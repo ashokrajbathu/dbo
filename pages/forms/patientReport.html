@@ -37,9 +37,8 @@
         <a href="../../index2.html" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>A</b>LT</span>
-
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><img style="width:50px;" src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"><b>dBotica</b></span>
+          <span class="logo-lg"><b>Admin</b>LTE</span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
@@ -53,7 +52,7 @@
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <!-- Messages: style can be found in dropdown.less-->
-              <!-- <li class="dropdown messages-menu">
+              <li class="dropdown messages-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-envelope-o"></i>
                   <span class="label label-success">4</span>
@@ -61,9 +60,9 @@
                 <ul class="dropdown-menu">
                   <li class="header">You have 4 messages</li>
                   <li>
-                    
+                    <!-- inner menu: contains the actual data -->
                     <ul class="menu">
-                      <li>
+                      <li><!-- start message -->
                         <a href="#">
                           <div class="pull-left">
                             <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
@@ -74,7 +73,7 @@
                           </h4>
                           <p>Why not buy a new awesome theme?</p>
                         </a>
-                      </li>
+                      </li><!-- end message -->
                       <li>
                         <a href="#">
                           <div class="pull-left">
@@ -127,9 +126,9 @@
                   </li>
                   <li class="footer"><a href="#">See All Messages</a></li>
                 </ul>
-              </li> -->
+              </li>
               <!-- Notifications: style can be found in dropdown.less -->
-              <!-- <li class="dropdown notifications-menu">
+              <li class="dropdown notifications-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-bell-o"></i>
                   <span class="label label-warning">10</span>
@@ -137,7 +136,7 @@
                 <ul class="dropdown-menu">
                   <li class="header">You have 10 notifications</li>
                   <li>
-                    
+                    <!-- inner menu: contains the actual data -->
                     <ul class="menu">
                       <li>
                         <a href="#">
@@ -169,9 +168,9 @@
                   </li>
                   <li class="footer"><a href="#">View all</a></li>
                 </ul>
-              </li> -->
+              </li>
               <!-- Tasks: style can be found in dropdown.less -->
-              <!-- <li class="dropdown tasks-menu">
+              <li class="dropdown tasks-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-flag-o"></i>
                   <span class="label label-danger">9</span>
@@ -179,9 +178,9 @@
                 <ul class="dropdown-menu">
                   <li class="header">You have 9 tasks</li>
                   <li>
-                   
+                    <!-- inner menu: contains the actual data -->
                     <ul class="menu">
-                      <li>
+                      <li><!-- Task item -->
                         <a href="#">
                           <h3>
                             Design some buttons
@@ -193,8 +192,8 @@
                             </div>
                           </div>
                         </a>
-                      </li>
-                      <li>
+                      </li><!-- end task item -->
+                      <li><!-- Task item -->
                         <a href="#">
                           <h3>
                             Create a nice theme
@@ -206,8 +205,8 @@
                             </div>
                           </div>
                         </a>
-                      </li>
-                      <li>
+                      </li><!-- end task item -->
+                      <li><!-- Task item -->
                         <a href="#">
                           <h3>
                             Some task I need to do
@@ -219,8 +218,8 @@
                             </div>
                           </div>
                         </a>
-                      </li>
-                      <li>
+                      </li><!-- end task item -->
+                      <li><!-- Task item -->
                         <a href="#">
                           <h3>
                             Make beautiful transitions
@@ -232,19 +231,19 @@
                             </div>
                           </div>
                         </a>
-                      </li>
+                      </li><!-- end task item -->
                     </ul>
                   </li>
                   <li class="footer">
                     <a href="#">View all tasks</a>
                   </li>
                 </ul>
-              </li> -->
+              </li>
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <img src="../../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                  <span class="hidden-xs" id="username1"></span>
+                  <span class="hidden-xs">Alexander Pierce</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
@@ -298,7 +297,7 @@
               <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-              <p id="username"></p>
+              <p>Alexander Pierce</p>
               <!-- Status -->
               <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
@@ -381,7 +380,7 @@
                 <div class="box-header">
                   <h3 class="box-title">Patient data</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body">
+               <!-- <div class="box-body">
                      <div class="col-md-12 form-group">
                          <div class="col-md-3 form-group">
                              <h4>Patient Name : </h4>
@@ -412,10 +411,7 @@
                      
                           <div class="col-md-3 form-group">
                              <h4>Clinical Impression : </h4></div>
-                          <div class="col-md-3 form-group">
-                     
-                            <h4><p placeholder="" id="patient-report-ci"></p></h4>
-                          </div>
+                         
                         </div>
                     </br>
 
@@ -424,26 +420,63 @@
 
 
                      
-                 <!-- <table id="current-prescriptions" class="table table-bordered table-striped">
-                    <thead>
-                      <tr>
-                        <th>BrandName</th>
-                        <th>Price</th>
-                        <th>Units</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                   <tfoot>
-                      <tr>
-                        <th>Rendering engine</th>
-                        <th>Browser</th>
-                        <th>Platform(s)</th>
-                        <th>Engine version</th>
-                        <th>CSS grade</th>
-                      </tr>
-                    </tfoot> 
-                  </table-->                
-                </div><!-- /.box-body -->
+                                
+                </div>/.box-body -->
+
+                 <div class="box-body">
+               <div class="col-md-3 form-group">
+                 <label>Patient Name</label>
+                 <span class="form-control" placeholder="Patient Name" value="Type" id="patient-name"  
+                 style="background-color: #eee;">
+               </span>
+             </div>
+
+             <div class="col-md-2 form-group">
+              <label>Age</label> 
+              <span class="form-control" placeholder="Age" value="Type" id="patient-age"  
+                 style="background-color: #eee;">
+               </span>
+             </div>
+          <div class="col-md-2 form-group">
+            <label>Gender</label>
+           <span class="form-control" placeholder="Patient Name" value="Type" id="patient-gender"  
+                 style="background-color: #eee;">
+               </span>
+        </div>
+        <div class="col-md-5 form-group">
+          <label>Clinical Impression</label>
+          <span class="form-control" placeholder="Patient Name" value="Type" id="patient-report-ci"  
+                 style="background-color: #eee;">
+               </span>
+      </div>
+        <div class="col-md-3 form-group">
+          <label>Height</label>
+          <span class="form-control" placeholder="Patient Name" value="Type" id="patient-height"  
+                 style="background-color: #eee;">
+               </span>
+      </div>
+       <div class="col-md-3 form-group">
+          <label>Weight</label>
+          <span class="form-control" placeholder="Patient Name" value="Type" id="patient-weight"  
+                 style="background-color: #eee;">
+               </span>
+      </div>
+      <div class="col-md-3 form-group">
+          <label>Temperature</label>
+         <span class="form-control" placeholder="Patient Name" value="Type" id="patient-temperature"  
+                 style="background-color: #eee;">
+               </span>
+      </div>
+      <div class="col-md-3 form-group">
+          <label>Blood Pressure</label>
+         <span class="form-control" placeholder="Patient Name" value="Type" id="patient-bldpressure"  
+                 style="background-color: #eee;">
+               </span>
+      </div>
+      
+
+    </div>
+
               </div><!-- /.box -->
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -501,9 +534,9 @@
 
       <footer class="main-footer">
         <div class="pull-right hidden-xs">
-          <b>Version</b> 2.3.0
+          <b>Version</b> 1.0.0
         </div>
-        <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; 2015-2016 <a href="http://dbotica.com">Dbotica</a>.</strong> All rights reserved.
       </footer>
 
       <!-- Control Sidebar -->
@@ -620,34 +653,31 @@
 
     <script type="text/javascript">
    $(document).ready(function(){
-   $('#username').text(localStorage.getItem('firstName'));
-  $('#username1').text(localStorage.getItem('firstName'));
-
+ 
                
       var ci = $.cookie('cookie-cli-imp');
-      $('#patient-report-ci').html(ci);
+      $('#patient-report-ci').text(ci);
 
-      var patientData = $.parseJSON($.cookie('currentPatientInfo'));
-      var drugData = $.cookie('cookie-array');     
+      //var drugData = $.cookie('cookie-array');
+
+      
+     
         $('#report-prescriptions > tbody').append($.cookie('drugHtml'));
         $('#report-prescriptions').DataTable();
 
-        var pName = patientData[0]['firstName'];
-        var pAge = patientData[0]['age'];
-        var pGender = patientData[0]['gender'];
-        var pEmail =  patientData[0]['email'];
-        var pPhone = patientData[0]['phoneNumber']
+        var data1 = $.parseJSON($.cookie('currentPatientInfo'));
+      if (data1.length != 0) {
+        $('#patient-name').text(data1[0]['firstName']);
+        $('#patient-gender').text(data1[0]['gender']);        
+       // $('#patient-reg-phone').val(data1[0]['gender']);
+        
+        $('#patient-age').text(data1[0]['age']);
+        //$('#patient-reg-bloodgrp').val(data1[0]['bloodGroup']);
 
-        $('#patient-name').text(pName);
-        $('#patient-age').text(pAge);
-        $('#patient-gender').text(pGender);
-        $('#patient-pres-date').text('12-09-2016');
+        }
 
-       $("#patient-search-result").append('</br><table> <tr width="100%"> <td width="30%"><h4>Name</h4>  </td><td width="10%">:</td><td width="60%" align="left"><input type="text" disabled="true" value="'+pName+'" id="search-Name"></input> </td><tr>');
-       $("#patient-search-result").append('<tr> <td width="30%"><h4>Age</h4> </td><td width="10%">:</td><td width="60%" align="left"><input type="text" disabled="true" value="'+pAge+'" id="search-age"></input> </td><tr>');
-       $("#patient-search-result").append('<tr> <td width="30%"><h4>Gender</h4></td><td width="10%">:</td><td width="60%" align="left"><input type="text" disabled="true" value="'+pGender+'"id="search-Gender"></input> </td></tr>');
-       $("#patient-search-result").append('<tr> <td width="30%"><h4>Email</h4> </td><td width="10%">:</td><td width="60%" align="left"><input type="text" disabled="true" value="'+pEmail+'" id="search-email"></input> </td></tr>/table>');
-       $("#patient-search-result").append('<tr> <td width="30%"><h4>Phone</h4> </td><td width="10%">:</td><td width="60%" align="left"><input type="text" disabled="true" value="'+pPhone+'" id="search-phone"></input> </td></tr>/table>');
+       
+
 
        //var doctor-id = localStorage.getItem('doctorId');
       // var doctor-name = localStorage.getItem('firstName');
@@ -669,10 +699,36 @@
        $('#doctor-qual').text(docQua);
        $('#doctor-specialization').text(docSpe);
        $('#doctor-ards').text(docAdrs);
-       if (!docPhn && docPhn != undefined && docPhn.length != 0) {
+       if (!docPhn && docPhn.length != 0) {
          $('#doctor-phn').text(docPhn);
        }
        $('#doctor-organization').text(docOrg);
+
+      var temp = $.cookie('currentPatientInfo-temp');
+      var height = $.cookie('currentPatientInfo-height');
+      var weight = $.cookie('currentPatientInfo-weight');
+      var bloodPressure = $.cookie('currentPatientInfo-bloodPressure');
+      var impression = $.cookie('currentPatientInfo-impression');
+
+      if (!!temp && temp.length != 0) {
+        $('#patient-temperature').text(temp);
+      } 
+
+      if (!!height && height.length != 0) {
+        $('#patient-height').text(height);
+      } 
+
+      if (!!weight && weight.length != 0) {
+        $('#patient-weight').text(weight);
+      } 
+
+      if (!!bloodPressure && bloodPressure.length != 0) {
+        $('#patient-bldpressure').text(bloodPressure);
+      } 
+
+      if (!!impression && impression.length != 0) {
+        $('#patient-report-ci').text(impression);
+      } 
 
        console.log("docname "+docname +" docid "+docid+" docorg "+docOrg+" docspe "+docSpe+" docadr "+docAdrs+" docphn "+docPhn);
 

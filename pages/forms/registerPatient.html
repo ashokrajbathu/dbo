@@ -110,20 +110,25 @@
 
     <script type="text/javascript">
     $(document).ready(function(){   
-      var phn = $.cookie('ck-patient-phone');
-      $('#patient-reg-phone').text(phn);
-      var data1 = $.parseJSON($.cookie('currentPatientInfo'));
-      if (data1.length != 0) {
-        $('#patient-reg-name').val(data1[0]['firstName']);
-        $('#patient-reg-email').val(data1[0]['emailId']);        
-        $('#patient-reg-phone').val(data1[0]['phoneNumber']);
-        if (data1[0]['gender'] == "MALE") {
-          $("#genderMale").prop("checked", true)
-        } else {
-          $("#genderFemale").prop("checked", true)
+
+      try {
+        var data1 = $.parseJSON($.cookie('currentPatientInfo'));
+        if (data1.length != 0) {
+          $('#patient-reg-name').val(data1[0]['firstName']);
+          $('#patient-reg-email').val(data1[0]['emailId']);        
+          $('#patient-reg-phone').val(data1[0]['phoneNumber']);
+          if (data1[0]['gender'] == "MALE") {
+            $("#genderMale").prop("checked", true)
+          } else {
+            $("#genderFemale").prop("checked", true)
+          }
+          $('#patient-reg-age').val(data1[0]['age']);
+          $('#patient-reg-bloodgrp').val(data1[0]['bloodGroup']);
+        } else{
+          //$('#patient-reg-phone').val(phn);
         }
-        $('#patient-reg-age').val(data1[0]['age']);
-        $('#patient-reg-bloodgrp').val(data1[0]['bloodGroup']);
+      } catch (e) {
+        $('#patient-reg-phone').val($.cookie('currentPatientContactNumber'));
       }
     });
 
