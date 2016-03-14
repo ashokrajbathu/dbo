@@ -579,9 +579,14 @@
     <script src="../../dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="../../dist/js/demo.js"></script>
+	<!-- IndexedDB for local storage-->
+	<script src="./indexedDB/indexedDbotica.js"></script>
+	
 
     <script type="text/javascript">
     (function ($) {
+		openDb();
+
       $('.spinner .btn:first-of-type').on('click', function() {
         $('.spinner input').val( parseInt($('.spinner input').val(), 10) + 1);
       });
@@ -731,6 +736,7 @@ if (days === 'Days') {
 $('#prescription-form-drug').keyup(function(e){
   var brandName = $('#prescription-form-drug').val();
   if (brandName === "") {
+	$('.drugs-dropdown-menu').hide('dropdown');
     return;
   }
   e.preventDefault();
@@ -826,8 +832,12 @@ $('#prescription-save-cont').click(function(e){
   data: JSON.stringify({'doctorId': localStorage.getItem('doctorId'), 'drugDosage' : json, 'height': $('#prescription-form-height').val(), 'weight': $('#prescription-form-weight').val(), 'bloodPressure': $('#prescription-form-bloodPressure').val(), 'temperature': $('#prescription-form-temp').val()}),
   success: function(response){       
     alert("Prescrition successfully saved");
-    var data = $.parseJSON(response.response);                  
-    console.log(data);
+    var prescriptionInfo = $.parseJSON(response.response);
+	//Adding prescriptioninfo to indexedDB
+	var patientInfoCookie = $.cookie('currentPatientInfo');
+	var patientInfo = $.parseJSON(patientInfoCookie);
+	addPrescriptiontoIndexedDB(prescriptionInfo,patientInfo,localStorage.getItem('doctorId'));	
+    console.log(prescriptionInfo);
     window.location.replace("../../starter.html");
   }
 });
@@ -911,6 +921,8 @@ alert($.cookie('ck-patient-phone'));
       var data1 = $.parseJSON(response.response);
       $.cookie('currentPatientInfo', response.response);
       $('#patient-search-result').load('registerPatient.html');
+	  console.log("id of patient recived "+data1[0]);
+	  addPatientObjecttoIndexedDB(data1[0]);
     } else {
       alert("Patient doesn't exist");
       $.cookie('currentPatientInfo', '');

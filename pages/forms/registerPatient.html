@@ -146,6 +146,7 @@
       }
 
       var requestString = "";
+	  var updatedObject;
       if (data1.length != 0) {
         data1[0]['gender'] =  $('input[name=gender]:checked').val();;
         data1[0]['firstName'] = $('#patient-reg-name').val();
@@ -154,6 +155,8 @@
         data1[0]['age'] = $('#patient-reg-age').val();
         data1[0]['bloodGroup'] = $('#patient-reg-bloodgrp').val();
         requestString = JSON.stringify(data1[0]);
+		/*updatedObject = $.parseJSON(requestString);
+		updatePatientObjectIndexedDB(updatedObject);*/
       } else {
         requestString = JSON.stringify({'gender': $('input[name=gender]:checked').val(), 'firstName' : $('#patient-reg-name').val(), 'emailId': $('#patient-reg-email').val(), 'phoneNumber': $('#patient-reg-phone').val(),
           'age': $('#patient-reg-age').val(), 'bloodGroup': $('#patient-reg-bloodgrp').val()});
@@ -168,6 +171,8 @@
            data: requestString,
            success: function(response){
                 $.cookie('currentPatientInfo', response.response);
+				updatedObject = $.parseJSON(response.response);
+				addPatientObjecttoIndexedDB(updatedObject[0]); 
                 alert("Patient details successfully updated.");
               }
             });//ajax
