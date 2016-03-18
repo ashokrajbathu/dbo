@@ -34,9 +34,9 @@
             <!-- Logo -->
             <a href="../../index2.html" class="logo"  style="width: 13%;">
               <!-- mini logo for sidebar mini 50x50 pixels -->
-              <span class="logo-mini"><b>db</b></span>
+              <span class="logo-mini"><b>A</b>LT</span>
               <!-- logo for regular state and mobile devices -->
-              <span class="logo-lg"><b>dBotica</b></span>
+              <span class="logo-lg"><b>Admin</b>LTE</span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation"  style="margin-left: 13%;">
@@ -348,6 +348,7 @@
                 <h3 class="box-title">Patient Data</h3>
               </div><!-- /.box-header -->
               <div class="box-body">
+                <form role="form" id="prescription-form-pd">
                <div class="col-md-3 form-group">
                  <label>Patient Name</label>
                  <span class="form-control" placeholder="Patient Name" value="Type" id="prescription-form-patient-name"  
@@ -357,26 +358,26 @@
 
              <div class="col-md-2 form-group">
               <label>Weight in kgs</label> 
-              <input type="text" class="form-control" placeholder="Weight" id="prescription-form-weight">
+              <input type="text" class="form-control" placeholder="Weight" data-validation="number length" data-validation-length="max3" id="prescription-form-weight">
             </input>
           </div>
           <div class="col-md-2 form-group">
             <label>Height in cms</label>
-            <input type="text" class="form-control" placeholder="Height" id="prescription-form-height">
+            <input type="text" class="form-control" placeholder="Height" data-validation="number length" data-validation-length="max3" id="prescription-form-height">
           </input>
         </div>
         <div class="col-md-2 form-group">
           <label>Temperature</label>
-          <input type="text" class="form-control" placeholder="Temperature" id="prescription-form-temp">
+          <input type="text" class="form-control" placeholder="Temperature" data-validation="number length" data-validation-length="max3" id="prescription-form-temp">
         </input>
       </div>
         <div class="col-md-3 form-group">
           <label>Blood Pressure</label>
-          <input type="text" class="form-control" placeholder="Blood Pressure" id="prescription-form-bloodPressure">
+          <input type="text" class="form-control" placeholder="Blood Pressure" data-validation="number length" data-validation-length="max4" id="prescription-form-bloodPressure">
         </input>
       </div>
 
-
+    </form>
     </div><!-- /.box-body -->
   </div><!-- /.box -->
 </div><!-- /.col -->
@@ -406,12 +407,12 @@
       <div class="box-body">
         <form role="form" id="prescription-form">
           <div class="col-md-12 form-group">
-            <input type="textarea"  class="form-control" rows="2"  placeholder="CLinical Impression" id="prescription-form-ClincImp" ></input>
+            <input type="textarea"  class="form-control" rows="2" data-validation="required length alphanumeric" data-validation-length="min5"  placeholder="Clinical Impression" id="prescription-form-ClincImp" ></input>
           </div>
           <!-- text input -->
           <div class="col-md-9 form-group">
             <!-- <label>Text</label> -->
-            <input type="text" class="form-control" placeholder="Drug" id="prescription-form-drug"></input>
+            <input type="text" class="form-control" data-validation="required" placeholder="Drug" id="prescription-form-drug"></input>
             <ul class="dropdown-menu drugs-dropdown-menu">
             </ul>
           </div>
@@ -424,7 +425,7 @@
 
         <div class="col-md-2 form-group">
           <!-- <label>Text</label> -->
-          <input type="text" class="form-control" placeholder="Per Serving" id="prescription-form-serving">
+          <input type="text" class="form-control" data-validation="required number" placeholder="Per Serving" id="prescription-form-serving">
         </input>
       </div>
       <div class="col-md-2 form-group">
@@ -528,7 +529,7 @@
 <!-- Control Sidebar -->
 
 <!-- Control Sidebar -->
-<aside class="control-sidebar control-sidebar-light" style="position: fixed; height: auto; width: 22%;">
+<aside class="control-sidebar control-sidebar-light" style="position: fixed;height:100%; width: 22%;">
   <!-- Create the tabs -->
   <!-- Tab panes -->
   <p class="login-box-msg" style="margin-top: 7%;">Patient search</p>
@@ -697,6 +698,8 @@ if (days === 'Days') {
    console.log(JSON.stringify(drugPojoList));
    countNum++;
    $.cookie('drugEntryCount', countNum);
+   var cliimp = $('#prescription-form-ClincImp').val();
+  $.cookie('cookie-cli-imp',cliimp);
 
    formClear();
  });
@@ -849,7 +852,7 @@ $('prescription-form').submit(function(e){
 });
 
 $('#prescription-reset').click(function(e){
-  $('#prescription-form-ClincImp').html("");
+  $('#prescription-form-ClincImp').val("");
   $('#current-prescriptions > tbody').append("");
   formClear();
   $.cookie('drugHtml', "");
@@ -859,16 +862,20 @@ $('#prescription-reset').click(function(e){
   $.cookie('currentPatientInfo-weight', "");
   $.cookie('currentPatientInfo-bloodPressure', "");
   $.cookie('currentPatientInfo-impression', "");
+  $.cookie('cookie-cli-imp', "");
+  $('#prescription-form-pd').find('input:text').val('');
 
   window.location.reload();
 });
 
 $('#prescription-reset-btm').click(function(e){
-  $('#prescription-form-ClincImp').html("");
+  $('#prescription-form-ClincImp').val("");
   $('#current-prescriptions > tbody').append("");
   formClear();
   $.cookie('drugHtml', "");
   $.cookie('drugEntryCount', "");
+  $.cookie('cookie-cli-imp', "");
+  $('#prescription-form-pd').find('input:text').val('');
   window.location.reload();
 });
 
@@ -878,7 +885,7 @@ $('prescription-form').submit(function(e){
 
 $(document).ready(function(){         
   var ci = $.cookie('cookie-cli-imp');
-  $('#prescription-form-ClincImp').html(ci);
+  $('#prescription-form-ClincImp').val(ci);
   $('#current-prescriptions > tbody').append($.cookie('drugHtml'));
 
   //var patntPhn = $('#patient-search-telephone').val();
@@ -993,5 +1000,8 @@ function resetPatientCookie(){
 </script> -->
 
 </script>
+<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/jquery.form-validator.min.js"></script>
+    <script> $.validate(); </script>
 </body>
 </html>

@@ -29,8 +29,10 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body class="hold-transition skin-blue sidebar-mini">
-    <div class="wrapper">
+  
+<body class="hold-transition skin-blue sidebar-mini control-sidebar-open">
+
+        <div class="wrapper">
 
           <header class="main-header">
             <!-- Logo -->
@@ -285,9 +287,8 @@
               </div>
             </nav>
           </header>
-
       <!-- Left side column. contains the logo and sidebar -->
-      <aside class="main-sidebar">
+      <aside class="main-sidebar" style="width: 13%;">
 
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
@@ -322,7 +323,7 @@
       </aside>
 
       <!-- Content Wrapper. Contains page content -->
-      <div class="content-wrapper">
+      <div class="content-wrapper"  style="margin-left: 13%;margin-right: 22%;">
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
@@ -535,7 +536,7 @@
       </div><!-- /.content-wrapper -->
      
 
-      <footer class="main-footer">
+      <footer class="main-footer" style="margin-left: 13%;margin-right: 22%;">
         <div class="pull-right hidden-xs">
           <b>Version</b> 1.0.0
         </div>
@@ -545,94 +546,15 @@
       <!-- Control Sidebar -->
      
       <!-- Control Sidebar -->
-      <aside class="control-sidebar control-sidebar-dark">
-        <!-- Create the tabs -->
-        <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-          <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-          
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content">
-          <!-- Home tab content -->
-          <div class="tab-pane" id="control-sidebar-home-tab">
-           
-            
-              
-              
-           
-            <h3 class="control-sidebar-heading">Patient Search</h3>
-            <ul class="control-sidebar-menu">
-                          
-         
-              <li>
-                <div id="patient-search-result"></div>
-              </li>
-             
-              </ul><!-- /.control-sidebar-menu -->
+      <aside class="control-sidebar control-sidebar-light" style="position: fixed;height:100%; width: 22%;">
+  <!-- Create the tabs -->
+  <!-- Tab panes -->
+  <p class="login-box-msg" style="margin-top: 7%;">Patient Details</p>
 
-          </div><!-- /.tab-pane -->
-          <!-- Stats tab content -->
-          <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div><!-- /.tab-pane -->
-          <!-- Settings tab content -->
-          <div class="tab-pane" id="control-sidebar-settings-tab">
-            <form method="post">
-              <h3 class="control-sidebar-heading">General Settings</h3>
-              <div class="form-group">
-                <label class="control-sidebar-subheading">
-                  Report panel usage
-                  <input type="checkbox" class="pull-right" checked>
-                </label>
-                <p>
-                  Some information about this general settings option
-                </p>
-              </div><!-- /.form-group -->
-
-              <div class="form-group">
-                <label class="control-sidebar-subheading">
-                  Allow mail redirect
-                  <input type="checkbox" class="pull-right" checked>
-                </label>
-                <p>
-                  Other sets of options are available
-                </p>
-              </div><!-- /.form-group -->
-
-              <div class="form-group">
-                <label class="control-sidebar-subheading">
-                  Expose author name in posts
-                  <input type="checkbox" class="pull-right" checked>
-                </label>
-                <p>
-                  Allow the user to show his name in blog posts
-                </p>
-              </div><!-- /.form-group -->
-
-              <h3 class="control-sidebar-heading">Chat Settings</h3>
-
-              <div class="form-group">
-                <label class="control-sidebar-subheading">
-                  Show me as online
-                  <input type="checkbox" class="pull-right" checked>
-                </label>
-              </div><!-- /.form-group -->
-
-              <div class="form-group">
-                <label class="control-sidebar-subheading">
-                  Turn off notifications
-                  <input type="checkbox" class="pull-right">
-                </label>
-              </div><!-- /.form-group -->
-
-              <div class="form-group">
-                <label class="control-sidebar-subheading">
-                  Delete chat history
-                  <a href="javascript::;" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
-                </label>
-              </div><!-- /.form-group -->
-            </form>
-          </div><!-- /.tab-pane -->
-        </div>
-      </aside><!-- /.control-sidebar -->
+<p class="login-box-msg" style="margin-top: 7%;"></p>
+<div id="patient-search-result"></div>
+</div>
+</aside><!-- /.control-sidebar -->
       <!-- Add the sidebar's background. This div must be placed
            immediately after the control sidebar -->
       <div class="control-sidebar-bg"></div>
@@ -656,6 +578,8 @@
 
     <script type="text/javascript">
    $(document).ready(function(){
+
+    $('#patient-search-result').load('registerPatient.html');
  
                
       var ci = $.cookie('cookie-cli-imp');
