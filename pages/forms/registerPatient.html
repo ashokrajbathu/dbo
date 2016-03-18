@@ -173,7 +173,9 @@
                 $.cookie('currentPatientInfo', response.response);
 				updatedObject = $.parseJSON(response.response);
 				addPatientObjecttoIndexedDB(updatedObject[0]); 
+				
                 alert("Patient details successfully updated.");
+				updatePatientFields();
               }
             });//ajax
 

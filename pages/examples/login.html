@@ -81,7 +81,7 @@
         });
 
         if(localStorage.getItem("isLoggedIn"))
-          window.location.replace("../../starter.html");
+          window.location.replace("../forms/entryPrescriptions.html");
       });
 
       $('#login-submit').click(function(e){
@@ -109,7 +109,7 @@
             localStorage.setItem("doctorPublicPhoneNumber",data['publicPhoneNumber']);
             localStorage.setItem("doctorOfficeAddress",data['officeAddress']);
             console.log(localStorage.getItem("firstName"));
-            window.location.replace("../../starter.html");
+            window.location.replace("../forms/entryPrescriptions.html");
            }
        });
       });

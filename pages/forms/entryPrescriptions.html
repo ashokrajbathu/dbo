@@ -32,11 +32,11 @@
 
           <header class="main-header">
             <!-- Logo -->
-            <a href="../../index2.html" class="logo"  style="width: 13%;">
+            <a href="../../starter.html" class="logo"  style="width: 13%;">
               <!-- mini logo for sidebar mini 50x50 pixels -->
-              <span class="logo-mini"><b>A</b>LT</span>
+              <span class="logo-mini"><b>db</b></span>
               <!-- logo for regular state and mobile devices -->
-              <span class="logo-lg"><b>Admin</b>LTE</span>
+              <span class="logo-lg"><b>dbotica</b></span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation"  style="margin-left: 13%;">
@@ -275,11 +275,7 @@
                       </li>
                     </ul>
                   </li>
-                  <!-- Control Sidebar Toggle Button -->
-                  <li>
-                    <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                  </li>
-                </ul>
+                 </ul>
               </div>
             </nav>
           </header>
@@ -916,7 +912,7 @@ $('#patient-search').click(function(e){
  var phn = $("#patient-search-telephone").val();
  var dob = $("#patient-search-dob").val();
  $.cookie('ck-patient-phone',phn);
-alert($.cookie('ck-patient-phone'));
+
  $.ajax({ 
   type: "GET",
   url: "http://localhost:8081/dbotica-spring/doctor/getPatients",
