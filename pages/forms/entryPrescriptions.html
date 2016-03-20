@@ -19,6 +19,15 @@
     <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="entryPrescription.css">
 
+    <!--Datepicker srcs -->
+    <link rel="stylesheet" href="css/datepicker.css" type="text/css" />
+  <!--  <link rel="stylesheet" media="screen" type="text/css" href="css/layout.css" />-->
+    
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/datepicker.js"></script>
+    <script type="text/javascript" src="js/eye.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/layout.js?ver=1.0.2"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -354,22 +363,41 @@
 
              <div class="col-md-2 form-group">
               <label>Weight in kgs</label> 
-              <input type="text" class="form-control" placeholder="Weight" data-validation="number length" data-validation-length="max3" id="prescription-form-weight">
+              <input type="text" class="form-control" placeholder="Weight"  id="prescription-form-weight">
             </input>
           </div>
           <div class="col-md-2 form-group">
             <label>Height in cms</label>
-            <input type="text" class="form-control" placeholder="Height" data-validation="number length" data-validation-length="max3" id="prescription-form-height">
+            <input type="text" class="form-control" placeholder="Height"  id="prescription-form-height">
           </input>
         </div>
         <div class="col-md-2 form-group">
           <label>Temperature</label>
-          <input type="text" class="form-control" placeholder="Temperature" data-validation="number length" data-validation-length="max3" id="prescription-form-temp">
+          <input type="text" class="form-control" placeholder="Temperature"  id="prescription-form-temp">
         </input>
       </div>
-        <div class="col-md-3 form-group">
+        <div class="col-md-2 form-group">
           <label>Blood Pressure</label>
-          <input type="text" class="form-control" placeholder="Blood Pressure" data-validation="number length" data-validation-length="max4" id="prescription-form-bloodPressure">
+          <input type="text" class="form-control" placeholder="Blood Pressure"  id="prescription-form-bloodPressure">
+        </input>
+      </div>
+      <div class="col-md-1 form-group">
+          
+      </div>
+
+      <div class="col-md-2 form-group">
+          <label>BMI</label>
+          <input type="text" class="form-control" placeholder="BMI"  id="prescription-form-bmi">
+        </input>
+      </div>
+      <div class="col-md-2 form-group">
+          <label>Saturation</label>
+          <input type="text" class="form-control" placeholder="Saturation"  id="prescription-form-saturatn">
+        </input>
+      </div>
+      <div class="col-md-2 form-group">
+          <label>Pulse</label>
+          <input type="text" class="form-control" placeholder="Pulse"  id="prescription-form-pulse">
         </input>
       </div>
 
@@ -403,7 +431,10 @@
       <div class="box-body">
         <form role="form" id="prescription-form">
           <div class="col-md-12 form-group">
-            <input type="textarea"  class="form-control" rows="2" data-validation="required length alphanumeric" data-validation-length="min5"  placeholder="Clinical Impression" id="prescription-form-ClincImp" ></input>
+            <input type="textarea"  class="form-control" rows="2"  placeholder="Symptoms" id="prescription-form-ClincImp" ></input>
+          </div>
+          <div class="col-md-12 form-group">
+            <textarea type="textarea"  class="form-control" rows="3" placeholder="Investigation" id="prescription-form-Investgtn" ></textarea>
           </div>
           <!-- text input -->
           <div class="col-md-9 form-group">
@@ -421,7 +452,7 @@
 
         <div class="col-md-2 form-group">
           <!-- <label>Text</label> -->
-          <input type="text" class="form-control" data-validation="required number" placeholder="Per Serving" id="prescription-form-serving">
+          <input type="text" class="form-control"  placeholder="Per Serving" id="prescription-form-serving">
         </input>
       </div>
       <div class="col-md-2 form-group">
@@ -460,6 +491,13 @@
         <input type="button" id="prescription-form-AL" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="AL"></input>
         <input type="button" id="prescription-form-BD" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="BD"></input>
         <input type="button" id="prescription-form-AD" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="AD"></input>
+      </div>
+      <div class="col-md-12 form-group">
+        Revisit after : <input type="text" id="inputDatetxt" name="inputDatetxt" /> days &nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="text" class="inputDate" id="inputDate" name="inputDate" value="">
+        <span class="glyphicon glyphicon-calendar" class="inputDate" id="inputDateSpan"></span>
+             <p hidden>  <label id="closeOnSelect"><input type="checkbox" checked="true" /> Close on selection</label></p>
+        
       </div>
       <div class="col-md-12" id="prescription-form-information" style="display: none;">
         <label>Information: </label>
@@ -505,12 +543,28 @@
             </thead>
             <tbody></tbody>
           </table>
-          <div class="box-footer">
-            <button type="submit" class="btn btn-primary pull-left"  id="prescription-reset-btm" >Reset</button>
-            <button type="submit" class="btn btn-primary pull-right"  id="prescription-save-cont" >Save and Continue</button>
-          </div>
+         
         </div><!-- /.box-body -->
       </div><!-- /.box -->
+
+      <div class="box box-solid box-primary">
+        <div class="box-header">
+          <h3 class="box-title">References</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+          <div class="col-md-13 form-group">
+            <textarea class="form-control" rows="3" placeholder="Additional References"  id="prescription-form-si"></textarea>
+          </div>
+      
+          
+          <div class="box-footer">
+            
+            <button type="submit" class="btn btn-primary pull-left"  id="prescription-reset-btm" >Reset</button>
+            <button type="submit" class="btn btn-primary pull-right"  id="prescription-save-cont" >Save and Continue</button>
+          
+          </div>
+        </div><!-- /.box-body -->
+      </div>
     </div><!-- /.col -->
   </div><!-- /.row -->
 </section><!-- /.content -->
@@ -549,8 +603,8 @@
   <div class="row">
   </div>
 </form>
-<p class="login-box-msg" style="margin-top: 7%;"></p>
-<div id="patient-search-result"></div>
+<div class="login-box-msg" id="patient-search-result" style="margin-top: 7%;"></div>
+<!--<div id="patient-search-result"></div>-->
 </div>
 </aside><!-- /.control-sidebar -->
       <!-- Add the sidebar's background. This div must be placed
@@ -572,7 +626,17 @@
     <!-- DataTables -->
     <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="../../plugins/datatables/dataTables.bootstrap.min.js"></script>
+    
+<script type="text/javascript" src="datepicker/js/datepicker.js"></script>
+  <!--<link rel="stylesheet" media="screen" type="text/css" href="datepicker/css/datepicker.css" />
+  <script type="text/javascript" src="datepicker/js/datepicker.js"></script>
+  <script type="text/javascript" src="datepicker/js/eye.js"></script>
+  <script type="text/javascript" src="datepicker/js/jquery.js"></script>
+  <script type="text/javascript" src="datepicker/js/utils.js"></script>
+  <script type="text/javascript" src="datepicker/js/layout.js?ver=1.0.2"></script>
+  <link rel="stylesheet" media="screen" type="text/css" href="datepicker/css/layout.css">-->
     <!-- AdminLTE App -->
+
     <script src="../../dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="../../dist/js/demo.js"></script>
@@ -730,7 +794,28 @@ if (days === 'Days') {
 // <!--  $('#prescription-form-drug').keyup(function(e){
 //       $.cookie("cookie-cli-imp",$('#prescription-form-ClincImp').val()); 
 //   }); -->
+/*
+$('#inputDateSpan').DatePicker({
+  format:'m/d/Y',
+  date: $('#inputDate').val(),
+  current: $('#inputDate').val(),
+  starts: 1,
+  position: 'r',
+  onBeforeShow: function(){
+    $('#inputDate').DatePickerSetDate($('#inputDate').val(), true);
+  },
+  onChange: function(formated, dates){
+    $('#inputDate').val(formated);
+    if ($('#closeOnSelect input').attr('checked')) {
+      $('#inputDate').DatePickerHide();
+    }
+  }
+});
+*/
 
+$('#pres-datepicker').click(function(e){
+  //$('#pres-datepicker').DatePickerShow();
+});
 
 $('#prescription-form-drug').keyup(function(e){
   var brandName = $('#prescription-form-drug').val();
@@ -820,6 +905,10 @@ $('#prescription-save-cont').click(function(e){
   $.cookie('currentPatientInfo-weight', $('#prescription-form-weight').val());
   $.cookie('currentPatientInfo-bloodPressure', $('#prescription-form-bloodPressure').val());
   $.cookie('currentPatientInfo-impression', $('#prescription-form-ClincImp').val());
+  $.cookie('currentPatientInfo-pulse',$('#prescription-form-pulse').val());
+  $.cookie('currentPatientInfo-saturation',$('#prescription-form-saturatn').val());
+  $.cookie('currentPatientInfo-bmi',$('#prescription-form-bmi').val());
+  $.cookie('currentPrescriptionInf0-inv',$('#prescription-form-Investgtn').val());
 
   $.ajax({ 
    type: "POST",
@@ -835,7 +924,11 @@ $('#prescription-save-cont').click(function(e){
 	//Adding prescriptioninfo to indexedDB
 	var patientInfoCookie = $.cookie('currentPatientInfo');
 	var patientInfo = $.parseJSON(patientInfoCookie);
-	addPrescriptiontoIndexedDB(prescriptionInfo,patientInfo,localStorage.getItem('doctorId'));	
+  try {
+  addPrescriptiontoIndexedDB(prescriptionInfo,patientInfo,localStorage.getItem('doctorId'));  
+} catch (e) {
+
+}
     console.log(prescriptionInfo);
     window.location.replace("../../starter.html");
   }
@@ -859,6 +952,9 @@ $('#prescription-reset').click(function(e){
   $.cookie('currentPatientInfo-bloodPressure', "");
   $.cookie('currentPatientInfo-impression', "");
   $.cookie('cookie-cli-imp', "");
+  $.cookie('currentPatientInfo-bmi',"");
+  $.cookie('currentPatientInfo-saturation',"");
+  $.cookie('currentPatientInfo-pulse',"");
   $('#prescription-form-pd').find('input:text').val('');
 
   window.location.reload();
@@ -879,7 +975,37 @@ $('prescription-form').submit(function(e){
  alert($(this).serializeArray());
 });
 
-$(document).ready(function(){         
+$('#prescription-form-height').keyup(function(e){
+  if($('#prescription-form-weight').val()!= '' && $('#prescription-form-height').val()!=""){
+    var bmi = ($('#prescription-form-weight').val()*10000)/($('#prescription-form-height').val()*$('#prescription-form-height').val());
+    $('#prescription-form-bmi').val(bmi);
+  }
+
+});
+
+$('#prescription-form-weight').keyup(function(e){
+  if($('#prescription-form-weight').val()!= '' && $('#prescription-form-height').val()!=""){
+    var bmi = ($('#prescription-form-weight').val()*10000)/($('#prescription-form-height').val()*$('#prescription-form-height').val());
+    $('#prescription-form-bmi').val(bmi);
+  }
+
+});
+
+
+$(document).ready(function(){     
+$('#closeOnSelect').hide();  
+ var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = month + "/" + day + "/" + year; 
+ document.getElementById('inputDate').value = today;
+ console.log(document.getElementById('inputDate').value);
   var ci = $.cookie('cookie-cli-imp');
   $('#prescription-form-ClincImp').val(ci);
   $('#current-prescriptions > tbody').append($.cookie('drugHtml'));
@@ -925,7 +1051,11 @@ $('#patient-search').click(function(e){
       $.cookie('currentPatientInfo', response.response);
       $('#patient-search-result').load('registerPatient.html');
 	  console.log("id of patient recived "+data1[0]);
-	  addPatientObjecttoIndexedDB(data1[0]);
+    try {
+      addPatientObjecttoIndexedDB(data1[0]);
+    } catch(e) {
+
+    }
     } else {
       alert("Patient doesn't exist");
       $.cookie('currentPatientInfo', '');
@@ -950,7 +1080,7 @@ function updatePatientFields(){
     try {
       $('#prescription-form-patient-name').text(data1[0]['firstName'] + " " + lastName);
     } catch (e) {
-
+      alert(e);
     }
   }
 }

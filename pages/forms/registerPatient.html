@@ -26,7 +26,7 @@
   <body class="hold-transition skin-blue sidebar-mini">
       <div class="register-box-body">
         <p class="login-box-msg">Update Patient details</p>
-        <form action="../../index.html" id="patient-register" method="post">
+        <form id="patient-register" method="post">
           <div class="form-group has-feedback">
             <input type="text" class="form-control" id="patient-reg-name" placeholder="Full name">
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -75,15 +75,30 @@
                   </select>
                   </div>
                </div> 
-           </div>         
+               </br>
+               <div class="form-group has-feedback">
+            <input type="text" class="form-control" id="patient-reg-allergy-disp" disabled="true" placeholder="Allergies">
+            
           </div>
-          
+          <div class="row">
+            <div class="col-xs-7">
+            <input type="text" class="form-control" id="patient-reg-allergy" placeholder="Allergic to"/>
+            </div>
+            <div class="col-xs-4">
+            <div type="submit" id="patient-register-alr-btn" class="btn btn-primary btn-block btn-flat" 
+              style="margin-bottom:60%" >Add</div>
+            </div>
+          </div>
+           
+
+          </div>
+                 
           <div class="row">
             <div class="col-xs-4">
             </div><!-- /.col -->
             <div class="col-xs-4">
-              <button type="submit" id="patient-register-btn" class="btn btn-primary btn-block btn-flat" 
-              style="margin-bottom:60%">Update</button>
+              <div type="submit" id="patient-register-btn" class="btn btn-primary btn-block btn-flat" 
+              style="margin-bottom:60%">Update</div>
             </div><!-- /.col -->
           </div>
         </form>
@@ -133,6 +148,25 @@
     });
 
 
+    $('#patient-register-alr-btn').click(function(){
+      if($('#patient-reg-allergy-disp').val()!=''){
+
+        var text = $('#patient-reg-allergy-disp').val();
+        if($('#patient-reg-allergy').val()!='')
+        {
+          text = text+', '+$('#patient-reg-allergy').val();
+          $('#patient-reg-allergy-disp').val(text);
+          $('#patient-reg-allergy').val("");
+        }
+      }else{
+        text = $('#patient-reg-allergy').val();
+        $('#patient-reg-allergy-disp').val(text);
+        $('#patient-reg-allergy').val("");
+
+      }
+
+    });
+
     $('#patient-register-btn').click(function(){
       // var radio1 = document.getElementById('genderFemale').checked();
       var patientInfoCookie = $.cookie('currentPatientInfo');
@@ -172,7 +206,11 @@
            success: function(response){
                 $.cookie('currentPatientInfo', response.response);
 				updatedObject = $.parseJSON(response.response);
-				addPatientObjecttoIndexedDB(updatedObject[0]); 
+        try {
+          addPatientObjecttoIndexedDB(updatedObject[0]);
+        } catch(e) {
+
+        }
 				
                 alert("Patient details successfully updated.");
 				updatePatientFields();

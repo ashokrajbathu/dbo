@@ -448,7 +448,7 @@
                </span>
         </div>
         <div class="col-md-5 form-group">
-          <label>Clinical Impression</label>
+          <label>Symptoms </label>
           <span class="form-control" placeholder="Patient Name" value="Type" id="patient-report-ci"  
                  style="background-color: #eee;">
                </span>
@@ -636,6 +636,9 @@
       var weight = $.cookie('currentPatientInfo-weight');
       var bloodPressure = $.cookie('currentPatientInfo-bloodPressure');
       var impression = $.cookie('currentPatientInfo-impression');
+      var bmi = $.cookie('currentPatientInfo-bmi');
+      var saturatn = $.cookie('currentPatientInfo-saturation');
+      var pulse = $.cookie('currentPatientInfo-pulse');
 
       if (!!temp && temp.length != 0) {
         $('#patient-temperature').text(temp);
