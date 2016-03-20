@@ -572,6 +572,7 @@
           			console.log(data);
           			$('#example1 > tbody').empty();
           			for(var i in data){
+                  console.log(data[i]['brandName']);
           				$('#example1 > tbody').append('<tr><td>'+data[i]['brandName']+'</td>');		
           			}
           			$('#example1').dataTable();
@@ -586,7 +587,7 @@
         $('#example1').DataTable({
           "paging": true,
           "lengthChange": false,
-          "searching": false,
+          "searching": true,
           "ordering": true,
           "info": true,
           "autoWidth": false
