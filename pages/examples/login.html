@@ -80,8 +80,9 @@
           increaseArea: '20%' // optional
         });
 
-        if(localStorage.getItem("isLoggedIn"))
+        if(localStorage.getItem("isLoggedIn") == "true") {
           window.location.replace("../forms/entryPrescriptions.html");
+        }
       });
 
       $('#login-submit').click(function(e){
