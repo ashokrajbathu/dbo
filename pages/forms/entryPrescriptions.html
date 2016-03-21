@@ -325,10 +325,17 @@
           <div class="content-wrapper"  style="margin-left: 13%;margin-right: 22%;">
             <!-- Content Header (Page header) -->
             <section class="content-header">
+			<div class="col-md-14">
+             <div class="box">
+              <h3 class="box-title"></h3>
+              <button type="submit" class="btn btn-primary pull-right"  id="prescription-reset" >Reset</button>
+            </div><!-- /.box-header -->
+          </div>
               <h1>
                 Prescriptions Form
                 <!-- <small>Preview</small> -->
               </h1>
+
           <!-- <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li><a href="#">Forms</a></li>
@@ -339,14 +346,7 @@
         <!-- Main content -->
         <section class="content">
           <div class="row">
-           <div class="col-md-14">
-             <div class="box-header with-border">
-              <h3 class="box-title"></h3>
-              <button type="submit" class="btn btn-primary pull-right"  id="prescription-reset" >Reset</button>
-            </div><!-- /.box-header -->
-
-
-          </div>
+           
           <div class="col-xs-12">
             <div class="box box-solid box-primary">
               <div class="box-header">
@@ -376,30 +376,26 @@
           <input type="text" class="form-control" placeholder="Temperature"  id="prescription-form-temp">
         </input>
       </div>
-        <div class="col-md-2 form-group">
+        <div class="col-md-3 form-group">
           <label>Blood Pressure</label>
           <input type="text" class="form-control" placeholder="Blood Pressure"  id="prescription-form-bloodPressure">
         </input>
       </div>
-      <div class="col-md-1 form-group">
-          
-      </div>
-
-      <div class="col-md-2 form-group">
-          <label>BMI</label>
-          <input type="text" class="form-control" placeholder="BMI"  id="prescription-form-bmi">
-        </input>
-      </div>
-      <div class="col-md-2 form-group">
-          <label>Saturation</label>
-          <input type="text" class="form-control" placeholder="Saturation"  id="prescription-form-saturatn">
-        </input>
-      </div>
-      <div class="col-md-2 form-group">
-          <label>Pulse</label>
-          <input type="text" class="form-control" placeholder="Pulse"  id="prescription-form-pulse">
-        </input>
-      </div>
+	  <div class="col-md-3 form-group">
+		<label>BMI</label>
+		<input type="text" class="form-control" placeholder="BMI" id="prescription-form-bmi">
+		</input>
+	  </div>
+	  <div class="col-md-2 form-group">
+		<label>Saturation</label>
+		<input type="text" class="form-control" placeholder="Saturation" id="prescription-form-saturation">
+		</input>
+	  </div>
+	  <div class="col-md-2 form-group">
+		<label>Pulse</label>
+		<input type="text" class="form-control" placeholder="Pulse" id="prescription-form-pulse">
+		</input>
+	  </div>
 
     </form>
     </div><!-- /.box-body -->
@@ -413,6 +409,35 @@
 </section>
 
 
+<section class="content">
+  <div class="row">
+
+  </div><!--/.col (left) -->
+
+  <!-- right column -->
+  <div class="col-md-14">
+    <!-- general form elements disabled -->
+    <div class="box box-solid box-primary">
+      <div class="box-header">
+        <h3 class="box-title">Investigation</h3>
+      </div>
+
+      <div class="box-body">
+        <form role="form" id="prescription-form">
+          <div class="col-md-12 form-group">
+			<textarea  class="form-control" rows="2"  placeholder="Clinical Impression" id="prescription-form-ClincImp" ></textarea>
+          </div>
+		  <div class="col-md-12 form-group">
+            <textarea  class="form-control" rows="2" placeholder="Investigation Report" id="prescription-form-Investigation" ></textarea>
+          </div>
+		  
+	</form>
+  </div><!-- /.box-body -->
+  
+</div><!-- /.box -->
+</div><!--/.col (right) -->
+<!-- /.row -->
+</section><!-- /.content -->
 
 
 <section class="content">
@@ -430,13 +455,8 @@
 
       <div class="box-body">
         <form role="form" id="prescription-form">
-          <div class="col-md-12 form-group">
-            <input type="textarea"  class="form-control" rows="2"  placeholder="Symptoms" id="prescription-form-ClincImp" ></input>
-          </div>
-          <div class="col-md-12 form-group">
-            <textarea type="textarea"  class="form-control" rows="3" placeholder="Investigation" id="prescription-form-Investgtn" ></textarea>
-          </div>
-          <!-- text input -->
+          
+		  <!-- text input -->
           <div class="col-md-9 form-group">
             <!-- <label>Text</label> -->
             <input type="text" class="form-control" data-validation="required" placeholder="Drug" id="prescription-form-drug"></input>
@@ -908,7 +928,7 @@ $('#prescription-save-cont').click(function(e){
   $.cookie('currentPatientInfo-pulse',$('#prescription-form-pulse').val());
   $.cookie('currentPatientInfo-saturation',$('#prescription-form-saturatn').val());
   $.cookie('currentPatientInfo-bmi',$('#prescription-form-bmi').val());
-  $.cookie('currentPrescriptionInf0-inv',$('#prescription-form-Investgtn').val());
+  $.cookie('currentPrescriptionInf0-inv',$('#prescription-form-Investigation').val());
 
   $.ajax({ 
    type: "POST",
