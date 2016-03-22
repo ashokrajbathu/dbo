@@ -425,7 +425,7 @@
       <div class="box-body">
         <form role="form" id="prescription-form">
           <div class="col-md-12 form-group">
-			<textarea  class="form-control" rows="2"  placeholder="Clinical Impression" id="prescription-form-ClincImp" ></textarea>
+			<textarea  class="form-control" rows="2"  placeholder="Symptoms" id="prescription-form-ClincImp" ></textarea>
           </div>
 		  <div class="col-md-12 form-group">
             <textarea  class="form-control" rows="2" placeholder="Investigation Report" id="prescription-form-Investigation" ></textarea>
@@ -559,6 +559,7 @@
                 <th>Days/Quantity</th>
                 <th>Usage</th>
                 <th>Remarks</th>
+                <th></th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -665,6 +666,8 @@
 	
 
     <script type="text/javascript">
+
+    var  drugPojo1 = {};
     (function ($) {
 		openDb();
 
@@ -758,24 +761,27 @@ if ($.cookie('drugPojoList') && $.cookie('drugPojoList') !== "") {
   drugPojoList = $.parseJSON($.cookie('drugPojoList'));
 }
 var drugPojo = {};
+drugPojo['brandName'] = drug;
 drugPojo['usageDirection'] = usage;
 drugPojo['remarks'] = si;
 drugPojo['']
 drugPojo['perServing'] = per_serving;
 if (days === 'Days') {
-  drugPojo['noOfDays'] = units;
+  drugPojo['noOfDays'] = units+' '+days;
 } else {
-  drugPojo['quantity'] = units;
+  drugPojo['quantity'] = units+' '+days;
 }
 
    //console.log("form submitted with values: "+drug+", "+days+", "+units+", "+si+", "+bbf+", "+abf+", "+bl+", "+al+", "+bd+", "+ad+", "+price+", "+constituents+", "+usage);
-   $('#current-prescriptions > tbody').append('<tr><td>'+count+'</td><td>'+drug+'</td><td>'+per_serving+" "+msrmnt+'</td><td>'+units+" "+days+'</td><td>'+usage+'</td><td>'+si+'</td>');   
+   $('#current-prescriptions > tbody').append('<tr ><td>'+count+'</td><td>'+drug+'</td><td>'+per_serving+" "+msrmnt+'</td><td>'+units+" "+days+'</td><td>'+
+    usage+'</td><td>'+si+'</td><td id="deliD'+ count + '"><button type="submit" name="delbtn" class="deletebutton" id="del'+ count + '" value="delID'+ count + '">Delete</button></td>');   
    $('#current-prescriptions').DataTable();
+   //console.log($('#current-prescriptions').DataTable());
    $.cookie('drugHtml', $('#current-prescriptions > tbody').html());
    var countNum = Number(count);
    drugPojoList.push(drugPojo);
    $.cookie('drugPojoList',  JSON.stringify(drugPojoList));
-   console.log(JSON.stringify(drugPojoList));
+   //console.log(JSON.stringify(drugPojoList));
    countNum++;
    $.cookie('drugEntryCount', countNum);
    var cliimp = $('#prescription-form-ClincImp').val();
@@ -833,8 +839,52 @@ $('#inputDateSpan').DatePicker({
 });
 */
 
-$('#pres-datepicker').click(function(e){
-  //$('#pres-datepicker').DatePickerShow();
+$(document).on('click','.deletebutton',function(e){
+       var result = confirm('Are you sure, you want to delete ?');
+        //console.log(this.id);
+        $.cookie('drugEntryCount',"");
+        $.cookie('drugHtml',"");
+        if(result){
+          var id=this.id;
+          id= id.slice(-1);
+          id=id-1;
+          console.log(id);
+          //alert(document.getElementById(id).value());
+          var drugPojoList1 = $.cookie('drugPojoList'); 
+          var drugData = JSON.parse(drugPojoList1); 
+          console.log(drugData);
+          if(drugData.length!=0)
+          {
+            for(i in drugData)
+            {
+                if(i == id)
+                {
+                  //alert(drugData[i]['perServing']);
+                  var removedObject = drugData.splice(id,1);
+                  //alert('removedObject'+removedObject);
+                  console.log('bye'+' '+i);
+                  console.log(drugData);
+                  break;
+
+                }
+            }
+          }
+          var newCount=1;
+          $('#current-prescriptions > tbody').text("");
+          for(s in drugData)
+          {
+            $('#current-prescriptions > tbody').append('<tr ><td>'+newCount+'</td><td>'+drugData[s]['brandName']+'</td><td>'+drugData[s]['perServing']+'</td><td>'+drugData[s]['noOfDays']+'</td><td>'+drugData[s]['usageDirection']+'</td><td>'+drugData[s]['remarks']+'</td><td id="deliD'+ newCount + '"><button type="submit" name="delbtn" class="deletebutton" id="del'+ newCount + '" value="delID'+ newCount + '">Delete</button></td>');
+            newCount++;
+            drugPojoList.push(drugData);
+          }
+          $.cookie('drugEntryCount',newCount);
+          $('#current-prescriptions').DataTable();
+          //console.log($('#current-prescriptions').DataTable());
+          $.cookie('drugHtml', $('#current-prescriptions > tbody').html());
+
+      }
+
+
 });
 
 $('#prescription-form-drug').keyup(function(e){
@@ -975,6 +1025,7 @@ $('#prescription-reset').click(function(e){
   $.cookie('currentPatientInfo-bmi',"");
   $.cookie('currentPatientInfo-saturation',"");
   $.cookie('currentPatientInfo-pulse',"");
+  $.cookie('drugPojoList',"");
   $('#prescription-form-pd').find('input:text').val('');
 
   window.location.reload();
