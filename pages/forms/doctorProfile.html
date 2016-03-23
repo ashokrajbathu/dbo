@@ -354,24 +354,24 @@
                     <div class="form-group">
                         <label for="inputName" class="col-sm-2 control-label">Old Password</label>
                         <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputName" placeholder="Name">
+                          <input type="password" class="form-control" id="doctor-profile-old-pswd" placeholder="Old Password">
                         </div>
                       </div>
                       <div class="form-group">
                         <label for="inputName" class="col-sm-2 control-label">New Password</label>
                         <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputName" placeholder="Name">
+                          <input type="password" class="form-control" id="doctor-profile-new-pswd-1" placeholder="New Password">
                         </div>
                       </div>
                       <div class="form-group">
                         <label for="inputName" class="col-sm-2 control-label">Re-type New Password</label>
                         <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputName" placeholder="Name">
+                          <input type="password" class="form-control" id="doctor-profile-new-pswd-2" placeholder="Re-type Password">
                         </div>
                       </div>
                       <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Update Password</button>
+                          <button type="submit" class="btn btn-danger" id="doctor-profile-update-pswd">Update Password</button>
                         </div>
                       </div>
                     </form>
@@ -393,67 +393,67 @@
                       <div class="form-group">
                         <label for="inputName" class="col-sm-2 control-label">First Name</label>
                         <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputName" placeholder="Name">
+                          <input type="text" class="form-control" id="doctor-profile-firstname" disabled="true" placeholder="First Name">
                         </div>
                       </div>
                       <div class="form-group">
                         <label for="inputName" class="col-sm-2 control-label">Last Name</label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputName" placeholder="Name">
+                          <input type="text" class="form-control" id="doctor-profile-lastname" disabled="true" placeholder="Last Name">
                         </div>
                       </div>
                       <div class="form-group">
                         <label for="inputName" class="col-sm-2 control-label">Registration No.</label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputName" placeholder="Name">
+                          <input type="text" class="form-control" id="doctor-profile-registration-no" disabled="true" placeholder="Registration No.">
                         </div>
                       </div>
                       <div class="form-group">
                         <label for="inputSkills" class="col-sm-2 control-label">Speciality</label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
+                          <input type="text" class="form-control" id="doctor-profile-speciality" placeholder="Speciality">
                         </div>
                       </div>
                       <div class="form-group">
                         <label for="inputSkills" class="col-sm-2 control-label">Organization</label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
+                          <input type="text" class="form-control" id="doctor-profile-organization" placeholder="Organization">
                         </div>
                       </div>
                       <div class="form-group">
                         <label for="inputSkills" class="col-sm-2 control-label">Qualification</label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
+                          <input type="text" class="form-control" id="doctor-profile-qualification" placeholder="Qualification">
                         </div>
                       </div>
                       <div class="form-group">
                         <label for="inputExperience" class="col-sm-2 control-label">Address</label>
                         <div class="col-sm-10">
-                          <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
+                          <textarea class="form-control" id="doctor-profile-address" placeholder="Address"></textarea>
                         </div>
                       </div>
                       <div class="form-group">
                         <label for="inputEmail" class="col-sm-2 control-label">City</label>
                         <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                          <input type="text" class="form-control" id="doctor-profile-city" placeholder="City">
                         </div>
                       </div>
                       <div class="form-group">
                         <label for="inputEmail" class="col-sm-2 control-label">Phone Number</label>
                         <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                          <input type="text" class="form-control" id="doctor-profile-phonenumber" disabled="true" placeholder="Phone Number">
                         </div>
                       </div>
                       <div class="form-group">
                         <label for="inputEmail" class="col-sm-2 control-label">Email</label>
                         <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                          <input type="email" class="form-control" id="doctor-profile-email" disabled="true" placeholder="Email">
                         </div>
                       </div>
                       <div class="form-group">
                         <label for="inputSkills" class="col-sm-2 control-label">Website URL</label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
+                          <input type="text" class="form-control" id="doctor-profile-website-url" placeholder="Website URL">
                         </div>
                       </div>
                       
@@ -522,8 +522,103 @@
 
 
     (function ($) {
+
+      
+      
     
     })(jQuery);
+
+    $(document).ready(function(){
+      console.log('hi');
+      console.log(localStorage.getItem('doctorPojo'));
+      var doctorData = $.parseJSON(localStorage.getItem('doctorPojo'));
+      console.log('doctor data'+doctorData['firstName'] );
+      if(doctorData['firstName']!="" && doctorData['firstName']!= null)
+        $('#doctor-profile-firstname').val(doctorData['firstName']);
+
+      if(doctorData['lastName']!="" && doctorData['lastName']!= null)
+        $('#doctor-profile-lastname').val(doctorData['lastName']);
+
+      if(doctorData['speciality']!="" && doctorData['speciality']!= null)
+        $('#doctor-profile-speciality').val(doctorData['speciality']);
+
+      if(doctorData['organization']!="" && doctorData['organization']!= null)
+        $('#doctor-profile-organization').val(doctorData['organization']);
+
+      if(doctorData['qualification']!="" && doctorData['qualification']!= null)
+        $('#doctor-profile-qualification').val(doctorData['qualification']);
+
+      if(doctorData['websiteUrl']!="" && doctorData['websiteUrl']!= null)
+        $('#doctor-profile-website-url').val(doctorData['websiteUrl']);
+
+      if(doctorData['emailId']!="" && doctorData['emailId']!= null)
+        $('#doctor-profile-email').val(doctorData['emailId']);
+
+      if(doctorData['phoneNumber']!="" && doctorData['phoneNumber']!= null)
+        $('#doctor-profile-phonenumber').val(doctorData['phoneNumber']);
+
+      if(doctorData['city']!="" && doctorData['city']!= null)
+        $('#doctor-profile-city').val(doctorData['city']);
+
+
+    $('#doctor-profile-old-pswd').val(localStorage.getItem('password'));
+      //if(doctorData['firstName']!="" && doctorData['firstName']!= null)
+        //$('doctor-profile-firstname').val(doctorData['firstName']);
+
+
+    });
+
+$('#patient-register-btn').click(function(){
+      // var radio1 = document.getElementById('genderFemale').checked();
+      var patientInfoCookie = $.cookie('currentPatientInfo');
+      var data1 = [];
+      if (patientInfoCookie.length != null) {
+        try {
+          data1 = $.parseJSON(patientInfoCookie);
+        } catch (e) {
+          // alert(e);
+        }
+      }
+
+      var requestString = "";
+    var updatedObject;
+      if (data1.length != 0) {
+        data1[0]['gender'] =  $('input[name=gender]:checked').val();;
+        data1[0]['firstName'] = $('#patient-reg-name').val();
+        data1[0]['emailId'] = $('#patient-reg-email').val();
+        data1[0]['phoneNumber'] = $('#patient-reg-phone').val();
+        data1[0]['age'] = $('#patient-reg-age').val();
+        data1[0]['bloodGroup'] = $('#patient-reg-bloodgrp').val();
+        requestString = JSON.stringify(data1[0]);
+    /*updatedObject = $.parseJSON(requestString);
+    updatePatientObjectIndexedDB(updatedObject);*/
+      } else {
+        requestString = JSON.stringify({'gender': $('input[name=gender]:checked').val(), 'firstName' : $('#patient-reg-name').val(), 'emailId': $('#patient-reg-email').val(), 'phoneNumber': $('#patient-reg-phone').val(),
+          'age': $('#patient-reg-age').val(), 'bloodGroup': $('#patient-reg-bloodgrp').val()});
+      }
+      $.ajax({ 
+           type: "POST",
+           url: "http://localhost:8081/dbotica-spring/doctor/addPatient",
+           beforeSend: function(xhr){
+                xhr.setRequestHeader("Content-Type","application/json");
+                xhr.setRequestHeader("Accept","application/json");
+            },
+           data: requestString,
+           success: function(response){
+                $.cookie('currentPatientInfo', response.response);
+        updatedObject = $.parseJSON(response.response);
+        try {
+          addPatientObjecttoIndexedDB(updatedObject[0]);
+        } catch(e) {
+
+        }
+        
+                alert("Patient details successfully updated.");
+        updatePatientFields();
+              }
+            });//ajax
+
+});
 
    
 </script>

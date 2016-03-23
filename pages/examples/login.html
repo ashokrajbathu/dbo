@@ -89,6 +89,7 @@
         var emailId = $('#emailId').val();
         var password = $('#password').val();
         console.log("emailId: "+emailId+", password: "+password);
+        console.log(localStorage.getItem("password"));
         $.ajax({ 
            type: "POST",
            url: "http://localhost:8081/dbotica-spring/doctor/login",
@@ -100,6 +101,7 @@
            success: function(response){       
             var data = $.parseJSON(response.response);                  
             console.log(data);
+            localStorage.setItem("doctorPojo",response.response);
             localStorage.setItem("isLoggedIn", true);
             localStorage.setItem("firstName",data['firstName']);            
             localStorage.setItem("doctorId",data['id']);
@@ -109,7 +111,7 @@
             localStorage.setItem("doctorQualification",data['qualification']);
             localStorage.setItem("doctorPublicPhoneNumber",data['publicPhoneNumber']);
             localStorage.setItem("doctorOfficeAddress",data['officeAddress']);
-            console.log(localStorage.getItem("firstName"));
+            
             window.location.replace("../forms/entryPrescriptions.html");
            }
        });
