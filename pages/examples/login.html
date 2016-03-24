@@ -97,23 +97,28 @@
                 xhr.setRequestHeader("Content-Type","application/json");
                 xhr.setRequestHeader("Accept","application/json");
             },
-           data: JSON.stringify({'emailId': emailId, 'password' : password}),
-           success: function(response){       
-            var data = $.parseJSON(response.response);                  
-            console.log(data);
-            localStorage.setItem("doctorPojo",response.response);
-            localStorage.setItem("isLoggedIn", true);
-            localStorage.setItem("firstName",data['firstName']);            
-            localStorage.setItem("doctorId",data['id']);
+            xhrFields: {withCredentials: true},
+            data: JSON.stringify({'emailId': emailId, 'password' : password}),
+            success: function(response){       
+              var errorCode = response.errorCode;
+              if (!!errorCode) {
+                alert(errorCode);
+              }
 
-            localStorage.setItem("doctorSpeciality",data['speciality']);
-            localStorage.setItem("doctorOrganization",data['organization']);
-            localStorage.setItem("doctorQualification",data['qualification']);
-            localStorage.setItem("doctorPublicPhoneNumber",data['publicPhoneNumber']);
-            localStorage.setItem("doctorOfficeAddress",data['officeAddress']);
-            
-            window.location.replace("../forms/entryPrescriptions.html");
-           }
+              var data = $.parseJSON(response.response);                  
+              console.log(data);
+              localStorage.setItem("isLoggedIn", true);
+              localStorage.setItem("firstName",data['firstName']);            
+              localStorage.setItem("doctorId",data['id']);
+
+              localStorage.setItem("doctorSpeciality",data['speciality']);
+              localStorage.setItem("doctorOrganization",data['organization']);
+              localStorage.setItem("doctorQualification",data['qualification']);
+              localStorage.setItem("doctorPublicPhoneNumber",data['publicPhoneNumber']);
+              localStorage.setItem("doctorOfficeAddress",data['officeAddress']);
+              console.log(localStorage.getItem("firstName"));
+              window.location.replace("../forms/entryPrescriptions.html");
+            }
        });
       });
     </script>
