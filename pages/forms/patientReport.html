@@ -526,7 +526,7 @@
 
           <div class="row no-print">
             <div class="col-xs-12">
-              <a href="report-print.html" target="_blank" class="btn btn-primary pull-right"><i class="fa fa-print"></i>Generate Print</a>
+              <a href="report-print.html" class="btn btn-primary pull-right"><i class="fa fa-print"></i>Generate Print</a>
               <button class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-download"></i> Generate PDF</button>
             </div>
           </div>
@@ -600,7 +600,7 @@
       
      
        // $('#report-prescriptions > tbody').append($.cookie('drugHtml'));
-        $('#report-prescriptions').DataTable();
+      //  $('#report-prescriptions').DataTable();
 
         var data1 = $.parseJSON($.cookie('currentPatientInfo'));
       if (data1.length != 0) {
@@ -642,6 +642,7 @@
        $('#doctor-organization').text(docOrg);
 
       var temp = $.cookie('currentPatientInfo-temp');
+      //alert(temp);
       var height = $.cookie('currentPatientInfo-height');
       var weight = $.cookie('currentPatientInfo-weight');
       var bloodPressure = $.cookie('currentPatientInfo-bloodPressure');
@@ -650,23 +651,23 @@
       var saturatn = $.cookie('currentPatientInfo-saturation');
       var pulse = $.cookie('currentPatientInfo-pulse');
 
-      if (!!temp && temp.length != 0) {
+      if (temp && temp.length != 0) {
         $('#patient-temperature').text(temp);
       } 
 
-      if (!!height && height.length != 0) {
+      if (height && height.length != 0) {
         $('#patient-height').text(height);
       } 
 
-      if (!!weight && weight.length != 0) {
+      if (weight && weight.length != 0) {
         $('#patient-weight').text(weight);
       } 
 
-      if (!!bloodPressure && bloodPressure.length != 0) {
+      if (bloodPressure && bloodPressure.length != 0) {
         $('#patient-bldpressure').text(bloodPressure);
       } 
 
-      if (!!impression && impression.length != 0) {
+      if (impression && impression.length != 0) {
         $('#patient-report-ci').text(impression);
       } 
 

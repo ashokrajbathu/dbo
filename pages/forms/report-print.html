@@ -23,6 +23,9 @@
     <![endif]-->
     <script type = "text/javascript" 
          src = "http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
+
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
+
   </head>
   <body onload="window.print();">
     <div class="wrapper">
@@ -113,7 +116,6 @@
 
     <script type="text/javascript" src="../../plugins/jQuery/jquery-barcode.js"></script> 
     <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
-    <script src="../../js-cookie/src/js.cookie.js"></script>
     <!-- Bootstrap 3.3.5 -->
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
     <!--Cookie -->
@@ -142,10 +144,22 @@
       
       //console.log(drugData.length);
      
-        $('#report-prescriptions > tbody').append($.cookie('drugHtml'));
-        $('#report-prescriptions').DataTable();
+        // $('#report-prescriptions > tbody').($.cookie('drugHtml'));
+       
 
-        
+        var drugData = JSON.parse($.cookie('drugPojoList'));
+
+          var sno=1;
+          for(s in drugData)
+          {
+
+            $('#report-prescriptions > tbody').append('<tr ><td>'+sno+'</td><td>'+drugData[s]['brandName']+'</td><td>'+drugData[s]['perServing']+'</td><td>'+drugData[s]['noOfDays']+'</td><td>'+drugData[s]['usageDirection']+'</td><td>'+drugData[s]['remarks']+'</td>');
+           
+              sno++;
+            
+          }
+
+
 
        //var doctor-id = localStorage.getItem('doctorId');
       // var doctor-name = localStorage.getItem('firstName');
@@ -167,12 +181,11 @@
        $('#pr-doctor-qual').text(docQua);
        $('#pr-doctor-specialization').text(docSpe);
        $('#pr-doctor-ards').text(docAdrs);
-       if (!docPhn && docPhn.length != 0) {
+       if (!!docPhn && docPhn.length != 0 && docPhn != "undefined") {
          $('#pr-doctor-phn').text(docPhn);
        }
 
        $('#pr-doctor-organization').text(docOrg);
-
       try {
         var data1 = $.parseJSON($.cookie('currentPatientInfo'));
         if (data1.length != 0) {
@@ -189,18 +202,19 @@
 
        console.log("docname "+docname +" docid "+docid+" docorg "+docOrg+" docspe "+docSpe+" docadr "+docAdrs+" docphn "+docPhn);
 
-      testEncryption();
-     
-        
-
+       populateBarCode();
+       // $('#report-prescriptions').DataTable();
 
 });
 
 </script>
 <script type="text/javascript">
-function testEncryption() {
-      //alert('hi');
-      var encrypted = CryptoJS.AES.encrypt("my message", localStorage.getItem('firstName'));
+function populateBarCode() {
+      var  firstName = localStorage.getItem('firstName');
+      if (!firstName || firstName.length == 0) {
+        firstName =  "dbotica";
+      }
+      var encrypted = CryptoJS.AES.encrypt("my message", firstName);
       var decrypted = CryptoJS.AES.decrypt(encrypted, "doctor123");
       var result = decrypted.toString(CryptoJS.enc.Utf8);
       $("#pr-bar-code").barcode(encrypted.toString(), "code128");

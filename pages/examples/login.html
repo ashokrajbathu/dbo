@@ -107,6 +107,7 @@
 
               var data = $.parseJSON(response.response);                  
               console.log(data);
+              localStorage.setItem('doctorPojo',response.response);
               localStorage.setItem("isLoggedIn", true);
               localStorage.setItem("firstName",data['firstName']);            
               localStorage.setItem("doctorId",data['id']);

@@ -389,7 +389,7 @@
                  </div>             <div class="box-body">
               
                   <div class="tab-pane" id="settings">
-                    <form class="form-horizontal">
+                    <div class="form-horizontal">
                       <div class="form-group">
                         <label for="inputName" class="col-sm-2 control-label">First Name</label>
                         <div class="col-sm-10">
@@ -427,7 +427,7 @@
                         </div>
                       </div>
                       <div class="form-group">
-                        <label for="inputExperience" class="col-sm-2 control-label">Address</label>
+                        <label for="inputExperience" class="col-sm-2 control-label">Office Address</label>
                         <div class="col-sm-10">
                           <textarea class="form-control" id="doctor-profile-address" placeholder="Address"></textarea>
                         </div>
@@ -459,10 +459,10 @@
                       
                       <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Update Details</button>
+                          <button type="submit" class="btn btn-danger" id="doctor-profile-update-btn">Update Details</button>
                         </div>
                       </div>
-                    </form>
+                    </div>
                   </div>
                    </div>
                   
@@ -561,6 +561,9 @@
       if(doctorData['city']!="" && doctorData['city']!= null)
         $('#doctor-profile-city').val(doctorData['city']);
 
+      if(doctorData['officeAddress']!="" && doctorData['officeAddress']!= null)
+        $('#doctor-profile-address').val(doctorData['officeAddress']);
+
 
    //$('#doctor-profile-old-pswd').val(localStorage.getItem('password'));
      // if(doctorData['firstName']!="" && doctorData['firstName']!= null)
@@ -569,6 +572,31 @@
 
     });
 
+$('#doctor-profile-update-btn').click(function(e){
+        $.ajax({ 
+           type: "POST",
+           url: "http://localhost:8081/dbotica-spring/doctor/updateProfile",
+           beforeSend: function(xhr){
+                xhr.setRequestHeader("Content-Type","application/json");
+                xhr.setRequestHeader("Accept","application/json");
+            },
+            xhrFields: {withCredentials: true},
+           data: JSON.stringify({'firstName': $('#doctor-profile-firstname').val(), 'lastName' : $('#doctor-profile-lastname').val(), 'speciality': $('#doctor-profile-speciality').val(),'organization':  $('#doctor-profile-organization').val(),'qualification': $('#doctor-profile-qualification').val(),'address': $('#doctor-profile-address').val(),'websiteUrl': $('#doctor-profile-website-url').val(),'city': $('#doctor-profile-city').val()}),
+           success: function(response){    
+           try {
+            var data = $.parseJSON(response.response);                  
+            alert('Profile updated successfully');
+            localStorage.setItem('doctorPojo',"");
+            localStorage.setItem('doctorPojo',response.response);
+          }  catch (e) {
+            alert("Error updating profile details. Kindly try after some time");
+          }
+      }
+    });
+
+  });
+
+   
 $('#doctor-profile-update-pswd').click(function(e){
 
   //alert('hi');
@@ -577,9 +605,6 @@ $('#doctor-profile-update-pswd').click(function(e){
         var newPassword = $('#doctor-profile-new-pswd-1').val();
         var doctorId = localStorage.getItem("doctorId");
         console.log("oldPassword: "+oldPassword+", newPassword: "+newPassword+" ,doctorId"+doctorId);
-        alert(doctorId);
-        alert(oldPassword);
-        alert(newPassword);
         $.ajax({ 
            type: "POST",
            url: "http://localhost:8081/dbotica-spring/doctor/changePassword",
@@ -587,18 +612,17 @@ $('#doctor-profile-update-pswd').click(function(e){
                 xhr.setRequestHeader("Content-Type","application/json");
                 xhr.setRequestHeader("Accept","application/json");
             },
-            async: false,
+            xhrFields: {withCredentials: true},
            data: JSON.stringify({'oldPassword': oldPassword, 'newPassword' : newPassword, 'doctorId': doctorId}),
            success: function(response){       
             var data = $.parseJSON(response.response);                  
-            console.log("sds" + data);
+            alert('Password updated successfully');
 
       }
     });
 
   });
 
-   
 </script>
 <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/jquery.form-validator.min.js"></script>
