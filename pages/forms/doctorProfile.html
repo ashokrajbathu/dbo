@@ -350,7 +350,7 @@
               
             </div>
             <div class="box-body">
-                    <form class="form-horizontal" action = "index.html">
+                    <div class="form-horizontal" action = "#">
                     <div class="form-group">
                         <label for="inputName" class="col-sm-2 control-label">Old Password</label>
                         <div class="col-sm-10">
@@ -374,7 +374,7 @@
                           <button type="submit" class="btn btn-danger" id="doctor-profile-update-pswd">Update Password</button>
                         </div>
                       </div>
-                    </form>
+                    </div>
                   </div>
 <!-- /.box-body -->
             <div class="box-footer">
@@ -532,7 +532,7 @@
      // console.log('hi');
      // console.log(localStorage.getItem('doctorPojo'));
       var doctorData = $.parseJSON(localStorage.getItem('doctorPojo'));
-      alert("12312" + doctorData);
+      //alert("12312" + doctorData);
       //console.log('doctor data'+doctorData['firstName'] );
        if(doctorData['firstName']!="" && doctorData['firstName']!= null)
          $('#doctor-profile-firstname').val(doctorData['firstName']);

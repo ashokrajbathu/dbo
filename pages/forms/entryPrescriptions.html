@@ -279,7 +279,7 @@
                           <a href="doctorProfile.html" class="btn btn-default btn-flat">Profile</a>
                         </div>
                         <div class="pull-right">
-                          <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                          <a href="#" class="btn btn-default btn-flat" id="logoutButton">Sign out</a>
                         </div>
                       </li>
                     </ul>
@@ -1137,6 +1137,21 @@ $('#closeOnSelect').hide();
 
   //var patntPhn = $('#patient-search-telephone').val();
   //$.cookie('patientPhnCk',patntPhn);
+
+  $('#logoutButton').click(function(e){
+        $.ajax({ 
+           type: "POST",
+           url: "http://localhost:8081/dbotica-spring/doctor/logout",
+           beforeSend: function(xhr){
+                xhr.setRequestHeader("Content-Type","application/json");
+                xhr.setRequestHeader("Accept","application/json");
+            },
+          success: function(response){       
+             localStorage.clear();
+             window.location.replace("pages/examples/login.html");
+           }
+       });
+        });
 
 
   
