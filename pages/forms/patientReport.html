@@ -585,11 +585,21 @@
       var ci = $.cookie('cookie-cli-imp');
       $('#patient-report-ci').text(ci);
 
-      //var drugData = $.cookie('cookie-array');
+      var drugData = JSON.parse($.cookie('drugPojoList'));
+
+          var sno=1;
+          for(s in drugData)
+          {
+
+            $('#report-prescriptions > tbody').append('<tr ><td>'+sno+'</td><td>'+drugData[s]['brandName']+'</td><td>'+drugData[s]['perServing']+'</td><td>'+drugData[s]['noOfDays']+'</td><td>'+drugData[s]['usageDirection']+'</td><td>'+drugData[s]['remarks']+'</td>');
+           
+              sno++;
+            
+          }
 
       
      
-        $('#report-prescriptions > tbody').append($.cookie('drugHtml'));
+       // $('#report-prescriptions > tbody').append($.cookie('drugHtml'));
         $('#report-prescriptions').DataTable();
 
         var data1 = $.parseJSON($.cookie('currentPatientInfo'));

@@ -18,7 +18,7 @@
     folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="entryPrescription.css">
-Datepicker
+
     <!--Datepicker srcs -->
     <link rel="stylesheet" href="css/datepicker.css" type="text/css" />
   <!--  <link rel="stylesheet" media="screen" type="text/css" href="css/layout.css" />-->
@@ -493,7 +493,7 @@ Datepicker
         <input type="button" id="prescription-form-AD" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="AD"></input>
       </div>
       <div class="col-md-12 form-group">
-        Revisit after : <input type="numbers" id="inputDatetxt" name="inputDatetxt" /> days &nbsp;&nbsp;&nbsp;&nbsp;
+        Revisit after : <input type="number" min="1" id="inputDatetxt" name="inputDatetxt" /> days &nbsp;&nbsp;&nbsp;&nbsp;
         <input type="text" class="inputDate" id="inputDate" name="inputDate" value="">
         <span class="glyphicon glyphicon-calendar" class="inputDate" id="inputDateSpan"></span>
              <p hidden>  <label id="closeOnSelect"><input type="checkbox" checked="true" /> Close on selection</label></p>
@@ -1090,6 +1090,49 @@ $('#closeOnSelect').hide();
  console.log(document.getElementById('inputDate').value);
   var ci = $.cookie('cookie-cli-imp');
   $('#prescription-form-ClincImp').val(ci);
+
+      var temp = $.cookie('currentPatientInfo-temp');
+      var height = $.cookie('currentPatientInfo-height');
+      var weight = $.cookie('currentPatientInfo-weight');
+      var bloodPressure = $.cookie('currentPatientInfo-bloodPressure');
+      var impression = $.cookie('currentPatientInfo-impression');
+      var bmi = $.cookie('currentPatientInfo-bmi');
+      var saturatn = $.cookie('currentPatientInfo-saturation');
+      var pulse = $.cookie('currentPatientInfo-pulse');
+
+    if (temp && temp.length != 0) {
+        $('#prescription-form-temp').val(temp);
+      } 
+
+      if (height && height.length != 0) {
+        $('#prescription-form-height').val(height);
+      } 
+
+      if (weight && weight.length != 0) {
+        $('#prescription-form-weight').val(weight);
+      } 
+
+      if (bloodPressure && bloodPressure.length != 0) {
+        $('#prescription-form-bloodPressure').val(bloodPressure);
+      } 
+
+      if (bmi && bmi.length != 0) {
+        $('#prescription-form-bmi').val(bmi);
+      } 
+
+
+      if (saturatn && saturatn.length != 0) {
+        $('#prescription-form-saturatn').val(saturatn);
+      } 
+
+
+      if (pulse && pulse.length != 0) {
+        $('#prescription-form-pulse').val(pulse);
+      }
+
+
+       
+
   $('#current-prescriptions > tbody').append($.cookie('drugHtml'));
 
   //var patntPhn = $('#patient-search-telephone').val();
