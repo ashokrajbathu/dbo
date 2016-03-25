@@ -19,7 +19,16 @@
     <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="entryPrescription.css">
      
-    <!--   date picker-->
+    
+	 <!--Datepicker srcs -->
+    <link rel="stylesheet" href="css/datepicker.css" type="text/css" />
+  <!--  <link rel="stylesheet" media="screen" type="text/css" href="css/layout.css" />-->
+    
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/datepicker.js"></script>
+    <script type="text/javascript" src="js/eye.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/layout.js?ver=1.0.2"></script>
    
 
       <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -34,9 +43,9 @@
 
       <header class="main-header">
         <!-- Logo -->
-        <a href="../../index2.html" class="logo">
+        <a href="entryPrescription.html" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b>A</b>LT</span>
+          <span class="logo-mini"><b>dB</b></span>
 
           <!-- logo for regular state and mobile devices -->
           <span class="logo-lg"><img style="width:50px;" src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"><b>dBotica</b></span>
@@ -52,194 +61,6 @@
           </a>
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-              <!-- Messages: style can be found in dropdown.less-->
-              <!-- <li class="dropdown messages-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-envelope-o"></i>
-                  <span class="label label-success">4</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="header">You have 4 messages</li>
-                  <li>
-                    
-                    <ul class="menu">
-                      <li>
-                        <a href="#">
-                          <div class="pull-left">
-                            <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                          </div>
-                          <h4>
-                            Support Team
-                            <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                          </h4>
-                          <p>Why not buy a new awesome theme?</p>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <div class="pull-left">
-                            <img src="../../dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
-                          </div>
-                          <h4>
-                            AdminLTE Design Team
-                            <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                          </h4>
-                          <p>Why not buy a new awesome theme?</p>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <div class="pull-left">
-                            <img src="../../dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
-                          </div>
-                          <h4>
-                            Developers
-                            <small><i class="fa fa-clock-o"></i> Today</small>
-                          </h4>
-                          <p>Why not buy a new awesome theme?</p>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <div class="pull-left">
-                            <img src="../../dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
-                          </div>
-                          <h4>
-                            Sales Department
-                            <small><i class="fa fa-clock-o"></i> Yesterday</small>
-                          </h4>
-                          <p>Why not buy a new awesome theme?</p>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <div class="pull-left">
-                            <img src="../../dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
-                          </div>
-                          <h4>
-                            Reviewers
-                            <small><i class="fa fa-clock-o"></i> 2 days</small>
-                          </h4>
-                          <p>Why not buy a new awesome theme?</p>
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="footer"><a href="#">See All Messages</a></li>
-                </ul>
-              </li> -->
-              <!-- Notifications: style can be found in dropdown.less -->
-              <!-- <li class="dropdown notifications-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-bell-o"></i>
-                  <span class="label label-warning">10</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="header">You have 10 notifications</li>
-                  <li>
-                    
-                    <ul class="menu">
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the page and may cause design problems
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-users text-red"></i> 5 new members joined
-                        </a>
-                      </li>
-
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-shopping-cart text-green"></i> 25 sales made
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-user text-red"></i> You changed your username
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="footer"><a href="#">View all</a></li>
-                </ul>
-              </li> -->
-              <!-- Tasks: style can be found in dropdown.less -->
-              <!-- <li class="dropdown tasks-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-flag-o"></i>
-                  <span class="label label-danger">9</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="header">You have 9 tasks</li>
-                  <li>
-                   
-                    <ul class="menu">
-                      <li>
-                        <a href="#">
-                          <h3>
-                            Design some buttons
-                            <small class="pull-right">20%</small>
-                          </h3>
-                          <div class="progress xs">
-                            <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">20% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <h3>
-                            Create a nice theme
-                            <small class="pull-right">40%</small>
-                          </h3>
-                          <div class="progress xs">
-                            <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">40% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <h3>
-                            Some task I need to do
-                            <small class="pull-right">60%</small>
-                          </h3>
-                          <div class="progress xs">
-                            <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">60% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <h3>
-                            Make beautiful transitions
-                            <small class="pull-right">80%</small>
-                          </h3>
-                          <div class="progress xs">
-                            <div class="progress-bar progress-bar-yellow" style="width: 80%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">80% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="footer">
-                    <a href="#">View all tasks</a>
-                  </li>
-                </ul>
-              </li> -->
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -347,133 +168,58 @@
                
                 <div class="box-body">
                   <form role="form" id="search-form">
+				  <div class="col-md-12 form-group"></div>
                     <div class="col-md-12 form-group">
-                     <div class="col-md-3 form-group">
-                      <div class="radio" align="center">
-                        <label>
-                          <input type="radio" name="optionsRadios" id="myprescriptions-date" value="option1" >
-                          By Date
-                        </label>
-                      </div>
-                      </div>
-                       <div class="col-md-3 form-group">
-                       <div class="radio" align="center">
-                        <label>
-                          <input type="radio" name="optionsRadios" id="myprescription-name" value="option2">
-                          By Name
-                        </label>
-                      </div>
-                    </div>
-                     <div class="col-md-3 form-group">
-                      <div class="radio" align="center">
-                        <label>
-                          <input type="radio" name="optionsRadios" id="myprescription-month" value="option3" >
-                          By Month
-                        </label>
-                      </div></div>
-                       <div class="col-md-3 form-group">
-                      <div class="radio" align="center">
-                        <label>
-                          <input type="radio" name="optionsRadios" id="myprescription-dboticaId" value="option3" >
-                          By Dbotica ID
-                        </label>
-                      </div>
-                  </div>
-                   </div>
-                   <div class="col-md-12 form-group">
-                    <div class="col-md-3 form-group">
+					
+                    <div class="col-md-6 form-group">
                        
-                      <label for="inputEmail3" class="col-sm-2 control-label">Start Date</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" id="myprescritions-start-date" placeholder="Start Date">
+                      <label for="inputEmail3" class="col-sm-3 control-label">From</label>
+                      <div class="col-sm-6">
+                        <input type="date" class="form-control" id="myprescritions-start-date" placeholder="Start Date" >
+						
                       </div>
                     
                     
                     </div>
-                    <div class="col-md-3 form-group">
+                    <div class="col-md-6 form-group">
                        
-                      <label for="inputEmail3" class="col-sm-2 control-label">Name</label>
-                      <div class="col-sm-9">
+                      <label for="inputEmail3" class="col-sm-3 control-label">Patient Name</label>
+                      <div class="col-sm-6">
                         <input type="text" class="form-control" id="myprescritions-search-name" placeholder="Name">
                       </div>
                     
                     
                     </div>
-                    <div class="col-md-3 form-group">
-                       
-                      <label for="inputEmail3" class="col-sm-2 control-label">Year</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" id="myprescritions-search-year" placeholder="">
-                      </div>
                     
                     
-                    </div>
-                    <div class="col-md-3 form-group">
-                       
-                      <label for="inputEmail3" class="col-sm-2 control-label">Dbotica ID</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" id="myprescritions-search-id" placeholder="">
-                      </div>
-                    
-                    
-                    </div>
 
                    </div>
                    <div class="col-md-12 form-group">
-                    <div class="col-md-3 form-group">
+                    <div class="col-md-6 form-group">
                        
-                      <label for="inputEmail3" class="col-sm-2 control-label">End Date</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" id="myprescritions-end-date" placeholder="End Date">
+                      <label for="inputEmail3" class="col-sm-3 control-label">To</label>
+                      <div class="col-sm-6">
+                        <input type="date" class="form-control" id="myprescritions-end-date" placeholder="End Date">
                       </div>
                     
                     
                     </div>
-                    <div class="col-md-3 form-group">
+                    <div class="col-md-6 form-group">
                        
-                      <label for="inputEmail3" class="col-sm-2 control-label">DOB</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" id="myprescritions-search-dob" placeholder="DOB">
+                      <label for="inputEmail3" class="col-sm-3 control-label">Patient Phone</label>
+                      <div class="col-sm-6">
+                        <input type="text" class="form-control" id="myprescritions-pateint-phone" placeholder="Phone Number">
                       </div>
                     
                     
                     </div>
-                    <div class="col-md-3 form-group">
-                       
-                      <label for="inputEmail3" class="col-sm-2 control-label">Month</label>
-                      <div class="col-sm-9">
-                      <div class="form-group">
-                     
-                      <select class="form-control" id="myprescritions-search-month">
-                        <option id="1">Jan</option>
-                        <option id="2">Feb</option>
-                        <option id="3">March</option>
-                        <option id="4">April</option>
-                        <option id="5">May</option>
-                        <option id="6">June</option>
-                        <option id="7">July</option>
-                        <option id="8">August</option>
-                        <option id="9">September</option>
-                        <option id="10">October</option>
-                        <option id="11">November</option>
-                        <option id="12">December</option>
-                      </select>
-                    </div>
-                      </div>
                     
-                    
-                    </div>
-                    <div class="col-md-3 form-group">
-                       
-                      <label for="inputEmail3" class="col-sm-2 control-label">OTP</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" id="myprescritions-search-otp" placeholder="">
-                      </div>
-                    
-                    
-                    </div>
 
                    </div>
+				   
+				   <div class="col-md-12 form-group">
+				   <button type="search" class="btn btn-primary pull-right"  id="myprescriptions-search-button" >Search</button>
+				   </div>
                    
                   </form>
                 </div><!-- /.box-body -->
@@ -494,7 +240,7 @@
                 <div class="box-body">
                     <input type='hidden' id='current_page' />  
                     <input type='hidden' id='show_per_page' /> 
-                     <div class="col-md-11 form-group" id="content">
+                     <div class="col-md-11 form-group" id="prescription-list">
                           
                          
                         
@@ -544,134 +290,8 @@
       </footer>
 
       <!-- Control Sidebar -->
-      <aside class="control-sidebar control-sidebar-dark">
-        <!-- Create the tabs -->
-        <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-          <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-          
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content">
-          <!-- Home tab content -->
-          <div class="tab-pane" id="control-sidebar-home-tab">
-           
-            
-              
-              
-           
-            <h3 class="control-sidebar-heading">Patient Search</h3>
-            <ul class="control-sidebar-menu">
-              <li>
-                
-                  <h4 class="control-sidebar-subheading">
-                    Telephone:<span class="label label-error pull-left">*</span>
-                    
-                  </h4>
-                  <div class="">
-                   <input type="text" id="patient-search-telephone" />
-                  </div>
-              
-              </li>
-              <li>
-                
-                  <h4 class="control-sidebar-subheading">
-                    Unique ID:<span class="label label-error pull-left">*</span>
-                    
-                  </h4>
-                  <div class="">
-                   <input type="text" id="patient-search-uniqueid"/>
-                  </div>
-               
-              </li>
-               <li>
-                
-                  <h4 class="control-sidebar-subheading">
-                    Date Of Birth:<span class="label label-error pull-left">*</span>
-                    
-                  </h4>
-                        <div class="">
-                          <div class="input-append date"  data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-      <input class="span2" size="16" type="text" id="patient-search-dob" value="12-02-2012">
-      <span class="add-on"><i class="icon-th"></i></span>
-    </div>   
-                                 </div>
-               
-              </li>
-              <li>
-                  <input type="button" id="patient-search" value="Search"></input>
-              </li>
-              <li>
-                <div id="patient-search-result"></div>
-              </li>
-             
-              </ul><!-- /.control-sidebar-menu -->
-
-          </div><!-- /.tab-pane -->
-          <!-- Stats tab content -->
-          <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div><!-- /.tab-pane -->
-          <!-- Settings tab content -->
-          <div class="tab-pane" id="control-sidebar-settings-tab">
-            <form method="post">
-              <h3 class="control-sidebar-heading">General Settings</h3>
-              <div class="form-group">
-                <label class="control-sidebar-subheading">
-                  Report panel usage
-                  <input type="checkbox" class="pull-right" checked>
-                </label>
-                <p>
-                  Some information about this general settings option
-                </p>
-              </div><!-- /.form-group -->
-
-              <div class="form-group">
-                <label class="control-sidebar-subheading">
-                  Allow mail redirect
-                  <input type="checkbox" class="pull-right" checked>
-                </label>
-                <p>
-                  Other sets of options are available
-                </p>
-              </div><!-- /.form-group -->
-
-              <div class="form-group">
-                <label class="control-sidebar-subheading">
-                  Expose author name in posts
-                  <input type="checkbox" class="pull-right" checked>
-                </label>
-                <p>
-                  Allow the user to show his name in blog posts
-                </p>
-              </div><!-- /.form-group -->
-
-              <h3 class="control-sidebar-heading">Chat Settings</h3>
-
-              <div class="form-group">
-                <label class="control-sidebar-subheading">
-                  Show me as online
-                  <input type="checkbox" class="pull-right" checked>
-                </label>
-              </div><!-- /.form-group -->
-
-              <div class="form-group">
-                <label class="control-sidebar-subheading">
-                  Turn off notifications
-                  <input type="checkbox" class="pull-right">
-                </label>
-              </div><!-- /.form-group -->
-
-              <div class="form-group">
-                <label class="control-sidebar-subheading">
-                  Delete chat history
-                  <a href="javascript::;" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
-                </label>
-              </div><!-- /.form-group -->
-            </form>
-          </div><!-- /.tab-pane -->
-        </div>
-      </aside><!-- /.control-sidebar -->
-      <!-- Add the sidebar's background. This div must be placed
-           immediately after the control sidebar -->
-      <div class="control-sidebar-bg"></div>
+      
+      
     </div><!-- ./wrapper -->
 
     <!-- jQuery 2.1.4 -->
@@ -689,15 +309,60 @@
     <script src="../../dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="../../dist/js/demo.js"></script>
+	<!-- IndexedDB for local storage-->
+	<script src="./indexedDB/indexedDbotica.js"></script>
 
     <script type="text/javascript"></script>
     <script>
+	
+	function addRowToPrescriptionTable(prescriptionData){
+			console.log(prescriptionData);
+
+            var date = new Date(prescriptionData['creationTime']);
+            var dateStr = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
+            var content1 ='<div class="box box-default collapsed-box">'+'<div class="box-header with-border">'+'<h6 class="box-title">'+' <span class="badge bg-light-blue">'+'<h5>'+'Patient Name</h5>'+'</span>'+'&nbsp&nbsp;' +prescriptionData['patientName'] +'</h6>'+'<h3 class="box-title">'+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+'<span class="badge bg-light-blue">'+'<h5>Date of Prescription</h5> '+'</span>'+'&nbsp&nbsp;'+dateStr+'</h3>'+
+                '<div class="box-tools pull-right">'+' <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button> </div> </div>'+
+                '<div class="box-body"><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h4>Gender : </h4></div><div class="col-md-3 form-group" ><h4> <p placeholder="" id="patient-gender">'+prescriptionData['patientInfo']['gender']+'</p></h4></div><div class="col-md-3 form-group"><h4>Age : </h4></div><div class="col-md-3 form-group"><h4><p  placeholder="" id="patient-age">'+prescriptionData['patientInfo']['age']+'</p></h4></div><div class="col-md-3 form-group"><h4>Blood Pressure : </h4></div><div class="col-md-3 form-group" ><h4> <p placeholder="" id="patient-bp">'+prescriptionData['patientInfo']['bloodpressure']+'</p></h4></div><div class="col-md-3 form-group"><h4>Temperature : </h4></div><div class="col-md-3 form-group" ><h4> <p placeholder="" id="patient-temperature">'+prescriptionData['prescription']['temperature']+'</p></h4></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h4>Clinical Impression : </h4></div><div class="col-md-3 form-group"><h4><p placeholder="" id="mypres-clinicalimpression">'+prescriptionData['prescription']['remarks']+'</p></h4></div></div><table id="current-prescriptions" class="table table-bordered table-striped"><thead><tr><th>BrandName</th><th>Per Serving</th><th>Days</th><th>Quantity</th><th>Remarks</th></tr></thead><tbody>';
+             
+            for(var dd in prescriptionData['prescription']['drugDosage']){
+                var drug = prescriptionData['prescription']['drugDosage'][dd];
+                content1 += '<tr><td>'+drug['drugId']+'</td><td>'+drug['perServing'];
+                if(parseInt(drug['noOfDays']) > 3){
+                  content1 += ' ML';
+                } else {
+                  content1 += ' MG';
+                }
+                content1 += '</td><td>'+drug['noOfDays']+'</td><td>'+drug['quantity']+'</td><td>'+drug['remarks']+'</td></tr>';
+            }
+
+            content1 += '</tbody></table></div></div>';
+
+            $("#prescription-list").append(content1);
+	
+	
+	}
+	
+	$('#myprescriptions-search-button').click(function(e){
+		e.preventDefault();
+		$("#prescription-list").empty();
+		var fromDate = $("#myprescritions-start-date").val();
+		var toDate = $("#myprescritions-end-date").val();
+		var phoneNumber = $("#myprescritions-pateint-phone").val();
+		console.log("from date ",fromDate);
+		console.log("to date ",toDate);
+		console.log("phone number ",phoneNumber);
+		//getPrescriptionsFromIndexedDB(fromDate,toDate,phoneNumber,addRowToPrescriptionTable);
+		getAllPrescriptionsFromIndexedDB(addRowToPrescriptionTable);
+		
+	});
 $(document).ready(function(){ 
   //CHANGE here
+	openDb();
+	console.log("myPrescriptions opened");
   $('#username').text(localStorage.getItem('firstName'));
   $('#username1').text(localStorage.getItem('firstName'));
   var doctorId= localStorage.getItem('doctorId'); 
-  $.ajax({ 
+ /* $.ajax({ 
             type: "GET",
             url: "http://localhost:8081/dbotica-spring/doctor/myPrescriptions",
             data: {'doctorId': doctorId, 'start':'0','limit':'10'},
@@ -735,7 +400,7 @@ $(document).ready(function(){
                         
             } 
 
-          });
+          }); */
 
 
 
@@ -753,7 +418,7 @@ function paginationStart(){
 //how much items per page to show  
     var show_per_page = 5;  
     //getting the amount of elements inside content div  
-    var number_of_items = $('#content').children().size();
+    var number_of_items = $('#prescription-list').children().size();
     console.log(number_of_items +': number_of_items');  
     //calculate the number of pages we are going to have  
     var number_of_pages = Math.ceil(number_of_items/show_per_page);  
@@ -784,10 +449,10 @@ function paginationStart(){
     $('#page_navigation .page_link:first').addClass('active_page');  
   
     //hide all the elements inside content div  
-    $('#content').children().css('display', 'none');  
+    $('#prescription-list').children().css('display', 'none');  
   
     //and show the first n (show_per_page) elements  
-    $('#content').children().slice(0, show_per_page).css('display', 'block');  
+    $('#prescription-list').children().slice(0, show_per_page).css('display', 'block');  
 
 
 }
@@ -822,7 +487,7 @@ function go_to_page(page_num){
     end_on = start_from + show_per_page;  
   
     //hide all children elements of content div, get specific items and show them  
-    $('#content').children().css('display', 'none').slice(start_from, end_on).css('display', 'block');  
+    $('#prescription-list').children().css('display', 'none').slice(start_from, end_on).css('display', 'block');  
   
     /*get the page link that has longdesc attribute of the current page and add active_page class to it 
     and remove that class from previously active page link*/  
@@ -834,22 +499,6 @@ function go_to_page(page_num){
 </script>
 
     
-<script>
-	
 
-	$(function () {
-	
-        
-	//$("#example1").DataTable();
-        // $('#current-prescriptions').DataTable({
-        //   "paging": true,
-        //   "lengthChange": false,
-        //   "searching": false,
-        //   "ordering": true,
-        //   "info": true,
-        //   "autoWidth": false
-        // });
-      });
-	</script>
      </body>
 </html>

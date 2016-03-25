@@ -1,6 +1,6 @@
 
 
-var COMPAT_ENVS = [
+  var COMPAT_ENVS = [
     ['Firefox', ">= 16.0"],
     ['Google Chrome',
      ">= 24.0 (you may need to get Google Chrome Canary), NO Blob storage support"]
@@ -18,6 +18,7 @@ var COMPAT_ENVS = [
   const DB_PATIENT_STORE = 'patients';
   const DB_PRESCRIPTION_STORE = 'prescriptions';
   
+  const doctorId = localStorage.getItem('doctorId');
 
   var db;
 
@@ -32,12 +33,15 @@ var COMPAT_ENVS = [
   function openDb() {
     console.log("openDb ...");
     var req = window.indexedDB.open(DB_NAME, DB_VERSION);
-    req.onsuccess = function (evt) {
+    req.onsuccess = function (event) {
       // Better use "this" than "req" to get the result to avoid problems with
       // garbage collection.
       // db = req.result;
       db = event.target.result;
-      console.log("openDb DONE");
+      console.log("openDb DONE success");
+	  
+	  
+	  
     };
     req.onerror = function (event) {
       console.error("openDb:", event.target.errorCode);
@@ -46,18 +50,40 @@ var COMPAT_ENVS = [
 	
 
     req.onupgradeneeded = function (event) {
-      console.log("openDb.onupgradeneeded");
-      var drugStore = event.currentTarget.result.createObjectStore(DB_DRUG_STORE, { keyPath: "id"});
-	  var patientStore = event.currentTarget.result.createObjectStore(DB_PATIENT_STORE, {keyPath : "id"});
-	  var prescriptionStore = event.currentTarget.result.createObjectStore(DB_PRESCRIPTION_STORE, {autoIncrement: true});
+      console.log("openDb.onupgradeneeded1");
+	  db = event.target.result;
+	  event.target.transaction.onsuccess=function(e){
+		startDrugIndex =0;
+		limitDrugIndex = 1000;
+		totalDrugCount = 0;
+		//syncAllDrugstoIndexedDB();
+	  
+		startPrescriptionIndex = 0;
+		limitPrescriptionIndex = 100;
+		totalPrescriptionCount = 0;
+	  
+		console.log("doctorId ",doctorId);
+		syncAllPrescriptionsToIndexedDB(doctorId);
+	  };
+	  event.target.transaction.onerror = indexedDB.onerror;
+	  
+	  event.target.transaction.onabort = function(e) {
+            console.log("abort: " + e.target.error.message);
+      };
+	  
+      var drugStore = db.createObjectStore(DB_DRUG_STORE, { keyPath: "id"});
+	  var patientStore = db.createObjectStore(DB_PATIENT_STORE, {keyPath : "id"});
+	  var prescriptionStore = db.createObjectStore(DB_PRESCRIPTION_STORE, {autoIncrement: true});
 		
 		
 
       drugStore.createIndex('brandName', 'brandName', { unique: false });
 	  patientStore.createIndex('phoneNumber', 'phoneNumber',{unique : false});
 	  prescriptionStore.createIndex('creationTime', 'creationTime',{unique: true});
-	  prescriptionStore.createIndex('patientId','patientId',{unique: false});
+	  prescriptionStore.createIndex('patientName','patientName',{unique: false});
+	  prescriptionStore.createIndex('patientPhoneNumber-creationTime',['patientPhoneNumber','creationTime'],{unique : false});
 	  
+	  /*
 	  startDrugIndex =0;
 	  limitDrugIndex = 1000;
 	  totalDrugCount = 0;
@@ -66,7 +92,9 @@ var COMPAT_ENVS = [
 	  startPrescriptionIndex = 0;
 	  limitPrescriptionIndex = 100;
       totalPrescriptionCount = 0;
-	  syncAllPrescriptionsToIndexedDB();
+	  console.log("doctorId ",doctorId);
+	  syncAllPrescriptionsToIndexedDB(doctorId);
+	  */
 	  
     };
   }
@@ -146,26 +174,31 @@ var COMPAT_ENVS = [
 		  type: "GET",
 		  url: "http://localhost:8081/dbotica-spring/doctor/myPrescriptions",
 		  data:{
-			  'name' : doctorId,
+			  'doctorId' : doctorId,
 			  'start' : startPrescriptionIndex,
 			  'limit' : limitPrescriptionIndex
 			  
 		  },
 		  success: function(response){
-			  var data = $.parseJSON(response.response);
+			  var data = {};
+			  data=$.parseJSON(response.response);
 			  //console.log(data);
 			  //var prescriptionObjectStore = getObjectStore(DB_PRESCRIPTION_STORE,"readwrite");
+			  console.log("prescriptions ",data);
+			  console.log("DB_PATIENT_STORE ",DB_PATIENT_STORE);
 			  var patientObjectStore = getObjectStore(DB_PATIENT_STORE,"readwrite");
 			  totalPrescriptionCount = response.totalCount;
 			  startPrescriptionIndex = startPrescriptionIndex + data.length;
 			  
 			  for(var i =0,l = data.length; i < l; i++){
-				  patientObjectStore.add(data[i]["patientInfo"]);
-				  addPrescriptiontoIndexedDB(data[i]["prescription"],data[i]["patientInfo"],data[i]["doctorInfo"]["id"]);
+				  if(data[i]["patientInfo"] !== undefined ){
+					  patientObjectStore.put(data[i]["patientInfo"]);
+				  }
+				  addPrescriptionToIndexedDB(data[i]["prescription"],data[i]["patientInfo"],data[i]["doctorInfo"]["id"]);
 				  
 			  }
 			  if(startPrescriptionIndex < totalPrescriptionCount)
-				  syncAllPrescriptionsToIndexedDB();
+				  syncAllPrescriptionsToIndexedDB(doctorId);
 			  else
 				  console.log("Sync all prescriptions to IndexedDB done");
 			  
@@ -215,11 +248,11 @@ var COMPAT_ENVS = [
 	Doctor doctorInfo;
   */
   
-  function addPrescriptiontoIndexedDB(prescription, patientInfo, doctorId){
+  function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId){
 	  console.log("addPrescription argumensts:", arguments);
-	  var obj = { "prescription" : prescription, "patientInfo" : patientInfo, "doctorId" : doctorId};
+	  var obj = { "prescription" : prescription, "patientInfo" : patientInfo, "doctorId" : doctorId, "patientName" : patientInfo.firstName, "patientPhoneNumber" : patientInfo.phoneNumber, "creationTime" : new Date(prescription.creationTime)};
 	  var store = getObjectStore(DB_PRESCRIPTION_STORE,'readwrite');
-	 
+	 console.log("prescription creation time", obj.creationTime);
 	 var req = store.add(obj);
 	 
 	  req.onsuccess = function(event){
@@ -234,7 +267,6 @@ var COMPAT_ENVS = [
   /**
    * Adding a patient to indexedDB
    * String firstName;
-	 String lastName;
 	 String emailId;
 	 Boolean isEmailVerified;
 	 String phoneNumber;
@@ -250,9 +282,9 @@ var COMPAT_ENVS = [
    * 
    * 
    */
-   function addPatienttoIndexedDB(id, firstName, lastName,emailId,isEmailVerified,phoneNumber,isPhoneVerified,userName,age,city,gender,bloodGroup){
+   function addPatienttoIndexedDB(id, firstName,emailId,isEmailVerified,phoneNumber,isPhoneVerified,userName,age,city,gender,bloodGroup){
 	   console.log("addPatient aruguments:", arguments);
-	   var obj = {"id" :id, "firstName" : firstName, "lastName": lastName,"emailId": emailId,"isEmailVerified" : isEmailVerified ,"phoneNumber" : phoneNumber,"isPhoneVerified" : isPhoneVerified,"userName" : userName, "age" : age,"city" : city, "gender" :gender,"bloodGroup" : bloodGroup};
+	   var obj = {"id" :id, "firstName" : firstName,"emailId": emailId,"isEmailVerified" : isEmailVerified ,"phoneNumber" : phoneNumber,"isPhoneVerified" : isPhoneVerified,"userName" : userName, "age" : age,"city" : city, "gender" :gender,"bloodGroup" : bloodGroup};
 	   var store = getObjectStore(DB_PATIENT_STORE,'readwrite');
 	   
 	   var req = store.add(obj);
@@ -327,47 +359,144 @@ var COMPAT_ENVS = [
 	*
     */
    
-   function getAllPrescriptionsFromIndexedDB(doctorId, handleData){
+   function getAllPrescriptionsFromIndexedDB(addDataToTable){
 	  var result=[];
 
 	  var store = getObjectStore(DB_PRESCRIPTION_STORE,'readonly');
+	  var index = store.index("creationTime");
 	  
-	  
-	  store.openCursor().onsuccess = function(event){
+	  index.openCursor().onsuccess = function(event){
 		  var cursor = event.target.result;
 		  if(cursor){
 			  if(cursor.value.doctorId == doctorId){
 				  result.push(cursor.value);
+				  addDataToTable(cursor.value);
 			  }
 			  
 			  cursor.continue();
 		  }
 		  else
-			  handleData(result);
-	  }
+			 console.log(result) //addDataToTable(result);
+	  };
 	  
 	  
   }
   
-  /*
-   * Get a prescription of particular patient from indexedDB
-   */
-  
-  function getPrescriptionsOfPatient(patientId){
+  function getPrescriptionsByPatientNameFromIndexedDB(patientName,addDataToTable){
 	  var result=[];
+
 	  var store = getObjectStore(DB_PRESCRIPTION_STORE,'readonly');
-	  var range = IDBKeyRange.only(patientId);
-	  var index = store.index("patientId");
+	  var index = store.index("patientName");
+	  var range = IDBKeyRange.bound(patientName.toLowerCase(),patientName.toLowerCase()+"z",false,true);
+	  
 	  index.openCursor(range).onsuccess = function(event){
 		  var cursor = event.target.result;
 		  if(cursor){
-			  result.push(cursor.value);
+			  if(cursor.value.doctorId == doctorId){
+				  result.push(cursor.value);
+				  addDataToTable(cursor.value);
+				  
+			  }
+			  
 			  cursor.continue();
 		  }
+	  };
+  }
+  
+  function getPrescriptionsByTimeFromIndexedDB(fromDate,toDate,addDataToTable){
+	  var result = [];
+	  var store = getObjectStore(DB_PRESCRIPTION_STORE,'readonly');
+	  var index = store.index("creationTime");
+	  var range;
+	  if(fromDate != "" && toDate != ""){
+			range = IDBKeyRange.bound(fromDate,toDate);
 	  }
-	  return result;
+	  else if(fromDate == ""){
+			range = IDBKeyRange.upperBound(toDate);
+	  }
+	  else{
+			range = IDBKeyRange.lowerBound(fromDate);
+	  }
+	  index.openCursor(range).onsuccess = function(event){
+		  var cursor = event.target.result;
+		  if(cursor){
+			  if(cursor.value.doctorId == doctorId){
+				  result.push(cursor.value);
+				  addDataToTable(cursor.value);
+				  
+			  }
+			  
+			  cursor.continue();
+		  }
+		  else{
+			  console.log(result);
+		  }
+	  };
 	  
   }
+  
+  function getPrescriptionsFromIndexedDB(fromDate,toDate,phoneNumber,addDataToTable){
+	  var result =[];
+	  var store = getObjectStore(DB_PRESCRIPTION_STORE,'readonly');
+	  var index = store.index('patientPhoneNumber-creationTime');
+	  var range;
+	  var initDay = new Date("Fri Mar 25 2016 18:53:37 GMT+0530");
+	  var today = new Date();
+	  if(fromDate == "" && toDate == "" && phoneNumber=="") {
+		  alert("No filter has been applied showing all the data");
+		  console.log("No Date range specified");
+		  getAllPrescriptionsFromIndexedDB(addDataToTable);
+		  return;
+	  }
+	  
+	  if(fromDate != "")
+		  fromDate = new Date(fromDate);
+	  if(toDate != "")
+		  toDate = new Date(toDate);
+	  console.log("indexeddb from date ",fromDate);
+	  console.log("indexeddb to date ",toDate);
+	  console.log("indexeddb phone number ",phoneNumber);
+	  if(phoneNumber != ""){
+			if(fromDate != "" && toDate != ""){
+				range = IDBKeyRange.bound([phoneNumber,fromDate],[phoneNumber,toDate]);
+			}
+			else if(toDate != ""){
+				range = IDBKeyRange.bound([phoneNumber,initDay],[phoneNumber,toDate]);
+			}
+			else if(fromDate != ""){
+				range = IDBKeyRange.bound([phoneNumber,fromDate],[phoneNumber,toDay]);
+			}
+			else{
+				range = IDBKeyRange.bound([phoneNumber],[phoneNumber,'']);
+			}
+	  }
+	  else{
+		  getPrescriptionsByTimeFromIndexedDB(fromDate,toDate,addDataToTable);
+			
+		  return ;
+	  }
+	  
+	  
+	  index.openCursor(range).onsuccess = function(event){
+		  var cursor = event.target.result;
+		  if(cursor){
+			  if(cursor.value.doctorId == doctorId){
+				  result.push(cursor.value);
+				  addDataToTable(cursor.value);
+				  
+			  }
+			  
+			  cursor.continue();
+		  }
+		  else{
+			  console.log(result);
+		  }
+	  };
+  }
+  
+  
+  
+  
   /*
    * Autocomplete search from indexedDB
    */
