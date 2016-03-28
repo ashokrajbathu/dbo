@@ -574,7 +574,7 @@
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="col-md-13 form-group">
-            <textarea class="form-control" rows="3" placeholder="Additional References"  id="prescription-form-si"></textarea>
+            <textarea class="form-control" rows="3" placeholder="Additional References"  id="prescription-form-additionalref"></textarea>
           </div>
       
           
@@ -863,6 +863,7 @@ $(document).on('click','.deletebutton',function(e){
           id=id-1;
           console.log(id);
           //alert(document.getElementById(id).value());
+
           var drugPojoList1 = $.cookie('drugPojoList'); 
           var drugData = JSON.parse(drugPojoList1); 
           console.log(drugData);
@@ -1009,7 +1010,7 @@ $('#prescription-save-cont').click(function(e){
   $.cookie('currentPatientInfo-saturation',$('#prescription-form-saturatn').val());
   $.cookie('currentPatientInfo-bmi',$('#prescription-form-bmi').val());
   $.cookie('currentPrescriptionInf0-inv',$('#prescription-form-Investigation').val());
-
+  $.cookie('currentPrescriptionInfo-additionalref',$('#prescription-form-additionalref').val());
   $.ajax({ 
    type: "POST",
    url: "http://localhost:8081/dbotica-spring/prescription/updatePrescription",
@@ -1056,6 +1057,9 @@ $('#prescription-reset').click(function(e){
   $.cookie('currentPatientInfo-bmi',"");
   $.cookie('currentPatientInfo-saturation',"");
   $.cookie('currentPatientInfo-pulse',"");
+  $.cookie('currentPrescriptionInfo-additionalref',"");
+  $.cookie('currentPrescriptionInf0-inv',"");
+  $.cookie('currentPatientInfo',"");
   $.cookie('drugPojoList',"");
   $('#prescription-form-pd').find('input:text').val('');
 
@@ -1080,6 +1084,7 @@ $('prescription-form').submit(function(e){
 $('#prescription-form-height').keyup(function(e){
   if($('#prescription-form-weight').val()!= '' && $('#prescription-form-height').val()!=""){
     var bmi = ($('#prescription-form-weight').val()*10000)/($('#prescription-form-height').val()*$('#prescription-form-height').val());
+    bmi = Math.round(bmi * 100) / 100;
     $('#prescription-form-bmi').val(bmi);
   }
 
@@ -1088,6 +1093,7 @@ $('#prescription-form-height').keyup(function(e){
 $('#prescription-form-weight').keyup(function(e){
   if($('#prescription-form-weight').val()!= '' && $('#prescription-form-height').val()!=""){
     var bmi = ($('#prescription-form-weight').val()*10000)/($('#prescription-form-height').val()*$('#prescription-form-height').val());
+    bmi = Math.round(bmi * 100) / 100;
     $('#prescription-form-bmi').val(bmi);
   }
 
@@ -1120,6 +1126,8 @@ $('#closeOnSelect').hide();
       var bmi = $.cookie('currentPatientInfo-bmi');
       var saturatn = $.cookie('currentPatientInfo-saturation');
       var pulse = $.cookie('currentPatientInfo-pulse');
+       var investigation = $.cookie('currentPrescriptionInf0-inv');
+      var additionaRef = $.cookie('currentPrescriptionInfo-additionalref');
 
     if (temp && temp.length != 0) {
         $('#prescription-form-temp').val(temp);
@@ -1151,6 +1159,13 @@ $('#closeOnSelect').hide();
         $('#prescription-form-pulse').val(pulse);
       }
 
+      if(!!investigation && investigation.length != 0) {
+        $('#prescription-form-Investgtn').val(investigation);
+      }
+
+      if(!!additionaRef && additionaRef.length != 0) {
+        $('#prescription-form-additionalref').val(additionaRef);
+      }
 
        
 
@@ -1167,7 +1182,7 @@ $('#closeOnSelect').hide();
                 xhr.setRequestHeader("Content-Type","application/json");
                 xhr.setRequestHeader("Accept","application/json");
             },
-            xhrFields: {withCredentials: true},
+          xhrFields: {withCredentials: true},
           success: function(response){       
              localStorage.clear();
              window.location.replace("../../pages/examples/login.html");

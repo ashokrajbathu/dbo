@@ -311,8 +311,9 @@
                 <li class="header">Welcome</li>
                 <!-- Optionally, you can add icons to the links -->
                 <li class="active"><a href="../forms/entryPrescriptions.html"><i class="fa fa-link"></i> <span>Drug prescription</span></a></li>
-                <li><a href="myPrescriptions.html"><i class="fa fa-link"></i> <span>My Prescriptions</span></a></li> 
-                <!--  <li class="active"><a href="../forms/PatientSearch.html"><i class="fa fa-link"></i> <span>Patient Search</span></a></li>  -->
+                <li><a href="myPrescriptions.html"><i class="fa fa-link"></i> <span>My Prescriptions</span></a></li>
+<!--                 <li><a href="myScheduler.html"><i class="fa fa-link"></i> <span>My Scheduler</span></a></li> 
+ -->                <!--  <li class="active"><a href="../forms/PatientSearch.html"><i class="fa fa-link"></i> <span>Patient Search</span></a></li>  -->
                 <li class="treeview">
                  <!--  <a href="../tables/data.html"><i class="fa fa-link"></i> <span>Drug database</span> <i class="fa fa-angle-left pull-right"></i></a> -->
                 </li>
@@ -325,17 +326,10 @@
           <div class="content-wrapper"  style="margin-left: 13%;margin-right: 22%;">
             <!-- Content Header (Page header) -->
             <section class="content-header">
-			<div class="col-md-14">
-             <div class="box">
-              <h3 class="box-title"></h3>
-              <button type="submit" class="btn btn-primary pull-right"  id="prescription-reset" >Reset</button>
-            </div><!-- /.box-header -->
-          </div>
               <h1>
                 Prescriptions Form
                 <!-- <small>Preview</small> -->
               </h1>
-
           <!-- <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li><a href="#">Forms</a></li>
@@ -346,7 +340,14 @@
         <!-- Main content -->
         <section class="content">
           <div class="row">
-           
+           <div class="col-md-14">
+             <div class="box-header with-border">
+              <h3 class="box-title"></h3>
+              <button type="submit" class="btn btn-primary pull-right"  id="prescription-reset" >Reset</button>
+            </div><!-- /.box-header -->
+
+
+          </div>
           <div class="col-xs-12">
             <div class="box box-solid box-primary">
               <div class="box-header">
@@ -376,26 +377,30 @@
           <input type="text" class="form-control" placeholder="Temperature"  id="prescription-form-temp">
         </input>
       </div>
-        <div class="col-md-3 form-group">
+        <div class="col-md-2 form-group">
           <label>Blood Pressure</label>
           <input type="text" class="form-control" placeholder="Blood Pressure"  id="prescription-form-bloodPressure">
         </input>
       </div>
-	  <div class="col-md-3 form-group">
-		<label>BMI</label>
-		<input type="text" class="form-control" placeholder="BMI" id="prescription-form-bmi">
-		</input>
-	  </div>
-	  <div class="col-md-2 form-group">
-		<label>Saturation</label>
-		<input type="text" class="form-control" placeholder="Saturation" id="prescription-form-saturation">
-		</input>
-	  </div>
-	  <div class="col-md-2 form-group">
-		<label>Pulse</label>
-		<input type="text" class="form-control" placeholder="Pulse" id="prescription-form-pulse">
-		</input>
-	  </div>
+      <div class="col-md-1 form-group">
+          
+      </div>
+
+      <div class="col-md-2 form-group">
+          <label>BMI</label>
+          <input type="text" class="form-control" placeholder="BMI"  id="prescription-form-bmi">
+        </input>
+      </div>
+      <div class="col-md-2 form-group">
+          <label>Saturation</label>
+          <input type="text" class="form-control" placeholder="Saturation"  id="prescription-form-saturatn">
+        </input>
+      </div>
+      <div class="col-md-2 form-group">
+          <label>Pulse</label>
+          <input type="text" class="form-control" placeholder="Pulse"  id="prescription-form-pulse">
+        </input>
+      </div>
 
     </form>
     </div><!-- /.box-body -->
@@ -409,35 +414,6 @@
 </section>
 
 
-<section class="content">
-  <div class="row">
-
-  </div><!--/.col (left) -->
-
-  <!-- right column -->
-  <div class="col-md-14">
-    <!-- general form elements disabled -->
-    <div class="box box-solid box-primary">
-      <div class="box-header">
-        <h3 class="box-title">Investigation</h3>
-      </div>
-
-      <div class="box-body">
-        <form role="form" id="Investigation-form">
-          <div class="col-md-12 form-group">
-			<textarea  class="form-control" rows="2"  placeholder="Symptoms" id="prescription-form-ClincImp" ></textarea>
-          </div>
-		  <div class="col-md-12 form-group">
-            <textarea  class="form-control" rows="2" placeholder="Investigation Report" id="prescription-form-Investigation" ></textarea>
-          </div>
-		  
-	</form>
-  </div><!-- /.box-body -->
-  
-</div><!-- /.box -->
-</div><!--/.col (right) -->
-<!-- /.row -->
-</section><!-- /.content -->
 
 
 <section class="content">
@@ -455,8 +431,13 @@
 
       <div class="box-body">
         <form role="form" id="prescription-form">
-          
-		  <!-- text input -->
+          <div class="col-md-12 form-group">
+            <input type="textarea"  class="form-control" rows="2"  placeholder="Symptoms" id="prescription-form-ClincImp" ></input>
+          </div>
+          <div class="col-md-12 form-group">
+            <textarea type="textarea"  class="form-control" rows="3" placeholder="Investigation" id="prescription-form-Investgtn" ></textarea>
+          </div>
+          <!-- text input -->
           <div class="col-md-9 form-group">
             <!-- <label>Text</label> -->
             <input type="text" class="form-control" data-validation="required" placeholder="Drug" id="prescription-form-drug"></input>
@@ -517,7 +498,9 @@
         <input type="text" class="inputDate" id="inputDate" name="inputDate" value="">
         <span class="glyphicon glyphicon-calendar" class="inputDate" id="inputDateSpan"></span>
              <p hidden>  <label id="closeOnSelect"><input type="checkbox" checked="true" /> Close on selection</label></p>
-        
+          &nbsp;&nbsp;&nbsp;&nbsp;
+<!--           <input type="button" id="prescription-book-appointment" name="book-appointment" value="Book Appointment" /> 
+ -->        
       </div>
       <div class="col-md-12" id="prescription-form-information" style="display: none;">
         <label>Information: </label>
@@ -574,7 +557,7 @@
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="col-md-13 form-group">
-            <textarea class="form-control" rows="3" placeholder="Additional References"  id="prescription-form-si"></textarea>
+            <textarea class="form-control" rows="3" placeholder="Additional References"  id="prescription-form-additionalref"></textarea>
           </div>
       
           
@@ -851,6 +834,12 @@ $('#inputDatetxt').keyup(function(e){
 
 });
 
+$('#prescription-book-appointment').click(function(){
+
+  $.cookie('appintmentDate',$('#inputDate').val());
+  window.location.href='myScheduler.html';
+});
+
 
 $(document).on('click','.deletebutton',function(e){
        var result = confirm('Are you sure, you want to delete ?');
@@ -863,6 +852,7 @@ $(document).on('click','.deletebutton',function(e){
           id=id-1;
           console.log(id);
           //alert(document.getElementById(id).value());
+
           var drugPojoList1 = $.cookie('drugPojoList'); 
           var drugData = JSON.parse(drugPojoList1); 
           console.log(drugData);
@@ -1008,8 +998,8 @@ $('#prescription-save-cont').click(function(e){
   $.cookie('currentPatientInfo-pulse',$('#prescription-form-pulse').val());
   $.cookie('currentPatientInfo-saturation',$('#prescription-form-saturatn').val());
   $.cookie('currentPatientInfo-bmi',$('#prescription-form-bmi').val());
-  $.cookie('currentPrescriptionInf0-inv',$('#prescription-form-Investigation').val());
-
+  $.cookie('currentPrescriptionInf0-inv',$('#prescription-form-Investgtn').val());
+  $.cookie('currentPrescriptionInfo-additionalref',$('#prescription-form-additionalref').val());
   $.ajax({ 
    type: "POST",
    url: "http://localhost:8081/dbotica-spring/prescription/updatePrescription",
@@ -1021,16 +1011,16 @@ $('#prescription-save-cont').click(function(e){
   data: JSON.stringify({'doctorId': localStorage.getItem('doctorId'), 'drugDosage' : json, 'height': $('#prescription-form-height').val(), 'weight': $('#prescription-form-weight').val(), 'bloodPressure': $('#prescription-form-bloodPressure').val(), 'temperature': $('#prescription-form-temp').val()}),
   success: function(response){       
     alert("Prescrition successfully saved");
-    var prescription = $.parseJSON(response.response);
+    var prescriptionInfo = $.parseJSON(response.response);
 	//Adding prescriptioninfo to indexedDB
 	var patientInfoCookie = $.cookie('currentPatientInfo');
 	var patientInfo = $.parseJSON(patientInfoCookie);
   try {
-  addPrescriptionToIndexedDB(prescription,patientInfo[0],localStorage.getItem('doctorId'));  
+  addPrescriptiontoIndexedDB(prescriptionInfo,patientInfo,localStorage.getItem('doctorId'));  
 } catch (e) {
 
 }
-    console.log(prescription);
+    console.log(prescriptionInfo);
     window.location.replace("../../starter.html");
   }
 });
@@ -1056,6 +1046,9 @@ $('#prescription-reset').click(function(e){
   $.cookie('currentPatientInfo-bmi',"");
   $.cookie('currentPatientInfo-saturation',"");
   $.cookie('currentPatientInfo-pulse',"");
+  $.cookie('currentPrescriptionInfo-additionalref',"");
+  $.cookie('currentPrescriptionInf0-inv',"");
+  $.cookie('currentPatientInfo',"");
   $.cookie('drugPojoList',"");
   $('#prescription-form-pd').find('input:text').val('');
 
@@ -1080,6 +1073,7 @@ $('prescription-form').submit(function(e){
 $('#prescription-form-height').keyup(function(e){
   if($('#prescription-form-weight').val()!= '' && $('#prescription-form-height').val()!=""){
     var bmi = ($('#prescription-form-weight').val()*10000)/($('#prescription-form-height').val()*$('#prescription-form-height').val());
+    bmi = Math.round(bmi * 100) / 100;
     $('#prescription-form-bmi').val(bmi);
   }
 
@@ -1088,6 +1082,7 @@ $('#prescription-form-height').keyup(function(e){
 $('#prescription-form-weight').keyup(function(e){
   if($('#prescription-form-weight').val()!= '' && $('#prescription-form-height').val()!=""){
     var bmi = ($('#prescription-form-weight').val()*10000)/($('#prescription-form-height').val()*$('#prescription-form-height').val());
+    bmi = Math.round(bmi * 100) / 100;
     $('#prescription-form-bmi').val(bmi);
   }
 
@@ -1120,6 +1115,8 @@ $('#closeOnSelect').hide();
       var bmi = $.cookie('currentPatientInfo-bmi');
       var saturatn = $.cookie('currentPatientInfo-saturation');
       var pulse = $.cookie('currentPatientInfo-pulse');
+       var investigation = $.cookie('currentPrescriptionInf0-inv');
+      var additionaRef = $.cookie('currentPrescriptionInfo-additionalref');
 
     if (temp && temp.length != 0) {
         $('#prescription-form-temp').val(temp);
@@ -1151,6 +1148,13 @@ $('#closeOnSelect').hide();
         $('#prescription-form-pulse').val(pulse);
       }
 
+      if(!!investigation && investigation.length != 0) {
+        $('#prescription-form-Investgtn').val(investigation);
+      }
+
+      if(!!additionaRef && additionaRef.length != 0) {
+        $('#prescription-form-additionalref').val(additionaRef);
+      }
 
        
 
@@ -1186,10 +1190,83 @@ function daysToDate(days){
   var date = new Date();
 
   //alert(days);
+  // if(date.getMonth() == '0' || date.getMonth() =='2' || date.getMonth() == '4' date.getMonth() =='6' || date.getMonth() =='7' || date.getMonth() =='9' || date.getMonth() == '10')
+  // {
+  //     var day= Number(date.getDate())+Number(days);
+  //     if(day > 31)
+  //     {
+  //       extraDays = day -31;
+  //       day = extraDays;
+  //       var month = date.getMonth() + 2;
+  //       if(month > 12)
+  //        var year = date.getFullYear()+1;
+  //       else 
+  //        var year = date.getFullYear(); 
 
-    var day = Number(date.getDate())+Number(days);
-    var month = date.getMonth() + 1;
+  //     }else {
+
+  //       //var day = Number(date.getDate())+Number(days);
+  //       var month = date.getMonth() + 1;
+  //       var year = date.getFullYear(); 
+
+  //     }
+
+
+  // }
+
+   var day = Number(date.getDate())+Number(days);
+   var month = date.getMonth() + 1;
     var year = date.getFullYear();
+
+    if( month == 1 || month == 3 || month == 5 || month == 7 || month== 8 || month == 10 || month == 12)
+    {
+      if(day > 31)
+        {
+          extraDays = day -31;
+          day = extraDays;
+          month = date.getMonth() + 2;
+          if(month > 12)
+            year = date.getFullYear()+1;
+          else 
+            year = date.getFullYear(); 
+
+        }else {
+
+          }
+        
+    }
+    else if(month == 4 || month== 6 || month == 9 || month == 11)
+    {
+      if(day > 30)
+        {
+          extraDays = day -30;
+          day = extraDays;
+          month = date.getMonth() + 2;
+          if(month > 12)
+            year = date.getFullYear()+1;
+          else 
+            year = date.getFullYear(); 
+
+        }else {
+
+          }
+  }else 
+  {
+    if(day > 28)
+        {
+          extraDays = day -28;
+          day = extraDays;
+          month = date.getMonth() + 2;
+          if(month > 12)
+            year = date.getFullYear()+1;
+          else 
+            year = date.getFullYear(); 
+
+        }else {
+
+          }
+
+  }
 
     if (month < 10) month = "0" + month;
     if (day < 10) day = "0" + day;
