@@ -30,7 +30,7 @@
 	}
 			
 
-  function openDb() {
+  function openDb(callBack) {
     console.log("openDb ...");
     var req = window.indexedDB.open(DB_NAME, DB_VERSION);
     req.onsuccess = function (event) {
@@ -38,6 +38,10 @@
       // garbage collection.
       // db = req.result;
       db = event.target.result;
+	  if(!!callBack){
+		  callBack();
+	  }
+		
       console.log("openDb DONE success");
 	  
 	  
@@ -464,10 +468,10 @@
 				range = IDBKeyRange.bound([phoneNumber,initDay],[phoneNumber,toDate]);
 			}
 			else if(fromDate != ""){
-				range = IDBKeyRange.bound([phoneNumber,fromDate],[phoneNumber,toDay]);
+				range = IDBKeyRange.bound([phoneNumber,fromDate],[phoneNumber,today]);
 			}
 			else{
-				range = IDBKeyRange.bound([phoneNumber],[phoneNumber,'']);
+				range = IDBKeyRange.bound([phoneNumber,initDay],[phoneNumber,today]);
 			}
 	  }
 	  else{

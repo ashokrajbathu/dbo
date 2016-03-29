@@ -351,13 +351,18 @@
 		console.log("from date ",fromDate);
 		console.log("to date ",toDate);
 		console.log("phone number ",phoneNumber);
-		//getPrescriptionsFromIndexedDB(fromDate,toDate,phoneNumber,addRowToPrescriptionTable);
-		getAllPrescriptionsFromIndexedDB(addRowToPrescriptionTable);
+		getPrescriptionsFromIndexedDB(fromDate,toDate,phoneNumber,addRowToPrescriptionTable);
+		//getAllPrescriptionsFromIndexedDB(addRowToPrescriptionTable);
 		
 	});
+function getAllPrescriptions(){
+	getAllPrescriptionsFromIndexedDB(addRowToPrescriptionTable);
+}
 $(document).ready(function(){ 
   //CHANGE here
-	openDb();
+	openDb(getAllPrescriptions);
+	
+	
 	console.log("myPrescriptions opened");
   $('#username').text(localStorage.getItem('firstName'));
   $('#username1').text(localStorage.getItem('firstName'));
