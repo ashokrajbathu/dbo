@@ -293,30 +293,30 @@
 
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
-
-              <!-- Sidebar user panel (optional) -->
-              <div class="user-panel">
-                <div class="pull-left image">
-                  <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="pull-left info">
+                        <p>Doctor 1</p>
+                        <!-- Status -->
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
                 </div>
-                <div class="pull-left info">
-                  <p>Doctor 1</p>
-                  <!-- Status -->
-                  <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-                </div>
-              </div>
-
-              <!-- Sidebar Menu -->
-              <ul class="sidebar-menu">
-                <li class="header">Welcome</li>
-                <!-- Optionally, you can add icons to the links -->
-                <li class="active"><a href="../forms/entryPrescriptions.html"><i class="fa fa-link"></i> <span>Drug prescription</span></a></li>
-                <li><a href="myPrescriptions.html"><i class="fa fa-link"></i> <span>My Prescriptions</span></a></li> 
-                <!--  <li class="active"><a href="../forms/PatientSearch.html"><i class="fa fa-link"></i> <span>Patient Search</span></a></li>  -->
-                <li class="treeview">
-                 <!--  <a href="../tables/data.html"><i class="fa fa-link"></i> <span>Drug database</span> <i class="fa fa-angle-left pull-right"></i></a> -->
-                </li>
-              </ul><!-- /.sidebar-menu -->
+                <!-- Sidebar Menu -->
+                <ul class="sidebar-menu">
+                    <li class="header">Welcome</li>
+                    <!-- Optionally, you can add icons to the links -->
+                    <li class="active"><a href="../forms/entryPrescriptions.html"><i class="fa fa-link"></i> <span>Drug prescription</span></a></li>
+                    <li><a href="myPrescriptions.html"><i class="fa fa-link"></i> <span>My Prescriptions</span></a></li>
+                    <li><a href="myPatients.html"><i class="fa fa-link"></i> <span>My Patients</span></a></li>
+                    <!--  <li class="active"><a href="../forms/PatientSearch.html"><i class="fa fa-link"></i> <span>Patient Search</span></a></li>  -->
+                    <li class="treeview">
+                        <!--  <a href="../tables/data.html"><i class="fa fa-link"></i> <span>Drug database</span> <i class="fa fa-angle-left pull-right"></i></a> -->
+                    </li>
+                </ul>
+                <!-- /.sidebar-menu -->
             </section>
             <!-- /.sidebar -->
           </aside>
@@ -994,41 +994,70 @@ dropdown.show('dropdown');
 });  
 });
 
-$('#prescription-save-cont').click(function(e){
+    $('#prescription-save-cont').click(function(e) {
 
-  var cliimp = $('#prescription-form-ClincImp').val();
-  $.cookie('cookie-cli-imp',cliimp);
-  var drugPojoList = $.cookie('drugPojoList');           // Object
-  var json = JSON.parse(drugPojoList);
-  $.cookie('currentPatientInfo-temp',$('#prescription-form-temp').val());
-  $.cookie('currentPatientInfo-height', $('#prescription-form-height').val());
-  $.cookie('currentPatientInfo-weight', $('#prescription-form-weight').val());
-  $.cookie('currentPatientInfo-bloodPressure', $('#prescription-form-bloodPressure').val());
-  $.cookie('currentPatientInfo-impression', $('#prescription-form-ClincImp').val());
-  $.cookie('currentPatientInfo-pulse',$('#prescription-form-pulse').val());
-  $.cookie('currentPatientInfo-saturation',$('#prescription-form-saturatn').val());
-  $.cookie('currentPatientInfo-bmi',$('#prescription-form-bmi').val());
-  $.cookie('currentPrescriptionInf0-inv',$('#prescription-form-Investigation').val());
+        var cliimp = $('#prescription-form-ClincImp').val();
+        $.cookie('cookie-cli-imp', cliimp);
+        var drugPojoList = $.cookie('drugPojoList'); // Object
+        var json = JSON.parse(drugPojoList);
+        $.cookie('currentPatientInfo-temp', $('#prescription-form-temp').val());
+        $.cookie('currentPatientInfo-height', $('#prescription-form-height').val());
+        $.cookie('currentPatientInfo-weight', $('#prescription-form-weight').val());
+        $.cookie('currentPatientInfo-bloodPressure', $('#prescription-form-bloodPressure').val());
+        $.cookie('currentPatientInfo-impression', $('#prescription-form-ClincImp').val());
+        $.cookie('currentPatientInfo-pulse', $('#prescription-form-pulse').val());
+        $.cookie('currentPatientInfo-saturation', $('#prescription-form-saturatn').val());
+        $.cookie('currentPatientInfo-bmi', $('#prescription-form-bmi').val());
+        $.cookie('currentPrescriptionInf0-inv', $('#prescription-form-Investigation').val());
+        var patientInfoCookie = $.cookie('currentPatientInfo');
+        var patientInfo = $.parseJSON(patientInfoCookie);
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/dbotica-spring/doctor/addMyPatients",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            async: false,
+            xhrFields: {
+                withCredentials: true
+            },
+            data: JSON.stringify({
+                'patientId': patientInfo[0].id,
+                'mobileNumber': patientInfo[0].phoneNumber
+            }),
+            success: function(response) {
 
-  $.ajax({ 
-   type: "POST",
-   url: "http://localhost:8081/dbotica-spring/prescription/updatePrescription",
-   beforeSend: function(xhr){
-    xhr.setRequestHeader("Content-Type","application/json");
-    xhr.setRequestHeader("Accept","application/json");
-  },
-  async : false,
-  xhrFields: {withCredentials: true},
-  data: JSON.stringify({'doctorId': localStorage.getItem('doctorId'), 'drugDosage' : json, 'height': $('#prescription-form-height').val(), 'weight': $('#prescription-form-weight').val(), 'bloodPressure': $('#prescription-form-bloodPressure').val(), 'temperature': $('#prescription-form-temp').val()}),
-  success: function(response){       
-    alert("Prescrition successfully saved");
-    var prescription = $.parseJSON(response.response);
-	//Adding prescriptioninfo to indexedDB
-	var patientInfoCookie = $.cookie('currentPatientInfo');
-	var patientInfo = $.parseJSON(patientInfoCookie);
-  try {
-  addPrescriptionToIndexedDB(prescription,patientInfo[0],localStorage.getItem('doctorId'));  
-} catch (e) {
+                console.log("addMyPatients  ", response);
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/dbotica-spring/prescription/updatePrescription",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            async: false,
+            xhrFields: {
+                withCredentials: true
+            },
+            data: JSON.stringify({
+                'doctorId': localStorage.getItem('doctorId'),
+                'drugDosage': json,
+                'height': $('#prescription-form-height').val(),
+                'weight': $('#prescription-form-weight').val(),
+                'bloodPressure': $('#prescription-form-bloodPressure').val(),
+                'temperature': $('#prescription-form-temp').val()
+            }),
+            success: function(response) {
+                alert("Prescrition successfully saved");
+                var prescription = $.parseJSON(response.response);
+                //Adding prescriptioninfo to indexedDB
+
+                try {
+                    addPrescriptionToIndexedDB(prescription, patientInfo[0], localStorage.getItem('doctorId'));
+                } catch (e) {
 
 }
     console.log(prescription);
