@@ -1110,6 +1110,7 @@ $('prescription-form').submit(function(e){
 $('#prescription-form-height').keyup(function(e){
   if($('#prescription-form-weight').val()!= '' && $('#prescription-form-height').val()!=""){
     var bmi = ($('#prescription-form-weight').val()*10000)/($('#prescription-form-height').val()*$('#prescription-form-height').val());
+    bmi = Math.round(bmi * 100) / 100;
     $('#prescription-form-bmi').val(bmi);
   }
 
@@ -1118,6 +1119,7 @@ $('#prescription-form-height').keyup(function(e){
 $('#prescription-form-weight').keyup(function(e){
   if($('#prescription-form-weight').val()!= '' && $('#prescription-form-height').val()!=""){
     var bmi = ($('#prescription-form-weight').val()*10000)/($('#prescription-form-height').val()*$('#prescription-form-height').val());
+    bmi = Math.round(bmi * 100) / 100;
     $('#prescription-form-bmi').val(bmi);
   }
 
