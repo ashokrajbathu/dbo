@@ -89,7 +89,7 @@
         var emailId = $('#emailId').val();
         var password = $('#password').val();
         console.log("emailId: "+emailId+", password: "+password);
-        console.log(localStorage.getItem("password"));
+       // console.log(localStorage.getItem("password"));
         $.ajax({ 
            type: "POST",
            url: "http://localhost:8081/dbotica-spring/doctor/login",
@@ -98,6 +98,7 @@
                 xhr.setRequestHeader("Accept","application/json");
             },
             xhrFields: {withCredentials: true},
+            async : false,
             data: JSON.stringify({'emailId': emailId, 'password' : password}),
             success: function(response){       
               var errorCode = response.errorCode;

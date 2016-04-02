@@ -18,13 +18,13 @@
 	titleRangeSeparator: ' \u2014 ', // emphasized dash
 	monthYearFormat: 'MMMM YYYY', // required for en. other languages rely on datepicker computable option
 
-	defaultTimedEventDuration: '02:00:00',
+	defaultTimedEventDuration: '00:15:00',
 	defaultAllDayEventDuration: { days: 1 },
 	forceEventDuration: false,
 	nextDayThreshold: '09:00:00', // 9am
 
 	// display
-	defaultView: 'month',
+	defaultView: 'agendaDay',
 	aspectRatio: 1.35,
 	header: {
 		left: 'title',
@@ -6920,6 +6920,8 @@ var View = fc.View = Class.extend({
 
 	t.defaultAllDayEventDuration = moment.duration(options.defaultAllDayEventDuration);
 	t.defaultTimedEventDuration = moment.duration(options.defaultTimedEventDuration);
+	//console.log(options.defaultTimedEventDuration);
+	//alert(options.defaultTimedEventDuration);
 
 
 	// Builds a moment using the settings of the current calendar: timezone and language.
@@ -7231,6 +7233,7 @@ var View = fc.View = Class.extend({
 		var allDefaultButtonText = options.defaultButtonText || {};
 		var allButtonText = options.buttonText || {};
 		var hash = options.views || {}; // the `views` option object
+		//console.log(hash);
 		var viewType = requestedViewType;
 		var viewOptionsChain = [];
 		var viewOptions;
@@ -9322,7 +9325,7 @@ setDefaults({
 	allDaySlot: true,
 	allDayText: 'all-day',
 	scrollTime: '06:00:00',
-	slotDuration: '00:30:00',
+	slotDuration: '00:15:00',
 	minTime: '00:00:00',
 	maxTime: '24:00:00',
 	slotEventOverlap: true
@@ -9492,6 +9495,7 @@ fcViews.agenda = View.extend({ // AgendaView
 
 	// Generates the HTML that goes before the bg of the TimeGrid slot area. Long vertical column.
 	slotBgIntroHtml: function() {
+		//alert(this.widgetContentClass + ' ' + this.axisStyleAttr());
 		return '<td class="fc-axis ' + this.widgetContentClass + '" ' + this.axisStyleAttr() + '></td>';
 	},
 

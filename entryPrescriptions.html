@@ -311,6 +311,8 @@
                     <li class="active"><a href="entryPrescriptions.html"><i class="fa fa-link"></i> <span>Drug prescription</span></a></li>
                     <li><a href="myPrescriptions.html"><i class="fa fa-link"></i> <span>My Prescriptions</span></a></li>
                     <li><a href="myPatients.html"><i class="fa fa-link"></i> <span>My Patients</span></a></li>
+                    <li><a href="myScheduler.html"><i class="fa fa-link"></i> <span>My Scheduler</span></a></li> 
+                
                     <!--  <li class="active"><a href="../forms/PatientSearch.html"><i class="fa fa-link"></i> <span>Patient Search</span></a></li>  -->
                     <li class="treeview">
                         <!--  <a href="../tables/data.html"><i class="fa fa-link"></i> <span>Drug database</span> <i class="fa fa-angle-left pull-right"></i></a> -->
@@ -353,7 +355,7 @@
                 <h3 class="box-title">Patient Data</h3>
               </div><!-- /.box-header -->
               <div class="box-body">
-                <form role="form" id="prescription-form-pd">
+                <div role="form" id="prescription-form-pd">
                <div class="col-md-3 form-group">
                  <label>Patient Name</label>
                  <span class="form-control" placeholder="Patient Name" value="Type" id="prescription-form-patient-name"  
@@ -397,7 +399,7 @@
 		</input>
 	  </div>
 
-    </form>
+    </div>
     </div><!-- /.box-body -->
   </div><!-- /.box -->
 </div><!-- /.col -->
@@ -423,7 +425,7 @@
       </div>
 
       <div class="box-body">
-        <form role="form" id="Investigation-form">
+        <div role="form" id="Investigation-form">
           <div class="col-md-12 form-group">
 			<textarea  class="form-control" rows="2"  placeholder="Symptoms" id="prescription-form-ClincImp" ></textarea>
           </div>
@@ -431,7 +433,7 @@
             <textarea  class="form-control" rows="2" placeholder="Investigation Report" id="prescription-form-Investigation" ></textarea>
           </div>
 		  
-	</form>
+	</div>
   </div><!-- /.box-body -->
   
 </div><!-- /.box -->
@@ -454,7 +456,7 @@
       </div>
 
       <div class="box-body">
-        <form role="form" id="prescription-form">
+        <div role="form" id="prescription-form">
           
 		  <!-- text input -->
           <div class="col-md-9 form-group">
@@ -517,6 +519,8 @@
         <input type="text" class="inputDate" id="inputDate" name="inputDate" value="">
         <span class="glyphicon glyphicon-calendar" class="inputDate" id="inputDateSpan"></span>
              <p hidden>  <label id="closeOnSelect"><input type="checkbox" checked="true" /> Close on selection</label></p>
+             &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="prescription-book-appointment" name="book-appointment" value="Book Appointment" /> 
+        
         
       </div>
       <div class="col-md-12" id="prescription-form-information" style="display: none;">
@@ -527,7 +531,7 @@
 
 
 
-    </form>
+    </div>
   </div><!-- /.box-body -->
   <div class="box-footer" align="right">
     <button type="submit" class="btn btn-primary"  id="prescription-add">Add</button>
@@ -851,6 +855,47 @@ $('#inputDatetxt').keyup(function(e){
 
 });
 
+$('#prescription-book-appointment').click(function(){
+
+  var patientInfoCookie = $.cookie('currentPatientInfo');
+        var patientInfo = $.parseJSON(patientInfoCookie);
+  $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/dbotica-spring/doctor/addCalendarEvent",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            async: false,
+            xhrFields: {
+                withCredentials: true
+            },
+            data: JSON.stringify({
+                'patientId': patientInfo[0].id,
+                'scheduleTime': "1459710477081",
+                'label': "LUNCH"
+            }),
+            success: function(response) {
+                alert("Appointment successfully booked");
+                var data = $.parseJSON(response.response);
+                console.log(data);
+                //Adding prescriptioninfo to indexedDB
+
+                try {
+                    addPrescriptionToIndexedDB(prescription, patientInfo[0], localStorage.getItem('doctorId'));
+                } catch (e) {
+
+          }
+         },
+          error: function(request, status, error) {
+                alert(status +' : '+ error);
+            }
+
+
+
+});
+});
+
 
 $(document).on('click','.deletebutton',function(e){
        var result = confirm('Are you sure, you want to delete ?');
@@ -970,7 +1015,7 @@ $('#prescription-form-drug').keyup(function(e){
                   $('#prescription-form-information').css('display','block');
                   $('#prescription-form-drug').val(data[s]['brandName']);
                   $('#prescription-form-drug-type').text(data[s]['drugType']);
-                  if(data[s]['manufacturer']=="manufacturer1")
+                  if(data[s]['drugType']=="SYRUP")
                   {
                  // console.log("show");
                  $('#prescription-form-measurmnt').text("ml");
@@ -990,7 +1035,10 @@ dropdown.show('dropdown');
 }
 
 }     
-}
+},
+ error: function(request, status, error) {
+                alert(status +' : '+error);
+            },
 });  
 });
 
@@ -1215,13 +1263,17 @@ $('#closeOnSelect').hide();
 <script>
 function daysToDate(days){
 
-  var date = new Date();
+   var date = new Date();
+  var newDate = new Date(date.getTime() + days*24*60*60*1000);
 
-  //alert(days);
+    console.log(newDate);
 
-    var day = Number(date.getDate())+Number(days);
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
+    var day = newDate.getDate();
+    var month =Number(newDate.getMonth() )+ 1;
+    var year = newDate.getFullYear();
+
+
+  
 
     if (month < 10) month = "0" + month;
     if (day < 10) day = "0" + day;

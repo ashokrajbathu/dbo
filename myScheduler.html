@@ -45,7 +45,7 @@
 
           <header class="main-header">
             <!-- Logo -->
-            <a href="starter.html" class="logo"  style="width: 13%;">
+            <a href="../../starter.html" class="logo"  style="width: 13%;">
               <!-- mini logo for sidebar mini 50x50 pixels -->
               <span class="logo-mini"><b>db</b></span>
               <!-- logo for regular state and mobile devices -->
@@ -461,7 +461,7 @@
     <!-- AdminLTE for demo purposes -->
     <script src="dist/js/demo.js"></script>
   <!-- IndexedDB for local storage-->
-  <script src="indexedDB/indexedDbotica.js"></script>
+  <script src="./indexedDB/indexedDbotica.js"></script>
   
 
     <script>
@@ -470,6 +470,42 @@
 
   $(document).ready(function() {
 
+
+ var date = new Date();
+    var d = date.getDate(),
+                m = date.getMonth(),
+                y = date.getFullYear();
+var event = Array();
+getEvents();
+//event.push({title:"Lunch" , start: new Date(y,m,d ,9,0), backgroundColor: "#f39c12",borderColor: "#f39c12"});
+// $.ajax({ 
+//               type: "GET",
+//               url: "http://localhost:8081/dbotica-spring/doctor/getMyCalendar?start=2016-04-01&end=2016-04-05",
+//               //data: {'doctorId': doctorId},
+//               //async : false,
+//               success: function(response){ 
+//                 if(response.success === true && response.response.length > 2)
+//                 {
+//                   var data = $.parseJSON(response.response);                  
+                  
+//                   var date = new Date(data[0]['scheduleTime']);
+//                 event = Array();
+//                 for (var i in data) 
+//                     event.push({title:"Lunch" , start: new Date(y,m,d ,9,0), backgroundColor: "#f39c12",borderColor: "#f39c12"});
+
+//                   console.log(event[0]);
+//                   event = JSON.stringify(event);
+
+
+//                  } else {
+//                   alert("No Events to show");
+//                 }
+                  
+//             },
+//             error: function() {
+//                 alert('Error while fetching events!');
+//             },
+//             });
 
     
     /* initialize the external events
@@ -504,11 +540,7 @@
 
    
 
-     var date = new Date();
-    var d = date.getDate(),
-                m = date.getMonth(),
-                y = date.getFullYear();
-
+    
      // var json_data ={
      //          title: 'All Day Event',
      //          start: new Date(y, m, 1),
@@ -529,21 +561,62 @@
             week: 'week',
             day: 'day'
           },
-      events: [
-      {
-              title: 'Long Event',
-              start: new Date(y, m, d - 5),
-              end: new Date(y, m, d - 2),
-              backgroundColor: "#f39c12", //yellow
-              borderColor: "#f39c12" //yellow
-            },
-            {
-              title: 'Meeting',
-              start: new Date(y, m, d, 10, 30),
-              allDay: false,
-              backgroundColor: "#0073b7", //Blue
-              borderColor: "#0073b7" //Blue
-            }],
+    //   events: function(start, end, timezone, callback) {
+    //     //console.log('hi');
+    //     var date = new Date();
+    //     start = new Date();
+    //     //start = date.getTime();
+    //     endDate = new Date(date.getTime() + 7*24*60*60*1000);
+    //     console.log(endDate +' end date');
+    //     $.ajax({ 
+    //           type: "GET",
+    //           url: "http://localhost:8081/dbotica-spring/doctor/getMyCalendar?start=2016-04-01&end=2016-04-05",
+    //           //data: {'doctorId': doctorId},
+    //           //async : false,
+    //           success: function(response){ 
+    //             if(response.success === true && response.response.length > 2)
+    //             {
+    //               var data = $.parseJSON(response.response);                  
+                  
+    //               var date = new Date(data[0]['scheduleTime']);
+    //             event = Array();
+    //             for (var i in data) 
+    //                 event.push({title:"Lunch" , start: new Date(y,m,d ,9,0), backgroundColor: "#f39c12",borderColor: "#f39c12"});
+
+    //               console.log(event[0]);
+    //               event = JSON.stringify(event);
+
+
+    //              } else {
+    //               alert("No Events to show");
+    //             }
+                  
+    //         },
+    //         error: function() {
+    //             alert('Error while fetching events!');
+    //         },
+    //         });
+        
+    
+
+         
+    // },
+    events : event,
+        // events: [
+        //     {
+        //       title: 'All Day Event',
+        //       start: new Date(y, m, d, 14, 0),
+        //       backgroundColor: "#f56954", //red
+        //       borderColor: "#f56954" //red
+        //     },
+        //     {
+        //       title: 'Long Event',
+        //       start: new Date(y, m, d ),
+        //       end: new Date(y, m, d ),
+        //       backgroundColor: "#f39c12", //yellow
+        //       borderColor: "#f39c12" //yellow
+        //     },
+        //   ],
       editable: true,
       droppable: true, // this allows things to be dropped onto the calendar
        dayClick: function(date, allDay, jsEvent, view) {
@@ -558,14 +631,29 @@
       eventClick: function(calEvent, jsEvent, view)
                     {
                         var r=confirm("Delete " + calEvent.title);
+                        console.log(calEvent._id);
                         if (r===true)
                           {
                               $('#calendar').fullCalendar('removeEvents', calEvent._id);
+
                           }
       },
+      eventDrop: function(event, delta, revertFunc) {
+
+        console.log(event.title + " was dropped on " + event.start.format());
+      console.log('in event drop');
+        
+      },
+     eventResize: function(event, delta, revertFunc) {
+
+        console.log('Resize : '+event.title + " end is now " + event.end.format());
+
+
+    },
       drop: function(date) {
         // is the "remove after drop" checkbox checked?
          // retrieve the dropped element's stored Event Object
+         console.log('in drop');
             var originalEventObject = $(this).data('eventObject');
 
             // we need to copy it, so that multiple events don't have a reference to the same object
@@ -576,8 +664,9 @@
             //copiedEventObject.allDay = allDay;
             copiedEventObject.backgroundColor = $(this).css("background-color");
             copiedEventObject.borderColor = $(this).css("border-color"); 
-
+               console.log(copiedEventObject._id);
              $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+            
         if ($('#drop-remove').is(':checked')) {
          
           $(this).remove();
@@ -614,41 +703,7 @@
           event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
           event.html(val);
 
-      //      //Add draggable funtionality
-      //      var eventObject = {
-      //         title: $.trim($("#new-event").val()) // use the element's text as the event title
-      //       };
-
-      //       // store the Event Object in the DOM element so we can get to it later
-      //       $(this).data('eventObject', eventObject);
-
-      // // make the event draggable using jQuery UI
-      //       $(this).draggable({
-      //         zIndex: 999,
-      //         revert: true,      // will cause the event to go back to its
-      //         revertDuration: 0  //  original position after the drag
-      //       });
-
-
-         
-
-      //     // retrieve the dropped element's stored Event Object
-      //       var originalEventObject = $(this).data('eventObject');
-
-      //       // we need to copy it, so that multiple events don't have a reference to the same object
-      //       var copiedEventObject = $.extend({}, originalEventObject);
-
-      //       // assign it the date that was reported
-      //       copiedEventObject.start = date1;
-      //      // copiedEventObject.allDay = event.allDay;
-      //       copiedEventObject.backgroundColor = $(this).css("background-color");
-      //       copiedEventObject.borderColor = $(this).css("border-color");
-
-      //       // render the event on the calendar
-      //       // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-      //       $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-
-            // is the "remove after drop" checkbox checked?
+     
             if ($('#drop-remove').is(':checked')) {
               // if so, remove the element from the "Draggable Events" list
               $(this).remove();
@@ -676,28 +731,105 @@
 
 
 
-  });
+ }); 
   
-$('#calendar').fullCalendar({
-    events: [
-        {
-            title  : 'event1',
-            start  : '2010-01-01'
-        },
-        {
-            title  : 'event2',
-            start  : '2010-01-05',
-            end    : '2010-01-07'
-        },
-        {
-            title  : 'event3',
-            start  : '2010-01-09T12:30:00',
-            allDay : false // will make the time show
-        }
-    ]
-});
 
     
+</script>
+
+<script>
+
+  function getEvents()
+  {
+    console.log('in getEvents');
+     var date = new Date();
+    var d = date.getDate(),
+                m = date.getMonth(),
+                y = date.getFullYear();
+
+    $.ajax({ 
+              type: "GET",
+              url: "http://localhost:8081/dbotica-spring/doctor/getMyCalendar?start=2016-04-01&end=2016-04-05",
+              //data: {'doctorId': doctorId},
+              async : false,
+             xhrFields: {
+                withCredentials: true
+            },
+              success: function(response){ 
+                if(response.success === true && response.response.length > 2)
+                {
+                  var data = $.parseJSON(response.response);     
+                  console.log(data);             
+                  
+                  
+
+                event = Array();
+                for (i in data) 
+                {
+                  var date = new Date(data[0]['scheduleTime']);
+                  d = date.getDate();
+                  m = date.getMonth();
+                  y = date.getFullYear();
+                  st_hrs = date.getHours();
+                  st_mm = date.getMinutes();
+
+
+                    event.push({title:data[i]['calendarEvent']['patientName'],id:'4343_'+i, start: new Date(y,m,d ,st_hrs,st_mm,0), backgroundColor: "#f39c12",borderColor: "#000000"});
+
+                 
+                }
+                  $('#calendar').fullCalendar( 'addEventSource', event );
+
+
+                 } else {
+                  alert("No Events to show");
+                }
+                  
+            },
+            error: function(e) {
+                alert('Error while fetching events!');
+            },
+            
+        });
+        
+    
+  }
+
+  /* Initialise update event button */
+// function initialise_update_event(){
+//   var test = $('#calendar').fullCalendar( 'clientEvents');
+//   //Bind event
+//   $('#btn_update_event').bind('click', function(){
+ 
+//     //Create vars
+//     var current_event_id = $('#txt_current_event').val();
+ 
+//     //Check if value found
+//     if(current_event_id){
+ 
+//       //Retrieve current event
+//       var current_event = $('#calendar').fullCalendar('clientEvents', current_event_id);
+ 
+//       //Check if found
+//       if(current_event && current_event.length == 1){
+ 
+//         //Retrieve current event from array
+//         current_event = current_event[0];
+ 
+//         //Set values
+//         current_event.backgroundColor = $('#txt_background_color').val();
+//         current_event.textColor = $('#txt_text_color').val();
+//         current_event.borderColor = $('#txt_border_color').val();
+//         current_event.title = $('#txt_title').val();
+//         current_event.description = $('#txt_description').val();
+//         current_event.price = $('#txt_price').val();
+//         current_event.available = $('#txt_available').val();
+ 
+//         //Update event
+//         $('#calendar').fullCalendar('updateEvent', current_event);
+//       }
+//     }
+//   });
 </script>
 
 </body>
