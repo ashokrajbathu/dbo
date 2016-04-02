@@ -1031,8 +1031,8 @@ function prescriptionFormDrugCallback(){
 	$('.drugs-dropdown-menu').hide('dropdown');
 	$('.drugs-dropdown-menu').empty();
   
-	autocompleteDrugIndexedDB(brandName,'#prescription-form-drug',OnGetDrugsResponse);
-	/*$.ajax({ 
+	//autocompleteDrugIndexedDB(brandName,'#prescription-form-drug',OnGetDrugsResponse);
+	$.ajax({ 
 		type: "GET",
 		url: "http://localhost:8081/dbotica-spring/drug/getDrugs",
 		data: {'brandName': brandName},
@@ -1045,7 +1045,7 @@ function prescriptionFormDrugCallback(){
         
 			}     
 		}
-	});  */
+	});  
 }
 var delay = (function(){
   var timer = 0;
