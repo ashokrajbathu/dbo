@@ -371,7 +371,7 @@ function updatePatientObjectIndexedDB(obj) {
  *
  */
 
-function getAllPrescriptionsFromIndexedDB(addDataToTable, id) {
+function getAllPrescriptionsFromIndexedDB(addDataToTable,callBackAfterAdding, id) {
     var result = [];
 
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
@@ -387,21 +387,9 @@ function getAllPrescriptionsFromIndexedDB(addDataToTable, id) {
 
             cursor.continue();
         } else {
-            $(id).accordion({
-                heightStyle: "content",
-                collapsible: true,
-                active: false,
-                activate: function(event, ui) {
+            callBackAfterAdding(id);
 
-                    if (!$.isEmptyObject(ui.newHeader.offset())) {
 
-                        $('html:not(:animated), body:not(:animated)').animate({ scrollTop: ui.newHeader.offset().top }, 'slow');
-
-                    }
-
-                }
-
-            });
         }
         //console.log("objects are----", result); //addDataToTable(result);
     };
@@ -430,7 +418,7 @@ function getAllPrescriptionsFromIndexedDB(addDataToTable, id) {
     };
 }*/
 
-function getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable) {
+function getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable,callBackAfterAdding,id) {
     var result = [];
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
     var index = store.index("creationTime");
@@ -453,13 +441,16 @@ function getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable) {
 
             cursor.continue();
         } else {
+            if (!!callBackAfterAdding) {
+                callBackAfterAdding(id);
+            }
             console.log(result);
         }
     };
 
 }
 
-function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addDataToTable) {
+function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addDataToTable, callBackAfterAdding,id) {
     var result = [];
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
     var index = store.index('patientPhoneNumber-creationTime');
@@ -467,9 +458,9 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addDataToT
     var initDay = new Date("Fri Mar 25 2016 18:53:37 GMT+0530");
     var today = new Date();
     if (fromDate == "" && toDate == "" && phoneNumber == "") {
-        alert("No filter has been applied, Showing all the data");
+        alert("No filter has been applied showing all the data");
         console.log("No Date range specified");
-        getAllPrescriptionsFromIndexedDB(addDataToTable);
+        getAllPrescriptionsFromIndexedDB(addDataToTable,callBackAfterAdding,id);
         return;
     }
 
@@ -491,7 +482,7 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addDataToT
             range = IDBKeyRange.bound([phoneNumber, initDay], [phoneNumber, today]);
         }
     } else {
-        getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable);
+        getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable,callBackAfterAdding,id);
 
         return;
     }
@@ -509,6 +500,9 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addDataToT
             cursor.continue();
         } else {
             console.log(result);
+            //if (!!callBackAfterAdding) {
+                callBackAfterAdding(id);
+            //}
         }
     };
 }

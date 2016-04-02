@@ -205,12 +205,27 @@
                         <div class="box">
                             <div class="box-header">
                                 <h3 class="box-title">Prescriptions</h3>
+                                <div class="accordion-header row">
+                                    <div class="col-md-3">
+                                        <h4 class="name"><b>Patient Name</b></h4>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h4><b>Date of Prescription</b></h4>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <h4><b>Age</b></h4>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h4><b>Follow Up</b></h4>
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
                                 <input type='hidden' id='current_page' />
                                 <input type='hidden' id='show_per_page' />
                                 <div class="accordion col-md-11 form-group" id="prescription-list">
+                                    <!--  -->
                                 </div>
                                 <div class="col-md-10">
                                     <div id='page_navigation'></div>
@@ -263,7 +278,6 @@
     <!--Cookie -->
     <script src="bootstrap/js/jquery.cookie.js"></script>
     <!-- FastClick -->
-    <script src="plugins/fastclick/fastclick.min.js"></script>
     <!-- DataTables -->
     <script src="plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
@@ -275,13 +289,12 @@
     <script src="indexedDB/indexedDbotica.js"></script>
     <script type="text/javascript"></script>
     <script>
-
     function addRowToPrescriptionTable(prescriptionData) {
         console.log("prescription object is----", prescriptionData);
 
         var date = new Date(prescriptionData['creationTime']);
         var dateStr = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-        var content1 = '<div class="row"><div class="col-md-5"><h4>Patient Name  : <b>' + prescriptionData['patientName'] + '</b></h4></div><div class="col-md-5"><h4>Date of Prescription : <b>' + dateStr + '</b></h4></div></div>' + '<div><div class="box-body"><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h5>Gender : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-gender">' + prescriptionData['patientInfo']['gender'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Age : </h5></div><div class="col-md-3 form-group"><h5><p  placeholder="" id="patient-age">' + prescriptionData['patientInfo']['age'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Blood Pressure : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-bp">' + prescriptionData['patientInfo']['bloodpressure'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Temperature : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-temperature">' + prescriptionData['prescription']['temperature'] + '</p></h5></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h5>Clinical Impression : </h5></div><div class="col-md-3 form-group"><h5><p placeholder="" id="mypres-clinicalimpression">' + prescriptionData['prescription']['remarks'] + '</p></h5></div></div><table id="current-prescriptions" class="table table-bordered table-striped"><thead><tr><th>BrandName</th><th>Per Serving</th><th>Days</th><th>Quantity</th><th>Remarks</th></tr></thead><tbody>';
+        var content1 = '<div class="accordion-row row"><div class="col-md-3"><h4>' + prescriptionData['patientName'] + '</h4></div><div class="col-md-3"><h4>' + dateStr + '</h4></div><div class="col-md-2" style="margin-left:54px;"><h4>' + prescriptionData['patientInfo']['age'] + '</h4></div></div>' + '<div><div class="box-body"><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h5>Gender : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-gender">' + prescriptionData['patientInfo']['gender'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Age : </h5></div><div class="col-md-3 form-group"><h5><p  placeholder="" id="patient-age">' + prescriptionData['patientInfo']['age'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Blood Pressure : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-bp">' + prescriptionData['patientInfo']['bloodpressure'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Temperature : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-temperature">' + prescriptionData['prescription']['temperature'] + '</p></h5></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h5>Clinical Impression : </h5></div><div class="col-md-3 form-group"><h5><p placeholder="" id="mypres-clinicalimpression">' + prescriptionData['prescription']['remarks'] + '</p></h5></div></div><table id="current-prescriptions" class="table table-bordered table-striped"><thead><tr><th>BrandName</th><th>Per Serving</th><th>Days</th><th>Quantity</th><th>Remarks</th></tr></thead><tbody>';
         for (var dd in prescriptionData['prescription']['drugDosage']) {
             var drug = prescriptionData['prescription']['drugDosage'][dd];
             content1 += '<tr><td>' + drug['drugId'] + '</td><td>' + drug['perServing'];
@@ -307,6 +320,7 @@
 
     $('#myprescriptions-search-button').click(function(e) {
         e.preventDefault();
+        $("#prescription-list").accordion("destroy");
         $("#prescription-list").empty();
         var fromDate = $("#myprescritions-start-date").val();
         var toDate = $("#myprescritions-end-date").val();
@@ -314,23 +328,39 @@
         console.log("from date ", fromDate);
         console.log("to date ", toDate);
         console.log("phone number ", phoneNumber);
-        getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addRowToPrescriptionTable);
+        getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addRowToPrescriptionTable,applyAccordion,"#prescription-list");
         //getAllPrescriptionsFromIndexedDB(addRowToPrescriptionTable);
 
     });
 
     function getAllPrescriptions() {
-        getAllPrescriptionsFromIndexedDB(addRowToPrescriptionTable, "#prescription-list");
+        if (phoneNumber) {
+            console.log("Coming here 1");
+            getPrescriptionsFromIndexedDB("", "", phoneNumber, addRowToPrescriptionTable,applyAccordion,"#prescription-list");
+        }else{
+            getAllPrescriptionsFromIndexedDB(addRowToPrescriptionTable, applyAccordion, "#prescription-list");
+        }
+        
     }
+    var phoneNumber ;
     $(document).ready(function() {
         //CHANGE here
-        openDb(getAllPrescriptions);
-
-
+        phoneNumber = getQueryStringValue("phoneNumber");
+        $('#myprescritions-pateint-phone').val(phoneNumber);
+        try {
+            openDb(getAllPrescriptions);
+        } catch (e) {
+            console.log(e);
+        }
+        
+        
+        //alert(phoneNumber);
+        
         console.log("myPrescriptions opened");
         $('#username').text(localStorage.getItem('firstName'));
         $('#username1').text(localStorage.getItem('firstName'));
         var doctorId = localStorage.getItem('doctorId');
+        //paginationStart();
         /* $.ajax({ 
                    type: "GET",
                    url: "http://localhost:8081/dbotica-spring/doctor/myPrescriptions",
@@ -380,12 +410,36 @@
 
     });
 
+    /*For Accordion*/
+
+    function applyAccordion(id) {
+        
+        $(id).accordion({
+            heightStyle: "content",
+            collapsible: true,
+            active: false,
+            activate: function(event, ui) {
+
+                if (!$.isEmptyObject(ui.newHeader.offset())) {
+
+                    $('html:not(:animated), body:not(:animated)').animate({
+                        scrollTop: ui.newHeader.offset().top
+                    }, 'slow');
+
+                }
+
+            }
+
+        });
+        //$(id).accordion("refresh");
+    }
+
     function paginationStart() {
 
         console.log("hi");
 
         //how much items per page to show  
-        var show_per_page = 5;
+        var show_per_page = 2;
         //getting the amount of elements inside content div  
         var number_of_items = $('#prescription-list').children().size();
         console.log(number_of_items + ': number_of_items');
@@ -465,6 +519,10 @@
 
         //update the current page input field  
         $('#current_page').val(page_num);
+    }
+
+    function getQueryStringValue (key) {  
+      return unescape(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + escape(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
     }
     </script>
 </body>
