@@ -476,7 +476,7 @@
                 m = date.getMonth(),
                 y = date.getFullYear();
 var event = Array();
-getEvents();
+// getEvents();
 //event.push({title:"Lunch" , start: new Date(y,m,d ,9,0), backgroundColor: "#f39c12",borderColor: "#f39c12"});
 // $.ajax({ 
 //               type: "GET",
@@ -561,6 +561,22 @@ getEvents();
             week: 'week',
             day: 'day'
           },
+                eventSources: [
+
+        // your event source
+        {
+            url: 'http://localhost:8081/dbotica-spring/doctor/getMyCalendar',
+            type: 'GET',
+                          xhrFields: {
+                withCredentials: true
+            },
+            error: function() {
+                alert('there was an error while fetching events!');
+            },
+            color: 'yellow',   // a non-ajax option
+            textColor: 'black' // a non-ajax option
+        }
+        ],
     //   events: function(start, end, timezone, callback) {
     //     //console.log('hi');
     //     var date = new Date();
@@ -601,7 +617,7 @@ getEvents();
 
          
     // },
-    events : event,
+    // events : event,
         // events: [
         //     {
         //       title: 'All Day Event',
@@ -640,13 +656,52 @@ getEvents();
       },
       eventDrop: function(event, delta, revertFunc) {
 
-        console.log(event.title + " was dropped on " + event.start.format());
-      console.log('in event drop');
+        // console.log(event.id + " was dropped on " + event.start.format());
+        console.log('in event drop');
+        var patientInfoCookie = $.cookie('currentPatientInfo');
+        var patientInfo = $.parseJSON(patientInfoCookie);
+         
+          $.ajax({ 
+              type: "POST",
+              url: "http://localhost:8081/dbotica-spring/doctor/updateCalendarEvent",
+              //data:JSON.stringify( {'calendarEvent': event}),
+               beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+              async : false,
+              xhrFields: {
+                withCredentials: true
+            },
+            data: JSON.stringify({
+                'doctorId' : localStorage.getItem('doctorId'),
+                'id' : event.calendarEventId,
+                'patientId': patientInfo[0].id,
+                'startTime': "1469707667280",
+                'label': "NEW Label"
+            }),
+              success: function(response){ 
+                if(response.success === true )
+                {
+                   alert("Event Updated!");
+
+                 } else {
+                  alert("Events didnot get updated");
+                }
+                  
+            },
+            error: function(e) {
+                alert('Error while moving events!');
+            },
+            
+        });
+
+
         
       },
      eventResize: function(event, delta, revertFunc) {
 
-        console.log('Resize : '+event.title + " end is now " + event.end.format());
+        console.log('Resize : '+event.id + " end is now " + event.end.format());
 
 
     },
@@ -664,7 +719,7 @@ getEvents();
             //copiedEventObject.allDay = allDay;
             copiedEventObject.backgroundColor = $(this).css("background-color");
             copiedEventObject.borderColor = $(this).css("border-color"); 
-               console.log(copiedEventObject._id);
+           //    console.log(copiedEventObject._id);
              $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
             
         if ($('#drop-remove').is(':checked')) {
@@ -749,35 +804,38 @@ getEvents();
 
     $.ajax({ 
               type: "GET",
-              url: "http://localhost:8081/dbotica-spring/doctor/getMyCalendar?start=2016-04-01&end=2016-04-05",
+              url: "http://localhost:8081/dbotica-spring/doctor/getMyCalendar?start=2016-04-01&end=2016-07-30",
               //data: {'doctorId': doctorId},
-              async : false,
-             xhrFields: {
+             // async : false,
+              xhrFields: {
                 withCredentials: true
             },
               success: function(response){ 
                 if(response.success === true && response.response.length > 2)
                 {
                   var data = $.parseJSON(response.response);     
-                  console.log(data);             
+                  console.log(data); 
+                  console.log(data[0]['calendarEvent']['startTime']);            
                   
                   
 
                 event = Array();
                 for (i in data) 
                 {
-                  var date = new Date(data[0]['scheduleTime']);
+                  var date = new Date(data[i]['calendarEvent']['startTime']);
                   d = date.getDate();
                   m = date.getMonth();
                   y = date.getFullYear();
                   st_hrs = date.getHours();
                   st_mm = date.getMinutes();
+                  console.log(new Date(data[0]['calendarEvent']['startTime']));
 
-
-                    event.push({title:data[i]['calendarEvent']['patientName'],id:'4343_'+i, start: new Date(y,m,d ,st_hrs,st_mm,0), backgroundColor: "#f39c12",borderColor: "#000000"});
-
+                 // console.log(data[i]['patient']['userName']);
+                    event.push({title: data[i]['patient']['userName'],calendarEventId:data[i]['calendarEvent']['id'], start: new Date(y,m,d ,st_hrs,st_mm), backgroundColor: "#f39c12",borderColor: "#000000"});
+                    //console.log(event.length);
                  
                 }
+
                   $('#calendar').fullCalendar( 'addEventSource', event );
 
 
@@ -791,10 +849,28 @@ getEvents();
             },
             
         });
-        
-    
+
   }
 
+        
+  //   $('#calendar').fullCalendar({
+  //     eventSources: [
+
+  //       // your event source
+  //       {
+  //           url: 'http://localhost:8081/dbotica-spring/doctor/getMyCalendar',
+  //           type: 'GET',
+  //                         xhrFields: {
+  //               withCredentials: true
+  //           },
+  //           error: function() {
+  //               alert('there was an error while fetching events!');
+  //           },
+  //           color: 'yellow',   // a non-ajax option
+  //           textColor: 'black' // a non-ajax option
+  //       }
+  //       ]
+  // });
   /* Initialise update event button */
 // function initialise_update_event(){
 //   var test = $('#calendar').fullCalendar( 'clientEvents');
