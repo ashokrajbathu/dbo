@@ -5,14 +5,71 @@ table {
 
 th,
 td {
-    width: 80%;
+    width: 50%;
     color: black;
-    padding: 18px 18px 18px 18px;
-    font-size: 20px;
+    padding: 12px 12px 12px 12px;
+    font-size: 16px;
     text-align: left;
-    border-bottom: 3px solid #ddd;
 }
 
-tr:hover {
-    background-color: #f5f5f5;
+.ui-accordion .ui-accordion-header {
+    padding: 0.1em 0.5em 3em 2em;
+}
+
+.ui-corner-bottom {
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.ui-state-default {
+    border: 3px solid #cccccc;
+}
+
+.ui-widget-content {
+    border: 0px;
+    background: white;
+}
+
+.ui-dialog-titlebar {
+    border: 1px solid red;
+    background: #f5f5f5;
+}
+
+.ui-dialog .ui-dialog-content {
+    
+    border: 1px solid black;
+}
+
+.ui-corner-all {
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.ui-state-default:hover {
+    background: #f5f5f5;
+}
+
+.ui-state-default {
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    color: black;
+    background: white;
+    font-weight: normal;
+}
+
+.name {
+    margin-left: 40px;
+}
+
+.phone {
+    margin-left: 328px;
+}
+
+.age {
+    margin-left: 44px;
+}
+
+tr {
+    height: 45px;
 }

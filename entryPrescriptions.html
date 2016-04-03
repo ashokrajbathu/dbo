@@ -695,6 +695,7 @@
     $('#prescription-add').click(function(e){
       e.preventDefault();
       var drug = $("#prescription-form-drug").val();
+	  var drugId = $("#prescription-form-drug").attr("drugId");
       var days = $("#prescription-form-days").val();
       var units = $("#prescription-form-units").val();
       var per_serving = $("#prescription-form-serving").val();
@@ -765,6 +766,7 @@ if ($.cookie('drugPojoList') && $.cookie('drugPojoList') !== "") {
   drugPojoList = $.parseJSON($.cookie('drugPojoList'));
 }
 var drugPojo = {};
+drugPojo['drugId'] = drugId;
 drugPojo['brandName'] = drug;
 drugPojo['usageDirection'] = usage;
 drugPojo['remarks'] = si;
@@ -960,26 +962,9 @@ $(document).on('click','.deletebutton',function(e){
 
 });
 
-
-$('#prescription-form-drug').keyup(function(e){
-  var brandName = $('#prescription-form-drug').val();
-  if (brandName === "") {
-	$('.drugs-dropdown-menu').hide('dropdown');
-    return;
-  }
-  e.preventDefault();
-  $('.drugs-dropdown-menu').hide('dropdown');
-  $('.drugs-dropdown-menu').empty();
-  $.ajax({ 
-    type: "GET",
-    url: "http://localhost:8081/dbotica-spring/drug/getDrugs",
-    data: {'brandName': brandName},
-    xhrFields: {withCredentials: true},
-    success: function(response){   
-      if (brandName === $('#prescription-form-drug').val()) {
-        var data = $.parseJSON(response.response);                  
-        console.log(data);
+function OnGetDrugsResponse(data){
         var dropdown = $('.drugs-dropdown-menu');
+		//console.log("In OnGetDrugsResponse");
         if(data.length != 0){
           for(var i in data){
             var drug = data[i];
@@ -1014,8 +999,9 @@ $('#prescription-form-drug').keyup(function(e){
                   }
                   $('#prescription-form-information').css('display','block');
                   $('#prescription-form-drug').val(data[s]['brandName']);
+				  $('#prescription-form-drug').attr("drugId",data[s][id]);
                   $('#prescription-form-drug-type').text(data[s]['drugType']);
-                  if(data[s]['drugType']=="SYRUP")
+                  if(data[s]['manufacturer']=="manufacturer1")
                   {
                  // console.log("show");
                  $('#prescription-form-measurmnt').text("ml");
@@ -1031,15 +1017,49 @@ $('#prescription-form-drug').keyup(function(e){
 
             dropdown.hide('dropdown');
           });
-dropdown.show('dropdown');
+	dropdown.show('dropdown');
+	}
 }
 
-}     
-},
- error: function(request, status, error) {
-                alert(status +' : '+error);
-            },
-});  
+function prescriptionFormDrugCallback(){
+	var brandName = $('#prescription-form-drug').val();
+	if (brandName === "") {
+		$('.drugs-dropdown-menu').hide('dropdown');
+		return;
+	}
+	
+	$('.drugs-dropdown-menu').hide('dropdown');
+	$('.drugs-dropdown-menu').empty();
+  
+	//autocompleteDrugIndexedDB(brandName,'#prescription-form-drug',OnGetDrugsResponse);
+	$.ajax({ 
+		type: "GET",
+		url: "http://localhost:8081/dbotica-spring/drug/getDrugs",
+		data: {'brandName': brandName},
+		xhrFields: {withCredentials: true},
+		success: function(response){   
+			if (brandName === $('#prescription-form-drug').val()) {
+				var data = $.parseJSON(response.response);                  
+				console.log(data);
+				OnGetDrugsResponse(data);
+        
+			}     
+		}
+	});  
+}
+var delay = (function(){
+  var timer = 0;
+  return function(callback, ms){
+    clearTimeout (timer);
+    timer = setTimeout(callback, ms);
+  };
+})();
+
+
+$('#prescription-form-drug').keyup(function(e){
+	e.preventDefault();
+	delay(prescriptionFormDrugCallback, 200 );
+  
 });
 
     $('#prescription-save-cont').click(function(e) {

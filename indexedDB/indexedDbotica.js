@@ -53,13 +53,14 @@ function openDb(callBack) {
 
 
     req.onupgradeneeded = function(event) {
-        console.log("openDb.onupgradeneeded1");
+        console.log("openDb.onupgradeneeded");
         db = event.target.result;
-        event.target.transaction.onsuccess = function(e) {
+        event.target.transaction.oncomplete = function(e) {
+			console.log("Transaction success");
             startDrugIndex = 0;
             limitDrugIndex = 1000;
             totalDrugCount = 0;
-            //syncAllDrugstoIndexedDB();
+            syncAllDrugstoIndexedDB();
 
             startPrescriptionIndex = 0;
             limitPrescriptionIndex = 100;
@@ -83,21 +84,8 @@ function openDb(callBack) {
         drugStore.createIndex('brandName', 'brandName', { unique: false });
         patientStore.createIndex('phoneNumber', 'phoneNumber', { unique: false });
         prescriptionStore.createIndex('creationTime', 'creationTime', { unique: true });
-        prescriptionStore.createIndex('patientName', 'patientName', { unique: false });
         prescriptionStore.createIndex('patientPhoneNumber-creationTime', ['patientPhoneNumber', 'creationTime'], { unique: false });
 
-        /*
-	  startDrugIndex =0;
-	  limitDrugIndex = 1000;
-	  totalDrugCount = 0;
-	  //syncAllDrugstoIndexedDB();
-	  
-	  startPrescriptionIndex = 0;
-	  limitPrescriptionIndex = 100;
-      totalPrescriptionCount = 0;
-	  console.log("doctorId ",doctorId);
-	  syncAllPrescriptionsToIndexedDB(doctorId);
-	  */
 
     };
 }
@@ -154,7 +142,10 @@ function syncAllDrugstoIndexedDB() {
             totalDrugCount = response.totalCount;
             startDrugIndex = startDrugIndex + data.length;
             for (var i = 0, l = data.length; i < l; i++) {
-                drugObjectStore.add(data[i]);
+				var drugObject = data[i];
+				drugObject['brandName'] = drugObject['brandName'].toLowerCase();
+				console.log(drugObject);
+                drugObjectStore.add(drugObject);
             }
             if (startDrugIndex < totalDrugCount)
                 syncAllDrugstoIndexedDB();
@@ -221,13 +212,13 @@ function syncAllPatientsToIndexedDB() {
 
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/dbotica-spring/drug/getAllPatientsToIndexedDB",
+        url: "http://localhost:8081/dbotica-spring/doctor/myPatients",
         success: function(response) {
             var data = $.parseJSON(response.response);
             //console.log(data);
             var patientObjectStore = getObjectStore(DB_PATIENT_STORE, "readwrite");
             for (var i = 0, l = data.length; i < l; i++) {
-                patientObjectStore.add(data[i]);
+                patientObjectStore.put(data[i]);
             }
         }
     });
@@ -254,9 +245,11 @@ function syncAllPatientsToIndexedDB() {
 
 function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId) {
     console.log("addPrescription argumensts:", arguments);
-    var obj = { "prescription": prescription, "patientInfo": patientInfo, "doctorId": doctorId, "patientName": patientInfo.firstName, "patientPhoneNumber": patientInfo.phoneNumber, "creationTime": new Date(prescription.creationTime) };
+	var patientName = (patientInfo && patientInfo !== "") ? patientInfo.firstName : "Unknown" ;
+	var patientPhoneNumber = (patientInfo && patientInfo !== "") ? patientInfo.phoneNumber : 0;
+    var obj = { "prescription": prescription, "patientInfo": patientInfo, "doctorId": doctorId, "patientName": patientName, "patientPhoneNumber": patientPhoneNumber, "creationTime": new Date(prescription.creationTime) };
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readwrite');
-    console.log("prescription creation time", obj.creationTime);
+    console.log("prescription obj", obj);
     var req = store.add(obj);
 
     req.onsuccess = function(event) {
@@ -286,7 +279,7 @@ function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId) {
    * 
    * 
    */
-function addPatienttoIndexedDB(id, firstName, emailId, isEmailVerified, phoneNumber, isPhoneVerified, userName, age, city, gender, bloodGroup) {
+/*function addPatienttoIndexedDB(id, firstName, emailId, isEmailVerified, phoneNumber, isPhoneVerified, userName, age, city, gender, bloodGroup) {
     console.log("addPatient aruguments:", arguments);
     var obj = { "id": id, "firstName": firstName, "emailId": emailId, "isEmailVerified": isEmailVerified, "phoneNumber": phoneNumber, "isPhoneVerified": isPhoneVerified, "userName": userName, "age": age, "city": city, "gender": gender, "bloodGroup": bloodGroup };
     var store = getObjectStore(DB_PATIENT_STORE, 'readwrite');
@@ -301,7 +294,7 @@ function addPatienttoIndexedDB(id, firstName, emailId, isEmailVerified, phoneNum
 
     }
 
-}
+}*/
 
 function addPatientObjecttoIndexedDB(obj) {
     console.log("addPatientObjecttoIndexedDB ", obj);
@@ -357,13 +350,28 @@ function updatePatientObjectIndexedDB(obj) {
  *
  */
 
+ /*
+ Get Patient from object store from phone number
+ */
+ 
+ function getPatientByPhoneNumberFromIndexedDB(phoneNumber){
+	 var store = getObjectStore(DB_PATIENT_STORE, 'readonly');
+	 var index = store.index("phoneNumber");
+	 index.get(phoneNumber).onsuccess = function(event){
+		 console.log("getPatientByPhoneNumberFromIndexedDB ", event.target.result);
+		 return event.target.result;
+		 
+	 };
+ }
+ 
+ 
 
 /*
  * get all prescriptions of this doctor from indexedDB
  *
  */
 
-function getAllPrescriptionsFromIndexedDB(addDataToTable, id) {
+function getAllPrescriptionsFromIndexedDB(addDataToTable,callBackAfterAdding, id) {
     var result = [];
 
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
@@ -379,21 +387,9 @@ function getAllPrescriptionsFromIndexedDB(addDataToTable, id) {
 
             cursor.continue();
         } else {
-            $(id).accordion({
-                heightStyle: "content",
-                collapsible: true,
-                active: false,
-                activate: function(event, ui) {
+            callBackAfterAdding(id);
 
-                    if (!$.isEmptyObject(ui.newHeader.offset())) {
 
-                        $('html:not(:animated), body:not(:animated)').animate({ scrollTop: ui.newHeader.offset().top }, 'slow');
-
-                    }
-
-                }
-
-            });
         }
         //console.log("objects are----", result); //addDataToTable(result);
     };
@@ -401,7 +397,7 @@ function getAllPrescriptionsFromIndexedDB(addDataToTable, id) {
 
 }
 
-function getPrescriptionsByPatientNameFromIndexedDB(patientName, addDataToTable) {
+/*function getPrescriptionsByPatientNameFromIndexedDB(patientName, addDataToTable) {
     var result = [];
 
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
@@ -420,9 +416,9 @@ function getPrescriptionsByPatientNameFromIndexedDB(patientName, addDataToTable)
             cursor.continue();
         }
     };
-}
+}*/
 
-function getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable) {
+function getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable,callBackAfterAdding,id) {
     var result = [];
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
     var index = store.index("creationTime");
@@ -445,13 +441,16 @@ function getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable) {
 
             cursor.continue();
         } else {
+            if (!!callBackAfterAdding) {
+                callBackAfterAdding(id);
+            }
             console.log(result);
         }
     };
 
 }
 
-function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addDataToTable) {
+function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addDataToTable, callBackAfterAdding,id) {
     var result = [];
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
     var index = store.index('patientPhoneNumber-creationTime');
@@ -461,7 +460,7 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addDataToT
     if (fromDate == "" && toDate == "" && phoneNumber == "") {
         alert("No filter has been applied showing all the data");
         console.log("No Date range specified");
-        getAllPrescriptionsFromIndexedDB(addDataToTable);
+        getAllPrescriptionsFromIndexedDB(addDataToTable,callBackAfterAdding,id);
         return;
     }
 
@@ -483,7 +482,7 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addDataToT
             range = IDBKeyRange.bound([phoneNumber, initDay], [phoneNumber, today]);
         }
     } else {
-        getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable);
+        getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable,callBackAfterAdding,id);
 
         return;
     }
@@ -501,6 +500,9 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addDataToT
             cursor.continue();
         } else {
             console.log(result);
+            //if (!!callBackAfterAdding) {
+                callBackAfterAdding(id);
+            //}
         }
     };
 }
@@ -511,26 +513,31 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addDataToT
 /*
  * Autocomplete search from indexedDB
  */
-function autocompleteDrugIndexedDB(searchterm, handleData) {
+function autocompleteDrugIndexedDB(searchterm,id, handleData) {
+	
+		
     var result = [];
     var flag = 0;
     var count = 0;
-    console.log("Enterering autocompleteDrugIndexedDB");
+    //console.log("Enterering autocompleteDrugIndexedDB");
     var store = getObjectStore(DB_DRUG_STORE, 'readonly');
-    var range = IDBKeyRange.bound(searchterm.toLowerCase(), searchterm.toLowerCase() + "z", false, true);
+    var range = IDBKeyRange.bound(searchterm.toLowerCase(), searchterm.toLowerCase() + '\uffff', false, true);
     var index = store.index("brandName");
     index.openCursor(range).onsuccess = function(event) {
         var cursor = event.target.result;
         //console.log(cursor);
         if (cursor && count < 100) {
             result.push(cursor.value);
-            console.log(cursor.value);
+            //console.log(cursor.value);
             count++;
             cursor.continue();
         } else {
-            handleData(result);
-
-
+			
+			if(searchterm === $(id).val()){
+				console.log($(id).val());
+				handleData(result);
+				
+			}
         }
     };
 
@@ -548,67 +555,7 @@ function autocompleteDrugIndexedDB(searchterm, handleData) {
   $('.drugs-dropdown-menu').empty();
   
     
-   autocompleteDrugIndexedDB(brandName,function(result){   
-      if (brandName === $('#prescription-form-drug').val()) {
-        var data = result;                  
-        //console.log(data);
-        var dropdown = $('.drugs-dropdown-menu');
-        if(data.length != 0){
-          for(var i in data){
-            var drug = data[i];
-            var string = drug['brandName'];
-            if(drug['constituents']){
-              string += " - "
-              var constituents = drug['constituents'];
-              for(var j in constituents){
-                string += constituents[j]['molecule']+" : "+constituents[j]['weight']+",";
-              }
-              string = string.slice(0, -1);
-            } 
-            dropdown.append('<li id="'+drug['id']+'"><a href="#">'+string);
-          }
-          $('.drugs-dropdown-menu > li').click(function(e){
-            e.preventDefault();
-            $('#prescription-form-information').css('display','none');
-            $('#prescription-form-information-text').empty();
-            var id = $(this).get(0).id;
-            for(var s in data){
-              if(data[s]['id'] === id){
-                console.log(data[s]);
-                if(data[s]['price'])
-                  if(data[s]['constituents']){
-                    var constituentsString = "";
-                    var constituents = data[s]['constituents'];
-                    for(var c in data[s]['constituents']){
-                      constituentsString += constituents[c]['molecule']+" : "+constituents[c]['weight']+",";
-                    }
-                    constituentsString = constituentsString.slice(0, -1);
-                    $('#prescription-form-information-text').append("<li >constituents - <span id='prescription-form-constituents'>"+constituentsString+"</span></li>");
-                  }
-                  $('#prescription-form-information').css('display','block');
-                  $('#prescription-form-drug').val(data[s]['brandName']);
-                  $('#prescription-form-drug-type').text(data[s]['drugType']);
-                  if(data[s]['manufacturer']=="manufacturer1")
-                  {
-                 // console.log("show");
-                 $('#prescription-form-measurmnt').text("ML");
-                 
-               }else{
-                  //console.log("hide");
-                  $('#prescription-form-measurmnt').text("MG");
-                  
-                }
-                break;
-              }
-            }
-
-            dropdown.hide('dropdown');
-          });
-dropdown.show('dropdown');
-}
-
-}     
-});
+   autocompleteDrugIndexedDB(brandName,OnGetDrugsResponse);
   
 });
 
@@ -654,7 +601,7 @@ function showAllPatients() {
 /**
  * @param {string} biblioid
  */
-function deletePublicationFromBib(biblioid) {
+function deletefromIndexedDb(biblioid) {
     console.log("deletePublication:", arguments);
     var store = getObjectStore(DB_STORE_NAME, 'readwrite');
     var req = store.index('biblioid');
@@ -663,7 +610,7 @@ function deletePublicationFromBib(biblioid) {
             displayActionFailure("No matching record found");
             return;
         }
-        deletePublication(evt.target.result.id, store);
+        deletefromIndexedDb(evt.target.result.id, store);
     };
     req.onerror = function(evt) {
         console.error("deletePublicationFromBib:", evt.target.errorCode);

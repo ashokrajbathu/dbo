@@ -15,18 +15,13 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="myPatients.css">
     <!--Datepicker srcs -->
-    <link rel="stylesheet" href="css/datepicker.css" type="text/css" />
     <!--  <link rel="stylesheet" media="screen" type="text/css" href="css/layout.css" />-->
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/datepicker.js"></script>
-    <script type="text/javascript" src="js/eye.js"></script>
-    <script type="text/javascript" src="js/utils.js"></script>
-    <script type="text/javascript" src="js/layout.js?ver=1.0.2"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -150,8 +145,20 @@
                 <div class="col-md-12">
                     <!-- general form elements disabled -->
                     <div class="box box-warning">
-                        <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <b class="name">Name</b>
+                            </div>
+                            <div class="col-md-2">
+                                <b class="age">Age</b>
+                            </div>
+                            <div class="col-md-4">
+                                <b class="phone">Phone</b>
+                            </div>
                         </div>
+                        <div id="box-body" class="box-body">
+                        </div>
+                        <div id="dialog-1"></div>
                         <!-- /.box-body -->
                     </div>
                     <!-- /.box -->
@@ -159,13 +166,12 @@
             </section>
         </div>
     </div>
-    <script src="plugins/jQuery/jQuery-2.1.4.min.js "></script>
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
     <!-- Bootstrap 3.3.5 -->
     <script src="bootstrap/js/bootstrap.min.js "></script>
     <!--Cookie -->
     <script src="bootstrap/js/jquery.cookie.js "></script>
-    <!-- FastClick -->
-    <script src="plugins/fastclick/fastclick.min.js "></script>
     <!-- DataTables -->
     <script src="plugins/datatables/jquery.dataTables.min.js "></script>
     <script src="plugins/datatables/dataTables.bootstrap.min.js "></script>
@@ -189,13 +195,52 @@
             success: function(response) {
                 console.log(response);
                 var data = $.parseJSON(response.response);
+
                 for (var i = 0, l = data.length; i < l; i++) {
-                    $(".box-body").append('<tr><td><b>Name : </b> ' + data[i].firstName + '</td><td><b>Phone : </b> ' + data[i].phoneNumber + '</td></tr>');
+                    console.log("l value is---" + l);
+                    console.log("object is---", data[i]);
+                    $(".box-body").append('<tr><td>' + data[i].firstName + '</td><td>' + data[i].age + '</td><td>' + data[i].phoneNumber + '</td></tr>');
+                    $(".box-body").append('<h1>Blood Group :<b style="margin-right:80px;">' + data[i].bloodGroup + '</b>Email Id :<b style="margin-right:80px;">' + data[i].emailId + '</b>Gender : <b style="margin-right:80px;">' + data[i].gender + '</b><button type="button" id="value' + i + '" class="viewPrescriptions btn btn-primary btn-md">View Prescriptions</button></h1>');
+                    var phoneNumber = data[i].phoneNumber;
+                    var id = "#value" + i;
+                    $(id).attr("value", phoneNumber);
                 }
+                $("#box-body").accordion({
+                    heightStyle: "content",
+                    collapsible: true,
+                    active: false,
+                    activate: function(event, ui) {
+
+                        if (!$.isEmptyObject(ui.newHeader.offset())) {
+
+                            $('html:not(:animated), body:not(:animated)').animate({
+                                scrollTop: ui.newHeader.offset().top
+                            }, 'slow');
+
+                        }
+
+                    }
+
+                });
             }
         });
 
+        /*$('.viewPrescriptions').click(function() {
+            console.log("hai all---");
+            alert("The button was clicked.");
+        });*/
+        $("#dialog-1").dialog({
+            autoOpen: false,
+        });
 
+        $(document).on('click', '.viewPrescriptions', function(e) {
+            var phoneNumber = $(this).attr("value");
+            var url = 'myPrescriptions.html';
+            if (!!phoneNumber) {
+                url += "?phoneNumber=" + phoneNumber;
+            }
+            window.open(url, '_blank');
+        });
 
 
 
