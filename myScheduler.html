@@ -561,13 +561,10 @@ var event = Array();
             week: 'week',
             day: 'day'
           },
-                eventSources: [
-
-        // your event source
-        {
+      eventSources: [{
             url: 'http://localhost:8081/dbotica-spring/doctor/getMyCalendar',
             type: 'GET',
-                          xhrFields: {
+            xhrFields: {
                 withCredentials: true
             },
             error: function() {
@@ -575,9 +572,8 @@ var event = Array();
             },
             color: 'yellow',   // a non-ajax option
             textColor: 'black' // a non-ajax option
-        }
-        ],
-    //   events: function(start, end, timezone, callback) {
+        }],
+            //   events: function(start, end, timezone, callback) {
     //     //console.log('hi');
     //     var date = new Date();
     //     start = new Date();
@@ -660,7 +656,10 @@ var event = Array();
         console.log('in event drop');
         var patientInfoCookie = $.cookie('currentPatientInfo');
         var patientInfo = $.parseJSON(patientInfoCookie);
-         
+        var formatDate = event.start.toDate();
+        var startTime = formatDate.getTime();
+        startTime = calcLocalTime(startTime);
+
           $.ajax({ 
               type: "POST",
               url: "http://localhost:8081/dbotica-spring/doctor/updateCalendarEvent",
@@ -672,13 +671,15 @@ var event = Array();
               async : false,
               xhrFields: {
                 withCredentials: true
-            },
+              },
             data: JSON.stringify({
                 'doctorId' : localStorage.getItem('doctorId'),
                 'id' : event.calendarEventId,
                 'patientId': patientInfo[0].id,
-                'startTime': "1469707667280",
-                'label': "NEW Label"
+                'startTime': startTime,
+                'label': event.title,
+                'backgroundColor' : event.backgroundColor,
+                'borderColor' : event.borderColor
             }),
               success: function(response){ 
                 if(response.success === true )
@@ -688,23 +689,16 @@ var event = Array();
                  } else {
                   alert("Events didnot get updated");
                 }
-                  
             },
             error: function(e) {
                 alert('Error while moving events!');
             },
             
         });
-
-
-        
       },
      eventResize: function(event, delta, revertFunc) {
-
         console.log('Resize : '+event.id + " end is now " + event.end.format());
-
-
-    },
+      },
       drop: function(date) {
         // is the "remove after drop" checkbox checked?
          // retrieve the dropped element's stored Event Object
@@ -715,12 +709,51 @@ var event = Array();
             var copiedEventObject = $.extend({}, originalEventObject);
 
             // assign it the date that was reported
+            var formatDate = date.toDate();
+            var startTime = formatDate.getTime();
+            startTime = calcLocalTime(startTime);
             copiedEventObject.start = date;
             //copiedEventObject.allDay = allDay;
-            copiedEventObject.backgroundColor = $(this).css("background-color");
-            copiedEventObject.borderColor = $(this).css("border-color"); 
+            copiedEventObject.backgroundColor = parseColor($(this).css("background-color"));
+            copiedEventObject.borderColor = parseColor($(this).css("border-color")); 
            //    console.log(copiedEventObject._id);
-             $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+          $.ajax({ 
+              type: "POST",
+              url: "http://localhost:8081/dbotica-spring/doctor/addCalendarEvent",
+              //data:JSON.stringify( {'calendarEvent': event}),
+               beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+              async : false,
+              xhrFields: {
+                withCredentials: true
+            },
+            data: JSON.stringify({
+                'doctorId' : localStorage.getItem('doctorId'),
+                'startTime': startTime,
+                'label': copiedEventObject.title,
+                'backgroundColor' : copiedEventObject.backgroundColor,
+                'borderColor' : copiedEventObject.borderColor
+            }),
+              success: function(response){ 
+                if(response.success === true )
+                {
+                   alert("Event Updated!");
+                   var data = $.parseJSON(response.response);
+                   console.log(data);
+                   if (!!data) {
+                   copiedEventObject.calendarEventId = data['id'];
+                   }
+                  $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);       
+                 }
+            },
+            error: function(e) {
+                alert('Error while moving events!');
+            },
+            
+        });
             
         if ($('#drop-remove').is(':checked')) {
          
@@ -815,10 +848,7 @@ var event = Array();
                 {
                   var data = $.parseJSON(response.response);     
                   console.log(data); 
-                  console.log(data[0]['calendarEvent']['startTime']);            
-                  
-                  
-
+                  console.log(data[0]['calendarEvent']['startTime']);
                 event = Array();
                 for (i in data) 
                 {
@@ -906,6 +936,25 @@ var event = Array();
 //       }
 //     }
 //   });
+
+function parseColor(color) {
+    var arr=[]; color.replace(/[\d+\.]+/g, function(v) { arr.push(parseFloat(v)); });
+    return "#" + arr.slice(0, 3).map(toHex).join("");
+}
+function toHex(int) {
+    var hex = int.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+function calcTime(d, offset) {
+    var utc = d.getTime() - (d.getTimezoneOffset() * 60000);
+    var nd = new Date(utc + (3600000*offset));
+    return nd.getTime();
+}
+
+function calcLocalTime(time) {
+    return time - 19800000;
+}
+
 </script>
 
 </body>

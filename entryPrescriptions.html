@@ -1271,6 +1271,7 @@ $('#prescription-form-drug').keyup(function(e){
             data: JSON.stringify({
                 'doctorId': localStorage.getItem('doctorId'),
                 'drugDosage': drugPojoList,
+                'diagnosisTests' : testPojoList,
                 'height': $('#prescription-form-height').val(),
                 'weight': $('#prescription-form-weight').val(),
                 'bloodPressure': $('#prescription-form-bloodPressure').val(),
