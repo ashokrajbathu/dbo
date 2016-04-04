@@ -337,6 +337,14 @@
         
         <!-- Main content -->
         <section class="content">
+		<div class="row no-print" style="margin-bottom:1%;">
+            <div class="col-xs-12">
+              <a href="report-print.html" class="btn btn-primary pull-right"><i class="fa fa-print"></i>Generate Print</a>
+              <button class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-download"></i> Generate PDF</button>
+            </div>
+         </div>
+		  
+		  
       <div class="box box-solid box-primary">
                 <div class="box-header">
               
@@ -400,13 +408,15 @@
                         <span class="form-control" placeholder="Patient Name" value="Type" id="patient-saturation">
                       </td>
                       <td><div align="center"><strong >Re-visit On</strong></div></td>
-                      <td><span class="form-control" placeholder="Patient Name" value="Type" id="patient-revisit"></td><td></td>
+                      <td><span class="form-control" placeholder="Patient Name" value="Type" id="patient-revisit"></td>
+					  <td><div align="center"><strong >Refer To</strong></div></td>
+					  <td><span class="form-control" placeholder="refer to" value="Type" id="referToDoctor"></td>
                     </tr>
                     <tr >
                       
-                      <td colspan="1" style="width: 16%"><div align="center"><strong >Additional References</strong></div></td>
+                      <td colspan="1" style="width: 16%"><div align="center"><strong >Additional Comments</strong></div></td>
                       <td colspan="5" style="width: 84%">
-                        <span class="form-control" placeholder="Patient Name" value="Type" id="patient-report-references">
+                        <span class="form-control" placeholder="Patient Name" value="Type" id="patient-report-remarks">
                       </td>
                       
                     </tr>
@@ -436,6 +446,30 @@
                         <th>Days/Quantity</th>
                         <th>Usage</th>
                         <th>Remarks</th>
+						<th></th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  
+                  </table>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+			  <div class="box box-solid box-primary">
+                <div class="box-header">
+                  <h3 class="box-title">Lab Tests </h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                     <div class="col-md-11 form-group">
+                        
+                     </div>
+
+                 <table id="report-tests" class="table table-bordered table-striped">
+                    <thead>
+                       <tr>
+                        <th>S.No</th>
+                        <th>TestName</th>
+                        <th>Remarks</th>
+						<th></th>
                       </tr>
                     </thead>
                     <tbody></tbody>
@@ -446,12 +480,7 @@
             </div><!-- /.col -->
           </div><!-- /.row -->
 
-          <div class="row no-print">
-            <div class="col-xs-12">
-              <a href="report-print.html" class="btn btn-primary pull-right"><i class="fa fa-print"></i>Generate Print</a>
-              <button class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-download"></i> Generate PDF</button>
-            </div>
-          </div>
+          
         </section><!--Prescription end -->
 
 
@@ -499,6 +528,115 @@
     <script src="dist/js/demo.js"></script>
 
     <script type="text/javascript">
+	
+	$(document).on('click','.deletebutton',function(e){
+       var result = confirm('Are you sure, you want to delete ?');
+        //console.log(this.id);
+        
+        if(result){
+			$.cookie('drugEntryCount',"");
+			$.cookie('drugHtml',"");
+			var id=this.id;
+			id= id.slice(-1);
+			id=id-1;
+			console.log(id);
+          //alert(document.getElementById(id).value());
+			var drugPojoList1 = $.cookie('drugPojoList'); 
+			var drugData = JSON.parse(drugPojoList1); 
+			//console.log(drugData);
+			if(drugData.length!=0)
+			{
+				for(i in drugData)
+				{
+					if(i == id)
+					{
+						//alert(drugData[i]['perServing']);
+						var removedObject = drugData.splice(id,1);
+                  //alert('removedObject'+removedObject);
+						console.log('bye'+' '+i);
+						console.log(drugData);
+						break;
+
+					}
+				}
+			}
+			var newCount=1;
+			$('#report-prescriptions > tbody').text("");
+			drugPojoList =[];
+			$.cookie('drugPojoList',"");
+
+			for(s in drugData)
+			{
+				$('#report-prescriptions > tbody').append('<tr ><td>'+newCount+'</td><td>'+drugData[s]['brandName']+'</td><td>'+drugData[s]['perServing']+'</td><td>'+drugData[s]['noOfDays']+'</td><td>'+drugData[s]['usageDirection']+'</td><td>'+drugData[s]['remarks']+'</td><td id="deliD'+ newCount + '"><button type="submit" name="delbtn" class="deletebutton" id="del'+ newCount + '" value="delID'+ newCount + '">Delete</button></td>');
+				newCount++;
+				try{
+					drugPojoList.push(drugData[s]);
+            
+				}
+				catch(e){
+
+				}
+
+            
+			}
+
+          
+			$.cookie('drugPojoList', JSON.stringify(drugPojoList));
+            console.log('pushed');
+			$.cookie('drugEntryCount',newCount);
+			
+			$.cookie('drugHtml', $('#report-prescriptions > tbody').html());
+
+      }
+
+
+});
+
+$(document).on('click','.deleteTestButton',function(e){
+		var result = confirm('Are you sure, you want to delete ?');
+		
+		if(result){
+			$.cookie('testEntryCount',"");
+			$.cookie('testHtml',"");
+			var id = this.id;
+			id= id.slice(-1);
+			id=id-1;
+			console.log(id);
+			var testPojoList1 = $.cookie('testPojoList');
+			var testData = JSON.parse(testPojoList1);
+			console.log(testData);
+			if(testData.length!=0){
+				for(i in testData){
+					if(i == id){
+						var removedObject = testData.splice(id,1);
+						console.log("testData ",testData);
+						break;
+					}
+				}
+			}
+			var newCount = 1;
+			$('#report-tests > tbody').text("");
+			testPojoList =[];
+			$.cookie('testPojoList',"");
+			for(s in testData){
+				$('#report-tests > tbody').append('<tr><td>'+newCount+'</td><td>'+testData[s]['testName']+'</td><td>'+testData[s]['remark']+'</td><td id ="deleteTest'+newCount+'"><button type ="submit" name = "deleteButton" class = "deleteTestButton" id ="deleteTestButton'+newCount+'" value="deleteTest'+newCount+'">Delete</button></td></tr>');
+				newCount++;
+				try{
+					testPojoList.push(testData[s]);
+				}catch(e){
+				
+				}
+			}
+			$.cookie('testPojoList', JSON.stringify(testPojoList));
+            console.log('pushed');
+			$.cookie('testEntryCount',newCount);
+			
+			$.cookie('testHtml', $('#report-tests > tbody').html());
+
+		}
+	});
+	
+
    $(document).ready(function(){
 
     $('#patient-search-result').load('registerPatient.html');
@@ -508,16 +646,16 @@
       $('#patient-report-ci').text(ci);
 
       var drugData = JSON.parse($.cookie('drugPojoList'));
-
-          var sno=1;
-          for(s in drugData)
+      $('#report-prescriptions > tbody').append($.cookie('drugHtml'));
+	  $('#report-tests > tbody').append($.cookie('testHtml'));
+          /*for(s in drugData)
           {
 
             $('#report-prescriptions > tbody').append('<tr ><td>'+sno+'</td><td>'+drugData[s]['brandName']+'</td><td>'+drugData[s]['perServing']+'</td><td>'+drugData[s]['noOfDays']+'</td><td>'+drugData[s]['usageDirection']+'</td><td>'+drugData[s]['remarks']+'</td>');
            
               sno++;
             
-          }
+          }*/
 
       
      
@@ -550,14 +688,25 @@
       var bloodPressure = $.cookie('currentPatientInfo-bloodPressure');
       var impression = $.cookie('currentPatientInfo-impression');
       var bmi = $.cookie('currentPatientInfo-bmi');
-      var saturatn = $.cookie('currentPatientInfo-saturation');
+      var saturation = $.cookie('currentPatientInfo-saturation');
       var pulse = $.cookie('currentPatientInfo-pulse');
-      var investigation = $.cookie('currentPrescriptionInf0-inv');
-      var additionaRef = $.cookie('currentPrescriptionInfo-additionalref');
+      var investigation = $.cookie('currentPrescriptionInfo-investigation');
+      var remarks = $.cookie('currentPrescriptionInfo-remarks');
+	  var revisit = $.cookie('currentInputDate');
+	  var revisitDays = $.cookie('currentInputDays');
+	  var referToDoctor = $.cookie('currentPrescriptionInfo-referToDoctor');
 
       if (!!temp && temp.length != 0) {
         $('#patient-temperature').text(temp);
       } 
+	  
+	  if (!!referToDoctor && referToDoctor.length != 0) {
+        $('#referToDoctor').text(referToDoctor);
+      }
+	  
+	  if (!!revisit && revisit.length != 0 && !!revisitDays && revisitDays.length != 0) {
+        $('#patient-revisit').text(revisit);
+      }
 
       if (!!height && height.length != 0) {
         $('#patient-height').text(height);
@@ -575,8 +724,8 @@
         $('#patient-report-ci').text(impression);
       } 
 
-      if(!!saturatn && saturatn.length != 0) {
-        $('#patient-saturation').text(saturatn);
+      if(!!saturation && saturation.length != 0) {
+        $('#patient-saturation').text(saturation);
       }
 
       if(!!pulse && pulse.length != 0) {
@@ -591,8 +740,8 @@
         $('#patient-investigation').text(investigation);
       }
       
-      if(!!additionaRef && additionaRef.length != 0) {
-        $('#patient-report-references').text(additionaRef);
+      if(!!remarks && remarks.length != 0) {
+        $('#patient-report-remarks').text(remarks);
       }
       // console.log("docname "+docname +" docid "+docid+" docorg "+docOrg+" docspe "+docSpe+" docadr "+docAdrs+" docphn "+docPhn);
 
