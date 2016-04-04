@@ -3,6 +3,23 @@ table {
     width: 100%;
 }
 
+.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.fixed-side-content {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+}
+
+#header {
+    padding-top: 0px;
+}
+
 th,
 td {
     width: 50%;
@@ -36,7 +53,6 @@ td {
 }
 
 .ui-dialog .ui-dialog-content {
-    
     border: 1px solid black;
 }
 

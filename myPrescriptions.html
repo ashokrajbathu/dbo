@@ -37,16 +37,16 @@
 
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
-        <header class="main-header">
+        <header id="header" class="fixed-content main-header">
             <!-- Logo -->
-            <a href="entryPrescription.html" class="logo">
+            <a href="starter.html" class="logo" style="width: 13%;">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini"><b>dB</b></span>
+                <span class="logo-mini"><b>db</b></span>
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><!-- <img style="width:50px;" src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"> --><b>dBotica</b></span>
+                <span class="logo-lg"><b>dbotica</b></span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
-            <nav class="navbar navbar-static-top" role="navigation">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-left: 13%;">
                 <!-- Sidebar toggle button-->
                 <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                     <span class="sr-only">Toggle navigation</span>
@@ -60,7 +60,7 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                                <span class="hidden-xs" id="username1"></span>
+                                <span class="hidden-xs">Doctor 1</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
@@ -86,10 +86,10 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                        <a href="doctorProfile.html" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                        <a href="#" class="btn btn-default btn-flat" id="logoutButton">Sign out</a>
                                     </div>
                                 </li>
                             </ul>
@@ -99,7 +99,7 @@
             </nav>
         </header>
         <!-- Left side column. contains the logo and sidebar -->
-        <aside class="main-sidebar">
+        <aside class="fixed-side-content main-sidebar" style="width: 13%;">
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
                 <!-- Sidebar user panel (optional) -->
@@ -108,20 +108,21 @@
                         <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
-                        <!--CHANGE here-->
-                        <p id="username"></p>
+                        <p>Doctor 1</p>
                         <!-- Status -->
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
                 </div>
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu">
-                    <li class="header">HEADER</li>
+                    <li class="header">Welcome</li>
                     <!-- Optionally, you can add icons to the links -->
                     <li class="active"><a href="entryPrescriptions.html"><i class="fa fa-link"></i> <span>Drug prescription</span></a></li>
-                    <li><a href="#"><i class="fa fa-link"></i> <span>My Prescriptions</span></a></li>
+                    <li><a href="myPrescriptions.html"><i class="fa fa-link"></i> <span>My Prescriptions</span></a></li>
                     <li><a href="myPatients.html"><i class="fa fa-link"></i> <span>My Patients</span></a></li>
-                    <!-- <li class="active"><a href="../forms/PatientSearch.html"><i class="fa fa-link"></i> <span>Patient Search</span></a></li> -->
+                    <li><a href="myScheduler.html"><i class="fa fa-link"></i> <span>My Scheduler</span></a></li>
+                    <li><a href="referADoctor.html"><i class="fa fa-link"></i> <span>Refer dbotica</span></a></li>
+                    <!--  <li class="active"><a href="../forms/PatientSearch.html"><i class="fa fa-link"></i> <span>Patient Search</span></a></li>  -->
                     <li class="treeview">
                         <!--  <a href="../tables/data.html"><i class="fa fa-link"></i> <span>Drug database</span> <i class="fa fa-angle-left pull-right"></i></a> -->
                     </li>
@@ -131,7 +132,7 @@
             <!-- /.sidebar -->
         </aside>
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
+        <div class="content-wrapper" style="margin-left:13%;">
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
@@ -261,7 +262,7 @@
             <!-- Patient details content -->
         </div>
         <!-- /.content-wrapper -->
-        <footer class="main-footer">
+        <footer class="main-footer" style="margin-left: 13%;margin-right: 0%;">
             <div class="pull-right hidden-xs">
                 <b>Version</b> 1.0.0
             </div>
@@ -328,7 +329,7 @@
         console.log("from date ", fromDate);
         console.log("to date ", toDate);
         console.log("phone number ", phoneNumber);
-        getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addRowToPrescriptionTable,applyAccordion,"#prescription-list");
+        getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addRowToPrescriptionTable, applyAccordion, "#prescription-list");
         //getAllPrescriptionsFromIndexedDB(addRowToPrescriptionTable);
 
     });
@@ -336,14 +337,21 @@
     function getAllPrescriptions() {
         if (phoneNumber) {
             console.log("Coming here 1");
-            getPrescriptionsFromIndexedDB("", "", phoneNumber, addRowToPrescriptionTable,applyAccordion,"#prescription-list");
-        }else{
+            getPrescriptionsFromIndexedDB("", "", phoneNumber, addRowToPrescriptionTable, applyAccordion, "#prescription-list");
+        } else {
             getAllPrescriptionsFromIndexedDB(addRowToPrescriptionTable, applyAccordion, "#prescription-list");
         }
-        
+
     }
-    var phoneNumber ;
+    var phoneNumber;
     $(document).ready(function() {
+        $(window).scroll(function() {
+            var sticky = $('.fixed-content'),
+                scroll = $(window).scrollTop();
+
+            if (scroll > 1) sticky.addClass('fixed');
+            else sticky.removeClass('fixed');
+        });
         //CHANGE here
         phoneNumber = getQueryStringValue("phoneNumber");
         $('#myprescritions-pateint-phone').val(phoneNumber);
@@ -352,10 +360,10 @@
         } catch (e) {
             console.log(e);
         }
-        
-        
+
+
         //alert(phoneNumber);
-        
+
         console.log("myPrescriptions opened");
         $('#username').text(localStorage.getItem('firstName'));
         $('#username1').text(localStorage.getItem('firstName'));
@@ -413,7 +421,7 @@
     /*For Accordion*/
 
     function applyAccordion(id) {
-        
+
         $(id).accordion({
             heightStyle: "content",
             collapsible: true,
@@ -521,8 +529,8 @@
         $('#current_page').val(page_num);
     }
 
-    function getQueryStringValue (key) {  
-      return unescape(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + escape(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
+    function getQueryStringValue(key) {
+        return unescape(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + escape(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
     }
     </script>
 </body>

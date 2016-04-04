@@ -6,6 +6,29 @@
     text-align: right;
 }
 
+.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.box{
+    border-top: 0px;
+}
+.content-header{
+    padding:1px 15px 0px 15px;
+}
+
+.fixed-side-content {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+}
+
+#header {
+    padding-top: 0px;
+}
+
 .input-group-btn-vertical {
     position: relative;
     white-space: nowrap;
@@ -39,4 +62,3 @@
     top: 0;
     left: 4px;
 }
-

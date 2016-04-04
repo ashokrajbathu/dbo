@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>AdminLTE 2 | General Form Elements</title>
@@ -18,208 +19,209 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="entryPrescription.css">
-     
+    <style type="text/css">
+    #register-box-body {
+        width: 280px;
+        height: 380px;
+        overflow-y: auto;
+    }
+    </style>
     <!--   date picker-->
-   
+</head>
 
-  </head>
-  <body class="hold-transition skin-blue sidebar-mini">
-      <div class="register-box-body">
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="register-box-body" id="register-box-body">
         <p class="login-box-msg">Update Patient details</p>
         <form id="patient-register" method="post">
-          <div class="form-group has-feedback">
-            <input type="text" class="form-control" id="patient-reg-name" placeholder="Full name">
-            <span class="glyphicon glyphicon-user form-control-feedback"></span>
-          </div>
-          <div class="form-group has-feedback">
-            <input type="email" class="form-control" id="patient-reg-email" placeholder="Email">
-            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-          </div>
-          <div class="form-group has-feedback">
-            <input type="text" class="form-control" id="patient-reg-phone" placeholder="Mobile Number">
-            <span class="glyphicon glyphicon-phone form-control-feedback"></span>
-          </div>
-
-
-
-          <div class="row">
-            <div class="col-xs-12">                
-                  <div class="input-group">
-                    <span class="input-group-addon">
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" id="patient-reg-name" placeholder="Full name">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="email" class="form-control" id="patient-reg-email" placeholder="Email">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" id="patient-reg-phone" placeholder="Mobile Number">
+                <span class="glyphicon glyphicon-phone form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="input-group">
+                        <span class="input-group-addon">
                       <input type="radio" value="MALE" id="genderMale" name="gender"/>
                     </span>
-                    <input type="text" class="form-control" placeholder="Male" disabled="true">
-                    <span class="input-group-addon">
+                        <input type="text" class="form-control" placeholder="Male" disabled="true">
+                        <span class="input-group-addon">
                       <input type="radio" value="FEMALE" id="genderFemale" name="gender"/>
                     </span>
-                    <input type="text" style="" class="form-control" placeholder="Female" disabled="true">
+                        <input type="text" style="" class="form-control" placeholder="Female" disabled="true">
                     </div>
-                  </div><!-- /input-group -->
-           </div> <br>
-
-          <div class="row">                           
+                </div>
+                <!-- /input-group -->
+            </div>
+            <br>
+            <div class="row">
                 <div class="col-xs-6">
-                  <input type="text" class="form-control" placeholder="Age" id="patient-reg-age" ></div>
+                    <input type="text" class="form-control" placeholder="Age" id="patient-reg-age">
+                </div>
                 <div class="col-xs-2"></div>
-                  <div class="col-xs-6">                        
-                  <select type="text"  class="form-control" placeholder="Female" id="patient-reg-bloodgrp">
-                      <option value= "O_POSITIVE">O+</option>
-                      <option value= "O_NEGATIVE">0-</option>
-                      <option value= "A_POSITIVE">A+</option>
-                      <option value= "A_NEGATIVE">A-</option>
-                      <option value= "B_POSITIVE">B+-</option>
-                      <option value= "B_NEGATIVE">B-</option>
-                      <option value= "AB_POSITIVE">AB+</option>
-                      <option value= "AB_NEGATIVE">AB-</option>
-                      <option value= "OTHER">OTHER</option>
-                  </select>
-                  </div>
-               </div> 
-               </br>
-               <div class="form-group has-feedback">
-            <input type="text" class="form-control" id="patient-reg-allergy-disp" disabled="true" placeholder="Allergies">
-            
-          </div>
-          <div class="row">
-            <div class="col-xs-7">
-            <input type="text" class="form-control" id="patient-reg-allergy" placeholder="Allergic to"/>
+                <div class="col-xs-6">
+                    <select type="text" class="form-control" placeholder="Female" id="patient-reg-bloodgrp">
+                        <option value="O_POSITIVE">O+</option>
+                        <option value="O_NEGATIVE">0-</option>
+                        <option value="A_POSITIVE">A+</option>
+                        <option value="A_NEGATIVE">A-</option>
+                        <option value="B_POSITIVE">B+-</option>
+                        <option value="B_NEGATIVE">B-</option>
+                        <option value="AB_POSITIVE">AB+</option>
+                        <option value="AB_NEGATIVE">AB-</option>
+                        <option value="OTHER">OTHER</option>
+                    </select>
+                </div>
             </div>
-            <div class="col-xs-4">
-            <div type="submit" id="patient-register-alr-btn" class="btn btn-primary btn-block btn-flat" 
-              style="margin-bottom:60%" >Add</div>
+            </br>
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" id="patient-reg-allergy-disp" disabled="true" placeholder="Allergies">
             </div>
-          </div>
-           
-
-          </div>
-                 
-          <div class="row">
-            <div class="col-xs-4">
-            </div><!-- /.col -->
-            <div class="col-xs-4">
-              <div type="submit" id="patient-register-btn" class="btn btn-primary btn-block btn-flat" 
-              style="margin-bottom:60%">Update</div>
-            </div><!-- /.col -->
-          </div>
+            <div class="row">
+                <div class="col-xs-7">
+                    <input type="text" class="form-control" id="patient-reg-allergy" placeholder="Allergic to" />
+                </div>
+                <div class="col-xs-4">
+                    <div type="submit" id="patient-register-alr-btn" class="btn btn-primary btn-block btn-flat" style="margin-bottom:60%">Add</div>
+                </div>
+            </div>
+            <!-- <div class="row">
+        <div class="col-xs-4">
+        </div>
+        <div class="col-xs-4">
+            <div type="submit" id="patient-register-btn" class="btn btn-primary btn-block btn-flat" style="margin-top:-25px;">Update</div>
+        </div>
+    </div> -->
+            <button type="submit" id="patient-register-btn" style="margin-top:-25px:" class="btn btn-primary btn-block btn-flat">Update</button>
         </form>
+    </div>
+    </div>
+    <!-- /.form-box -->
+</body>
+<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<!-- Bootstrap 3.3.5 -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="bootstrap/js/jquery.cookie.js"></script>
+<!-- FastClick -->
+<script src="plugins/fastclick/fastclick.min.js"></script>
+<!-- DataTables -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
 
-        
-        
-      </div><!-- /.form-box -->
-
-  </body>
-
-  <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
-    <!-- Bootstrap 3.3.5 -->
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script src="bootstrap/js/jquery.cookie.js"></script>
-    <!-- FastClick -->
-    <script src="plugins/fastclick/fastclick.min.js"></script>
-    <!-- DataTables -->
-    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="dist/js/app.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
-
-    <script type="text/javascript">
-    $(document).ready(function(){   
-
-      try {
+    try {
         var data1 = $.parseJSON($.cookie('currentPatientInfo'));
         if (data1.length != 0) {
-          $('#patient-reg-name').val(data1[0]['firstName']);
-          $('#patient-reg-email').val(data1[0]['emailId']);        
-          $('#patient-reg-phone').val(data1[0]['phoneNumber']);
-          if (data1[0]['gender'] == "MALE") {
-            $("#genderMale").prop("checked", true)
-          } else {
-            $("#genderFemale").prop("checked", true)
-          }
-          $('#patient-reg-age').val(data1[0]['age']);
-          $('#patient-reg-bloodgrp').val(data1[0]['bloodGroup']);
-        } else{
-          //$('#patient-reg-phone').val(phn);
+            $('#patient-reg-name').val(data1[0]['firstName']);
+            $('#patient-reg-email').val(data1[0]['emailId']);
+            $('#patient-reg-phone').val(data1[0]['phoneNumber']);
+            if (data1[0]['gender'] == "MALE") {
+                $("#genderMale").prop("checked", true)
+            } else {
+                $("#genderFemale").prop("checked", true)
+            }
+            $('#patient-reg-age').val(data1[0]['age']);
+            $('#patient-reg-bloodgrp').val(data1[0]['bloodGroup']);
+        } else {
+            //$('#patient-reg-phone').val(phn);
         }
-      } catch (e) {
+    } catch (e) {
         $('#patient-reg-phone').val($.cookie('currentPatientContactNumber'));
-      }
-    });
+    }
+});
 
 
-    $('#patient-register-alr-btn').click(function(){
-      if($('#patient-reg-allergy-disp').val()!=''){
+$('#patient-register-alr-btn').click(function() {
+    if ($('#patient-reg-allergy-disp').val() != '') {
 
         var text = $('#patient-reg-allergy-disp').val();
-        if($('#patient-reg-allergy').val()!='')
-        {
-          text = text+', '+$('#patient-reg-allergy').val();
-          $('#patient-reg-allergy-disp').val(text);
-          $('#patient-reg-allergy').val("");
+        if ($('#patient-reg-allergy').val() != '') {
+            text = text + ', ' + $('#patient-reg-allergy').val();
+            $('#patient-reg-allergy-disp').val(text);
+            $('#patient-reg-allergy').val("");
         }
-      }else{
+    } else {
         text = $('#patient-reg-allergy').val();
         $('#patient-reg-allergy-disp').val(text);
         $('#patient-reg-allergy').val("");
 
-      }
+    }
 
-    });
+});
 
-    $('#patient-register-btn').click(function(){
-      // var radio1 = document.getElementById('genderFemale').checked();
-      var patientInfoCookie = $.cookie('currentPatientInfo');
-      var data1 = [];
-      if (patientInfoCookie.length != null) {
+$('#patient-register-btn').click(function() {
+    // var radio1 = document.getElementById('genderFemale').checked();
+    var patientInfoCookie = $.cookie('currentPatientInfo');
+    var data1 = [];
+    if (patientInfoCookie.length != null) {
         try {
-          data1 = $.parseJSON(patientInfoCookie);
+            data1 = $.parseJSON(patientInfoCookie);
         } catch (e) {
-          // alert(e);
+            // alert(e);
         }
-      }
+    }
 
-      var requestString = "";
-	  var updatedObject;
-      if (data1.length != 0) {
-        data1[0]['gender'] =  $('input[name=gender]:checked').val();;
+    var requestString = "";
+    var updatedObject;
+    if (data1.length != 0) {
+        data1[0]['gender'] = $('input[name=gender]:checked').val();;
         data1[0]['firstName'] = $('#patient-reg-name').val();
         data1[0]['emailId'] = $('#patient-reg-email').val();
         data1[0]['phoneNumber'] = $('#patient-reg-phone').val();
         data1[0]['age'] = $('#patient-reg-age').val();
         data1[0]['bloodGroup'] = $('#patient-reg-bloodgrp').val();
         requestString = JSON.stringify(data1[0]);
-		/*updatedObject = $.parseJSON(requestString);
-		updatePatientObjectIndexedDB(updatedObject);*/
-      } else {
-        requestString = JSON.stringify({'gender': $('input[name=gender]:checked').val(), 'firstName' : $('#patient-reg-name').val(), 'emailId': $('#patient-reg-email').val(), 'phoneNumber': $('#patient-reg-phone').val(),
-          'age': $('#patient-reg-age').val(), 'bloodGroup': $('#patient-reg-bloodgrp').val()});
-      }
-      $.ajax({ 
-           type: "POST",
-           url: "http://localhost:8081/dbotica-spring/doctor/addPatient",
-           beforeSend: function(xhr){
-                xhr.setRequestHeader("Content-Type","application/json");
-                xhr.setRequestHeader("Accept","application/json");
-            },
-            xhrFields: {withCredentials: true},
-           data: requestString,
-           success: function(response){
-                $.cookie('currentPatientInfo', response.response);
-				updatedObject = $.parseJSON(response.response);
-        try {
-          addPatientObjecttoIndexedDB(updatedObject[0]);
-        } catch(e) {
+        /*updatedObject = $.parseJSON(requestString);
+        updatePatientObjectIndexedDB(updatedObject);*/
+    } else {
+        requestString = JSON.stringify({
+            'gender': $('input[name=gender]:checked').val(),
+            'firstName': $('#patient-reg-name').val(),
+            'emailId': $('#patient-reg-email').val(),
+            'phoneNumber': $('#patient-reg-phone').val(),
+            'age': $('#patient-reg-age').val(),
+            'bloodGroup': $('#patient-reg-bloodgrp').val()
+        });
+    }
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/dbotica-spring/doctor/addPatient",
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader("Accept", "application/json");
+        },
+        xhrFields: {
+            withCredentials: true
+        },
+        data: requestString,
+        success: function(response) {
+            $.cookie('currentPatientInfo', response.response);
+            updatedObject = $.parseJSON(response.response);
+            try {
+                addPatientObjecttoIndexedDB(updatedObject[0]);
+            } catch (e) {
 
+            }
+
+            alert("Patient details successfully updated.");
+            updatePatientFields();
         }
-				
-                alert("Patient details successfully updated.");
-				updatePatientFields();
-              }
-            });//ajax
+    }); //ajax
 
 
 
-    });
+});
 </script>
-    </script>
+</script>
