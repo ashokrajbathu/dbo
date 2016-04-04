@@ -1007,7 +1007,8 @@
                         $('#prescription-form-drug').val(data[s]['brandName']);
                         $('#prescription-form-drug').attr("drugId", data[s][id]);
                         $('#prescription-form-drug-type').text(data[s]['drugType']);
-                        switch (data[s]['drugType'].toUpperCase()) {
+                        var drugTypeUpperCase = "" + data[s]['drugType'];
+                        switch (drugTypeUpperCase.toUpperCase()) {
                             case 'SYRUP':
                                 $('#prescription-form-measurmnt').text("ml");
                                 break;
@@ -1200,9 +1201,17 @@
         var cliimp = $('#prescription-form-ClincImp').val();
         $.cookie('cookie-cli-imp', cliimp);
         var drugPojoListCookie = $.cookie('drugPojoList'); // Object
-        var drugPojoList = JSON.parse(drugPojoListCookie);
+        var drugPojoList = [];
+        if (!!drugPojoListCookie) {
+            drugPojoList = JSON.parse(drugPojoListCookie);
+        }
+
+
         var testPojoListCookie = $.cookie('testPojoList');
-        var testPojoList = JSON.parse(testPojoListCookie);
+        var testPojoList = [];
+        if (!!testPojoListCookie) {
+            testPojoList = JSON.parse(testPojoListCookie);
+        }
         $.cookie('currentPatientInfo-temp', $('#prescription-form-temp').val());
         $.cookie('currentPatientInfo-height', $('#prescription-form-height').val());
         $.cookie('currentPatientInfo-weight', $('#prescription-form-weight').val());
@@ -1253,7 +1262,7 @@
             data: JSON.stringify({
                 'doctorId': localStorage.getItem('doctorId'),
                 'drugDosage': drugPojoList,
-                'diagnosisTests' : testPojoList,
+                'diagnosisTests': testPojoList,
                 'height': $('#prescription-form-height').val(),
                 'weight': $('#prescription-form-weight').val(),
                 'bloodPressure': $('#prescription-form-bloodPressure').val(),

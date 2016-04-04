@@ -23,6 +23,7 @@
     #register-box-body {
         width: 280px;
         height: 380px;
+        
         overflow-y: auto;
     }
     </style>
@@ -99,25 +100,13 @@
             <div type="submit" id="patient-register-btn" class="btn btn-primary btn-block btn-flat" style="margin-top:-25px;">Update</div>
         </div>
     </div> -->
-            <button type="submit" id="patient-register-btn" style="margin-top:-25px:" class="btn btn-primary btn-block btn-flat">Update</button>
+            <div type="submit" id="patient-register-btn" style="margin-top:-25px:" class="btn btn-primary btn-block btn-flat">Update</div>
         </form>
     </div>
     </div>
     <!-- /.form-box -->
 </body>
-<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
-<!-- Bootstrap 3.3.5 -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<script src="bootstrap/js/jquery.cookie.js"></script>
-<!-- FastClick -->
-<script src="plugins/fastclick/fastclick.min.js"></script>
-<!-- DataTables -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function() {
 
@@ -171,6 +160,8 @@ $('#patient-register-btn').click(function() {
         } catch (e) {
             // alert(e);
         }
+    } else {
+
     }
 
     var requestString = "";
