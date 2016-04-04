@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | General Form Elements</title>
+    <title>dbotica</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -67,23 +67,10 @@
                                 <!-- User image -->
                                 <li class="user-header">
                                     <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                                    <p>
-                                        Doctor 1 - Cardiologist
-                                        <small>Member since Feb 2016</small>
+                                    <p id="doctorName">
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
-                                <li class="user-body">
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Followers</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Health Tips</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Friends</a>
-                                    </div>
-                                </li>
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
@@ -118,11 +105,11 @@
                 <ul class="sidebar-menu">
                     <li class="header">Welcome</li>
                     <!-- Optionally, you can add icons to the links -->
-                    <li class="active"><a href="entryPrescriptions.html"><i class="fa fa-link"></i> <span>Drug prescription</span></a></li>
+                    <li><a href="entryPrescriptions.html"><i class="fa fa-link"></i> <span>Drug prescription</span></a></li>
                     <li><a href="myPrescriptions.html"><i class="fa fa-link"></i> <span>My Prescriptions</span></a></li>
                     <li><a href="myPatients.html"><i class="fa fa-link"></i> <span>My Patients</span></a></li>
                     <li><a href="myScheduler.html"><i class="fa fa-link"></i> <span>My Scheduler</span></a></li>
-                    <li><a href="referADoctor.html"><i class="fa fa-link"></i> <span>Refer dbotica</span></a></li>
+                    <li class="active"><a href="referADoctor.html"><i class="fa fa-link"></i> <span>Refer dbotica</span></a></li>
                     <!--  <li class="active"><a href="../forms/PatientSearch.html"><i class="fa fa-link"></i> <span>Patient Search</span></a></li>  -->
                     <li class="treeview">
                         <!--  <a href="../tables/data.html"><i class="fa fa-link"></i> <span>Drug database</span> <i class="fa fa-angle-left pull-right"></i></a> -->
@@ -133,31 +120,31 @@
             <!-- /.sidebar -->
         </aside>
         <div class="control-sidebar-bg"></div>
-    </div>
-    <div class="referdboticaForm" style="margin-left:18%;margin-top:2%;">
-        <h3>Refer Fellow Doctors to dbotica</h3>
-        <form>
-            <div class="form-group">
-                <label for="exampleInputName">Name</label>
-                <input type="text" style="width:50%;border-radius:3px;" class="form-control" id="exampleInputName" placeholder="Name">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail">Email</label>
-                <input type="email" class="form-control" style="width:50%;border-radius:3px;" id="exampleInputEmail" placeholder="Email">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPhone">Phone</label>
-                <input type="text" class="form-control" style="width:50%;border-radius:3px;" id="exampleInputPhone" placeholder="Phone">
-            </div>
-            <button type="submit" id="referToDboticaBtn" class="btn btn-primary btn-default" style="color:white;">Refer To dbotica</button>
-        </form>
-    </div>
-    <footer id="footer" class="main-footer" style="margin-left: 13%;margin-right: 0%;">
-        <div class="pull-right hidden-xs">
-            <b>Version</b> 1.0.0
+        <div class="referdboticaForm" style="margin-left:13%;margin-top:-20px;">
+            <h3>Refer Fellow Doctors to dbotica</h3>
+            <form class="referalForm">
+                <div class="form-group">
+                    <label for="exampleInputName">Name</label>
+                    <input type="text" style="width:50%;border-radius:3px;" class="form-control" id="exampleInputName" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail">Email</label>
+                    <input type="email" class="form-control" style="width:50%;border-radius:3px;" id="exampleInputEmail" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPhone">Phone</label>
+                    <input type="text" class="form-control" style="width:50%;border-radius:3px;" id="exampleInputPhone" placeholder="Phone">
+                </div>
+                <button type="submit" id="referToDboticaBtn" class="btn btn-primary btn-default" style="color:white;">Refer To dbotica</button>
+            </form>
         </div>
-        <strong>Copyright &copy; 2015-2016 <a href="http://dbotica.com">Dbotica</a>.</strong> All rights reserved.
-    </footer>
+        <footer id="footer" class="main-footer" style="margin-left: 13%;margin-right: 0%;">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0.0
+            </div>
+            <strong>Copyright &copy; 2015-2016 <a href="http://dbotica.com">Dbotica</a>.</strong> All rights reserved.
+        </footer>
+    </div>
     <!-- ./wrapper -->
     <!--added for register pop up ->
     <!-jQuery 2.1.4 -->
@@ -175,6 +162,9 @@
     <!-- IndexedDB for local storage-->
     <script type="text/javascript">
     $(document).ready(function() {
+        var doctorName = localStorage.getItem('firstName');
+        console.log("doctor name is----" + doctorName);
+        $("#doctorName").text(doctorName);
         $("#referToDboticaBtn").click(function() {
             var name = $("#exampleInputName").val();
             var email = $("#exampleInputEmail").val();

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | General Form Elements</title>
+    <title>dbotica</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -45,55 +46,42 @@
                 <span class="logo-lg"><b>dbotica</b></span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
-            <nav class="navbar navbar-static-top" role="navigation"  style="margin-left: 13%;">
-              <!-- Sidebar toggle button-->
-              <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </a>
-              <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">              
-                  <li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                      <span class="hidden-xs">Doctor 1</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <!-- User image -->
-                      <li class="user-header">
-                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                        <p>
-                          Doctor 1 - Cardiologist
-                          <small>Member since Feb 2016</small>
-                        </p>
-                      </li>
-                      <!-- Menu Body -->
-                      <li class="user-body">
-                        <div class="col-xs-4 text-center">
-                          <a href="#">Followers</a>
-                        </div>
-                        <div class="col-xs-4 text-center">
-                          <a href="#">Health Tips</a>
-                        </div>
-                        <div class="col-xs-4 text-center">
-                          <a href="#">Friends</a>
-                        </div>
-                      </li>
-                      <!-- Menu Footer-->
-                      <li class="user-footer">
-                        <div class="pull-left">
-                          <a href="doctorProfile.html" class="btn btn-default btn-flat">Profile</a>
-                        </div>
-                        <div class="pull-right">
-                          <a href="#" class="btn btn-default btn-flat" id="logoutButton">Sign out</a>
-                        </div>
-                      </li>
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-left: 13%;">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                                <span class="hidden-xs">Doctor 1</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                    <p id="doctorName">
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="doctorProfile.html" class="btn btn-default btn-flat">Profile</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="#" class="btn btn-default btn-flat" id="logoutButton">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
-                  </li>
-                 </ul>
-              </div>
+                </div>
             </nav>
         </header>
         <!-- Left side column. contains the logo and sidebar -->
@@ -299,143 +287,136 @@
                                     <input type="button" id="prescription-form-BD" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="BD"></input>
                                     <input type="button" id="prescription-form-AD" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="AD"></input>
                                 </div>
-      
-      <div class="col-md-12" id="prescription-form-information" style="display: none;">
-        <label>Information: </label>
-        <div id="prescription-form-information-text"></div>
-      </div>
-
-
-
-
-    </div>
-  </div><!-- /.box-body -->
-  <div class="box-footer" align="right">
-    <button type="submit" class="btn btn-primary"  id="prescription-add">Add</button>
-  </div>
-</div><!-- /.box -->
-</div><!--/.col (right) -->
-<!-- /.row -->
-</section><!-- /.content -->
-
-
-
-
-
-<!-- Main content -->
-<section class="content">
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="box box-solid box-primary">
-        <div class="box-header">
-          <h3 class="box-title">List of drugs</h3>
-        </div><!-- /.box-header -->
-        <div class="box-body">
-          <table id="current-prescriptions" class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th>S.No</th>
-                <th>BrandName</th>
-                <th>Per Serving</th>
-                <th>Days/Quantity</th>
-                <th>Usage</th>
-                <th>Remarks</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-         
-        </div><!-- /.box-body -->
-      </div><!-- /.box -->
-	  
-	  <div class="box box-solid box-primary">
-        <div class="box-header">
-          <h3 class="box-title">Tests</h3>
-        </div><!-- /.box-header -->
-        <div class="box-body">
-			<div class="col-md-6 form-group">
-				<input type="text" class="form-control"  placeholder="Test" id="prescription-form-test"></input>
-				<ul class="dropdown-menu tests-dropdown-menu">
-				</ul>
-			</div>
-			<div class="col-md-4 form-group">
-				<input type="text" class="form-control"  placeholder="Remark" id="prescription-form-test-remark"></input>
-				
-				</ul>
-			</div>
-			
-			<div align="right">
-				<button type="submit" class="btn btn-primary"  id="prescription-test-add">Add</button>
-			</div>
-			<table id="current-tests" class="table table-bordered table-striped">
-				<thead>
-					<tr>
-						<th>S.No</th>
-						<th>Test Name</th>
-						<th>Remarks</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody></tbody>
-			</table>
-           
-			
-			
-      
-          
-          
-        </div><!-- /.box-body -->
-      </div>
-    
-
-      <div class="box box-solid box-primary">
-        <div class="box-header">
-          <h3 class="box-title">Remarks</h3>
-        </div><!-- /.box-header -->
-        <div class="box-body">
-			<div class="col-md-8 form-group pull-left">
-				Revisit after : <input type="number"  id="inputDatetxt" name="inputDatetxt" style ="width :50px"/> days &nbsp;&nbsp;&nbsp;&nbsp;
-				<input type="text" class="inputDate" id="inputDate" name="inputDate" value="" style ="width :100px">
-				<span class="glyphicon glyphicon-calendar" class="inputDate" id="inputDateSpan"></span>
-				<p hidden>  <label id="closeOnSelect"><input type="checkbox" checked="true" /> Close on selection</label></p>
-				&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="prescription-book-appointment" name="book-appointment" value="Book Appointment" /> 
-			</div>
-			<div class ="col-md-7 form-group">
-				Refer To : <input type="text"  id="referToDoctor" name="referToDoctor" >
-			</div>
-			<div class="col-md-13 form-group">
-				<textarea class="form-control" rows="2" placeholder="Additional Comments"  id="prescription-form-remarks"></textarea>
-			</div>
-      
-          
-          <div class="box-footer">
-            
-            <button type="submit" class="btn btn-primary pull-left"  id="prescription-reset-btm" >Reset</button>
-            <button type="submit" class="btn btn-primary pull-right"  id="prescription-save-cont" >Save and Continue</button>
-          
-          </div>
-        </div><!-- /.box-body -->
-      </div>
-    </div><!-- /.col -->
-  </div><!-- /.row -->
-</section><!-- /.content -->
-</div><!-- /.content-wrapper -->
-<footer class="main-footer" style="margin-left: 13%;margin-right: 22%;">
-  <div class="pull-right hidden-xs">
-    <b>Version</b> 1.0.0
-  </div>
-  <strong>Copyright &copy; 2015-2016 <a href="http://dbotica.com">Dbotica</a>.</strong> All rights reserved.
-</footer>
-
-<!-- Control Sidebar -->
-
-<!-- Control Sidebar -->
-<aside class="control-sidebar control-sidebar-light" style="position: fixed;height:100%; width: 22%;">
-  <!-- Create the tabs -->
-  <!-- Tab panes -->
-  <p class="login-box-msg" style="margin-top: 7%;">Patient search</p>
-  <form action="index.html" method="post" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%; 
+                                <div class="col-md-12" id="prescription-form-information" style="display: none;">
+                                    <label>Information: </label>
+                                    <div id="prescription-form-information-text"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer" align="right">
+                            <button type="submit" class="btn btn-primary" id="prescription-add">Add</button>
+                        </div>
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!--/.col (right) -->
+                <!-- /.row -->
+            </section>
+            <!-- /.content -->
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box box-solid box-primary">
+                            <div class="box-header">
+                                <h3 class="box-title">List of drugs</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <table id="current-prescriptions" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>BrandName</th>
+                                            <th>Per Serving</th>
+                                            <th>Days/Quantity</th>
+                                            <th>Usage</th>
+                                            <th>Remarks</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                        <div class="box box-solid box-primary">
+                            <div class="box-header">
+                                <h3 class="box-title">Tests</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="col-md-6 form-group">
+                                    <input type="text" class="form-control" placeholder="Test" id="prescription-form-test"></input>
+                                    <ul class="dropdown-menu tests-dropdown-menu">
+                                    </ul>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <input type="text" class="form-control" placeholder="Remark" id="prescription-form-test-remark"></input>
+                                    </ul>
+                                </div>
+                                <div align="right">
+                                    <button type="submit" class="btn btn-primary" id="prescription-test-add">Add</button>
+                                </div>
+                                <table id="current-tests" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Test Name</th>
+                                            <th>Remarks</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <div class="box box-solid box-primary">
+                            <div class="box-header">
+                                <h3 class="box-title">Remarks</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="col-md-8 form-group pull-left">
+                                    Revisit after :
+                                    <input type="number" id="inputDatetxt" name="inputDatetxt" style="width :50px" /> days &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="text" class="inputDate" id="inputDate" name="inputDate" value="" style="width :100px">
+                                    <span class="glyphicon glyphicon-calendar" class="inputDate" id="inputDateSpan"></span>
+                                    <p hidden>
+                                        <label id="closeOnSelect">
+                                            <input type="checkbox" checked="true" /> Close on selection</label>
+                                    </p>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="button" id="prescription-book-appointment" name="book-appointment" value="Book Appointment" />
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    Refer To :
+                                    <input type="text" id="referToDoctor" name="referToDoctor">
+                                </div>
+                                <div class="col-md-13 form-group">
+                                    <textarea class="form-control" rows="2" placeholder="Additional Comments" id="prescription-form-remarks"></textarea>
+                                </div>
+                                <div class="box-footer">
+                                    <button type="submit" class="btn btn-primary pull-left" id="prescription-reset-btm">Reset</button>
+                                    <button type="submit" class="btn btn-primary pull-right" id="prescription-save-cont">Save and Continue</button>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <footer class="main-footer" style="margin-left: 13%;margin-right: 22%;">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0.0
+            </div>
+            <strong>Copyright &copy; 2015-2016 <a href="http://dbotica.com">Dbotica</a>.</strong> All rights reserved.
+        </footer>
+        <!-- Control Sidebar -->
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-light" style="position: fixed;height:100%; width: 22%;">
+            <!-- Create the tabs -->
+            <!-- Tab panes -->
+            <p class="login-box-msg" style="margin-top: 7%;">Patient search</p>
+            <form action="index.html" method="post" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%; 
   margin-top: 2%;">
                 <div class="form-group has-feedback">
                     <input type="text" class="form-control" id="patient-search-telephone" placeholder="Mobile Number">
@@ -493,268 +474,270 @@
     <!-- IndexedDB for local storage-->
     <script src="indexedDB/indexedDbotica.js"></script>
     <script type="text/javascript">
-	$.fn.pageMe = function(opts){
-		var $this = this,
-			defaults = {
-            perPage: 7,
-            showPrevNext: false,
-            numbersPerPage: 1,
-            hidePageNumbers: false
-			},
-        settings = $.extend(defaults, opts);
-    
-		var listElement = $this;
-		var perPage = settings.perPage; 
-		var children = listElement.children();
-		var pager = $('.pagination');
-    
-		if (typeof settings.childSelector!="undefined") {
-			children = listElement.find(settings.childSelector);
-		}
-    
-		if (typeof settings.pagerSelector!="undefined") {
-			pager = $(settings.pagerSelector);
-		}
-    
-		var numItems = children.size();
-		var numPages = Math.ceil(numItems/perPage);
-		console.log("number of pages ",numPages);
-		var curr = 0;
-		pager.data("curr",curr);
-    
-		if (settings.showPrevNext){
-			$('<li><a href="#" class="prev_link">«</a></li>').appendTo(pager);
-		}
-    
-		while(numPages > curr && (settings.hidePageNumbers==false)){
-			$('<li><a href="#" class="page_link">'+(curr+1)+'</a></li>').appendTo(pager);
-			curr++;
-		}
-  
-		if (settings.numbersPerPage > 1) {
-			$('.page_link').hide();
-			$('.page_link').slice(pager.data("curr"), settings.numbersPerPage).show();
-		}
-    
-		if (settings.showPrevNext){
-			$('<li><a href="#" class="next_link">»</a></li>').appendTo(pager);
-		}
-    
-		pager.find('.page_link:first').addClass('active');
-		pager.find('.prev_link').hide();
-		if (numPages<=1) {
-			pager.find('.next_link').hide();
-		}
-		pager.children().eq(0).addClass("active");
-    
-		children.hide();
-		children.slice(0, perPage).show();
-    
-		pager.find('li .page_link').click(function(){
-			var clickedPage = $(this).html().valueOf()-1;
-			goTo(clickedPage,perPage);
-			return false;
-		});
-		pager.find('li .prev_link').click(function(){
-			previous();
-			return false;
-		});
-		pager.find('li .next_link').click(function(){
-			next();
-			return false;
-		});
-    
-		function previous(){
-			var goToPage = parseInt(pager.data("curr")) - 1;
-			goTo(goToPage);
-		}
-     
-		function next(){
-			goToPage = parseInt(pager.data("curr")) + 1;
-			goTo(goToPage);
-		}
-    
-		function goTo(page){
-			var startAt = page * perPage,
-            endOn = startAt + perPage;
-        
-			children.css('display','none').slice(startAt, endOn).show();
-        
-			if (page>=1) {
-				pager.find('.prev_link').show();
-			}
-			else {
-				pager.find('.prev_link').hide();
-			}
-        
-			if (page<(numPages-1)) {
-				pager.find('.next_link').show();
-			}
-			else {
-				pager.find('.next_link').hide();
-			}
-        
-			pager.data("curr",page);
-       
-			if (settings.numbersPerPage>1) {
-				$('.page_link').hide();
-				$('.page_link').slice(page, settings.numbersPerPage+page).show();
-			}
-      
-			pager.children().removeClass("active");
-			pager.children().eq(page+1).addClass("active");
-    
-		}
-	};
+    $.fn.pageMe = function(opts) {
+        var $this = this,
+            defaults = {
+                perPage: 7,
+                showPrevNext: false,
+                numbersPerPage: 1,
+                hidePageNumbers: false
+            },
+            settings = $.extend(defaults, opts);
 
-	
-	function OnGetTestsResponse(data){
-		var dropdown = $('.tests-dropdown-menu');
-		if(data.length !=0){
-			for(var i in data){
-				var test = data[i];
-				var testString = test['testName'];
-				dropdown.append('<li id="'+test['id']+'"><a href="#">'+testString);
-			}
-			$('.tests-dropdown-menu > li').click(function(e){
-				e.preventDefault();
-				var id = $(this).get(0).id;
-				for(var s in data){
-					if(data[s]['id'] ===id){
-						console.log(data[s]);
-						$('#prescription-form-test').val(data[s]['testName']);
-						$('#prescription-form-test').attr("testId",data[s][id]);
-						break;
-					}
-				}
-				dropdown.hide('dropdown');
-			});
-			dropdown.show('dropdown');
-			
-		}
-	
-	}
-	
-	function prescriptionFormTestCallback(){
-		var testName = $('#prescription-form-test').val();
-		if(testName === ""){
-			$('.tests-dropdown-menu').hide('dropdown');
-			return;
-		}
-		
-		$('.tests-dropdown-menu').hide('dropdown');
-		$('.tests-dropdown-menu').empty();
-		
-		$.ajax({
-			type: "GET",
-			url: "http://localhost:8081/dbotica-spring/diagnosis/getDiagnosisTest",
-			data: {'testName': testName},
-			xhrFields: {withCredentials: true},
-			success: function(response){   
-				if (testName === $('#prescription-form-test').val()) {
-					var data = $.parseJSON(response.response);                  
-					console.log(data);
-					OnGetTestsResponse(data);
-        
-				}     
-			}
-		});
-	}
-	
-	
-	$('#prescription-form-test').keyup(function(e){
-		e.preventDefault();
-		delay(prescriptionFormTestCallback, 300);
-	});
-	
-	$('#prescription-test-add').click(function(e){
-		e.preventDefault();
-		var test = $('#prescription-form-test').val();
-		var testId = $('#prescription-form-test').attr("testId");
-		var remark = $('#prescription-form-test-remark').val();
-		if(!test)
-			return;
-		var count = $.cookie('testEntryCount');
-		if(!count){
-			count = 1;
-			
-		}
-		var testPojoList = [];
-		if($.cookie('testPojoList') && $.cookie('testPojoList') !== ""){
-			testPojoList = $.parseJSON($.cookie('testPojoList'));
-		}
-		var testPojo ={};
-		testPojo['testName'] = test;
-		testPojo['testId'] = testId;
-		testPojo['remark'] = remark;
-		$('#current-tests > tbody').append('<tr><td>'+count+'</td><td>'+test+'</td><td>'+remark+'<td id ="deleteTest'+count+'"><button type ="submit" name = "deleteButton" class = "deleteTestButton" id ="deleteTestButton'+count+'" value="deleteTest'+count+'">Delete</button></td></tr>');
-		//$('#current-tests').DataTable();
-		$.cookie('testHtml',$('#current-tests > tbody').html());
-		var countNum = Number(count);
-		testPojoList.push(testPojo);
-		$.cookie('testPojoList', JSON.stringify(testPojoList));
-		countNum++;
-		$.cookie('testEntryCount',countNum);
-		
-		$('#prescription-form-test').val('');
-		$('#prescription-form-test-remark').val('');
-		
-	});
-		
-	$(document).on('click','.deleteTestButton',function(e){
-		var result = confirm('Are you sure, you want to delete ?');
-		
-		if(result){
-			$.cookie('testEntryCount',"");
-			$.cookie('testHtml',"");
-			var id = this.id;
-			id= id.slice(-1);
-			id=id-1;
-			console.log(id);
-			var testPojoList1 = $.cookie('testPojoList');
-			var testData = JSON.parse(testPojoList1);
-			console.log(testData);
-			if(testData.length!=0){
-				for(i in testData){
-					if(i == id){
-						var removedObject = testData.splice(id,1);
-						console.log("testData ",testData);
-						break;
-					}
-				}
-			}
-			var newCount = 1;
-			$('#current-tests > tbody').text("");
-			testPojoList =[];
-			$.cookie('testPojoList',"");
-			for(s in testData){
-				$('#current-tests > tbody').append('<tr><td>'+newCount+'</td><td>'+testData[s]['testName']+'</td><td>'+testData[s]['remark']+'</td><td id ="deleteTest'+newCount+'"><button type ="submit" name = "deleteButton" class = "deleteTestButton" id ="deleteTestButton'+newCount+'" value="deleteTest'+newCount+'">Delete</button></td></tr>');
-				newCount++;
-				try{
-					testPojoList.push(testData[s]);
-				}catch(e){
-				
-				}
-			}
-			$.cookie('testPojoList', JSON.stringify(testPojoList));
+        var listElement = $this;
+        var perPage = settings.perPage;
+        var children = listElement.children();
+        var pager = $('.pagination');
+
+        if (typeof settings.childSelector != "undefined") {
+            children = listElement.find(settings.childSelector);
+        }
+
+        if (typeof settings.pagerSelector != "undefined") {
+            pager = $(settings.pagerSelector);
+        }
+
+        var numItems = children.size();
+        var numPages = Math.ceil(numItems / perPage);
+        console.log("number of pages ", numPages);
+        var curr = 0;
+        pager.data("curr", curr);
+
+        if (settings.showPrevNext) {
+            $('<li><a href="#" class="prev_link">«</a></li>').appendTo(pager);
+        }
+
+        while (numPages > curr && (settings.hidePageNumbers == false)) {
+            $('<li><a href="#" class="page_link">' + (curr + 1) + '</a></li>').appendTo(pager);
+            curr++;
+        }
+
+        if (settings.numbersPerPage > 1) {
+            $('.page_link').hide();
+            $('.page_link').slice(pager.data("curr"), settings.numbersPerPage).show();
+        }
+
+        if (settings.showPrevNext) {
+            $('<li><a href="#" class="next_link">»</a></li>').appendTo(pager);
+        }
+
+        pager.find('.page_link:first').addClass('active');
+        pager.find('.prev_link').hide();
+        if (numPages <= 1) {
+            pager.find('.next_link').hide();
+        }
+        pager.children().eq(0).addClass("active");
+
+        children.hide();
+        children.slice(0, perPage).show();
+
+        pager.find('li .page_link').click(function() {
+            var clickedPage = $(this).html().valueOf() - 1;
+            goTo(clickedPage, perPage);
+            return false;
+        });
+        pager.find('li .prev_link').click(function() {
+            previous();
+            return false;
+        });
+        pager.find('li .next_link').click(function() {
+            next();
+            return false;
+        });
+
+        function previous() {
+            var goToPage = parseInt(pager.data("curr")) - 1;
+            goTo(goToPage);
+        }
+
+        function next() {
+            goToPage = parseInt(pager.data("curr")) + 1;
+            goTo(goToPage);
+        }
+
+        function goTo(page) {
+            var startAt = page * perPage,
+                endOn = startAt + perPage;
+
+            children.css('display', 'none').slice(startAt, endOn).show();
+
+            if (page >= 1) {
+                pager.find('.prev_link').show();
+            } else {
+                pager.find('.prev_link').hide();
+            }
+
+            if (page < (numPages - 1)) {
+                pager.find('.next_link').show();
+            } else {
+                pager.find('.next_link').hide();
+            }
+
+            pager.data("curr", page);
+
+            if (settings.numbersPerPage > 1) {
+                $('.page_link').hide();
+                $('.page_link').slice(page, settings.numbersPerPage + page).show();
+            }
+
+            pager.children().removeClass("active");
+            pager.children().eq(page + 1).addClass("active");
+
+        }
+    };
+
+
+    function OnGetTestsResponse(data) {
+        var dropdown = $('.tests-dropdown-menu');
+        if (data.length != 0) {
+            for (var i in data) {
+                var test = data[i];
+                var testString = test['testName'];
+                dropdown.append('<li id="' + test['id'] + '"><a href="#">' + testString);
+            }
+            $('.tests-dropdown-menu > li').click(function(e) {
+                e.preventDefault();
+                var id = $(this).get(0).id;
+                for (var s in data) {
+                    if (data[s]['id'] === id) {
+                        console.log(data[s]);
+                        $('#prescription-form-test').val(data[s]['testName']);
+                        $('#prescription-form-test').attr("testId", data[s][id]);
+                        break;
+                    }
+                }
+                dropdown.hide('dropdown');
+            });
+            dropdown.show('dropdown');
+
+        }
+
+    }
+
+    function prescriptionFormTestCallback() {
+        var testName = $('#prescription-form-test').val();
+        if (testName === "") {
+            $('.tests-dropdown-menu').hide('dropdown');
+            return;
+        }
+
+        $('.tests-dropdown-menu').hide('dropdown');
+        $('.tests-dropdown-menu').empty();
+
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8081/dbotica-spring/diagnosis/getDiagnosisTest",
+            data: {
+                'testName': testName
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(response) {
+                if (testName === $('#prescription-form-test').val()) {
+                    var data = $.parseJSON(response.response);
+                    console.log(data);
+                    OnGetTestsResponse(data);
+
+                }
+            }
+        });
+    }
+
+
+    $('#prescription-form-test').keyup(function(e) {
+        e.preventDefault();
+        delay(prescriptionFormTestCallback, 300);
+    });
+
+    $('#prescription-test-add').click(function(e) {
+        e.preventDefault();
+        var test = $('#prescription-form-test').val();
+        var testId = $('#prescription-form-test').attr("testId");
+        var remark = $('#prescription-form-test-remark').val();
+        if (!test)
+            return;
+        var count = $.cookie('testEntryCount');
+        if (!count) {
+            count = 1;
+
+        }
+        var testPojoList = [];
+        if ($.cookie('testPojoList') && $.cookie('testPojoList') !== "") {
+            testPojoList = $.parseJSON($.cookie('testPojoList'));
+        }
+        var testPojo = {};
+        testPojo['testName'] = test;
+        testPojo['testId'] = testId;
+        testPojo['remark'] = remark;
+        $('#current-tests > tbody').append('<tr><td>' + count + '</td><td>' + test + '</td><td>' + remark + '<td id ="deleteTest' + count + '"><button type ="submit" name = "deleteButton" class = "deleteTestButton" id ="deleteTestButton' + count + '" value="deleteTest' + count + '">Delete</button></td></tr>');
+        //$('#current-tests').DataTable();
+        $.cookie('testHtml', $('#current-tests > tbody').html());
+        var countNum = Number(count);
+        testPojoList.push(testPojo);
+        $.cookie('testPojoList', JSON.stringify(testPojoList));
+        countNum++;
+        $.cookie('testEntryCount', countNum);
+
+        $('#prescription-form-test').val('');
+        $('#prescription-form-test-remark').val('');
+
+    });
+
+    $(document).on('click', '.deleteTestButton', function(e) {
+        var result = confirm('Are you sure, you want to delete ?');
+
+        if (result) {
+            $.cookie('testEntryCount', "");
+            $.cookie('testHtml', "");
+            var id = this.id;
+            id = id.slice(-1);
+            id = id - 1;
+            console.log(id);
+            var testPojoList1 = $.cookie('testPojoList');
+            var testData = JSON.parse(testPojoList1);
+            console.log(testData);
+            if (testData.length != 0) {
+                for (i in testData) {
+                    if (i == id) {
+                        var removedObject = testData.splice(id, 1);
+                        console.log("testData ", testData);
+                        break;
+                    }
+                }
+            }
+            var newCount = 1;
+            $('#current-tests > tbody').text("");
+            testPojoList = [];
+            $.cookie('testPojoList', "");
+            for (s in testData) {
+                $('#current-tests > tbody').append('<tr><td>' + newCount + '</td><td>' + testData[s]['testName'] + '</td><td>' + testData[s]['remark'] + '</td><td id ="deleteTest' + newCount + '"><button type ="submit" name = "deleteButton" class = "deleteTestButton" id ="deleteTestButton' + newCount + '" value="deleteTest' + newCount + '">Delete</button></td></tr>');
+                newCount++;
+                try {
+                    testPojoList.push(testData[s]);
+                } catch (e) {
+
+                }
+            }
+            $.cookie('testPojoList', JSON.stringify(testPojoList));
             console.log('pushed');
-			$.cookie('testEntryCount',newCount);
-			//$('#current-tests').DataTable();
-			//console.log($('#current-tests').DataTable());
-			$.cookie('testHtml', $('#current-tests > tbody').html());
+            $.cookie('testEntryCount', newCount);
+            //$('#current-tests').DataTable();
+            //console.log($('#current-tests').DataTable());
+            $.cookie('testHtml', $('#current-tests > tbody').html());
 
-		}
-	});
-	
+        }
+    });
 
-    var  drugPojo1 = {};
-    (function ($) {
-		try{
-			openDb();
-		}catch(e){
-			console.log("Error in openDb");
-		}
-		
+
+    var drugPojo1 = {};
+    (function($) {
+        try {
+            openDb();
+        } catch (e) {
+            console.log("Error in openDb");
+        }
+
 
         $('.spinner .btn:first-of-type').on('click', function() {
             $('.spinner input').val(parseInt($('.spinner input').val(), 10) + 1);
@@ -781,7 +764,7 @@
         var units = $("#prescription-form-units").val();
         var per_serving = $("#prescription-form-serving").val();
         var msrmnt = $('#prescription-form-measurmnt').text();
-        
+
         var si = $("#prescription-form-si").val();
         var bbf = $("#prescription-form-BBF").hasClass('btn-success');
         var abf = $("#prescription-form-ABF").hasClass('btn-success');
@@ -836,45 +819,45 @@
             count = 1;
         }
 
-		var drugPojoList = [];
-		if ($.cookie('drugPojoList') && $.cookie('drugPojoList') !== "") {
-			drugPojoList = $.parseJSON($.cookie('drugPojoList'));
-		}
-		var drugPojo = {};
-		drugPojo['drugId'] = drugId;
-		drugPojo['brandName'] = drug;
-		drugPojo['usageDirection'] = usage;
-		drugPojo['remarks'] = si;
-		drugPojo['perServing'] = per_serving;
-		if (days === 'Days') {
-			drugPojo['noOfDays'] = units+' '+days;
-		} else {
-			drugPojo['quantity'] = units+' '+days;
-		}
+        var drugPojoList = [];
+        if ($.cookie('drugPojoList') && $.cookie('drugPojoList') !== "") {
+            drugPojoList = $.parseJSON($.cookie('drugPojoList'));
+        }
+        var drugPojo = {};
+        drugPojo['drugId'] = drugId;
+        drugPojo['brandName'] = drug;
+        drugPojo['usageDirection'] = usage;
+        drugPojo['remarks'] = si;
+        drugPojo['perServing'] = per_serving;
+        if (days === 'Days') {
+            drugPojo['noOfDays'] = units + ' ' + days;
+        } else {
+            drugPojo['quantity'] = units + ' ' + days;
+        }
 
-		//console.log("form submitted with values: "+drug+", "+days+", "+units+", "+si+", "+bbf+", "+abf+", "+bl+", "+al+", "+bd+", "+ad+", "+price+", "+constituents+", "+usage);
-		$('#current-prescriptions > tbody').append('<tr ><td>'+count+'</td><td>'+drug+'</td><td>'+per_serving+" "+msrmnt+'</td><td>'+units+" "+days+'</td><td>'+
-		usage+'</td><td>'+si+'</td><td id="deliD'+ count + '"><button type="submit" name="delbtn" class="deletebutton" id="del'+ count + '" value="delID'+ count + '">Delete</button></td>');   
-		//$('#current-prescriptions').DataTable();
-		//console.log($('#current-prescriptions').DataTable());
-		$.cookie('drugHtml', $('#current-prescriptions > tbody').html());
-		var countNum = Number(count);
-		drugPojoList.push(drugPojo);
-		$.cookie('drugPojoList',  JSON.stringify(drugPojoList));
-		//console.log(JSON.stringify(drugPojoList));
-		countNum++;
-		$.cookie('drugEntryCount', countNum);
-		/*var cliimp = $('#prescription-form-ClincImp').val();
-		var investigation = $('#prescription-form-Investigation').val();
-		$.cookie('cookie-cli-imp',cliimp);
-		$.cookie('currentPrescriptionInfo-investigation',investigation);*/
+        //console.log("form submitted with values: "+drug+", "+days+", "+units+", "+si+", "+bbf+", "+abf+", "+bl+", "+al+", "+bd+", "+ad+", "+price+", "+constituents+", "+usage);
+        $('#current-prescriptions > tbody').append('<tr ><td>' + count + '</td><td>' + drug + '</td><td>' + per_serving + " " + msrmnt + '</td><td>' + units + " " + days + '</td><td>' +
+            usage + '</td><td>' + si + '</td><td id="deliD' + count + '"><button type="submit" name="delbtn" class="deletebutton" id="del' + count + '" value="delID' + count + '">Delete</button></td>');
+        //$('#current-prescriptions').DataTable();
+        //console.log($('#current-prescriptions').DataTable());
+        $.cookie('drugHtml', $('#current-prescriptions > tbody').html());
+        var countNum = Number(count);
+        drugPojoList.push(drugPojo);
+        $.cookie('drugPojoList', JSON.stringify(drugPojoList));
+        //console.log(JSON.stringify(drugPojoList));
+        countNum++;
+        $.cookie('drugEntryCount', countNum);
+        /*var cliimp = $('#prescription-form-ClincImp').val();
+        var investigation = $('#prescription-form-Investigation').val();
+        $.cookie('cookie-cli-imp',cliimp);
+        $.cookie('currentPrescriptionInfo-investigation',investigation);*/
 
-		formClear();
- });
+        formClear();
+    });
 
 
 
-$('#inputDatetxt').keyup(function(e){
+    $('#inputDatetxt').keyup(function(e) {
 
         var inputdays = $('#inputDatetxt').val();
         if (!isNaN(inputdays)) {
@@ -925,293 +908,292 @@ $('#inputDatetxt').keyup(function(e){
     });
 
 
-$(document).on('click','.deletebutton',function(e){
-       var result = confirm('Are you sure, you want to delete ?');
+    $(document).on('click', '.deletebutton', function(e) {
+        var result = confirm('Are you sure, you want to delete ?');
         console.log(this.id);
-        
-		
-        if(result){
-			$.cookie('drugEntryCount',"");
-			$.cookie('drugHtml',"");
-          var id=this.id;
-          id= id.slice(-1);
-          id=id-1;
-          console.log(id);
-          //alert(document.getElementById(id).value());
-          var drugPojoList1 = $.cookie('drugPojoList'); 
-          var drugData = JSON.parse(drugPojoList1); 
-          console.log(drugData);
-          if(drugData.length!=0)
-          {
-            for(i in drugData)
-            {
-                if(i == id)
-                {
-                  //alert(drugData[i]['perServing']);
-                  var removedObject = drugData.splice(id,1);
-                  //alert('removedObject'+removedObject);
-                  console.log('bye'+' '+i);
-                  console.log(drugData);
-                  break;
+
+
+        if (result) {
+            $.cookie('drugEntryCount', "");
+            $.cookie('drugHtml', "");
+            var id = this.id;
+            id = id.slice(-1);
+            id = id - 1;
+            console.log(id);
+            //alert(document.getElementById(id).value());
+            var drugPojoList1 = $.cookie('drugPojoList');
+            var drugData = JSON.parse(drugPojoList1);
+            console.log(drugData);
+            if (drugData.length != 0) {
+                for (i in drugData) {
+                    if (i == id) {
+                        //alert(drugData[i]['perServing']);
+                        var removedObject = drugData.splice(id, 1);
+                        //alert('removedObject'+removedObject);
+                        console.log('bye' + ' ' + i);
+                        console.log(drugData);
+                        break;
+
+                    }
+                }
+            }
+            var newCount = 1;
+            $('#current-prescriptions > tbody').text("");
+            drugPojoList = [];
+            $.cookie('drugPojoList', "");
+
+            for (s in drugData) {
+                $('#current-prescriptions > tbody').append('<tr ><td>' + newCount + '</td><td>' + drugData[s]['brandName'] + '</td><td>' + drugData[s]['perServing'] + '</td><td>' + drugData[s]['noOfDays'] + '</td><td>' + drugData[s]['usageDirection'] + '</td><td>' + drugData[s]['remarks'] + '</td><td id="deliD' + newCount + '"><button type="submit" name="delbtn" class="deletebutton" id="del' + newCount + '" value="delID' + newCount + '">Delete</button></td>');
+                newCount++;
+                try {
+                    drugPojoList.push(drugData[s]);
+
+                } catch (e) {
+
+                }
+
+
+            }
+
+
+            $.cookie('drugPojoList', JSON.stringify(drugPojoList));
+            console.log('pushed');
+            $.cookie('drugEntryCount', newCount);
+            //$('#current-prescriptions').DataTable();
+            //console.log($('#current-prescriptions').DataTable());
+            $.cookie('drugHtml', $('#current-prescriptions > tbody').html());
+
+        }
+
+
+    });
+
+    function OnGetDrugsResponse(data) {
+        var dropdown = $('.drugs-dropdown-menu');
+        //console.log("In OnGetDrugsResponse");
+        if (data.length != 0) {
+            for (var i in data) {
+                var drug = data[i];
+                var string = drug['brandName'];
+                if (drug['constituents']) {
+                    string += " - "
+                    var constituents = drug['constituents'];
+                    for (var j in constituents) {
+                        string += constituents[j]['molecule'] + " : " + constituents[j]['weight'] + ",";
+                    }
+                    string = string.slice(0, -1);
+                }
+                dropdown.append('<li id="' + drug['id'] + '"><a href="#">' + string);
+            }
+            $('.drugs-dropdown-menu > li').click(function(e) {
+                e.preventDefault();
+                $('#prescription-form-information').css('display', 'none');
+                $('#prescription-form-information-text').empty();
+                var id = $(this).get(0).id;
+                for (var s in data) {
+                    if (data[s]['id'] === id) {
+                        console.log(data[s]);
+                        if (data[s]['price'])
+                            if (data[s]['constituents']) {
+                                var constituentsString = "";
+                                var constituents = data[s]['constituents'];
+                                for (var c in data[s]['constituents']) {
+                                    constituentsString += constituents[c]['molecule'] + " : " + constituents[c]['weight'] + ",";
+                                }
+                                constituentsString = constituentsString.slice(0, -1);
+                                $('#prescription-form-information-text').append("<li >constituents - <span id='prescription-form-constituents'>" + constituentsString + "</span></li>");
+                            }
+                        $('#prescription-form-information').css('display', 'block');
+                        $('#prescription-form-drug').val(data[s]['brandName']);
+                        $('#prescription-form-drug').attr("drugId", data[s][id]);
+                        $('#prescription-form-drug-type').text(data[s]['drugType']);
+                        switch (data[s]['drugType'].toUpperCase()) {
+                            case 'SYRUP':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'TABLET':
+                                $('#prescription-form-measurmnt').text("mg");
+                                break;
+                            case 'CAPSULE':
+                                $('#prescription-form-measurmnt').text("mg");
+                                break;
+                            case 'INFUSION':
+                                $('#prescription-form-measurmnt').text("unit");
+                                break;
+                            case 'SUSPENSION':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'INJECTION':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'POWDER':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'GEL':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'DROP':
+                                $('#prescription-form-measurmnt').text("unit");
+                                break;
+                            case 'MOUTH_WASH_GARGLE':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'CREAM':
+                                $('#prescription-form-measurmnt').text("mg");
+                                break;
+                            case 'OINTMENT':
+                                $('#prescription-form-measurmnt').text("mg");
+                                break;
+                            case 'KIT':
+                                $('#prescription-form-measurmnt').text("unit");
+                                break;
+                            case 'SHAMPOO':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'SOLUTION':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'LOTION':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'SOAP_BAR':
+                                $('#prescription-form-measurmnt').text("unit");
+                                break;
+                            case 'SACHET':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'EXPECTORANT':
+                                $('#prescription-form-measurmnt').text("mg");
+                                break;
+                            case 'ROTACAP':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'INHALER':
+                                $('#prescription-form-measurmnt').text("mg");
+                                break;
+                            case 'EMULSION':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'GRANULES':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'LOZENGES':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'PESSARY':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'SUPPOSITORY':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'LINCTUS':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'SPRAY':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'TOOTH_PASTE':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'GUM_PAINT':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'RESPULES':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'PEN':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'ELIXIR':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'MOUTH_PAINT':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'APLICAPS':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'GLUE':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'GUM':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'ASTRINGENT':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'ENEMA':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'PATCH':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+                            case 'OIL':
+                                $('#prescription-form-measurmnt').text("ml");
+                                break;
+
+
+                        }
+                        /*SYRUP, TABLET, CAPSULE, INFUSION, SUSPENSION, INJECTION, POWDER, GEL,
+                        DROP, MOUTH_WASH_GARGLE, CREAM, OINTMENT, KIT, SHAMPOO, SOLUTION, 
+                        LOTION, SOAP_BAR, SACHET, EXPECTORANT, ROTACAP, INHALER, EMULSION, 
+                        GRANULES, LOZENGES, PESSARY, SUPPOSITORY, LINCTUS, SPRAY, TOOTH_PASTE, 
+                        GUM_PAINT, RESPULES, PEN, ELIXIR, MOUTH_PAINT, APLICAPS, GLUE, GUM, 
+                        ASTRINGENT, ENEMA, PATCH, OIL*/
+
+                        break;
+                    }
+                }
+                dropdown.hide('dropdown');
+            });
+            dropdown.show('dropdown');
+        }
+    }
+
+    function prescriptionFormDrugCallback() {
+        var brandName = $('#prescription-form-drug').val();
+        if (brandName === "") {
+            $('.drugs-dropdown-menu').hide('dropdown');
+            return;
+        }
+
+        $('.drugs-dropdown-menu').hide('dropdown');
+        $('.drugs-dropdown-menu').empty();
+
+        //autocompleteDrugIndexedDB(brandName,'#prescription-form-drug',OnGetDrugsResponse);
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8081/dbotica-spring/drug/getDrugs",
+            data: {
+                'brandName': brandName
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(response) {
+                if (brandName === $('#prescription-form-drug').val()) {
+                    var data = $.parseJSON(response.response);
+                    console.log(data);
+                    OnGetDrugsResponse(data);
 
                 }
             }
-          }
-          var newCount=1;
-          $('#current-prescriptions > tbody').text("");
-           drugPojoList =[];
-          $.cookie('drugPojoList',"");
-
-          for(s in drugData)
-          {
-            $('#current-prescriptions > tbody').append('<tr ><td>'+newCount+'</td><td>'+drugData[s]['brandName']+'</td><td>'+drugData[s]['perServing']+'</td><td>'+drugData[s]['noOfDays']+'</td><td>'+drugData[s]['usageDirection']+'</td><td>'+drugData[s]['remarks']+'</td><td id="deliD'+ newCount + '"><button type="submit" name="delbtn" class="deletebutton" id="del'+ newCount + '" value="delID'+ newCount + '">Delete</button></td>');
-            newCount++;
-            try{
-            drugPojoList.push(drugData[s]);
-            
-          }
-          catch(e){
-
-          }
-
-            
-          }
-
-          
-          $.cookie('drugPojoList', JSON.stringify(drugPojoList));
-            console.log('pushed');
-          $.cookie('drugEntryCount',newCount);
-          //$('#current-prescriptions').DataTable();
-          //console.log($('#current-prescriptions').DataTable());
-          $.cookie('drugHtml', $('#current-prescriptions > tbody').html());
-
-      }
-
-
-});
-
-function OnGetDrugsResponse(data){
-        var dropdown = $('.drugs-dropdown-menu');
-		//console.log("In OnGetDrugsResponse");
-        if(data.length != 0){
-          for(var i in data){
-            var drug = data[i];
-            var string = drug['brandName'];
-            if(drug['constituents']){
-              string += " - "
-              var constituents = drug['constituents'];
-              for(var j in constituents){
-                string += constituents[j]['molecule']+" : "+constituents[j]['weight']+",";
-              }
-              string = string.slice(0, -1);
-            } 
-            dropdown.append('<li id="'+drug['id']+'"><a href="#">'+string);
-          }
-          $('.drugs-dropdown-menu > li').click(function(e){
-            e.preventDefault();
-            $('#prescription-form-information').css('display','none');
-            $('#prescription-form-information-text').empty();
-            var id = $(this).get(0).id;
-            for(var s in data){
-				if(data[s]['id'] === id){
-					console.log(data[s]);
-					if(data[s]['price'])
-						if(data[s]['constituents']){
-							var constituentsString = "";
-							var constituents = data[s]['constituents'];
-							for(var c in data[s]['constituents']){
-								constituentsString += constituents[c]['molecule']+" : "+constituents[c]['weight']+",";
-							}
-							constituentsString = constituentsString.slice(0, -1);
-							$('#prescription-form-information-text').append("<li >constituents - <span id='prescription-form-constituents'>"+constituentsString+"</span></li>");
-						}
-					$('#prescription-form-information').css('display','block');
-					$('#prescription-form-drug').val(data[s]['brandName']);
-					$('#prescription-form-drug').attr("drugId",data[s][id]);
-					$('#prescription-form-drug-type').text(data[s]['drugType']);
-					switch(data[s]['drugType'].toUpperCase()){
-						case 'SYRUP' : 
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'TABLET' :
-							$('#prescription-form-measurmnt').text("mg");
-							break;
-						case 'CAPSULE' :
-							$('#prescription-form-measurmnt').text("mg");
-							break;
-						case 'INFUSION' :
-							$('#prescription-form-measurmnt').text("unit");
-							break;
-						case 'SUSPENSION' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'INJECTION' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'POWDER' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'GEL' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'DROP' :
-							$('#prescription-form-measurmnt').text("unit");
-							break;
-						case 'MOUTH_WASH_GARGLE' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'CREAM' :
-							$('#prescription-form-measurmnt').text("mg");
-							break;
-						case 'OINTMENT' :
-							$('#prescription-form-measurmnt').text("mg");
-							break;
-						case 'KIT' :
-							$('#prescription-form-measurmnt').text("unit");
-							break;
-						case 'SHAMPOO' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'SOLUTION' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'LOTION' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'SOAP_BAR' :
-							$('#prescription-form-measurmnt').text("unit");
-							break;
-						case 'SACHET' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'EXPECTORANT' :
-							$('#prescription-form-measurmnt').text("mg");
-							break;
-						case 'ROTACAP' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'INHALER' :
-							$('#prescription-form-measurmnt').text("mg");
-							break;
-						case 'EMULSION' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'GRANULES' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'LOZENGES' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'PESSARY' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'SUPPOSITORY' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'LINCTUS' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'SPRAY' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'TOOTH_PASTE' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'GUM_PAINT' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'RESPULES' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'PEN' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'ELIXIR' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'MOUTH_PAINT' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'APLICAPS' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'GLUE' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'GUM' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'ASTRINGENT' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'ENEMA' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'PATCH' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						case 'OIL' :
-							$('#prescription-form-measurmnt').text("ml");
-							break;
-						
-						
-					}
-					/*SYRUP, TABLET, CAPSULE, INFUSION, SUSPENSION, INJECTION, POWDER, GEL,
-					DROP, MOUTH_WASH_GARGLE, CREAM, OINTMENT, KIT, SHAMPOO, SOLUTION, 
-					LOTION, SOAP_BAR, SACHET, EXPECTORANT, ROTACAP, INHALER, EMULSION, 
-					GRANULES, LOZENGES, PESSARY, SUPPOSITORY, LINCTUS, SPRAY, TOOTH_PASTE, 
-					GUM_PAINT, RESPULES, PEN, ELIXIR, MOUTH_PAINT, APLICAPS, GLUE, GUM, 
-					ASTRINGENT, ENEMA, PATCH, OIL*/
-					
-					break;
-				}
-			}
-			dropdown.hide('dropdown');
         });
-		dropdown.show('dropdown');
-	}
-}
-
-function prescriptionFormDrugCallback(){
-	var brandName = $('#prescription-form-drug').val();
-	if (brandName === "") {
-		$('.drugs-dropdown-menu').hide('dropdown');
-		return;
-	}
-	
-	$('.drugs-dropdown-menu').hide('dropdown');
-	$('.drugs-dropdown-menu').empty();
-  
-	//autocompleteDrugIndexedDB(brandName,'#prescription-form-drug',OnGetDrugsResponse);
-	$.ajax({ 
-		type: "GET",
-		url: "http://localhost:8081/dbotica-spring/drug/getDrugs",
-		data: {'brandName': brandName},
-		xhrFields: {withCredentials: true},
-		success: function(response){   
-			if (brandName === $('#prescription-form-drug').val()) {
-				var data = $.parseJSON(response.response);                  
-				console.log(data);
-				OnGetDrugsResponse(data);
-        
-			}     
-		}
-	});  
-}
-var delay = (function(){
-  var timer = 0;
-  return function(callback, ms){
-    clearTimeout (timer);
-    timer = setTimeout(callback, ms);
-  };
-})();
+    }
+    var delay = (function() {
+        var timer = 0;
+        return function(callback, ms) {
+            clearTimeout(timer);
+            timer = setTimeout(callback, ms);
+        };
+    })();
 
 
-$('#prescription-form-drug').keyup(function(e){
-	e.preventDefault();
-	delay(prescriptionFormDrugCallback, 50 );
-  
-});
+    $('#prescription-form-drug').keyup(function(e) {
+        e.preventDefault();
+        delay(prescriptionFormDrugCallback, 50);
+
+    });
 
     $('#prescription-save-cont').click(function(e) {
 
@@ -1219,8 +1201,8 @@ $('#prescription-form-drug').keyup(function(e){
         $.cookie('cookie-cli-imp', cliimp);
         var drugPojoListCookie = $.cookie('drugPojoList'); // Object
         var drugPojoList = JSON.parse(drugPojoListCookie);
-		var testPojoListCookie = $.cookie('testPojoList');
-		var testPojoList = JSON.parse(testPojoListCookie);
+        var testPojoListCookie = $.cookie('testPojoList');
+        var testPojoList = JSON.parse(testPojoListCookie);
         $.cookie('currentPatientInfo-temp', $('#prescription-form-temp').val());
         $.cookie('currentPatientInfo-height', $('#prescription-form-height').val());
         $.cookie('currentPatientInfo-weight', $('#prescription-form-weight').val());
@@ -1230,11 +1212,11 @@ $('#prescription-form-drug').keyup(function(e){
         $.cookie('currentPatientInfo-saturation', $('#prescription-form-saturation').val());
         $.cookie('currentPatientInfo-bmi', $('#prescription-form-bmi').val());
         $.cookie('currentPrescriptionInfo-investigation', $('#prescription-form-Investigation').val());
-		$.cookie('currentPrescriptionInfo-remarks',$('#prescription-form-remarks').val());
-		$.cookie('currentPrescriptionInfo-referToDoctor',$('#referToDoctor').val());
-		$.cookie('currentInputDate',$('#inputDate').val());
-		$.cookie('currentInputDays',$('#inputDatetxt').val());
-		
+        $.cookie('currentPrescriptionInfo-remarks', $('#prescription-form-remarks').val());
+        $.cookie('currentPrescriptionInfo-referToDoctor', $('#referToDoctor').val());
+        $.cookie('currentInputDate', $('#inputDate').val());
+        $.cookie('currentInputDays', $('#inputDatetxt').val());
+
         var patientInfoCookie = $.cookie('currentPatientInfo');
         var patientInfo = $.parseJSON(patientInfoCookie);
         $.ajax({
@@ -1286,84 +1268,87 @@ $('#prescription-form-drug').keyup(function(e){
                     addPrescriptionToIndexedDB(prescription, patientInfo[0], localStorage.getItem('doctorId'));
                 } catch (e) {
 
-}
-    console.log(prescription);
-    window.location.replace("index.html");
-  }
-});
-  window.location.href = 'patientReport.html';
-});
+                }
+                console.log(prescription);
+                window.location.replace("index.html");
+            }
+        });
+        window.location.href = 'patientReport.html';
+    });
 
-$('prescription-form').submit(function(e){
- alert($(this).serializeArray());
-});
+    $('prescription-form').submit(function(e) {
+        alert($(this).serializeArray());
+    });
 
-function resetAll(){
-	$('#prescription-form-ClincImp').val("");
-  $('#current-prescriptions > tbody').append("");
-  formClear();
-  $.cookie('drugHtml', "");
-  $.cookie('drugEntryCount', "");
-  $.cookie('testHtml', "");
-  $.cookie('testEntryCount', "");
-  $.cookie('currentPatientInfo-temp',"");
-  $.cookie('currentPatientInfo-height',"");
-  $.cookie('currentPatientInfo-weight', "");
-  $.cookie('currentPatientInfo-bloodPressure', "");
-  $.cookie('currentPatientInfo-impression', "");
-  $.cookie('cookie-cli-imp', "");
-  $.cookie('currentInputDays',"");
-  $.cookie('currentInputDate',"");
-  $.cookie('currentPrescriptionInfo-investigation', "");
-  $.cookie('currentPrescriptionInfo-remarks',"");
-  $.cookie('currentPrescriptionInfo-referToDoctor',"");
-  $.cookie('currentPatientInfo-bmi',"");
-  $.cookie('currentPatientInfo-saturation',"");
-  $.cookie('currentPatientInfo-pulse',"");
-  $.cookie('drugPojoList',"");
-  $.cookie('testPojoList',"");
-  $('#prescription-form-pd').find('input:text').val('');
-  $('#prescription-form-test').val('');
-  $('#prescription-form-test-remark').val('');
+    function resetAll() {
+        $('#prescription-form-ClincImp').val("");
+        $('#current-prescriptions > tbody').append("");
+        formClear();
+        $.cookie('drugHtml', "");
+        $.cookie('drugEntryCount', "");
+        $.cookie('testHtml', "");
+        $.cookie('testEntryCount', "");
+        $.cookie('currentPatientInfo-temp', "");
+        $.cookie('currentPatientInfo-height', "");
+        $.cookie('currentPatientInfo-weight', "");
+        $.cookie('currentPatientInfo-bloodPressure', "");
+        $.cookie('currentPatientInfo-impression', "");
+        $.cookie('cookie-cli-imp', "");
+        $.cookie('currentInputDays', "");
+        $.cookie('currentInputDate', "");
+        $.cookie('currentPrescriptionInfo-investigation', "");
+        $.cookie('currentPrescriptionInfo-remarks', "");
+        $.cookie('currentPrescriptionInfo-referToDoctor', "");
+        $.cookie('currentPatientInfo-bmi', "");
+        $.cookie('currentPatientInfo-saturation', "");
+        $.cookie('currentPatientInfo-pulse', "");
+        $.cookie('drugPojoList', "");
+        $.cookie('testPojoList', "");
+        $('#prescription-form-pd').find('input:text').val('');
+        $('#prescription-form-test').val('');
+        $('#prescription-form-test-remark').val('');
 
-  
-}
 
-$('#prescription-reset').click(function(e){
-  resetAll();
-  window.location.reload();
-});
+    }
 
-$('#prescription-reset-btm').click(function(e){
-  resetAll();
-  window.location.reload();
-});
+    $('#prescription-reset').click(function(e) {
+        resetAll();
+        window.location.reload();
+    });
 
-$('prescription-form').submit(function(e){
- alert($(this).serializeArray());
-});
+    $('#prescription-reset-btm').click(function(e) {
+        resetAll();
+        window.location.reload();
+    });
 
-$('#prescription-form-height').keyup(function(e){
-  if($('#prescription-form-weight').val()!= '' && $('#prescription-form-height').val()!=""){
-    var bmi = ($('#prescription-form-weight').val()*10000)/($('#prescription-form-height').val()*$('#prescription-form-height').val());
-    bmi = Math.round(bmi * 100) / 100;
-    $('#prescription-form-bmi').val(bmi);
-  }
+    $('prescription-form').submit(function(e) {
+        alert($(this).serializeArray());
+    });
 
-});
+    $('#prescription-form-height').keyup(function(e) {
+        if ($('#prescription-form-weight').val() != '' && $('#prescription-form-height').val() != "") {
+            var bmi = ($('#prescription-form-weight').val() * 10000) / ($('#prescription-form-height').val() * $('#prescription-form-height').val());
+            bmi = Math.round(bmi * 100) / 100;
+            $('#prescription-form-bmi').val(bmi);
+        }
 
-$('#prescription-form-weight').keyup(function(e){
-  if($('#prescription-form-weight').val()!= '' && $('#prescription-form-height').val()!=""){
-    var bmi = ($('#prescription-form-weight').val()*10000)/($('#prescription-form-height').val()*$('#prescription-form-height').val());
-    bmi = Math.round(bmi * 100) / 100;
-    $('#prescription-form-bmi').val(bmi);
-  }
+    });
 
-});
+    $('#prescription-form-weight').keyup(function(e) {
+        if ($('#prescription-form-weight').val() != '' && $('#prescription-form-height').val() != "") {
+            var bmi = ($('#prescription-form-weight').val() * 10000) / ($('#prescription-form-height').val() * $('#prescription-form-height').val());
+            bmi = Math.round(bmi * 100) / 100;
+            $('#prescription-form-bmi').val(bmi);
+        }
+
+    });
 
 
 
     $(document).ready(function() {
+        var doctorName = localStorage.getItem('firstName');
+        console.log("doctor name is----" + doctorName);
+        $("#doctorName").text(doctorName);
 
         $(window).scroll(function() {
             var sticky = $('.fixed-content'),
@@ -1383,93 +1368,94 @@ $('#prescription-form-weight').keyup(function(e){
         if (month < 10) month = "0" + month;
         if (day < 10) day = "0" + day;
 
-    var today = month + "/" + day + "/" + year; 
- document.getElementById('inputDate').value = today;
- console.log(document.getElementById('inputDate').value);
-  var ci = $.cookie('cookie-cli-imp');
-  $('#prescription-form-ClincImp').val(ci);
-  var investigation  = $.cookie('currentPrescriptionInfo-investigation');
-  $('#prescription-form-Investigation').val(investigation);
-  var finalRemarks = $.cookie('currentPrescriptionInfo-remarks');
-  var referToDoctor = $.cookie('currentPrescriptionInfo-referToDoctor');
-  
-  $('#prescription-form-remarks').val(finalRemarks);
-  $('#referToDoctor').val(referToDoctor);
-      var temp = $.cookie('currentPatientInfo-temp');
-      var height = $.cookie('currentPatientInfo-height');
-      var weight = $.cookie('currentPatientInfo-weight');
-      var bloodPressure = $.cookie('currentPatientInfo-bloodPressure');
-      var impression = $.cookie('currentPatientInfo-impression');
-      var bmi = $.cookie('currentPatientInfo-bmi');
-      var saturation = $.cookie('currentPatientInfo-saturation');
-      var pulse = $.cookie('currentPatientInfo-pulse');
+        var today = month + "/" + day + "/" + year;
+        document.getElementById('inputDate').value = today;
+        console.log(document.getElementById('inputDate').value);
+        var ci = $.cookie('cookie-cli-imp');
+        $('#prescription-form-ClincImp').val(ci);
+        var investigation = $.cookie('currentPrescriptionInfo-investigation');
+        $('#prescription-form-Investigation').val(investigation);
+        var finalRemarks = $.cookie('currentPrescriptionInfo-remarks');
+        var referToDoctor = $.cookie('currentPrescriptionInfo-referToDoctor');
 
-    if (temp && temp.length != 0) {
-        $('#prescription-form-temp').val(temp);
-      } 
+        $('#prescription-form-remarks').val(finalRemarks);
+        $('#referToDoctor').val(referToDoctor);
+        var temp = $.cookie('currentPatientInfo-temp');
+        var height = $.cookie('currentPatientInfo-height');
+        var weight = $.cookie('currentPatientInfo-weight');
+        var bloodPressure = $.cookie('currentPatientInfo-bloodPressure');
+        var impression = $.cookie('currentPatientInfo-impression');
+        var bmi = $.cookie('currentPatientInfo-bmi');
+        var saturation = $.cookie('currentPatientInfo-saturation');
+        var pulse = $.cookie('currentPatientInfo-pulse');
 
-      if (height && height.length != 0) {
-        $('#prescription-form-height').val(height);
-      } 
+        if (temp && temp.length != 0) {
+            $('#prescription-form-temp').val(temp);
+        }
 
-      if (weight && weight.length != 0) {
-        $('#prescription-form-weight').val(weight);
-      } 
+        if (height && height.length != 0) {
+            $('#prescription-form-height').val(height);
+        }
 
-      if (bloodPressure && bloodPressure.length != 0) {
-        $('#prescription-form-bloodPressure').val(bloodPressure);
-      } 
+        if (weight && weight.length != 0) {
+            $('#prescription-form-weight').val(weight);
+        }
 
-      if (bmi && bmi.length != 0) {
-        $('#prescription-form-bmi').val(bmi);
-      } 
+        if (bloodPressure && bloodPressure.length != 0) {
+            $('#prescription-form-bloodPressure').val(bloodPressure);
+        }
 
-
-      if (saturation && saturation.length != 0) {
-        $('#prescription-form-saturation').val(saturation);
-      } 
+        if (bmi && bmi.length != 0) {
+            $('#prescription-form-bmi').val(bmi);
+        }
 
 
-      if (pulse && pulse.length != 0) {
-        $('#prescription-form-pulse').val(pulse);
-      }
+        if (saturation && saturation.length != 0) {
+            $('#prescription-form-saturation').val(saturation);
+        }
 
 
-       
+        if (pulse && pulse.length != 0) {
+            $('#prescription-form-pulse').val(pulse);
+        }
 
-  $('#current-prescriptions > tbody').append($.cookie('drugHtml'));
-  //$('#current-prescriptions').DataTable();
-  $('#current-tests > tbody').append($.cookie('testHtml'));
 
-  //var patntPhn = $('#patient-search-telephone').val();
-  //$.cookie('patientPhnCk',patntPhn);
 
-  $('#logoutButton').click(function(e){
-        $.ajax({ 
-           type: "POST",
-           url: "http://localhost:8081/dbotica-spring/doctor/logout",
-           beforeSend: function(xhr){
-                xhr.setRequestHeader("Content-Type","application/json");
-                xhr.setRequestHeader("Accept","application/json");
-            },
-            xhrFields: {withCredentials: true},
-          success: function(response){       
-             localStorage.clear();
-             window.location.replace("login.html");
-           }
-       });
+
+        $('#current-prescriptions > tbody').append($.cookie('drugHtml'));
+        //$('#current-prescriptions').DataTable();
+        $('#current-tests > tbody').append($.cookie('testHtml'));
+
+        //var patntPhn = $('#patient-search-telephone').val();
+        //$.cookie('patientPhnCk',patntPhn);
+
+        $('#logoutButton').click(function(e) {
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8081/dbotica-spring/doctor/logout",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.setRequestHeader("Accept", "application/json");
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(response) {
+                    localStorage.clear();
+                    window.location.replace("login.html");
+                }
+            });
         });
 
 
-  
-});
 
-</script>
-<script>
-function daysToDate(days){
+    });
+    </script>
+    <script>
+    function daysToDate(days) {
 
-   var date = new Date();
-  var newDate = new Date(date.getTime() + days*24*60*60*1000);
+        var date = new Date();
+        var newDate = new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
 
         console.log(newDate);
 
@@ -1491,26 +1477,26 @@ function daysToDate(days){
 
     function formClear() {
 
-  $('#prescription-form').find('input:text').val('');
-  $('#prescription-form').find('input:button').removeClass('btn-success').addClass('btn-default');
-  $('#prescription-form-information').css('display','none');
-  $('#prescription-form-information-text').empty();
-  $('#prescription-form-units').val('1');
-  $('#prescription-form-drug-type').html('');
-  $('#prescription-form-measurmnt').html('Qunt');
-  $('#prescription-form-si').val('');
-  //console.log('claered');
+        $('#prescription-form').find('input:text').val('');
+        $('#prescription-form').find('input:button').removeClass('btn-success').addClass('btn-default');
+        $('#prescription-form-information').css('display', 'none');
+        $('#prescription-form-information-text').empty();
+        $('#prescription-form-units').val('1');
+        $('#prescription-form-drug-type').html('');
+        $('#prescription-form-measurmnt').html('Qunt');
+        $('#prescription-form-si').val('');
+        //console.log('claered');
 
-}
-</script>
-<script>
-$('#patient-search').click(function(e){
- e.preventDefault();
- $('#patient-search-result').text('');
+    }
+    </script>
+    <script>
+    $('#patient-search').click(function(e) {
+        e.preventDefault();
+        $('#patient-search-result').text('');
 
- var uniId = $("#patient-search-uniqueid").val();
- var phn = $("#patient-search-telephone").val();
- 
+        var uniId = $("#patient-search-uniqueid").val();
+        var phn = $("#patient-search-telephone").val();
+
 
         $.ajax({
             type: "GET",
@@ -1560,11 +1546,8 @@ $('#patient-search').click(function(e){
             }
         }
     }
-
-
-
-</script>
-<!--  <script type="text/javascript">
+    </script>
+    <!--  <script type="text/javascript">
   $("#modal_trigger").leanModal({top : 200, overlay : 0.6, closeButton: ".modal_close" });
 
   $(function(){
