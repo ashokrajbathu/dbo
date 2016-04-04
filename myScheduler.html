@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | General Form Elements</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.5 -->
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>dbotica</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
     folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="entryPrescription.css">
-
+    <link rel="stylesheet" type="text/css" href="myScheduler.css">
     <!-- fullCalendar 2.2.5-->
     <link rel="stylesheet" href="plugins/fullcalendar/fullcalendar.min.css">
     <link rel="stylesheet" href="plugins/fullcalendar/fullcalendar.print.css" media="print">
-
     <!--Datepicker srcs -->
     <link rel="stylesheet" href="css/datepicker.css" type="text/css" />
-  <!--  <link rel="stylesheet" media="screen" type="text/css" href="css/layout.css" />-->
-    
-  <script type="text/javascript" src="js/jquery.js"></script>
-  <script type="text/javascript" src="js/datepicker.js"></script>
+    <!--  <link rel="stylesheet" media="screen" type="text/css" href="css/layout.css" />-->
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/datepicker.js"></script>
     <script type="text/javascript" src="js/eye.js"></script>
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/layout.js?ver=1.0.2"></script>
@@ -38,32 +37,31 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-      </head>
-      <body class="hold-transition skin-blue sidebar-mini control-sidebar-open">
+</head>
 
-        <div class="wrapper">
-
-          <header class="main-header">
+<body class="hold-transition skin-blue sidebar-mini control-sidebar-open">
+    <div class="wrapper">
+        <header id="header" class="fixed-content main-header">
             <!-- Logo -->
-            <a href="starter.html" class="logo"  style="width: 13%;">
-              <!-- mini logo for sidebar mini 50x50 pixels -->
-              <span class="logo-mini"><b>db</b></span>
-              <!-- logo for regular state and mobile devices -->
-              <span class="logo-lg"><b>dbotica</b></span>
+            <a href="starter.html" class="logo" style="width: 13%;">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>db</b></span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><b>dbotica</b></span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
-            <nav class="navbar navbar-static-top" role="navigation"  style="margin-left: 13%;">
-              <!-- Sidebar toggle button-->
-              <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </a>
-              <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                  <!-- Messages: style can be found in dropdown.less-->
-              <!-- <li class="dropdown messages-menu">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-left: 13%;">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- Messages: style can be found in dropdown.less-->
+                        <!-- <li class="dropdown messages-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-envelope-o"></i>
                   <span class="label label-success">4</span>
@@ -138,8 +136,8 @@
                   <li class="footer"><a href="#">See All Messages</a></li>
                 </ul>
               </li> -->
-              <!-- Notifications: style can be found in dropdown.less -->
-              <!-- <li class="dropdown notifications-menu">
+                        <!-- Notifications: style can be found in dropdown.less -->
+                        <!-- <li class="dropdown notifications-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-bell-o"></i>
                   <span class="label label-warning">10</span>
@@ -180,8 +178,8 @@
                   <li class="footer"><a href="#">View all</a></li>
                 </ul>
               </li> -->
-              <!-- Tasks: style can be found in dropdown.less -->
-              <!-- <li class="dropdown tasks-menu">
+                        <!-- Tasks: style can be found in dropdown.less -->
+                        <!-- <li class="dropdown tasks-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-flag-o"></i>
                   <span class="label label-danger">9</span>
@@ -250,197 +248,183 @@
                   </li>
                 </ul>
               </li> -->
-              <!-- User Account: style can be found in dropdown.less -->
-                  <li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                      <span class="hidden-xs">Doctor 1</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <!-- User image -->
-                      <li class="user-header">
-                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                        <p>
-                          Doctor 1 - Cardiologist
-                          <small>Member since Feb 2016</small>
-                        </p>
-                      </li>
-                      <!-- Menu Body -->
-                      <li class="user-body">
-                        <div class="col-xs-4 text-center">
-                          <a href="#">Followers</a>
-                        </div>
-                        <div class="col-xs-4 text-center">
-                          <a href="#">Health Tips</a>
-                        </div>
-                        <div class="col-xs-4 text-center">
-                          <a href="#">Friends</a>
-                        </div>
-                      </li>
-                      <!-- Menu Footer-->
-                      <li class="user-footer">
-                        <div class="pull-left">
-                          <a href="doctorProfile.html" class="btn btn-default btn-flat">Profile</a>
-                        </div>
-                        <div class="pull-right">
-                          <a href="#" class="btn btn-default btn-flat" id="logoutButton">Sign out</a>
-                        </div>
-                      </li>
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                                <span class="hidden-xs">Doctor 1</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                    <p id="doctorName">
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="doctorProfile.html" class="btn btn-default btn-flat">Profile</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="#" class="btn btn-default btn-flat" id="logoutButton">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
-                  </li>
-                 </ul>
-              </div>
+                </div>
             </nav>
-          </header>
-          <!-- Left side column. contains the logo and sidebar -->
-          <aside class="main-sidebar" style="width: 13%;">
-
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar" style="width: 13%;">
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
-
-              <!-- Sidebar user panel (optional) -->
-              <div class="user-panel">
-                <div class="pull-left image">
-                  <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="pull-left info">
+                        <p>Doctor 1</p>
+                        <!-- Status -->
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
                 </div>
-                <div class="pull-left info">
-                  <p>Doctor 1</p>
-                  <!-- Status -->
-                  <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-                </div>
-              </div>
-
-              <!-- Sidebar Menu -->
-              <ul class="sidebar-menu">
-                <li class="header">Welcome</li>
-                <!-- Optionally, you can add icons to the links -->
-                <li class="active"><a href="entryPrescriptions.html"><i class="fa fa-link"></i> <span>Drug prescription</span></a></li>
-                <li><a href="myPrescriptions.html"><i class="fa fa-link"></i> <span>My Prescriptions</span></a></li> 
-                <!--  <li class="active"><a href="../forms/PatientSearch.html"><i class="fa fa-link"></i> <span>Patient Search</span></a></li>  -->
-                <li class="treeview">
-                 
-                </li>
-              </ul><!-- /.sidebar-menu -->
+                <!-- Sidebar Menu -->
+                <ul class="sidebar-menu">
+                    <li class="header">Welcome</li>
+                    <!-- Optionally, you can add icons to the links -->
+                    <li><a href="entryPrescriptions.html"><i class="fa fa-link"></i> <span>Drug prescription</span></a></li>
+                    <li><a href="myPrescriptions.html"><i class="fa fa-link"></i> <span>My Prescriptions</span></a></li>
+                    <li><a href="myPatients.html"><i class="fa fa-link"></i> <span>My Patients</span></a></li>
+                    <li class="active"><a href="myScheduler.html"><i class="fa fa-link"></i> <span>My Scheduler</span></a></li>
+                    <li><a href="referADoctor.html"><i class="fa fa-link"></i> <span>Refer dbotica</span></a></li>
+                    <!--  <li class="active"><a href="../forms/PatientSearch.html"><i class="fa fa-link"></i> <span>Patient Search</span></a></li>  -->
+                    <li class="treeview">
+                    </li>
+                </ul>
+                <!-- /.sidebar-menu -->
             </section>
             <!-- /.sidebar -->
-          </aside>
-
-          <!-- Content Wrapper. Contains page content -->
-          <div class="content-wrapper" >
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper" style="margin-left:13%;">
             <!-- Content Header (Page header) -->
             <section class="content-header">
-      <div class="col-md-14">
-             <div class="box">
-              <h3 class="box-title"></h3>
-              <button type="submit" class="btn btn-primary pull-right"  id="prescription-reset" >Reset</button>
-            </div><!-- /.box-header -->
-          </div>
-              <h1>
+                <div class="col-md-14">
+                    <div class="box">
+                        <h3 class="box-title"></h3>
+                        <button type="submit" class="btn btn-primary pull-right" id="prescription-reset">Reset</button>
+                    </div>
+                    <!-- /.box-header -->
+                </div>
+                <h1>
                 Calendar
                 <!-- <small>Preview</small> -->
               </h1>
-
-          
-
-      <section class="content">
-          <div class="row">
-            <div class="col-md-3">
-              <div class="box box-solid">
-                <div class="box-header with-border">
-                  <h4 class="box-title">Draggable Events</h4>
-                </div>
-                <div class="box-body">
-                  <!-- the events -->
-                  <div id="external-events">
-                    <div class="external-event bg-green">Lunch</div>
-                    <div class="external-event bg-yellow">Go home</div>
-                    <div class="external-event bg-aqua">Do homework</div>
-                    <div class="external-event bg-light-blue">Work on UI design</div>
-                    <div class="external-event bg-red">Sleep tight</div>
-                    <div class="checkbox">
-                      <label for="drop-remove">
-                        <input type="checkbox" id="drop-remove">
-                        remove after drop
-                      </label>
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="box box-solid">
+                                <div class="box-header with-border">
+                                    <h4 class="box-title">Draggable Events</h4>
+                                </div>
+                                <div class="box-body">
+                                    <!-- the events -->
+                                    <div id="external-events">
+                                        <div class="external-event bg-green">Lunch</div>
+                                        <div class="external-event bg-yellow">Go home</div>
+                                        <div class="external-event bg-aqua">Do homework</div>
+                                        <div class="external-event bg-light-blue">Work on UI design</div>
+                                        <div class="external-event bg-red">Sleep tight</div>
+                                        <div class="checkbox">
+                                            <label for="drop-remove">
+                                                <input type="checkbox" id="drop-remove"> remove after drop
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /. box -->
+                            <div class="box box-solid">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Create Event</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
+                                        <!--<button type="button" id="color-chooser-btn" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown">Color <span class="caret"></span></button>-->
+                                        <ul class="fc-color-picker" id="color-chooser">
+                                            <li><a class="text-aqua" href="#"><i class="fa fa-square"></i></a></li>
+                                            <li><a class="text-blue" href="#"><i class="fa fa-square"></i></a></li>
+                                            <li><a class="text-light-blue" href="#"><i class="fa fa-square"></i></a></li>
+                                            <li><a class="text-teal" href="#"><i class="fa fa-square"></i></a></li>
+                                            <li><a class="text-yellow" href="#"><i class="fa fa-square"></i></a></li>
+                                            <li><a class="text-orange" href="#"><i class="fa fa-square"></i></a></li>
+                                            <li><a class="text-green" href="#"><i class="fa fa-square"></i></a></li>
+                                            <li><a class="text-lime" href="#"><i class="fa fa-square"></i></a></li>
+                                            <li><a class="text-red" href="#"><i class="fa fa-square"></i></a></li>
+                                            <li><a class="text-purple" href="#"><i class="fa fa-square"></i></a></li>
+                                            <li><a class="text-fuchsia" href="#"><i class="fa fa-square"></i></a></li>
+                                            <li><a class="text-muted" href="#"><i class="fa fa-square"></i></a></li>
+                                            <li><a class="text-navy" href="#"><i class="fa fa-square"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <div class="input-group">
+                                        <input id="new-event" type="text" class="form-control" placeholder="Event Title">
+                                        <div class="input-group-btn">
+                                            <button id="add-new-event" type="button" class="btn btn-primary btn-flat">Add</button>
+                                        </div>
+                                        <!-- /btn-group -->
+                                    </div>
+                                    <!-- /input-group -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-9">
+                            <div class="box box-primary">
+                                <div class="box-body no-padding">
+                                    <!-- THE CALENDAR -->
+                                    <div id="calendar"></div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /. box -->
+                        </div>
+                        <!-- /.col -->
                     </div>
-                  </div>
-                </div><!-- /.box-body -->
-              </div><!-- /. box -->
-              <div class="box box-solid">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Create Event</h3>
-                </div>
-                <div class="box-body">
-                  <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
-                    <!--<button type="button" id="color-chooser-btn" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown">Color <span class="caret"></span></button>-->
-                    <ul class="fc-color-picker" id="color-chooser">
-                      <li><a class="text-aqua" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-blue" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-light-blue" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-teal" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-yellow" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-orange" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-green" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-lime" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-red" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-purple" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-fuchsia" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-muted" href="#"><i class="fa fa-square"></i></a></li>
-                      <li><a class="text-navy" href="#"><i class="fa fa-square"></i></a></li>
-                    </ul>
-                  </div><!-- /btn-group -->
-                  <div class="input-group">
-                    <input id="new-event" type="text" class="form-control" placeholder="Event Title">
-                    <div class="input-group-btn">
-                      <button id="add-new-event" type="button" class="btn btn-primary btn-flat">Add</button>
-                    </div><!-- /btn-group -->
-                  </div><!-- /input-group -->
-                </div>
-              </div>
-            </div><!-- /.col -->
-            <div class="col-md-9">
-              <div class="box box-primary">
-                <div class="box-body no-padding">
-                  <!-- THE CALENDAR -->
-                  <div id="calendar"></div>
-                </div><!-- /.box-body -->
-              </div><!-- /. box -->
-            </div><!-- /.col -->
-          </div><!-- /.row -->
-        </section><!-- /.content -->
-      </div>
-
-
-
-<!-- Main content -->
-
-</div><!-- /.content-wrapper -->
-<footer class="main-footer" >
-  <div class="pull-right hidden-xs">
-    <b>Version</b> 1.0.0
-  </div>
-  <strong>Copyright &copy; 2015-2016 <a href="http://dbotica.com">Dbotica</a>.</strong> All rights reserved.
-</footer>
-
-<!-- Control Sidebar -->
-
-<!-- Control Sidebar -->
-<!-- /.control-sidebar -->
-      <!-- Add the sidebar's background. This div must be placed
+                    <!-- /.row -->
+                </section>
+                <!-- /.content -->
+        </div>
+        <!-- Main content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 1.0.0
+        </div>
+        <strong>Copyright &copy; 2015-2016 <a href="http://dbotica.com">Dbotica</a>.</strong> All rights reserved.
+    </footer>
+    <!-- Control Sidebar -->
+    <!-- Control Sidebar -->
+    <!-- /.control-sidebar -->
+    <!-- Add the sidebar's background. This div must be placed
       immediately after the control sidebar -->
-      <div class="control-sidebar-bg"></div>
-    </div><!-- ./wrapper -->
-
+    <div class="control-sidebar-bg"></div>
+    </div>
+    <!-- ./wrapper -->
     <!--added for register pop up --->
-
-
-
     <!-- jQuery 2.1.4 -->
     <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <!-- Bootstrap 3.3.5 -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="bootstrap/js/jquery.cookie.js"></script>
-      <!-- jQuery UI 1.11.4 -->
+    <!-- jQuery UI 1.11.4 -->
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <!-- Slimscroll -->
     <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
@@ -449,464 +433,468 @@
     <!-- DataTables -->
     <script src="plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
-
     <!-- fullCalendar 2.2.5 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
     <script src="plugins/fullcalendar/fullcalendar.min.js"></script>
     <script src="plugins/fullcalendar/fullcalendar.js"></script>
-    
-
-
     <script src="dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="dist/js/demo.js"></script>
-  <!-- IndexedDB for local storage-->
-  <script src="indexedDB/indexedDbotica.js"></script>
-  
-
+    <!-- IndexedDB for local storage-->
+    <script src="indexedDB/indexedDbotica.js"></script>
     <script>
+    $(document).ready(function() {
+        var doctorName = localStorage.getItem('firstName');
+        console.log("doctor name is----" + doctorName);
+        $("#doctorName").text(doctorName);
 
+        $(window).scroll(function() {
+            var sticky = $('.fixed-content'),
+                scroll = $(window).scrollTop();
 
-
-  $(document).ready(function() {
-
-
- var date = new Date();
-    var d = date.getDate(),
-                m = date.getMonth(),
-                y = date.getFullYear();
-var event = Array();
-// getEvents();
-//event.push({title:"Lunch" , start: new Date(y,m,d ,9,0), backgroundColor: "#f39c12",borderColor: "#f39c12"});
-// $.ajax({ 
-//               type: "GET",
-//               url: "http://localhost:8081/dbotica-spring/doctor/getMyCalendar?start=2016-04-01&end=2016-04-05",
-//               //data: {'doctorId': doctorId},
-//               //async : false,
-//               success: function(response){ 
-//                 if(response.success === true && response.response.length > 2)
-//                 {
-//                   var data = $.parseJSON(response.response);                  
-                  
-//                   var date = new Date(data[0]['scheduleTime']);
-//                 event = Array();
-//                 for (var i in data) 
-//                     event.push({title:"Lunch" , start: new Date(y,m,d ,9,0), backgroundColor: "#f39c12",borderColor: "#f39c12"});
-
-//                   console.log(event[0]);
-//                   event = JSON.stringify(event);
-
-
-//                  } else {
-//                   alert("No Events to show");
-//                 }
-                  
-//             },
-//             error: function() {
-//                 alert('Error while fetching events!');
-//             },
-//             });
-
-    
-    /* initialize the external events
-    -----------------------------------------------------------------*/
-
-   function ini_events(ele) {
-          ele.each(function () {
-     
-
-      // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-            // it doesn't need to have a start or end
-            var eventObject = {
-              title: $.trim($(this).text()) // use the element's text as the event title
-            };
-
-            // store the Event Object in the DOM element so we can get to it later
-            $(this).data('eventObject', eventObject);
-
-      // make the event draggable using jQuery UI
-      $(this).draggable({
-        zIndex: 999,
-        revert: true,      // will cause the event to go back to its
-        revertDuration: 0  //  original position after the drag
-      });
-
-    });
-    }
-           ini_events($('#external-events div.external-event'));
-
-    /* initialize the calendar
-    -----------------------------------------------------------------*/
-
-   
-
-    
-     // var json_data ={
-     //          title: 'All Day Event',
-     //          start: new Date(y, m, 1),
-     //          backgroundColor: "#f56954",
-     //          borderColor: "#f56954" };
-            
-
-        
-    $('#calendar').fullCalendar({
-      header: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'month,agendaWeek,agendaDay'
-      },
-      buttonText: {
-            today: 'today',
-            month: 'month',
-            week: 'week',
-            day: 'day'
-          },
-                eventSources: [
-
-        // your event source
-        {
-            url: 'http://localhost:8081/dbotica-spring/doctor/getMyCalendar',
-            type: 'GET',
-                          xhrFields: {
-                withCredentials: true
-            },
-            error: function() {
-                alert('there was an error while fetching events!');
-            },
-            color: 'yellow',   // a non-ajax option
-            textColor: 'black' // a non-ajax option
-        }
-        ],
-    //   events: function(start, end, timezone, callback) {
-    //     //console.log('hi');
-    //     var date = new Date();
-    //     start = new Date();
-    //     //start = date.getTime();
-    //     endDate = new Date(date.getTime() + 7*24*60*60*1000);
-    //     console.log(endDate +' end date');
-    //     $.ajax({ 
-    //           type: "GET",
-    //           url: "http://localhost:8081/dbotica-spring/doctor/getMyCalendar?start=2016-04-01&end=2016-04-05",
-    //           //data: {'doctorId': doctorId},
-    //           //async : false,
-    //           success: function(response){ 
-    //             if(response.success === true && response.response.length > 2)
-    //             {
-    //               var data = $.parseJSON(response.response);                  
-                  
-    //               var date = new Date(data[0]['scheduleTime']);
-    //             event = Array();
-    //             for (var i in data) 
-    //                 event.push({title:"Lunch" , start: new Date(y,m,d ,9,0), backgroundColor: "#f39c12",borderColor: "#f39c12"});
-
-    //               console.log(event[0]);
-    //               event = JSON.stringify(event);
-
-
-    //              } else {
-    //               alert("No Events to show");
-    //             }
-                  
-    //         },
-    //         error: function() {
-    //             alert('Error while fetching events!');
-    //         },
-    //         });
-        
-    
-
-         
-    // },
-    // events : event,
-        // events: [
-        //     {
-        //       title: 'All Day Event',
-        //       start: new Date(y, m, d, 14, 0),
-        //       backgroundColor: "#f56954", //red
-        //       borderColor: "#f56954" //red
-        //     },
-        //     {
-        //       title: 'Long Event',
-        //       start: new Date(y, m, d ),
-        //       end: new Date(y, m, d ),
-        //       backgroundColor: "#f39c12", //yellow
-        //       borderColor: "#f39c12" //yellow
-        //     },
-        //   ],
-      editable: true,
-      droppable: true, // this allows things to be dropped onto the calendar
-       dayClick: function(date, allDay, jsEvent, view) {
-            //console.log(date.getFullYear()+date.getDate());
-
-           //console.log(view);
-            //if (view === "month") {
-                $('#calendar').fullCalendar('gotoDate', date);
-                $('#calendar').fullCalendar('changeView', 'agendaDay');
-            //}
-      },     
-      eventClick: function(calEvent, jsEvent, view)
-                    {
-                        var r=confirm("Delete " + calEvent.title);
-                        console.log(calEvent._id);
-                        if (r===true)
-                          {
-                              $('#calendar').fullCalendar('removeEvents', calEvent._id);
-
-                          }
-      },
-      eventDrop: function(event, delta, revertFunc) {
-
-        // console.log(event.id + " was dropped on " + event.start.format());
-        console.log('in event drop');
-        var patientInfoCookie = $.cookie('currentPatientInfo');
-        var patientInfo = $.parseJSON(patientInfoCookie);
-         
-          $.ajax({ 
-              type: "POST",
-              url: "http://localhost:8081/dbotica-spring/doctor/updateCalendarEvent",
-              //data:JSON.stringify( {'calendarEvent': event}),
-               beforeSend: function(xhr) {
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.setRequestHeader("Accept", "application/json");
-            },
-              async : false,
-              xhrFields: {
-                withCredentials: true
-            },
-            data: JSON.stringify({
-                'doctorId' : localStorage.getItem('doctorId'),
-                'id' : event.calendarEventId,
-                'patientId': patientInfo[0].id,
-                'startTime': "1469707667280",
-                'label': "NEW Label"
-            }),
-              success: function(response){ 
-                if(response.success === true )
-                {
-                   alert("Event Updated!");
-
-                 } else {
-                  alert("Events didnot get updated");
-                }
-                  
-            },
-            error: function(e) {
-                alert('Error while moving events!');
-            },
-            
+            if (scroll > 1) sticky.addClass('fixed');
+            else sticky.removeClass('fixed');
         });
 
 
-        
-      },
-     eventResize: function(event, delta, revertFunc) {
+        var date = new Date();
+        var d = date.getDate(),
+            m = date.getMonth(),
+            y = date.getFullYear();
+        var event = Array();
+        // getEvents();
+        //event.push({title:"Lunch" , start: new Date(y,m,d ,9,0), backgroundColor: "#f39c12",borderColor: "#f39c12"});
+        // $.ajax({ 
+        //               type: "GET",
+        //               url: "http://localhost:8081/dbotica-spring/doctor/getMyCalendar?start=2016-04-01&end=2016-04-05",
+        //               //data: {'doctorId': doctorId},
+        //               //async : false,
+        //               success: function(response){ 
+        //                 if(response.success === true && response.response.length > 2)
+        //                 {
+        //                   var data = $.parseJSON(response.response);                  
 
-        console.log('Resize : '+event.id + " end is now " + event.end.format());
+        //                   var date = new Date(data[0]['scheduleTime']);
+        //                 event = Array();
+        //                 for (var i in data) 
+        //                     event.push({title:"Lunch" , start: new Date(y,m,d ,9,0), backgroundColor: "#f39c12",borderColor: "#f39c12"});
+
+        //                   console.log(event[0]);
+        //                   event = JSON.stringify(event);
 
 
-    },
-      drop: function(date) {
-        // is the "remove after drop" checkbox checked?
-         // retrieve the dropped element's stored Event Object
-         console.log('in drop');
-            var originalEventObject = $(this).data('eventObject');
+        //                  } else {
+        //                   alert("No Events to show");
+        //                 }
 
-            // we need to copy it, so that multiple events don't have a reference to the same object
-            var copiedEventObject = $.extend({}, originalEventObject);
+        //             },
+        //             error: function() {
+        //                 alert('Error while fetching events!');
+        //             },
+        //             });
 
-            // assign it the date that was reported
-            copiedEventObject.start = date;
-            //copiedEventObject.allDay = allDay;
-            copiedEventObject.backgroundColor = $(this).css("background-color");
-            copiedEventObject.borderColor = $(this).css("border-color"); 
-           //    console.log(copiedEventObject._id);
-             $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-            
-        if ($('#drop-remove').is(':checked')) {
-         
-          $(this).remove();
-      }
-      }
-    });
 
-  /* ADDING EVENTS */
+        /* initialize the external events
+        -----------------------------------------------------------------*/
+
+        function ini_events(ele) {
+            ele.each(function() {
+
+
+                // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+                // it doesn't need to have a start or end
+                var eventObject = {
+                    title: $.trim($(this).text()) // use the element's text as the event title
+                };
+
+                // store the Event Object in the DOM element so we can get to it later
+                $(this).data('eventObject', eventObject);
+
+                // make the event draggable using jQuery UI
+                $(this).draggable({
+                    zIndex: 999,
+                    revert: true, // will cause the event to go back to its
+                    revertDuration: 0 //  original position after the drag
+                });
+
+            });
+        }
+        ini_events($('#external-events div.external-event'));
+
+        /* initialize the calendar
+        -----------------------------------------------------------------*/
+
+
+
+
+        // var json_data ={
+        //          title: 'All Day Event',
+        //          start: new Date(y, m, 1),
+        //          backgroundColor: "#f56954",
+        //          borderColor: "#f56954" };
+
+
+
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            buttonText: {
+                today: 'today',
+                month: 'month',
+                week: 'week',
+                day: 'day'
+            },
+            eventSources: [
+
+                // your event source
+                {
+                    url: 'http://localhost:8081/dbotica-spring/doctor/getMyCalendar',
+                    type: 'GET',
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    error: function() {
+                        alert('there was an error while fetching events!');
+                    },
+                    color: 'yellow', // a non-ajax option
+                    textColor: 'black' // a non-ajax option
+                }
+            ],
+            //   events: function(start, end, timezone, callback) {
+            //     //console.log('hi');
+            //     var date = new Date();
+            //     start = new Date();
+            //     //start = date.getTime();
+            //     endDate = new Date(date.getTime() + 7*24*60*60*1000);
+            //     console.log(endDate +' end date');
+            //     $.ajax({ 
+            //           type: "GET",
+            //           url: "http://localhost:8081/dbotica-spring/doctor/getMyCalendar?start=2016-04-01&end=2016-04-05",
+            //           //data: {'doctorId': doctorId},
+            //           //async : false,
+            //           success: function(response){ 
+            //             if(response.success === true && response.response.length > 2)
+            //             {
+            //               var data = $.parseJSON(response.response);                  
+
+            //               var date = new Date(data[0]['scheduleTime']);
+            //             event = Array();
+            //             for (var i in data) 
+            //                 event.push({title:"Lunch" , start: new Date(y,m,d ,9,0), backgroundColor: "#f39c12",borderColor: "#f39c12"});
+
+            //               console.log(event[0]);
+            //               event = JSON.stringify(event);
+
+
+            //              } else {
+            //               alert("No Events to show");
+            //             }
+
+            //         },
+            //         error: function() {
+            //             alert('Error while fetching events!');
+            //         },
+            //         });
+
+
+
+
+            // },
+            // events : event,
+            // events: [
+            //     {
+            //       title: 'All Day Event',
+            //       start: new Date(y, m, d, 14, 0),
+            //       backgroundColor: "#f56954", //red
+            //       borderColor: "#f56954" //red
+            //     },
+            //     {
+            //       title: 'Long Event',
+            //       start: new Date(y, m, d ),
+            //       end: new Date(y, m, d ),
+            //       backgroundColor: "#f39c12", //yellow
+            //       borderColor: "#f39c12" //yellow
+            //     },
+            //   ],
+            editable: true,
+            droppable: true, // this allows things to be dropped onto the calendar
+            dayClick: function(date, allDay, jsEvent, view) {
+                //console.log(date.getFullYear()+date.getDate());
+
+                //console.log(view);
+                //if (view === "month") {
+                $('#calendar').fullCalendar('gotoDate', date);
+                $('#calendar').fullCalendar('changeView', 'agendaDay');
+                //}
+            },
+            eventClick: function(calEvent, jsEvent, view) {
+                var r = confirm("Delete " + calEvent.title);
+                console.log(calEvent._id);
+                if (r === true) {
+                    $('#calendar').fullCalendar('removeEvents', calEvent._id);
+
+                }
+            },
+            eventDrop: function(event, delta, revertFunc) {
+
+                // console.log(event.id + " was dropped on " + event.start.format());
+                console.log('in event drop');
+                var patientInfoCookie = $.cookie('currentPatientInfo');
+                var patientInfo = $.parseJSON(patientInfoCookie);
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8081/dbotica-spring/doctor/updateCalendarEvent",
+                    //data:JSON.stringify( {'calendarEvent': event}),
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("Accept", "application/json");
+                    },
+                    async: false,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    data: JSON.stringify({
+                        'doctorId': localStorage.getItem('doctorId'),
+                        'id': event.calendarEventId,
+                        'patientId': patientInfo[0].id,
+                        'startTime': "1469707667280",
+                        'label': "NEW Label"
+                    }),
+                    success: function(response) {
+                        if (response.success === true) {
+                            alert("Event Updated!");
+
+                        } else {
+                            alert("Events didnot get updated");
+                        }
+
+                    },
+                    error: function(e) {
+                        alert('Error while moving events!');
+                    },
+
+                });
+
+
+
+            },
+            eventResize: function(event, delta, revertFunc) {
+
+                console.log('Resize : ' + event.id + " end is now " + event.end.format());
+
+
+            },
+            drop: function(date) {
+                // is the "remove after drop" checkbox checked?
+                // retrieve the dropped element's stored Event Object
+                console.log('in drop');
+                var originalEventObject = $(this).data('eventObject');
+
+                // we need to copy it, so that multiple events don't have a reference to the same object
+                var copiedEventObject = $.extend({}, originalEventObject);
+
+                // assign it the date that was reported
+                copiedEventObject.start = date;
+                //copiedEventObject.allDay = allDay;
+                copiedEventObject.backgroundColor = $(this).css("background-color");
+                copiedEventObject.borderColor = $(this).css("border-color");
+                //    console.log(copiedEventObject._id);
+                $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+                if ($('#drop-remove').is(':checked')) {
+
+                    $(this).remove();
+                }
+            }
+        });
+
+        /* ADDING EVENTS */
         var currColor = "#3c8dbc"; //Red by default
         //Color chooser button
         var colorChooser = $("#color-chooser-btn");
-        $("#color-chooser > li > a").click(function (e) {
-          e.preventDefault();
-          //Save color
-          currColor = $(this).css("color");
-          //Add color effect to button
-          $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
+        $("#color-chooser > li > a").click(function(e) {
+            e.preventDefault();
+            //Save color
+            currColor = $(this).css("color");
+            //Add color effect to button
+            $('#add-new-event').css({
+                "background-color": currColor,
+                "border-color": currColor
+            });
         });
 
 
-         var date1 = new Date();
+        var date1 = new Date();
 
-       $("#add-new-event").click(function (e) {
+        $("#add-new-event").click(function(e) {
 
-          e.preventDefault();
-        //  Get value and make sure it is not null
-          var val = $("#new-event").val();
-          if (val.length == 0) {
-            return;
-          }
-          //create event
+            e.preventDefault();
+            //  Get value and make sure it is not null
+            var val = $("#new-event").val();
+            if (val.length == 0) {
+                return;
+            }
+            //create event
 
-           var event = $("<div />");
-          event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
-          event.html(val);
+            var event = $("<div />");
+            event.css({
+                "background-color": currColor,
+                "border-color": currColor,
+                "color": "#fff"
+            }).addClass("external-event");
+            event.html(val);
 
-     
+
             if ($('#drop-remove').is(':checked')) {
-              // if so, remove the element from the "Draggable Events" list
-              $(this).remove();
+                // if so, remove the element from the "Draggable Events" list
+                $(this).remove();
             }
 
 
 
-          // e.preventDefault();
-          //Get value and make sure it is not null
-          var val = $("#new-event").val();
-          if (val.length == 0) {
-            return;
-          }
+            // e.preventDefault();
+            //Get value and make sure it is not null
+            var val = $("#new-event").val();
+            if (val.length == 0) {
+                return;
+            }
 
-        //  Create events
-        
-          $('#external-events').prepend(event);
+            //  Create events
 
-           ini_events(event);
+            $('#external-events').prepend(event);
 
-
-          //Remove event from text input
-          $("#new-event").val("");
-        }); 
+            ini_events(event);
 
 
+            //Remove event from text input
+            $("#new-event").val("");
+        });
 
- }); 
-  
 
-    
-</script>
 
-<script>
+    });
+    </script>
+    <script>
+    function getEvents() {
+        console.log('in getEvents');
+        var date = new Date();
+        var d = date.getDate(),
+            m = date.getMonth(),
+            y = date.getFullYear();
 
-  function getEvents()
-  {
-    console.log('in getEvents');
-     var date = new Date();
-    var d = date.getDate(),
-                m = date.getMonth(),
-                y = date.getFullYear();
-
-    $.ajax({ 
-              type: "GET",
-              url: "http://localhost:8081/dbotica-spring/doctor/getMyCalendar?start=2016-04-01&end=2016-07-30",
-              //data: {'doctorId': doctorId},
-             // async : false,
-              xhrFields: {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8081/dbotica-spring/doctor/getMyCalendar?start=2016-04-01&end=2016-07-30",
+            //data: {'doctorId': doctorId},
+            // async : false,
+            xhrFields: {
                 withCredentials: true
             },
-              success: function(response){ 
-                if(response.success === true && response.response.length > 2)
-                {
-                  var data = $.parseJSON(response.response);     
-                  console.log(data); 
-                  console.log(data[0]['calendarEvent']['startTime']);            
-                  
-                  
+            success: function(response) {
+                if (response.success === true && response.response.length > 2) {
+                    var data = $.parseJSON(response.response);
+                    console.log(data);
+                    console.log(data[0]['calendarEvent']['startTime']);
 
-                event = Array();
-                for (i in data) 
-                {
-                  var date = new Date(data[i]['calendarEvent']['startTime']);
-                  d = date.getDate();
-                  m = date.getMonth();
-                  y = date.getFullYear();
-                  st_hrs = date.getHours();
-                  st_mm = date.getMinutes();
-                  console.log(new Date(data[0]['calendarEvent']['startTime']));
 
-                 // console.log(data[i]['patient']['userName']);
-                    event.push({title: data[i]['patient']['userName'],calendarEventId:data[i]['calendarEvent']['id'], start: new Date(y,m,d ,st_hrs,st_mm), backgroundColor: "#f39c12",borderColor: "#000000"});
-                    //console.log(event.length);
-                 
+
+                    event = Array();
+                    for (i in data) {
+                        var date = new Date(data[i]['calendarEvent']['startTime']);
+                        d = date.getDate();
+                        m = date.getMonth();
+                        y = date.getFullYear();
+                        st_hrs = date.getHours();
+                        st_mm = date.getMinutes();
+                        console.log(new Date(data[0]['calendarEvent']['startTime']));
+
+                        // console.log(data[i]['patient']['userName']);
+                        event.push({
+                            title: data[i]['patient']['userName'],
+                            calendarEventId: data[i]['calendarEvent']['id'],
+                            start: new Date(y, m, d, st_hrs, st_mm),
+                            backgroundColor: "#f39c12",
+                            borderColor: "#000000"
+                        });
+                        //console.log(event.length);
+
+                    }
+
+                    $('#calendar').fullCalendar('addEventSource', event);
+
+
+                } else {
+                    alert("No Events to show");
                 }
 
-                  $('#calendar').fullCalendar( 'addEventSource', event );
-
-
-                 } else {
-                  alert("No Events to show");
-                }
-                  
             },
             error: function(e) {
                 alert('Error while fetching events!');
             },
-            
+
         });
 
-  }
+    }
 
-        
-  //   $('#calendar').fullCalendar({
-  //     eventSources: [
 
-  //       // your event source
-  //       {
-  //           url: 'http://localhost:8081/dbotica-spring/doctor/getMyCalendar',
-  //           type: 'GET',
-  //                         xhrFields: {
-  //               withCredentials: true
-  //           },
-  //           error: function() {
-  //               alert('there was an error while fetching events!');
-  //           },
-  //           color: 'yellow',   // a non-ajax option
-  //           textColor: 'black' // a non-ajax option
-  //       }
-  //       ]
-  // });
-  /* Initialise update event button */
-// function initialise_update_event(){
-//   var test = $('#calendar').fullCalendar( 'clientEvents');
-//   //Bind event
-//   $('#btn_update_event').bind('click', function(){
- 
-//     //Create vars
-//     var current_event_id = $('#txt_current_event').val();
- 
-//     //Check if value found
-//     if(current_event_id){
- 
-//       //Retrieve current event
-//       var current_event = $('#calendar').fullCalendar('clientEvents', current_event_id);
- 
-//       //Check if found
-//       if(current_event && current_event.length == 1){
- 
-//         //Retrieve current event from array
-//         current_event = current_event[0];
- 
-//         //Set values
-//         current_event.backgroundColor = $('#txt_background_color').val();
-//         current_event.textColor = $('#txt_text_color').val();
-//         current_event.borderColor = $('#txt_border_color').val();
-//         current_event.title = $('#txt_title').val();
-//         current_event.description = $('#txt_description').val();
-//         current_event.price = $('#txt_price').val();
-//         current_event.available = $('#txt_available').val();
- 
-//         //Update event
-//         $('#calendar').fullCalendar('updateEvent', current_event);
-//       }
-//     }
-//   });
-</script>
+    //   $('#calendar').fullCalendar({
+    //     eventSources: [
 
+    //       // your event source
+    //       {
+    //           url: 'http://localhost:8081/dbotica-spring/doctor/getMyCalendar',
+    //           type: 'GET',
+    //                         xhrFields: {
+    //               withCredentials: true
+    //           },
+    //           error: function() {
+    //               alert('there was an error while fetching events!');
+    //           },
+    //           color: 'yellow',   // a non-ajax option
+    //           textColor: 'black' // a non-ajax option
+    //       }
+    //       ]
+    // });
+    /* Initialise update event button */
+    // function initialise_update_event(){
+    //   var test = $('#calendar').fullCalendar( 'clientEvents');
+    //   //Bind event
+    //   $('#btn_update_event').bind('click', function(){
+
+    //     //Create vars
+    //     var current_event_id = $('#txt_current_event').val();
+
+    //     //Check if value found
+    //     if(current_event_id){
+
+    //       //Retrieve current event
+    //       var current_event = $('#calendar').fullCalendar('clientEvents', current_event_id);
+
+    //       //Check if found
+    //       if(current_event && current_event.length == 1){
+
+    //         //Retrieve current event from array
+    //         current_event = current_event[0];
+
+    //         //Set values
+    //         current_event.backgroundColor = $('#txt_background_color').val();
+    //         current_event.textColor = $('#txt_text_color').val();
+    //         current_event.borderColor = $('#txt_border_color').val();
+    //         current_event.title = $('#txt_title').val();
+    //         current_event.description = $('#txt_description').val();
+    //         current_event.price = $('#txt_price').val();
+    //         current_event.available = $('#txt_available').val();
+
+    //         //Update event
+    //         $('#calendar').fullCalendar('updateEvent', current_event);
+    //       }
+    //     }
+    //   });
+    </script>
 </body>
+
 </html>
