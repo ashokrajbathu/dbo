@@ -32,11 +32,11 @@
     <div class="wrapper">
         <header id="header" class="fixed-content main-header">
             <!-- Logo -->
-            <a href="index.html" class="logo" style="width: 13%;">
+            <a href="entryPrescriptions.html" class="logo" style="width: 13%;">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini"><b>db</b></span>
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><b>Dbotica</b></span>
+                <span class="logo-lg"><b>dbotica</b></span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation" style="margin-left: 13%;">
@@ -66,7 +66,7 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                        <a href="doctorProfile.html" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
                                         <a href="#" class="btn btn-default btn-flat">Sign out</a>
@@ -91,7 +91,7 @@
                     <div class="pull-left info">
                         <p>Doctor 1</p>
                         <!-- Status -->
-                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                        <a href="doctorProfile.html">Profile</a>
                     </div>
                 </div>
                 <!-- Sidebar Menu -->
@@ -458,9 +458,9 @@ $(document).on('click','.deleteTestButton',function(e){
         var ci = $.cookie('cookie-cli-imp');
         $('#patient-report-ci').text(ci);
 
-      var drugData = JSON.parse($.cookie('drugPojoList'));
-      $('#report-prescriptions > tbody').append($.cookie('drugHtml'));
-    $('#report-tests > tbody').append($.cookie('testHtml'));
+		//var drugData = JSON.parse($.cookie('drugPojoList'));
+		$('#report-prescriptions > tbody').append($.cookie('drugHtml'));
+		$('#report-tests > tbody').append($.cookie('testHtml'));
           /*for(s in drugData)
           {
 
@@ -606,8 +606,10 @@ $(document).on('click','.deleteTestButton',function(e){
         }
         // console.log("docname "+docname +" docid "+docid+" docorg "+docOrg+" docspe "+docSpe+" docadr "+docAdrs+" docphn "+docPhn);
 
-
-        var data1 = $.parseJSON($.cookie('currentPatientInfo'));
+		currentPatientInfoCookie = $.cookie('currentPatientInfo');
+		var data1 =[];
+		if(!!currentPatientInfoCookie)
+			var data1 = $.parseJSON(currentPatientInfoCookie);
       if (data1.length != 0) {
         $('#patient-name').text(data1[0]['firstName']);
         $('#patient-gender').text(data1[0]['gender']);        
@@ -629,43 +631,7 @@ $(document).on('click','.deleteTestButton',function(e){
   
 
 
-$('#patient-search').click(function(e){
- e.preventDefault();
- var brandName = "brandName1";
- var uniId = $("#patient-search-uniqueid").val();
-    var phn = $("#patient-search-telephone").val();
-    var dob = $("#patient-search-dob").val();
-    $.ajax({ 
-            type: "GET",
-            url: "http://localhost:8081/dbotica-spring/drug/getDrugs",
-            data: {
-                'brandName': brandName
-            },
-            success: function(response) {
-                var data1 = $.parseJSON(response.response);
-                console.log("dfnb" + data1[0]['price']);
-                console.log(uniId + "  " + phn + "  " + dob);
-                console.log(data1.length);
-                if (data1.length != 0) {
-                    $("#patient-search-result").append('</br><table> <tr width="100%"> <td width="30%"><h4>Name</h4>  </td><td width="10%">:</td><td width="60%" align="left"><input type="text" disabled="true" value="' + data1[0]['brandName'] + '" id="Name"></input> </td><tr>');
-                    $("#patient-search-result").append('<tr> <td width="30%"><h4>Age</h4> </td><td width="10%">:</td><td width="60%" align="left"><input type="text" disabled="true" value="' + phn + '" id="Name"></input> </td><tr>');
-                    $("#patient-search-result").append('<tr> <td width="30%"><h4>Gender</h4></td><td width="10%">:</td><td width="60%" align="left"><input type="text" disabled="true" id="Gender"></input> </td></tr>');
-                    $("#patient-search-result").append('<tr> <td width="30%"><h4>DOB </h4></td><td width="10%">:</td><td width="60%" align="left"><input type="text" disabled="true" id="email"></input> </td></tr>');
-                    $("#patient-search-result").append('<tr> <td width="30%"><h4>Email</h4> </td><td width="10%">:</td><td width="60%" align="left"><input type="text" disabled="true" id="email"></input> </td></tr>/table>');
-                    // $("#patient-search-result").append('<tr> <td>DOB : <input type="text" disabled="true" id="email"></input> </td></tr></table>');
 
-
-
-                } else {
-                    alert("Patient doesn't exist");
-                    $('#patient-search-result').load('somesample.html');
-
-             }
-
-            }
-          });
-
-    });
     </script>
 </body>
 
