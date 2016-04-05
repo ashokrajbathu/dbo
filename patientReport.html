@@ -494,20 +494,27 @@ $(document).on('click','.deleteTestButton',function(e){
        // }
        // $('#doctor-organization').text(docOrg);
 
-      var temp = $.cookie('currentPatientInfo-temp');
-     // alert(temp);
-      var height = $.cookie('currentPatientInfo-height');
-      var weight = $.cookie('currentPatientInfo-weight');
-      var bloodPressure = $.cookie('currentPatientInfo-bloodPressure');
-      var impression = $.cookie('currentPatientInfo-impression');
-      var bmi = $.cookie('currentPatientInfo-bmi');
-      var saturation = $.cookie('currentPatientInfo-saturation');
-      var pulse = $.cookie('currentPatientInfo-pulse');
-      var investigation = $.cookie('currentPrescriptionInfo-investigation');
-      var remarks = $.cookie('currentPrescriptionInfo-remarks');
-    var revisit = $.cookie('currentInputDate');
-    var revisitDays = $.cookie('currentInputDays');
-    var referToDoctor = $.cookie('currentPrescriptionInfo-referToDoctor');
+        var temp = $.cookie('currentPatientInfo-temp');
+        // alert(temp);
+        var height = $.cookie('currentPatientInfo-height');
+        var weight = $.cookie('currentPatientInfo-weight');
+        var bloodPressure = $.cookie('currentPatientInfo-bloodPressure');
+        var impression = $.cookie('currentPatientInfo-impression');
+        var bmi = $.cookie('currentPatientInfo-bmi');
+        var saturation = $.cookie('currentPatientInfo-saturation');
+        var pulse = $.cookie('currentPatientInfo-pulse');
+        var investigation = $.cookie('currentPrescriptionInfo-investigation');
+        var remarks = $.cookie('currentPrescriptionInfo-remarks');
+        var revisit = $.cookie('currentInputDate');
+        var dates = [];
+
+        dates = revisit.split('/');
+        var tmp = dates[0];
+        dates[0] = dates[1];
+        dates[1] = tmp;
+        revisit = dates.join('/');
+        var revisitDays = $.cookie('currentInputDays');
+        var referToDoctor = $.cookie('currentPrescriptionInfo-referToDoctor');
 
         if (!!temp && temp.length != 0) {
             $('#patient-temperature').text(temp);
@@ -526,6 +533,8 @@ $(document).on('click','.deleteTestButton',function(e){
         }
 
         if (!!revisit && revisit.length != 0 && !!revisitDays && revisitDays.length != 0) {
+            console.log("revisit date is----------" + revisit);
+            console.log("dates array is------", dates);
             $('#patient-revisit').text(revisit);
         } else {
             $('#patient-revisit-label').hide();

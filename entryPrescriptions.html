@@ -1692,7 +1692,13 @@
     });
 
     function updatePatientFields() {
-        var data1 = $.parseJSON($.cookie('currentPatientInfo'));
+        var currentPatientInfoList = $.cookie('currentPatientInfo');
+        var data1 = [];
+
+        if (!!currentPatientInfoList) {
+            data1 = $.parseJSON(currentPatientInfoList);
+        }
+
         if (data1.length != 0) {
             var lastName = data1[0]['lastName'];
             if (lastName === undefined || lastName.length <= 0) {

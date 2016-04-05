@@ -14,8 +14,8 @@ hr {
     margin-top: 10px;
 }
 
-label{
-	font-weight:500;
+label {
+    font-weight: 600;
 }
 
 #footer {
@@ -78,6 +78,11 @@ h4 {
 
 .row2 {
     margin-top: 4px;
+}
+
+#revisit-label {
+    margin-top: 5px;
+    font-weight: 600;
 }
 
 td {

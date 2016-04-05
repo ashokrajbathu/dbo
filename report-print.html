@@ -101,6 +101,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
+            <strong id="revisit-label">Revisit On : </strong><span id="revisit-date-report"></span>
             <h4 id="signature">(Doctor Signature)</h4>
             <small class="pull-right"><span  id="pr-bar-code" ></span></small>
         </section>
@@ -136,9 +137,19 @@
     <script src="dist/js/demo.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
-        if (localStorage.getItem("isLoggedIn") == "false") {
-            window.location.replace("login.html");
-        }
+
+        var revisit = $.cookie('currentInputDate');
+        var dates = [];
+
+        dates = revisit.split('/');
+        var tmp = dates[0];
+        dates[0] = dates[1];
+        dates[1] = tmp;
+        revisit = dates.join('/');
+
+        var referToDoctor = $.cookie('currentPrescriptionInfo-referToDoctor');
+
+        console.log("hai");
         var date = new Date();
 
         var day = date.getDate();
@@ -155,14 +166,16 @@
 
         var drugPojoList1 = $.cookie('drugPojoList');
         var drugData = [];
-        if (!!drugData) {
+        if (!!drugPojoList1) {
             drugData = JSON.parse(drugPojoList1);
         }
         if (drugData.length > 0) {
             var newCount = 1;
             $('#report-prescriptions > tbody').text("");
+            console.log("drug data is--------", drugData);
 
             for (s in drugData) {
+                console.log("drug data s value is----", s);
                 $('#report-prescriptions > tbody').append('<tr ><td>' + newCount + '</td><td>' + drugData[s]['brandName'] + '</td><td>' + drugData[s]['perServing'] + '</td><td>' + drugData[s]['noOfDays'] + '</td><td>' + drugData[s]['usageDirection'] + '</td><td>' + drugData[s]['remarks'] + '</td>');
                 newCount++;
                 console.log("new count is----" + newCount);
@@ -248,9 +261,13 @@
                 $('#patient-report-ci').text(impression);
             }
 
-            if (!!saturatn && saturatn.length != 0) {
-                $('#patient-saturation').text(saturatn);
-            }
+        if (!!saturatn && saturatn.length != 0) {
+            $('#patient-saturation').text(saturatn);
+        }
+
+        if (!!revisit && revisit.length != 0) {
+            $("#revisit-date-report").text(revisit);
+        }
 
             if (!!pulse && pulse.length != 0) {
                 $('#patient-pulse').text(pulse);
