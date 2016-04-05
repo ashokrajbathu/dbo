@@ -34,6 +34,10 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+
+    <script src="plugins/sweetalert/dist/sweetalert.min.js"></script> 
+    <link rel="stylesheet" type="text/css" href="plugins/sweetalert/dist/sweetalert.css">
+
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini control-sidebar-open" style="background-color:#f5f5f5;">
@@ -135,7 +139,7 @@
                     <label for="exampleInputPhone">Phone</label>
                     <input type="text" class="form-control" style="width:50%;border-radius:3px;" id="exampleInputPhone" placeholder="Phone">
                 </div>
-                <button type="submit" id="referToDboticaBtn" class="btn btn-primary btn-default" style="color:white;">Refer To dbotica</button>
+                <div type="submit" id="referToDboticaBtn" class="btn btn-primary btn-default" style="color:white;">Refer To dbotica</div>
             </form>
         </div>
         <footer id="footer" class="main-footer" style="margin-left: 13%;margin-right: 0%;">
@@ -176,7 +180,7 @@
             if (name === "" || (email === "" && phone === "")) {
                 swal({
                     title: "Error",
-                    text: "Kindly enter the details"
+                    text: "Kindly enter the details",
                     type: "error",
                     confirmButtonText: "OK" });
             } else {
@@ -198,24 +202,33 @@
 
                     }),
                     success: function(response) {
-                var errorCode = response.errorCode;
-                    if (!!errorCode) {
-                        switch (errorCode) {
-                            case "NO_USER_LOGGED_IN" :
-                            localStorage.setItem("isLoggedIn", false);
-                            swal({
-                                title: "Error",
-                                text: "You are not logged into your account. Kindly login again to view this page",
-                                type: "error",
-                                confirmButtonText: "OK" },
-                                function() {
-                                    localStorage.setItem("isLoggedIn", false);
-                                    window.location.replace("login.html");
-                                }
-                                );
-                                break;
+                        var errorCode = response.errorCode;
+                        if (!!errorCode) {
+                            switch (errorCode) {
+                                case "NO_USER_LOGGED_IN" :
+                                localStorage.setItem("isLoggedIn", false);
+                                swal({
+                                    title: "Error",
+                                    text: "You are not logged into your account. Kindly login again to view this page",
+                                    type: "error",
+                                    confirmButtonText: "OK" },
+                                    function() {
+                                        localStorage.setItem("isLoggedIn", false);
+                                        window.location.replace("login.html");
+                                    }
+                                    );
+                                    break;
                             }
-                       }
+                        }
+
+                        swal({
+                            title: "success",
+                            text: "Details are successfully saved.",
+                            type: "success",
+                            confirmButtonText: "OK" },
+                            function() {
+                                window.location.replace("referADoctor.html");
+                            });
                     },
                     error: function(request, status, error) {
                         alert(status + ' : ' + error);

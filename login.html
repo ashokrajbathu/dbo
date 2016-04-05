@@ -193,7 +193,7 @@
             if (name === "" || (email === "" && phone === "")) {
                 swal({
                     title: "Error",
-                    text: "Kindly enter the details"
+                    text: "Kindly enter the details",
                     type: "error",
                     confirmButtonText: "OK" });
             } else {
@@ -223,7 +223,7 @@
                     error: function(request, status, error) {
                         swal({
                             title: "Error",
-                            text: "Error receiving the details. Kindly try after some time."
+                            text: "Error receiving the details. Kindly try after some time",
                             type: "error",
                             confirmButtonText: "OK" });
                     }
