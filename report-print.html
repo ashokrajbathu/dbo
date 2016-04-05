@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Invoice</title>
+    <title>dbotica</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -14,194 +15,111 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-
+    <link rel="stylesheet" type="text/css" href="report-print.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script type = "text/javascript" 
-         src = "http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
-
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
+</head>
 
-  </head>
-  <body onload="window.print();">
+<body onload="window.print();">
     <div class="wrapper">
-      <!-- Main content -->
-      <section class="invoice">
-        <!-- title row -->
-        <div class="row">
-          <div class="col-xs-12">
-            <h2 class="page-header">
-              <i class="fa fa-globe"></i> dbotica, Inc.
-              <small class="pull-right">Date: 2/10/2014</small>
-            </h2>
-          </div><!-- /.col -->
-        </div>
-        <!-- info row -->
-                <div class="row invoice-info">
-               <div class="col-sm-4 invoice-col">
-              Doctor Details
-              <address>
-                <strong><span id="pr-doctor-name" ></span></strong>&nbsp;&nbsp;<span placeholder="docqual" id="doctor-qual"></span><br>
-                <span  id="pr-doctor-specialization"></span><br>
-                <span  id="pr-doctor-organization"></span><br>
-                <span  id="pr-doctor-adrs"></span><br>
-                <span  id="pr-doctor-phn"></span><br>
-                <span id="">Email Id</span>
-              </address>
-            </div><!-- /.col -->
-          <div class="col-sm-3 invoice-col">
-            Patient Details
-            <address>
-              <strong><span id="patient-name" ></span></strong>&nbsp;&nbsp;<span placeholder="docqual" id="doctor-qual"></span><br>
-                <span  id="pr-patient-age"></span><br>
-                <span  id="pr-patient-gender"></span><br>
-                <span  id="pr-patient-email"></span><br>
-                <span id=""></span>
-            </address>
-          </div><!-- /.col -->
-          <div class="col-sm-5 invoice-col">
-            <b>Bar Code</b><br>
-            <br>
-            <b> <span  id=""></span>Transaction ID:</b> 4F3S8J<br>
-            
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-        <div class="row">
-          <div class="col-xs-10">
-           <strong>Clinical Impression : <span id="report-ci" ></span></strong> <br><br>
-
-          </div>
-
-        </div>
-
-        <!-- Table row -->
-        <div class="row">
-          <div class="box-header">
-              
-                  <h3 class="box-title">Prescription Details</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body no-padding">
-                   <div class="col-xs-12">
-                  <table class="table table-striped">
-                    <tr >
-                      <th style="width: 16%"></th>
-                      <th style="width: 17%"></th>
-                      <th style="width: 17%"></th>
-                      <th style="width: 17%"></th>
-                      <th style="width: 16%"></th>
-                      <th style="width: 17%"></th>
-                    </tr>
-                    <tr >
-                      
-                      <td colspan="1" style="width: 16%"><div align="center"><strong >Symptoms</strong></div></td>
-                      <td colspan="5" style="width: 84%">
-                        <span class="form-control" placeholder="Patient Name" value="Type" id="patient-report-ci">
-                      </td>
-                      
-                    </tr>
-                    <tr>
-                       <td colspan="1" style="width: 16%"><div align="center"><strong >Investigation</strong></div></td>
-                      <td colspan="5" style="width: 84%">
-                        <span class="form-control" placeholder="Patient Name" value="Type" id="patient-investigation">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td ><div align="center"><strong >Height</strong></div></td>
-                      
-                      <td>
-                        <span class="form-control" placeholder="Patient Name" value="Type" id="patient-height">
-                      </td>
-                      <td><div align="center"><strong >Weight</strong></div></td>
-                      <td><span class="form-control" placeholder="Patient Name" value="Type" id="patient-weight"></td>
-                      <td><div align="center"><strong >BMI</strong></div></td>
-                      
-                      <td>
-                        <span class="form-control" placeholder="Patient Name" value="Type" id="patient-bmi">
-                      </td>
-
-                    </tr>
-                    <tr>
-                        <td><div align="center"><strong >Blood Pressure</strong></div></td>
-                      <td><span class="form-control" placeholder="Patient Name" value="Type" id="patient-bloodpressure"></td>
-                    
-                       <td><div align="center"><strong >Temperature</strong></div></td>
-                      
-                      <td>
-                        <span class="form-control" placeholder="Patient Name" value="Type" id="patient-temperature">
-                      </td>
-                      <td><div align="center"><strong >Pulse</strong></div></td>
-                      <td><span class="form-control" placeholder="Patient Name" value="Type" id="patient-pulse"></td>
-                    </tr>
-                    <tr>
-                       <td><div align="center"><strong >Saturation</strong></div></td>
-                      
-                      <td>
-                        <span class="form-control" placeholder="Patient Name" value="Type" id="patient-saturation">
-                      </td>
-                      <td><div align="center"><strong >Re-visit On</strong></div></td>
-                      <td><span class="form-control" placeholder="Patient Name" value="Type" id="patient-revisit"></td><td></td>
-                    </tr>
-                    <tr >
-                      
-                      <td colspan="1" style="width: 16%"><div align="center"><strong >Additional References</strong></div></td>
-                      <td colspan="5" style="width: 84%">
-                        <span class="form-control" placeholder="Patient Name" value="Type" id="patient-report-references">
-                      </td>
-                      
-                    </tr>
-                  </table>
+        <!-- Main content -->
+        <section class="invoice">
+            <div class="row invoice-info">
+                <div class="col-sm-9 invoice-col">
+                    <address>
+                        <strong><span id="pr-doctor-name" ></span></strong>&nbsp;&nbsp;<span placeholder="docqual" id="doctor-qual"></span>
+                        <br>
+                        <span id="pr-doctor-specialization"></span>
+                        <br>
+                        <span id="pr-doctor-organization"></span>
+                    </address>
                 </div>
-                </div><!--body-->
-        </div>
-        <div class="row"></div>
-        <div class="row">
-          <div class="col-xs-12 table-responsive">
+            </div>
+            <hr>
+            <div>
+                <strong>Patient Name :</strong> <span id="patient-name"></span>
+                <span id="billNo"><strong>Bill No : </strong><label></label></span></div>
+            <div id="patientDetails1">
+                <strong>
+                        Age : 
+                      </strong>
+                <span id="patient-age">
+                      </span>
+                <strong>Gender : </strong><span id="patient-gender"></span>
+                <span id="exampleVisitDate"><strong id="exampleDate">Date : </strong><span id="date"></span></span>
+            </div>
+            <p class="assessment"><strong>ASSESSMENT</strong></p>
+            <table style="width:80%">
+                <tr>
+                    <td><strong>Height(cm) : </strong><span id="patient-height"></span></td>
+                    <td><strong>Weight(kg) : </strong><span id="patient-weight"></span></td>
+                    <td><strong>Temperature(Fh) : </strong><span id="patient-temperature"></span></td>
+                    <td><strong>Pulse : </strong><span id="patient-pulse"></span></td>
+                </tr>
+                <tr>
+                    <td><strong>B.P.(mm Hg) : </strong><span id="patient-bloodpressure"></span></td>
+                    <td><strong>Others : </strong><span id="patient-Other-Details"></span></td>
+                </tr>
+            </table>
+            <div class="row" id="symptoms">
+                <div class="col-md-6">
+                    <strong>Symptoms : </strong><span id="patient-report-ci"></span>
+                </div>
+            </div>
+            <div class="row" id="investigations">
+                <div class="col-md-6">
+                    <strong>Investigations : </strong><span id="patient-investigation"></span>
+                </div>
+            </div>
             <table id="report-prescriptions" class="table table-bordered table-striped">
-                    <thead>
-                       <tr>
+                <thead>
+                    <tr>
                         <th>S.No</th>
-                        <th>BrandName</th>
+                        <th>Drug Name and Dose</th>
                         <th>Per Serving</th>
-                        <th>Days/Quantity</th>
-                        <th>Usage</th>
+                        <th>Days</th>
+                        <th>Dosage</th>
+                        <th>Special Instructions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <strong>Test Details</strong>
+            <table id="report-tests" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>TestName</th>
                         <th>Remarks</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  <!-- <tfoot>
-                      <tr>
-                        <th>Rendering engine</th>
-                        <th>Browser</th>
-                        <th>Platform(s)</th>
-                        <th>Engine version</th>
-                        <th>CSS grade</th>
-                      </tr>
-                    </tfoot> -->
-                  </table>
-          </div><!-- /.col -->
-        </div>
-        <div class="row">
-          <div class="col-xs-12 pull-right"><br><br>
-           <small class="pull-right"><label>Bar Code : </label><span  id="pr-bar-code" ></span></small> <br><br>
-
-          </div>
-
-        </div>
-<!-- /.row -->
-
-             </section><!-- /.content -->
-    </div><!-- ./wrapper -->
-
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <h4 id="signature">(Doctor Signature)</h4>
+            <small class="pull-right"><span  id="pr-bar-code" ></span></small>
+        </section>
+    </div>
+    <div>
+        <h5>Note:</h5>
+        <p>BBF:Before Breakfast || ABF:After Breakfast || BL:Before Lunch || AL:After Lunch || BD:Before Dinner || AD:After Dinner</p>
+    </div>
+    <footer id="footer" align="center">
+        <hr>Terms and conditions apply,Powered by Dbotica
+    </footer>
+    <!-- /.row -->
+    <!-- /.content -->
+    <!-- ./wrapper -->
     <!-- AdminLTE App -->
     <script src="dist/js/app.min.js"></script>
-     <!-- jQuery 2.1.4 -->
+    <!-- jQuery 2.1.4 -->
     <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
-
-    <script type="text/javascript" src="plugins/jQuery/jquery-barcode.js"></script> 
+    <script type="text/javascript" src="plugins/jQuery/jquery-barcode.js"></script>
     <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
     <!-- Bootstrap 3.3.5 -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
@@ -209,159 +127,191 @@
     <script src="bootstrap/js/jquery.cookie.js"></script>
     <!-- FastClick -->
     <script src="plugins/fastclick/fastclick.min.js"></script>
-     <!-- DataTables -->
+    <!-- DataTables -->
     <script src="plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="dist/js/demo.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        console.log("hai");
+        var date = new Date();
 
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
 
-   
-<script type="text/javascript">
-   $(document).ready(function(){
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
 
-      
- 
-               
-      var ci = $.cookie('cookie-cli-imp');
-      $('#report-ci').html(ci);
+        var today = day + "/" + month + "/" + year;
 
-      var temp = $.cookie('currentPatientInfo-temp');
-     // alert(temp);
-      var height = $.cookie('currentPatientInfo-height');
-      var weight = $.cookie('currentPatientInfo-weight');
-      var bloodPressure = $.cookie('currentPatientInfo-bloodPressure');
-      var impression = $.cookie('currentPatientInfo-impression');
-      var bmi = $.cookie('currentPatientInfo-bmi');
-      var saturatn = $.cookie('currentPatientInfo-saturation');
-      var pulse = $.cookie('currentPatientInfo-pulse');
-      var investigation = $.cookie('currentPrescriptionInf0-inv');
-      var additionaRef = $.cookie('currentPrescriptionInfo-additionalref');
+        /*$('#date').text(DateOfVisit);*/
+        $('#date').text(today);
 
-      if (!!temp && temp.length != 0) {
-        $('#patient-temperature').text(temp);
-      } 
+        var drugPojoList1 = $.cookie('drugPojoList');
+        var drugData = JSON.parse(drugPojoList1);
 
-      if (!!height && height.length != 0) {
-        $('#patient-height').text(height);
-      } 
+        var newCount = 1;
+        $('#report-prescriptions > tbody').text("");
 
-      if (!!weight && weight.length != 0) {
-        $('#patient-weight').text(weight);
-      } 
-
-      if (!!bloodPressure && bloodPressure.length != 0) {
-        $('#patient-bloodpressure').text(bloodPressure);
-      } 
-
-      if (!!impression && impression.length != 0) {
-        $('#patient-report-ci').text(impression);
-      } 
-
-      if(!!saturatn && saturatn.length != 0) {
-        $('#patient-saturation').text(saturatn);
-      }
-
-      if(!!pulse && pulse.length != 0) {
-        $('#patient-pulse').text(pulse);
-      }
-
-      if(!!bmi && bmi.length != 0) {
-        $('#patient-bmi').text(bmi);
-      }
-
-      if(!!investigation && investigation.length != 0) {
-        $('#patient-investigation').text(investigation);
-      }
-      
-      if(!!additionaRef && additionaRef.length != 0) {
-        $('#patient-report-references').text(additionaRef);
-      }
-      
-      //console.log(drugData.length);
-     
-        // $('#report-prescriptions > tbody').($.cookie('drugHtml'));
-       
-
-        var drugData = JSON.parse($.cookie('drugPojoList'));
-
-          var sno=1;
-          for(s in drugData)
-          {
-
-            $('#report-prescriptions > tbody').append('<tr ><td>'+sno+'</td><td>'+drugData[s]['brandName']+'</td><td>'+drugData[s]['perServing']+'</td><td>'+drugData[s]['noOfDays']+'</td><td>'+drugData[s]['usageDirection']+'</td><td>'+drugData[s]['remarks']+'</td>');
-           
-              sno++;
-            
-          }
-
-
-
-       //var doctor-id = localStorage.getItem('doctorId');
-      // var doctor-name = localStorage.getItem('firstName');
-       //var doctor-speciality = localStorage.getItem('doctorSpeciality');
-       //var doctor-organization = localStorage.getItem('doctorOrganization');
-       //var doctor-qualification = localStorage.getItem('doctorQualification');
-       //var doctor-ards = localStorage.getItem('doctorOfficeAddress');
-       //var doctor-phn = localStorage.getItem('doctorPublicPhoneNumber');
-
-       var docname = localStorage.getItem('firstName');
-       var docid =  localStorage.getItem('doctorId');
-       var docOrg = localStorage.getItem('doctorOrganization');
-       var docSpe = localStorage.getItem('doctorSpeciality');
-       var docQua = localStorage.getItem('doctorQualification');
-       var docAdrs = localStorage.getItem('doctorOfficeAddress');
-       var docPhn = localStorage.getItem('doctorPublicPhoneNumber');
-
-       $('#pr-doctor-name').text(docname);
-       $('#pr-doctor-qual').text(docQua);
-       $('#pr-doctor-specialization').text(docSpe);
-       $('#pr-doctor-ards').text(docAdrs);
-       if (!!docPhn && docPhn.length != 0 && docPhn != "undefined") {
-         $('#pr-doctor-phn').text(docPhn);
-       }
-
-       $('#pr-doctor-organization').text(docOrg);
-      try {
-        var data1 = $.parseJSON($.cookie('currentPatientInfo'));
-        if (data1.length != 0) {
-          $('#patient-name').text(data1[0]['firstName']);
-          if (!!data1[0]['email']) {
-            $('#patient-email').text(data1[0]['email']);
-          }
-          $('#patient-age').text(data1[0]['age']);
-          $('#patient-gender').text(data1[0]['gender']);        
+        for (s in drugData) {
+            $('#report-prescriptions > tbody').append('<tr ><td>' + newCount + '</td><td>' + drugData[s]['brandName'] + '</td><td>' + drugData[s]['perServing'] + '</td><td>' + drugData[s]['noOfDays'] + '</td><td>' + drugData[s]['usageDirection'] + '</td><td>' + drugData[s]['remarks'] + '</td>');
+            newCount++;
+            console.log("new count is----" + newCount);
         }
-      } catch (e) {
 
-      }
-
-       console.log("docname "+docname +" docid "+docid+" docorg "+docOrg+" docspe "+docSpe+" docadr "+docAdrs+" docphn "+docPhn);
-
-       populateBarCode();
-       // $('#report-prescriptions').DataTable();
-
-});
-
-</script>
-<script type="text/javascript">
-function populateBarCode() {
-      var  firstName = localStorage.getItem('firstName');
-      if (!firstName || firstName.length == 0) {
-        firstName =  "dbotica";
-      }
-      var encrypted = CryptoJS.AES.encrypt("my message", firstName);
-      var decrypted = CryptoJS.AES.decrypt(encrypted, "doctor123");
-      var result = decrypted.toString(CryptoJS.enc.Utf8);
-      $("#pr-bar-code").barcode(encrypted.toString(), "code128");
-      return encrypted;
-    }
-
-</script>
+        var testPojoList1 = $.cookie('testPojoList');
+        var testData = JSON.parse(testPojoList1);
+        var newCount1 = 1;
+        $('#report-tests > tbody').text("");
+        for (s in testData) {
+            $('#report-tests > tbody').append('<tr><td>' + newCount1 + '</td><td>' + testData[s]['testName'] + '</td><td>' + testData[s]['remark'] + '</td></tr>');
+            newCount++;
+        }
 
 
 
-  </body>
+
+        var currentPatientInfoCookie = $.cookie('currentPatientInfo');
+        if (!!currentPatientInfoCookie) {
+            var data1 = $.parseJSON(currentPatientInfoCookie);
+            if (data1.length != 0) {
+                $('#patient-name').text(data1[0]['firstName']);
+                $('#patient-gender').text(data1[0]['gender']);
+                $('#patient-age').text(data1[0]['age']);
+            }
+        }
+
+
+
+        var ci = $.cookie('cookie-cli-imp');
+        $('#report-ci').html(ci);
+
+        var temp = $.cookie('currentPatientInfo-temp');
+        // alert(temp);
+        var height = $.cookie('currentPatientInfo-height');
+        var weight = $.cookie('currentPatientInfo-weight');
+        var bloodPressure = $.cookie('currentPatientInfo-bloodPressure');
+        var impression = $.cookie('currentPatientInfo-impression');
+        var bmi = $.cookie('currentPatientInfo-bmi');
+        var saturatn = $.cookie('currentPatientInfo-saturation');
+        var pulse = $.cookie('currentPatientInfo-pulse');
+        var investigation = $.cookie('currentPrescriptionInfo-investigation');
+
+        var additionaRef = $.cookie('currentPrescriptionInfo-additionalref');
+
+        if (!!temp && temp.length != 0) {
+            console.log("temperature is---" + temp);
+            $('#patient-temperature').text(temp);
+        }
+
+            if (!!height && height.length != 0) {
+                $('#patient-height').text(height);
+            }
+
+            if (!!weight && weight.length != 0) {
+                $('#patient-weight').text(weight);
+            }
+
+            if (!!bloodPressure && bloodPressure.length != 0) {
+                $('#patient-bloodpressure').text(bloodPressure);
+            }
+
+            if (!!impression && impression.length != 0) {
+                $('#patient-report-ci').text(impression);
+            }
+
+            if (!!saturatn && saturatn.length != 0) {
+                $('#patient-saturation').text(saturatn);
+            }
+
+            if (!!pulse && pulse.length != 0) {
+                $('#patient-pulse').text(pulse);
+            }
+
+            if (!!bmi && bmi.length != 0) {
+                $('#patient-bmi').text(bmi);
+            }
+
+            if (!!investigation && investigation.length != 0) {
+                $('#patient-investigation').text(investigation);
+            }
+
+            if (!!additionaRef && additionaRef.length != 0) {
+                $('#patient-report-references').text(additionaRef);
+            }
+
+            //console.log(drugData.length);
+
+            // $('#report-prescriptions > tbody').($.cookie('drugHtml'));
+
+
+
+
+
+
+            //var doctor-id = localStorage.getItem('doctorId');
+            // var doctor-name = localStorage.getItem('firstName');
+            //var doctor-speciality = localStorage.getItem('doctorSpeciality');
+            //var doctor-organization = localStorage.getItem('doctorOrganization');
+            //var doctor-qualification = localStorage.getItem('doctorQualification');
+            //var doctor-ards = localStorage.getItem('doctorOfficeAddress');
+            //var doctor-phn = localStorage.getItem('doctorPublicPhoneNumber');
+
+            var docname = localStorage.getItem('firstName');
+            var docid = localStorage.getItem('doctorId');
+            var docOrg = localStorage.getItem('doctorOrganization');
+            var docSpe = localStorage.getItem('doctorSpeciality');
+            var docQua = localStorage.getItem('doctorQualification');
+            var docAdrs = localStorage.getItem('doctorOfficeAddress');
+            var docPhn = localStorage.getItem('doctorPublicPhoneNumber');
+
+            $('#pr-doctor-name').text(docname);
+            $('#pr-doctor-qual').text(docQua);
+            $('#pr-doctor-specialization').text(docSpe);
+            $('#pr-doctor-ards').text(docAdrs);
+            if (!!docPhn && docPhn.length != 0 && docPhn != "undefined") {
+                $('#pr-doctor-phn').text(docPhn);
+            }
+
+            $('#pr-doctor-organization').text(docOrg);
+            try {
+                var data1 = $.parseJSON($.cookie('currentPatientInfo'));
+                if (data1.length != 0) {
+                    $('#patient-name').text(data1[0]['firstName']);
+                    if (!!data1[0]['email']) {
+                        $('#patient-email').text(data1[0]['email']);
+                    }
+                    $('#patient-age').text(data1[0]['age']);
+                    $('#patient-gender').text(data1[0]['gender']);
+                }
+            } catch (e) {
+
+            }
+
+            console.log("docname " + docname + " docid " + docid + " docorg " + docOrg + " docspe " + docSpe + " docadr " + docAdrs + " docphn " + docPhn);
+
+            populateBarCode();
+            // $('#report-prescriptions').DataTable();
+
+        });
+        </script>
+        <script type="text/javascript">
+        function populateBarCode() {
+            var firstName = localStorage.getItem('firstName');
+            if (!firstName || firstName.length == 0) {
+                firstName = "dbotica";
+            }
+            var encrypted = CryptoJS.AES.encrypt("my message", firstName);
+            var decrypted = CryptoJS.AES.decrypt(encrypted, "doctor123");
+            var result = decrypted.toString(CryptoJS.enc.Utf8);
+            $("#pr-bar-code").barcode(encrypted.toString(), "code128");
+            return encrypted;
+        }
+        </script>
+</body>
+
 </html>
