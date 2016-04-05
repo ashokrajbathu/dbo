@@ -689,14 +689,34 @@
 
     <script type="text/javascript"></script>
     <script>
-$(document).ready(function(){ 
-var doctorId='56cca97a44ae1683662508f8'; 
+$(document).ready(function(){
+    if (localStorage.getItem("isLoggedIn") == "false") {
+        window.location.replace("login.html");
+    }
 
   $.ajax({ 
             type: "GET",
             url: "http://localhost:8081/dbotica-spring/doctor/myPrescriptions",
-            data: {'doctorId': doctorId, 'start':'0','limit':'10'},
+            data: {'doctorId': localStorage.setItem("doctorId"), 'start':'0','limit':'10'},
              success: function(response){ 
+                var errorCode = response.errorCode;
+                if (!!errorCode) {
+                    switch (errorCode) {
+                        case "NO_USER_LOGGED_IN" :
+                        localStorage.setItem("isLoggedIn", false);
+                        swal({
+                            title: "Error",
+                            text: "You are not logged into your account. Kindly login again to view this page",
+                            type: "error",
+                            confirmButtonText: "OK" },
+                            function() {
+                                localStorage.setItem("isLoggedIn", false);
+                                window.location.replace("login.html");
+                            }
+                            );
+                            break;
+                    }
+                }
               var data1 = $.parseJSON(response.response);
               console.log(data1.length)
             
@@ -706,10 +726,7 @@ var doctorId='56cca97a44ae1683662508f8';
               var content1 ='<div class="box box-default collapsed-box">'+'<div class="box-header with-border">'+'<h3 class="box-title">'+'Transaction id' +s+'</h3>'+'<div class="box-tools pull-right"> <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button> </div> </div> <div class="box-body">'+'content of prescription'+'</div> </div>';
               $("#content").append(content1);
 
-            }
-            alert("hello")
-
-            
+            }            
             }
           });
 
@@ -723,8 +740,6 @@ var doctorId='56cca97a44ae1683662508f8';
 });  
 
 function paginationStart(){
-
-  alert("hi");
 
 //how much items per page to show  
     var show_per_page = 5;  

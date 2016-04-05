@@ -424,6 +424,10 @@
     }
     var phoneNumber;
     $(document).ready(function() {
+        if (localStorage.getItem("isLoggedIn") == "false") {
+            window.location.replace("login.html");
+        }
+
         var doctorName = localStorage.getItem('firstName');
         console.log("doctor name is----" + doctorName);
         $("#doctorName").text(doctorName);

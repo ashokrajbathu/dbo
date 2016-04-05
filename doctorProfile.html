@@ -28,6 +28,10 @@
     <script type="text/javascript" src="js/eye.js"></script>
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/layout.js?ver=1.0.2"></script>
+
+    <script src="plugins/sweetalert/dist/sweetalert.min.js"></script> 
+    <link rel="stylesheet" type="text/css" href="plugins/sweetalert/dist/sweetalert.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -522,6 +526,10 @@
     })(jQuery);
 
     $(document).ready(function(){
+        if (localStorage.getItem("isLoggedIn") == "false") {
+            window.location.replace("login.html");
+        }
+
      // console.log('hi');
      // console.log(localStorage.getItem('doctorPojo'));
       var doctorData = $.parseJSON(localStorage.getItem('doctorPojo'));
@@ -576,13 +584,42 @@ $('#doctor-profile-update-btn').click(function(e){
             xhrFields: {withCredentials: true},
            data: JSON.stringify({'firstName': $('#doctor-profile-firstname').val(), 'lastName' : $('#doctor-profile-lastname').val(), 'speciality': $('#doctor-profile-speciality').val(),'organization':  $('#doctor-profile-organization').val(),'qualification': $('#doctor-profile-qualification').val(),'address': $('#doctor-profile-address').val(),'websiteUrl': $('#doctor-profile-website-url').val(),'city': $('#doctor-profile-city').val()}),
            success: function(response){    
+                var errorCode = response.errorCode;
+                if (!!errorCode) {
+                    switch (errorCode) {
+                        case "NO_USER_LOGGED_IN" :
+                        localStorage.setItem("isLoggedIn", false);
+                        swal({
+                            title: "Error",
+                            text: "You are not logged into your account. Kindly login again to view this page",
+                            type: "error",
+                            confirmButtonText: "OK" },
+                            function() {
+                                localStorage.setItem("isLoggedIn", false);
+                                window.location.replace("login.html");
+                            }
+                            );
+                            break;
+                    }
+                }
+
            try {
             var data = $.parseJSON(response.response);                  
-            alert('Profile updated successfully');
+            swal({
+                title: "Success",
+                text: "Your profile has been updated successfully",
+                type: "success",
+                confirmButtonText: "OK" }
+                );
             localStorage.setItem('doctorPojo',"");
             localStorage.setItem('doctorPojo',response.response);
           }  catch (e) {
-            alert("Error updating profile details. Kindly try after some time");
+            swal({
+                title: "Error",
+                text: "Error updating your profile details. Kindly contact the support for further details."
+                type: "error",
+                confirmButtonText: "OK" }
+                );
           }
       }
     });
@@ -608,9 +645,32 @@ $('#doctor-profile-update-pswd').click(function(e){
             xhrFields: {withCredentials: true},
            data: JSON.stringify({'oldPassword': oldPassword, 'newPassword' : newPassword, 'doctorId': doctorId}),
            success: function(response){       
-            var data = $.parseJSON(response.response);                  
-            alert('Password updated successfully');
+              var errorCode = response.errorCode;
+                if (!!errorCode) {
+                    switch (errorCode) {
+                        case "NO_USER_LOGGED_IN" :
+                        localStorage.setItem("isLoggedIn", false);
+                        swal({
+                            title: "Error",
+                            text: "You are not logged into your account. Kindly login again to view this page",
+                            type: "error",
+                            confirmButtonText: "OK" },
+                            function() {
+                                localStorage.setItem("isLoggedIn", false);
+                                window.location.replace("login.html");
+                            }
+                            );
+                            break;
+                    }
+                }
 
+            var data = $.parseJSON(response.response);                  
+            swal({
+                title: "Success",
+                text: "Your password has been updated successfully",
+                type: "success",
+                confirmButtonText: "OK" }
+                );
       }
     });
 

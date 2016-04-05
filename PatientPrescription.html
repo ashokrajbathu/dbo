@@ -694,14 +694,34 @@
     <script type="text/javascript"></script>
     <script>
 $(document).ready(function(){ 
+      if (localStorage.getItem("isLoggedIn") == "false") {
+        window.location.replace("login.html");
+    }
+
   var patientId=getParameterByName('patientId', null);
-  alert(patientId);
   // $.url().param('search');
   $.ajax({ 
             type: "GET",
             url: "http://localhost:8081/dbotica-spring/doctor/myPrescriptions",
             data: {'patientId': patientId, 'start':'0','limit':'10'},
              success: function(response){ 
+                var errorCode = response.errorCode;
+                if (!!errorCode) {
+                    switch (errorCode) {
+                        case "NO_USER_LOGGED_IN" :
+                        swal({
+                            title: "Error",
+                            text: "You are not logged into your account. Kindly login again to view this page",
+                            type: "error",
+                            confirmButtonText: "OK" },
+                            function() {
+                                localStorage.setItem("isLoggedIn", false);
+                                window.location.replace("login.html");
+                            }
+                            );
+                            break;
+                    }
+                }
               var data1 = $.parseJSON(response.response);
               console.log(data1.length)
             
@@ -712,9 +732,6 @@ $(document).ready(function(){
               $("#content").append(content1);
 
             }
-            alert("hello")
-
-            
             }
           });
 
@@ -738,8 +755,6 @@ function getParameterByName(name, url) {
 }
 
 function paginationStart(){
-
-  alert("hi");
 
 //how much items per page to show  
     var show_per_page = 5;  

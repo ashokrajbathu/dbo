@@ -162,6 +162,10 @@
     <!-- IndexedDB for local storage-->
     <script type="text/javascript">
     $(document).ready(function() {
+        if (localStorage.getItem("isLoggedIn") == "false") {
+            window.location.replace("login.html");
+        }
+
         var doctorName = localStorage.getItem('firstName');
         console.log("doctor name is----" + doctorName);
         $("#doctorName").text(doctorName);
@@ -170,7 +174,11 @@
             var email = $("#exampleInputEmail").val();
             var phone = $("#exampleInputPhone").val();
             if (name === "" || (email === "" && phone === "")) {
-                alert("Please enter all fields!");
+                swal({
+                    title: "Error",
+                    text: "Kindly enter the details"
+                    type: "error",
+                    confirmButtonText: "OK" });
             } else {
                 $.ajax({
                     type: 'POST',
@@ -190,8 +198,24 @@
 
                     }),
                     success: function(response) {
-                        console.log("response after refering is-----", response);
-
+                var errorCode = response.errorCode;
+                    if (!!errorCode) {
+                        switch (errorCode) {
+                            case "NO_USER_LOGGED_IN" :
+                            localStorage.setItem("isLoggedIn", false);
+                            swal({
+                                title: "Error",
+                                text: "You are not logged into your account. Kindly login again to view this page",
+                                type: "error",
+                                confirmButtonText: "OK" },
+                                function() {
+                                    localStorage.setItem("isLoggedIn", false);
+                                    window.location.replace("login.html");
+                                }
+                                );
+                                break;
+                            }
+                       }
                     },
                     error: function(request, status, error) {
                         alert(status + ' : ' + error);

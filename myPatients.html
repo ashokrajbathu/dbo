@@ -20,6 +20,9 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="myPatients.css">
+
+    <script src="plugins/sweetalert/dist/sweetalert.min.js"></script> 
+    <link rel="stylesheet" type="text/css" href="plugins/sweetalert/dist/sweetalert.css">
     <!--Datepicker srcs -->
     <!--  <link rel="stylesheet" media="screen" type="text/css" href="css/layout.css" />-->
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -180,6 +183,10 @@
     <script type="text/javascript "></script>
     <script type="text/javascript ">
     $(document).ready(function() {
+        if (localStorage.getItem("isLoggedIn") == "false") {
+            window.location.replace("login.html");
+        }
+
         var doctorName = localStorage.getItem('firstName');
         console.log("doctor name is----" + doctorName);
         $("#doctorName").text(doctorName);
@@ -199,6 +206,25 @@
                 withCredentials: true
             },
             success: function(response) {
+                var errorCode = response.errorCode;
+                if (!!errorCode) {
+                    switch (errorCode) {
+                        case "NO_USER_LOGGED_IN" :
+                        localStorage.setItem("isLoggedIn", false);
+                        swal({
+                            title: "Error",
+                            text: "You are not logged into your account. Kindly login again to view this page",
+                            type: "error",
+                            confirmButtonText: "OK" },
+                            function() {
+                                localStorage.setItem("isLoggedIn", false);
+                                window.location.replace("login.html");
+                            }
+                            );
+                            break;
+                    }
+                }
+
                 console.log(response);
                 var data = $.parseJSON(response.response);
 

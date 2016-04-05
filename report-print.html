@@ -136,7 +136,9 @@
     <script src="dist/js/demo.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
-        console.log("hai");
+        if (localStorage.getItem("isLoggedIn") == "false") {
+            window.location.replace("login.html");
+        }
         var date = new Date();
 
         var day = date.getDate();

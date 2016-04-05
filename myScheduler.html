@@ -31,6 +31,10 @@
     <script type="text/javascript" src="js/eye.js"></script>
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/layout.js?ver=1.0.2"></script>
+
+    <script src="plugins/sweetalert/dist/sweetalert.min.js"></script> 
+    <link rel="stylesheet" type="text/css" href="plugins/sweetalert/dist/sweetalert.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -441,6 +445,10 @@
     <script src="indexedDB/indexedDbotica.js"></script>
     <script>
     $(document).ready(function() {
+        if (localStorage.getItem("isLoggedIn") == "false") {
+            window.location.replace("login.html");
+        }
+
         var doctorName = localStorage.getItem('firstName');
         console.log("doctor name is----" + doctorName);
         $("#doctorName").text(doctorName);
@@ -550,8 +558,37 @@
                 xhrFields: {
                     withCredentials: true
                 },
+                success: function(response){    
+                  var errorCode = response.errorCode;
+                  if (!!errorCode) {
+                      switch (errorCode) {
+                          case "NO_USER_LOGGED_IN" :
+                          localStorage.setItem("isLoggedIn", false);
+                          swal({
+                              title: "Error",
+                              text: "You are not logged into your account. Kindly login again to view this page",
+                              type: "error",
+                              confirmButtonText: "OK" },
+                              function() {
+                                  localStorage.setItem("isLoggedIn", false);
+                                  window.location.replace("login.html");
+                              }
+                              );
+                              break;
+                      }
+                  }
+                },
                 error: function() {
-                    alert('there was an error while fetching events!');
+                  swal({
+                      title: "Error",
+                      text: "There was some error fetching your calendar events. Kindly contact the support team for further details.",
+                      type: "error",
+                      confirmButtonText: "OK" },
+                      function() {
+                          localStorage.setItem("isLoggedIn", false);
+                          window.location.replace("login.html");
+                      }
+                      );
                 },
                 color: 'yellow', // a non-ajax option
                 textColor: 'black' // a non-ajax option
@@ -624,13 +661,67 @@
                 //}
             },
             eventClick: function(calEvent, jsEvent, view) {
-                var r = confirm("Delete " + calEvent.title);
-                console.log(calEvent._id);
-                if (r === true) {
-                    $('#calendar').fullCalendar('removeEvents', calEvent._id);
+              var r = swal({
+                      title: "Warning",
+                      text: "Are you sure you want to delte event - " + calEvent.title,
+                      type: "warning",
+                      confirmButtonText: "OK",
+                      showConfirmButton : true,
+                      showCancelButton: true},
+                      function() {
+                        $.ajax({
+                            type: "POST",
+                            url: "http://localhost:8081/dbotica-spring/doctor/deleteCalendarEvent",
+                            //data:JSON.stringify( {'calendarEvent': event}),
+                            beforeSend: function(xhr) {
+                                xhr.setRequestHeader("Content-Type", "application/json");
+                                xhr.setRequestHeader("Accept", "application/json");
+                            },
+                            async: false,
+                            xhrFields: {
+                                withCredentials: true
+                            },
+                            data: calEvent.calendarEventId,
+                            success: function(response) {
+                                var errorCode = response.errorCode;
+                                if (!!errorCode) {
+                                    switch (errorCode) {
+                                        case "NO_USER_LOGGED_IN" :
+                                        localStorage.setItem("isLoggedIn", false);
+                                        swal({
+                                            title: "Error",
+                                            text: "You are not logged into your account. Kindly login again to view this page",
+                                            type: "error",
+                                            confirmButtonText: "OK" },
+                                            function() {
+                                                localStorage.setItem("isLoggedIn", false);
+                                                window.location.replace("login.html");
+                                            }
+                                            );
+                                            break;
+                                    }
+                                }
 
-                }
-            },
+                                if (response.success === true) {
+                                    $('#calendar').fullCalendar('removeEvents', calEvent._id);
+                                } else {
+                                    swal({
+                                        title: "Error",
+                                        text: "Event did not get delted. Kindly try in some time.",
+                                        type: "error",
+                                        confirmButtonText: "OK" });
+                                }
+                            },
+                            error: function(e) {
+                                    swal({
+                                        title: "Error",
+                                        text: "Event did not get delted. Kindly try in some time.",
+                                        type: "error",
+                                        confirmButtonText: "OK" });
+                            },
+                        });
+                      });
+                },
             eventDrop: function(event, delta, revertFunc) {
 
                 // console.log(event.id + " was dropped on " + event.start.format());
@@ -663,17 +754,42 @@
                         'borderColor': event.borderColor
                     }),
                     success: function(response) {
+                        var errorCode = response.errorCode;
+                        if (!!errorCode) {
+                            switch (errorCode) {
+                                case "NO_USER_LOGGED_IN" :
+                                localStorage.setItem("isLoggedIn", false);
+                                swal({
+                                    title: "Error",
+                                    text: "You are not logged into your account. Kindly login again to view this page",
+                                    type: "error",
+                                    confirmButtonText: "OK" },
+                                    function() {
+                                        localStorage.setItem("isLoggedIn", false);
+                                        window.location.replace("login.html");
+                                    }
+                                    );
+                                    break;
+                            }
+                        }
+
                         if (response.success === true) {
-                            alert("Event Updated!");
 
                         } else {
-                            alert("Events didnot get updated");
+                            swal({
+                                title: "Error",
+                                text: "Event did not get updated. Kindly try in some time.",
+                                type: "error",
+                                confirmButtonText: "OK" });
                         }
                     },
                     error: function(e) {
-                        alert('Error while moving events!');
+                        swal({
+                            title: "Error",
+                            text: "Event did not get updated. Kindly try in some time.",
+                            type: "error",
+                            confirmButtonText: "OK" });                    
                     },
-
                 });
             },
             eventResize: function(event, delta, revertFunc) {
@@ -718,18 +834,46 @@
                         'borderColor': copiedEventObject.borderColor
                     }),
                     success: function(response) {
+                        var errorCode = response.errorCode;
+                        if (!!errorCode) {
+                            switch (errorCode) {
+                                case "NO_USER_LOGGED_IN" :
+                                localStorage.setItem("isLoggedIn", false);
+                                swal({
+                                    title: "Error",
+                                    text: "You are not logged into your account. Kindly login again to view this page",
+                                    type: "error",
+                                    confirmButtonText: "OK" },
+                                    function() {
+                                        localStorage.setItem("isLoggedIn", false);
+                                        window.location.replace("login.html");
+                                    }
+                                    );
+                                    break;
+                            }
+                        }
+
                         if (response.success === true) {
-                            alert("Event Updated!");
                             var data = $.parseJSON(response.response);
                             console.log(data);
                             if (!!data) {
                                 copiedEventObject.calendarEventId = data['id'];
                             }
                             $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+                        } else {
+                            swal({
+                                title: "Error",
+                                text: "Event did not get updated. Kindly try in some time.",
+                                type: "error",
+                                confirmButtonText: "OK" });
                         }
                     },
                     error: function(e) {
-                        alert('Error while moving events!');
+                          swal({
+                              title: "Error",
+                              text: "Event did not get added. Kindly try in some time.",
+                              type: "error",
+                              confirmButtonText: "OK" });
                     },
 
                 });
@@ -851,10 +995,6 @@
                     }
 
                     $('#calendar').fullCalendar('addEventSource', event);
-
-
-                } else {
-                    alert("No Events to show");
                 }
 
             },

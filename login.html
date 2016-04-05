@@ -162,8 +162,10 @@
                                 type: "error",
                                 confirmButtonText: "OK" });
                                 break;
-                            default :
-                               alert("Normal alert");
+                            case "USER_ALREADY_LOGGED_IN" :
+                                localStorage.setItem("isLoggedIn", true);
+                                window.location.replace("entryPrescriptions.html");
+                                break;
                         }
                     }
 
@@ -189,7 +191,11 @@
             var email = $("#exampleInputEmail").val();
             var phone = $("#exampleInputPhone").val();
             if (name === "" || (email === "" && phone === "")) {
-                alert("Please enter all fields!");
+                swal({
+                    title: "Error",
+                    text: "Kindly enter the details"
+                    type: "error",
+                    confirmButtonText: "OK" });
             } else {
                 $.ajax({
                     type: 'POST',
@@ -207,12 +213,19 @@
 
                     }),
                     success: function(response) {
-                        console.log("response after refering is-----", response);
-                        alert('Thank You!! dBotica team will call you shortly.');
+                        swal({
+                            title: "Success",
+                            text: "Thank You!! dBotica team will call you shortly",
+                            type: "success",
+                            confirmButtonText: "OK" });
 
                     },
                     error: function(request, status, error) {
-                        alert(status + ' : ' + error);
+                        swal({
+                            title: "Error",
+                            text: "Error receiving the details. Kindly try after some time."
+                            type: "error",
+                            confirmButtonText: "OK" });
                     }
 
                 });

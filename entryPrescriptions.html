@@ -27,6 +27,10 @@
     <script type="text/javascript" src="js/eye.js"></script>
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/layout.js?ver=1.0.2"></script>
+
+    <script src="plugins/sweetalert/dist/sweetalert.min.js"></script> 
+    <link rel="stylesheet" type="text/css" href="plugins/sweetalert/dist/sweetalert.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -634,6 +638,25 @@
                 withCredentials: true
             },
             success: function(response) {
+              var errorCode = response.errorCode;
+                if (!!errorCode) {
+                    switch (errorCode) {
+                        case "NO_USER_LOGGED_IN" :
+                        localStorage.setItem("isLoggedIn", false);
+                        swal({
+                            title: "Error",
+                            text: "You are not logged into your account. Kindly login again to view this page",
+                            type: "error",
+                            confirmButtonText: "OK" },
+                            function() {
+                                localStorage.setItem("isLoggedIn", false);
+                                window.location.replace("login.html");
+                            }
+                            );
+                            break;
+                    }
+                }
+
                 if (testName === $('#prescription-form-test').val()) {
                     var data = $.parseJSON(response.response);
                     console.log(data);
@@ -883,11 +906,35 @@
             },
             data: JSON.stringify({
                 'patientId': patientInfo[0].id,
-                'scheduleTime': "1459710477081",
-                'label': "LUNCH"
+                'scheduleTime': "1469842989372",
+                'label': patientInfo[0].firstName
             }),
             success: function(response) {
-                alert("Appointment successfully booked");
+                var errorCode = response.errorCode;
+                if (!!errorCode) {
+                    switch (errorCode) {
+                        case "NO_USER_LOGGED_IN" :
+                        localStorage.setItem("isLoggedIn", false);
+                        swal({
+                            title: "Error",
+                            text: "You are not logged into your account. Kindly login again to view this page",
+                            type: "error",
+                            confirmButtonText: "OK" },
+                            function() {
+                                localStorage.setItem("isLoggedIn", false);
+                                window.location.replace("login.html");
+                            }
+                            );
+                            break;
+                    }
+                }
+
+                swal({
+                    title: "Success",
+                    text: "Appointment successfully booked",
+                    type: "success",
+                    confirmButtonText: "OK" });
+
                 var data = $.parseJSON(response.response);
                 console.log(data);
                 //Adding prescriptioninfo to indexedDB
@@ -899,7 +946,11 @@
                 }
             },
             error: function(request, status, error) {
-                alert(status + ' : ' + error);
+                swal({
+                    title: "Error",
+                    text: "Error updating the appointment details",
+                    type: "error",
+                    confirmButtonText: "OK" });
             }
 
 
@@ -1172,6 +1223,25 @@
                 withCredentials: true
             },
             success: function(response) {
+              var errorCode = response.errorCode;
+                if (!!errorCode) {
+                    switch (errorCode) {
+                        case "NO_USER_LOGGED_IN" :
+                        localStorage.setItem("isLoggedIn", false);
+                        swal({
+                            title: "Error",
+                            text: "You are not logged into your account. Kindly login again to view this page",
+                            type: "error",
+                            confirmButtonText: "OK" },
+                            function() {
+                                localStorage.setItem("isLoggedIn", false);
+                                window.location.replace("login.html");
+                            }
+                            );
+                            break;
+                    }
+                }
+
                 if (brandName === $('#prescription-form-drug').val()) {
                     var data = $.parseJSON(response.response);
                     console.log(data);
@@ -1246,6 +1316,24 @@
                 'mobileNumber': patientInfo[0].phoneNumber
             }),
             success: function(response) {
+              var errorCode = response.errorCode;
+                if (!!errorCode) {
+                    switch (errorCode) {
+                        case "NO_USER_LOGGED_IN" :
+                        localStorage.setItem("isLoggedIn", false);
+                        swal({
+                            title: "Error",
+                            text: "You are not logged into your account. Kindly login again to view this page",
+                            type: "error",
+                            confirmButtonText: "OK" },
+                            function() {
+                                localStorage.setItem("isLoggedIn", false);
+                                window.location.replace("login.html");
+                            }
+                            );
+                            break;
+                    }
+                }
 
                 console.log("addMyPatients  ", response);
             }
@@ -1272,7 +1360,32 @@
                 'temperature': $('#prescription-form-temp').val()
             }),
             success: function(response) {
-                alert("Prescrition successfully saved");
+              var errorCode = response.errorCode;
+                if (!!errorCode) {
+                    switch (errorCode) {
+                        case "NO_USER_LOGGED_IN" :
+                        localStorage.setItem("isLoggedIn", false);
+                        swal({
+                            title: "Error",
+                            text: "You are not logged into your account. Kindly login again to view this page",
+                            type: "error",
+                            confirmButtonText: "OK" },
+                            function() {
+                                localStorage.setItem("isLoggedIn", false);
+                                window.location.replace("login.html");
+                            }
+                            );
+                            break;
+                    }
+                }
+
+
+                swal({
+                    title: "Success",
+                    text: "Prescrition details are saved successfully",
+                    type: "success",
+                    confirmButtonText: "OK" });
+
                 var prescription = $.parseJSON(response.response);
 				var prescriptionId = prescription.id;
 				$.cookie('currentPresccriptionId',prescriptionId);
@@ -1291,7 +1404,7 @@
     });
 
     $('prescription-form').submit(function(e) {
-        alert($(this).serializeArray());
+        var temp = $(this).serializeArray();
     });
 
     function resetAll() {
@@ -1340,7 +1453,7 @@
     });
 
     $('prescription-form').submit(function(e) {
-        alert($(this).serializeArray());
+        var temp = $(this).serializeArray());
     });
 
     $('#prescription-form-height').keyup(function(e) {
@@ -1364,6 +1477,10 @@
 
 
     $(document).ready(function() {
+        if (localStorage.getItem("isLoggedIn") == "false") {
+            window.location.replace("login.html");
+        }
+
         var doctorName = localStorage.getItem('firstName');
         console.log("doctor name is----" + doctorName);
         $("#doctorName").text(doctorName);
@@ -1528,6 +1645,25 @@
                 withCredentials: true
             },
             success: function(response) {
+              var errorCode = response.errorCode;
+                if (!!errorCode) {
+                    switch (errorCode) {
+                        case "NO_USER_LOGGED_IN" :
+                        localStorage.setItem("isLoggedIn", false);
+                        swal({
+                            title: "Error",
+                            text: "You are not logged into your account. Kindly login again to view this page",
+                            type: "error",
+                            confirmButtonText: "OK" },
+                            function() {
+                                localStorage.setItem("isLoggedIn", false);
+                                window.location.replace("login.html");
+                            }
+                            );
+                            break;
+                    }
+                }
+
                 if (response.success === true && response.response.length > 2) {
                     var data1 = $.parseJSON(response.response);
                     $.cookie('currentPatientInfo', response.response);
@@ -1539,7 +1675,12 @@
 
                     }
                 } else {
-                    alert("Patient doesn't exist");
+                    swal({
+                        title: "Info",
+                        text: "No details found for this patient",
+                        type: "info",
+                        confirmButtonText: "OK" }
+                    );
                     $.cookie('currentPatientInfo', '');
                     $('#patient-search-result').load('registerPatient.html');
 
@@ -1561,7 +1702,7 @@
             try {
                 $('#prescription-form-patient-name').text(data1[0]['firstName'] + " " + lastName);
             } catch (e) {
-                alert(e);
+
             }
         }
     }
