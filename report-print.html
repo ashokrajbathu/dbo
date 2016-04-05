@@ -90,7 +90,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
-            <strong>Test Details</strong>
+            <strong id="test-details">Test Details</strong>
             <table id="report-tests" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -152,24 +152,46 @@
         $('#date').text(today);
 
         var drugPojoList1 = $.cookie('drugPojoList');
-        var drugData = JSON.parse(drugPojoList1);
+        var drugData = [];
+        if (!!drugData) {
+            drugData = JSON.parse(drugPojoList1);
+        }
+        if (drugData.length > 0) {
+            var newCount = 1;
+            $('#report-prescriptions > tbody').text("");
 
-        var newCount = 1;
-        $('#report-prescriptions > tbody').text("");
+            for (s in drugData) {
+                $('#report-prescriptions > tbody').append('<tr ><td>' + newCount + '</td><td>' + drugData[s]['brandName'] + '</td><td>' + drugData[s]['perServing'] + '</td><td>' + drugData[s]['noOfDays'] + '</td><td>' + drugData[s]['usageDirection'] + '</td><td>' + drugData[s]['remarks'] + '</td>');
+                newCount++;
+                console.log("new count is----" + newCount);
+            }
 
-        for (s in drugData) {
-            $('#report-prescriptions > tbody').append('<tr ><td>' + newCount + '</td><td>' + drugData[s]['brandName'] + '</td><td>' + drugData[s]['perServing'] + '</td><td>' + drugData[s]['noOfDays'] + '</td><td>' + drugData[s]['usageDirection'] + '</td><td>' + drugData[s]['remarks'] + '</td>');
-            newCount++;
-            console.log("new count is----" + newCount);
+        } else {
+
+            $('#report-prescriptions').hide();
+
         }
 
         var testPojoList1 = $.cookie('testPojoList');
-        var testData = JSON.parse(testPojoList1);
-        var newCount1 = 1;
-        $('#report-tests > tbody').text("");
-        for (s in testData) {
-            $('#report-tests > tbody').append('<tr><td>' + newCount1 + '</td><td>' + testData[s]['testName'] + '</td><td>' + testData[s]['remark'] + '</td></tr>');
-            newCount++;
+        var testData = [];
+        if (!!testPojoList1) {
+
+            testData = JSON.parse(testPojoList1);
+            console.log(testData);
+            console.log(testData.length);
+        }
+        if (testData.length > 0) {
+            var newCount1 = 1;
+            $('#report-tests > tbody').text("");
+            for (s in testData) {
+                $('#report-tests > tbody').append('<tr><td>' + newCount1 + '</td><td>' + testData[s]['testName'] + '</td><td>' + testData[s]['remark'] + '</td></tr>');
+                newCount++;
+            }
+        } else {
+            console.log("hide------");
+            $('#test-details').hide();
+            $('#report-tests').hide();
+
         }
 
 
