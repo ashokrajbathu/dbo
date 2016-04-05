@@ -39,7 +39,7 @@
     <div class="wrapper">
         <header id="header" class="fixed-content main-header">
             <!-- Logo -->
-            <a href="starter.html" class="logo" style="width: 13%;">
+            <a href="entryPrescriptions.html" class="logo" style="width: 13%;">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini"><b>db</b></span>
                 <!-- logo for regular state and mobile devices -->
@@ -96,7 +96,7 @@
                     <div class="pull-left info">
                         <p>Doctor 1</p>
                         <!-- Status -->
-                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                        <a href="doctorProfile.html">Profile</a>
                     </div>
                 </div>
                 <!-- Sidebar Menu -->
@@ -1205,8 +1205,10 @@
         if (!!drugPojoListCookie) {
             drugPojoList = JSON.parse(drugPojoListCookie);
         }
-
-
+		var currentPresccriptionIdCookie = $.cookie('currentPresccriptionId');
+		var currentPresccriptionId = "";
+		if(!!currentPresccriptionIdCookie)
+			currentPresccriptionId = $.cookie('currentPresccriptionId');
         var testPojoListCookie = $.cookie('testPojoList');
         var testPojoList = [];
         if (!!testPojoListCookie) {
@@ -1260,6 +1262,7 @@
                 withCredentials: true
             },
             data: JSON.stringify({
+				'id' : currentPresccriptionId,
                 'doctorId': localStorage.getItem('doctorId'),
                 'drugDosage': drugPojoList,
                 'diagnosisTests': testPojoList,
@@ -1271,6 +1274,8 @@
             success: function(response) {
                 alert("Prescrition successfully saved");
                 var prescription = $.parseJSON(response.response);
+				var prescriptionId = prescription.id;
+				$.cookie('currentPresccriptionId',prescriptionId);
                 //Adding prescriptioninfo to indexedDB
 
                 try {
@@ -1291,7 +1296,10 @@
 
     function resetAll() {
         $('#prescription-form-ClincImp').val("");
-        $('#current-prescriptions > tbody').append("");
+		$('#prescription-form-Investigation').val('');
+        
+		$('#current-prescriptions > tbody').empty();
+		$('#current-tests > tbody').empty();
         formClear();
         $.cookie('drugHtml', "");
         $.cookie('drugEntryCount', "");
@@ -1313,6 +1321,7 @@
         $.cookie('currentPatientInfo-pulse', "");
         $.cookie('drugPojoList', "");
         $.cookie('testPojoList', "");
+		$.cookie('currentPresccriptionId',"");
         $('#prescription-form-pd').find('input:text').val('');
         $('#prescription-form-test').val('');
         $('#prescription-form-test-remark').val('');
@@ -1502,7 +1511,8 @@
     $('#patient-search').click(function(e) {
         e.preventDefault();
         $('#patient-search-result').text('');
-
+		
+		resetAll();
         var uniId = $("#patient-search-uniqueid").val();
         var phn = $("#patient-search-telephone").val();
 

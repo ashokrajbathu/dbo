@@ -77,7 +77,7 @@ function openDb(callBack) {
 
         var drugStore = db.createObjectStore(DB_DRUG_STORE, { keyPath: "id" });
         var patientStore = db.createObjectStore(DB_PATIENT_STORE, { keyPath: "id" });
-        var prescriptionStore = db.createObjectStore(DB_PRESCRIPTION_STORE, { autoIncrement: true });
+        var prescriptionStore = db.createObjectStore(DB_PRESCRIPTION_STORE, { keyPath: "id" });
 
 
 
@@ -247,18 +247,25 @@ function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId) {
     console.log("addPrescription argumensts:", arguments);
 	var patientName = (patientInfo && patientInfo !== "") ? patientInfo.firstName : "Unknown" ;
 	var patientPhoneNumber = (patientInfo && patientInfo !== "") ? patientInfo.phoneNumber : 0;
-    var obj = { "prescription": prescription, "patientInfo": patientInfo, "doctorId": doctorId, "patientName": patientName, "patientPhoneNumber": patientPhoneNumber, "creationTime": new Date(prescription.creationTime) };
+    var obj = { "id":prescription.id, "prescription": prescription, "patientInfo": patientInfo, "doctorId": doctorId, "patientName": patientName, "patientPhoneNumber": patientPhoneNumber, "creationTime": new Date(prescription.creationTime) };
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readwrite');
+	
     console.log("prescription obj", obj);
-    var req = store.add(obj);
+    var request = store.get(obj.id);
+    request.onsuccess = function(event) {
+        
+        
+        var requestUpdate = store.put(obj);
+        requestUpdate.onsuccess = function(event) {
+            console.log("addPrescriptionToIndexedDB Done");
+			console.log(obj);
+        }
+        requestUpdate.onerror = function() {
+            console.error("addPrescriptionToIndexedDB", this.error);
+        }
+    }
 
-    req.onsuccess = function(event) {
-        console.log("AddPrescription successfull");
-        console.log(obj);
-    }
-    req.onerror = function(event) {
-        console.log("AddPrescription error:", this.error);
-    }
+   
 }
 
 /**
