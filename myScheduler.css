@@ -11,6 +11,14 @@
     left: 0px;
 }
 
+#prescription-reset {
+    margin-right: 18px;
+}
+
+#calender-section {
+    background-color: #f5f5f5;
+}
+
 #header {
     padding-top: 0px;
 }
