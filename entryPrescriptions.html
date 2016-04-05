@@ -264,7 +264,7 @@
                                 </div>
                                 <div class="col-md-2 form-group">
                                     <!-- <label>Text</label> -->
-                                    <p class="form-control" placeholder="" id="prescription-form-measurmnt" style="background-color: #eee;"> Units </p>
+                                    <p class="form-control" placeholder="" id="prescription-form-measurmnt" style="background-color: #eee;"> units </p>
                                 </div>
                                 <div class="col-md-2 form-group">
                                     <!-- <label>Text</label> -->
@@ -1063,125 +1063,8 @@
                             case 'SYRUP':
                                 $('#prescription-form-measurmnt').text("ml");
                                 break;
-                            case 'TABLET':
-                                $('#prescription-form-measurmnt').text("mg");
-                                break;
-                            case 'CAPSULE':
-                                $('#prescription-form-measurmnt').text("mg");
-                                break;
-                            case 'INFUSION':
-                                $('#prescription-form-measurmnt').text("unit");
-                                break;
-                            case 'SUSPENSION':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'INJECTION':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'POWDER':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'GEL':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'DROP':
-                                $('#prescription-form-measurmnt').text("unit");
-                                break;
-                            case 'MOUTH_WASH_GARGLE':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'CREAM':
-                                $('#prescription-form-measurmnt').text("mg");
-                                break;
-                            case 'OINTMENT':
-                                $('#prescription-form-measurmnt').text("mg");
-                                break;
-                            case 'KIT':
-                                $('#prescription-form-measurmnt').text("unit");
-                                break;
-                            case 'SHAMPOO':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'SOLUTION':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'LOTION':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'SOAP_BAR':
-                                $('#prescription-form-measurmnt').text("unit");
-                                break;
-                            case 'SACHET':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'EXPECTORANT':
-                                $('#prescription-form-measurmnt').text("mg");
-                                break;
-                            case 'ROTACAP':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'INHALER':
-                                $('#prescription-form-measurmnt').text("mg");
-                                break;
-                            case 'EMULSION':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'GRANULES':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'LOZENGES':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'PESSARY':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'SUPPOSITORY':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'LINCTUS':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'SPRAY':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'TOOTH_PASTE':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'GUM_PAINT':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'RESPULES':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'PEN':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'ELIXIR':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'MOUTH_PAINT':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'APLICAPS':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'GLUE':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'GUM':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'ASTRINGENT':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'ENEMA':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'PATCH':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            case 'OIL':
-                                $('#prescription-form-measurmnt').text("ml");
+                            default :
+                                $('#prescription-form-measurmnt').text("units");
                                 break;
 
 
@@ -1618,7 +1501,7 @@
         $('#prescription-form-information-text').empty();
         $('#prescription-form-units').val('1');
         $('#prescription-form-drug-type').html('');
-        $('#prescription-form-measurmnt').html('Qunt');
+        $('#prescription-form-measurmnt').html('units');
         $('#prescription-form-si').val('');
         //console.log('claered');
 
