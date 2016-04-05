@@ -10,9 +10,9 @@
     <!-- Bootstrap 3.3.5 -->
     <link class="cssdeck" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" class="cssdeck">
-    <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <link href="css/jquery-ui.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
@@ -20,6 +20,10 @@
     <!-- iCheck -->
     <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
     <link rel="stylesheet" type="text/css" href="login.css">
+
+    <script src="plugins/sweetalert/dist/sweetalert.min.js"></script> 
+    <link rel="stylesheet" type="text/css" href="plugins/sweetalert/dist/sweetalert.css">
+
     <style type="text/css">
     .nav-tabs>li {
         float: left;
@@ -47,7 +51,7 @@
         <div class="modal-header" style="background-color:#3c8dbc;height:50px;">
             <h2 style="color:white">dbotica</h2>
         </div>
-        <div class="modal-body" style="width:30%;margin-left:300px;">
+        <div class="modal-body" style="width:30%;margin-left:25%;">
             <div class="well" style="padding:8px;width:91%;">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#login" data-toggle="tab">Login</a></li>
@@ -74,9 +78,8 @@
                                 <div class="control-group">
                                     <!-- Button -->
                                     <div class="controls">
-                                        <span><input type="checkbox"> Remember Me</span>
                                         <span>
-                                        <button style="margin-left:15px;" id="login-submit" class="btn btn-success">Login</button>
+                                        <div style="margin-left:100px;" id="login-submit" class="btn btn-success">Login</div>
                                         </span>
                                     </div>
                                 </div>
@@ -151,7 +154,17 @@
                 success: function(response) {
                     var errorCode = response.errorCode;
                     if (!!errorCode) {
-                        alert(errorCode);
+                        switch (errorCode) {
+                            case "BAD_CREDENTIALS" :
+                            swal({
+                                title: "Error",
+                                text: "Incorrect email or password.",
+                                type: "error",
+                                confirmButtonText: "OK" });
+                                break;
+                            default :
+                               alert("Normal alert");
+                        }
                     }
 
                     var data = $.parseJSON(response.response);
@@ -194,7 +207,6 @@
 
                     }),
                     success: function(response) {
-
                         console.log("response after refering is-----", response);
                         alert('Thank You!! dBotica team will call you shortly.');
 
