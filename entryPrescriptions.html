@@ -1205,8 +1205,10 @@
         if (!!drugPojoListCookie) {
             drugPojoList = JSON.parse(drugPojoListCookie);
         }
-
-
+		var currentPresccriptionIdCookie = $.cookie('currentPresccriptionId');
+		var currentPresccriptionId = "";
+		if(!!currentPresccriptionIdCookie)
+			currentPresccriptionId = $.cookie('currentPresccriptionId');
         var testPojoListCookie = $.cookie('testPojoList');
         var testPojoList = [];
         if (!!testPojoListCookie) {
@@ -1260,6 +1262,7 @@
                 withCredentials: true
             },
             data: JSON.stringify({
+				'id' : currentPresccriptionId,
                 'doctorId': localStorage.getItem('doctorId'),
                 'drugDosage': drugPojoList,
                 'diagnosisTests': testPojoList,
@@ -1271,6 +1274,8 @@
             success: function(response) {
                 alert("Prescrition successfully saved");
                 var prescription = $.parseJSON(response.response);
+				var prescriptionId = prescription.id;
+				$.cookie('currentPresccriptionId',prescriptionId);
                 //Adding prescriptioninfo to indexedDB
 
                 try {
@@ -1316,6 +1321,7 @@
         $.cookie('currentPatientInfo-pulse', "");
         $.cookie('drugPojoList', "");
         $.cookie('testPojoList', "");
+		$.cookie('currentPresccriptionId',"");
         $('#prescription-form-pd').find('input:text').val('');
         $('#prescription-form-test').val('');
         $('#prescription-form-test-remark').val('');
