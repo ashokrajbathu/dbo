@@ -19,6 +19,10 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="entryPrescription.css">
+
+    <script src="plugins/sweetalert/dist/sweetalert.min.js"></script> 
+    <link rel="stylesheet" type="text/css" href="plugins/sweetalert/dist/sweetalert.css">
+
     <style type="text/css">
     #register-box-body {
         width: 280px;
@@ -109,9 +113,13 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-        if (localStorage.getItem("isLoggedIn") == "false") {
-            window.location.replace("login.html");
-        }
+    onLoadTasks();
+});
+
+function onLoadTasks() {
+    if (localStorage.getItem("isLoggedIn") == "false") {
+        window.location.replace("login.html");
+    }
 
     try {
         var data1 = $.parseJSON($.cookie('currentPatientInfo'));
@@ -132,8 +140,7 @@ $(document).ready(function() {
     } catch (e) {
         $('#patient-reg-phone').val($.cookie('currentPatientContactNumber'));
     }
-});
-
+}
 
 $('#patient-register-alr-btn').click(function() {
     if ($('#patient-reg-allergy-disp').val() != '') {
@@ -228,7 +235,11 @@ $('#patient-register-btn').click(function() {
 
             }
 
-            alert("Patient details successfully updated.");
+            swal({
+                title: "Success",
+                text: "Patient details successfully updated.",
+                type: "success",
+                confirmButtonText: "OK" });
             updatePatientFields();
         }
     }); //ajax
