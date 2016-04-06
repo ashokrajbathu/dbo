@@ -641,17 +641,18 @@
               var errorCode = response.errorCode;
                 if (!!errorCode) {
                     switch (errorCode) {
-                        case "NO_USER_LOGGED_IN" :
-                        localStorage.setItem("isLoggedIn", false);
-                        swal({
-                            title: "Error",
-                            text: "You are not logged into your account. Kindly login again to view this page",
-                            type: "error",
-                            confirmButtonText: "OK" },
-                            function() {
-                                localStorage.setItem("isLoggedIn", false);
-                                window.location.replace("login.html");
-                            }
+                        case "NO_USER_LOGGED_IN":
+                            localStorage.setItem("isLoggedIn", false);
+                            swal({
+                                    title: "Error",
+                                    text: "You are not logged into your account. Kindly login again to view this page",
+                                    type: "error",
+                                    confirmButtonText: "OK"
+                                },
+                                function() {
+                                    localStorage.setItem("isLoggedIn", false);
+                                    window.location.replace("login.html");
+                                }
                             );
                             break;
                     }
@@ -785,6 +786,7 @@
         var drugId = $("#prescription-form-drug").attr("drugId");
         var days = $("#prescription-form-days").val();
         var units = $("#prescription-form-units").val();
+        var drugType = $("#prescription-form-drug-type").text();
         var per_serving = $("#prescription-form-serving").val();
         var msrmnt = $('#prescription-form-measurmnt').text();
 
@@ -858,6 +860,8 @@
         drugPojo['brandName'] = drug;
         drugPojo['usageDirection'] = usage;
         drugPojo['remarks'] = si;
+        drugPojo['drugType'] = drugType;
+        console.log("drug type required is-------" + drugType);
         drugPojo['perServing'] = per_serving;
         if (days === 'Days') {
             drugPojo['noOfDays'] = units;
@@ -866,7 +870,7 @@
             drugPojo['quantity'] = units;
 			drugPojo['noOfDays'] = quantCount!=0 ? parseInt(units)/quantCount : 0 ;
         }
-
+        console.log("drug pojo required is-----", drugPojo);
         //console.log("form submitted with values: "+drug+", "+days+", "+units+", "+si+", "+bbf+", "+abf+", "+bl+", "+al+", "+bd+", "+ad+", "+price+", "+constituents+", "+usage);
         $('#current-prescriptions > tbody').append('<tr ><td>' + count + '</td><td>' + drug + '</td><td>' + per_serving + " " + msrmnt + '</td><td>' + units + " " + days + '</td><td>' +
             usage + '</td><td>' + si + '</td><td id="deliD' + count + '"><button type="submit" name="delbtn" class="deletebutton" id="del' + count + '" value="delID' + count + '">Delete</button></td>');
@@ -875,6 +879,7 @@
         $.cookie('drugHtml', $('#current-prescriptions > tbody').html());
         var countNum = Number(count);
         drugPojoList.push(drugPojo);
+        console.log("drug pojo list required is------", drugPojoList);
         $.cookie('drugPojoList', JSON.stringify(drugPojoList));
         //console.log(JSON.stringify(drugPojoList));
         countNum++;
@@ -922,17 +927,18 @@
                 var errorCode = response.errorCode;
                 if (!!errorCode) {
                     switch (errorCode) {
-                        case "NO_USER_LOGGED_IN" :
-                        localStorage.setItem("isLoggedIn", false);
-                        swal({
-                            title: "Error",
-                            text: "You are not logged into your account. Kindly login again to view this page",
-                            type: "error",
-                            confirmButtonText: "OK" },
-                            function() {
-                                localStorage.setItem("isLoggedIn", false);
-                                window.location.replace("login.html");
-                            }
+                        case "NO_USER_LOGGED_IN":
+                            localStorage.setItem("isLoggedIn", false);
+                            swal({
+                                    title: "Error",
+                                    text: "You are not logged into your account. Kindly login again to view this page",
+                                    type: "error",
+                                    confirmButtonText: "OK"
+                                },
+                                function() {
+                                    localStorage.setItem("isLoggedIn", false);
+                                    window.location.replace("login.html");
+                                }
                             );
                             break;
                     }
@@ -942,7 +948,8 @@
                     title: "Success",
                     text: "Appointment successfully booked",
                     type: "success",
-                    confirmButtonText: "OK" });
+                    confirmButtonText: "OK"
+                });
 
                 var data = $.parseJSON(response.response);
                 console.log(data);
@@ -959,7 +966,8 @@
                     title: "Error",
                     text: "Error updating the appointment details",
                     type: "error",
-                    confirmButtonText: "OK" });
+                    confirmButtonText: "OK"
+                });
             }
 
 
@@ -1118,17 +1126,18 @@
               var errorCode = response.errorCode;
                 if (!!errorCode) {
                     switch (errorCode) {
-                        case "NO_USER_LOGGED_IN" :
-                        localStorage.setItem("isLoggedIn", false);
-                        swal({
-                            title: "Error",
-                            text: "You are not logged into your account. Kindly login again to view this page",
-                            type: "error",
-                            confirmButtonText: "OK" },
-                            function() {
-                                localStorage.setItem("isLoggedIn", false);
-                                window.location.replace("login.html");
-                            }
+                        case "NO_USER_LOGGED_IN":
+                            localStorage.setItem("isLoggedIn", false);
+                            swal({
+                                    title: "Error",
+                                    text: "You are not logged into your account. Kindly login again to view this page",
+                                    type: "error",
+                                    confirmButtonText: "OK"
+                                },
+                                function() {
+                                    localStorage.setItem("isLoggedIn", false);
+                                    window.location.replace("login.html");
+                                }
                             );
                             break;
                     }
@@ -1281,17 +1290,18 @@
               var errorCode = response.errorCode;
                 if (!!errorCode) {
                     switch (errorCode) {
-                        case "NO_USER_LOGGED_IN" :
-                        localStorage.setItem("isLoggedIn", false);
-                        swal({
-                            title: "Error",
-                            text: "You are not logged into your account. Kindly login again to view this page",
-                            type: "error",
-                            confirmButtonText: "OK" },
-                            function() {
-                                localStorage.setItem("isLoggedIn", false);
-                                window.location.replace("login.html");
-                            }
+                        case "NO_USER_LOGGED_IN":
+                            localStorage.setItem("isLoggedIn", false);
+                            swal({
+                                    title: "Error",
+                                    text: "You are not logged into your account. Kindly login again to view this page",
+                                    type: "error",
+                                    confirmButtonText: "OK"
+                                },
+                                function() {
+                                    localStorage.setItem("isLoggedIn", false);
+                                    window.location.replace("login.html");
+                                }
                             );
                             break;
                     }
@@ -1316,17 +1326,18 @@
               var errorCode = response.errorCode;
                 if (!!errorCode) {
                     switch (errorCode) {
-                        case "NO_USER_LOGGED_IN" :
-                        localStorage.setItem("isLoggedIn", false);
-                        swal({
-                            title: "Error",
-                            text: "You are not logged into your account. Kindly login again to view this page",
-                            type: "error",
-                            confirmButtonText: "OK" },
-                            function() {
-                                localStorage.setItem("isLoggedIn", false);
-                                window.location.replace("login.html");
-                            }
+                        case "NO_USER_LOGGED_IN":
+                            localStorage.setItem("isLoggedIn", false);
+                            swal({
+                                    title: "Error",
+                                    text: "You are not logged into your account. Kindly login again to view this page",
+                                    type: "error",
+                                    confirmButtonText: "OK"
+                                },
+                                function() {
+                                    localStorage.setItem("isLoggedIn", false);
+                                    window.location.replace("login.html");
+                                }
                             );
                             break;
                     }
@@ -1337,7 +1348,8 @@
                     title: "Success",
                     text: "Prescrition details are saved successfully",
                     type: "success",
-                    confirmButtonText: "OK" });
+                    confirmButtonText: "OK"
+                });
 
                 var prescription = $.parseJSON(response.response);
 				var prescriptionId = prescription.id;
@@ -1604,17 +1616,18 @@
               var errorCode = response.errorCode;
                 if (!!errorCode) {
                     switch (errorCode) {
-                        case "NO_USER_LOGGED_IN" :
-                        localStorage.setItem("isLoggedIn", false);
-                        swal({
-                            title: "Error",
-                            text: "You are not logged into your account. Kindly login again to view this page",
-                            type: "error",
-                            confirmButtonText: "OK" },
-                            function() {
-                                localStorage.setItem("isLoggedIn", false);
-                                window.location.replace("login.html");
-                            }
+                        case "NO_USER_LOGGED_IN":
+                            localStorage.setItem("isLoggedIn", false);
+                            swal({
+                                    title: "Error",
+                                    text: "You are not logged into your account. Kindly login again to view this page",
+                                    type: "error",
+                                    confirmButtonText: "OK"
+                                },
+                                function() {
+                                    localStorage.setItem("isLoggedIn", false);
+                                    window.location.replace("login.html");
+                                }
                             );
                             break;
                     }
@@ -1635,8 +1648,8 @@
                         title: "Info",
                         text: "No details found for this patient",
                         type: "info",
-                        confirmButtonText: "OK" }
-                    );
+                        confirmButtonText: "OK"
+                    });
                     $.cookie('currentPatientInfo', '');
                     $('#patient-search-result').load('registerPatient.html');
 

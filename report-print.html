@@ -176,7 +176,14 @@
 
             for (s in drugData) {
                 console.log("drug data s value is----", s);
-                $('#report-prescriptions > tbody').append('<tr ><td>' + newCount + '</td><td>' + drugData[s]['brandName'] + '</td><td>' + drugData[s]['perServing'] + '</td><td>' + drugData[s]['noOfDays'] + '</td><td>' + drugData[s]['usageDirection'] + '</td><td>' + drugData[s]['remarks'] + '</td>');
+                var perServing = "1 unit";
+                if (drugData[s]['drugType'] == "SYRUP") {
+                    perServing = drugData[s]['perServing'] + " ml";
+                }
+                if (drugData[s]['drugType'] == "TABLET" && !!drugData[s]['perServing']) {
+                    perServing = drugData[s]['perServing'] + " units";
+                }
+                $('#report-prescriptions > tbody').append('<tr ><td>' + newCount + '</td><td>' + drugData[s]['brandName'] + '</td><td>' + perServing + '</td><td>' + drugData[s]['noOfDays'] + '</td><td>' + drugData[s]['usageDirection'] + '</td><td>' + drugData[s]['remarks'] + '</td>');
                 newCount++;
                 console.log("new count is----" + newCount);
             }
