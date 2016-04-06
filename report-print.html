@@ -346,6 +346,18 @@
             if (!firstName || firstName.length == 0) {
                 firstName = "dbotica";
             }
+			var patientInfoCookie = $.cookie('currentPatientInfo');
+			var patientInfo = $.parseJSON(patientInfoCookie);
+			var prescriptionCookie = $.cookie('currentPrescription');
+			var prescription ={};
+			if(!!prescriptionCookie){
+			
+				prescription = JSON.parse(prescriptionCookie);
+			
+			}
+			var patientPhoneNumber = patientInfo[0].phoneNumber;
+			var prescriptionId = prescription.id;
+			
             var encrypted = CryptoJS.AES.encrypt("my message", firstName);
             var decrypted = CryptoJS.AES.decrypt(encrypted, "doctor123");
             var result = decrypted.toString(CryptoJS.enc.Utf8);
