@@ -388,7 +388,29 @@
 
         }
 
-        content1 += '</tbody></table></div></div></div>';
+        /*content1 += '</tbody></table></div></div></div>';*/
+        content1 += '</tbody></table>';
+
+        var testData = [];
+
+        testData = prescriptionData['prescription']['diagnosisTests'];
+        console.log("test data object is-----", testData);
+        if (!!testData) {
+            var newCount1 = 1;
+            content1 += '<h4>Test Details</h4><table id="test-details-myPrescription" style="width:100%;" class="table-bordered table-striped"><thead><tr><th>S.No</th><th>Test Name</th><th>Remarks</th></tr></thead><tbody>';
+            for (s in testData) {
+                content1 += '<tr><td>' + newCount1 + '</td><td>' + testData[s]['testName'] + '</td><td>' + testData[s]['remark'] + '</td></tr>';
+                newCount1++;
+            }
+            content1 += '</tbody></table>';
+        } else {
+            console.log("hide------");
+            $('#test-details-myPrescription').append('<h3>ravi teja</h3>');
+            $('#test-details-myPrescription').hide();
+            $('#test-details-myPrescription').hide();
+
+        }
+        content1 += '</div></div></div>';
         $("#prescription-list").append(content1);
 
 
@@ -446,7 +468,7 @@
         try {
             openDb(getAllPrescriptions);
         } catch (e) {
-            console.log("error opeining indexeddb",e);
+            console.log("error opeining indexeddb", e);
         }
 
 

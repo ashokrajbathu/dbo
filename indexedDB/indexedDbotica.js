@@ -386,12 +386,14 @@ function getAllPrescriptionsFromIndexedDB(addDataToTable,callBackAfterAdding, id
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
     var index = store.index("creationTime");
 
-    index.openCursor().onsuccess = function(event) {
+    index.openCursor(null,"prev").onsuccess = function(event) {
         var cursor = event.target.result;
 		//console.log(cursor.value);
         if (cursor) {
             if (cursor.value.doctorId == doctorId) {
                 result.push(cursor.value);
+                console.log("cursor value object is---", cursor.value);
+                console.log("cursor value array is---" + cursor.value);
                 addDataToTable(cursor.value);
             }
 
@@ -440,7 +442,7 @@ function getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable,ca
     } else {
         range = IDBKeyRange.lowerBound(fromDate);
     }
-    index.openCursor(range).onsuccess = function(event) {
+    index.openCursor(range,"prev").onsuccess = function(event) {
         var cursor = event.target.result;
         if (cursor) {
             if (cursor.value.doctorId == doctorId) {
@@ -497,7 +499,7 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addDataToT
     }
 
 
-    index.openCursor(range).onsuccess = function(event) {
+    index.openCursor(range,"prev").onsuccess = function(event) {
         var cursor = event.target.result;
         if (cursor) {
             if (cursor.value.doctorId == doctorId) {

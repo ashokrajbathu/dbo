@@ -84,11 +84,7 @@
                         <th>Drug Name and Dose</th>
                         <th style="width:10px;height:1px;">Per Serving</th>
                         <th>Days</th>
-                        <th>Dosage
-                            <p id="dosageTimings">(BBF:Before Breakfast ; ABF:After Breakfast;
-                                <br> BL:Before Lunch ; AL:After Lunch;
-                                <br> BD:Before Dinner ; AD:After Dinner)</p>
-                        </th>
+                        <th>Dosage</th>
                         <th>Special Instructions</th>
                     </tr>
                 </thead>
@@ -183,7 +179,8 @@
                 if (drugData[s]['drugType'] == "TABLET" && !!drugData[s]['perServing']) {
                     perServing = drugData[s]['perServing'] + " units";
                 }
-                $('#report-prescriptions > tbody').append('<tr ><td>' + newCount + '</td><td>' + drugData[s]['brandName'] + '</td><td>' + perServing + '</td><td>' + drugData[s]['noOfDays'] + '</td><td>' + drugData[s]['usageDirection'] + '</td><td>' + drugData[s]['remarks'] + '</td>');
+                console.log("dosage timings are---" + drugData[s]['usageDirection']);
+                $('#report-prescriptions > tbody').append('<tr ><td>' + newCount + '</td><td>' + drugData[s]['brandName'] + '</td><td>' + perServing + '</td><td>' + drugData[s]['noOfDays'] + '</td><td id="dosageTimings">' + drugData[s]['usageDirection'] + '</td><td>' + drugData[s]['remarks'] + '</td>');
                 newCount++;
                 console.log("new count is----" + newCount);
             }

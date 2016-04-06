@@ -62,6 +62,10 @@ tr:hover {
     padding: 0.2em 2em 1em 2em;
 }
 
+#test-details-myPrescription {
+    margin-top: 10px;
+}
+
 .box-body {
     margin-top: -20px;
 }

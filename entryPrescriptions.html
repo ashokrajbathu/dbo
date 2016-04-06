@@ -802,46 +802,46 @@
         var usage = "";
 		var quantCount = 0;
         if ($("#prescription-form-BBF").hasClass('btn-success')) {
-            usage = "BBF";
-			quantCount++;
+            usage = "BBF-Before BreakFast";
+            quantCount++;
         }
         if ($("#prescription-form-ABF").hasClass('btn-success')) {
             if (usage == "") {
-                usage = "ABF";
+                usage = "ABF-After BreakFast";
             } else {
-                usage = usage + ", " + "ABF";
+                usage = usage + ", " + "ABF-After BreakFast";
             }
 			quantCount++;
         }
         if ($("#prescription-form-BL").hasClass('btn-success')) {
             if (usage == "") {
-                usage = "BF";
+                usage = "BL-Before Lunch";
             } else {
-                usage = usage + ", " + "BF";
+                usage = usage + ", " + "BL-Before Lunch";
             }
 			quantCount++;
         }
         if ($("#prescription-form-AL").hasClass('btn-success')) {
             if (usage == "") {
-                usage = "AL";
+                usage = "AL-After Lunch";
             } else {
-                usage = usage + ", " + "AL";
+                usage = usage + ", " + "AL-After Lunch";
             }
 			quantCount++;
         }
         if ($("#prescription-form-BD").hasClass('btn-success')) {
             if (usage == "") {
-                usage = "BD";
+                usage = "BD-Before Dinner";
             } else {
-                usage = usage + ", " + "BD";
+                usage = usage + ", " + "BD-Before Dinner";
             }
 			quantCount++;
         }
         if ($("#prescription-form-AD").hasClass('btn-success')) {
             if (usage == "") {
-                usage = "AD";
+                usage = "AD-After Dinner";
             } else {
-                usage = usage + ", " + "AD";
+                usage = usage + ", " + "AD-After Dinner";
             }
 			quantCount++;
         }
