@@ -609,17 +609,15 @@ $('#doctor-profile-update-btn').click(function(e){
                 title: "Success",
                 text: "Your profile has been updated successfully",
                 type: "success",
-                confirmButtonText: "OK" }
-                );
+                confirmButtonText: "OK" });
             localStorage.setItem('doctorPojo',"");
             localStorage.setItem('doctorPojo',response.response);
           }  catch (e) {
             swal({
                 title: "Error",
-                text: "Error updating your profile details. Kindly contact the support for further details."
+                text: "Error updating your profile details. Kindly contact the support for further details.",
                 type: "error",
-                confirmButtonText: "OK" }
-                );
+                confirmButtonText: "OK" });
           }
       }
     });

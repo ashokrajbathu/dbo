@@ -468,7 +468,6 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addDataToT
     var initDay = new Date("Fri Mar 25 2016 18:53:37 GMT+0530");
     var today = new Date();
     if (fromDate == "" && toDate == "" && phoneNumber == "") {
-        alert("No filter has been applied showing all the data");
         console.log("No Date range specified");
         getAllPrescriptionsFromIndexedDB(addDataToTable,callBackAfterAdding,id);
         return;
