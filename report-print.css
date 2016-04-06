@@ -6,12 +6,20 @@ hr {
     margin-top: 2px;
 }
 
+#division {
+    margin-top: -3px;
+}
+
 #patientGender {
     margin-left: 25px;
 }
 
 #patientDetails1 {
     margin-top: 10px;
+}
+
+#dosageTimings {
+    font-size: 10px;
 }
 
 label {

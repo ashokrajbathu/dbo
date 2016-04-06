@@ -17,8 +17,7 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
     folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
-    <link rel="stylesheet" href="entryPrescription.css">
-
+    <link rel="stylesheet" href="doctorProfile.css">
     <!--Datepicker srcs -->
     <link rel="stylesheet" href="css/datepicker.css" type="text/css" />
   <!--  <link rel="stylesheet" media="screen" type="text/css" href="css/layout.css" />-->
@@ -38,12 +37,11 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-      </head>
-      <body class="hold-transition skin-blue sidebar-mini control-sidebar-open">
+</head>
 
-        <div class="wrapper">
-
-          <header class="main-header">
+<body class="hold-transition skin-blue sidebar-mini control-sidebar-open">
+    <div class="wrapper">
+        <header id="header" class="fixed-content main-header">
             <!-- Logo -->
             <a href="entryPrescriptions.html" class="logo"  style="width: 13%;">
               <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -250,41 +248,37 @@
                   </li>
                 </ul>
               </li> -->
-              <!-- User Account: style can be found in dropdown.less -->
-                  <li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                      <span class="hidden-xs">Doctor 1</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <!-- User image -->
-                      <li class="user-header">
-                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                        <p>
-                          Doctor 1 - Cardiologist
-                          <small>Member since Feb 2016</small>
-                        </p>
-                      </li>
-                      <!-- Menu Body -->
-                      
-                      <!-- Menu Footer-->
-                      <li class="user-footer">
-                        <div class="pull-left">
-                          <a href="doctorProfile.html" class="btn btn-default btn-flat">Profile</a>
-                        </div>
-                        <div class="pull-right">
-                          <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                        </div>
-                      </li>
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                                <span class="hidden-xs">Doctor 1</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                    <p id="doctorName">
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="doctorProfile.html" class="btn btn-default btn-flat">Profile</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
-                  </li>
-                 </ul>
-              </div>
+                </div>
             </nav>
-          </header>
-          <!-- Left side column. contains the logo and sidebar -->
-          <aside class="main-sidebar" style="width: 13%;">
-
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="fixed-side-content main-sidebar" style="width: 13%;">
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
 
@@ -316,177 +310,167 @@
               </ul><!-- /.sidebar-menu -->
             </section>
             <!-- /.sidebar -->
-          </aside>
-
-<!-- Content Wrapper. Contains page content -->
-      <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-          <h1>
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper" style="margin-right:0%;">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
             Account Settings
             <small></small>
           </h1>
-          <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Examples</a></li>
-            <li class="active">Blank page</li>
-          </ol>
-        </section>
-
-        <!-- Main content -->
-        <section class="content">
-
-          <!-- Default box -->
-          <div class="box">
-            <div class="box-header with-border">
-              <h3 class="box-title">Change Password</h3>
-              <div class="box-tools pull-right">
-                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-                
-              </div>
-              
-            </div>
-            <div class="box-body">
-                    <div class="form-horizontal" action = "#">
-                    <div class="form-group">
-                        <label for="inputName" class="col-sm-2 control-label">Old Password</label>
-                        <div class="col-sm-10">
-                          <input type="password" class="form-control" id="doctor-profile-old-pswd" placeholder="Old Password">
+                <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li><a href="#">Examples</a></li>
+                    <li class="active">Blank page</li>
+                </ol>
+            </section>
+            <!-- Main content -->
+            <section class="content">
+                <!-- Default box -->
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Change Password</h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                         </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputName" class="col-sm-2 control-label">New Password</label>
-                        <div class="col-sm-10">
-                          <input type="password" class="form-control" id="doctor-profile-new-pswd-1" placeholder="New Password">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputName" class="col-sm-2 control-label">Re-type New Password</label>
-                        <div class="col-sm-10">
-                          <input type="password" class="form-control" id="doctor-profile-new-pswd-2" placeholder="Re-type Password">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger" id="doctor-profile-update-pswd">Update Password</button>
-                        </div>
-                      </div>
                     </div>
-                  </div>
-<!-- /.box-body -->
-            <div class="box-footer">
-              * marked are mandatory fields
-            </div><!-- /.box-footer-->
-
-            <div class="box box-default collapsed-box">
-              <div class="box-header with-border"><h3 class="box-title">Update Personal Information</h3>
-                <div class="box-tools pull-right">
-                 <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                  </div>
-                 </div>             <div class="box-body">
-              
-                  <div class="tab-pane" id="settings">
-                    <div class="form-horizontal">
-                      <div class="form-group">
-                        <label for="inputName" class="col-sm-2 control-label">First Name</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="doctor-profile-firstname" disabled="true" placeholder="First Name">
+                    <div class="box-body">
+                        <div class="form-horizontal" action="#">
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Old Password</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" id="doctor-profile-old-pswd" placeholder="Old Password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">New Password</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" id="doctor-profile-new-pswd-1" placeholder="New Password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">Re-type New Password</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" id="doctor-profile-new-pswd-2" placeholder="Re-type Password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-danger" id="doctor-profile-update-pswd">Update Password</button>
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputName" class="col-sm-2 control-label">Last Name</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="doctor-profile-lastname" disabled="true" placeholder="Last Name">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputName" class="col-sm-2 control-label">Registration No.</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="doctor-profile-registration-no" disabled="true" placeholder="Registration No.">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputSkills" class="col-sm-2 control-label">Speciality</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="doctor-profile-speciality" placeholder="Speciality">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputSkills" class="col-sm-2 control-label">Organization</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="doctor-profile-organization" placeholder="Organization">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputSkills" class="col-sm-2 control-label">Qualification</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="doctor-profile-qualification" placeholder="Qualification">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputExperience" class="col-sm-2 control-label">Office Address</label>
-                        <div class="col-sm-10">
-                          <textarea class="form-control" id="doctor-profile-address" placeholder="Address"></textarea>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputEmail" class="col-sm-2 control-label">City</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="doctor-profile-city" placeholder="City">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputEmail" class="col-sm-2 control-label">Phone Number</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="doctor-profile-phonenumber" disabled="true" placeholder="Phone Number">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="doctor-profile-email" disabled="true" placeholder="Email">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputSkills" class="col-sm-2 control-label">Website URL</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="doctor-profile-website-url" placeholder="Website URL">
-                        </div>
-                      </div>
-                      
-                      <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger" id="doctor-profile-update-btn">Update Details</button>
-                        </div>
-                      </div>
                     </div>
-                  </div>
-                   </div>
-                  
-               </div>
-          </div><!-- /.box -->
-
-        </section><!-- /.content -->
-      </div><!-- /.content-wrapper -->
-
-      <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-          <b>Version</b> 2.3.0
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        * marked are mandatory fields
+                    </div>
+                    <!-- /.box-footer-->
+                    <div class="box box-default collapsed-box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Update Personal Information</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="tab-pane" id="settings">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="inputName" class="col-sm-2 control-label">First Name</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="doctor-profile-firstname" disabled="true" placeholder="First Name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputName" class="col-sm-2 control-label">Last Name</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="doctor-profile-lastname" disabled="true" placeholder="Last Name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputName" class="col-sm-2 control-label">Registration No.</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="doctor-profile-registration-no" disabled="true" placeholder="Registration No.">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputSkills" class="col-sm-2 control-label">Speciality</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="doctor-profile-speciality" placeholder="Speciality">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputSkills" class="col-sm-2 control-label">Organization</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="doctor-profile-organization" placeholder="Organization">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputSkills" class="col-sm-2 control-label">Qualification</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="doctor-profile-qualification" placeholder="Qualification">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputExperience" class="col-sm-2 control-label">Office Address</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" id="doctor-profile-address" placeholder="Address"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail" class="col-sm-2 control-label">City</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="doctor-profile-city" placeholder="City">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail" class="col-sm-2 control-label">Phone Number</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="doctor-profile-phonenumber" disabled="true" placeholder="Phone Number">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                                        <div class="col-sm-10">
+                                            <input type="email" class="form-control" id="doctor-profile-email" disabled="true" placeholder="Email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputSkills" class="col-sm-2 control-label">Website URL</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="doctor-profile-website-url" placeholder="Website URL">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" class="btn btn-danger" id="doctor-profile-update-btn">Update Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box -->
+            </section>
+            <!-- /.content -->
         </div>
-        <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved.
-      </footer>
-
-<!-- Control Sidebar -->
-
-      <!-- Add the sidebar's background. This div must be placed
+        <!-- /.content-wrapper -->
+        <footer class="main-footer" style="margin-left:13%;margin-right:0%;">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 2.3.0
+            </div>
+            <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">dbotica</a>.</strong> All rights reserved.
+        </footer>
+        <!-- Control Sidebar -->
+        <!-- Add the sidebar's background. This div must be placed
       immediately after the control sidebar -->
-      <div class="control-sidebar-bg"></div>
-    </div><!-- ./wrapper -->
-
-    <!--added for register pop up --->
-
-
-
+        <!-- <div class="control-sidebar-bg"></div> -->
+    </div>
+    <!-- ./wrapper -->
+    <!--added for register pop up -->
     <!-- jQuery 2.1.4 -->
     <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <!-- Bootstrap 3.3.5 -->
@@ -525,18 +509,33 @@
     
     })(jQuery);
 
-    $(document).ready(function(){
+    $(document).ready(function() {
+        $(window).scroll(function() {
+            var sticky = $('.fixed-content'),
+                scroll = $(window).scrollTop();
+
+            if (scroll > 1) sticky.addClass('fixed');
+            else sticky.removeClass('fixed');
+        });
+
+        var doctorName = localStorage.getItem('firstName');
+        console.log("doctor name is----" + doctorName);
+        $("#doctorName").text(doctorName);
+
         if (localStorage.getItem("isLoggedIn") == "false") {
             window.location.replace("login.html");
         }
 
-     // console.log('hi');
-     // console.log(localStorage.getItem('doctorPojo'));
-      var doctorData = $.parseJSON(localStorage.getItem('doctorPojo'));
-      //alert("12312" + doctorData);
-      //console.log('doctor data'+doctorData['firstName'] );
-       if(doctorData['firstName']!="" && doctorData['firstName']!= null)
-         $('#doctor-profile-firstname').val(doctorData['firstName']);
+        var doctorName = localStorage.getItem('firstName');
+        console.log("doctor name is----" + doctorName);
+        $("#doctorName").text(doctorName);
+        // console.log('hi');
+        // console.log(localStorage.getItem('doctorPojo'));
+        var doctorData = $.parseJSON(localStorage.getItem('doctorPojo'));
+        //alert("12312" + doctorData);
+        //console.log('doctor data'+doctorData['firstName'] );
+        if (doctorData['firstName'] != "" && doctorData['firstName'] != null)
+            $('#doctor-profile-firstname').val(doctorData['firstName']);
 
        if(doctorData['lastName']!="" && doctorData['lastName']!= null)
          $('#doctor-profile-lastname').val(doctorData['lastName']);
