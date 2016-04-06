@@ -251,18 +251,20 @@ function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId) {
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readwrite');
 	
     console.log("prescription obj", obj);
-    var request = store.get(obj.id);
+    var request = store.put(obj);
+	//console.log("came here");
     request.onsuccess = function(event) {
-        
-        
-        var requestUpdate = store.put(obj);
+        var prescription = request.result;
+		console.log("prescription result", prescription);
+        showAllPrescriptions();
+        /*var requestUpdate = store.put(obj);
         requestUpdate.onsuccess = function(event) {
-            console.log("addPrescriptionToIndexedDB Done");
-			console.log(obj);
+            console.log("addPrescriptionToIndexedDB Done",event.target.result.value);
+			showAllPrescriptions();
         }
         requestUpdate.onerror = function() {
             console.error("addPrescriptionToIndexedDB", this.error);
-        }
+        }*/	
     }
 
    
@@ -386,6 +388,7 @@ function getAllPrescriptionsFromIndexedDB(addDataToTable,callBackAfterAdding, id
 
     index.openCursor().onsuccess = function(event) {
         var cursor = event.target.result;
+		//console.log(cursor.value);
         if (cursor) {
             if (cursor.value.doctorId == doctorId) {
                 result.push(cursor.value);
@@ -577,6 +580,20 @@ function autocompleteDrugIndexedDB(searchterm,id, handleData) {
 
 function showAllPatients() {
     var store = getObjectStore(DB_PATIENT_STORE, 'readonly');
+	console.log("showAllPateints opened");
+    store.openCursor().onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+            console.log(cursor.value);
+            cursor.continue();
+        }
+    }
+
+}
+
+function showAllPrescriptions() {
+    var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
+	console.log("showAllPrescriptions opened");
     store.openCursor().onsuccess = function(event) {
         var cursor = event.target.result;
         if (cursor) {

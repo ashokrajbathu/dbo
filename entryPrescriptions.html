@@ -798,8 +798,10 @@
         var price = $("#prescription-form-price").text();
         var constituents = $("#prescription-form-constituents").text();
         var usage = "";
+		var quantCount = 0;
         if ($("#prescription-form-BBF").hasClass('btn-success')) {
             usage = "BBF";
+			quantCount++;
         }
         if ($("#prescription-form-ABF").hasClass('btn-success')) {
             if (usage == "") {
@@ -807,6 +809,7 @@
             } else {
                 usage = usage + ", " + "ABF";
             }
+			quantCount++;
         }
         if ($("#prescription-form-BL").hasClass('btn-success')) {
             if (usage == "") {
@@ -814,6 +817,7 @@
             } else {
                 usage = usage + ", " + "BF";
             }
+			quantCount++;
         }
         if ($("#prescription-form-AL").hasClass('btn-success')) {
             if (usage == "") {
@@ -821,6 +825,7 @@
             } else {
                 usage = usage + ", " + "AL";
             }
+			quantCount++;
         }
         if ($("#prescription-form-BD").hasClass('btn-success')) {
             if (usage == "") {
@@ -828,6 +833,7 @@
             } else {
                 usage = usage + ", " + "BD";
             }
+			quantCount++;
         }
         if ($("#prescription-form-AD").hasClass('btn-success')) {
             if (usage == "") {
@@ -835,6 +841,7 @@
             } else {
                 usage = usage + ", " + "AD";
             }
+			quantCount++;
         }
 
         var count = $.cookie('drugEntryCount');
@@ -853,9 +860,11 @@
         drugPojo['remarks'] = si;
         drugPojo['perServing'] = per_serving;
         if (days === 'Days') {
-            drugPojo['noOfDays'] = units + ' ' + days;
+            drugPojo['noOfDays'] = units;
+			drugPojo['quantity'] = parseInt(units)* quantCount ;
         } else {
-            drugPojo['quantity'] = units + ' ' + days;
+            drugPojo['quantity'] = units;
+			drugPojo['noOfDays'] = quantCount!=0 ? parseInt(units)/quantCount : 0 ;
         }
 
         //console.log("form submitted with values: "+drug+", "+days+", "+units+", "+si+", "+bbf+", "+abf+", "+bl+", "+al+", "+bd+", "+ad+", "+price+", "+constituents+", "+usage);
@@ -1162,11 +1171,13 @@
 		var currentPresccriptionId = "";
 		if(!!currentPresccriptionIdCookie)
 			currentPresccriptionId = $.cookie('currentPresccriptionId');
+		console.log("currentPresccriptionId", currentPresccriptionId);
         var testPojoListCookie = $.cookie('testPojoList');
         var testPojoList = [];
         if (!!testPojoListCookie) {
             testPojoList = JSON.parse(testPojoListCookie);
         }
+		
         $.cookie('currentPatientInfo-temp', $('#prescription-form-temp').val());
         $.cookie('currentPatientInfo-height', $('#prescription-form-height').val());
         $.cookie('currentPatientInfo-weight', $('#prescription-form-weight').val());
@@ -1180,9 +1191,77 @@
         $.cookie('currentPrescriptionInfo-referToDoctor', $('#referToDoctor').val());
         $.cookie('currentInputDate', $('#inputDate').val());
         $.cookie('currentInputDays', $('#inputDatetxt').val());
+		var temperature = $.cookie('currentPatientInfo-temp');
+        var height = $.cookie('currentPatientInfo-height');
+		var weight = $.cookie('currentPatientInfo-weight');
+		var bloodPressure = $.cookie('currentPatientInfo-bloodPressure');
+		var impression = $.cookie('currentPatientInfo-impression');
+		var bmi = $.cookie('currentPatientInfo-bmi');
+		var saturation = $.cookie('currentPatientInfo-saturation');
+		var pulse = $.cookie('currentPatientInfo-pulse');
+		var investigation = $.cookie('currentPrescriptionInfo-investigation');
+		var remarks = $.cookie('currentPrescriptionInfo-remarks');
+		var revisitDate = $.cookie('currentInputDate');
+		var revisitDays = $.cookie('currentInputDays');
+		var referToDoctor = $.cookie('currentPrescriptionInfo-referToDoctor');
 
-        var patientInfoCookie = $.cookie('currentPatientInfo');
+		
+		var patientInfoCookie = $.cookie('currentPatientInfo');
         var patientInfo = $.parseJSON(patientInfoCookie);
+		console.log("patientInfoCookie",patientInfoCookie);
+		var prescriptionCookie = $.cookie('currentPrescription');
+		console.log("prescriptionCookie", prescriptionCookie);
+		var prescription ={};
+		if(!!prescriptionCookie){
+			
+			prescription = JSON.parse(prescriptionCookie);
+			
+		}
+		
+		
+		var prescriptionString="";
+		console.log("remarks", remarks);
+		if(!jQuery.isEmptyObject(prescription)){
+			prescription['patientId'] = patientInfo[0].id;
+			prescription['doctorId'] = localStorage.getItem('doctorId');
+			prescription['drugDosage'] = drugPojoList;
+			prescription['diagnosisTests'] = testPojoList;
+			prescription['remarks'] = remarks;
+			prescription['height'] = height;
+			prescription['weight'] = weight;
+			prescription['bloodPressure'] = bloodPressure;
+			prescription['temperature'] = temperature;
+			prescription['age'] = patientInfo[0].age;
+			prescription['gender'] = patientInfo[0].gender;
+			prescription['bmi'] = bmi;
+			prescription['saturation'] = saturation;
+			prescription['pulse'] = pulse;
+			prescription['investigation'] = investigation;
+			prescription['revisitDate'] = revisitDate;
+			prescription['references'] = referToDoctor;
+			prescriptionString = JSON.stringify(prescription);
+		}else{
+			prescriptionString = JSON.stringify({
+				'patientId' : patientInfo[0].id,
+				'doctorId' : localStorage.getItem('doctorId'),
+				'drugDosage' : drugPojoList,
+				'diagnosisTests' : testPojoList,
+				'remarks' : remarks,
+				'height' : height,
+				'weight' : weight,
+				'bloodPressure'  : bloodPressure,
+				'temperature' : temperature,
+				'age' : patientInfo[0].age,
+				'gender' : patientInfo[0].gender,
+				'bmi' : bmi,
+				'saturation' : saturation,
+				'pulse' : pulse,
+				'investigation' : investigation,
+				'revisitDate' : revisitDate,
+				'references' : referToDoctor				
+			});
+		}
+        
         $.ajax({
             type: "POST",
             url: "http://localhost:8081/dbotica-spring/doctor/addMyPatients",
@@ -1232,16 +1311,7 @@
             xhrFields: {
                 withCredentials: true
             },
-            data: JSON.stringify({
-				'id' : currentPresccriptionId,
-                'doctorId': localStorage.getItem('doctorId'),
-                'drugDosage': drugPojoList,
-                'diagnosisTests': testPojoList,
-                'height': $('#prescription-form-height').val(),
-                'weight': $('#prescription-form-weight').val(),
-                'bloodPressure': $('#prescription-form-bloodPressure').val(),
-                'temperature': $('#prescription-form-temp').val()
-            }),
+            data: prescriptionString,
             success: function(response) {
               var errorCode = response.errorCode;
                 if (!!errorCode) {
@@ -1279,7 +1349,9 @@
                 } catch (e) {
 
                 }
+				$.cookie('currentPrescription', response.response);
                 console.log(prescription);
+				console.log($.cookie('currentPrescription'));
                 window.location.replace("index.html");
             }
         });
@@ -1297,6 +1369,7 @@
 		$('#current-prescriptions > tbody').empty();
 		$('#current-tests > tbody').empty();
         formClear();
+		$.cookie('currentPrescription',"");
         $.cookie('drugHtml', "");
         $.cookie('drugEntryCount', "");
         $.cookie('testHtml', "");
