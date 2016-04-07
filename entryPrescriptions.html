@@ -444,10 +444,9 @@
             </form>
             <div class="login-box-msg" id="patient-search-result" style="margin-top: 7%;"></div>
             <!--<div id="patient-search-result"></div>-->
-    </div>
-    </aside>
-    <!-- /.control-sidebar -->
-    <!-- Add the sidebar's background. This div must be placed
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Add the sidebar's background. This div must be placed
       immediately after the control sidebar -->
     <div class="control-sidebar-bg"></div>
     </div>
@@ -782,7 +781,8 @@
 
     $('#prescription-add').click(function(e) {
         e.preventDefault();
-        var drug = $("#prescription-form-drug").val();
+        var drug = "";
+        drug = $("#prescription-form-drug").val();
         var drugId = $("#prescription-form-drug").attr("drugId");
         var days = $("#prescription-form-days").val();
         var units = $("#prescription-form-units").val();
@@ -800,50 +800,50 @@
         var price = $("#prescription-form-price").text();
         var constituents = $("#prescription-form-constituents").text();
         var usage = "";
-		var quantCount = 0;
+        var quantCount = 0;
         if ($("#prescription-form-BBF").hasClass('btn-success')) {
-            usage = "BBF-Before BreakFast";
+            usage = "Before BreakFast";
             quantCount++;
         }
         if ($("#prescription-form-ABF").hasClass('btn-success')) {
             if (usage == "") {
-                usage = "ABF-After BreakFast";
+                usage = "After BreakFast";
             } else {
-                usage = usage + ", " + "ABF-After BreakFast";
+                usage = usage + ", " + "After BreakFast";
             }
-			quantCount++;
+            quantCount++;
         }
         if ($("#prescription-form-BL").hasClass('btn-success')) {
             if (usage == "") {
-                usage = "BL-Before Lunch";
+                usage = "Before Lunch";
             } else {
-                usage = usage + ", " + "BL-Before Lunch";
+                usage = usage + ", " + "Before Lunch";
             }
-			quantCount++;
+            quantCount++;
         }
         if ($("#prescription-form-AL").hasClass('btn-success')) {
             if (usage == "") {
-                usage = "AL-After Lunch";
+                usage = "After Lunch";
             } else {
-                usage = usage + ", " + "AL-After Lunch";
+                usage = usage + ", " + "After Lunch";
             }
-			quantCount++;
+            quantCount++;
         }
         if ($("#prescription-form-BD").hasClass('btn-success')) {
             if (usage == "") {
-                usage = "BD-Before Dinner";
+                usage = "Before Dinner";
             } else {
-                usage = usage + ", " + "BD-Before Dinner";
+                usage = usage + ", " + "Before Dinner";
             }
-			quantCount++;
+            quantCount++;
         }
         if ($("#prescription-form-AD").hasClass('btn-success')) {
             if (usage == "") {
-                usage = "AD-After Dinner";
+                usage = "After Dinner";
             } else {
-                usage = usage + ", " + "AD-After Dinner";
+                usage = usage + ", " + "After Dinner";
             }
-			quantCount++;
+            quantCount++;
         }
 
         var count = $.cookie('drugEntryCount');
@@ -871,25 +871,61 @@
 			drugPojo['noOfDays'] = quantCount!=0 ? parseInt(units)/quantCount : 0 ;
         }
         console.log("drug pojo required is-----", drugPojo);
-        //console.log("form submitted with values: "+drug+", "+days+", "+units+", "+si+", "+bbf+", "+abf+", "+bl+", "+al+", "+bd+", "+ad+", "+price+", "+constituents+", "+usage);
-        $('#current-prescriptions > tbody').append('<tr ><td>' + count + '</td><td>' + drug + '</td><td>' + per_serving + " " + msrmnt + '</td><td>' + units + " " + days + '</td><td>' +
-            usage + '</td><td>' + si + '</td><td id="deliD' + count + '"><button type="submit" name="delbtn" class="deletebutton" id="del' + count + '" value="delID' + count + '">Delete</button></td>');
-        //$('#current-prescriptions').DataTable();
-        //console.log($('#current-prescriptions').DataTable());
-        $.cookie('drugHtml', $('#current-prescriptions > tbody').html());
-        var countNum = Number(count);
-        drugPojoList.push(drugPojo);
-        console.log("drug pojo list required is------", drugPojoList);
-        $.cookie('drugPojoList', JSON.stringify(drugPojoList));
-        //console.log(JSON.stringify(drugPojoList));
-        countNum++;
-        $.cookie('drugEntryCount', countNum);
-        /*var cliimp = $('#prescription-form-ClincImp').val();
-        var investigation = $('#prescription-form-Investigation').val();
-        $.cookie('cookie-cli-imp',cliimp);
-        $.cookie('currentPrescriptionInfo-investigation',investigation);*/
 
-        formClear();
+        console.log("drug usage is-----", usage);
+        /*if (drug === "") {
+            switch (drug) {
+                case "":
+
+                    swal({
+                            title: "Error",
+                            text: "Please select the drug",
+                            type: "error",
+                            confirmButtonText: "OK"
+                        },
+                        function() {}
+                    );
+                    break;
+            }
+        }*/
+        var check;
+        check = ((usage === "") || (drug === ""));
+        console.log("check value is---" + check);
+        if (check) {
+            switch (check) {
+                case true:
+
+                    swal({
+                            title: "Error",
+                            text: "Please enter drug details and select medicine usage timings",
+                            type: "error",
+                            confirmButtonText: "OK"
+                        },
+                        function() {}
+                    );
+                    break;
+            }
+        } else {
+            //console.log("form submitted with values: "+drug+", "+days+", "+units+", "+si+", "+bbf+", "+abf+", "+bl+", "+al+", "+bd+", "+ad+", "+price+", "+constituents+", "+usage);
+            $('#current-prescriptions > tbody').append('<tr ><td>' + count + '</td><td>' + drug + '</td><td>' + per_serving + " " + msrmnt + '</td><td>' + units + " " + days + '</td><td>' +
+                usage + '</td><td>' + si + '</td><td id="deliD' + count + '"><button type="submit" name="delbtn" class="deletebutton" id="del' + count + '" value="delID' + count + '">Delete</button></td>');
+            //$('#current-prescriptions').DataTable();
+            //console.log($('#current-prescriptions').DataTable());
+            $.cookie('drugHtml', $('#current-prescriptions > tbody').html());
+            var countNum = Number(count);
+            drugPojoList.push(drugPojo);
+            console.log("drug pojo list required is------", drugPojoList);
+            $.cookie('drugPojoList', JSON.stringify(drugPojoList));
+            //console.log(JSON.stringify(drugPojoList));
+            countNum++;
+            $.cookie('drugEntryCount', countNum);
+            /*var cliimp = $('#prescription-form-ClincImp').val();
+            var investigation = $('#prescription-form-Investigation').val();
+            $.cookie('cookie-cli-imp',cliimp);
+            $.cookie('currentPrescriptionInfo-investigation',investigation);*/
+
+            formClear();
+        }
     });
 
 
@@ -1613,7 +1649,9 @@
                 withCredentials: true
             },
             success: function(response) {
-              var errorCode = response.errorCode;
+                console.log("first page response is----", response);
+                var errorCode = response.errorCode;
+                console.log("error code is----" + errorCode);
                 if (!!errorCode) {
                     switch (errorCode) {
                         case "NO_USER_LOGGED_IN":
@@ -1635,9 +1673,10 @@
 
                 if (response.success === true && response.response.length > 2) {
                     var data1 = $.parseJSON(response.response);
+                    console.log(" response response is---" + response.response);
                     $.cookie('currentPatientInfo', response.response);
                     $('#patient-search-result').load('registerPatient.html');
-                    console.log("id of patient recived " + data1[0]);
+                    console.log("id of patient recived ", data1[0]);
                     try {
                         addPatientObjecttoIndexedDB(data1[0]);
                     } catch (e) {
@@ -1650,21 +1689,24 @@
                         type: "info",
                         confirmButtonText: "OK"
                     });
-                    $.cookie('currentPatientInfo', '');
+                    var num = [];
+                    $.cookie('currentPatientInfo',null);
+                    $.cookie('newPatientPhoneNumber', phn);
                     $('#patient-search-result').load('registerPatient.html');
 
                     // $("patient-search-result").append('<input type="button" id="prescription-form-BBF" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="BBF"></input>');
                 }
-                updatePatientFields();
+                updatePatientFields(phn);
             }
         });
     });
 
-    function updatePatientFields() {
+    function updatePatientFields(phn) {
+
         var currentPatientInfoList = $.cookie('currentPatientInfo');
         var data1 = [];
 
-        if (!!currentPatientInfoList) {
+        if (!!currentPatientInfoList && currentPatientInfoList !== 'null') {
             data1 = $.parseJSON(currentPatientInfoList);
         }
 

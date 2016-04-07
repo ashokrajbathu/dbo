@@ -23,8 +23,7 @@
     <!--Datepicker srcs -->
     <link rel="stylesheet" href="css/datepicker3.css" type="text/css" />
     <!--  <link rel="stylesheet" media="screen" type="text/css" href="css/layout.css" />-->
-	<script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="plugin/datepicker/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/eye.js"></script>
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/layout.js?ver=1.0.2"></script>
@@ -192,9 +191,9 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="box">
-                            <div class="box-header">
+                            <!-- <div class="box-header">
                                 <h3 class="box-title">Prescriptions</h3>
-                                <div class="accordion-header row">
+                                <div class="accordion-header container row">
                                     <div class="col-md-3">
                                         <h4 class="name"><b>Patient Name</b></h4>
                                     </div>
@@ -208,7 +207,17 @@
                                         <h4><b>Follow Up</b></h4>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
+                            <table style="width:75%;">
+                                <thead>
+                                    <tr>
+                                        <th style="padding-left:4%">Patient Name</th>
+                                        <th>Date of Prescription</th>
+                                        <th style="padding-right:2%">Age</th>
+                                        <th style="padding-left:4%">Follow Up</th>
+                                    </tr>
+                                </thead>
+                            </table>
                             <!-- /.box-header -->
                             <div class="box-body">
                                 <div class="accordion col-md-11 form-group" id="prescription-list">
@@ -374,7 +383,7 @@
 
         var date = new Date(prescriptionData['creationTime']);
         var dateStr = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-        var content1 = '<div class="accordion-row row"><div class="col-md-3"><h4>' + prescriptionData['patientName'] + '</h4></div><div class="col-md-3"><h4>' + dateStr + '</h4></div><div class="col-md-2" style="margin-left:54px;"><h4>' + prescriptionData['patientInfo']['age'] + '</h4></div></div>' + '<div><div class="box-body"><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h5>Gender : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-gender">' + prescriptionData['patientInfo']['gender'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Age : </h5></div><div class="col-md-3 form-group"><h5><p  placeholder="" id="patient-age">' + prescriptionData['patientInfo']['age'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Blood Pressure : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-bp">' + prescriptionData['prescription']['bloodpressure'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Temperature : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-temperature">' + prescriptionData['prescription']['temperature'] + '</p></h5></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h5>Clinical Impression : </h5></div><div class="col-md-3 form-group"><h5><p placeholder="" id="mypres-clinicalimpression">' + prescriptionData['prescription']['remarks'] + '</p></h5></div></div><table id="current-prescriptions" class="table table-bordered table-striped"><thead><tr><th>BrandName</th><th>Per Serving</th><th>Days</th><th>Quantity</th><th>Remarks</th></tr></thead><tbody>';
+        var content1 = '<div class="accordion-row row"><div class="col-md-3"><h4>' + prescriptionData['patientName'] + '</h4></div><div class="col-md-3"><h4>' + dateStr + '</h4></div><div class="col-md-2"><h4 style="padding-left:5%;">' + prescriptionData['patientInfo']['age'] + '</h4 style="padding-left:1%;"></div><div class="col-md-3"></div></div>' + '<div><div class="box-body"><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h5>Gender : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-gender">' + prescriptionData['patientInfo']['gender'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Age : </h5></div><div class="col-md-3 form-group"><h5><p  placeholder="" id="patient-age">' + prescriptionData['patientInfo']['age'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Blood Pressure : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-bp">' + prescriptionData['prescription']['bloodpressure'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Temperature : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-temperature">' + prescriptionData['prescription']['temperature'] + '</p></h5></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h5>Clinical Impression : </h5></div><div class="col-md-3 form-group"><h5><p placeholder="" id="mypres-clinicalimpression">' + prescriptionData['prescription']['remarks'] + '</p></h5></div></div><table id="current-prescriptions" class="table table-bordered table-striped"><thead><tr><th>BrandName</th><th>Per Serving</th><th>Days</th><th>Quantity</th><th>Remarks</th></tr></thead><tbody>';
         for (var dd in prescriptionData['prescription']['drugDosage']) {
             var drug = prescriptionData['prescription']['drugDosage'][dd];
             content1 += '<tr><td>' + drug['brandName'] + '</td><td>' + drug['perServing'];

@@ -77,7 +77,7 @@
                         <option value="O_NEGATIVE">O-</option>
                         <option value="A_POSITIVE">A+</option>
                         <option value="A_NEGATIVE">A-</option>
-                        <option value="B_POSITIVE">B+-</option>
+                        <option value="B_POSITIVE">B+</option>
                         <option value="B_NEGATIVE">B-</option>
                         <option value="AB_POSITIVE">AB+</option>
                         <option value="AB_NEGATIVE">AB-</option>
@@ -122,20 +122,33 @@ function onLoadTasks() {
     }
 
     try {
-        var data1 = $.parseJSON($.cookie('currentPatientInfo'));
-        if (data1.length != 0) {
-            $('#patient-reg-name').val(data1[0]['firstName']);
-            $('#patient-reg-email').val(data1[0]['emailId']);
-            $('#patient-reg-phone').val(data1[0]['phoneNumber']);
-            if (data1[0]['gender'] == "MALE") {
-                $("#genderMale").prop("checked", true)
-            } else {
-                $("#genderFemale").prop("checked", true)
+
+        var newPhoneNumber = $.cookie('newPatientPhoneNumber');
+        console.log("num is---" + newPhoneNumber);
+        
+        if ($.cookie('currentPatientInfo') != 'null') {
+            
+            var data1 = $.parseJSON($.cookie('currentPatientInfo'));
+
+            
+            if (data1.length != 0) {
+                
+                $('#patient-reg-name').val(data1[0]['firstName']);
+                $('#patient-reg-email').val(data1[0]['emailId']);
+                $('#patient-reg-phone').val(data1[0]['phoneNumber']);
+                if (data1[0]['gender'] == "MALE") {
+                    $("#genderMale").prop("checked", true)
+                } else {
+                    $("#genderFemale").prop("checked", true)
+                }
+                $('#patient-reg-age').val(data1[0]['age']);
+                $('#patient-reg-bloodgrp').val(data1[0]['bloodGroup']);
             }
-            $('#patient-reg-age').val(data1[0]['age']);
-            $('#patient-reg-bloodgrp').val(data1[0]['bloodGroup']);
-        } else {
-            //$('#patient-reg-phone').val(phn);
+        }
+        if ($.cookie('currentPatientInfo') == 'null') {
+
+            
+            $('#patient-reg-phone').val(newPhoneNumber);
         }
     } catch (e) {
         $('#patient-reg-phone').val($.cookie('currentPatientContactNumber'));
@@ -211,17 +224,18 @@ $('#patient-register-btn').click(function() {
             var errorCode = response.errorCode;
             if (!!errorCode) {
                 switch (errorCode) {
-                    case "NO_USER_LOGGED_IN" :
-                    localStorage.setItem("isLoggedIn", false);
-                    swal({
-                        title: "Error",
-                        text: "You are not logged into your account. Kindly login again to view this page",
-                        type: "error",
-                        confirmButtonText: "OK" },
-                        function() {
-                            localStorage.setItem("isLoggedIn", false);
-                            window.location.replace("login.html");
-                        }
+                    case "NO_USER_LOGGED_IN":
+                        localStorage.setItem("isLoggedIn", false);
+                        swal({
+                                title: "Error",
+                                text: "You are not logged into your account. Kindly login again to view this page",
+                                type: "error",
+                                confirmButtonText: "OK"
+                            },
+                            function() {
+                                localStorage.setItem("isLoggedIn", false);
+                                window.location.replace("login.html");
+                            }
                         );
                         break;
                 }
@@ -239,7 +253,8 @@ $('#patient-register-btn').click(function() {
                 title: "Success",
                 text: "Patient details successfully updated.",
                 type: "success",
-                confirmButtonText: "OK" });
+                confirmButtonText: "OK"
+            });
             updatePatientFields();
         }
     }); //ajax

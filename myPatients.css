@@ -29,6 +29,14 @@ td {
     text-align: left;
 }
 
+.info {
+    width: 40%;
+    color: black;
+    padding: 12px 12px 12px 12px;
+    font-size: 16px;
+    text-align: left;
+}
+
 .ui-accordion .ui-accordion-header {
     padding: 0.1em 0.5em 3em 2em;
 }
@@ -74,17 +82,20 @@ td {
     font-weight: normal;
 }
 
-.name {
+
+/*.name {
     margin-left: 40px;
-}
+}*/
 
-.phone {
+
+/*.phone {
     margin-left: 328px;
-}
+}*/
 
-.age {
+
+/*.age {
     margin-left: 44px;
-}
+}*/
 
 tr {
     height: 45px;

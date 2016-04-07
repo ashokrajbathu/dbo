@@ -66,10 +66,6 @@ tr:hover {
     margin-top: 10px;
 }
 
-.box-body {
-    margin-top: -20px;
-}
-
 .ui-state-default:hover {
     background: #f5f5f5;
 }
@@ -79,7 +75,7 @@ tr:hover {
 }
 
 .accordion-header {
-    height: 30px;
+    height: 60px;
     background-color: #f5f5f5;
 }
 
@@ -88,7 +84,7 @@ tr:hover {
 }
 
 .col-md-3 {
-    text-align: center;
+    text-align: left;
 }
 
 .row {
