@@ -444,6 +444,23 @@
     <!-- IndexedDB for local storage-->
     <script src="indexedDB/indexedDbotica.js"></script>
     <script>
+    $('#logoutButton').click(function(e) {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/dbotica-spring/doctor/logout",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(response) {
+                localStorage.clear();
+                window.location.replace("login.html");
+            }
+        });
+    });
     $(document).ready(function() {
         if (localStorage.getItem("isLoggedIn") == "false") {
             window.location.replace("login.html");
@@ -558,37 +575,39 @@
                 xhrFields: {
                     withCredentials: true
                 },
-                success: function(response){    
-                  var errorCode = response.errorCode;
-                  if (!!errorCode) {
-                      switch (errorCode) {
-                          case "NO_USER_LOGGED_IN" :
-                          localStorage.setItem("isLoggedIn", false);
-                          swal({
-                              title: "Error",
-                              text: "You are not logged into your account. Kindly login again to view this page",
-                              type: "error",
-                              confirmButtonText: "OK" },
-                              function() {
-                                  localStorage.setItem("isLoggedIn", false);
-                                  window.location.replace("login.html");
-                              }
-                              );
-                              break;
-                      }
-                  }
+                success: function(response) {
+                    var errorCode = response.errorCode;
+                    if (!!errorCode) {
+                        switch (errorCode) {
+                            case "NO_USER_LOGGED_IN":
+                                localStorage.setItem("isLoggedIn", false);
+                                swal({
+                                        title: "Error",
+                                        text: "You are not logged into your account. Kindly login again to view this page",
+                                        type: "error",
+                                        confirmButtonText: "OK"
+                                    },
+                                    function() {
+                                        localStorage.setItem("isLoggedIn", false);
+                                        window.location.replace("login.html");
+                                    }
+                                );
+                                break;
+                        }
+                    }
                 },
                 error: function() {
-                  swal({
-                      title: "Error",
-                      text: "There was some error fetching your calendar events. Kindly contact the support team for further details.",
-                      type: "error",
-                      confirmButtonText: "OK" },
-                      function() {
-                          localStorage.setItem("isLoggedIn", false);
-                          window.location.replace("login.html");
-                      }
-                      );
+                    swal({
+                            title: "Error",
+                            text: "There was some error fetching your calendar events. Kindly contact the support team for further details.",
+                            type: "error",
+                            confirmButtonText: "OK"
+                        },
+                        function() {
+                            localStorage.setItem("isLoggedIn", false);
+                            window.location.replace("login.html");
+                        }
+                    );
                 },
                 color: 'yellow', // a non-ajax option
                 textColor: 'black' // a non-ajax option
@@ -661,14 +680,15 @@
                 //}
             },
             eventClick: function(calEvent, jsEvent, view) {
-              var r = swal({
-                      title: "Warning",
-                      text: "Are you sure you want to delte event - " + calEvent.title,
-                      type: "warning",
-                      confirmButtonText: "OK",
-                      showConfirmButton : true,
-                      showCancelButton: true},
-                      function() {
+                var r = swal({
+                        title: "Warning",
+                        text: "Are you sure you want to delte event - " + calEvent.title,
+                        type: "warning",
+                        confirmButtonText: "OK",
+                        showConfirmButton: true,
+                        showCancelButton: true
+                    },
+                    function() {
                         $.ajax({
                             type: "POST",
                             url: "http://localhost:8081/dbotica-spring/doctor/deleteCalendarEvent",
@@ -686,17 +706,18 @@
                                 var errorCode = response.errorCode;
                                 if (!!errorCode) {
                                     switch (errorCode) {
-                                        case "NO_USER_LOGGED_IN" :
-                                        localStorage.setItem("isLoggedIn", false);
-                                        swal({
-                                            title: "Error",
-                                            text: "You are not logged into your account. Kindly login again to view this page",
-                                            type: "error",
-                                            confirmButtonText: "OK" },
-                                            function() {
-                                                localStorage.setItem("isLoggedIn", false);
-                                                window.location.replace("login.html");
-                                            }
+                                        case "NO_USER_LOGGED_IN":
+                                            localStorage.setItem("isLoggedIn", false);
+                                            swal({
+                                                    title: "Error",
+                                                    text: "You are not logged into your account. Kindly login again to view this page",
+                                                    type: "error",
+                                                    confirmButtonText: "OK"
+                                                },
+                                                function() {
+                                                    localStorage.setItem("isLoggedIn", false);
+                                                    window.location.replace("login.html");
+                                                }
                                             );
                                             break;
                                     }
@@ -709,15 +730,17 @@
                                         title: "Error",
                                         text: "Event did not get delted. Kindly try in some time.",
                                         type: "error",
-                                        confirmButtonText: "OK" });
+                                        confirmButtonText: "OK"
+                                    });
                                 }
                             },
                             error: function(e) {
-                                    swal({
-                                        title: "Error",
-                                        text: "Event did not get delted. Kindly try in some time.",
-                                        type: "error",
-                                        confirmButtonText: "OK" });
+                                swal({
+                                    title: "Error",
+                                    text: "Event did not get delted. Kindly try in some time.",
+                                    type: "error",
+                                    confirmButtonText: "OK"
+                                });
                             },
                         });
                       });
@@ -757,17 +780,18 @@
                         var errorCode = response.errorCode;
                         if (!!errorCode) {
                             switch (errorCode) {
-                                case "NO_USER_LOGGED_IN" :
-                                localStorage.setItem("isLoggedIn", false);
-                                swal({
-                                    title: "Error",
-                                    text: "You are not logged into your account. Kindly login again to view this page",
-                                    type: "error",
-                                    confirmButtonText: "OK" },
-                                    function() {
-                                        localStorage.setItem("isLoggedIn", false);
-                                        window.location.replace("login.html");
-                                    }
+                                case "NO_USER_LOGGED_IN":
+                                    localStorage.setItem("isLoggedIn", false);
+                                    swal({
+                                            title: "Error",
+                                            text: "You are not logged into your account. Kindly login again to view this page",
+                                            type: "error",
+                                            confirmButtonText: "OK"
+                                        },
+                                        function() {
+                                            localStorage.setItem("isLoggedIn", false);
+                                            window.location.replace("login.html");
+                                        }
                                     );
                                     break;
                             }
@@ -780,7 +804,8 @@
                                 title: "Error",
                                 text: "Event did not get updated. Kindly try in some time.",
                                 type: "error",
-                                confirmButtonText: "OK" });
+                                confirmButtonText: "OK"
+                            });
                         }
                     },
                     error: function(e) {
@@ -788,7 +813,8 @@
                             title: "Error",
                             text: "Event did not get updated. Kindly try in some time.",
                             type: "error",
-                            confirmButtonText: "OK" });                    
+                            confirmButtonText: "OK"
+                        });
                     },
                 });
             },
@@ -837,17 +863,18 @@
                         var errorCode = response.errorCode;
                         if (!!errorCode) {
                             switch (errorCode) {
-                                case "NO_USER_LOGGED_IN" :
-                                localStorage.setItem("isLoggedIn", false);
-                                swal({
-                                    title: "Error",
-                                    text: "You are not logged into your account. Kindly login again to view this page",
-                                    type: "error",
-                                    confirmButtonText: "OK" },
-                                    function() {
-                                        localStorage.setItem("isLoggedIn", false);
-                                        window.location.replace("login.html");
-                                    }
+                                case "NO_USER_LOGGED_IN":
+                                    localStorage.setItem("isLoggedIn", false);
+                                    swal({
+                                            title: "Error",
+                                            text: "You are not logged into your account. Kindly login again to view this page",
+                                            type: "error",
+                                            confirmButtonText: "OK"
+                                        },
+                                        function() {
+                                            localStorage.setItem("isLoggedIn", false);
+                                            window.location.replace("login.html");
+                                        }
                                     );
                                     break;
                             }
@@ -865,15 +892,17 @@
                                 title: "Error",
                                 text: "Event did not get updated. Kindly try in some time.",
                                 type: "error",
-                                confirmButtonText: "OK" });
+                                confirmButtonText: "OK"
+                            });
                         }
                     },
                     error: function(e) {
-                          swal({
-                              title: "Error",
-                              text: "Event did not get added. Kindly try in some time.",
-                              type: "error",
-                              confirmButtonText: "OK" });
+                        swal({
+                            title: "Error",
+                            text: "Event did not get added. Kindly try in some time.",
+                            type: "error",
+                            confirmButtonText: "OK"
+                        });
                     },
 
                 });

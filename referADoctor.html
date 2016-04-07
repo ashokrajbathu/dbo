@@ -165,6 +165,23 @@
     <script src="dist/js/demo.js"></script>
     <!-- IndexedDB for local storage-->
     <script type="text/javascript">
+    $('#logoutButton').click(function(e) {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/dbotica-spring/doctor/logout",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(response) {
+                localStorage.clear();
+                window.location.replace("login.html");
+            }
+        });
+    });
     $(document).ready(function() {
         if (localStorage.getItem("isLoggedIn") == "false") {
             window.location.replace("login.html");
@@ -182,7 +199,8 @@
                     title: "Error",
                     text: "Kindly enter the details",
                     type: "error",
-                    confirmButtonText: "OK" });
+                    confirmButtonText: "OK"
+                });
             } else {
                 $.ajax({
                     type: 'POST',
@@ -205,27 +223,29 @@
                         var errorCode = response.errorCode;
                         if (!!errorCode) {
                             switch (errorCode) {
-                                case "NO_USER_LOGGED_IN" :
-                                localStorage.setItem("isLoggedIn", false);
-                                swal({
-                                    title: "Error",
-                                    text: "You are not logged into your account. Kindly login again to view this page",
-                                    type: "error",
-                                    confirmButtonText: "OK" },
-                                    function() {
-                                        localStorage.setItem("isLoggedIn", false);
-                                        window.location.replace("login.html");
-                                    }
+                                case "NO_USER_LOGGED_IN":
+                                    localStorage.setItem("isLoggedIn", false);
+                                    swal({
+                                            title: "Error",
+                                            text: "You are not logged into your account. Kindly login again to view this page",
+                                            type: "error",
+                                            confirmButtonText: "OK"
+                                        },
+                                        function() {
+                                            localStorage.setItem("isLoggedIn", false);
+                                            window.location.replace("login.html");
+                                        }
                                     );
                                     break;
                             }
                         }
 
                         swal({
-                            title: "success",
-                            text: "Details are successfully saved. Thank you for referring to dBotica",
-                            type: "success",
-                            confirmButtonText: "OK" },
+                                title: "success",
+                                text: "Details are successfully saved. Thank you for referring to dBotica",
+                                type: "success",
+                                confirmButtonText: "OK"
+                            },
                             function() {
                                 window.location.replace("referADoctor.html");
                             });

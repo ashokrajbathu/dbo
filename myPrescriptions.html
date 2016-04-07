@@ -558,6 +558,23 @@
         //$(id).accordion("refresh");
     }
 
+    $('#logoutButton').click(function(e) {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/dbotica-spring/doctor/logout",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(response) {
+                localStorage.clear();
+                window.location.replace("login.html");
+            }
+        });
+    });
 
 
 
