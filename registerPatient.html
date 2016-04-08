@@ -19,15 +19,12 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="entryPrescription.css">
-
-    <script src="plugins/sweetalert/dist/sweetalert.min.js"></script> 
+    <script src="plugins/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="plugins/sweetalert/dist/sweetalert.css">
-
     <style type="text/css">
     #register-box-body {
         width: 280px;
         height: 380px;
-        
         overflow-y: auto;
     }
     </style>
@@ -110,7 +107,6 @@
     </div>
     <!-- /.form-box -->
 </body>
-
 <script type="text/javascript">
 $(document).ready(function() {
     onLoadTasks();
@@ -150,6 +146,7 @@ function onLoadTasks() {
             
             $('#patient-reg-phone').val(newPhoneNumber);
         }
+
     } catch (e) {
         $('#patient-reg-phone').val($.cookie('currentPatientContactNumber'));
     }

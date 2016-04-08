@@ -55,34 +55,42 @@
                 <span id="exampleVisitDate"><strong id="exampleDate">Date : </strong><span id="date"></span></span>
             </div>
             <p class="assessment"><strong>ASSESSMENT</strong></p>
-            <table style="width:80%">
+            <table class="details" style="width:100%">
                 <tr>
                     <td><strong>Height(cm) : </strong><span id="patient-height"></span></td>
                     <td><strong>Weight(kg) : </strong><span id="patient-weight"></span></td>
                     <td><strong>Temperature(Fh) : </strong><span id="patient-temperature"></span></td>
                     <td><strong>Pulse : </strong><span id="patient-pulse"></span></td>
                 </tr>
-                <tr>
+                <tr style="width:100%">
                     <td><strong>B.P.(mm Hg) : </strong><span id="patient-bloodpressure"></span></td>
                     <td><strong>Others : </strong><span id="patient-Other-Details"></span></td>
+                    <td></td>
+                    <td></td>
                 </tr>
             </table>
-            <div class="row" id="symptoms">
-                <div class="col-md-6">
+            <!-- <div class="row" id="symptoms">
+                <div class="col-md-3">
                     <strong>Symptoms : </strong><span id="patient-report-ci"></span>
                 </div>
-            </div>
-            <div class="row" id="investigations">
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <strong>Investigations : </strong><span id="patient-investigation"></span>
                 </div>
-            </div>
+            </div> -->
+            <table style="table-layout:fixed;width:100%;margin-top:8px;">
+                <tbody>
+                    <tr>
+                        <td style="word-wrap: break-word" id="patient-report-ci"><b>SYMPTOMS : </b></td>
+                        <td style="word-wrap: break-word" id="patient-investigation"><b>INVESTIGATIONS : </b></td>
+                    </tr>
+                </tbody>
+            </table>
             <table id="report-prescriptions" class="table table-bordered table-striped">
                 <thead>
-                    <tr>
+                    <tr style="border-bottom:2px solid black;" class="header">
                         <th>S.No</th>
                         <th>Drug Name and Dose</th>
-                        <th style="width:10px;height:1px;">Per Serving</th>
+                        <th>Per Serving</th>
                         <th>Days</th>
                         <th>Dosage</th>
                         <th>Special Instructions</th>
@@ -90,19 +98,12 @@
                 </thead>
                 <tbody></tbody>
             </table>
-            <strong id="test-details">Test Details</strong>
-            <table id="report-tests" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>S.No</th>
-                        <th>TestName</th>
-                        <th>Remarks</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-            <strong id="revisit-label">Revisit On : </strong><span id="revisit-date-report"></span>
-            <h4 id="signature">(Doctor Signature)</h4>
+            <strong id="test-details">Recommendations :</strong>
+            <ol id="report-tests">
+            </ol>
+            <div><b id="refer-to-label">Refer To : </b><span id="refer-to-report">Dr.</span></div>
+            <b id="revisit-label">Revisit On : </b><span id="revisit-date-report"></span>
+            <h4 class="pull-right" id="signature">(Doctor Signature)</h4>
             <small class="pull-right"><span  id="pr-bar-code" ></span></small>
         </section>
     </div>
@@ -180,7 +181,7 @@
                     perServing = drugData[s]['perServing'] + " units";
                 }
                 console.log("dosage timings are---" + drugData[s]['usageDirection']);
-                $('#report-prescriptions > tbody').append('<tr ><td>' + newCount + '</td><td>' + drugData[s]['brandName'] + '</td><td>' + perServing + '</td><td>' + drugData[s]['noOfDays'] + '</td><td id="dosageTimings">' + drugData[s]['usageDirection'] + '</td><td>' + drugData[s]['remarks'] + '</td>');
+                $('#report-prescriptions > tbody').append('<tr class="patientInfoDetails"><td class="patientDetailsInTable">' + newCount + '</td><td class="patientDetailsInTable">' + drugData[s]['brandName'] + '</td><td>' + perServing + '</td><td class="patientDetailsInTable">' + drugData[s]['noOfDays'] + '</td><td class="patientDetailsInTable" id="dosageTimings">' + drugData[s]['usageDirection'] + '</td><td class="patientDetailsInTable">' + drugData[s]['remarks'] + '</td>');
                 newCount++;
                 console.log("new count is----" + newCount);
             }
@@ -201,10 +202,10 @@
         }
         if (testData.length > 0) {
             var newCount1 = 1;
-            $('#report-tests > tbody').text("");
+            $('#report-tests').text("");
             for (s in testData) {
-                $('#report-tests > tbody').append('<tr><td>' + newCount1 + '</td><td>' + testData[s]['testName'] + '</td><td>' + testData[s]['remark'] + '</td></tr>');
-                newCount++;
+                $('#report-tests').append('<li>' + " " + testData[s]['testName'] + "-" + testData[s]['remark'] + '</li>');
+                newCount1++;
             }
         } else {
             console.log("hide------");
@@ -241,6 +242,7 @@
         var saturatn = $.cookie('currentPatientInfo-saturation');
         var pulse = $.cookie('currentPatientInfo-pulse');
         var investigation = $.cookie('currentPrescriptionInfo-investigation');
+        var referTo = $.cookie('currentPrescriptionInfo-referToDoctor');
 
         var additionaRef = $.cookie('currentPrescriptionInfo-additionalref');
 
@@ -248,6 +250,12 @@
             console.log("temperature is---" + temp);
             $('#patient-temperature').text(temp);
         }
+
+        if (!!referTo && referTo.length != 0) {
+            console.log("refer to doctor name---" + referTo);
+            $('#refer-to-report').append(referTo);
+        }
+
 
             if (!!height && height.length != 0) {
                 $('#patient-height').text(height);
@@ -261,9 +269,11 @@
                 $('#patient-bloodpressure').text(bloodPressure);
             }
 
-            if (!!impression && impression.length != 0) {
-                $('#patient-report-ci').text(impression);
-            }
+        if (!!impression && impression.length != 0) {
+            /*$('#patient-report-ci').text(impression);*/
+            $('#patient-report-ci').append(impression);
+
+        }
 
         if (!!saturatn && saturatn.length != 0) {
             $('#patient-saturation').text(saturatn);
@@ -281,9 +291,9 @@
                 $('#patient-bmi').text(bmi);
             }
 
-            if (!!investigation && investigation.length != 0) {
-                $('#patient-investigation').text(investigation);
-            }
+        if (!!investigation && investigation.length != 0) {
+            $('#patient-investigation').append(investigation);
+        }
 
             if (!!additionaRef && additionaRef.length != 0) {
                 $('#patient-report-references').text(additionaRef);
