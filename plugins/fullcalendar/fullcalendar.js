@@ -3364,6 +3364,9 @@ Grid.mixin({
 					else if (view.isEventDraggable(seg.event)) {
 						_this.segDragMousedown(seg, ev);
 					}
+				},
+				dblclick: function(seg, ev) {
+					return view.trigger('eventDoubleClick', this, seg.event, ev); // can return `false` to cancel
 				}
 			},
 			function(name, func) {

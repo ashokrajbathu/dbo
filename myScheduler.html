@@ -679,10 +679,22 @@
                 $('#calendar').fullCalendar('changeView', 'agendaDay');
                 //}
             },
-            eventClick: function(calEvent, jsEvent, view) {
-                var r = swal({
+			eventClick: function(calEvent, jsEvent, view) {
+
+				alert('Redirecting to entryPrescriptions');
+				console.log(calEvent.patientId);
+				$.cookie('patientId_Event',calEvent.patientId);
+				
+				window.location.href = "entryPrescriptions.html";
+				
+			}, 
+			
+            eventDoubleClick: function(calEvent, jsEvent, view) {
+                		
+				
+				var r = swal({
                         title: "Warning",
-                        text: "Are you sure you want to delte event - " + calEvent.title,
+                        text: "Are you sure you want to delete event - " + calEvent.title,
                         type: "warning",
                         confirmButtonText: "OK",
                         showConfirmButton: true,
@@ -737,7 +749,7 @@
                             error: function(e) {
                                 swal({
                                     title: "Error",
-                                    text: "Event did not get delted. Kindly try in some time.",
+                                    text: "Event did not get deleted. Kindly try in some time.",
                                     type: "error",
                                     confirmButtonText: "OK"
                                 });
