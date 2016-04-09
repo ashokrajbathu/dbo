@@ -126,8 +126,8 @@
             <section class="content">
                 <div class="row no-print" style="margin-bottom:1%;">
                     <div class="col-xs-12">
-                        <a href="report-print.html" class="btn btn-primary pull-right"><i class="fa fa-print"></i>Generate Print</a>
-                        <button class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-download"></i> Generate PDF</button>
+                        <a href="report-print.html" target="_blank" class="btn btn-primary pull-right"><i class="fa fa-print"></i>Generate Print</a>
+                        <button id="newPatientBtn" class="btn btn-primary" style="margin-right: 5px;"><a style="color:white;">New Patient</a></button>
                     </div>
                 </div>
                 <div class="box box-solid box-primary">
@@ -393,42 +393,76 @@
 
 });
 
-$(document).on('click','.deleteTestButton',function(e){
-    var result = confirm('Are you sure, you want to delete ?');
-    
-    if(result){
-      $.cookie('testEntryCount',"");
-      $.cookie('testHtml',"");
-      var id = this.id;
-      id= id.slice(-1);
-      id=id-1;
-      console.log(id);
-      var testPojoList1 = $.cookie('testPojoList');
-      var testData = JSON.parse(testPojoList1);
-      console.log(testData);
-      if(testData.length!=0){
-        for(i in testData){
-          if(i == id){
-            var removedObject = testData.splice(id,1);
-            console.log("testData ",testData);
-            break;
-          }
-        }
-      }
-      var newCount = 1;
-      $('#report-tests > tbody').text("");
-      testPojoList =[];
-      $.cookie('testPojoList',"");
-      for(s in testData){
-        $('#report-tests > tbody').append('<tr><td>'+newCount+'</td><td>'+testData[s]['testName']+'</td><td>'+testData[s]['remark']+'</td><td id ="deleteTest'+newCount+'"><button type ="submit" name = "deleteButton" class = "deleteTestButton" id ="deleteTestButton'+newCount+'" value="deleteTest'+newCount+'">Delete</button></td></tr>');
-        newCount++;
-        try{
-          testPojoList.push(testData[s]);
-        }catch(e){
-        
-        }
-      }
-      $.cookie('testPojoList', JSON.stringify(testPojoList));
+    $(document).on('click', '#newPatientBtn', function(e) {
+        resetAll();
+        window.location.replace("entryPrescriptions.html");
+    });
+
+    function resetAll() {
+
+        $.cookie('currentPrescription', "");
+        $.cookie('drugHtml', "");
+        $.cookie('drugEntryCount', "");
+        $.cookie('testHtml', "");
+        $.cookie('testEntryCount', "");
+        $.cookie('currentPatientInfo-temp', "");
+        $.cookie('currentPatientInfo-height', "");
+        $.cookie('currentPatientInfo-weight', "");
+        $.cookie('currentPatientInfo-bloodPressure', "");
+        $.cookie('currentPatientInfo-impression', "");
+        $.cookie('cookie-cli-imp', "");
+        $.cookie('currentInputDays', "");
+        $.cookie('currentInputDate', "");
+        $.cookie('currentPrescriptionInfo-investigation', "");
+        $.cookie('currentPrescriptionInfo-remarks', "");
+        $.cookie('currentPrescriptionInfo-referToDoctor', "");
+        $.cookie('currentPatientInfo-bmi', "");
+        $.cookie('currentPatientInfo-saturation', "");
+        $.cookie('currentPatientInfo-pulse', "");
+        $.cookie('drugPojoList', "");
+        $.cookie('testPojoList', "");
+        $.cookie('currentPresccriptionId', "");
+
+
+
+    }
+
+    $(document).on('click', '.deleteTestButton', function(e) {
+        var result = confirm('Are you sure, you want to delete ?');
+
+        if (result) {
+            $.cookie('testEntryCount', "");
+            $.cookie('testHtml', "");
+            var id = this.id;
+            id = id.slice(-1);
+            id = id - 1;
+            console.log(id);
+            var testPojoList1 = $.cookie('testPojoList');
+            var testData = JSON.parse(testPojoList1);
+            console.log(testData);
+            if (testData.length != 0) {
+                for (i in testData) {
+                    if (i == id) {
+                        var removedObject = testData.splice(id, 1);
+                        console.log("testData ", testData);
+                        break;
+                    }
+                }
+            }
+            var newCount = 1;
+            $('#report-tests > tbody').text("");
+            testPojoList = [];
+            $.cookie('testPojoList', "");
+            for (s in testData) {
+                $('#report-tests > tbody').append('<tr><td>' + newCount + '</td><td>' + testData[s]['testName'] + '</td><td>' + testData[s]['remark'] + '</td><td id ="deleteTest' + newCount + '"><button type ="submit" name = "deleteButton" class = "deleteTestButton" id ="deleteTestButton' + newCount + '" value="deleteTest' + newCount + '">Delete</button></td></tr>');
+                newCount++;
+                try {
+                    testPojoList.push(testData[s]);
+                } catch (e) {
+
+                }
+            }
+            $.cookie('testPojoList', JSON.stringify(testPojoList));
             console.log('pushed');
       $.cookie('testEntryCount',newCount);
       
