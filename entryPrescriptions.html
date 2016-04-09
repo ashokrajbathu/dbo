@@ -943,6 +943,20 @@
 
         var patientInfoCookie = $.cookie('currentPatientInfo');
         var patientInfo = $.parseJSON(patientInfoCookie);
+		//var scheduleTime = $('#inputDate').val();
+		
+		var dateString = $('#inputDate').val();//"23/09/2014 - 09:15",
+		dateArgs = dateString.match(/\d{2,4}/g),
+		year = dateArgs[2],
+		day = parseInt(dateArgs[1]) - 1,
+		month = dateArgs[0],
+		hour = dateArgs[3],
+		minutes = dateArgs[4];
+
+		
+		
+		var milliseconds = new Date(year, month, day, hour, minutes).getTime();
+		console.log('scheduleTime'+ milliseconds);
         $.ajax({
             type: "POST",
             url: "http://localhost:8081/dbotica-spring/doctor/addCalendarEvent",
@@ -1493,8 +1507,22 @@
             if (scroll > 1) sticky.addClass('fixed');
             else sticky.removeClass('fixed');
         });
-
-        $('#closeOnSelect').hide();
+		var patientId_Event = $.cookie('patientId_Event');
+        if(patientId_Event != ''){
+		
+		/*var patientId = $.cookie('patientId_Event');
+            var url = 'registerPatient.html';
+            if (!!patientId) {
+                url += "?patientId=" + patientId;
+				$.cookie('patientId_Event','')
+            }
+            window.open(url, '_blank');*/
+		
+		}
+		
+		
+		
+		$('#closeOnSelect').hide();
         var date = new Date();
 
         var day = date.getDate();
