@@ -709,7 +709,6 @@
                                 xhr.setRequestHeader("Content-Type", "application/json");
                                 xhr.setRequestHeader("Accept", "application/json");
                             },
-                            async: false,
                             xhrFields: {
                                 withCredentials: true
                             },
@@ -775,7 +774,6 @@
                         xhr.setRequestHeader("Content-Type", "application/json");
                         xhr.setRequestHeader("Accept", "application/json");
                     },
-                    async: false,
                     xhrFields: {
                         withCredentials: true
                     },
@@ -860,7 +858,6 @@
                         xhr.setRequestHeader("Content-Type", "application/json");
                         xhr.setRequestHeader("Accept", "application/json");
                     },
-                    async: false,
                     xhrFields: {
                         withCredentials: true
                     },
@@ -899,6 +896,9 @@
                                 copiedEventObject.calendarEventId = data['id'];
                             }
                             $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+                            if ($('#drop-remove').is(':checked')) {
+                                $(this).remove();
+                            }
                         } else {
                             swal({
                                 title: "Error",
@@ -918,11 +918,6 @@
                     },
 
                 });
-
-                if ($('#drop-remove').is(':checked')) {
-
-                    $(this).remove();
-                }
             }
         });
 

@@ -67,7 +67,7 @@
                                     <label>
                                         <input id="login-remember" style="margin-left:150px;" type="checkbox" name="remember" value="1"> Remember me
                                     </label>
-                                    <button id="login-submit" style="margin-left:15px;" class="btn btn-success">Login</button>
+                                    <div id="login-submit" style="margin-left:15px;" class="btn btn-success">Login</div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -118,7 +118,7 @@
                             <div class="form-group" style="margin-top:25px; margin-left:180px;">
                                 <!-- Button -->
                                 <div class="col-md-offset-3 col-md-9">
-                                    <button id="signUpSubmitBtn" type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp Sign Up</button>
+                                    <div id="signUpSubmitBtn" type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp Sign Up</div>
                                 </div>
                             </div>
                         </form>
@@ -169,7 +169,6 @@
                 xhrFields: {
                     withCredentials: true
                 },
-                async: false,
                 data: JSON.stringify({
                     'emailId': emailId,
                     'password': password
@@ -183,33 +182,36 @@
                                 title: "Error",
                                 text: "Incorrect email or password.",
                                 type: "error",
-                                confirmButtonText: "OK"
+                                confirmButtonText: "OK",
+                                function() {
+                                    window.location.reload();
+                                }
                             });
                             break;
                         case "USER_ALREADY_LOGGED_IN":
                             localStorage.setItem("isLoggedIn", true);
                             window.location.replace("entryPrescriptions.html");
                             break;
+                        }
+                    } else {
+                        var data = $.parseJSON(response.response);
+                        console.log(data);
+                        localStorage.setItem('doctorPojo', response.response);
+                        localStorage.setItem("isLoggedIn", true);
+                        localStorage.setItem("firstName", data['firstName']);
+                        localStorage.setItem("doctorId", data['id']);
+
+                        localStorage.setItem("doctorSpeciality", data['speciality']);
+                        localStorage.setItem("doctorOrganization", data['organization']);
+                        localStorage.setItem("doctorQualification", data['qualification']);
+                        localStorage.setItem("doctorPublicPhoneNumber", data['publicPhoneNumber']);
+                        localStorage.setItem("doctorOfficeAddress", data['officeAddress']);
+                        console.log(localStorage.getItem("firstName"));
+                        window.location.replace("entryPrescriptions.html");
                     }
                 }
-
-                var data = $.parseJSON(response.response);
-                console.log(data);
-                localStorage.setItem('doctorPojo', response.response);
-                localStorage.setItem("isLoggedIn", true);
-                localStorage.setItem("firstName", data['firstName']);
-                localStorage.setItem("doctorId", data['id']);
-
-                localStorage.setItem("doctorSpeciality", data['speciality']);
-                localStorage.setItem("doctorOrganization", data['organization']);
-                localStorage.setItem("doctorQualification", data['qualification']);
-                localStorage.setItem("doctorPublicPhoneNumber", data['publicPhoneNumber']);
-                localStorage.setItem("doctorOfficeAddress", data['officeAddress']);
-                console.log(localStorage.getItem("firstName"));
-                window.location.replace("entryPrescriptions.html");
-            }
+            });
         });
-    });
     $("#signUpSubmitBtn").click(function() {
         var name = $("#exampleInputName").val();
         var email = $("#exampleInputEmail").val();
@@ -219,7 +221,7 @@
                 title: "Error",
                 text: "Kindly enter the details",
                 type: "error",
-                confirmButtonText: "OK"
+                confirmButtonText: "OK",
             });
         } else {
             $.ajax({
