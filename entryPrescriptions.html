@@ -419,29 +419,31 @@
         <aside class="control-sidebar control-sidebar-light" style="position: fixed;height:100%; width: 22%;">
             <!-- Create the tabs -->
             <!-- Tab panes -->
-            <p class="login-box-msg" style="margin-top: 7%;">Patient search</p>
-            <form action="index.html" method="post" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%; 
+            <div id="patientSearchAside">
+                <p class="login-box-msg" style="margin-top: 7%;">Patient search</p>
+                <form action="index.html" method="post" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%; 
   margin-top: 2%;">
-                <div class="form-group has-feedback">
-                    <input type="text" class="form-control" id="patient-search-telephone" placeholder="Mobile Number">
-                    <span class="glyphicon glyphicon-phone form-control-feedback"></span>
-                </div>
-                <div class="form-group has-feedback">
-                    <input type="email" class="form-control" id="patient-search-uniqueid" placeholder="Dbotica Id">
-                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4">
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" id="patient-search-telephone" placeholder="Mobile Number">
+                        <span class="glyphicon glyphicon-phone form-control-feedback"></span>
                     </div>
-                    <!-- /.col -->
-                    <div class="col-xs-4">
-                        <button type="submit" id="patient-search" class="btn btn-primary btn-block btn-flat">Search</button>
+                    <div class="form-group has-feedback">
+                        <input type="email" class="form-control" id="patient-search-uniqueid" placeholder="Dbotica Id">
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
-                    <!-- /.col -->
-                </div>
-                <div class="row">
-                </div>
-            </form>
+                    <div class="row">
+                        <div class="col-xs-4">
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-xs-4">
+                            <button type="submit" id="patient-search" class="btn btn-primary btn-block btn-flat">Search</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <div class="row">
+                    </div>
+                </form>
+            </div>
             <div class="login-box-msg" id="patient-search-result" style="margin-top: 7%;"></div>
             <!--<div id="patient-search-result"></div>-->
         </aside>
@@ -1631,11 +1633,16 @@
     <script>
     $('#patient-search').click(function(e) {
         e.preventDefault();
-        $('#patient-search-result').text('');
-		
-		resetAll();
-        var uniId = $("#patient-search-uniqueid").val();
-        var phn = $("#patient-search-telephone").val();
+        var phoneNumberSearch;
+        phoneNumberSearch = $('#patient-search-telephone').val();
+        console.log("phone number while searching----" + phoneNumberSearch);
+        if (phoneNumberSearch !== "") {
+            $('#patientSearchAside').hide();
+            $('#patient-search-result').text('');
+
+            resetAll();
+            var uniId = $("#patient-search-uniqueid").val();
+            var phn = $("#patient-search-telephone").val();
 
 
         $.ajax({
@@ -1694,11 +1701,20 @@
                     $.cookie('newPatientPhoneNumber', phn);
                     $('#patient-search-result').load('registerPatient.html');
 
-                    // $("patient-search-result").append('<input type="button" id="prescription-form-BBF" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="BBF"></input>');
+                        // $("patient-search-result").append('<input type="button" id="prescription-form-BBF" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="BBF"></input>');
+                    }
+                    updatePatientFields(phn);
                 }
-                updatePatientFields(phn);
-            }
-        });
+            });
+        } else {
+            swal({
+                title: "Error",
+                text: "Please enter mobile number before search",
+                type: "error",
+                confirmButtonText: "OK"
+            });
+        }
+
     });
 
     function updatePatientFields(phn) {
