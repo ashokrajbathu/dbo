@@ -174,7 +174,7 @@ $('#patient-register-btn').click(function() {
     // var radio1 = document.getElementById('genderFemale').checked();
     var patientInfoCookie = $.cookie('currentPatientInfo');
     var data1 = [];
-    if (patientInfoCookie.length != null) {
+    if (!!patientInfoCookie) {
         try {
             data1 = $.parseJSON(patientInfoCookie);
         } catch (e) {
@@ -186,7 +186,7 @@ $('#patient-register-btn').click(function() {
 
     var requestString = "";
     var updatedObject;
-    if (data1.length != 0) {
+    if (data1 != null && data1.length != 0) {
         data1[0]['gender'] = $('input[name=gender]:checked').val();;
         data1[0]['firstName'] = $('#patient-reg-name').val();
         data1[0]['emailId'] = $('#patient-reg-email').val();
