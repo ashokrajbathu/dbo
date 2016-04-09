@@ -174,6 +174,9 @@ function syncAllPrescriptionsToIndexedDB(doctorId) {
             'limit': limitPrescriptionIndex
 
         },
+		xhrFields: {
+                withCredentials: true
+            },
         success: function(response) {
             var data = {};
             data = $.parseJSON(response.response);
@@ -188,7 +191,10 @@ function syncAllPrescriptionsToIndexedDB(doctorId) {
             for (var i = 0, l = data.length; i < l; i++) {
                 if (data[i]["patientInfo"] !== undefined) {
                     patientObjectStore.put(data[i]["patientInfo"]);
-                }
+					
+                }else{
+					data[i]['patientInfo']= {};
+				}
                 addPrescriptionToIndexedDB(data[i]["prescription"], data[i]["patientInfo"], data[i]["doctorInfo"]["id"]);
 
             }
@@ -256,7 +262,7 @@ function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId) {
     request.onsuccess = function(event) {
         var prescription = request.result;
 		console.log("prescription result", prescription);
-        showAllPrescriptions();
+        //showAllPrescriptions();
         /*var requestUpdate = store.put(obj);
         requestUpdate.onsuccess = function(event) {
             console.log("addPrescriptionToIndexedDB Done",event.target.result.value);

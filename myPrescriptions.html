@@ -396,14 +396,14 @@
 
         }
 
-        /*content1 += '</tbody></table></div></div></div>';*/
+        
         content1 += '</tbody></table>';
 
         var testData = [];
 
         testData = prescriptionData['prescription']['diagnosisTests'];
         console.log("test data object is-----", testData);
-        if (!!testData) {
+        if (testData.length > 0) {
             var newCount1 = 1;
             content1 += '<h4>Test Details</h4><table id="test-details-myPrescription" style="width:100%;" class="table-bordered table-striped"><thead><tr><th>S.No</th><th>Test Name</th><th>Remarks</th></tr></thead><tbody>';
             for (s in testData) {
@@ -413,7 +413,6 @@
             content1 += '</tbody></table>';
         } else {
             console.log("hide------");
-            $('#test-details-myPrescription').append('<h3>ravi teja</h3>');
             $('#test-details-myPrescription').hide();
             $('#test-details-myPrescription').hide();
 
