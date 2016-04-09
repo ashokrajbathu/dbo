@@ -272,7 +272,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-1 form-group input-group spinner">
-                                    <input type="text" class="form-control" value="1" id="prescription-form-units"></input>
+                                    <input type="number" class="form-control" value="1" id="prescription-form-units"></input>
                                     <div class="input-group-btn-vertical">
                                         <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
                                         <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
@@ -1430,12 +1430,14 @@
 
         $('#current-prescriptions > tbody').empty();
         $('#current-tests > tbody').empty();
+		$('#prescription-form-units').val('1');
         formClear();
         $.cookie('currentPrescription', "");
         $.cookie('drugHtml', "");
         $.cookie('drugEntryCount', "");
         $.cookie('testHtml', "");
         $.cookie('testEntryCount', "");
+		$.cookie('currentPatientInfo',"");
         $.cookie('currentPatientInfo-temp', "");
         $.cookie('currentPatientInfo-height', "");
         $.cookie('currentPatientInfo-weight', "");
@@ -1585,6 +1587,8 @@
         if (pulse && pulse.length != 0) {
             $('#prescription-form-pulse').val(pulse);
         }
+		
+		updatePatientFields();
 
 
 
@@ -1648,7 +1652,7 @@
         $('#prescription-form').find('input:button').removeClass('btn-success').addClass('btn-default');
         $('#prescription-form-information').css('display', 'none');
         $('#prescription-form-information-text').empty();
-        $('#prescription-form-units').val('1');
+        //$('#prescription-form-units').val('1');
         $('#prescription-form-drug-type').html('');
         $('#prescription-form-measurmnt').html('units');
         $('#prescription-form-si').val('');
@@ -1729,7 +1733,7 @@
 
                         // $("patient-search-result").append('<input type="button" id="prescription-form-BBF" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="BBF"></input>');
                     }
-                    updatePatientFields(phn);
+                    updatePatientFields();
                 }
             });
         } else {
@@ -1743,7 +1747,7 @@
 
     });
 
-    function updatePatientFields(phn) {
+    function updatePatientFields() {
 
         var currentPatientInfoList = $.cookie('currentPatientInfo');
         var data1 = [];
