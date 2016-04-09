@@ -48,7 +48,24 @@ label {
 }
 
 .table-striped>tbody>tr>td {
-    padding: 5px;
+    padding: 2px;
+}
+
+.table-striped>thead>tr>th {
+    padding: 2px;
+}
+
+.details {
+    width: 100%;
+}
+
+.symptoms-investigations {
+    margin-top: 4px;
+    margin-bottom: 10px;
+}
+
+.symptoms-investigations>tbody>tr>td {
+    border: 1px solid black;
 }
 
 .table-striped {
@@ -141,6 +158,7 @@ td {
 }
 
 .assessment {
+    width: 100%;
     padding-top: 5px;
     height: 30px;
     border-top: 1px;

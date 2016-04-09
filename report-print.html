@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>dbotica</title>
+    <title></title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -23,6 +23,13 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <style>
+    @page {
+        size: auto;
+        margin-top: 4mm;
+        margin-bottom: 4mm;
+    }
+    </style>
     <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
 </head>
 
@@ -55,19 +62,21 @@
                 <span id="exampleVisitDate"><strong id="exampleDate">Date : </strong><span id="date"></span></span>
             </div>
             <p class="assessment"><strong>ASSESSMENT</strong></p>
-            <table class="details" style="width:100%">
-                <tr>
-                    <td><strong>Height(cm) : </strong><span id="patient-height"></span></td>
-                    <td><strong>Weight(kg) : </strong><span id="patient-weight"></span></td>
-                    <td><strong>Temperature(Fh) : </strong><span id="patient-temperature"></span></td>
-                    <td><strong>Pulse : </strong><span id="patient-pulse"></span></td>
-                </tr>
-                <tr style="width:100%">
-                    <td><strong>B.P.(mm Hg) : </strong><span id="patient-bloodpressure"></span></td>
-                    <td><strong>Others : </strong><span id="patient-Other-Details"></span></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+            <table class="details">
+                <tbody>
+                    <tr>
+                        <td><strong>Height(cm) : </strong><span id="patient-height"></span></td>
+                        <td><strong>Weight(kg) : </strong><span id="patient-weight"></span></td>
+                        <td><strong>Temperature(Fh) : </strong><span id="patient-temperature"></span></td>
+                        <td><strong>Pulse : </strong><span id="patient-pulse"></span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>B.P.(mm Hg) : </strong><span id="patient-bloodpressure"></span></td>
+                        <td><strong>Others : </strong><span id="patient-Other-Details"></span></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
             </table>
             <!-- <div class="row" id="symptoms">
                 <div class="col-md-3">
@@ -77,7 +86,7 @@
                     <strong>Investigations : </strong><span id="patient-investigation"></span>
                 </div>
             </div> -->
-            <table style="table-layout:fixed;width:100%;margin-top:8px;">
+            <table class="symptoms-investigations" style="table-layout:fixed;width:100%;margin-top:8px;">
                 <tbody>
                     <tr>
                         <td style="word-wrap: break-word" id="patient-report-ci"><b>SYMPTOMS : </b></td>
@@ -105,6 +114,19 @@
             <b id="revisit-label">Revisit On : </b><span id="revisit-date-report"></span>
             <h4 class="pull-right" id="signature">(Doctor Signature)</h4>
             <small class="pull-right"><span  id="pr-bar-code" ></span></small>
+            <!-- <table id="report-tests" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>TestName</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table> -->
+            <!-- <strong id="revisit-label">Revisit On : </strong><span id="revisit-date-report"></span>
+            
+            <small class="pull-right"><span  id="pr-bar-code" ></span></small> -->
         </section>
     </div>
     <footer id="footer" align="center">
@@ -257,17 +279,17 @@
         }
 
 
-            if (!!height && height.length != 0) {
-                $('#patient-height').text(height);
-            }
+        if (!!height && height.length != 0) {
+            $('#patient-height').text(height);
+        }
 
-            if (!!weight && weight.length != 0) {
-                $('#patient-weight').text(weight);
-            }
+        if (!!weight && weight.length != 0) {
+            $('#patient-weight').text(weight);
+        }
 
-            if (!!bloodPressure && bloodPressure.length != 0) {
-                $('#patient-bloodpressure').text(bloodPressure);
-            }
+        if (!!bloodPressure && bloodPressure.length != 0) {
+            $('#patient-bloodpressure').text(bloodPressure);
+        }
 
         if (!!impression && impression.length != 0) {
             /*$('#patient-report-ci').text(impression);*/
@@ -283,102 +305,102 @@
             $("#revisit-date-report").text(revisit);
         }
 
-            if (!!pulse && pulse.length != 0) {
-                $('#patient-pulse').text(pulse);
-            }
+        if (!!pulse && pulse.length != 0) {
+            $('#patient-pulse').text(pulse);
+        }
 
-            if (!!bmi && bmi.length != 0) {
-                $('#patient-bmi').text(bmi);
-            }
+        if (!!bmi && bmi.length != 0) {
+            $('#patient-bmi').text(bmi);
+        }
 
         if (!!investigation && investigation.length != 0) {
             $('#patient-investigation').append(investigation);
         }
 
-            if (!!additionaRef && additionaRef.length != 0) {
-                $('#patient-report-references').text(additionaRef);
-            }
-
-            //console.log(drugData.length);
-
-            // $('#report-prescriptions > tbody').($.cookie('drugHtml'));
-
-
-
-
-
-
-            //var doctor-id = localStorage.getItem('doctorId');
-            // var doctor-name = localStorage.getItem('firstName');
-            //var doctor-speciality = localStorage.getItem('doctorSpeciality');
-            //var doctor-organization = localStorage.getItem('doctorOrganization');
-            //var doctor-qualification = localStorage.getItem('doctorQualification');
-            //var doctor-ards = localStorage.getItem('doctorOfficeAddress');
-            //var doctor-phn = localStorage.getItem('doctorPublicPhoneNumber');
-
-            var docname = localStorage.getItem('firstName');
-            var docid = localStorage.getItem('doctorId');
-            var docOrg = localStorage.getItem('doctorOrganization');
-            var docSpe = localStorage.getItem('doctorSpeciality');
-            var docQua = localStorage.getItem('doctorQualification');
-            var docAdrs = localStorage.getItem('doctorOfficeAddress');
-            var docPhn = localStorage.getItem('doctorPublicPhoneNumber');
-
-            $('#pr-doctor-name').text(docname);
-            $('#pr-doctor-qual').text(docQua);
-            $('#pr-doctor-specialization').text(docSpe);
-            $('#pr-doctor-ards').text(docAdrs);
-            if (!!docPhn && docPhn.length != 0 && docPhn != "undefined") {
-                $('#pr-doctor-phn').text(docPhn);
-            }
-
-            $('#pr-doctor-organization').text(docOrg);
-            try {
-                var data1 = $.parseJSON($.cookie('currentPatientInfo'));
-                if (data1.length != 0) {
-                    $('#patient-name').text(data1[0]['firstName']);
-                    if (!!data1[0]['email']) {
-                        $('#patient-email').text(data1[0]['email']);
-                    }
-                    $('#patient-age').text(data1[0]['age']);
-                    $('#patient-gender').text(data1[0]['gender']);
-                }
-            } catch (e) {
-
-            }
-
-            console.log("docname " + docname + " docid " + docid + " docorg " + docOrg + " docspe " + docSpe + " docadr " + docAdrs + " docphn " + docPhn);
-
-            populateBarCode();
-            // $('#report-prescriptions').DataTable();
-
-        });
-        </script>
-        <script type="text/javascript">
-        function populateBarCode() {
-            var firstName = localStorage.getItem('firstName');
-            if (!firstName || firstName.length == 0) {
-                firstName = "dbotica";
-            }
-			var patientInfoCookie = $.cookie('currentPatientInfo');
-			var patientInfo = $.parseJSON(patientInfoCookie);
-			var prescriptionCookie = $.cookie('currentPrescription');
-			var prescription ={};
-			if(!!prescriptionCookie){
-			
-				prescription = JSON.parse(prescriptionCookie);
-			
-			}
-			var patientPhoneNumber = patientInfo[0].phoneNumber;
-			var prescriptionId = prescription.id;
-			
-            var encrypted = CryptoJS.AES.encrypt("my message", firstName);
-            var decrypted = CryptoJS.AES.decrypt(encrypted, "doctor123");
-            var result = decrypted.toString(CryptoJS.enc.Utf8);
-            $("#pr-bar-code").barcode(encrypted.toString(), "code128");
-            return encrypted;
+        if (!!additionaRef && additionaRef.length != 0) {
+            $('#patient-report-references').text(additionaRef);
         }
-        </script>
+
+        //console.log(drugData.length);
+
+        // $('#report-prescriptions > tbody').($.cookie('drugHtml'));
+
+
+
+
+
+
+        //var doctor-id = localStorage.getItem('doctorId');
+        // var doctor-name = localStorage.getItem('firstName');
+        //var doctor-speciality = localStorage.getItem('doctorSpeciality');
+        //var doctor-organization = localStorage.getItem('doctorOrganization');
+        //var doctor-qualification = localStorage.getItem('doctorQualification');
+        //var doctor-ards = localStorage.getItem('doctorOfficeAddress');
+        //var doctor-phn = localStorage.getItem('doctorPublicPhoneNumber');
+
+        var docname = localStorage.getItem('firstName');
+        var docid = localStorage.getItem('doctorId');
+        var docOrg = localStorage.getItem('doctorOrganization');
+        var docSpe = localStorage.getItem('doctorSpeciality');
+        var docQua = localStorage.getItem('doctorQualification');
+        var docAdrs = localStorage.getItem('doctorOfficeAddress');
+        var docPhn = localStorage.getItem('doctorPublicPhoneNumber');
+
+        $('#pr-doctor-name').text(docname);
+        $('#pr-doctor-qual').text(docQua);
+        $('#pr-doctor-specialization').text(docSpe);
+        $('#pr-doctor-ards').text(docAdrs);
+        if (!!docPhn && docPhn.length != 0 && docPhn != "undefined") {
+            $('#pr-doctor-phn').text(docPhn);
+        }
+
+        $('#pr-doctor-organization').text(docOrg);
+        try {
+            var data1 = $.parseJSON($.cookie('currentPatientInfo'));
+            if (data1.length != 0) {
+                $('#patient-name').text(data1[0]['firstName']);
+                if (!!data1[0]['email']) {
+                    $('#patient-email').text(data1[0]['email']);
+                }
+                $('#patient-age').text(data1[0]['age']);
+                $('#patient-gender').text(data1[0]['gender']);
+            }
+        } catch (e) {
+
+        }
+
+        console.log("docname " + docname + " docid " + docid + " docorg " + docOrg + " docspe " + docSpe + " docadr " + docAdrs + " docphn " + docPhn);
+
+        populateBarCode();
+        // $('#report-prescriptions').DataTable();
+
+    });
+    </script>
+    <script type="text/javascript">
+    function populateBarCode() {
+        var firstName = localStorage.getItem('firstName');
+        if (!firstName || firstName.length == 0) {
+            firstName = "dbotica";
+        }
+        var patientInfoCookie = $.cookie('currentPatientInfo');
+        var patientInfo = $.parseJSON(patientInfoCookie);
+        var prescriptionCookie = $.cookie('currentPrescription');
+        var prescription = {};
+        if (!!prescriptionCookie) {
+
+            prescription = JSON.parse(prescriptionCookie);
+
+        }
+        var patientPhoneNumber = patientInfo[0].phoneNumber;
+        var prescriptionId = prescription.id;
+
+        var encrypted = CryptoJS.AES.encrypt("my message", firstName);
+        var decrypted = CryptoJS.AES.decrypt(encrypted, "doctor123");
+        var result = decrypted.toString(CryptoJS.enc.Utf8);
+        $("#pr-bar-code").barcode(encrypted.toString(), "code128");
+        return encrypted;
+    }
+    </script>
 </body>
 
 </html>
