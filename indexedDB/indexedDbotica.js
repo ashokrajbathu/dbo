@@ -134,6 +134,9 @@ function syncAllDrugstoIndexedDB() {
             'start': startDrugIndex,
             'limit': limitDrugIndex
         },
+        xhrFields: {
+                withCredentials: true
+            },
         success: function(response) {
 
             var data = $.parseJSON(response.response);
