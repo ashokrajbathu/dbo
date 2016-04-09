@@ -22,6 +22,10 @@ hr {
     font-size: 10px;
 }
 
+#pr-bar-code {
+    margin-top: 20px;
+}
+
 hr {
     border: 1.5px solid black;
 }
@@ -154,7 +158,7 @@ td {
 }
 
 #signature {
-    margin-bottom: 15px;
+    margin-top: -40px;
 }
 
 .assessment {
