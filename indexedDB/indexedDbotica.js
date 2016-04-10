@@ -12,10 +12,11 @@ COMPAT_ENVS.forEach(function(val, idx, array) {
 });
 
 const DB_NAME = 'dbotica-indexedDB';
-const DB_VERSION = 1; // Use a long long for this value (don't use a float)
+const DB_VERSION = 2; // Use a long long for this value (don't use a float)
 const DB_DRUG_STORE = 'drugs';
 const DB_PATIENT_STORE = 'patients';
 const DB_PRESCRIPTION_STORE = 'prescriptions';
+const DB_SYNC_STORE = 'syncStore';
 
 const doctorId = localStorage.getItem('doctorId');
 
@@ -31,12 +32,13 @@ if (!window.indexedDB) {
 
 function openDb(callBack) {
     console.log("openDb ...");
-    var req = window.indexedDB.open(DB_NAME, DB_VERSION);
+    var req = window.indexedDB.open(DB_NAME,DB_VERSION);
     req.onsuccess = function(event) {
         // Better use "this" than "req" to get the result to avoid problems with
         // garbage collection.
         // db = req.result;
         db = event.target.result;
+		syncAllDrugstoIndexedDB();
         if (!!callBack) {
             callBack();
         }
@@ -57,10 +59,10 @@ function openDb(callBack) {
         db = event.target.result;
         event.target.transaction.oncomplete = function(e) {
 			console.log("Transaction success");
-            startDrugIndex = 0;
+            
             limitDrugIndex = 1000;
             totalDrugCount = 0;
-            syncAllDrugstoIndexedDB();
+            //syncAllDrugstoIndexedDB();
 
             startPrescriptionIndex = 0;
             limitPrescriptionIndex = 100;
@@ -74,19 +76,25 @@ function openDb(callBack) {
         event.target.transaction.onabort = function(e) {
             console.log("abort: " + e.target.error.message);
         };
+		if(!db.objectStoreNames.contains(DB_DRUG_STORE)){
+			var drugStore = db.createObjectStore(DB_DRUG_STORE, { keyPath: "id" });
+			drugStore.createIndex('brandName', 'brandName', { unique: false });
+		}
+		if(!db.objectStoreNames.contains(DB_PATIENT_STORE)){
+			var patientStore = db.createObjectStore(DB_PATIENT_STORE, { keyPath: "id" });
+			patientStore.createIndex('phoneNumber', 'phoneNumber', { unique: false });
+		}
+		if(!db.objectStoreNames.contains(DB_PRESCRIPTION_STORE)){
+			var prescriptionStore = db.createObjectStore(DB_PRESCRIPTION_STORE, { keyPath: "id" });
+			prescriptionStore.createIndex('creationTime', 'creationTime', { unique: true });
+			prescriptionStore.createIndex('patientPhoneNumber-creationTime', ['patientPhoneNumber', 'creationTime'], { unique: false });
 
-        var drugStore = db.createObjectStore(DB_DRUG_STORE, { keyPath: "id" });
-        var patientStore = db.createObjectStore(DB_PATIENT_STORE, { keyPath: "id" });
-        var prescriptionStore = db.createObjectStore(DB_PRESCRIPTION_STORE, { keyPath: "id" });
-
-
-
-        drugStore.createIndex('brandName', 'brandName', { unique: false });
-        patientStore.createIndex('phoneNumber', 'phoneNumber', { unique: false });
-        prescriptionStore.createIndex('creationTime', 'creationTime', { unique: true });
-        prescriptionStore.createIndex('patientPhoneNumber-creationTime', ['patientPhoneNumber', 'creationTime'], { unique: false });
-
-
+		}
+		if(!db.objectStoreNames.contains(DB_SYNC_STORE)){
+			var syncStore = db.createObjectStore(DB_SYNC_STORE,{keyPath : "store"});
+		}
+		    
+		
     };
 }
 
@@ -120,42 +128,101 @@ Functions for getting all objects of different objectStores from server
  * sync all drugs in a loop from server.
  * 
  */
-var startDrugIndex;
+
 var limitDrugIndex;
 var totalDrugCount;
 
 
 function syncAllDrugstoIndexedDB() {
+	var syncStore = getObjectStore(DB_SYNC_STORE, 'readonly');
+	var startDrugIndex=0;
+	var lastUpdatedDrugIndex = 0;
+	var request = syncStore.get(DB_DRUG_STORE);
+	request.onsuccess = function(event){
+		var obj = request.result;
+		console.log("syncstore result ",obj);
+		if(obj && obj != null){
+			if(obj.store == DB_DRUG_STORE){
+				
+				startDrugIndex = obj["start"];
+				lastUpdatedDrugIndex = (obj["lastUpdated"] && obj["lastUpdated"]!= null) ? obj["lastUpdated"] : 0 ;
+				
+			}
+			
+		}
+		
+		$.ajax({
+			type: "GET",
+			url: "http://localhost:8081/dbotica-spring/drug/getDrugs",
+			data: {
+				'start': startDrugIndex,
+				'limit': 1000,
+				'lastUpdated' : lastUpdatedDrugIndex
+			},
+			xhrFields: {
+				withCredentials: true
+			},
+			success: function(response) {
 
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8081/dbotica-spring/drug/getDrugs",
-        data: {
-            'start': startDrugIndex,
-            'limit': limitDrugIndex
-        },
-        xhrFields: {
-                withCredentials: true
-            },
-        success: function(response) {
+				var data = $.parseJSON(response.response);
+				//console.log("In sync drugs: " + response.totalCount + " " + data.length);
+				var drugObjectStore = getObjectStore(DB_DRUG_STORE, "readwrite");
+				totalDrugCount = response.totalCount;
+				
+				for (var i = 0, l = data.length; i < l; i++) {
+					var drugObject = data[i];
+					drugObject['brandName'] = drugObject['brandName'].toLowerCase();
+					//console.log(drugObject);
+					drugObjectStore.put(drugObject);
+				}
+				startDrugIndex = startDrugIndex + data.length;
+				var syncStore = getObjectStore(DB_SYNC_STORE, 'readwrite');
+				var request1 =syncStore.get(DB_DRUG_STORE);
+				request1.onsuccess = function(event){
+					var obj = request1.result;
+					
+					if(startDrugIndex < totalDrugCount){
+						var obj1={};
+						obj1["store"] = DB_DRUG_STORE;
+						obj1["start"] = startDrugIndex;
+						var req = syncStore.put(obj1);
+						req.onsuccess = function(event){
+							syncAllDrugstoIndexedDB();
+						}
+						req.onerror = function(){
+							console.error("syncAllDrugstoIndexedDB second req ",this.error);
+						}
+						
+					}
+					else{
+						obj["store"] = DB_DRUG_STORE;
+						obj["start"] = 0;
+						obj["lastUpdated"] = (new Date).getTime();
+						var req1 = syncStore.put(obj);
+						req1.onsuccess = function(event){
+							console.log("Sync all drus to indexedDB Done");
+						}
+						req1.onerror = function(){
+							console.error("syncAllDrugstoIndexedDB third error ",this.error);
+						}
+					}
+						
+						
+					
+				}
+	
+				
+			}
+		});
+		
+		
+		
+	}
+	request.onerror = function(){
+		console.error("syncAllDrugstoIndexedDB first request ",this.error);
+	}
 
-            var data = $.parseJSON(response.response);
-            console.log("In sync drugs: " + response.totalCount + " " + data.length);
-            var drugObjectStore = getObjectStore(DB_DRUG_STORE, "readwrite");
-            totalDrugCount = response.totalCount;
-            startDrugIndex = startDrugIndex + data.length;
-            for (var i = 0, l = data.length; i < l; i++) {
-				var drugObject = data[i];
-				drugObject['brandName'] = drugObject['brandName'].toLowerCase();
-				console.log(drugObject);
-                drugObjectStore.add(drugObject);
-            }
-            if (startDrugIndex < totalDrugCount)
-                syncAllDrugstoIndexedDB();
-            else
-                console.log("Sync all drus to indexedDB Done");
-        }
-    });
+    
 }
 
 
