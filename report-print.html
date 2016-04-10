@@ -402,7 +402,7 @@
         var encrypted = CryptoJS.AES.encrypt(prescriptionId + patientPhoneNumber, "doctor123");
         var decrypted = CryptoJS.AES.decrypt(encrypted, "doctor123");
         var result = decrypted.toString(CryptoJS.enc.Utf8);
-		
+		console.log(encrypted.toString());
 		$("#pr-bar-code").qrcode({width : 128, height:128, text : encrypted.toString()});
         //$("#pr-bar-code").barcode(encrypted.toString(), "code128");
         return encrypted;

@@ -1410,11 +1410,11 @@
                 }
                 $.cookie('currentPrescription', response.response);
                 console.log(prescription);
-                console.log($.cookie('currentPrescription'));
-                window.location.replace("index.html");
+                console.log("currentPrescrition ",$.cookie('currentPrescription'));
+                window.location.href = 'patientReport.html';
             }
         });
-        window.location.href = 'patientReport.html';
+        
     });
 
     $('prescription-form').submit(function(e) {
