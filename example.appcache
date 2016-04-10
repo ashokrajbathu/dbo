@@ -4,10 +4,10 @@ CACHE:
 bootstrap/css/bootstrap.min.css
 https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css
 https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css
-https://www.dbotica.com/bootstrap/fonts/glyphicons-halflings-regular.woff2
-https://www.dbotica.com/bootstrap/fonts/glyphicons-halflings-regular.woff
-https://www.dbotica.com/bootstrap/fonts/glyphicons-halflings-regular.ttf
-https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/jquery.form-validator.min.js
+http://localhost/dbotica-frontend/bootstrap/fonts/glyphicons-halflings-regular.woff2
+http://localhost/dbotica-frontend/bootstrap/fonts/glyphicons-halflings-regular.woff
+http://localhost/dbotica-frontend/bootstrap/fonts/glyphicons-halflings-regular.ttf
+http://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/jquery.form-validator.min.js
 https://fonts.gstatic.com/s/sourcesanspro/v9/toadOcfmlt9b38dHJxOBGCOFnW3Jk0f09zW_Yln67Ac.woff2
 https://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlNV_2ngZ8dMf8fLgjYEouxg.woff2
 https://fonts.gstatic.com/s/sourcesanspro/v9/toadOcfmlt9b38dHJxOBGEo0As1BFRXtCDhS66znb_k.woff2
