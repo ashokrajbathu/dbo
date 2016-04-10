@@ -895,7 +895,7 @@
                             if (!!data) {
                                 copiedEventObject.calendarEventId = data['id'];
                             }
-                            $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+                            $('#calendar').fullCalendar('renderEvent', copiedEventObject, false);
                             if ($('#drop-remove').is(':checked')) {
                                 $(this).remove();
                             }
