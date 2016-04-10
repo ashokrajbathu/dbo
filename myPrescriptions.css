@@ -13,11 +13,46 @@ td {
     border-bottom: 3px solid #ddd;
 }*/
 
+
+/*#ToRow {
+    margin-left: 1%;
+}*/
+
+.formContent {
+    min-height: 10px;
+}
+
+.accordionHeader {
+    border-radius: 4px;
+    width: 100%;
+    background-color: #3c8dbc;
+    color: white;
+}
+
+
+
+.accordionHeader>thead>tr:hover {
+    border-radius: 5px;
+    width: 100%;
+    background-color: #3c8dbc;
+    color: white;
+}
+
+.accordionHeader>thead>tr>th {
+    font-family: 'Source Sans Pro',sans-serif;
+    font-size: 18px;
+    height: 40px;
+}
+
 .fixed {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+}
+
+.form-group {
+    margin-bottom: 6px;
 }
 
 .fixed-side-content {

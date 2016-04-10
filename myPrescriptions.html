@@ -128,16 +128,16 @@
           </h1>
             </section>
             <!-- Main content -->
-            <section class="content">
+            <section class="formContent content">
                 <div class="row">
                 </div>
                 <!--/.col (left) -->
-                <div class="col-md-14">
+                <!-- <div class="col-md-14">
                     <div class="box-header with-border">
                         <h3 class="box-title"></h3>
                     </div>
-                    <!-- /.box-header -->
-                </div>
+                    
+                </div> -->
                 <!-- right column -->
                 <div class="col-md-14">
                     <!-- general form elements disabled -->
@@ -145,7 +145,7 @@
                         <div class="box-body">
                             <form role="form" id="search-form">
                                 <div class="col-md-12 form-group"></div>
-                                <div class="col-md-12 form-group">
+                                <div class="col-md-14 form-group">
                                     <div class="col-md-6 form-group">
                                         <label for="inputEmail3" class="col-sm-3 control-label">From</label>
                                         <div class="col-sm-6">
@@ -159,7 +159,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12 form-group">
+                                <div id="ToRow" class="col-md-14 form-group">
                                     <div class="col-md-6 form-group">
                                         <label for="inputEmail3" class="col-sm-3 control-label">To</label>
                                         <div class="col-sm-6">
@@ -171,11 +171,14 @@
                                         <div class="col-sm-6">
                                             <input type="text" class="form-control" id="myprescritions-pateint-phone" placeholder="Phone Number">
                                         </div>
+                                        <span>
+                                            <button type="search" class="btn btn-primary pull-right" id="myprescriptions-search-button">Search</button>
+                                            </span>
                                     </div>
                                 </div>
-                                <div class="col-md-12 form-group">
+                                <!-- <div class="col-md-12 form-group">
                                     <button type="search" class="btn btn-primary pull-right" id="myprescriptions-search-button">Search</button>
-                                </div>
+                                </div> -->
                             </form>
                         </div>
                         <!-- /.box-body -->
@@ -208,19 +211,21 @@
                                     </div>
                                 </div>
                             </div> -->
-                            <table style="width:75%;">
-                                <thead>
-                                    <tr>
-                                        <th style="padding-left:4%">Patient Name</th>
-                                        <th>Date of Prescription</th>
-                                        <th style="padding-right:2%">Age</th>
-                                        <th style="padding-left:4%">Follow Up</th>
-                                    </tr>
-                                </thead>
-                            </table>
+                            <div class="accordionHeaderClass col-md-14">
+                                <table class="accordionHeader">
+                                    <thead>
+                                        <tr>
+                                            <th style="padding-left:4%">Patient Name</th>
+                                            <th>Date of Prescription</th>
+                                            <th style="padding-right:2%">Age</th>
+                                            <th style="padding-left:4%">Follow Up</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
                             <!-- /.box-header -->
                             <div class="box-body">
-                                <div class="accordion col-md-11 form-group" id="prescription-list">
+                                <div class="accordion col-md-12 form-group" id="prescription-list">
                                 </div>
                                 <div class="col-md-11 text-center">
                                     <ul id="myPager" class="pagination"></ul>
@@ -382,7 +387,7 @@
 
         var date = new Date(prescriptionData['creationTime']);
         var dateStr = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-        var content1 = '<div class="accordion-row row"><div class="col-md-3"><h4>' + prescriptionData['patientName'] + '</h4></div><div class="col-md-3"><h4>' + dateStr + '</h4></div><div class="col-md-2"><h4 style="padding-left:5%;">' + prescriptionData['patientInfo']['age'] + '</h4 style="padding-left:1%;"></div><div class="col-md-3"></div></div>' + '<div><div class="box-body"><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h5>Gender : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-gender">' + prescriptionData['patientInfo']['gender'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Age : </h5></div><div class="col-md-3 form-group"><h5><p  placeholder="" id="patient-age">' + prescriptionData['patientInfo']['age'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Blood Pressure : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-bp">' + prescriptionData['prescription']['bloodpressure'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Temperature : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-temperature">' + prescriptionData['prescription']['temperature'] + '</p></h5></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h5>Clinical Impression : </h5></div><div class="col-md-3 form-group"><h5><p placeholder="" id="mypres-clinicalimpression">' + prescriptionData['prescription']['remarks'] + '</p></h5></div></div><table id="current-prescriptions" class="table table-bordered table-striped"><thead><tr><th>BrandName</th><th>Per Serving</th><th>Days</th><th>Quantity</th><th>Remarks</th></tr></thead><tbody>';
+        var content1 = '<div class="accordion-row row"><div class="col-md-2"><h4>' + prescriptionData['patientName'] + '</h4></div><div class="col-md-offset-2 col-md-3"><h4>' + dateStr + '</h4></div><div class="col-md-2"><h4 style="padding-left:18%;">' + prescriptionData['patientInfo']['age'] + '</h4 style="padding-left:1%;"></div><div class="col-md-3"></div></div>' + '<div><div class="box-body"><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h5>Gender : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-gender">' + prescriptionData['patientInfo']['gender'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Age : </h5></div><div class="col-md-3 form-group"><h5><p  placeholder="" id="patient-age">' + prescriptionData['patientInfo']['age'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Blood Pressure : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-bp">' + prescriptionData['prescription']['bloodpressure'] + '</p></h5></div><div class="col-md-3 form-group"><h5>Temperature : </h5></div><div class="col-md-3 form-group" ><h5> <p placeholder="" id="patient-temperature">' + prescriptionData['prescription']['temperature'] + '</p></h5></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h5>Clinical Impression : </h5></div><div class="col-md-3 form-group"><h5><p placeholder="" id="mypres-clinicalimpression">' + prescriptionData['prescription']['remarks'] + '</p></h5></div></div><table id="current-prescriptions" class="table table-bordered table-striped"><thead><tr><th>BrandName</th><th>Per Serving</th><th>Days</th><th>Quantity</th><th>Remarks</th></tr></thead><tbody>';
         for (var dd in prescriptionData['prescription']['drugDosage']) {
             var drug = prescriptionData['prescription']['drugDosage'][dd];
             content1 += '<tr><td>' + drug['brandName'] + '</td><td>' + drug['perServing'];
