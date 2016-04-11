@@ -150,7 +150,7 @@ $('#patient-register-alr-btn').click(function() {
 
         var text = $('#patient-reg-allergy-disp').val();
         if ($('#patient-reg-allergy').val() != '') {
-            text = text + ', ' + $('#patient-reg-allergy').val();
+            text = text + ',' + $('#patient-reg-allergy').val();
             $('#patient-reg-allergy-disp').val(text);
             $('#patient-reg-allergy').val("");
         }
@@ -180,12 +180,14 @@ $('#patient-register-btn').click(function() {
     var requestString = "";
     var updatedObject;
     if (data1.length != 0) {
-        data1[0]['gender'] = $('input[name=gender]:checked').val();;
+        data1[0]['gender'] = $('input[name=gender]:checked').val();
         data1[0]['firstName'] = $('#patient-reg-name').val();
         data1[0]['emailId'] = $('#patient-reg-email').val();
         data1[0]['phoneNumber'] = $('#patient-reg-phone').val();
         data1[0]['age'] = $('#patient-reg-age').val();
         data1[0]['bloodGroup'] = $('#patient-reg-bloodgrp').val();
+        data1[0]['drugAllergy'] = $('#patient-reg-allergy-disp').val();
+
         requestString = JSON.stringify(data1[0]);
         /*updatedObject = $.parseJSON(requestString);
         updatePatientObjectIndexedDB(updatedObject);*/
@@ -196,9 +198,11 @@ $('#patient-register-btn').click(function() {
             'emailId': $('#patient-reg-email').val(),
             'phoneNumber': $('#patient-reg-phone').val(),
             'age': $('#patient-reg-age').val(),
-            'bloodGroup': $('#patient-reg-bloodgrp').val()
+            'bloodGroup': $('#patient-reg-bloodgrp').val(),
+            'drugAllergy': $('#patient-reg-allergy-disp').val()
         });
     }
+    $.cookie('drugAllergicTo', $('#patient-reg-allergy-disp').val());
     $.ajax({
         type: "POST",
         url: "http://localhost:8081/dbotica-spring/doctor/addPatient",
@@ -232,6 +236,7 @@ $('#patient-register-btn').click(function() {
             }
 
             $.cookie('currentPatientInfo', response.response);
+            console.log("update response is---", response.response);
             updatedObject = $.parseJSON(response.response);
             try {
                 addPatientObjecttoIndexedDB(updatedObject[0]);

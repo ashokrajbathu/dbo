@@ -6,9 +6,28 @@ input[type='number'] {
     -moz-appearance:textfield;
 }
 
+#searchclear {
+    position: absolute;
+    right: 25px;
+    top: 0;
+    bottom: 0;
+    height: 14px;
+    margin: auto;
+    font-size: 14px;
+    cursor: pointer;
+    color: #ccc;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
+}
+
+#drugWarning {
+    color: red;
+    margin-top: -4px;
+    padding-left: 14px;
+    margin-bottom: 2px;
 }
 
 .spinner input {
