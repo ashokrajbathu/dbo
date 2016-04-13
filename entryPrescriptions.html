@@ -29,6 +29,7 @@
     <script type="text/javascript" src="js/layout.js?ver=1.0.2"></script>
     <script src="plugins/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="plugins/sweetalert/dist/sweetalert.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -956,17 +957,9 @@
 		//var scheduleTime = $('#inputDate').val();
 		
 		var dateString = $('#inputDate').val();//"23/09/2014 - 09:15",
-		dateArgs = dateString.match(/\d{2,4}/g),
-		year = dateArgs[2],
-		day = parseInt(dateArgs[1]) - 1,
-		month = dateArgs[0],
-		hour = dateArgs[3],
-		minutes = dateArgs[4];
+        var momentVar = moment($('#inputDate').val(), "MM/DD/YYYY");
 
 		
-		
-		var milliseconds = new Date(year, month, day, hour, minutes).getTime();
-		console.log('scheduleTime'+ milliseconds);
         $.ajax({
             type: "POST",
             url: "http://localhost:8081/dbotica-spring/doctor/addCalendarEvent",
@@ -979,7 +972,7 @@
             },
             data: JSON.stringify({
                 'patientId': patientInfo[0].id,
-                'scheduleTime': "1469842989372",
+                'startTime': momentVar.valueOf() + 36000000,
                 'label': patientInfo[0].firstName
             }),
             success: function(response) {

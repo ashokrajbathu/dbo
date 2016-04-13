@@ -173,13 +173,10 @@ $('#patient-register-btn').click(function() {
         } catch (e) {
             // alert(e);
         }
-    } else {
-
     }
-
     var requestString = "";
     var updatedObject;
-    if (data1.length != 0) {
+    if (!!data1 && data1.length != 0) {
         data1[0]['gender'] = $('input[name=gender]:checked').val();
         data1[0]['firstName'] = $('#patient-reg-name').val();
         data1[0]['emailId'] = $('#patient-reg-email').val();
