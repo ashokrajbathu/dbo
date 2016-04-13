@@ -191,6 +191,11 @@
                                         <input type="text" class="form-control" placeholder="Pulse" id="prescription-form-pulse">
                                         </input>
                                     </div>
+                                    <div class="col-md-2 form-group">
+                                        <label>Drug Allergy</label>
+                                        <input type="text" class="form-control" placeholder="Drug Allergy" id="prescription-form-drug-allergy">
+                                        </input>
+                                    </div>
                                 </div>
                             </div>
                             <!-- /.box-body -->
@@ -242,11 +247,13 @@
                             <h3 class="box-title">Fill Prescription</h3>
                         </div>
                         <div class="box-body">
+                            <h5 id="drugWarning">(**Please select the drug to which patient is not allergic)</h5>
                             <div role="form" id="prescription-form">
                                 <!-- text input -->
                                 <div class="col-md-9 form-group">
                                     <!-- <label>Text</label> -->
-                                    <input type="text" class="form-control" data-validation="required" placeholder="Drug" id="prescription-form-drug"></input>
+                                    <input type="text" class="form-control" data-validation="required" placeholder="Drug" id="prescription-form-drug">
+                                    <span id="searchclear" class="glyphicon glyphicon-remove-circle"></span>
                                     <ul class="dropdown-menu drugs-dropdown-menu">
                                     </ul>
                                 </div>
@@ -888,8 +895,9 @@
                     break;
             }
         }*/
-        var check;
-        check = ((usage === "") || (drug === ""));
+
+        /*check = ((usage === "") || (drug === ""));*/
+        check = (drug === "");
         console.log("check value is---" + check);
         if (check) {
             switch (check) {
@@ -897,7 +905,8 @@
 
                     swal({
                             title: "Error",
-                            text: "Please enter drug details and select medicine usage timings",
+                            /*text: "Please enter drug details and select medicine usage timings",*/
+                            text: "Please enter drug details",
                             type: "error",
                             confirmButtonText: "OK"
                         },
@@ -925,6 +934,7 @@
             $.cookie('currentPrescriptionInfo-investigation',investigation);*/
 
             formClear();
+            $('#drugWarning').hide();
         }
     });
 
@@ -1121,20 +1131,65 @@
                                 $('#prescription-form-information-text').append("<li >constituents - <span id='prescription-form-constituents'>" + constituentsString + "</span></li>");
                             }
                         $('#prescription-form-information').css('display', 'block');
-                        $('#prescription-form-drug').val(data[s]['brandName']);
-                        $('#prescription-form-drug').attr("drugId", data[s][id]);
-                        $('#prescription-form-drug-type').text(data[s]['drugType']);
-                        var drugTypeUpperCase = "" + data[s]['drugType'];
-                        switch (drugTypeUpperCase.toUpperCase()) {
-                            case 'SYRUP':
-                                $('#prescription-form-measurmnt').text("ml");
-                                break;
-                            default:
-                                $('#prescription-form-measurmnt').text("units");
-                                break;
 
+                        var drugSelected = data[s]['brandName'];
+
+                        if (drugSelected !== "") {
+                            var drugAllergyTo = $.cookie('drugAllergicTo');
+                            var drugAllergyToArray = drugAllergyTo.split(",");
+                            var drugName = drugSelected.split(" (")[0];
+                            var check;
+                            for (var i = 0, l = drugAllergyToArray.length; i < l; i++) {
+                                check = (drugName === drugAllergyToArray[i]);
+                                if (check === true) {
+                                    break;
+                                } else {
+                                    continue;
+                                }
+
+                            }
+                            if (check) {
+                                switch (check) {
+                                    case true:
+
+                                        swal({
+                                                title: "Error",
+                                                text: "Please select a drug to which patient is not allergic",
+                                                type: "error",
+                                                confirmButtonText: "OK"
+
+                                            },
+                                            function() {
+                                                $('#prescription-form-drug').val("");
+                                                $('#drugWarning').hide();
+                                            }
+                                        );
+
+                                        break;
+                                }
+
+                            } else {
+                                console.log("in else if");
+                                $('#prescription-form-drug').val(data[s]['brandName']);
+                                $('#prescription-form-drug').attr("drugId", data[s][id]);
+                                $('#prescription-form-drug-type').text(data[s]['drugType']);
+                                var drugTypeUpperCase = "" + data[s]['drugType'];
+                                switch (drugTypeUpperCase.toUpperCase()) {
+                                    case 'SYRUP':
+                                        $('#prescription-form-measurmnt').text("ml");
+                                        break;
+                                    default:
+                                        $('#prescription-form-measurmnt').text("units");
+                                        break;
+
+
+                                }
+                                $('#drugWarning').hide();
+                                break;
+                            }
 
                         }
+
                         /*SYRUP, TABLET, CAPSULE, INFUSION, SUSPENSION, INJECTION, POWDER, GEL,
                         DROP, MOUTH_WASH_GARGLE, CREAM, OINTMENT, KIT, SHAMPOO, SOLUTION, 
                         LOTION, SOAP_BAR, SACHET, EXPECTORANT, ROTACAP, INHALER, EMULSION, 
@@ -1146,6 +1201,7 @@
                     }
                 }
                 dropdown.hide('dropdown');
+                /*$('#drugWarning').hide();*/
             });
             dropdown.show('dropdown');
         }
@@ -1211,6 +1267,11 @@
 
 
     $('#prescription-form-drug').keyup(function(e) {
+        $('#drugWarning').show();
+        var searchDrugChars = $('#prescription-form-drug').val();
+        if (searchDrugChars === "") {
+            $('#drugWarning').hide();
+        }
         e.preventDefault();
         delay(prescriptionFormDrugCallback, 250);
 
@@ -1247,6 +1308,7 @@
         $.cookie('currentPrescriptionInfo-investigation', $('#prescription-form-Investigation').val());
         $.cookie('currentPrescriptionInfo-remarks', $('#prescription-form-remarks').val());
         $.cookie('currentPrescriptionInfo-referToDoctor', $('#referToDoctor').val());
+        $.cookie('currentPatientInfo-drugAllergy', $('#prescription-form-drug-allergy').val());
         $.cookie('currentInputDate', $('#inputDate').val());
         $.cookie('currentInputDays', $('#inputDatetxt').val());
         var temperature = $.cookie('currentPatientInfo-temp');
@@ -1410,11 +1472,11 @@
                 }
                 $.cookie('currentPrescription', response.response);
                 console.log(prescription);
-                console.log($.cookie('currentPrescription'));
-                window.location.replace("index.html");
+                console.log("currentPrescrition ",$.cookie('currentPrescription'));
+                window.location.href = 'patientReport.html';
             }
         });
-        window.location.href = 'patientReport.html';
+        
     });
 
     $('prescription-form').submit(function(e) {
@@ -1494,6 +1556,11 @@
 
 
     $(document).ready(function() {
+        $('#searchclear').click(function() {
+            $("#prescription-form-drug").val("");
+            $("#prescription-form-drug-type").text("");
+        });
+        $('#drugWarning').hide();
         if (localStorage.getItem("isLoggedIn") == "false") {
             window.location.replace("login.html");
         }
