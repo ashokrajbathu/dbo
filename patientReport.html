@@ -406,23 +406,9 @@
         $.cookie('testHtml', "");
         $.cookie('testEntryCount', "");
 		$.cookie('currentPatientInfo',"");
-        $.cookie('currentPatientInfo-temp', "");
-        $.cookie('currentPatientInfo-height', "");
-        $.cookie('currentPatientInfo-weight', "");
-        $.cookie('currentPatientInfo-bloodPressure', "");
-        $.cookie('currentPatientInfo-impression', "");
-        $.cookie('cookie-cli-imp', "");
-        $.cookie('currentInputDays', "");
-        $.cookie('currentInputDate', "");
-        $.cookie('currentPrescriptionInfo-investigation', "");
-        $.cookie('currentPrescriptionInfo-remarks', "");
-        $.cookie('currentPrescriptionInfo-referToDoctor', "");
-        $.cookie('currentPatientInfo-bmi', "");
-        $.cookie('currentPatientInfo-saturation', "");
-        $.cookie('currentPatientInfo-pulse', "");
         $.cookie('drugPojoList', "");
         $.cookie('testPojoList', "");
-        $.cookie('currentPresccriptionId', "");
+      
 
 
 
@@ -489,70 +475,35 @@
 
         $('#patient-search-result').load('registerPatient.html');
 
-
-        var ci = $.cookie('cookie-cli-imp');
-        $('#patient-report-ci').text(ci);
-
-		//var drugData = JSON.parse($.cookie('drugPojoList'));
 		$('#report-prescriptions > tbody').append($.cookie('drugHtml'));
 		$('#report-tests > tbody').append($.cookie('testHtml'));
-          /*for(s in drugData)
-          {
+          
+		var prescriptionCookie = $.cookie('currentPrescription');
+        var prescription = {};
+        if (!!prescriptionCookie) {
 
-            $('#report-prescriptions > tbody').append('<tr ><td>'+sno+'</td><td>'+drugData[s]['brandName']+'</td><td>'+drugData[s]['perServing']+'</td><td>'+drugData[s]['noOfDays']+'</td><td>'+drugData[s]['usageDirection']+'</td><td>'+drugData[s]['remarks']+'</td>');
-           
-              sno++;
-            
-          }*/
+            prescription = JSON.parse(prescriptionCookie);
 
-      
-     
-       // $('#report-prescriptions > tbody').append($.cookie('drugHtml'));
-      //    $('#report-prescriptions').DataTable();
+        }       
+		
+		var temperature 	= 	prescription['temperature'];
+		var height 			=	prescription['height'];
+		var weight 			=	prescription['weight'];
+		var bloodPressure	=	prescription['bloodPressure'];
+		var symptoms 		=	prescription['symptoms'];
+		var bmi 			=	prescription['bmi'];
+		var saturation 		=	prescription['saturation'];
+		var pulse 			=	prescription['pulse'];
+		var investigation	=	prescription['investigation']; 
+		var remarks 		=	prescription['remarks'];
+		var revisitDate 	=	prescription['revisitDate'];
+		var referToDoctor	=	prescription['references']; 
+		
+        
 
-
-       
-       // var docname = localStorage.getItem('firstName');
-       // var docid =  localStorage.getItem('doctorId');
-       // var docOrg = localStorage.getItem('doctorOrganization');
-       // var docSpe = localStorage.getItem('doctorSpeciality');
-       // var docQua = localStorage.getItem('doctorQualification');
-       // var docAdrs = localStorage.getItem('doctorOfficeAddress');
-       // var docPhn = localStorage.getItem('doctorPublicPhoneNumber');
-
-       // $('#doctor-name').text(docname);
-       // $('#doctor-qual').text(docQua);
-       // $('#doctor-specialization').text(docSpe);
-       // $('#doctor-ards').text(docAdrs);
-       // if (!docPhn && docPhn.length != 0) {
-       //   $('#doctor-phn').text(docPhn);
-       // }
-       // $('#doctor-organization').text(docOrg);
-
-        var temp = $.cookie('currentPatientInfo-temp');
-        // alert(temp);
-        var height = $.cookie('currentPatientInfo-height');
-        var weight = $.cookie('currentPatientInfo-weight');
-        var bloodPressure = $.cookie('currentPatientInfo-bloodPressure');
-        var impression = $.cookie('currentPatientInfo-impression');
-        var bmi = $.cookie('currentPatientInfo-bmi');
-        var saturation = $.cookie('currentPatientInfo-saturation');
-        var pulse = $.cookie('currentPatientInfo-pulse');
-        var investigation = $.cookie('currentPrescriptionInfo-investigation');
-        var remarks = $.cookie('currentPrescriptionInfo-remarks');
-        var revisit = $.cookie('currentInputDate');
-        var dates = [];
-
-        dates = revisit.split('/');
-        var tmp = dates[0];
-        dates[0] = dates[1];
-        dates[1] = tmp;
-        revisit = dates.join('/');
-        var revisitDays = $.cookie('currentInputDays');
-        var referToDoctor = $.cookie('currentPrescriptionInfo-referToDoctor');
-
-        if (!!temp && temp.length != 0) {
-            $('#patient-temperature').text(temp);
+		
+        if (!!temperature && temperature.length != 0) {
+            $('#patient-temperature').text(temperature);
         } else {
             $('#patient-temperature-label').hide();
             $('#patient-temperature').hide();
@@ -567,10 +518,9 @@
 
         }
 
-        if (!!revisit && revisit.length != 0 && !!revisitDays && revisitDays.length != 0) {
-            console.log("revisit date is----------" + revisit);
-            console.log("dates array is------", dates);
-            $('#patient-revisit').text(revisit);
+        if (!!revisitDate && revisitDate.length != 0 ) {
+            console.log("revisit date is----------" + revisitDate);
+            $('#patient-revisit').text(revisitDate);
         } else {
             $('#patient-revisit-label').hide();
             $('#patient-revisit').hide();
@@ -601,8 +551,8 @@
 
         }
 
-        if (!!impression && impression.length != 0) {
-            $('#patient-report-ci').text(impression);
+        if (!!symptoms && symptoms.length != 0) {
+            $('#patient-report-ci').text(symptoms);
         } else {
             $('#patient-report-ci-row').hide();
             $('#patient-report-ci').hide();

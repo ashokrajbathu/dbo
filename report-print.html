@@ -158,22 +158,11 @@
 	<script src="js/jquery.qrcode.min.js"></script>
 
     <script src="dist/js/demo.js"></script>
+	<!-- IndexedDB for local storage-->
+    <script src="indexedDB/indexedDbotica.js"></script>
     <script type="text/javascript">
-    $(document).ready(function() {
-
-        var revisit = $.cookie('currentInputDate');
-        var dates = [];
-
-        dates = revisit.split('/');
-        var tmp = dates[0];
-        dates[0] = dates[1];
-        dates[1] = tmp;
-        revisit = dates.join('/');
-
-        var referToDoctor = $.cookie('currentPrescriptionInfo-referToDoctor');
-
-        console.log("hai");
-        var date = new Date();
+	function getTodayString(){
+		var date = new Date();
 
         var day = date.getDate();
         var month = date.getMonth() + 1;
@@ -183,9 +172,86 @@
         if (day < 10) day = "0" + day;
 
         var today = day + "/" + month + "/" + year;
+		
+		return today;
+	}
+	function printPrescription(){
+		var prescriptionCookie = $.cookie('currentPrescription');
+        var prescription = {};
+        if (!!prescriptionCookie) {
+
+            prescription = JSON.parse(prescriptionCookie);
+
+        }
+		
+		var temperature 	= 	prescription['temperature'];
+		var height 			=	prescription['height'];
+		var weight 			=	prescription['weight'];
+		var bloodPressure	=	prescription['bloodPressure'];
+		var symptoms 		=	prescription['symptoms'];
+		var bmi 			=	prescription['bmi'];
+		var saturation 		=	prescription['saturation'];
+		var pulse 			=	prescription['pulse'];
+		var investigation	=	prescription['investigation']; 
+		var remarks 		=	prescription['remarks'];
+		var revisitDate 	=	prescription['revisitDate'];
+		var referToDoctor	=	prescription['references']; 
+		
+        var today = getTodayString();
 
         /*$('#date').text(DateOfVisit);*/
         $('#date').text(today);
+		
+		if (!!temperature && temperature.length != 0) {
+            console.log("temperature is---" + temperature);
+            $('#patient-temperature').text(temperature);
+        }
+
+        if (!!referToDoctor && referToDoctor.length != 0) {
+            console.log("refer to doctor name---" + referToDoctor);
+            $('#refer-to-report').append(referToDoctor);
+        }
+
+
+        if (!!height && height.length != 0) {
+            $('#patient-height').text(height);
+        }
+
+        if (!!weight && weight.length != 0) {
+            $('#patient-weight').text(weight);
+        }
+
+        if (!!bloodPressure && bloodPressure.length != 0) {
+            $('#patient-bloodpressure').text(bloodPressure);
+        }
+
+        if (!!symptoms && symptoms.length != 0) {
+            $('#patient-report-ci').append(symptoms);
+
+        }
+
+        if (!!saturation && saturation.length != 0) {
+            $('#patient-saturation').text(saturation);
+        }
+
+        if (!!revisitDate && revisitDate.length != 0) {
+            $("#revisit-date-report").text(revisitDate);
+        }
+
+        if (!!pulse && pulse.length != 0) {
+            $('#patient-pulse').text(pulse);
+        }
+
+        if (!!bmi && bmi.length != 0) {
+            $('#patient-bmi').text(bmi);
+        }
+
+        if (!!investigation && investigation.length != 0) {
+            $('#patient-investigation').append(investigation);
+        }
+		
+		
+		
 
         var drugPojoList1 = $.cookie('drugPojoList');
         var drugData = [];
@@ -253,94 +319,13 @@
             }
         }
 
+ 
+        
+        
+        
 
+        
 
-        var ci = $.cookie('cookie-cli-imp');
-        $('#report-ci').html(ci);
-
-        var temp = $.cookie('currentPatientInfo-temp');
-        // alert(temp);
-        var height = $.cookie('currentPatientInfo-height');
-        var weight = $.cookie('currentPatientInfo-weight');
-        var bloodPressure = $.cookie('currentPatientInfo-bloodPressure');
-        var impression = $.cookie('currentPatientInfo-impression');
-        var bmi = $.cookie('currentPatientInfo-bmi');
-        var saturatn = $.cookie('currentPatientInfo-saturation');
-        var pulse = $.cookie('currentPatientInfo-pulse');
-        var investigation = $.cookie('currentPrescriptionInfo-investigation');
-        var referTo = $.cookie('currentPrescriptionInfo-referToDoctor');
-
-        var additionaRef = $.cookie('currentPrescriptionInfo-additionalref');
-
-        if (!!temp && temp.length != 0) {
-            console.log("temperature is---" + temp);
-            $('#patient-temperature').text(temp);
-        }
-
-        if (!!referTo && referTo.length != 0) {
-            console.log("refer to doctor name---" + referTo);
-            $('#refer-to-report').append(referTo);
-        }
-
-
-        if (!!height && height.length != 0) {
-            $('#patient-height').text(height);
-        }
-
-        if (!!weight && weight.length != 0) {
-            $('#patient-weight').text(weight);
-        }
-
-        if (!!bloodPressure && bloodPressure.length != 0) {
-            $('#patient-bloodpressure').text(bloodPressure);
-        }
-
-        if (!!impression && impression.length != 0) {
-            /*$('#patient-report-ci').text(impression);*/
-            $('#patient-report-ci').append(impression);
-
-        }
-
-        if (!!saturatn && saturatn.length != 0) {
-            $('#patient-saturation').text(saturatn);
-        }
-
-        if (!!revisit && revisit.length != 0) {
-            $("#revisit-date-report").text(revisit);
-        }
-
-        if (!!pulse && pulse.length != 0) {
-            $('#patient-pulse').text(pulse);
-        }
-
-        if (!!bmi && bmi.length != 0) {
-            $('#patient-bmi').text(bmi);
-        }
-
-        if (!!investigation && investigation.length != 0) {
-            $('#patient-investigation').append(investigation);
-        }
-
-        if (!!additionaRef && additionaRef.length != 0) {
-            $('#patient-report-references').text(additionaRef);
-        }
-
-        //console.log(drugData.length);
-
-        // $('#report-prescriptions > tbody').($.cookie('drugHtml'));
-
-
-
-
-
-
-        //var doctor-id = localStorage.getItem('doctorId');
-        // var doctor-name = localStorage.getItem('firstName');
-        //var doctor-speciality = localStorage.getItem('doctorSpeciality');
-        //var doctor-organization = localStorage.getItem('doctorOrganization');
-        //var doctor-qualification = localStorage.getItem('doctorQualification');
-        //var doctor-ards = localStorage.getItem('doctorOfficeAddress');
-        //var doctor-phn = localStorage.getItem('doctorPublicPhoneNumber');
 
         var docname = localStorage.getItem('firstName');
         var docid = localStorage.getItem('doctorId');
@@ -377,6 +362,64 @@
 
         populateBarCode();
         // $('#report-prescriptions').DataTable();
+		
+	}
+	
+    $(document).ready(function() {
+		try {
+            openDb();
+        } catch (e) {
+            console.log("error opeining indexeddb", e);
+        }
+	
+		var prescriptionCookie = $.cookie('currentPrescription');
+        var prescription = {};
+        if (!!prescriptionCookie) {
+
+            prescription = JSON.parse(prescriptionCookie);
+
+        }
+		var prescriptionString = JSON.stringify(prescription);
+		
+		$.ajax({
+            type: "POST",
+            url: "http://localhost:8081/dbotica-spring/prescription/updatePrescription",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            data: prescriptionString,
+            success: function(response) {
+                var errorCode = response.errorCode;
+                if (!!errorCode) {
+                    switch (errorCode) {
+                        case "NO_USER_LOGGED_IN":
+                            localStorage.setItem("isLoggedIn", false);
+							window.location.replace("login.html");
+                            break;
+                    }
+                }                
+                
+				var prescription = $.parseJSON(response.response);
+                //Adding prescriptioninfo to indexedDB
+
+                try {
+                    addPrescriptionToIndexedDB(prescription, patientInfo[0], localStorage.getItem('doctorId'));
+                } catch (e) {
+
+                }
+                $.cookie('currentPrescription', response.response);
+                console.log(prescription);
+                console.log("currentPrescrition ",$.cookie('currentPrescription'));
+                
+				
+            }
+        });
+		printPrescription();
+        
 
     });
     </script>
@@ -399,10 +442,7 @@
         var prescriptionId = prescription.id;
 		console.log(prescriptionId + patientPhoneNumber);
 
-        var encrypted = CryptoJS.AES.encrypt(prescriptionId + patientPhoneNumber, "doctor123");
-        var decrypted = CryptoJS.AES.decrypt(encrypted, "doctor123");
-        var result = decrypted.toString(CryptoJS.enc.Utf8);
-		console.log(encrypted.toString());
+        var encrypted = CryptoJS.AES.encrypt(patientPhoneNumber + ":" + prescriptionId , "dBotica");       
 		$("#pr-bar-code").qrcode({width : 128, height:128, text : encrypted.toString()});
         //$("#pr-bar-code").barcode(encrypted.toString(), "code128");
         return encrypted;
