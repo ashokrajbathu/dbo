@@ -1,36 +1,34 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>dbotica</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.5 -->
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>dbotica</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
     folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="doctorProfile.css">
     <!--Datepicker srcs -->
     <link rel="stylesheet" href="css/datepicker.css" type="text/css" />
-  <!--  <link rel="stylesheet" media="screen" type="text/css" href="css/layout.css" />-->
-    
-  <script type="text/javascript" src="js/jquery.js"></script>
-  <script type="text/javascript" src="js/datepicker.js"></script>
+    <!--  <link rel="stylesheet" media="screen" type="text/css" href="css/layout.css" />-->
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/datepicker.js"></script>
     <script type="text/javascript" src="js/eye.js"></script>
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/layout.js?ver=1.0.2"></script>
-
-    <script src="plugins/sweetalert/dist/sweetalert.min.js"></script> 
+    <script src="plugins/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="plugins/sweetalert/dist/sweetalert.css">
-
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -43,25 +41,25 @@
     <div class="wrapper">
         <header id="header" class="fixed-content main-header">
             <!-- Logo -->
-            <a href="entryPrescriptions.html" class="logo"  style="width: 13%;">
-              <!-- mini logo for sidebar mini 50x50 pixels -->
-              <span class="logo-mini"><b>db</b></span>
-              <!-- logo for regular state and mobile devices -->
-              <span class="logo-lg"><b>dbotica</b></span>
+            <a href="entryPrescriptions.html" class="logo" style="width: 13%;">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>db</b></span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><b>dbotica</b></span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
-            <nav class="navbar navbar-static-top" role="navigation"  style="margin-left: 13%;">
-              <!-- Sidebar toggle button-->
-              <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </a>
-              <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                  <!-- Messages: style can be found in dropdown.less-->
-              <!-- <li class="dropdown messages-menu">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-left: 13%;">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- Messages: style can be found in dropdown.less-->
+                        <!-- <li class="dropdown messages-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-envelope-o"></i>
                   <span class="label label-success">4</span>
@@ -136,8 +134,8 @@
                   <li class="footer"><a href="#">See All Messages</a></li>
                 </ul>
               </li> -->
-              <!-- Notifications: style can be found in dropdown.less -->
-              <!-- <li class="dropdown notifications-menu">
+                        <!-- Notifications: style can be found in dropdown.less -->
+                        <!-- <li class="dropdown notifications-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-bell-o"></i>
                   <span class="label label-warning">10</span>
@@ -178,8 +176,8 @@
                   <li class="footer"><a href="#">View all</a></li>
                 </ul>
               </li> -->
-              <!-- Tasks: style can be found in dropdown.less -->
-              <!-- <li class="dropdown tasks-menu">
+                        <!-- Tasks: style can be found in dropdown.less -->
+                        <!-- <li class="dropdown tasks-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-flag-o"></i>
                   <span class="label label-danger">9</span>
@@ -281,33 +279,32 @@
         <aside class="fixed-side-content main-sidebar" style="width: 13%;">
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
-
-              <!-- Sidebar user panel (optional) -->
-              <div class="user-panel">
-                <div class="pull-left image">
-                  <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="pull-left info">
+                        <p>Doctor 1</p>
+                        <!-- Status -->
+                        <a href="doctorProfile.html">Profile</a>
+                    </div>
                 </div>
-                <div class="pull-left info">
-                  <p>Doctor 1</p>
-                  <!-- Status -->
-                  <a href="doctorProfile.html">Profile</a>
-                </div>
-              </div>
-
-              <!-- Sidebar Menu -->
-              <ul class="sidebar-menu">
-                <li class="header">Welcome</li>
-                <!-- Optionally, you can add icons to the links -->
-                <li ><a href="entryPrescriptions.html"><i class="fa fa-link"></i> <span>Drug prescription</span></a></li>
-                <li><a href="myPrescriptions.html"><i class="fa fa-link"></i> <span>My Prescriptions</span></a></li> 
-				<li><a href="myPatients.html"><i class="fa fa-link"></i> <span>My Patients</span></a></li>
-                <li><a href="myScheduler.html"><i class="fa fa-link"></i> <span>My Scheduler</span></a></li>
-                <li><a href="referADoctor.html"><i class="fa fa-link"></i> <span>Refer dbotica</span></a></li>
-                <!--  <li class="active"><a href="../forms/PatientSearch.html"><i class="fa fa-link"></i> <span>Patient Search</span></a></li>  -->
-                <li class="treeview">
-                 <!--  <a href="../tables/data.html"><i class="fa fa-link"></i> <span>Drug database</span> <i class="fa fa-angle-left pull-right"></i></a> -->
-                </li>
-              </ul><!-- /.sidebar-menu -->
+                <!-- Sidebar Menu -->
+                <ul class="sidebar-menu">
+                    <li class="header">Welcome</li>
+                    <!-- Optionally, you can add icons to the links -->
+                    <li><a href="entryPrescriptions.html"><i class="fa fa-link"></i> <span>Drug prescription</span></a></li>
+                    <li><a href="myPrescriptions.html"><i class="fa fa-link"></i> <span>My Prescriptions</span></a></li>
+                    <li><a href="myPatients.html"><i class="fa fa-link"></i> <span>My Patients</span></a></li>
+                    <li><a href="myScheduler.html"><i class="fa fa-link"></i> <span>My Scheduler</span></a></li>
+                    <li><a href="referADoctor.html"><i class="fa fa-link"></i> <span>Refer dbotica</span></a></li>
+                    <!--  <li class="active"><a href="../forms/PatientSearch.html"><i class="fa fa-link"></i> <span>Patient Search</span></a></li>  -->
+                    <li class="treeview">
+                        <!--  <a href="../tables/data.html"><i class="fa fa-link"></i> <span>Drug database</span> <i class="fa fa-angle-left pull-right"></i></a> -->
+                    </li>
+                </ul>
+                <!-- /.sidebar-menu -->
             </section>
             <!-- /.sidebar -->
         </aside>
@@ -452,6 +449,44 @@
                             </div>
                         </div>
                     </div>
+                    <!-- My Assistants -->
+                    <div class="box box-default collapsed-box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">My Assistants</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="tab-pane" id="settings">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="inputName" class="col-sm-2 control-label">Assistant Name</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="doctor-profile-assistant-firstname" disabled="true" placeholder="First Name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail" class="col-sm-2 control-label">Phone Number</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="doctor-profile-assistant-phonenumber" disabled="true" placeholder="Phone Number">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                                        <div class="col-sm-10">
+                                            <input type="email" class="form-control" id="doctor-profile-assistant-email" disabled="true" placeholder="Email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" class="btn btn-danger" id="doctor-profile-active-btn">Active</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.box -->
             </section>
@@ -481,8 +516,7 @@
     <!-- DataTables -->
     <script src="plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
-    
-<!--<script type="text/javascript" src="datepicker/js/datepicker.js"></script>
+    <!--<script type="text/javascript" src="datepicker/js/datepicker.js"></script>
   <!--<link rel="stylesheet" media="screen" type="text/css" href="datepicker/css/datepicker.css" />
   <script type="text/javascript" src="datepicker/js/datepicker.js"></script>
   <script type="text/javascript" src="datepicker/js/eye.js"></script>
@@ -491,22 +525,17 @@
   <script type="text/javascript" src="datepicker/js/layout.js?ver=1.0.2"></script>
   <link rel="stylesheet" media="screen" type="text/css" href="datepicker/css/layout.css">-->
     <!-- AdminLTE App -->
-
     <script src="dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="dist/js/demo.js"></script>
-  <!-- IndexedDB for local storage-->
-  <script src="indexedDB/indexedDbotica.js"></script>
-  
-
+    <!-- IndexedDB for local storage-->
+    <script src="indexedDB/indexedDbotica.js"></script>
     <script type="text/javascript">
+    (function($) {
 
 
-    (function ($) {
 
-      
-      
-    
+
     })(jQuery);
 
     $(document).ready(function() {
@@ -537,145 +566,168 @@
         if (doctorData['firstName'] != "" && doctorData['firstName'] != null)
             $('#doctor-profile-firstname').val(doctorData['firstName']);
 
-       if(doctorData['lastName']!="" && doctorData['lastName']!= null)
-         $('#doctor-profile-lastname').val(doctorData['lastName']);
+        if (doctorData['lastName'] != "" && doctorData['lastName'] != null)
+            $('#doctor-profile-lastname').val(doctorData['lastName']);
 
-       if(doctorData['speciality']!="" && doctorData['speciality']!= null)
-        $('#doctor-profile-speciality').val(doctorData['speciality']);
+        if (doctorData['speciality'] != "" && doctorData['speciality'] != null)
+            $('#doctor-profile-speciality').val(doctorData['speciality']);
 
-      if(doctorData['organization']!="" && doctorData['organization']!= null)
-        $('#doctor-profile-organization').val(doctorData['organization']);
+        if (doctorData['organization'] != "" && doctorData['organization'] != null)
+            $('#doctor-profile-organization').val(doctorData['organization']);
 
-      if(doctorData['qualification']!="" && doctorData['qualification']!= null)
-        $('#doctor-profile-qualification').val(doctorData['qualification']);
+        if (doctorData['qualification'] != "" && doctorData['qualification'] != null)
+            $('#doctor-profile-qualification').val(doctorData['qualification']);
 
-      if(doctorData['websiteUrl']!="" && doctorData['websiteUrl']!= null)
-        $('#doctor-profile-website-url').val(doctorData['websiteUrl']);
+        if (doctorData['websiteUrl'] != "" && doctorData['websiteUrl'] != null)
+            $('#doctor-profile-website-url').val(doctorData['websiteUrl']);
 
-      if(doctorData['emailId']!="" && doctorData['emailId']!= null)
-        $('#doctor-profile-email').val(doctorData['emailId']);
+        if (doctorData['emailId'] != "" && doctorData['emailId'] != null)
+            $('#doctor-profile-email').val(doctorData['emailId']);
 
-      if(doctorData['phoneNumber']!="" && doctorData['phoneNumber']!= null)
-        $('#doctor-profile-phonenumber').val(doctorData['phoneNumber']);
+        if (doctorData['phoneNumber'] != "" && doctorData['phoneNumber'] != null)
+            $('#doctor-profile-phonenumber').val(doctorData['phoneNumber']);
 
-      if(doctorData['city']!="" && doctorData['city']!= null)
-        $('#doctor-profile-city').val(doctorData['city']);
+        if (doctorData['city'] != "" && doctorData['city'] != null)
+            $('#doctor-profile-city').val(doctorData['city']);
 
-      if(doctorData['officeAddress']!="" && doctorData['officeAddress']!= null)
-        $('#doctor-profile-address').val(doctorData['officeAddress']);
+        if (doctorData['officeAddress'] != "" && doctorData['officeAddress'] != null)
+            $('#doctor-profile-address').val(doctorData['officeAddress']);
 
 
-   //$('#doctor-profile-old-pswd').val(localStorage.getItem('password'));
-     // if(doctorData['firstName']!="" && doctorData['firstName']!= null)
-       // $('doctor-profile-firstname').val(doctorData['firstName']);
+        //$('#doctor-profile-old-pswd').val(localStorage.getItem('password'));
+        // if(doctorData['firstName']!="" && doctorData['firstName']!= null)
+        // $('doctor-profile-firstname').val(doctorData['firstName']);
 
 
     });
 
-$('#doctor-profile-update-btn').click(function(e){
-        $.ajax({ 
-           type: "POST",
-           url: "http://localhost:8081/dbotica-spring/doctor/updateProfile",
-           beforeSend: function(xhr){
-                xhr.setRequestHeader("Content-Type","application/json");
-                xhr.setRequestHeader("Accept","application/json");
+    $('#doctor-profile-update-btn').click(function(e) {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/dbotica-spring/doctor/updateProfile",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
             },
-            xhrFields: {withCredentials: true},
-           data: JSON.stringify({'firstName': $('#doctor-profile-firstname').val(), 'lastName' : $('#doctor-profile-lastname').val(), 'speciality': $('#doctor-profile-speciality').val(),'organization':  $('#doctor-profile-organization').val(),'qualification': $('#doctor-profile-qualification').val(),'address': $('#doctor-profile-address').val(),'websiteUrl': $('#doctor-profile-website-url').val(),'city': $('#doctor-profile-city').val()}),
-           success: function(response){    
+            xhrFields: {
+                withCredentials: true
+            },
+            data: JSON.stringify({
+                'firstName': $('#doctor-profile-firstname').val(),
+                'lastName': $('#doctor-profile-lastname').val(),
+                'speciality': $('#doctor-profile-speciality').val(),
+                'organization': $('#doctor-profile-organization').val(),
+                'qualification': $('#doctor-profile-qualification').val(),
+                'address': $('#doctor-profile-address').val(),
+                'websiteUrl': $('#doctor-profile-website-url').val(),
+                'city': $('#doctor-profile-city').val()
+            }),
+            success: function(response) {
                 var errorCode = response.errorCode;
                 if (!!errorCode) {
                     switch (errorCode) {
-                        case "NO_USER_LOGGED_IN" :
-                        localStorage.setItem("isLoggedIn", false);
-                        swal({
-                            title: "Error",
-                            text: "You are not logged into your account. Kindly login again to view this page",
-                            type: "error",
-                            confirmButtonText: "OK" },
-                            function() {
-                                localStorage.setItem("isLoggedIn", false);
-                                window.location.replace("login.html");
-                            }
+                        case "NO_USER_LOGGED_IN":
+                            localStorage.setItem("isLoggedIn", false);
+                            swal({
+                                    title: "Error",
+                                    text: "You are not logged into your account. Kindly login again to view this page",
+                                    type: "error",
+                                    confirmButtonText: "OK"
+                                },
+                                function() {
+                                    localStorage.setItem("isLoggedIn", false);
+                                    window.location.replace("login.html");
+                                }
                             );
                             break;
                     }
                 }
 
-           try {
-            var data = $.parseJSON(response.response);                  
-            swal({
-                title: "Success",
-                text: "Your profile has been updated successfully",
-                type: "success",
-                confirmButtonText: "OK" });
-            localStorage.setItem('doctorPojo',"");
-            localStorage.setItem('doctorPojo',response.response);
-          }  catch (e) {
-            swal({
-                title: "Error",
-                text: "Error updating your profile details. Kindly contact the support for further details.",
-                type: "error",
-                confirmButtonText: "OK" });
-          }
-      }
+                try {
+                    var data = $.parseJSON(response.response);
+                    swal({
+                        title: "Success",
+                        text: "Your profile has been updated successfully",
+                        type: "success",
+                        confirmButtonText: "OK"
+                    });
+                    localStorage.setItem('doctorPojo', "");
+                    localStorage.setItem('doctorPojo', response.response);
+                } catch (e) {
+                    swal({
+                        title: "Error",
+                        text: "Error updating your profile details. Kindly contact the support for further details.",
+                        type: "error",
+                        confirmButtonText: "OK"
+                    });
+                }
+            }
+        });
+
     });
 
-  });
 
-   
-$('#doctor-profile-update-pswd').click(function(e){
+    $('#doctor-profile-update-pswd').click(function(e) {
 
-  //alert('hi');
-      
-      var oldPassword = $('#doctor-profile-old-pswd').val();
+        //alert('hi');
+
+        var oldPassword = $('#doctor-profile-old-pswd').val();
         var newPassword = $('#doctor-profile-new-pswd-1').val();
         var doctorId = localStorage.getItem("doctorId");
-        console.log("oldPassword: "+oldPassword+", newPassword: "+newPassword+" ,doctorId"+doctorId);
-        $.ajax({ 
-           type: "POST",
-           url: "http://localhost:8081/dbotica-spring/doctor/changePassword",
-           beforeSend: function(xhr){
-                xhr.setRequestHeader("Content-Type","application/json");
-                xhr.setRequestHeader("Accept","application/json");
+        console.log("oldPassword: " + oldPassword + ", newPassword: " + newPassword + " ,doctorId" + doctorId);
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/dbotica-spring/doctor/changePassword",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
             },
-            xhrFields: {withCredentials: true},
-           data: JSON.stringify({'oldPassword': oldPassword, 'newPassword' : newPassword, 'doctorId': doctorId}),
-           success: function(response){       
-              var errorCode = response.errorCode;
+            xhrFields: {
+                withCredentials: true
+            },
+            data: JSON.stringify({
+                'oldPassword': oldPassword,
+                'newPassword': newPassword,
+                'doctorId': doctorId
+            }),
+            success: function(response) {
+                var errorCode = response.errorCode;
                 if (!!errorCode) {
                     switch (errorCode) {
-                        case "NO_USER_LOGGED_IN" :
-                        localStorage.setItem("isLoggedIn", false);
-                        swal({
-                            title: "Error",
-                            text: "You are not logged into your account. Kindly login again to view this page",
-                            type: "error",
-                            confirmButtonText: "OK" },
-                            function() {
-                                localStorage.setItem("isLoggedIn", false);
-                                window.location.replace("login.html");
-                            }
+                        case "NO_USER_LOGGED_IN":
+                            localStorage.setItem("isLoggedIn", false);
+                            swal({
+                                    title: "Error",
+                                    text: "You are not logged into your account. Kindly login again to view this page",
+                                    type: "error",
+                                    confirmButtonText: "OK"
+                                },
+                                function() {
+                                    localStorage.setItem("isLoggedIn", false);
+                                    window.location.replace("login.html");
+                                }
                             );
                             break;
                     }
                 }
 
-            var data = $.parseJSON(response.response);                  
-            swal({
-                title: "Success",
-                text: "Your password has been updated successfully",
-                type: "success",
-                confirmButtonText: "OK" }
-                );
-      }
+                var data = $.parseJSON(response.response);
+                swal({
+                    title: "Success",
+                    text: "Your password has been updated successfully",
+                    type: "success",
+                    confirmButtonText: "OK"
+                });
+            }
+        });
+
     });
-
-  });
-
-</script>
-<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+    </script>
+    <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/jquery.form-validator.min.js"></script>
-    <script> $.validate(); </script>
+    <script>
+    $.validate();
+    </script>
 </body>
+
 </html>

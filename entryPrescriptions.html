@@ -1177,7 +1177,7 @@
 
 
                                 }
-                                $('#drugWarning').hide();
+                                /*$('#drugWarning').hide();*/
                                 break;
                             }
 
@@ -1550,8 +1550,11 @@
 
     $(document).ready(function() {
         $('#searchclear').click(function() {
+            $('.drugs-dropdown-menu').hide();
+            $("#drugWarning").hide();
             $("#prescription-form-drug").val("");
             $("#prescription-form-drug-type").text("");
+            $('#prescription-form-information-text').hide();
         });
         $('#drugWarning').hide();
         if (localStorage.getItem("isLoggedIn") == "false") {
