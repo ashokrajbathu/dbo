@@ -132,16 +132,17 @@ function onLoadTasks() {
                 }
                 $('#patient-reg-age').val(data1[0]['age']);
                 $('#patient-reg-bloodgrp').val(data1[0]['bloodGroup']);
+				$('#patient-reg-allergy-disp').val(data1[0]['drugAllergy']);
             }
         }
-        if ($.cookie('currentPatientInfo') == 'null') {
+		if ($.cookie('currentPatientInfo') == 'null') {
 
 
             $('#patient-reg-phone').val(newPhoneNumber);
         }
 
     } catch (e) {
-        $('#patient-reg-phone').val($.cookie('currentPatientContactNumber'));
+        console.log("error occured ", e);
     }
 }
 
@@ -199,7 +200,6 @@ $('#patient-register-btn').click(function() {
             'drugAllergy': $('#patient-reg-allergy-disp').val()
         });
     }
-    $.cookie('drugAllergicTo', $('#patient-reg-allergy-disp').val());
     $.ajax({
         type: "POST",
         url: "http://localhost:8081/dbotica-spring/doctor/addPatient",

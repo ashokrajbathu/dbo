@@ -165,6 +165,19 @@
     <script src="dist/js/demo.js"></script>
     <!-- IndexedDB for local storage-->
     <script type="text/javascript">
+	
+	function removeCookies(){
+		$.removeCookie('currentPrescription');
+		$.removeCookie('newPatientPhoneNumber');
+        $.removeCookie('drugHtml');
+        $.removeCookie('drugEntryCount');
+        $.removeCookie('testHtml');
+        $.removeCookie('testEntryCount');
+		$.removeCookie('currentPatientInfo');
+        $.removeCookie('drugPojoList');
+        $.removeCookie('testPojoList');
+	}
+	
     $('#logoutButton').click(function(e) {
         $.ajax({
             type: "POST",
@@ -178,6 +191,7 @@
             },
             success: function(response) {
                 localStorage.clear();
+				removeCookies();
                 window.location.replace("login.html");
             }
         });

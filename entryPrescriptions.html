@@ -192,9 +192,9 @@
                                         <input type="text" class="form-control" placeholder="Pulse" id="prescription-form-pulse">
                                         </input>
                                     </div>
-                                    <div class="col-md-2 form-group">
+                                    <div class="col-md-4 form-group">
                                         <label>Drug Allergy</label>
-                                        <input type="text" class="form-control" placeholder="Drug Allergy" id="prescription-form-drug-allergy">
+                                        <input type="text" class="form-control" placeholder="Drug Allergy" disabled="true" id="prescription-form-drug-allergy">
                                         </input>
                                     </div>
                                 </div>
@@ -1123,7 +1123,7 @@
                         var drugSelected = data[s]['brandName'];
 
                         if (drugSelected !== "") {
-                            var drugAllergyTo = $.cookie('drugAllergicTo');
+                            var drugAllergyTo = $('#prescription-form-drug-allergy').val();
 							var drugAllergyToArray =[];
 							if(!!drugAllergyTo)
 								var drugAllergyToArray = drugAllergyTo.split(",");
@@ -1489,6 +1489,7 @@
 		$('#prescription-form-units').val('1');
         formClear();
         $.cookie('currentPrescription', "");
+		$.cookie('newPatientPhoneNumber',"");
         $.cookie('drugHtml', "");
         $.cookie('drugEntryCount', "");
         $.cookie('testHtml', "");
@@ -1502,6 +1503,18 @@
 
 
     }
+	
+	function removeCookies(){
+		$.removeCookie('currentPrescription');
+		$.removeCookie('newPatientPhoneNumber');
+        $.removeCookie('drugHtml');
+        $.removeCookie('drugEntryCount');
+        $.removeCookie('testHtml');
+        $.removeCookie('testEntryCount');
+		$.removeCookie('currentPatientInfo');
+        $.removeCookie('drugPojoList');
+        $.removeCookie('testPojoList');
+	}
 
     $('#prescription-reset').click(function(e) {
         resetAll();
@@ -1682,6 +1695,7 @@
                 },
                 success: function(response) {
                     localStorage.clear();
+					removeCookies();
                     window.location.replace("login.html");
                 }
             });
@@ -1796,6 +1810,7 @@
                         });
                         var num = [];
                         $.cookie('currentPatientInfo', null);
+						$.cookie('newPatientPhoneNumber', phn);
                         $('#patient-search-result').load('registerPatient.html');
 
                         // $("patient-search-result").append('<input type="button" id="prescription-form-BBF" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="BBF"></input>');
@@ -1831,7 +1846,8 @@
 
             try {
                 $('#prescription-form-patient-name').text(data1[0]['firstName'] + " " + lastName);
-            } catch (e) {
+				$('#prescription-form-drug-allergy').val(data1[0]['drugAllergy']);
+           } catch (e) {
 
             }
         }

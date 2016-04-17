@@ -387,14 +387,14 @@
 
         var date = new Date(prescriptionData['creationTime']);
         var dateStr = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-        var content1 = '<div class="accordion-row row"><div class="col-md-2"><h4>' + prescriptionData['patientName'] + '</h4></div><div class="col-md-offset-2 col-md-3"><h4>' + dateStr + '</h4></div><div class="col-md-2"><h4 style="padding-left:18%;">' + prescriptionData['patientInfo']['age'] + '</h4 style="padding-left:1%;"></div><div class="col-md-3"></div></div>' + '<div><div class="box-body"><div style="margin-top:-14px;" class="col-md-12 form-group"><div class="col-md-3 form-group">Gender :<span><b id="patient-gender">' + prescriptionData['patientInfo']['gender'] + '</b></span></div><div class="col-md-3 form-group">Age :<span><b id="patient-age">' + prescriptionData['patientInfo']['age'] + '</b></span></div><div class="col-md-3 form-group">Blood Pressure : <span><b id="patient-bp">' + prescriptionData['prescription']['bloodpressure'] + '</b></span></div><div class="col-md-3 form-group">Temperature :<span><b  id="patient-temperature">' + prescriptionData['prescription']['temperature'] + '</b></span></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h5>Clinical Impression : </h5></div><div class="col-md-3 form-group"><h5><p placeholder="" id="mypres-clinicalimpression">' + prescriptionData['prescription']['remarks'] + '</p></h5></div></div><table id="current-prescriptions" class="table table-bordered table-striped"><thead><tr><th>BrandName</th><th>Per Serving</th><th>Days</th><th>Quantity</th><th>Remarks</th></tr></thead><tbody>';
+        var content1 = '<div class="accordion-row row"><div class="col-md-2"><h4>' + prescriptionData['patientName'] + '</h4></div><div class="col-md-offset-2 col-md-3"><h4>' + dateStr + '</h4></div><div class="col-md-2"><h4 style="padding-left:18%;">' + prescriptionData['patientInfo']['age'] + '</h4 style="padding-left:1%;"></div><div class="col-md-3"></div></div>' + '<div><div class="box-body"><div style="margin-top:-14px;" class="col-md-12 form-group"><div class="col-md-3 form-group">Gender :<span><b id="patient-gender">' + prescriptionData['patientInfo']['gender'] + '</b></span></div><div class="col-md-3 form-group">Age :<span><b id="patient-age">' + prescriptionData['patientInfo']['age'] + '</b></span></div><div class="col-md-3 form-group">Blood Pressure : <span><b id="patient-bp">' + prescriptionData['prescription']['bloodpressure'] + '</b></span></div><div class="col-md-3 form-group">Temperature :<span><b  id="patient-temperature">' + prescriptionData['prescription']['temperature'] + '</b></span></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h5>Symptoms : </h5></div><div class="col-md-3 form-group"><h5><p placeholder="" id="mypres-clinicalimpression">' + prescriptionData['prescription']['symptoms'] + '</p></h5></div></div><table id="current-prescriptions" class="table table-bordered table-striped"><thead><tr><th>BrandName</th><th>Per Serving</th><th>Days</th><th>Quantity</th><th>Remarks</th></tr></thead><tbody>';
         for (var dd in prescriptionData['prescription']['drugDosage']) {
             var drug = prescriptionData['prescription']['drugDosage'][dd];
             content1 += '<tr><td>' + drug['brandName'] + '</td><td>' + drug['perServing'];
-            if (parseInt(drug['noOfDays']) > 3) {
-                content1 += ' ML';
+            if (drug['drugType'] === "SYRUP") {
+                content1 += ' ml';
             } else {
-                content1 += ' MG';
+                content1 += ' unit';
             }
             content1 += '</td><td>' + drug['noOfDays'] + '</td><td>' + drug['quantity'] + '</td><td>' + drug['remarks'] + '</td></tr>';
 
@@ -493,53 +493,7 @@
         $('#username').text(localStorage.getItem('firstName'));
         $('#username1').text(localStorage.getItem('firstName'));
         var doctorId = localStorage.getItem('doctorId');
-        //paginationStart();
-        /* $.ajax({ 
-                   type: "GET",
-                   url: "http://localhost:8081/dbotica-spring/doctor/myPrescriptions",
-                   data: {'doctorId': doctorId, 'start':'0','limit':'10'},
-                    success: function(response){ 
-                     var data1 = $.parseJSON(response.response);
-                    
-                   
-                   for (var s in data1)
-                   {
-                     console.log(data1[0]);
-
-                     var date = new Date(data1[s]['prescription']['creationTime']);
-                     var dateStr = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
-                     var content1 ='<div class="box box-default collapsed-box">'+'<div class="box-header with-border">'+'<h6 class="box-title">'+' <span class="badge bg-light-blue">'+'<h5>'+'Transaction id </h5>'+'</span>'+'&nbsp&nbsp;' +data1[s]['prescription']['id'] +'</h6>'+'<h3 class="box-title">'+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+'<span class="badge bg-light-blue">'+'<h5>Date of Prescription</h5> '+'</span>'+'&nbsp&nbsp;'+dateStr+'</h3>'+'<h3 class="box-title">'+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+'<span class="badge bg-light-blue">'+'<h5>Patient Id</h5>'+'</span>'+'&nbsp&nbsp;'+data1[s]['prescription']['id']+'</h3>'+
-                       '<div class="box-tools pull-right">'+' <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button> </div> </div>'+
-                       '<div class="box-body"><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h4>Gender : </h4></div><div class="col-md-3 form-group" ><h4> <p placeholder="" id="patient-gender">'+data1[s]['prescription']['gender']+'</p></h4></div><div class="col-md-3 form-group"><h4>Age : </h4></div><div class="col-md-3 form-group"><h4><p  placeholder="" id="patient-age">'+data1[s]['prescription']['age']+'</p></h4></div><div class="col-md-3 form-group"><h4>Blood Pressure : </h4></div><div class="col-md-3 form-group" ><h4> <p placeholder="" id="patient-bp">'+data1[s]['prescription']['bloodpressure']+'</p></h4></div><div class="col-md-3 form-group"><h4>Temperature : </h4></div><div class="col-md-3 form-group" ><h4> <p placeholder="" id="patient-temperature">'+data1[s]['prescription']['temperature']+'</p></h4></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group"><h4>Clinical Impression : </h4></div><div class="col-md-3 form-group"><h4><p placeholder="" id="mypres-clinicalimpression">'+data1[s]['prescription']['remarks']+'</p></h4></div></div><table id="current-prescriptions" class="table table-bordered table-striped"><thead><tr><th>BrandName</th><th>Per Serving</th><th>Days</th><th>Quantity</th><th>Remarks</th></tr></thead><tbody>';
-                    
-                     for(var dd in data1[s]['prescription']['drugDosage']){
-                       var drug = data1[s]['prescription']['drugDosage'][dd];
-                       content1 += '<tr><td>'+drug['drugId']+'</td><td>'+drug['perServing'];
-                       if(parseInt(drug['noOfDays']) > 3){
-                         content1 += ' ML';
-                       } else {
-                         content1 += ' MG';
-                       }
-                       content1 += '</td><td>'+drug['noOfDays']+'</td><td>'+drug['quantity']+'</td><td>'+drug['remarks']+'</td></tr>';
-                     }
-
-                     content1 += '</tbody></table></div></div>';
-
-                     $("#content").append(content1);
-
-                   }
-                   paginationStart();
-                               
-                   } 
-
-                 }); */
-
-
-
-
-
-
-        //paginationStart();
+        
 
     });
 
@@ -572,6 +526,18 @@
         });
         //$(id).accordion("refresh");
     }
+	
+	function removeCookies(){
+		$.removeCookie('currentPrescription');
+		$.removeCookie('newPatientPhoneNumber');
+        $.removeCookie('drugHtml');
+        $.removeCookie('drugEntryCount');
+        $.removeCookie('testHtml');
+        $.removeCookie('testEntryCount');
+		$.removeCookie('currentPatientInfo');
+        $.removeCookie('drugPojoList');
+        $.removeCookie('testPojoList');
+	}
 
     $('#logoutButton').click(function(e) {
         $.ajax({
@@ -586,6 +552,7 @@
             },
             success: function(response) {
                 localStorage.clear();
+				removeCookies();
                 window.location.replace("login.html");
             }
         });

@@ -444,6 +444,18 @@
     <!-- IndexedDB for local storage-->
     <script src="indexedDB/indexedDbotica.js"></script>
     <script>
+	function removeCookies(){
+		$.removeCookie('currentPrescription');
+		$.removeCookie('newPatientPhoneNumber');
+        $.removeCookie('drugHtml');
+        $.removeCookie('drugEntryCount');
+        $.removeCookie('testHtml');
+        $.removeCookie('testEntryCount');
+		$.removeCookie('currentPatientInfo');
+        $.removeCookie('drugPojoList');
+        $.removeCookie('testPojoList');
+	}
+	
     $('#logoutButton').click(function(e) {
         $.ajax({
             type: "POST",
@@ -457,6 +469,7 @@
             },
             success: function(response) {
                 localStorage.clear();
+				removeCookies();
                 window.location.replace("login.html");
             }
         });
