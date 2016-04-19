@@ -1672,7 +1672,75 @@
 		
 		updatePatientFields();
 
+        var phoneNumberSearch = getQueryStringValue("phoneNumber");
+        console.log("phone number while searching----" + phoneNumberSearch);
+        if (phoneNumberSearch !== "") {
+            $('#patientSearchAside').hide();
+            $('#patient-search-result').text('');
 
+            resetAll();
+            var uniId = $("#patient-search-uniqueid").val();
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8081/dbotica-spring/doctor/getPatients",
+                data: {
+                    'patientIds': phoneNumberSearch
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(response) {
+                    console.log("first page response is----", response);
+                    var errorCode = response.errorCode;
+                    console.log("error code is----" + errorCode);
+                    if (!!errorCode) {
+                        switch (errorCode) {
+                            case "NO_USER_LOGGED_IN":
+                                localStorage.setItem("isLoggedIn", false);
+                                swal({
+                                        title: "Error",
+                                        text: "You are not logged into your account. Kindly login again to view this page",
+                                        type: "error",
+                                        confirmButtonText: "OK"
+                                    },
+                                    function() {
+                                        localStorage.setItem("isLoggedIn", false);
+                                        window.location.replace("login.html");
+                                    }
+                                );
+                                break;
+                        }
+                    }
+
+                    if (response.success === true && response.response.length > 2) {
+                        var data1 = $.parseJSON(response.response);
+                        console.log(" response response is---" + response.response);
+                        $.cookie('currentPatientInfo', response.response);
+                        $('#patient-search-result').load('registerPatient.html');
+                        console.log("id of patient recived ", data1[0]);
+                        try {
+                            addPatientObjecttoIndexedDB(data1[0]);
+                        } catch (e) {
+
+                        }
+                    } else {
+                        swal({
+                            title: "Info",
+                            text: "No details found for this patient",
+                            type: "info",
+                            confirmButtonText: "OK"
+                        });
+                        var num = [];
+                        $.cookie('currentPatientInfo', null);
+                        $.cookie('newPatientPhoneNumber', phoneNumberSearch);
+                        $('#patient-search-result').load('registerPatient.html');
+
+                        // $("patient-search-result").append('<input type="button" id="prescription-form-BBF" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="BBF"></input>');
+                    }
+                    updatePatientFields();
+                }
+            });
+        }
 
 
         $('#current-prescriptions > tbody').append($.cookie('drugHtml'));
@@ -1851,6 +1919,10 @@
 
             }
         }
+    }
+
+    function getQueryStringValue(key) {
+        return unescape(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + escape(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
     }
     </script>
     <!--  <script type="text/javascript">
