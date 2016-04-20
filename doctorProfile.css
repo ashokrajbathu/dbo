@@ -18,3 +18,11 @@
 .content-wrapper {
     margin-left: 13%;
 }
+
+th {
+    text-align: center;
+}
+
+#myAssistantsBody>tr>td {
+    text-align: center;
+}

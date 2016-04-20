@@ -458,8 +458,21 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <div class="tab-pane" id="settings">
-                                <div class="form-horizontal">
+                            <div class="tab-pane myAssistantsTabPane" id="settings">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No.</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone Number</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="myAssistantsBody">
+                                    </tbody>
+                                </table>
+                                <!-- <div class="form-horizontal">
                                     <div class="form-group">
                                         <label for="inputName" class="col-sm-2 control-label">Assistant Name</label>
                                         <div class="col-sm-10">
@@ -483,7 +496,7 @@
                                             <button type="submit" class="btn btn-danger" id="doctor-profile-active-btn">Active</button>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -568,6 +581,80 @@
             }
         });
     });
+
+    $('.fa-plus').click(function() {
+        console.log("in fa-plus section");
+        console.log("my profile");
+        var newCount = 1;
+        var patientsIdList = [];
+        $('#myAssistantsBody').empty();
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8081/dbotica-spring/doctor/getMyAssistants",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(response) {
+                var assistantsList = JSON.parse(response.response);
+                console.log("assistants main list is----", assistantsList);
+                for (var s in assistantsList) {
+                    $('#myAssistantsBody').append('<tr><td>' + newCount + '</td><td>' + assistantsList[s]['assistant']['firstName'] + '</td><td>' + assistantsList[s]['assistant']['emailId'] + '</td><td>' + assistantsList[s]['assistant']['phoneNumber'] + '</td><td><input type="button" id="assistantBtn' + s + '" class="assistantsListBtn" value="' + assistantsList[s]['assistantMapping']['state'] + '"></td>');
+
+                    patientsIdList.push(assistantsList[s]['assistantMapping']['id']);
+
+                    newCount++;
+                }
+                var json_str = JSON.stringify(patientsIdList);
+                console.log(json_str);
+                $.cookie('patientidList', json_str);
+            }
+        });
+    });
+
+    $('#myAssistantsBody').on('click', '.assistantsListBtn', function() {
+        var patientIdValues = $.cookie('patientidList');
+        var patientIdValuesParsed = JSON.parse(patientIdValues);
+
+        var idNumber = this.id.slice(-1);
+        var assistantId = patientIdValuesParsed[idNumber];
+
+        var nextState = "";
+        if (this.value === "ACTIVE") {
+            nextState = "INACTIVE";
+
+        } else {
+            nextState = "ACTIVE";
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/dbotica-spring/doctor/markAssistantStatus",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            data: JSON.stringify({
+                'assistantMappingId': assistantId,
+                'state': nextState
+            }),
+            success: function(response) {
+                console.log("response after button click---", response);
+            }
+        });
+
+        this.value = nextState;
+
+    });
+
+
+
 
     $(document).ready(function() {
         $(window).scroll(function() {
