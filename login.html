@@ -135,6 +135,7 @@
     <script class="cssdeck" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <!-- iCheck -->
     <script src="plugins/iCheck/icheck.min.js"></script>
+    <script src="bootstrap/js/jquery.cookie.js"></script>
     <script>
     $(document).ready(function() {
         $("#dialog-1").dialog({
@@ -155,6 +156,8 @@
         });
 
         $('#login-submit').click(function(e) {
+            var patientsListOfDoctor = [];
+            var json_str = [];
             var emailId = $('#emailId').val();
             var password = $('#password').val();
             console.log("emailId: " + emailId + ", password: " + password);
@@ -173,6 +176,7 @@
                     'emailId': emailId,
                     'password': password
                 }),
+                async: false,
                 success: function(response) {
                     var errorCode = response.errorCode;
                     if (!!errorCode) {
@@ -200,13 +204,15 @@
                         localStorage.setItem("isLoggedIn", true);
                         localStorage.setItem("firstName", data['firstName']);
                         localStorage.setItem("doctorId", data['id']);
-
+                        var idOfLoggedInDoctor = data['id'];
+                        console.log("doctor id of the doctor who is logging in-----" + idOfLoggedInDoctor);
                         localStorage.setItem("doctorSpeciality", data['speciality']);
                         localStorage.setItem("doctorOrganization", data['organization']);
                         localStorage.setItem("doctorQualification", data['qualification']);
                         localStorage.setItem("doctorPublicPhoneNumber", data['publicPhoneNumber']);
                         localStorage.setItem("doctorOfficeAddress", data['officeAddress']);
                         console.log(localStorage.getItem("firstName"));
+                        $.cookie('doctorCurrentlyLoggedInId', idOfLoggedInDoctor);
                         window.location.replace("entryPrescriptions.html");
                     }
                 }

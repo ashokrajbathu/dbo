@@ -1565,6 +1565,148 @@
 	
 
     $(document).ready(function() {
+        $.cookie('currentPatientInfo', "");
+        var doctorIdActive = $.cookie('doctorCurrentlyLoggedInId');
+        var patientsListOfThatDoctorParsed = [];
+
+        console.log("doctor id in getPatientsListOfDoctor---" + doctorIdActive);
+        var patientsList = [];
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8081/dbotica-spring/assistant/getDoctorEvents?doctorId=" + doctorIdActive,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            async: false,
+            success: function(response) {
+                console.log("patients list of doctor in entry prescription----", response);
+                patientsListOfThatDoctorParsed = JSON.parse(response.response);
+                console.log("list of patients in entry prescription---", patientsListOfThatDoctorParsed);
+            }
+        });
+        var patientsListOfThatDoctor = [];
+        var appointmentsPatientsListOfThatDoctor = [];
+        var appointmentsPatientsIdListOfThatDocotor = [];
+        var walkinPatientsIdListOfThatDoctor = [];
+        var walkinPatientsListOfThatDoctor = [];
+        var totalNumberOfPatients = patientsListOfThatDoctorParsed.length;
+        $('.sidebar-menu').append('<label class="appointmentsLabel">Patients : ' + totalNumberOfPatients + '</label><br>');
+        $('.sidebar-menu').append('<label class="appointmentsLabel">Appointments :</label><ul class="appointmentsPatientsList"></ul>');
+        for (var s in patientsListOfThatDoctorParsed) {
+            console.log("label value is----" + patientsListOfThatDoctorParsed[s]);
+            if (patientsListOfThatDoctorParsed[s]['calendarStatus'] === "APPOINTMENT") {
+                appointmentsPatientsListOfThatDoctor.push(patientsListOfThatDoctorParsed[s]);
+            } else {
+                walkinPatientsListOfThatDoctor.push(patientsListOfThatDoctorParsed[s]);
+            }
+        }
+        for (var s in appointmentsPatientsListOfThatDoctor) {
+            appointmentsPatientsIdListOfThatDocotor.push(appointmentsPatientsListOfThatDoctor[s]['patientId']);
+            var millisecsOfThatPatient = appointmentsPatientsListOfThatDoctor[s]['startTime'];
+            var date = new Date(millisecsOfThatPatient);
+            timeString = date.toLocaleString('en-US', {
+                hour12: true
+            });
+            var timeArray = timeString.split(",");
+            var timeInHrMin = timeArray[1].split(":");
+            var amOrPm = timeInHrMin[2].split(" ");
+            var timeOfPatient = timeInHrMin[0] + ":" + timeInHrMin[1] + " " + amOrPm[1];
+
+            $('.appointmentsPatientsList').append('<li id="appointment' + s + '" class="patientName" style="margin-left:10px;">' + appointmentsPatientsListOfThatDoctor[s]['label'] + '-' + timeOfPatient + '</li>');
+        }
+        var appointmentsIds = [];
+        appointmentsIds = JSON.stringify(appointmentsPatientsIdListOfThatDocotor);
+        $.cookie('appointmentsIdFullList', appointmentsIds);
+        $('.sidebar-menu').append('<label class="appointmentsLabel">WalkIn :</label><ul class="walkinPatientsList"></ul>');
+        for (var s in walkinPatientsListOfThatDoctor) {
+            walkinPatientsIdListOfThatDoctor.push(walkinPatientsListOfThatDoctor[s]['patientId']);
+            $('.walkinPatientsList').append('<li id="walkin' + s + '" class="patientName" style="margin-left:10px;">' + walkinPatientsListOfThatDoctor[s]['label'] + '</li>');
+        }
+        var walkinsIds = [];
+        walkinsIds = JSON.stringify(walkinPatientsIdListOfThatDoctor);
+        $.cookie('walkinsIdFullList', walkinsIds);
+
+        $('.appointmentsPatientsList').on('click', '.patientName', function() {
+            var appointmentsIdValues = $.cookie('appointmentsIdFullList');
+            var appointmentsIdParsed = JSON.parse(appointmentsIdValues);
+
+            var idNumber = this.id.slice(-1);
+            var appointmentId = appointmentsIdParsed[idNumber];
+            console.log("appointment id of patient clicked---" + appointmentId);
+
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8081/dbotica-spring/doctor/getPatients?patientIds=" + appointmentId,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.setRequestHeader("Accept", "application/json");
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(response) {
+                    if (response.success === true && response.response.length > 2) {
+                        var data1 = $.parseJSON(response.response);
+                        console.log(" response in appointment list response is---" + response.response);
+                        $.cookie('currentPatientInfo', response.response);
+                        $('#patient-search-result').load('registerPatient.html');
+                        console.log("id of patient recived ", data1[0]);
+                        try {
+                            addPatientObjecttoIndexedDB(data1[0]);
+                        } catch (e) {
+
+                        }
+                    }
+                    updatePatientFields();
+
+                }
+            });
+
+        });
+
+        $('.walkinPatientsList').on('click', '.patientName', function() {
+            var walkinsIdValues = $.cookie('walkinsIdFullList');
+            var walkinsIdParsed = JSON.parse(walkinsIdValues);
+
+            var idNumber = this.id.slice(-1);
+            var walkinId = walkinsIdParsed[idNumber];
+            console.log("appointment id of patient clicked---" + walkinId);
+
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8081/dbotica-spring/doctor/getPatients?patientIds=" + walkinId,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.setRequestHeader("Accept", "application/json");
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(response) {
+                    if (response.success === true && response.response.length > 2) {
+                        var data1 = $.parseJSON(response.response);
+                        console.log(" response in appointment list response is---" + response.response);
+                        $.cookie('currentPatientInfo', response.response);
+                        $('#patient-search-result').load('registerPatient.html');
+                        console.log("id of patient recived ", data1[0]);
+                        try {
+                            addPatientObjecttoIndexedDB(data1[0]);
+                        } catch (e) {
+
+                        }
+                    }
+                    updatePatientFields();
+
+                }
+            });
+
+        });
+
+
         $('#searchclear').click(function() {
             $('.drugs-dropdown-menu').hide();
             $("#drugWarning").hide();
