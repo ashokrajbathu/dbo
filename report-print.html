@@ -30,7 +30,7 @@
         margin-bottom: 4mm;
     }
     </style>
-    <script src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
+    
 </head>
 
 <body onload="window.print();">
@@ -143,7 +143,6 @@
     <!-- jQuery 2.1.4 -->
     <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <script type="text/javascript" src="plugins/jQuery/jquery-barcode.js"></script>
-    <script src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
     <!-- Bootstrap 3.3.5 -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <!--Cookie -->
@@ -442,9 +441,9 @@
         var prescriptionId = prescription.id;
 		console.log(prescriptionId + patientPhoneNumber);
 
-        var encrypted = CryptoJS.AES.encrypt(patientPhoneNumber + ":" + prescriptionId , "dBotica");       
-		$("#pr-bar-code").qrcode({width : 128, height:128, text : encrypted.toString()});
-        //$("#pr-bar-code").barcode(encrypted.toString(), "code128");
+        var qrString = patientPhoneNumber + ":" + prescriptionId ;       
+		$("#pr-bar-code").qrcode({width : 128, height:128, text : qrString});
+      
         return encrypted;
     }
     </script>
