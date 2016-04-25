@@ -842,7 +842,84 @@
                 });
             },
             eventResize: function(event, delta, revertFunc) {
+
                 console.log('Resize : ' + event.id + " end is now " + event.end.format());
+                console.log('in event drop');
+                var patientInfoCookie = $.cookie('currentPatientInfo');
+                var id = "";
+                try {
+                  var patientInfo = $.parseJSON(patientInfoCookie);
+                  id = patientInfo[0].id;
+                } catch (e) {
+                }
+                var formatDate = event.start.toDate();
+                var startTime = formatDate.getTime();
+                startTime = calcLocalTime(startTime);
+                var endTime = calcLocalTime(event.end.toDate().getTime());
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8081/dbotica-spring/doctor/updateCalendarEvent",
+                    //data:JSON.stringify( {'calendarEvent': event}),
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("Accept", "application/json");
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    data: JSON.stringify({
+                        'doctorId': localStorage.getItem('doctorId'),
+                        'id': event.calendarEventId,
+                        'patientId': id,
+                        'startTime': startTime,
+                        'endTime' : endTime,
+                        'label': event.title,
+                        'backgroundColor': event.backgroundColor,
+                        'borderColor': event.borderColor
+                    }),
+                    success: function(response) {
+                        var errorCode = response.errorCode;
+                        if (!!errorCode) {
+                            switch (errorCode) {
+                                case "NO_USER_LOGGED_IN":
+                                    localStorage.setItem("isLoggedIn", false);
+                                    swal({
+                                            title: "Error",
+                                            text: "You are not logged into your account. Kindly login again to view this page",
+                                            type: "error",
+                                            confirmButtonText: "OK"
+                                        },
+                                        function() {
+                                            localStorage.setItem("isLoggedIn", false);
+                                            window.location.replace("login.html");
+                                        }
+                                    );
+                                    break;
+                            }
+                        }
+
+                        if (response.success === true) {
+
+                        } else {
+                            swal({
+                                title: "Error",
+                                text: "Event did not get updated. Kindly try in some time.",
+                                type: "error",
+                                confirmButtonText: "OK"
+                            });
+                        }
+                    },
+                    error: function(e) {
+                        swal({
+                            title: "Error",
+                            text: "Event did not get updated. Kindly try in some time.",
+                            type: "error",
+                            confirmButtonText: "OK"
+                        });
+                    },
+                });
+
             },
             drop: function(date) {
                 // is the "remove after drop" checkbox checked?
