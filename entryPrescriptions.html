@@ -949,12 +949,12 @@
 
         var patientInfoCookie = $.cookie('currentPatientInfo');
         var patientInfo = $.parseJSON(patientInfoCookie);
-		//var scheduleTime = $('#inputDate').val();
-		
-		var dateString = $('#inputDate').val();//"23/09/2014 - 09:15",
+        //var scheduleTime = $('#inputDate').val();
+
+        var dateString = $('#inputDate').val(); //"23/09/2014 - 09:15",
         var momentVar = moment($('#inputDate').val(), "MM/DD/YYYY");
 
-		
+
         $.ajax({
             type: "POST",
             url: "http://localhost:8081/dbotica-spring/doctor/addCalendarEvent",
@@ -1124,9 +1124,9 @@
 
                         if (drugSelected !== "") {
                             var drugAllergyTo = $('#prescription-form-drug-allergy').val();
-							var drugAllergyToArray =[];
-							if(!!drugAllergyTo)
-								var drugAllergyToArray = drugAllergyTo.split(",");
+                            var drugAllergyToArray = [];
+                            if (!!drugAllergyTo)
+                                var drugAllergyToArray = drugAllergyTo.split(",");
                             var drugName = drugSelected.split(" (")[0];
                             var check;
                             for (var i = 0, l = drugAllergyToArray.length; i < l; i++) {
@@ -1269,7 +1269,7 @@
 
     $('#prescription-save-cont').click(function(e) {
 
-        
+
         var drugPojoListCookie = $.cookie('drugPojoList'); // Object
         var drugPojoList = [];
         if (!!drugPojoListCookie) {
@@ -1308,32 +1308,32 @@
         var revisitDate = $.cookie('currentInputDate');
         var revisitDays = $.cookie('currentInputDays');
         var referToDoctor = $.cookie('currentPrescriptionInfo-referToDoctor');*/
-		
-		var temperature 	=	$('#prescription-form-temp').val();
-		var height 			= 	$('#prescription-form-height').val();
-		var weight 			= 	$('#prescription-form-weight').val();
-		var bloodPressure	=	$('#prescription-form-bloodPressure').val();
-		var symptoms 		= 	$('#prescription-form-Symptoms').val();
-		var bmi 			=	$('#prescription-form-bmi').val();
-		var saturation 		= 	$('#prescription-form-saturation').val();
-		var pulse 			= 	$('#prescription-form-pulse').val();
-		var investigation	=	$('#prescription-form-Investigation').val();
-		var remarks 		=	$('#prescription-form-remarks').val();
-		var revisitDate 	=	$('#inputDate').val(); 
-		var referToDoctor	=	$('#referToDoctor').val();
+
+        var temperature = $('#prescription-form-temp').val();
+        var height = $('#prescription-form-height').val();
+        var weight = $('#prescription-form-weight').val();
+        var bloodPressure = $('#prescription-form-bloodPressure').val();
+        var symptoms = $('#prescription-form-Symptoms').val();
+        var bmi = $('#prescription-form-bmi').val();
+        var saturation = $('#prescription-form-saturation').val();
+        var pulse = $('#prescription-form-pulse').val();
+        var investigation = $('#prescription-form-Investigation').val();
+        var remarks = $('#prescription-form-remarks').val();
+        var revisitDate = $('#inputDate').val();
+        var referToDoctor = $('#referToDoctor').val();
 
         var patientInfoCookie = $.cookie('currentPatientInfo');
         var patientInfo = $.parseJSON(patientInfoCookie);
         console.log("patientInfoCookie", patientInfoCookie);
-        
-		var prescriptionCookie = $.cookie('currentPrescription');
+
+        var prescriptionCookie = $.cookie('currentPrescription');
         var prescription = {};
         if (!!prescriptionCookie) {
 
             prescription = JSON.parse(prescriptionCookie);
 
         }
-		var today = getTodayString();
+        var today = getTodayString();
 
         var prescriptionString = "";
         console.log("remarks", remarks);
@@ -1353,9 +1353,9 @@
             prescription['saturation'] = saturation;
             prescription['pulse'] = pulse;
             prescription['investigation'] = investigation;
-            prescription['revisitDate'] = (revisitDate !== today) ? revisitDate : "" ;
+            prescription['revisitDate'] = (revisitDate !== today) ? revisitDate : "";
             prescription['references'] = referToDoctor;
-			prescription['symptoms'] = symptoms;
+            prescription['symptoms'] = symptoms;
             prescriptionString = JSON.stringify(prescription);
         } else {
             prescriptionString = JSON.stringify({
@@ -1376,7 +1376,7 @@
                 'investigation': investigation,
                 'revisitDate': (revisitDate !== today) ? revisitDate : "",
                 'references': referToDoctor,
-				'symptoms' : symptoms
+                'symptoms': symptoms
             });
         }
 
@@ -1459,7 +1459,7 @@
                 });
 
                 var prescription = $.parseJSON(response.response);
-                
+
                 //Adding prescriptioninfo to indexedDB
 
                 try {
@@ -1469,11 +1469,11 @@
                 }
                 $.cookie('currentPrescription', response.response);
                 console.log(prescription);
-                console.log("currentPrescrition ",$.cookie('currentPrescription'));
+                console.log("currentPrescrition ", $.cookie('currentPrescription'));
                 window.location.href = 'patientReport.html';
             }
         });
-        
+
     });
 
     $('prescription-form').submit(function(e) {
@@ -1486,15 +1486,15 @@
 
         $('#current-prescriptions > tbody').empty();
         $('#current-tests > tbody').empty();
-		$('#prescription-form-units').val('1');
+        $('#prescription-form-units').val('1');
         formClear();
         $.cookie('currentPrescription', "");
-		$.cookie('newPatientPhoneNumber',"");
+        $.cookie('newPatientPhoneNumber', "");
         $.cookie('drugHtml', "");
         $.cookie('drugEntryCount', "");
         $.cookie('testHtml', "");
         $.cookie('testEntryCount', "");
-		$.cookie('currentPatientInfo',"");
+        $.cookie('currentPatientInfo', "");
         $.cookie('drugPojoList', "");
         $.cookie('testPojoList', "");
         $('#prescription-form-pd').find('input:text').val('');
@@ -1503,18 +1503,18 @@
 
 
     }
-	
-	function removeCookies(){
-		$.removeCookie('currentPrescription');
-		$.removeCookie('newPatientPhoneNumber');
+
+    function removeCookies() {
+        $.removeCookie('currentPrescription');
+        $.removeCookie('newPatientPhoneNumber');
         $.removeCookie('drugHtml');
         $.removeCookie('drugEntryCount');
         $.removeCookie('testHtml');
         $.removeCookie('testEntryCount');
-		$.removeCookie('currentPatientInfo');
+        $.removeCookie('currentPatientInfo');
         $.removeCookie('drugPojoList');
         $.removeCookie('testPojoList');
-	}
+    }
 
     $('#prescription-reset').click(function(e) {
         resetAll();
@@ -1548,8 +1548,8 @@
 
     });
 
-	function getTodayString(){
-		var date = new Date();
+    function getTodayString() {
+        var date = new Date();
 
         var day = date.getDate();
         var month = date.getMonth() + 1;
@@ -1559,76 +1559,90 @@
         if (day < 10) day = "0" + day;
 
         var today = day + "/" + month + "/" + year;
-		
-		return today;
-	}
-	
+
+        return today;
+    }
+
 
     $(document).ready(function() {
-        $.cookie('currentPatientInfo', "");
-        var doctorIdActive = $.cookie('doctorCurrentlyLoggedInId');
-        var patientsListOfThatDoctorParsed = [];
+        
+            $.cookie('currentPatientInfo', "");
+            var doctorIdActive = $.cookie('doctorCurrentlyLoggedInId');
+            var patientsListOfThatDoctorParsed = [];
+            $('.patientsListToBeDisplayed').remove();
+            $('.appointmentsPatientsList').remove();
+            $('.walkinPatientsList').remove();
 
-        console.log("doctor id in getPatientsListOfDoctor---" + doctorIdActive);
-        var patientsList = [];
-        $.ajax({
-            type: "GET",
-            url: "http://localhost:8081/dbotica-spring/assistant/getDoctorEvents?doctorId=" + doctorIdActive,
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.setRequestHeader("Accept", "application/json");
-            },
-            xhrFields: {
-                withCredentials: true
-            },
-            async: false,
-            success: function(response) {
-                console.log("patients list of doctor in entry prescription----", response);
-                patientsListOfThatDoctorParsed = JSON.parse(response.response);
-                console.log("list of patients in entry prescription---", patientsListOfThatDoctorParsed);
-            }
-        });
-        var patientsListOfThatDoctor = [];
-        var appointmentsPatientsListOfThatDoctor = [];
-        var appointmentsPatientsIdListOfThatDocotor = [];
-        var walkinPatientsIdListOfThatDoctor = [];
-        var walkinPatientsListOfThatDoctor = [];
-        var totalNumberOfPatients = patientsListOfThatDoctorParsed.length;
-        $('.sidebar-menu').append('<label class="appointmentsLabel">Patients : ' + totalNumberOfPatients + '</label><br>');
-        $('.sidebar-menu').append('<label class="appointmentsLabel">Appointments :</label><ul class="appointmentsPatientsList"></ul>');
-        for (var s in patientsListOfThatDoctorParsed) {
-            console.log("label value is----" + patientsListOfThatDoctorParsed[s]);
-            if (patientsListOfThatDoctorParsed[s]['calendarStatus'] === "APPOINTMENT") {
-                appointmentsPatientsListOfThatDoctor.push(patientsListOfThatDoctorParsed[s]);
-            } else {
-                walkinPatientsListOfThatDoctor.push(patientsListOfThatDoctorParsed[s]);
-            }
-        }
-        for (var s in appointmentsPatientsListOfThatDoctor) {
-            appointmentsPatientsIdListOfThatDocotor.push(appointmentsPatientsListOfThatDoctor[s]['patientId']);
-            var millisecsOfThatPatient = appointmentsPatientsListOfThatDoctor[s]['startTime'];
-            var date = new Date(millisecsOfThatPatient);
-            timeString = date.toLocaleString('en-US', {
-                hour12: true
+            console.log("doctor id in getPatientsListOfDoctor---" + doctorIdActive);
+            var patientsList = [];
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8081/dbotica-spring/assistant/getDoctorEvents?doctorId=" + doctorIdActive,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.setRequestHeader("Accept", "application/json");
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                async: false,
+                success: function(response) {
+                    console.log("patients list of doctor in entry prescription----", response);
+                    patientsListOfThatDoctorParsed = JSON.parse(response.response);
+                    console.log("list of patients in entry prescription---", patientsListOfThatDoctorParsed);
+                }
             });
-            var timeArray = timeString.split(",");
-            var timeInHrMin = timeArray[1].split(":");
-            var amOrPm = timeInHrMin[2].split(" ");
-            var timeOfPatient = timeInHrMin[0] + ":" + timeInHrMin[1] + " " + amOrPm[1];
+            var patientsListOfThatDoctor = [];
+            var appointmentsPatientsListOfThatDoctor = [];
+            var appointmentsPatientsIdListOfThatDocotor = [];
+            var walkinPatientsIdListOfThatDoctor = [];
+            var walkinPatientsListOfThatDoctor = [];
+            var totalNumberOfPatients = patientsListOfThatDoctorParsed.length;
+            $('.sidebar-menu').append('<div class="patientsListToBeDisplayed"></div>');
+            $('.patientsListToBeDisplayed').append('<label class="appointmentsLabel">Patients : ' + totalNumberOfPatients + '</label><br>');
+            $('.patientsListToBeDisplayed').append('<label class="appointmentsLabel">Appointments :</label><ul class="appointmentsPatientsList"></ul>');
+            for (var s in patientsListOfThatDoctorParsed) {
+                console.log("label value is----" + patientsListOfThatDoctorParsed[s]);
+                if (patientsListOfThatDoctorParsed[s]['calendarStatus'] === "APPOINTMENT") {
+                    appointmentsPatientsListOfThatDoctor.push(patientsListOfThatDoctorParsed[s]);
+                } else {
+                    walkinPatientsListOfThatDoctor.push(patientsListOfThatDoctorParsed[s]);
+                }
+            }
+            for (var s in appointmentsPatientsListOfThatDoctor) {
+                appointmentsPatientsIdListOfThatDocotor.push(appointmentsPatientsListOfThatDoctor[s]['patientId']);
+                var millisecsOfThatPatient = appointmentsPatientsListOfThatDoctor[s]['startTime'];
+                var date = new Date(millisecsOfThatPatient);
+                timeString = date.toLocaleString('en-US', {
+                    hour12: true
+                });
+                var timeArray = timeString.split(",");
+                var timeInHrMin = timeArray[1].split(":");
+                var amOrPm = timeInHrMin[2].split(" ");
+                var timeOfPatient = timeInHrMin[0] + ":" + timeInHrMin[1] + " " + amOrPm[1];
 
-            $('.appointmentsPatientsList').append('<li id="appointment' + s + '" class="patientName" style="margin-left:10px;">' + appointmentsPatientsListOfThatDoctor[s]['label'] + '-' + timeOfPatient + '</li>');
-        }
-        var appointmentsIds = [];
-        appointmentsIds = JSON.stringify(appointmentsPatientsIdListOfThatDocotor);
-        $.cookie('appointmentsIdFullList', appointmentsIds);
-        $('.sidebar-menu').append('<label class="appointmentsLabel">WalkIn :</label><ul class="walkinPatientsList"></ul>');
-        for (var s in walkinPatientsListOfThatDoctor) {
-            walkinPatientsIdListOfThatDoctor.push(walkinPatientsListOfThatDoctor[s]['patientId']);
-            $('.walkinPatientsList').append('<li id="walkin' + s + '" class="patientName" style="margin-left:10px;">' + walkinPatientsListOfThatDoctor[s]['label'] + '</li>');
-        }
-        var walkinsIds = [];
-        walkinsIds = JSON.stringify(walkinPatientsIdListOfThatDoctor);
-        $.cookie('walkinsIdFullList', walkinsIds);
+                if (appointmentsPatientsListOfThatDoctor[s]['state'] === 'INACTIVE') {
+                    continue;
+                } else {
+                    $('.appointmentsPatientsList').append('<li id="appointment' + s + '" class="patientName" style="margin-left:10px;">' + appointmentsPatientsListOfThatDoctor[s]['label'] + '-' + timeOfPatient + '</li>');
+                }
+            }
+            var appointmentsIds = [];
+            appointmentsIds = JSON.stringify(appointmentsPatientsIdListOfThatDocotor);
+            $.cookie('appointmentsIdFullList', appointmentsIds);
+            $('.patientsListToBeDisplayed').append('<label class="appointmentsLabel">WalkIn :</label><ul class="walkinPatientsList"></ul>');
+            for (var s in walkinPatientsListOfThatDoctor) {
+                walkinPatientsIdListOfThatDoctor.push(walkinPatientsListOfThatDoctor[s]['patientId']);
+                if (walkinPatientsListOfThatDoctor[s]['state'] === 'INACTIVE') {
+                    continue;
+                } else {
+                    $('.walkinPatientsList').append('<li id="walkin' + s + '" class="patientName" style="margin-left:10px;">' + walkinPatientsListOfThatDoctor[s]['label'] + '</li>');
+                }
+            }
+            var walkinsIds = [];
+            walkinsIds = JSON.stringify(walkinPatientsIdListOfThatDoctor);
+            $.cookie('walkinsIdFullList', walkinsIds);
+        
 
         $('.appointmentsPatientsList').on('click', '.patientName', function() {
             var appointmentsIdValues = $.cookie('appointmentsIdFullList');
@@ -1730,43 +1744,43 @@
             if (scroll > 1) sticky.addClass('fixed');
             else sticky.removeClass('fixed');
         });
-				
-		$('#closeOnSelect').hide();
-        
+
+        $('#closeOnSelect').hide();
+
         document.getElementById('inputDate').value = getTodayString();
-        
-		//Prescription form filling from cookie
-		
-		var prescriptionCookie = $.cookie('currentPrescription');
+
+        //Prescription form filling from cookie
+
+        var prescriptionCookie = $.cookie('currentPrescription');
         var prescription = {};
         if (!!prescriptionCookie) {
 
             prescription = JSON.parse(prescriptionCookie);
 
         }
-		console.log("prescription ready ", prescription);
-		var temperature 	= 	prescription['temperature'];
-		var height 			=	prescription['height'];
-		var weight 			=	prescription['weight'];
-		var bloodPressure	=	prescription['bloodPressure'];
-		var symptoms 		=	prescription['symptoms'];
-		var bmi 			=	prescription['bmi'];
-		var saturation 		=	prescription['saturation'];
-		var pulse 			=	prescription['pulse'];
-		var investigation	=	prescription['investigation']; 
-		var finalRemarks 	=	prescription['remarks'];
-		var revisitDate 	=	prescription['revisitDate'];
-		var referToDoctor	=	prescription['references'];
-		
-		if(symptoms && symptoms.length != 0){
-			$('#prescription-form-Symptoms').val(symptoms);
-		}
-		
-        if(investigation && investigation.length != 0){
-			$('#prescription-form-Investigation').val(investigation);
-       
-		}
-        
+        console.log("prescription ready ", prescription);
+        var temperature = prescription['temperature'];
+        var height = prescription['height'];
+        var weight = prescription['weight'];
+        var bloodPressure = prescription['bloodPressure'];
+        var symptoms = prescription['symptoms'];
+        var bmi = prescription['bmi'];
+        var saturation = prescription['saturation'];
+        var pulse = prescription['pulse'];
+        var investigation = prescription['investigation'];
+        var finalRemarks = prescription['remarks'];
+        var revisitDate = prescription['revisitDate'];
+        var referToDoctor = prescription['references'];
+
+        if (symptoms && symptoms.length != 0) {
+            $('#prescription-form-Symptoms').val(symptoms);
+        }
+
+        if (investigation && investigation.length != 0) {
+            $('#prescription-form-Investigation').val(investigation);
+
+        }
+
         if (temperature && temperature.length != 0) {
             $('#prescription-form-temp').val(temperature);
         }
@@ -1796,23 +1810,23 @@
         if (pulse && pulse.length != 0) {
             $('#prescription-form-pulse').val(pulse);
         }
-		
-		if(referToDoctor && referToDoctor.length != 0){
-			$('#referToDoctor').val(referToDoctor);
-		}
-		
-		if(finalRemarks && finalRemarks.length != 0){
-			$('#prescription-form-remarks').val(finalRemarks);
-		}
-		
-		if(revisitDate && revisitDate.length != 0){
-			$('#inputDate').val(revisitDate);
-		}
-		
-        
-		
-		
-		updatePatientFields();
+
+        if (referToDoctor && referToDoctor.length != 0) {
+            $('#referToDoctor').val(referToDoctor);
+        }
+
+        if (finalRemarks && finalRemarks.length != 0) {
+            $('#prescription-form-remarks').val(finalRemarks);
+        }
+
+        if (revisitDate && revisitDate.length != 0) {
+            $('#inputDate').val(revisitDate);
+        }
+
+
+
+
+        updatePatientFields();
 
         var phoneNumberSearch = getQueryStringValue("phoneNumber");
         console.log("phone number while searching----" + phoneNumberSearch);
@@ -1905,7 +1919,7 @@
                 },
                 success: function(response) {
                     localStorage.clear();
-					removeCookies();
+                    removeCookies();
                     window.location.replace("login.html");
                 }
             });
@@ -1935,7 +1949,7 @@
 
         var revisitDate = day + "/" + month + "/" + year;
         document.getElementById('inputDate').value = revisitDate;
-       
+
 
     }
 
@@ -2020,7 +2034,7 @@
                         });
                         var num = [];
                         $.cookie('currentPatientInfo', null);
-						$.cookie('newPatientPhoneNumber', phn);
+                        $.cookie('newPatientPhoneNumber', phn);
                         $('#patient-search-result').load('registerPatient.html');
 
                         // $("patient-search-result").append('<input type="button" id="prescription-form-BBF" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="BBF"></input>');
@@ -2056,8 +2070,8 @@
 
             try {
                 $('#prescription-form-patient-name').text(data1[0]['firstName'] + " " + lastName);
-				$('#prescription-form-drug-allergy').val(data1[0]['drugAllergy']);
-           } catch (e) {
+                $('#prescription-form-drug-allergy').val(data1[0]['drugAllergy']);
+            } catch (e) {
 
             }
         }
