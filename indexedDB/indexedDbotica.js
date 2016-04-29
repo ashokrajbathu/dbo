@@ -265,7 +265,7 @@ function syncAllPrescriptionsToIndexedDB(doctorId) {
                 }else{
 					data[i]['patientInfo']= {};
 				}
-                addPrescriptionToIndexedDB(data[i]["prescription"], data[i]["patientInfo"], data[i]["doctorInfo"]["id"]);
+                addPrescriptionToIndexedDB(data[i]["prescription"], data[i]["patientInfo"], doctorId);
 
             }
             if (startPrescriptionIndex < totalPrescriptionCount)
