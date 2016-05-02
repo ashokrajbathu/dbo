@@ -31,10 +31,8 @@
     <script type="text/javascript" src="js/eye.js"></script>
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/layout.js?ver=1.0.2"></script>
-
-    <script src="plugins/sweetalert/dist/sweetalert.min.js"></script> 
+    <script src="plugins/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="plugins/sweetalert/dist/sweetalert.css">
-
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -256,18 +254,18 @@
     <!-- IndexedDB for local storage-->
     <script src="indexedDB/indexedDbotica.js"></script>
     <script>
-	function removeCookies(){
-		$.removeCookie('currentPrescription');
-		$.removeCookie('newPatientPhoneNumber');
+    function removeCookies() {
+        $.removeCookie('currentPrescription');
+        $.removeCookie('newPatientPhoneNumber');
         $.removeCookie('drugHtml');
         $.removeCookie('drugEntryCount');
         $.removeCookie('testHtml');
         $.removeCookie('testEntryCount');
-		$.removeCookie('currentPatientInfo');
+        $.removeCookie('currentPatientInfo');
         $.removeCookie('drugPojoList');
         $.removeCookie('testPojoList');
-	}
-	
+    }
+
     $('#logoutButton').click(function(e) {
         $.ajax({
             type: "POST",
@@ -281,7 +279,7 @@
             },
             success: function(response) {
                 localStorage.clear();
-				removeCookies();
+                removeCookies();
                 window.location.replace("login.html");
             }
         });
@@ -397,20 +395,20 @@
                 $('#calendar').fullCalendar('changeView', 'agendaDay');
                 //}
             },
-			eventClick: function(calEvent, jsEvent, view) {
+            eventClick: function(calEvent, jsEvent, view) {
 
-				alert('Redirecting to entryPrescriptions');
-				console.log(calEvent.patientId);
-				$.cookie('patientId_Event',calEvent.patientId);
-				
-				window.location.href = "entryPrescriptions.html";
-				
-			}, 
-			
+                alert('Redirecting to entryPrescriptions');
+                console.log(calEvent.patientId);
+                $.cookie('patientId_Event', calEvent.patientId);
+
+                window.location.href = "entryPrescriptions.html";
+
+            },
+
             eventDoubleClick: function(calEvent, jsEvent, view) {
-                		
-				
-				var r = swal({
+
+
+                var r = swal({
                         title: "Warning",
                         text: "Are you sure you want to delete event - " + calEvent.title,
                         type: "warning",
@@ -472,8 +470,8 @@
                                 });
                             },
                         });
-                      });
-                },
+                    });
+            },
             eventDrop: function(event, delta, revertFunc) {
 
                 // console.log(event.id + " was dropped on " + event.start.format());
@@ -553,10 +551,9 @@
                 var patientInfoCookie = $.cookie('currentPatientInfo');
                 var id = "";
                 try {
-                  var patientInfo = $.parseJSON(patientInfoCookie);
-                  id = patientInfo[0].id;
-                } catch (e) {
-                }
+                    var patientInfo = $.parseJSON(patientInfoCookie);
+                    id = patientInfo[0].id;
+                } catch (e) {}
                 var formatDate = event.start.toDate();
                 var startTime = formatDate.getTime();
                 startTime = calcLocalTime(startTime);
@@ -578,7 +575,7 @@
                         'id': event.calendarEventId,
                         'patientId': id,
                         'startTime': startTime,
-                        'endTime' : endTime,
+                        'endTime': endTime,
                         'label': event.title,
                         'backgroundColor': event.backgroundColor,
                         'borderColor': event.borderColor
@@ -836,7 +833,8 @@
         });
 
     }
-      function parseColor(color) {
+
+    function parseColor(color) {
         var arr = [];
         color.replace(/[\d+\.]+/g, function(v) {
             arr.push(parseFloat(v));
@@ -858,6 +856,7 @@
     function calcLocalTime(time) {
         return time - 19800000;
     }
+    
     </script>
 </body>
 
