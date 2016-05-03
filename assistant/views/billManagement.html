@@ -1,0 +1,84 @@
+<div ng-controller="billManagementCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="billInfo col-md-9">
+                <div class="panel panel-default">
+                    <div class="heading panel-heading">
+                        <h4 class="headerInfo">Patient Bill : </h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="patientInfo">
+                            <div class="patientDetailsRow row">
+                                <div class="col-md-3">
+                                    <label>First Name :</label>
+                                    <span></span>
+                                </div>
+                                <div class="col-md-2">
+                                    <label>Last Name :</label>
+                                    <span></span>
+                                </div>
+                                <div class="col-md-2">
+                                    <label>Phone :</label>
+                                    <span></span>
+                                </div>
+                                <div class="col-md-1">
+                                    <label>Age :</label>
+                                    <span></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Gaurdian :</label>
+                                    <span></span>
+                                </div>
+                            </div>
+                            <hr class="horizontalLine">
+                            <div class="patientConsultation row">
+                                <div class="dropdown">
+                                    <button class="btn billTxtBox dropdown-toggle" type="button" data-toggle="dropdown">Consultation
+                                        <span class="caret"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="javascript:void">HTML</a></li>
+                                        <li><a href="javascript:void">CSS</a></li>
+                                        <li><a href="javascript:void">JavaScript</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <hr class="horizontalLine">
+                            <div class="patientInfoSearchMedicine">
+                                <form class="form-inline">
+                                    <div class="col-md-6 form-group">
+                                        <label for="exampleInputMedicine">Medicine</label>
+                                        <input type="text" class="billTxtBox billTxtBoxMedicine form-control" id="exampleInputMedicine">
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label for="exampleInputmedicineAvalilability">Availability</label>
+                                        <input type="text" class="billTxtBox form-control" id="exampleInputmedicineAvailability">
+                                    </div>
+                                    <button type="submit" class="btn billBtn">+</button>
+                                </form>
+                            </div>
+                            <hr class="horizontalLine">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="patientDetailsSearch col-md-3">
+                <div class="panel panel-default">
+                    <div class="heading panel-heading">
+                        <h4 class="headerInfo">Patient Search : </h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="patientSearchForm">
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <label for="examplepatientSearchPhoneNumber">Phone:</label>
+                                    <input type="text" class="billTxtBox" class="form-control" id="exampleInputpatientSearchNumber">
+                                </div>
+                                <button type="submit" class="billBtn btn">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,673 @@
+.sidebar-menu {
+    padding-left: 35px;
+    margin-top: 50px;
+}
+
+[ng\:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+    display: none !important;
+}
+
+.main-sidebar {
+    margin-top: 51px;
+}
+
+.skin-blue .sidebar a {
+    color: white;
+}
+
+.timingsList {
+    margin-left: 15px;
+}
+
+.nav-pills>li>a {
+    padding-top: 1px;
+}
+
+
+/*.nav-pills>li {
+    margin-top: 5px;
+    border-radius: 5px;
+    height: 30px;
+    background-color: #f4f4f4;
+}*/
+
+.activeButton {
+    color: white;
+    background-color: #00a65a;
+}
+
+.activeButtonAfternoon {
+    color: white;
+    background-color: #00a65a;
+}
+
+.timings {
+    height: 150px;
+}
+
+.morningTimingsArray[disabled],
+.afternoonTimingsArray[disabled],
+.eveningTimingsArray[disabled] {
+    background-color: #f5f5f5;
+    text-decoration: line-through;
+}
+
+.morningTimingsArray[disabled]:hover,
+.afternoonTimingsArray[disabled]:hover,
+.eveningTimingsArray[disabled]:hover {
+    color: black;
+    background-color: #f5f5f5;
+    border: 0px solid white;
+}
+
+.buttonTimings {
+    margin-right: 2px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+.buttonTimings:focus {
+    background-color: #1abc9c;
+    color: white;
+}
+
+.buttonTimings:hover {
+    border: 1px solid #1abc9c;
+    color: #1abc9c;
+}
+
+.skin-blue .sidebar a:hover {
+    color: white;
+}
+
+.doctorDetails {
+    margin-top: 5px;
+    width: 100%;
+    border: 1.2px solid #f39c12;
+}
+
+.asideDoctorsHeader {
+    color: white;
+    margin-top: -36px;
+    margin-left: 10px;
+}
+
+.asideHr {
+    margin-top: 1px;
+    width: 88%;
+    border: 0.5px solid #f39c12;
+}
+
+.skin-blue .sidebar-menu>li>a {
+    border-left: 0px;
+}
+
+#exTab2 h3 {
+    color: white;
+    background-color: #428bca;
+    padding: 5px 15px;
+}
+
+.tabContents>li>a {
+    position: relative;
+    display: block;
+    padding: 10px 233px;
+}
+
+.modalInfo {
+    color: black;
+    font-size: 12px;
+}
+
+.modal-content {
+    width: 700px;
+}
+
+#bookAppointmentLabel {
+    padding-left: 25px;
+    color: black;
+}
+
+.nextForm {
+    margin-top: -30px;
+}
+
+.modal-footer {
+    margin-top: 120px;
+    border-top: 0px;
+}
+
+li.ui-timepicker-disabled {
+    color: #888;
+    cursor: default;
+}
+
+.btn-group {
+    margin-top: 16px;
+}
+
+.ui-timepicker-wrapper>ul.ui-timepicker-list>li.ui-timepicker-disabled {
+    color: #888;
+    cursor: default;
+}
+
+.tabContents>li.active>a,
+.tabContents>li.active>a:hover,
+.tabContents>li.active>a:focus {
+    color: #555;
+    cursor: pointer;
+    background-color: white;
+    border: 3px solid #ddd;
+    border-bottom-color: red;
+    border-bottom-style: solid;
+    border-right-color: white;
+    border-left-color: white;
+    border-top-color: white;
+}
+
+.modal {
+    color: black;
+}
+
+.asideDoctorsHeader.selected {
+    color: red;
+}
+
+#entryTypeBtn {
+    background-color: white;
+    color: black;
+    height: 35px;
+    width: 180px;
+    border-color: #d2d6de;
+}
+
+.dropdown-menu {
+    margin-left: 16px;
+    width: 180px;
+}
+
+#modalCancelBookingsSearchBtn,
+.cancelBookingsModalCloseBtn {
+    color: #00bd9c;
+    background-color: white;
+    border: 1px solid #00bd9c;
+}
+
+.cancelBookingsModalCloseBtn {
+    border: 1px solid #00bd9c;
+}
+
+#modalCancelBookingsSearchBtn:hover,
+.cancelBookingsModalCloseBtn:hover {
+    color: white;
+    background-color: #00bd9c;
+}
+
+.btn.addPatientBtn {
+    border: 1px solid #00bd9c;
+    background-color: white;
+    color: #00bd9c;
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+.btn.doctorTimingsBtn {
+    border: 1px solid #00bd9c;
+    background-color: white;
+    color: #00bd9c;
+}
+
+.btn.doctorTimingsBtn:hover {
+    color: white;
+    background-color: #00bd9c;
+}
+
+.btn.addPatientBtn:hover {
+    color: white;
+    background-color: #00bd9c;
+}
+
+.btn.cancelBookingsBtn {
+    border: 1px solid #00bd9c;
+    background-color: white;
+    color: #00bd9c;
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+.btn.patientSearchBtn {
+    border: 1px solid #00bd9c;
+    background-color: white;
+    color: #00bd9c;
+}
+
+.btn.patientSearchBtn:hover {
+    color: white;
+    background-color: #00bd9c;
+}
+
+.btn.cancelBookingsBtn:hover {
+    color: white;
+    background-color: #00bd9c;
+}
+
+.doctorTimingsBtn {
+    margin-left: 2px;
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+.ng-hide {
+    height: 0;
+}
+
+.doctorSessionSelect {
+    margin-right: 8px;
+}
+
+.deleteDoctorSessionSelect {
+    margin-right: 8px;
+}
+
+.btn.neutral {
+    background-color: #d9d9d9;
+    color: rgba(46, 67, 89, .65);
+}
+
+.btn.neutral:hover {
+    background-color: #13d8b6;
+    color: white;
+}
+
+#inputPatientPhoneNumberSearch {
+    height: 33px;
+    margin-top: 15px;
+    margin-right: 8px;
+    border-radius: 4px;
+    border: 1px solid #00bd9c;
+}
+
+.btn.checkin {
+    background-color: #00bd9c;
+}
+
+.btn.checkin:hover {
+    background-color: #13d8b6;
+}
+
+.btn-default:hover {
+    background-position: 0 -32px;
+}
+
+.btn.warning {
+    background-color: rgba(255, 109, 111, .3);
+    color: #ff6d6f;
+}
+
+.box {
+    border-top: 0px solid white;
+}
+
+.btn.warning:hover {
+    background-color: #ff6d6f;
+    color: #fff;
+}
+
+.neutral:hover {
+    background-color: #13d8b6;
+}
+
+.deleteSection {
+    margin-top: 10px;
+}
+
+.doctorTimings {
+    margin-bottom: 10px;
+}
+
+.doctorTimings.ng-hide-add {
+    -webkit-animation: 0.1s hide;
+    animation: 0.1s hide;
+}
+
+@keyframes hide {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    30% {
+        transform: scale(1.02);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
+@-webkit-keyframes hide {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    30% {
+        transform: scale(1.02);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
+.doctorTimings.ng-hide-remove {
+    -webkit-animation: 0.3s show;
+    animation: 0.3s show;
+}
+
+@keyframes show {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    70% {
+        transform: scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@-webkit-keyframes show {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    70% {
+        transform: scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-Form-control {
+    padding-right: 20px;
+}
+
+.disableTimeBtn {
+    pointer-events: none;
+}
+
+.patient-form-inline {
+    padding-bottom: 8px;
+}
+
+.patient-form-inline .patient-form-group {
+    padding-right: 50px;
+}
+
+
+/*#doctorName {
+    font-style: bold;
+    font-size: 22px;
+    color: #49b1d1;
+}*/
+
+li {
+    margin-left: 5px;
+    list-style-type: none;
+}
+
+.doctorsList:hover,
+.doctorsList>a:hover {
+    cursor: pointer;
+    color: #00bd9c;
+}
+
+.doctorInList:hover {
+    color: #00bd9c;
+}
+
+.docList {
+    margin-top: 60px;
+}
+
+.doctorInList {
+    color: #00bd9c;
+}
+
+.docList>li>a:hover {
+    margin-bottom: -5px;
+}
+
+.docList>li {
+    height: 70px;
+    /*margin-top: -5px;*/
+}
+
+.docLinks {
+    margin-bottom: 4px;
+}
+
+.docList>li.active>a,
+.docList>li.active>a:hover {
+    margin-bottom: -5px;
+    color: #fff;
+    background-color: white;
+    border-top color: white;
+}
+
+.doctorInList:hover {
+    color: #00bd9c;
+}
+
+.patientsTable>tbody>tr>td {
+    border-top: 1px solid #ddd;
+}
+
+.datepicker {
+    width: 180px;
+    opacity: 1;
+    z-index: 1150 !important;
+}
+
+#inputPatientGender {
+    width: 180px;
+}
+
+.ui-timepicker-input {
+    height: 26px;
+}
+
+#sessionDatepicker {
+    height: 26px;
+}
+
+.ui-timepicker-wrapper {
+    overflow-y: auto;
+    height: 150px;
+    width: 10.5em;
+    background: #fff;
+    border: 1px solid #ddd;
+    outline: none;
+}
+
+.startTimeBox,
+.endTimeBox {
+    margin-top: 10px;
+}
+
+.ui-timepicker-list li {
+    margin-left: -38px;
+    padding: 3px 0 3px 30px;
+    cursor: pointer;
+    color: #000;
+    list-style: none;
+}
+
+.ui-timepicker-list li:hover {
+    background-color: #f5f5f5;
+}
+
+
+/*.time {
+    opacity: 1;
+    z-index: 1150 !important;
+}*/
+
+.datepicker.dropdown-menu {
+    width: 250px;
+}
+
+.datePara {
+    margin-right: 10px;
+}
+
+.dropdown>button {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.dropdownOptions {
+    padding-right: 15px;
+    margin-left: 1px;
+    width: 100px;
+}
+
+.doctorLine {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.viewDetailsLink {
+    padding-left: 50px;
+}
+
+a {
+    font-size: 16px;
+}
+
+.tabActive {
+    font-size: 18px;
+    color: white;
+}
+
+.patientsTable {
+    margin-top: 5px;
+}
+
+.patientsListHeaderRow {
+    border-radius: 4px;
+    color: rgba(38, 54, 72, .7);
+    background-color: #d2dae3;
+    font-size: 18px;
+}
+
+#actionsOnPatient {
+    text-align: center;
+}
+
+#actions {
+    text-align: center;
+    width: 40%;
+}
+
+.content-wrapper {
+    padding-left: 15px;
+    margin-top: -20px;
+    background-color: white;
+}
+
+.box.box-primary {
+    border-top-color: #f5f5f5;
+}
+
+.details {
+    height: 60px;
+}
+
+#assistantLoginForm {
+    padding-top: 20px;
+    background-color: #f5f5f5;
+}
+
+.container-fluid {
+    padding-right: 0px;
+}
+
+.navbar-default .navbar-nav > li > a {
+    font-size: 15px;
+    color: white;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+    font-size: 15px;
+    color: white;
+}
+
+.biodata-title {
+    padding-bottom: 8px;
+    padding-left: 15px;
+}
+
+#bs-example-navbar-collapse-1 {
+    background-color: #3c8dbc;
+}
+
+#logo {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding-top: 0px;
+    background-color: #367fa9;
+    color: #fff;
+    font-size: 20px;
+    line-height: 50px;
+    text-align: center;
+    width: 230px;
+}
+
+.logo-lg {
+    display: block;
+}
+
+.logo-mini {
+    display: none;
+}
+
+
+/*#loginBtn {
+    margin-left: 50%;
+}*/
+
+#loginHorizontal {
+    width: 68%;
+    border: 1.2px solid #f39c12;
+}
+
+.skin-blue .wrapper {
+    background-color: #f5f5f5;
+}
+
+
+/*.skin-blue .main-sidebar {
+    background-color: #f5f5f5;
+}*/
+
+#body {
+    background-color: white;
+}
+
+.errorMsg {
+    color: red;
+}
+
+
+/*hr {
+    width: 98%;
+    border: 1.2px solid #f39c12;
+}*/

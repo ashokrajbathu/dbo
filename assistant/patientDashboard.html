@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>dbotica</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="css/sweet-alert.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" type="text/css" href="css/patientDashboard.css">
+    <link rel="stylesheet" href="plugins/iCheck/flat/blue.css">
+    <!-- Morris chart -->
+    <link rel="stylesheet" href="plugins/morris/morris.css">
+    <!-- jvectormap -->
+    <link rel="stylesheet" href="plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker-bs3.css">
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="plugins/timepicker/jquery-timepicker.css"> -->
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+
+<body id="body" class="hold-transition skin-blue sidebar-mini" ng-app="personalAssistant">
+    <div class="wrapper">
+        <header class="main-header">
+            <a href="#" class="logo">
+                <span class="logo-mini"><b>db</b></span>
+                <span class="logo-lg"><b>dbotica</b></span>
+            </a>
+            <nav class="navbar navbar-static-top" role="navigation">
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <div class="patientDashBoard">
+            <div class="container-fluid">
+                <div class="patientDashBoardBody row">
+                    <div class="personalDetails">
+                        <div class="details col-md-4">
+                            <div class="panel patientHistoryPanel">
+                                <div class="panel-heading">
+                                    <h4>Patient History</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="patientDetailsTable table table-striped">
+                                        <thead>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="photo">
+                                                <td height="120">Photo</td>
+                                                <td height="120">photo.png</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Id</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Reg Date</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Name</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mobile</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>DOB</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Age</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Gender</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Status</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Blood Group</td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button class="btn heightWeightBtn" data-toggle="modal" data-target="#heightWeightModal">Weight/Height</button>
+                                    <span>
+                                        <button class="btn bloodPressureBtn" data-toggle="modal" data-target="#bloodPressureModal">Blood Pressure(B.P.)</button>
+                                    </span>
+                                    <div id="bloodPressureModal" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modalHeader modal-title">Blood Pressure :  </h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form class="form-inline">
+                                                        <div class="form-group">
+                                                            <label for="exampleInputBloodPressure">Blood Pressure :</label>
+                                                            <input type="text" class="form-control" id="exampleInputBloodPressure">
+                                                            <span>/</span>
+                                                             <input type="text" class="form-control" id="exampleInputBloodPressureSecondPart">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Date:</label>
+                                                            <input type="text" id="bloodPressureDatepicker">
+                                                        </div>
+                                                        <button type="submit" class="heightWeightAddBtn btn">Add</button>
+                                                    </form>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>S.No.</th>
+                                                                <th>Blood Pressure</th>
+                                                                <th>Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="heightWeightModal" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modalHeader modal-title">Height - Weight :  </h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form class="form-inline">
+                                                        <div class="form-group">
+                                                            <label for="exampleInputHeight">Height (in cms.)</label>
+                                                            <input type="text" class="form-control" id="exampleInputHeight">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputWeight">Weight(in Kgs.)</label>
+                                                            <input type="email" class="form-control" id="exampleInputWeight">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Date:</label>
+                                                            <input type="text" id="heightWeightDatepicker">
+                                                        </div>
+                                                        <button type="submit" class="heightWeightAddBtn btn">Add</button>
+                                                    </form>
+                                                    <table class="heightWeightTable table">
+                                                        <thead>
+                                                            <tr>
+                                                                <td>S.No.</td>
+                                                                <td>Height(in cms.)</td>
+                                                                <td>Weight(in kgs.)</td>
+                                                                <td>Date</td>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="immunizationHistory">
+                        <div class="immunization col-md-4">
+                            <div class="panel immunizationHistoryPanel">
+                                <div class="panel-heading">
+                                    <h4>Immunization Details</h4>
+                                </div>
+                                <div class="immunizationBody panel-body">
+                                    <label style="margin-left:5px;">Date: </label>
+                                    <input type="text" id="immunizationDatepicker">
+                                    <span class="panelDropdown dropdown">
+                                        <label>vaccine:</label>
+                                        <button class="immunityBtn btn dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+                                            <span class="caret"></span></button>
+                                    <ul class="optionsDropdown dropdown-menu">
+                                        <li><a href="#">HTML</a></li>
+                                        <li><a href="#">CSS</a></li>
+                                        <li><a href="#">JavaScript</a></li>
+                                    </ul>
+                                    </span>
+                                    <div class="panelDropdownStatus dropdown">
+                                        <label>Status:</label>
+                                        <button class="immunityBtn btn dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example2
+                                            <span class="caret"></span></button>
+                                        <ul class="optionsDropdownStatus dropdown-menu">
+                                            <li><a href="#">HTML</a></li>
+                                            <li><a href="#">CSS</a></li>
+                                            <li><a href="#">JavaScript</a></li>
+                                        </ul>
+                                        <span class="immunizationCheckBox">
+                                        <label>Checkbox :</label>
+                                        <input type="checkbox" name="vehicle" value="Car">
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel familyHistoryPanel">
+                                <div class="panel-heading">
+                                    <h4>Family History</h4>
+                                </div>
+                                <div class="familyHistoryBody panel-body">
+                                    <div class="dropdown">
+                                        <button class="diseaseBtn btn dropdown-toggle" type="button" data-toggle="dropdown">Disease
+                                            <span class="caret"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">HTML</a></li>
+                                            <li><a href="#">CSS</a></li>
+                                            <li><a href="#">JavaScript</a></li>
+                                        </ul>
+                                        <span class="dropdown">
+                                            <button class="relationBtn btn dropdown-toggle" type="button" data-toggle="dropdown">Relation
+                                            <span class="caret"></span></button>
+                                        <ul class="relationDropdown dropdown-menu">
+                                            <li><a href="#">Father</a></li>
+                                            <li><a href="#">Mother</a></li>
+                                            <li><a href="#">Son</a></li>
+                                            <li><a href="#">Daughter</a></li>
+                                            <li><a href="#">Grandfather</a></li>
+                                            <li><a href="#">Grandmother</a></li>
+                                            <li><a href="#">Grandson</a></li>
+                                            <li><a href="#">Granddaughter</a></li>
+                                        </ul>
+                                        </span>
+                                        <span>
+                                            <input id="remarks" type="text" placeholder="Remarks">
+                                            <button class="addRelativeBtn btn">+</button>
+                                        </span>
+                                    </div>
+                                    <table style="margin-top:8px;" class="familyTable table">
+                                        <thead>
+                                            <tr>
+                                                <th>Relative</th>
+                                                <th>Disease</th>
+                                                <th>Remarks</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="familyHistoryBody panel-body"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="medicalHistory">
+                        <div class="history col-md-4">
+                            <div class="panel panel-danger">
+                                <div class="panel-heading">
+                                    <h4>Medical History</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <h1>Ravi Teja</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="medicalHistory">
+                        <div id="medicalHistory" class="col-md-3">
+                            <div class="medicalHistoryPanel panel">
+                                <div class="panel-heading">
+                                    <h4>Medical History</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <h1>Ravi Teja</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $("#immunizationDatepicker").datepicker({
+            dateFormat: "dd/mm/yy",
+            autoclose: true,
+            minDate: new Date()
+
+        });
+        $("#heightWeightDatepicker").datepicker({
+            dateFormat: "dd/mm/yy",
+            autoclose: true,
+            minDate: new Date()
+
+        });
+
+        $("#bloodPressureDatepicker").datepicker({
+            dateFormat: "dd/mm/yy",
+            autoclose: true,
+            minDate: new Date()
+
+        });
+
+
+    });
+    </script>
+</body>
+
+</html>

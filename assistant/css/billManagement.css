@@ -1,0 +1,68 @@
+.patientDetailsSearch {
+    width: 24%;
+}
+
+.heading {
+    color: #fff;
+    background-color: #3c8dbc;
+    height: 40px;
+}
+
+.panel-default>.panel-heading {
+    color: white;
+    background-image: none;
+    background-color: #3c8dbc;
+}
+
+.patientDetailsRow {
+    padding-top: 8px;
+    margin-left: 14px;
+}
+
+.patientInfoSearchMedicine,
+.patientConsultation {
+    margin-left: 14px;
+    margin-bottom: 10px;
+}
+
+.horizontalLine {
+    margin-top: 4px;
+}
+
+.headerInfo {
+    margin-top: 0px;
+}
+
+.btn.billBtn {
+    background-color: white;
+    border: 1px solid #00bd9c;
+    color: #00bd9c;
+}
+
+.btn.billBtn:hover {
+    color: white;
+    background-color: #00bd9c;
+}
+
+.billTxtBox,
+.form-control.billTxtBox {
+    padding-left: 6px;
+    height: 32px;
+    border-radius: 4px;
+    border: 1px solid #00bd9c;
+}
+
+.dropdown>button {
+    width: 20%;
+    border: 1px solid #00bd9c;
+    background-color: #fff;
+}
+
+.dropdown>ul {
+    width: 20%;
+    margin-left: 0px;
+}
+
+.form-control.billTxtBoxMedicine {
+    width: 80%;
+}
