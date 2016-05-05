@@ -3,7 +3,7 @@
 }
 
 input[type='number'] {
-    -moz-appearance:textfield;
+    -moz-appearance: textfield;
 }
 
 #searchclear {
@@ -16,6 +16,11 @@ input[type='number'] {
     font-size: 14px;
     cursor: pointer;
     color: #ccc;
+}
+
+.patientsRadioButton,
+.patientsRadioLabel {
+    margin-left: 5px;
 }
 
 input::-webkit-outer-spin-button,
@@ -59,11 +64,13 @@ input::-webkit-inner-spin-button {
     left: 0;
     width: 100%;
 }
-.box{
+
+.box {
     border-top: 0px;
 }
-.content-header{
-    padding:1px 15px 0px 15px;
+
+.content-header {
+    padding: 1px 15px 0px 15px;
 }
 
 .fixed-side-content {

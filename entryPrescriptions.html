@@ -1918,6 +1918,9 @@
             $.ajax({
                 type: "GET",
                 url: "http://localhost:8081/dbotica-spring/doctor/getPatients",
+                /*data: {
+                    'patientIds': "56fd6b3ee2c60ef16dfc4fdb,56fd70c7e2c65a558536c264"
+                },*/
                 data: {
                     'patientIds': phn
                 },
@@ -1950,7 +1953,8 @@
                     if (response.success === true && response.response.length > 2) {
                         var data1 = $.parseJSON(response.response);
                         console.log(" response response is---" + response.response);
-                        $.cookie('currentPatientInfo', response.response);
+                        var data2 = data1.slice(0, 8);
+                        $.cookie('currentPatientInfo', JSON.stringify(data2));
                         $('#patient-search-result').load('registerPatient.html');
                         console.log("id of patient recived ", data1[0]);
                         try {
@@ -1989,6 +1993,7 @@
     function updatePatientFields() {
 
         var currentPatientInfoList = $.cookie('currentPatientInfo');
+        console.log("in up---", currentPatientInfoList);
         var data1 = [];
 
         if (!!currentPatientInfoList && currentPatientInfoList !== 'null') {
@@ -1996,6 +2001,7 @@
         }
 
         if (data1.length != 0) {
+            /*console.log("last is---",data1[0]['lastName']);*/
             var lastName = data1[0]['lastName'];
             if (lastName === undefined || lastName.length <= 0) {
                 lastName = "";

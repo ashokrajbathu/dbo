@@ -140,7 +140,7 @@ function syncAllDrugstoIndexedDB() {
 	var request = syncStore.get(DB_DRUG_STORE);
 	request.onsuccess = function(event){
 		var obj = request.result;
-		console.log("syncstore result ",obj);
+		/*console.log("syncstore result ",obj);*/
 		if(obj && obj != null){
 			if(obj.store == DB_DRUG_STORE){
 				
@@ -320,18 +320,18 @@ function syncAllPatientsToIndexedDB() {
   */
 
 function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId) {
-    console.log("addPrescription argumensts:", arguments);
+    /*console.log("addPrescription argumensts:", arguments);*/
 	var patientName = (patientInfo && patientInfo !== "") ? patientInfo.firstName : "Unknown" ;
 	var patientPhoneNumber = (patientInfo && patientInfo !== "") ? patientInfo.phoneNumber : 0;
     var obj = { "id":prescription.id, "prescription": prescription, "patientInfo": patientInfo, "doctorId": doctorId, "patientName": patientName, "patientPhoneNumber": patientPhoneNumber, "creationTime": new Date(prescription.creationTime) };
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readwrite');
 	
-    console.log("prescription obj", obj);
+    /*console.log("prescription obj", obj);*/
     var request = store.put(obj);
 	//console.log("came here");
     request.onsuccess = function(event) {
         var prescription = request.result;
-		console.log("prescription result", prescription);
+		/*console.log("prescription result", prescription);*/
         //showAllPrescriptions();
         /*var requestUpdate = store.put(obj);
         requestUpdate.onsuccess = function(event) {
@@ -661,7 +661,7 @@ function showAllPatients() {
     store.openCursor().onsuccess = function(event) {
         var cursor = event.target.result;
         if (cursor) {
-            console.log(cursor.value);
+            /*console.log(cursor.value);*/
             cursor.continue();
         }
     }

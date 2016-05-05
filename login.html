@@ -184,21 +184,21 @@
                     var errorCode = response.errorCode;
                     if (!!errorCode) {
                         switch (errorCode) {
-                            case "BAD_CREDENTIALS" :
-                            swal({
-                                title: "Error",
-                                text: "Incorrect email or password.",
-                                type: "error",
-                                confirmButtonText: "OK",
-                                function() {
-                                    window.location.reload();
-                                }
-                            });
-                            break;
-                        case "USER_ALREADY_LOGGED_IN":
-                            localStorage.setItem("isLoggedIn", true);
-                            window.location.replace("entryPrescriptions.html");
-                            break;
+                            case "BAD_CREDENTIALS":
+                                swal({
+                                    title: "Error",
+                                    text: "Incorrect email or password.",
+                                    type: "error",
+                                    confirmButtonText: "OK",
+                                    function() {
+                                        window.location.reload();
+                                    }
+                                });
+                                break;
+                            case "USER_ALREADY_LOGGED_IN":
+                                localStorage.setItem("isLoggedIn", true);
+                                window.location.replace("entryPrescriptions.html");
+                                break;
                         }
                     } else {
                         var data = $.parseJSON(response.response);
@@ -221,50 +221,50 @@
                 }
             });
         });
-    $("#signUpSubmitBtn").click(function() {
-        var name = $("#exampleInputName").val();
-        var email = $("#exampleInputEmail").val();
-        var phone = $("#exampleInputPhone").val();
-        if (name === "" || (email === "" && phone === "")) {
-            swal({
-                title: "Error",
-                text: "Kindly enter the details",
-                type: "error",
-                confirmButtonText: "OK",
-            });
-        } else {
-            $.ajax({
-                type: 'POST',
-                url: 'http://localhost:8081/dbotica-spring/doctor/referDoctor',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader("Content-Type", "application/json");
-                    xhr.setRequestHeader("Accept", "application/json");
-                },
-                async: false,
+        $("#signUpSubmitBtn").click(function() {
+            var name = $("#exampleInputName").val();
+            var email = $("#exampleInputEmail").val();
+            var phone = $("#exampleInputPhone").val();
+            if (name === "" || (email === "" && phone === "")) {
+                swal({
+                    title: "Error",
+                    text: "Kindly enter the details",
+                    type: "error",
+                    confirmButtonText: "OK",
+                });
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://localhost:8081/dbotica-spring/doctor/referDoctor',
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("Accept", "application/json");
+                    },
+                    async: false,
 
-                data: JSON.stringify({
-                    'doctorName': name,
-                    'emailId': email,
-                    'phoneNumber': phone
+                    data: JSON.stringify({
+                        'doctorName': name,
+                        'emailId': email,
+                        'phoneNumber': phone
 
-                }),
-                success: function(response) {
-                    swal({
-                        title: "Success",
-                        text: "Thank You!! dBotica team will call you shortly",
-                        type: "success",
-                        confirmButtonText: "OK"
-                    });
+                    }),
+                    success: function(response) {
+                        swal({
+                            title: "Success",
+                            text: "Thank You!! dBotica team will call you shortly",
+                            type: "success",
+                            confirmButtonText: "OK"
+                        });
 
-                },
-                error: function(request, status, error) {
-                    swal({
-                        title: "Error",
-                        text: "Error receiving the details. Kindly try after some time",
-                        type: "error",
-                        confirmButtonText: "OK"
-                    });
-                }
+                    },
+                    error: function(request, status, error) {
+                        swal({
+                            title: "Error",
+                            text: "Error receiving the details. Kindly try after some time",
+                            type: "error",
+                            confirmButtonText: "OK"
+                        });
+                    }
 
                 });
             }
