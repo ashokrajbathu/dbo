@@ -38,7 +38,8 @@ function openDb(callBack) {
         // garbage collection.
         // db = req.result;
         db = event.target.result;
-		syncAllDrugstoIndexedDB();
+		syncAllDrugsToIndexedDB();
+		syncAllPrescriptionsToIndexedDB();
         if (!!callBack) {
             callBack();
         }
@@ -64,12 +65,12 @@ function openDb(callBack) {
             totalDrugCount = 0;
             //syncAllDrugstoIndexedDB();
 
-            startPrescriptionIndex = 0;
+            
             limitPrescriptionIndex = 100;
             totalPrescriptionCount = 0;
 
             console.log("doctorId ", doctorId);
-            syncAllPrescriptionsToIndexedDB(doctorId);
+            //syncAllPrescriptionsToIndexedDB();
         };
         event.target.transaction.onerror = indexedDB.onerror;
 
@@ -133,7 +134,7 @@ var limitDrugIndex;
 var totalDrugCount;
 
 
-function syncAllDrugstoIndexedDB() {
+function syncAllDrugsToIndexedDB() {
 	var syncStore = getObjectStore(DB_SYNC_STORE, 'readonly');
 	var startDrugIndex=0;
 	var lastUpdatedDrugIndex = 0;
@@ -179,15 +180,16 @@ function syncAllDrugstoIndexedDB() {
 				var syncStore = getObjectStore(DB_SYNC_STORE, 'readwrite');
 				var request1 =syncStore.get(DB_DRUG_STORE);
 				request1.onsuccess = function(event){
-					var obj = request1.result;
+					
 					
 					if(startDrugIndex < totalDrugCount){
 						var obj1={};
 						obj1["store"] = DB_DRUG_STORE;
 						obj1["start"] = startDrugIndex;
+						obj1["lastUpdated"] = lastUpdatedDrugIndex;
 						var req = syncStore.put(obj1);
 						req.onsuccess = function(event){
-							syncAllDrugstoIndexedDB();
+							syncAllDrugsToIndexedDB();
 						}
 						req.onerror = function(){
 							console.error("syncAllDrugstoIndexedDB second req ",this.error);
@@ -195,6 +197,7 @@ function syncAllDrugstoIndexedDB() {
 						
 					}
 					else{
+						var obj = {};
 						obj["store"] = DB_DRUG_STORE;
 						obj["start"] = 0;
 						obj["lastUpdated"] = (new Date).getTime();
@@ -230,52 +233,95 @@ function syncAllDrugstoIndexedDB() {
 /*
  *	Get all prescriptions issued by this doctor
  */
-var startPrescriptionIndex;
+
 var limitPrescriptionIndex;
 var totalPrescriptionCount;
 
-function syncAllPrescriptionsToIndexedDB(doctorId) {
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8081/dbotica-spring/doctor/myPrescriptions",
-        data: {
-            'doctorId': doctorId,
-            'start': startPrescriptionIndex,
-            'limit': limitPrescriptionIndex
+function syncAllPrescriptionsToIndexedDB() {
+	var syncStore = getObjectStore(DB_SYNC_STORE, 'readonly');
+	var startPrescriptionIndex =0 ;
+	var lastUpdatedPrescriptionIndex = 0;
+	var request = syncStore.get(DB_PRESCRIPTION_STORE);
+	request.onsuccess = function(event){
+		var obj = request.result;
+		if(obj && obj != null){
+			if(obj.store == DB_PRESCRIPTION_STORE){
+				startPrescriptionIndex = obj["start"];
+				lastUpdatedPrescriptionIndex = (obj["lastUpdated"] && obj["lastUpdated"]!= null) ? obj["lastUpdated"] : 0 ;
+				
+			}
+			
+		}
+		
+	    $.ajax({
+			type: "GET",
+			url: "http://localhost:8081/dbotica-spring/doctor/myPrescriptions",
+			data: {
+				'doctorId': doctorId,
+				'start': startPrescriptionIndex,
+				'limit': 100,
+				'lastUpdated' : lastUpdatedPrescriptionIndex
 
-        },
-		xhrFields: {
+			},
+			xhrFields: {
                 withCredentials: true
             },
-        success: function(response) {
-            var data = {};
-            data = $.parseJSON(response.response);
-            //console.log(data);
-            //var prescriptionObjectStore = getObjectStore(DB_PRESCRIPTION_STORE,"readwrite");
-            console.log("prescriptions ", data);
-            console.log("DB_PATIENT_STORE ", DB_PATIENT_STORE);
-            var patientObjectStore = getObjectStore(DB_PATIENT_STORE, "readwrite");
-            totalPrescriptionCount = response.totalCount;
-            startPrescriptionIndex = startPrescriptionIndex + data.length;
-
-            for (var i = 0, l = data.length; i < l; i++) {
-                if (data[i]["patientInfo"] !== undefined) {
-                    patientObjectStore.put(data[i]["patientInfo"]);
+			success: function(response) {
+				var data = {};
+				data = $.parseJSON(response.response);
+				console.log("prescriptions ", data);
+				var patientObjectStore = getObjectStore(DB_PATIENT_STORE, "readwrite");
+				totalPrescriptionCount = response.totalCount;
+            
+				for (var i = 0, l = data.length; i < l; i++) {
+					if (data[i]["patientInfo"] !== undefined) {
+						patientObjectStore.put(data[i]["patientInfo"]);
 					
-                }else{
-					data[i]['patientInfo']= {};
+					}else{
+						data[i]['patientInfo']= {};
+					}
+					addPrescriptionToIndexedDB(data[i]["prescription"], data[i]["patientInfo"], doctorId);
+
 				}
-                addPrescriptionToIndexedDB(data[i]["prescription"], data[i]["patientInfo"], doctorId);
-
-            }
-            if (startPrescriptionIndex < totalPrescriptionCount)
-                syncAllPrescriptionsToIndexedDB(doctorId);
-            else
-                console.log("Sync all prescriptions to IndexedDB done");
-
-
-        }
-    });
+				startPrescriptionIndex = startPrescriptionIndex + data.length; 
+				var syncStore = getObjectStore(DB_SYNC_STORE, 'readwrite');
+				var request1 = syncStore.get(DB_PRESCRIPTION_STORE);
+				request1.onsuccess = function(event){
+					
+					
+					if(startPrescriptionIndex < totalPrescriptionCount){
+						var obj1 ={};
+						obj1["store"] = DB_PRESCRIPTION_STORE;
+						obj1["start"] = startPrescriptionIndex;
+						obj1["lastUpdated"] = lastUpdatedPrescriptionIndex;
+						var req = syncStore.put(obj1);
+						req.onsuccess = function(event){
+							syncAllPrescriptionsToIndexedDB()
+						}
+						req.onerror = function(){
+							console.error("SyncAllPrescriptiontoIndexedDB second req ", this.error);
+						}
+					}
+					else{
+						var obj ={};
+						obj["store"] = DB_PRESCRIPTION_STORE;
+						obj["start"] = 0;
+						obj["lastUpdated"] = (new Date).getTime();
+						var req1 = syncStore.put(obj);
+						req1.onsuccess = function(event){
+							console.log("Sync all prescriptions to indexedDb done");
+						}
+						req1.onerror = function(){
+							console.error("SyncAllPrescriptiontoIndexedDB third error ", this.error);
+						}
+					}
+					
+	
+				}
+			}
+        
+		});
+	}
 }
 
 
