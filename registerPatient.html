@@ -377,7 +377,8 @@ $('#patient-register-btn').click(function() {
                                 title: "Error",
                                 text: "You are not logged into your account. Kindly login again to view this page",
                                 type: "error",
-                                confirmButtonText: "OK"
+                                confirmButtonText: "OK",
+                                allowOutsideClick: true
                             },
                             function() {
                                 localStorage.setItem("isLoggedIn", false);
@@ -401,7 +402,8 @@ $('#patient-register-btn').click(function() {
                 title: "Success",
                 text: "Patient details successfully updated.",
                 type: "success",
-                confirmButtonText: "OK"
+                confirmButtonText: "OK",
+                allowOutsideClick: true
             });
             updatePatientFields();
             var patientInfoCookieUpdated = $.parseJSON($.cookie('patientsInRegister'));

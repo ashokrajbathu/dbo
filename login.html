@@ -190,6 +190,7 @@
                                     text: "Incorrect email or password.",
                                     type: "error",
                                     confirmButtonText: "OK",
+                                    allowOutsideClick: true,
                                     function() {
                                         window.location.reload();
                                     }
@@ -231,6 +232,7 @@
                     text: "Kindly enter the details",
                     type: "error",
                     confirmButtonText: "OK",
+                    allowOutsideClick: true
                 });
             } else {
                 $.ajax({
@@ -253,7 +255,8 @@
                             title: "Success",
                             text: "Thank You!! dBotica team will call you shortly",
                             type: "success",
-                            confirmButtonText: "OK"
+                            confirmButtonText: "OK",
+                            allowOutsideClick: true
                         });
 
                     },
@@ -262,7 +265,8 @@
                             title: "Error",
                             text: "Error receiving the details. Kindly try after some time",
                             type: "error",
-                            confirmButtonText: "OK"
+                            confirmButtonText: "OK",
+                            allowOutsideClick: true
                         });
                     }
 

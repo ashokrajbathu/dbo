@@ -750,7 +750,8 @@
                                     title: "Error",
                                     text: "You are not logged into your account. Kindly login again to view this page",
                                     type: "error",
-                                    confirmButtonText: "OK"
+                                    confirmButtonText: "OK",
+                                    allowOutsideClick: true
                                 },
                                 function() {
                                     localStorage.setItem("isLoggedIn", false);
@@ -767,7 +768,8 @@
                         title: "Success",
                         text: "Your profile has been updated successfully",
                         type: "success",
-                        confirmButtonText: "OK"
+                        confirmButtonText: "OK",
+                        allowOutsideClick: true
                     });
                     localStorage.setItem('doctorPojo', "");
                     localStorage.setItem('doctorPojo', response.response);
@@ -776,7 +778,8 @@
                         title: "Error",
                         text: "Error updating your profile details. Kindly contact the support for further details.",
                         type: "error",
-                        confirmButtonText: "OK"
+                        confirmButtonText: "OK",
+                        allowOutsideClick: true
                     });
                 }
             }
@@ -818,7 +821,8 @@
                                     title: "Error",
                                     text: "You are not logged into your account. Kindly login again to view this page",
                                     type: "error",
-                                    confirmButtonText: "OK"
+                                    confirmButtonText: "OK",
+                                    allowOutsideClick: true
                                 },
                                 function() {
                                     localStorage.setItem("isLoggedIn", false);
@@ -834,7 +838,8 @@
                     title: "Success",
                     text: "Your password has been updated successfully",
                     type: "success",
-                    confirmButtonText: "OK"
+                    confirmButtonText: "OK",
+                    allowOutsideClick: true
                 });
             }
         });

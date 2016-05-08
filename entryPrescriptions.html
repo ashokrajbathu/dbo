@@ -654,7 +654,8 @@
                                     title: "Error",
                                     text: "You are not logged into your account. Kindly login again to view this page",
                                     type: "error",
-                                    confirmButtonText: "OK"
+                                    confirmButtonText: "OK",
+                                    allowOutsideClick: true
                                 },
                                 function() {
                                     localStorage.setItem("isLoggedIn", false);
@@ -909,7 +910,8 @@
                             /*text: "Please enter drug details and select medicine usage timings",*/
                             text: "Please enter drug details",
                             type: "error",
-                            confirmButtonText: "OK"
+                            confirmButtonText: "OK",
+                            allowOutsideClick: true
                         },
                         function() {}
                     );
@@ -980,7 +982,8 @@
                                     title: "Error",
                                     text: "You are not logged into your account. Kindly login again to view this page",
                                     type: "error",
-                                    confirmButtonText: "OK"
+                                    confirmButtonText: "OK",,
+                                    allowOutsideClick: true
                                 },
                                 function() {
                                     localStorage.setItem("isLoggedIn", false);
@@ -995,7 +998,8 @@
                     title: "Success",
                     text: "Appointment successfully booked",
                     type: "success",
-                    confirmButtonText: "OK"
+                    confirmButtonText: "OK",
+                    allowOutsideClick: true 
                 });
 
                 var data = $.parseJSON(response.response);
@@ -1013,7 +1017,8 @@
                     title: "Error",
                     text: "Error updating the appointment details",
                     type: "error",
-                    confirmButtonText: "OK"
+                    confirmButtonText: "OK",
+                    allowOutsideClick: true
                 });
             }
 
@@ -1146,8 +1151,8 @@
                                                 title: "Error",
                                                 text: "Please select a drug to which patient is not allergic",
                                                 type: "error",
-                                                confirmButtonText: "OK"
-
+                                                confirmButtonText: "OK",
+                                                allowOutsideClick: true
                                             },
                                             function() {
                                                 $('#prescription-form-drug').val("");
@@ -1254,7 +1259,6 @@
             timer = setTimeout(callback, ms);
         };
     })();
-
 
     $('#prescription-form-drug').keyup(function(e) {
         $('#drugWarning').show();
@@ -1404,7 +1408,8 @@
                                     title: "Error",
                                     text: "You are not logged into your account. Kindly login again to view this page",
                                     type: "error",
-                                    confirmButtonText: "OK"
+                                    confirmButtonText: "OK",
+                                    allowOutsideClick: true
                                 },
                                 function() {
                                     localStorage.setItem("isLoggedIn", false);
@@ -1439,7 +1444,8 @@
                                     title: "Error",
                                     text: "You are not logged into your account. Kindly login again to view this page",
                                     type: "error",
-                                    confirmButtonText: "OK"
+                                    confirmButtonText: "OK",
+                                    allowOutsideClick: true
                                 },
                                 function() {
                                     localStorage.setItem("isLoggedIn", false);
@@ -1455,7 +1461,8 @@
                     title: "Success",
                     text: "Prescrition details are saved successfully",
                     type: "success",
-                    confirmButtonText: "OK"
+                    confirmButtonText: "OK",
+                    allowOutsideClick: true
                 });
 
                 var prescription = $.parseJSON(response.response);
@@ -1733,7 +1740,8 @@
                                         title: "Error",
                                         text: "You are not logged into your account. Kindly login again to view this page",
                                         type: "error",
-                                        confirmButtonText: "OK"
+                                        confirmButtonText: "OK",
+                                        allowOutsideClick: true
                                     },
                                     function() {
                                         localStorage.setItem("isLoggedIn", false);
@@ -1760,7 +1768,8 @@
                             title: "Info",
                             text: "No details found for this patient",
                             type: "info",
-                            confirmButtonText: "OK"
+                            confirmButtonText: "OK",
+                            allowOutsideClick: true
                         });
                         var num = [];
                         $.cookie('currentPatientInfo', null);
@@ -1939,7 +1948,8 @@
                                         title: "Error",
                                         text: "You are not logged into your account. Kindly login again to view this page",
                                         type: "error",
-                                        confirmButtonText: "OK"
+                                        confirmButtonText: "OK",
+                                        allowOutsideClick: true
                                     },
                                     function() {
                                         localStorage.setItem("isLoggedIn", false);
@@ -1967,7 +1977,8 @@
                             title: "Info",
                             text: "No details found for this patient",
                             type: "info",
-                            confirmButtonText: "OK"
+                            confirmButtonText: "OK",
+                            allowOutsideClick: true
                         });
                         var num = [];
                         $.cookie('currentPatientInfo', null);
@@ -1984,7 +1995,8 @@
                 title: "Error",
                 text: "Please enter mobile number before search",
                 type: "error",
-                confirmButtonText: "OK"
+                confirmButtonText: "OK",
+                allowOutsideClick: true
             });
         }
 

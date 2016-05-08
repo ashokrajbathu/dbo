@@ -213,7 +213,8 @@
                     title: "Error",
                     text: "Kindly enter the details",
                     type: "error",
-                    confirmButtonText: "OK"
+                    confirmButtonText: "OK",
+                    allowOutsideClick: true
                 });
             } else {
                 $.ajax({
@@ -242,7 +243,8 @@
                                             title: "Error",
                                             text: "You are not logged into your account. Kindly login again to view this page",
                                             type: "error",
-                                            confirmButtonText: "OK"
+                                            confirmButtonText: "OK",
+                                            allowOutsideClick: true
                                         },
                                         function() {
                                             localStorage.setItem("isLoggedIn", false);
@@ -257,7 +259,8 @@
                                 title: "success",
                                 text: "Details are successfully saved. Thank you for referring to dBotica",
                                 type: "success",
-                                confirmButtonText: "OK"
+                                confirmButtonText: "OK",
+                                allowOutsideClick: true
                             },
                             function() {
                                 window.location.replace("referADoctor.html");
