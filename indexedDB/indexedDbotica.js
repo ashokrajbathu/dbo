@@ -32,7 +32,7 @@ if (!window.indexedDB) {
 
 function openDb(callBack) {
     console.log("openDb ...");
-    var req = window.indexedDB.open(DB_NAME,DB_VERSION);
+    var req = window.indexedDB.open(DB_NAME, DB_VERSION);
     req.onsuccess = function(event) {
         // Better use "this" than "req" to get the result to avoid problems with
         // garbage collection.
@@ -646,9 +646,9 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addDataToT
 /*
  * Autocomplete search from indexedDB
  */
-function autocompleteDrugIndexedDB(searchterm,id, handleData) {
-	
-		
+function autocompleteDrugIndexedDB(searchterm, id, handleData, callback) {
+
+
     var result = [];
     var flag = 0;
     var count = 0;
@@ -659,18 +659,19 @@ function autocompleteDrugIndexedDB(searchterm,id, handleData) {
     index.openCursor(range).onsuccess = function(event) {
         var cursor = event.target.result;
         //console.log(cursor);
-        if (cursor && count < 100) {
+        if (cursor && count < 10) {
             result.push(cursor.value);
             //console.log(cursor.value);
             count++;
             cursor.continue();
         } else {
-			
-			if(searchterm === $(id).val()){
-				console.log($(id).val());
-				handleData(result);
-				
-			}
+
+
+            /*console.log("reult in index is-------", result);*/
+            handleData(result, callback);
+            //callback(result);
+
+
         }
     };
 
