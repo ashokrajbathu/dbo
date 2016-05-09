@@ -43,15 +43,13 @@
 <body style="overflow:auto;" class="hold-transition skin-blue sidebar-mini control-sidebar-open">
     <div class="wrapper">
         <header id="header" class="fixed-content main-header">
-            <!-- Logo -->
-            <a href="entryPrescriptions.html" class="logo" style="width: 13%;">
-                <!-- mini logo for sidebar mini 50x50 pixels -->
+            <a href="entryPrescriptions.html" class="logo fixed" style="width: 13%;">
                 <span class="logo-mini"><b>db</b></span>
-                <!-- logo for regular state and mobile devices -->
                 <span class="logo-lg"><b>dbotica</b></span>
             </a>
+            <!-- Logo -->
             <!-- Header Navbar: style can be found in header.less -->
-            <nav class="navbar navbar-static-top" role="navigation" style="margin-left: 13%;">
+            <nav class="navbar navbar-fixed-top" role="navigation" style="margin-left: 13%;">
                 <!-- Sidebar toggle button-->
                 <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                     <span class="sr-only">Toggle navigation</span>
@@ -93,6 +91,10 @@
         <aside class="fixed-side-content main-sidebar" style="width: 13%;">
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
+                <!-- <a href="entryPrescriptions.html" class="logo">
+                    <span class="logo-mini"><b>db</b></span>
+                    <span class="logo-lg"><b>dbotica</b></span>
+                </a> -->
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel">
                     <div class="pull-left image">
@@ -123,7 +125,7 @@
             <!-- /.sidebar -->
         </aside>
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper" style="margin-left: 13%;margin-right: 22%;">
+        <div class="content-wrapper" style="margin-left: 13%;margin-right: 22%;margin-top:3%;">
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <div class="col-md-14">
@@ -982,7 +984,7 @@
                                     title: "Error",
                                     text: "You are not logged into your account. Kindly login again to view this page",
                                     type: "error",
-                                    confirmButtonText: "OK",,
+                                    confirmButtonText: "OK",
                                     allowOutsideClick: true
                                 },
                                 function() {
@@ -999,7 +1001,7 @@
                     text: "Appointment successfully booked",
                     type: "success",
                     confirmButtonText: "OK",
-                    allowOutsideClick: true 
+                    allowOutsideClick: true
                 });
 
                 var data = $.parseJSON(response.response);
@@ -1878,13 +1880,13 @@
         console.log("doctor name is----" + doctorName);
         $("#doctorName").text(doctorName);
 
-        $(window).scroll(function() {
+        /*$(window).scroll(function() {
             var sticky = $('.fixed-content'),
                 scroll = $(window).scrollTop();
 
             if (scroll > 1) sticky.addClass('fixed');
             else sticky.removeClass('fixed');
-        });
+        });*/
 
         $('#closeOnSelect').hide();
 
