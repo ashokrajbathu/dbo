@@ -79,6 +79,24 @@ input::-webkit-inner-spin-button {
     left: 0px;
 }
 
+/*.ui-widget {
+    background: white;
+}*/
+
+
+/*.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus {
+    background: #ff8a00;
+    border: none;
+    color: #000;
+    border-radius: 0;
+    font-weight: normal;
+}*/
+
 #header {
     padding-top: 0px;
 }
