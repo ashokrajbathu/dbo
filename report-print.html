@@ -157,8 +157,7 @@
 	<script src="js/jquery.qrcode.min.js"></script>
 
     <script src="dist/js/demo.js"></script>
-	<!-- IndexedDB for local storage-->
-    <script src="indexedDB/indexedDbotica.js"></script>
+
     <script type="text/javascript">
 	function getTodayString(){
 		var date = new Date();
@@ -200,6 +199,8 @@
 
         /*$('#date').text(DateOfVisit);*/
         $('#date').text(today);
+		
+		console.log("report print prescrition ", prescription);
 		
 		if (!!temperature && temperature.length != 0) {
             console.log("temperature is---" + temperature);
@@ -444,7 +445,7 @@
         var qrString = patientPhoneNumber + ":" + prescriptionId ;       
 		$("#pr-bar-code").qrcode({width : 128, height:128, text : qrString});
       
-        return encrypted;
+        
     }
     </script>
 </body>
