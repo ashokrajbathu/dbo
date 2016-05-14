@@ -438,11 +438,11 @@
             prescription = JSON.parse(prescriptionCookie);
 
         }
-        var patientPhoneNumber = patientInfo[0].phoneNumber;
+        var patientId = patientInfo[0].id;
         var prescriptionId = prescription.id;
-		console.log(prescriptionId + patientPhoneNumber);
+		console.log(prescriptionId + patientId);
 
-        var qrString = patientPhoneNumber + ":" + prescriptionId ;       
+        var qrString = patientId + ":" + prescriptionId ;       
 		$("#pr-bar-code").qrcode({width : 128, height:128, text : qrString});
       
         
