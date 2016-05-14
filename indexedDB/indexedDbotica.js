@@ -367,27 +367,32 @@ function syncAllPatientsToIndexedDB() {
 
 function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId) {
     /*console.log("addPrescription argumensts:", arguments);*/
-	var patientName = (patientInfo && patientInfo !== "") ? patientInfo.firstName : "Unknown" ;
-	var patientPhoneNumber = (patientInfo && patientInfo !== "") ? patientInfo.phoneNumber : 0;
+	var patientName = !$.isEmptyObject(patientInfo) ? patientInfo.firstName : "Unknown" ;
+	var patientPhoneNumber = !$.isEmptyObject(patientInfo) ? patientInfo.phoneNumber : 0;
     var obj = { "id":prescription.id, "prescription": prescription, "patientInfo": patientInfo, "doctorId": doctorId, "patientName": patientName, "patientPhoneNumber": patientPhoneNumber, "creationTime": new Date(prescription.creationTime) };
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readwrite');
 	
     /*console.log("prescription obj", obj);*/
-    var request = store.put(obj);
+	var request = store.get(prescription.id);
+	
+    
 	//console.log("came here");
     request.onsuccess = function(event) {
-        var prescription = request.result;
-		/*console.log("prescription result", prescription);*/
-        //showAllPrescriptions();
-        /*var requestUpdate = store.put(obj);
-        requestUpdate.onsuccess = function(event) {
-            console.log("addPrescriptionToIndexedDB Done",event.target.result.value);
-			showAllPrescriptions();
-        }
-        requestUpdate.onerror = function() {
-            console.error("addPrescriptionToIndexedDB", this.error);
-        }*/	
-    }
+        var prescriptionObj = event.target.result;
+		console.log("PrescriptionObj present", prescriptionObj);
+		var a = !prescriptionObj;
+		var b = $.isEmptyObject(prescriptionObj.patientInfo);
+		var c = prescriptionObj.patientInfo === undefined ;
+		var d = obj.patientInfo.length > 0 ;
+		console.log("a b c d",a,b,c,d);
+		if(!prescriptionObj || $.isEmptyObject(prescriptionObj.patientInfo) || prescriptionObj.patientInfo === undefined ||  obj.patientInfo.length > 0){
+			var requestUpdate = store.put(obj);
+			requestUpdate.onsuccess = function(event){
+				console.log("Adding prescription object ", obj);
+			}
+		}
+		
+	}
 
    
 }
@@ -514,8 +519,8 @@ function getAllPrescriptionsFromIndexedDB(addDataToTable,callBackAfterAdding, id
         if (cursor) {
             if (cursor.value.doctorId == doctorId) {
                 result.push(cursor.value);
-                console.log("cursor value object is---", cursor.value);
-                console.log("cursor value array is---" + cursor.value);
+                //console.log("cursor value object is---", cursor.value);
+                //console.log("cursor value array is---" + cursor.value);
                 addDataToTable(cursor.value);
             }
 
