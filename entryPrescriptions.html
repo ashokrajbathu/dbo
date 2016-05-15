@@ -489,7 +489,7 @@
     <script src="indexedDB/indexedDbotica.js"></script>
     <script type="text/javascript">
     var totalDrugObjectsOnReady = [];
-    $.fn.pageMe = function(opts) {
+    /*$.fn.pageMe = function(opts) {
         var $this = this,
             defaults = {
                 perPage: 7,
@@ -599,7 +599,7 @@
             pager.children().eq(page + 1).addClass("active");
 
         }
-    };
+    };*/
 
 
     function OnGetTestsResponse(data) {
@@ -1295,50 +1295,62 @@
                 if (totalDrugObjectsOnReady[drugIndex]['brandName'] == ui.item.value) {
                     drugSelected = ui.item.value;
                     drugIdSelected = drugIndex;
+
                 }
             }
             if (drugSelected !== "") {
                 console.log("in not empty");
                 var drugAllergyTo = $('#prescription-form-drug-allergy').val();
                 var drugAllergyToArray = [];
-                if (!!drugAllergyTo)
+                if (!!drugAllergyTo) {
                     console.log("indrugall");
-                var drugAllergyToArray = drugAllergyTo.split(",");
-                var drugName = drugSelected.split(" (")[0];
-                var check;
-                console.log("drugName is-----" + drugName);
-                for (var i = 0, l = drugAllergyToArray.length; i < l; i++) {
-                    drugAllergyToArray[i] = drugAllergyToArray[i].toLowerCase();
-                    check = (drugName === drugAllergyToArray[i]);
-                    console.log("drug---" + drugAllergyToArray[i]);
-                    console.log("checkis----", check);
-                    if (check === true) {
-                        break;
-                    } else {
-                        continue;
+                    var drugAllergyToArray = drugAllergyTo.split(",");
+                    var drugName = drugSelected.split(" (")[0];
+                    var check;
+                    console.log("drugName is-----" + drugName);
+                    for (var i = 0, l = drugAllergyToArray.length; i < l; i++) {
+                        drugAllergyToArray[i] = drugAllergyToArray[i].toLowerCase();
+                        check = (drugName === drugAllergyToArray[i]);
+                        console.log("drug---" + drugAllergyToArray[i]);
+                        console.log("checkis----", check);
+                        if (check === true) {
+                            break;
+                        } else {
+                            continue;
+                        }
+
                     }
+                    if (check) {
+                        console.log("check value is--", check);
+                        ui.item.value = "";
+                        switch (check) {
+                            case true:
 
-                }
-                if (check) {
-                    console.log("check value is--", check);
-                    ui.item.value = "";
-                    switch (check) {
-                        case true:
+                                swal({
+                                        title: "Error",
+                                        text: "Please select a drug to which patient is not allergic",
+                                        type: "error",
+                                        confirmButtonText: "OK"
 
-                            swal({
-                                    title: "Error",
-                                    text: "Please select a drug to which patient is not allergic",
-                                    type: "error",
-                                    confirmButtonText: "OK"
+                                    },
+                                    function() {
+                                        $('#prescription-form-drug').val("");
+                                        /*$('#drugWarning').hide();*/
+                                    }
+                                );
 
-                                },
-                                function() {
-                                    $('#prescription-form-drug').val("");
-                                    /*$('#drugWarning').hide();*/
-                                }
-                            );
-
-
+                        }
+                    }
+                    $('#prescription-form-drug').attr("drugId", totalDrugObjectsOnReady[drugIdSelected]['id']);
+                    $('#prescription-form-drug-type').text(totalDrugObjectsOnReady[drugIdSelected]['drugType']);
+                    var drugTypeUpperCase = "" + totalDrugObjectsOnReady[drugIdSelected]['drugType'];
+                    switch (drugTypeUpperCase.toUpperCase()) {
+                        case 'SYRUP':
+                            $('#prescription-form-measurmnt').text("ml");
+                            break;
+                        default:
+                            $('#prescription-form-measurmnt').text("units");
+                            break;
                     }
 
                 } else {
@@ -2143,21 +2155,14 @@
         var newDate = new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
 
         console.log(newDate);
-
         var day = newDate.getDate();
         var month = Number(newDate.getMonth()) + 1;
         var year = newDate.getFullYear();
-
-
-
-
         if (month < 10) month = "0" + month;
         if (day < 10) day = "0" + day;
 
         var revisitDate = day + "/" + month + "/" + year;
         document.getElementById('inputDate').value = revisitDate;
-
-
     }
 
     function formClear() {
