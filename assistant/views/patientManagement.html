@@ -123,7 +123,7 @@
                                 <td>{{patient.calendarStatus}}</td>
                                 <td>{{patient.startTime | date:"h:mma"}}</td>
                                 <td id="actionsOnPatient">
-                                    <button class="btn checkin">Check-In</button>
+                                    <button class="btn checkin" ng-click="checkin(patient)">Check-In</button>
                                     <button data-toggle="modal" data-target="#myModal" ng-click="editDetailsOfPatient(patient.patientId)" class="btn btn-default neutral">Edit Details</button>
                                     <button ng-click="cancelAppointment(patient,$index)" class="btn warning">Cancel Appointment</button>
                                 </td>
