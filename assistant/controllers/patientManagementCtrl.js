@@ -707,7 +707,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 $scope.patientDataInNextDiv.name = addPatientResponse[0].firstName;
                 $scope.book.label = addPatientResponse[0].firstName;
                 $scope.book.patientId = addPatientResponse[0].id;
-                $scope.addPatientBtn = true;
+                $scope.addPatientBtn=true;
             }, function() {});
         } else {
             swal({
@@ -829,27 +829,5 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         }, function(errorResponse) {
             console.log("book error response is---", errorResponse);
         });
-    }
-
-    $scope.checkin = function(patient) {
-        var checkinBook = {};
-        console.log("patient for checkin is----", patient);
-        checkinBook.calendarStatus = "CHECK_IN";
-        checkinBook.doctorId = patient.doctorId;
-        checkinBook.eventName = patient.eventName;
-        checkinBook.label = patient.label;
-        checkinBook.patientId = patient.patientId;
-        checkinBook.startTime = patient.startTime;
-        checkinBook.id = patient.id;
-        checkinBook.state = "ACTIVE";
-        console.log("check in book is-----", checkinBook);
-        var promise = dboticaServices.cancelAppointmentOfADateOrUpdateDoctorEvent(checkinBook);
-        promise.then(function(response) {
-            console.log("after checkin is----", response);
-        }, function(errorResponse) {
-            console.log("in checkin error response");
-        })
-
-
     }
 }]);
