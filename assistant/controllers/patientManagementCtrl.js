@@ -1,6 +1,6 @@
 angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
 
-	localStorage.setItem("currentState", "patientManagement");
+    localStorage.setItem("currentState", "patientManagement");
     angular.element("#sessionDatepicker").datepicker({
         dateFormat: "dd/mm/yy",
         autoclose: true,
