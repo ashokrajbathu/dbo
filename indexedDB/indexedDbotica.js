@@ -365,7 +365,7 @@ function syncAllPatientsToIndexedDB() {
 	Doctor doctorInfo;
   */
 
-function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId) {
+function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId, callBack) {
     /*console.log("addPrescription argumensts:", arguments);*/
 	var patientName = !$.isEmptyObject(patientInfo) ? patientInfo.firstName : "Unknown" ;
 	var patientPhoneNumber = !$.isEmptyObject(patientInfo) ? patientInfo.phoneNumber : 0;
@@ -387,9 +387,13 @@ function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId) {
 		var d = !$.isEmptyObject(obj.patientInfo);
 		console.log("a b c d",a,b,c,d);
 		if(!prescriptionObj || $.isEmptyObject(prescriptionObj.patientInfo) || prescriptionObj.patientInfo === undefined ||  !$.isEmptyObject(obj.patientInfo)){
-			var requestUpdate = store.put(obj);
+			var prescriptionStore = getObjectStore(DB_PRESCRIPTION_STORE, 'readwrite');
+			var requestUpdate = prescriptionStore.put(obj);
 			requestUpdate.onsuccess = function(event){
 				console.log("Adding prescription object ", obj);
+				if(!!callBack)
+					callBack();
+				
 			}
 		}
 		

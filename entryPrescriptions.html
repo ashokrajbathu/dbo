@@ -662,7 +662,7 @@
                                 },
                                 function() {
                                     localStorage.setItem("isLoggedIn", false);
-                                    window.location.replace("login.html");
+                                    window.location.href = "login.html";
                                 }
                             );
                             break;
@@ -989,7 +989,7 @@
                                 },
                                 function() {
                                     localStorage.setItem("isLoggedIn", false);
-                                    window.location.replace("login.html");
+                                    window.location.href = "login.html";
                                 }
                             );
                             break;
@@ -1241,7 +1241,7 @@
                                 },
                                 function() {
                                     localStorage.setItem("isLoggedIn", false);
-                                    window.location.replace("login.html");
+                                    window.location.href = "login.html";
                                 }
                             );
                             break;
@@ -1374,6 +1374,10 @@
 
 
     });
+	
+	var loadPatientReport = function(){
+		window.location.href = 'patientReport.html';		
+	}
 
     $('#prescription-save-cont').click(function(e) {
 
@@ -1552,7 +1556,7 @@
                                 },
                                 function() {
                                     localStorage.setItem("isLoggedIn", false);
-                                    window.location.replace("login.html");
+                                    window.location.href = "login.html";
                                 }
                             );
                             break;
@@ -1588,7 +1592,7 @@
                                 },
                                 function() {
                                     localStorage.setItem("isLoggedIn", false);
-                                    window.location.replace("login.html");
+                                    window.location.href = "login.html";
                                 }
                             );
                             break;
@@ -1605,18 +1609,19 @@
                 });
 
                 var prescription = $.parseJSON(response.response);
+				$.cookie('currentPrescription', response.response);
 
                 //Adding prescriptioninfo to indexedDB
 
                 try {
-                    addPrescriptionToIndexedDB(prescription, patientInfo[0], localStorage.getItem('doctorId'));
+                    addPrescriptionToIndexedDB(prescription, patientInfo[0], localStorage.getItem('doctorId'), loadPatientReport);
                 } catch (e) {
 
                 }
-                $.cookie('currentPrescription', response.response);
-                console.log(prescription);
-                console.log("currentPrescrition ", $.cookie('currentPrescription'));
-                window.location.href = 'patientReport.html';
+                
+                //console.log(prescription);
+                //console.log("currentPrescrition ", $.cookie('currentPrescription'));
+                
             }
         });
 
@@ -1920,7 +1925,7 @@
         });
         $('#drugWarning').hide();
         if (localStorage.getItem("isLoggedIn") == "false") {
-            window.location.replace("login.html");
+            window.location.href = "login.html";
         }
 
         var doctorName = localStorage.getItem('firstName');
@@ -2052,7 +2057,7 @@
                                     },
                                     function() {
                                         localStorage.setItem("isLoggedIn", false);
-                                        window.location.replace("login.html");
+                                        window.location.href = "login.html";
                                     }
                                 );
                                 break;
@@ -2112,7 +2117,7 @@
                 success: function(response) {
                     localStorage.clear();
                     removeCookies();
-                    window.location.replace("login.html");
+                    window.location.href = "login.html";
                 }
             });
         });
@@ -2232,9 +2237,6 @@
             $.ajax({
                 type: "GET",
                 url: "http://localhost:8081/dbotica-spring/doctor/getPatients",
-                /*data: {
-                    'patientIds': "56fd6b3ee2c60ef16dfc4fdb,56fd70c7e2c65a558536c264"
-                },*/
                 data: {
                     'patientIds': phn
                 },
@@ -2258,7 +2260,8 @@
                                     },
                                     function() {
                                         localStorage.setItem("isLoggedIn", false);
-                                        window.location.replace("login.html");
+										console.log("Redirecting to login page");
+                                        window.location.href = "login.html";
                                     }
                                 );
                                 break;
