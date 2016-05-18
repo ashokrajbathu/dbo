@@ -1488,6 +1488,41 @@
             });
         }
 
+        var requestEntity = {};
+        requestEntity.patientId = patientInfo[0].id;
+        requestEntity.patientPhysicalDetails = {};
+        requestEntity.patientPhysicalDetails.height = height;
+        requestEntity.patientPhysicalDetails.weight = weight;
+        requestEntity.patientPhysicalDetails.bloodPressure = bloodPressure;
+        requestEntity.patientPhysicalDetails.updatedLocation = "entryPrescriptionPage";
+        var time = new Date();
+        time = time.getTime();
+        requestEntity.patientPhysicalDetails.updatedDate = time;
+        requestEntity = JSON.stringify(requestEntity);
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/dbotica-spring/doctor/addPatientPhysicalDetails",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            data: requestEntity,
+            success: function(response) {
+                var patientDetailsObject = {};
+                try {
+                    patientDetailsObject = $.parseJSON(response.response);
+                } catch (e) {
+                    console.log("Error in add physical Details from entry prescriptions");
+                }
+                console.log("patient object is----", patientDetailsObject);
+            }
+        });
+
+
         $.ajax({
             type: "POST",
             url: "http://localhost:8081/dbotica-spring/doctor/addMyPatients",

@@ -142,7 +142,7 @@
                 <!-- right column -->
                 <div class="col-md-14">
                     <!-- general form elements disabled -->
-                    <div class="box box-warning"  style="margin-top:3%;">
+                    <div class="box box-warning" style="margin-top:3%;">
                         <div class="box-body">
                             <form role="form" id="search-form">
                                 <div class="col-md-12 form-group"></div>
@@ -384,25 +384,132 @@
     };
 
     function addRowToPrescriptionTable(prescriptionData) {
+        var emptySpace = "  -";
         console.log("prescription object is----", prescriptionData);
-
         var date = new Date(prescriptionData['creationTime']);
         var dateStr = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-        var content1 = '<div class="accordion-row row"><div class="col-md-2"><h4>' + prescriptionData['patientName'] + '</h4></div><div class="col-md-offset-2 col-md-3"><h4>' + dateStr + '</h4></div><div class="col-md-2"><h4 style="padding-left:18%;">' + prescriptionData['patientInfo']['age'] + '</h4 style="padding-left:1%;"></div><div class="col-md-3"></div></div>' + '<div><div class="box-body"><div style="margin-top:-14px;" class="col-md-12 form-group"><div class="col-md-3 form-group">Gender :<span><b id="patient-gender">' + prescriptionData['patientInfo']['gender'] + '</b></span></div><div class="col-md-3 form-group">Blood Pressure : <span><b id="patient-bp">' + prescriptionData['prescription']['bloodpressure'] + '</b></span></div><div class="col-md-3 form-group">Temperature :<span><b  id="patient-temperature">' + prescriptionData['prescription']['temperature'] + '</b></span></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group">Symptoms : <span><b id="mypres-clinicalimpression">' + prescriptionData['prescription']['symptoms'] + '</b></span></div><div class="col-md-3 form-group">Height : <span><b id="patient-height">' + prescriptionData['prescription']['height'] + '</b></span></div><div class="col-md-3 form-group">Weight : <span><b id="patient-weight">' + prescriptionData['prescription']['weight'] + '</b></span></div></div><table id="current-prescriptions" class="table table-bordered table-striped"><thead><tr><th>BrandName</th><th>Per Serving</th><th>Days</th><th>Quantity</th><th>Remarks</th></tr></thead><tbody>';
-        for (var dd in prescriptionData['prescription']['drugDosage']) {
-            var drug = prescriptionData['prescription']['drugDosage'][dd];
-            content1 += '<tr><td>' + drug['brandName'] + '</td><td>' + drug['perServing'];
+        var patientName = "";
+        var patientAge = "";
+        var patientGender = "";
+        if (!prescriptionData.hasOwnProperty('patientName')) {
+            patientName = emptySpace;
+        } else {
+            patientName = prescriptionData['patientName'];
+        }
+        var object = {};
+        if (prescriptionData.hasOwnProperty('patientInfo')) {
+            object = prescriptionData['patientInfo'];
+            if (!object.hasOwnProperty('age')) {
+                patientAge = emptySpace;
+            } else {
+                patientAge = object['age'];
+            }
+            if (!object.hasOwnProperty('gender')) {
+                patientGender = emptySpace;
+            } else {
+                patientGender = object['gender'];
+            }
+        } else {
+            patientAge = emptySpace;
+            patientGender = emptySpace;
+        }
+        var patientBloodPressure = "";
+        var patientTemperature = "";
+        var patientSymptoms = "";
+        var patientHeight = "";
+        var patientWeight = "";
+        var prescriptionObject = {};
+        var drugDosageArray = [];
+        console.log("prescription Data is-----", prescriptionData);
+        if (prescriptionData.hasOwnProperty('prescription')) {
+            prescriptionObject = prescriptionData['prescription'];
+            console.log("ob is----", prescriptionObject);
+            if (!prescriptionObject.hasOwnProperty('bloodPressure')) {
+                console.log("in not bp");
+                patientBloodPressure = emptySpace;
+            } else {
+                console.log("in bp");
+                console.log("in bp---" + prescriptionObject['bloodPressure']);
+                patientBloodPressure = prescriptionObject['bloodPressure'];
+            }
+            if (!prescriptionObject.hasOwnProperty('temperature')) {
+                patientTemperature = emptySpace;
+            } else {
+                patientTemperature = prescriptionObject['temperature'];
+            }
+            if (!prescriptionObject.hasOwnProperty('symptoms')) {
+                patientSymptoms = emptySpace;
+            } else {
+                patientSymptoms = prescriptionObject['symptoms'];
+            }
+            if (!prescriptionObject.hasOwnProperty('height')) {
+                patientHeight = emptySpace;
+            } else {
+                patientHeight = prescriptionObject['height'];
+            }
+            if (!prescriptionObject.hasOwnProperty('weight')) {
+                patientWeight = emptySpace;
+            } else {
+                patientWeight = prescriptionObject['weight'];
+            }
+            if (!prescriptionObject.hasOwnProperty('drugDosage')) {
+                drugDosageArray = [];
+            } else {
+                drugDosageArray = prescriptionObject['drugDosage'];
+            }
+
+        } else {
+            console.log("in not ====");
+            patientBloodPressure = emptySpace;
+            patientTemperature = emptySpace;
+            patientSymptoms = emptySpace;
+            patientHeight = emptySpace;
+            patientWeight = emptySpace;
+        }
+        var content1 = '<div class="accordion-row row"><div class="col-md-2"><h4>' + patientName + '</h4></div><div class="col-md-offset-2 col-md-3"><h4>' + dateStr + '</h4></div><div class="col-md-2"><h4 style="padding-left:18%;">' + patientAge + '</h4 style="padding-left:1%;"></div><div class="col-md-3"></div></div>' + '<div><div class="box-body"><div style="margin-top:-14px;" class="col-md-12 form-group"><div class="col-md-3 form-group">Gender :<span><b id="patient-gender">' + patientGender + '</b></span></div><div class="col-md-3 form-group">Blood Pressure : <span><b id="patient-bp">' + patientBloodPressure + '</b></span></div><div class="col-md-3 form-group">Temperature :<span><b  id="patient-temperature">' + patientTemperature + '</b></span></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group">Symptoms : <span><b id="mypres-clinicalimpression">' + patientSymptoms + '</b></span></div><div class="col-md-3 form-group">Height : <span><b id="patient-height">' + patientHeight + '</b></span></div><div class="col-md-3 form-group">Weight : <span><b id="patient-weight">' + patientWeight + '</b></span></div></div><table id="current-prescriptions" class="table table-bordered table-striped"><thead><tr><th>BrandName</th><th>Per Serving</th><th>Days</th><th>Quantity</th><th>Remarks</th></tr></thead><tbody>';
+        for (var dd in drugDosageArray) {
+            var drug = drugDosageArray[dd];
+            var brandName = "";
+            var perServing = "";
+            var drugType = "";
+            var drugDays = "";
+            var drugQuantity = "";
+            var drugRemarks = "";
+            if (drug.hasOwnProperty('brandName')) {
+                brandName = drug['brandName'];
+            } else {
+                brandName = emptySpace;
+            }
+            if (drug.hasOwnProperty('perServing')) {
+                perServing = drug['perServing'];
+            } else {
+                perServing = emptySpace;
+            }
+            if (drug.hasOwnProperty('noOfDays')) {
+                drugDays = drug['noOfDays'];
+            } else {
+                drugDays = emptySpace;
+            }
+            if (drug.hasOwnProperty('quantity')) {
+                drugQuantity = drug['quantity'];
+            } else {
+                drugQuantity = emptySpace;
+            }
+            if (drug.hasOwnProperty('remarks')) {
+                drugRemarks = drug['remarks'];
+            } else {
+                drugRemarks = emptySpace;
+            }
+            content1 += '<tr><td>' + brandName + '</td><td>' + perServing;
             if (drug['drugType'] === "SYRUP") {
                 content1 += ' ml';
             } else {
                 content1 += ' unit';
             }
-            content1 += '</td><td>' + drug['noOfDays'] + '</td><td>' + drug['quantity'] + '</td><td>' + drug['remarks'] + '</td></tr>';
-
-
+            content1 += '</td><td>' + drugDays + '</td><td>' + drugQuantity + '</td><td>' + drugRemarks + '</td></tr>';
         }
 
-        /*content1 += '</tbody></table></div></div></div>';*/
+
         content1 += '</tbody></table>';
 
         var testData = [];
@@ -413,15 +520,17 @@
             var newCount1 = 1;
             content1 += '<h4>Test Details</h4><table id="test-details-myPrescription" style="width:100%;" class="table-bordered table-striped"><thead><tr><th>S.No</th><th>Test Name</th><th>Remarks</th></tr></thead><tbody>';
             for (s in testData) {
+                console.log("in for loop test data----");
+                console.log("new count 1----" + newCount1);
+                console.log("test name is------" + testData[s]['testName']);
+                console.log("test remarks is----------" + testData[s]['remark']);
                 content1 += '<tr><td>' + newCount1 + '</td><td>' + testData[s]['testName'] + '</td><td>' + testData[s]['remark'] + '</td></tr>';
                 newCount1++;
             }
             content1 += '</tbody></table>';
         } else {
             console.log("hide------");
-            /*$('#test-details-myPrescription').append('
-<h3>ravi teja</h3>');
-*/
+
             $('#test-details-myPrescription').hide();
             $('#test-details-myPrescription').hide();
 
