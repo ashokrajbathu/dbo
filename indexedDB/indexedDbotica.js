@@ -379,13 +379,14 @@ function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId) {
 	//console.log("came here");
     request.onsuccess = function(event) {
         var prescriptionObj = event.target.result;
-		console.log("PrescriptionObj present", prescriptionObj);
+		console.log("PrescriptionObj old", prescriptionObj);
+		console.log("PrescriptionObj new", obj);
 		var a = !prescriptionObj;
-		var b = $.isEmptyObject(prescriptionObj.patientInfo);
-		var c = prescriptionObj.patientInfo === undefined ;
-		var d = obj.patientInfo.length > 0 ;
+		var b = a || $.isEmptyObject(prescriptionObj.patientInfo);
+		var c = a || prescriptionObj.patientInfo === undefined ;
+		var d = !$.isEmptyObject(obj.patientInfo);
 		console.log("a b c d",a,b,c,d);
-		if(!prescriptionObj || $.isEmptyObject(prescriptionObj.patientInfo) || prescriptionObj.patientInfo === undefined ||  obj.patientInfo.length > 0){
+		if(!prescriptionObj || $.isEmptyObject(prescriptionObj.patientInfo) || prescriptionObj.patientInfo === undefined ||  !$.isEmptyObject(obj.patientInfo)){
 			var requestUpdate = store.put(obj);
 			requestUpdate.onsuccess = function(event){
 				console.log("Adding prescription object ", obj);
