@@ -102,6 +102,10 @@ label {
     margin-left: -20px;
 }
 
+#pr-doctor-phoneNumber {
+    margin-right: 10%;
+}
+
 #billNo {
     margin-left: 50%;
 }

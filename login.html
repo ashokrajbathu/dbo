@@ -201,8 +201,9 @@
                                 break;
                         }
                     } else {
+                        console.log("doctor details before prse is----", response.response);
                         var data = $.parseJSON(response.response);
-                        console.log(data);
+                        console.log("doctor details are---", data);
                         localStorage.setItem('doctorPojo', response.response);
                         localStorage.setItem("isLoggedIn", true);
                         localStorage.setItem("firstName", data['firstName']);
@@ -212,8 +213,10 @@
                         localStorage.setItem("doctorSpeciality", data['speciality']);
                         localStorage.setItem("doctorOrganization", data['organization']);
                         localStorage.setItem("doctorQualification", data['qualification']);
-                        localStorage.setItem("doctorPublicPhoneNumber", data['publicPhoneNumber']);
+                        localStorage.setItem("doctorPublicPhoneNumber", data['phoneNumber']);
                         localStorage.setItem("doctorOfficeAddress", data['officeAddress']);
+                        localStorage.setItem("doctorRegistrationNo", data['doctorRegistrationNo']);
+                        localStorage.setItem("doctorHospitalLocation",data['city']);
                         console.log(localStorage.getItem("firstName"));
                         $.cookie('doctorCurrentlyLoggedInId', idOfLoggedInDoctor);
                         window.location.replace("entryPrescriptions.html");

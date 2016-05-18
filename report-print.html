@@ -30,7 +30,6 @@
         margin-bottom: 4mm;
     }
     </style>
-    
 </head>
 
 <body onload="window.print();">
@@ -38,13 +37,31 @@
         <!-- Main content -->
         <section class="invoice">
             <div class="row invoice-info">
-                <div class="col-sm-9 invoice-col">
-                    <address>
-                        <strong><span id="pr-doctor-name" ></span></strong>&nbsp;&nbsp;<span placeholder="docqual" id="doctor-qual"></span>
+                <div class="col-md-12 col-sm-9 invoice-col">
+                    <address >
+                        <strong><span id="pr-doctor-name" ></span></strong>&nbsp;&nbsp;<span placeholder="docqual" id="doctor-qual"></span><span style="margin-left:250%;" id="pr-doctor-phoneNumber"></span>
                         <br>
-                        <span id="pr-doctor-specialization"></span>
+                        <span id="pr-doctor-specialization"></span><span style="margin-left:251%;" id="pr-doctor-hospitalLocation"></span>
                         <br>
                         <span id="pr-doctor-organization"></span>
+                        <br>
+                        <span id="pr-doctor-registrationNo"></span>
+                        <!-- <div class="row">
+                            <div class="col-md-8 pull-right">
+                                <strong><span id="pr-doctor-name"></span></strong>
+                                <strong><span id="pr-doctor-phoneNumber"></span></strong>
+                            </div>
+                        </div> -->
+                        <!-- <table class="table">
+                            <thead>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td width="80%">ravi</td>
+                                    <td width="20%">teja</td>
+                                </tr>
+                            </tbody>
+                        </table> -->
                     </address>
                 </div>
             </div>
@@ -334,11 +351,18 @@
         var docQua = localStorage.getItem('doctorQualification');
         var docAdrs = localStorage.getItem('doctorOfficeAddress');
         var docPhn = localStorage.getItem('doctorPublicPhoneNumber');
+        var docRegistrationNo = localStorage.getItem('doctorRegistrationNo');
+        var phoneNumber = localStorage.getItem('doctorPublicPhoneNumber');
+        var city=localStorage.getItem('doctorHospitalLocation');
+        console.log("doc specialization is----" + docSpe);
 
         $('#pr-doctor-name').text(docname);
         $('#pr-doctor-qual').text(docQua);
         $('#pr-doctor-specialization').text(docSpe);
         $('#pr-doctor-ards').text(docAdrs);
+        $('#pr-doctor-registrationNo').text(docRegistrationNo);
+        $('#pr-doctor-phoneNumber').text(phoneNumber);
+        $('#pr-doctor-hospitalLocation').text(city);
         if (!!docPhn && docPhn.length != 0 && docPhn != "undefined") {
             $('#pr-doctor-phn').text(docPhn);
         }
@@ -440,12 +464,16 @@
         }
         var patientId = patientInfo[0].id;
         var prescriptionId = prescription.id;
-		console.log(prescriptionId + patientId);
+        console.log(prescriptionId + patientId);
 
-        var qrString = patientId + ":" + prescriptionId ;       
-		$("#pr-bar-code").qrcode({width : 128, height:128, text : qrString});
-      
-        
+        var qrString = patientId + ":" + prescriptionId;
+        $("#pr-bar-code").qrcode({
+            width: 128,
+            height: 128,
+            text: qrString
+        });
+
+
     }
     </script>
 </body>

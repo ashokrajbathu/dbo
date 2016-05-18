@@ -679,6 +679,7 @@
         // console.log('hi');
         // console.log(localStorage.getItem('doctorPojo'));
         var doctorData = $.parseJSON(localStorage.getItem('doctorPojo'));
+        console.log("doctor data in profile----",doctorData);
         //alert("12312" + doctorData);
         //console.log('doctor data'+doctorData['firstName'] );
         if (doctorData['firstName'] != "" && doctorData['firstName'] != null)
@@ -692,6 +693,9 @@
 
         if (doctorData['organization'] != "" && doctorData['organization'] != null)
             $('#doctor-profile-organization').val(doctorData['organization']);
+
+        if (doctorData['doctorRegistrationNo'] != "" && doctorData['doctorRegistrationNo'] != null)
+            $('#doctor-profile-registration-no').val(doctorData['doctorRegistrationNo']);
 
         if (doctorData['qualification'] != "" && doctorData['qualification'] != null)
             $('#doctor-profile-qualification').val(doctorData['qualification']);
