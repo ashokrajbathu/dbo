@@ -1669,6 +1669,10 @@
 
     $('#prescription-reset').click(function(e) {
         resetAll();
+        $('#inputDatetxt').val('');
+        $('#inputDate').val('');
+        $('#referToDoctor').val('');
+        $('#prescription-form-remarks').val('');
         window.location.reload();
     });
 

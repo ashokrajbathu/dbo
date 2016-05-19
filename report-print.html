@@ -22,7 +22,6 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
     <style>
     @page {
         size: auto;
@@ -37,9 +36,9 @@
         <!-- Main content -->
         <section class="invoice">
             <div class="row invoice-info">
-                <div class="col-md-12 col-sm-9 invoice-col">
-                    <address >
-                        <strong><span id="pr-doctor-name" ></span></strong>&nbsp;&nbsp;<span placeholder="docqual" id="doctor-qual"></span><span style="margin-left:250%;" id="pr-doctor-phoneNumber"></span>
+                <div class="col-md-12 col-sm-12 col-xs-12 invoice-col">
+                    <address>
+                        <strong><span id="pr-doctor-name" ></span></strong><span placeholder="docqual" id="doctor-qual"></span><span style="margin-left:250%;" id="pr-doctor-phoneNumber"></span>
                         <br>
                         <span id="pr-doctor-specialization"></span><span style="margin-left:251%;" id="pr-doctor-hospitalLocation"></span>
                         <br>
@@ -89,6 +88,7 @@
                     </tr>
                     <tr>
                         <td><strong>B.P.(mm Hg) : </strong><span id="patient-bloodpressure"></span></td>
+                        <td><strong>BMI : </strong><span id="patient-bmi"></span></td>
                         <td><strong>Others : </strong><span id="patient-Other-Details"></span></td>
                         <td></td>
                         <td></td>
@@ -187,31 +187,33 @@
         if (day < 10) day = "0" + day;
 
         var today = day + "/" + month + "/" + year;
-		
-		return today;
-	}
-	function printPrescription(){
-		var prescriptionCookie = $.cookie('currentPrescription');
+
+        return today;
+    }
+
+    function printPrescription() {
+        var prescriptionCookie = $.cookie('currentPrescription');
         var prescription = {};
         if (!!prescriptionCookie) {
 
             prescription = JSON.parse(prescriptionCookie);
 
         }
-		
-		var temperature 	= 	prescription['temperature'];
-		var height 			=	prescription['height'];
-		var weight 			=	prescription['weight'];
-		var bloodPressure	=	prescription['bloodPressure'];
-		var symptoms 		=	prescription['symptoms'];
-		var bmi 			=	prescription['bmi'];
-		var saturation 		=	prescription['saturation'];
-		var pulse 			=	prescription['pulse'];
-		var investigation	=	prescription['investigation']; 
-		var remarks 		=	prescription['remarks'];
-		var revisitDate 	=	prescription['revisitDate'];
-		var referToDoctor	=	prescription['references']; 
-		
+        console.log("current prescription is----", prescription);
+        var temperature = prescription['temperature'];
+        var height = prescription['height'];
+        var weight = prescription['weight'];
+        var bloodPressure = prescription['bloodPressure'];
+        var symptoms = prescription['symptoms'];
+        var bmi = prescription['bmi'];
+        var saturation = prescription['saturation'];
+        var pulse = prescription['pulse'];
+        var investigation = prescription['investigation'];
+        var remarks = prescription['remarks'];
+        var revisitDate = prescription['revisitDate'];
+        var referToDoctor = prescription['references'];
+        var bmi = prescription['bmi'];
+
         var today = getTodayString();
 
         /*$('#date').text(DateOfVisit);*/
@@ -236,6 +238,10 @@
 
         if (!!weight && weight.length != 0) {
             $('#patient-weight').text(weight);
+        }
+
+        if (!!bmi && bmi.length != 0) {
+            $('#patient-bmi').text(bmi);
         }
 
         if (!!bloodPressure && bloodPressure.length != 0) {
