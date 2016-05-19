@@ -196,11 +196,13 @@
                                 });
                                 break;
                             case "USER_ALREADY_LOGGED_IN":
+                                localStorage.setItem("isLoggedInCheck", true);
                                 localStorage.setItem("isLoggedIn", true);
                                 window.location.replace("entryPrescriptions.html");
                                 break;
                         }
                     } else {
+                        localStorage.setItem("isLoggedInCheck", true);
                         console.log("doctor details before prse is----", response.response);
                         var data = $.parseJSON(response.response);
                         console.log("doctor details are---", data);

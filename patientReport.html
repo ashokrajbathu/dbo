@@ -319,6 +319,14 @@
 
     <!-- jQuery 2.1.4 -->
     <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <script type="text/javascript">
+    $.holdReady(true);
+    if (localStorage.getItem('isLoggedInCheck') === 'true') {
+        $.holdReady(false);
+    } else {
+        window.location.href = 'login.html';
+    }
+    </script>
     <!-- Bootstrap 3.3.5 -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <!--Cookie -->
@@ -437,6 +445,7 @@
                 localStorage.clear();
 				removeCookies();
                 window.location.replace("login.html");
+                localStorage.setItem('isLoggedInCheck', false);
             }
         });
     });

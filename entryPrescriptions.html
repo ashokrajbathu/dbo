@@ -22,6 +22,14 @@
     <!--Datepicker srcs -->
     <link rel="stylesheet" href="css/datepicker.css" type="text/css" />
     <script src="plugins/jQuery/jquery-1.9.1.js"></script>
+    <script type="text/javascript">
+    $.holdReady(true);
+    if (localStorage.getItem('isLoggedInCheck') === 'true') {
+        $.holdReady(false);
+    } else {
+        window.location.href = 'login.html';
+    }
+    </script>
     <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
     <!--  <link rel="stylesheet" media="screen" type="text/css" href="css/layout.css" />-->
     <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -252,7 +260,7 @@
                             <h3 class="box-title">Fill Prescription</h3>
                         </div>
                         <div class="box-body">
-                            <h5 id="drugWarning">(**Please select the drug to which patient is not allergic)</h5>
+                            <!-- <h5 id="drugWarning">(**Please select the drug to which patient is not allergic)</h5> -->
                             <div role="form" id="prescription-form">
                                 <!-- text input -->
                                 <div class="col-md-9 form-group">
@@ -1727,6 +1735,13 @@
         /*old part start*/
 
         //$.cookie('currentPatientInfo', "");
+
+        /*var check = localStorage.getItem('isLoggedInCheck');
+        console.log("check value is----", check);
+        if (check === 'false') {
+            console.log("in check");
+            window.location.href = "login.html";
+        }*/
         var doctorIdActive = $.cookie('doctorCurrentlyLoggedInId');
         var patientsListOfThatDoctorParsed = [];
         $('.patientsListToBeDisplayed').remove();
@@ -2122,6 +2137,7 @@
                     localStorage.clear();
                     removeCookies();
                     window.location.href = "login.html";
+                    localStorage.setItem("isLoggedInCheck", false);
                 }
             });
         });

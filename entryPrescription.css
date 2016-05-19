@@ -26,10 +26,18 @@ input[type='number'] {
     border-bottom: 2px solid #f4f4f4;
 }
 
-#ui-id-1>li:hover {
+#ui-id-1>li:hover,
+#ui-id-1>li:active,
+#ui-id-1>li:focus {
     color: #3c8dbc;
     background: white;
     border: 1px solid #3c8dbc;
+}
+
+.ui-state-focus{
+    color:#3c8dbc !important;
+    background: white !important;
+    border:1px solid #3c8dbc !important;
 }
 
 .patientsRadioButton,
