@@ -24,7 +24,7 @@
     <script src="plugins/jQuery/jquery-1.9.1.js"></script>
     <script type="text/javascript">
     $.holdReady(true);
-    if (localStorage.getItem('isLoggedInCheck') === 'true') {
+    if (localStorage.getItem('isLoggedIn') === 'true') {
         $.holdReady(false);
     } else {
         window.location.href = 'login.html';
@@ -1499,6 +1499,7 @@
                 'symptoms': symptoms
             });
         }
+        console.log("request entity for check is----", prescriptionString);
 
         var requestEntity = {};
         requestEntity.patientId = patientInfo[0].id;
@@ -1736,7 +1737,7 @@
 
         //$.cookie('currentPatientInfo', "");
 
-        /*var check = localStorage.getItem('isLoggedInCheck');
+        /*
         console.log("check value is----", check);
         if (check === 'false') {
             console.log("in check");
@@ -2136,8 +2137,9 @@
                 success: function(response) {
                     localStorage.clear();
                     removeCookies();
+                    localStorage.setItem("isLoggedIn", false);
                     window.location.href = "login.html";
-                    localStorage.setItem("isLoggedInCheck", false);
+                    
                 }
             });
         });
