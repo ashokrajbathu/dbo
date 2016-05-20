@@ -292,6 +292,7 @@
         var listElement = $this;
         var perPage = settings.perPage;
         var children = listElement.children();
+		var accordionChildren = listElement.find(settings.accordionChildSelector);
         var pager = $('.pagination');
 
         if (typeof settings.childSelector != "undefined") {
@@ -365,6 +366,7 @@
                 endOn = startAt + perPage;
 
             children.css('display', 'none').slice(startAt, endOn).show();
+			accordionChildren.hide();
 
             if (page >= 1) {
                 pager.find('.prev_link').show();
@@ -474,7 +476,7 @@
             patientHeight = emptySpace;
             patientWeight = emptySpace;
         }
-        var content1 = '<div class="accordion-row row"><div class="col-md-2"><h4>' + patientName + '</h4></div><div class="col-md-offset-2 col-md-3"><h4>' + dateStr + '</h4></div><div class="col-md-2"><h4 style="padding-left:18%;">' + patientAge + '</h4 style="padding-left:1%;"></div><div class="col-md-3"></div></div>' + '<div><div class="box-body"><div style="margin-top:-14px;" class="col-md-12 form-group"><div class="col-md-3 form-group">Gender :<span><b id="patient-gender">' + patientGender + '</b></span></div><div class="col-md-3 form-group">Blood Pressure : <span><b id="patient-bp">' + patientBloodPressure + '</b></span></div><div class="col-md-3 form-group">Temperature :<span><b  id="patient-temperature">' + patientTemperature + '</b></span></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group">Symptoms : <span><b id="mypres-clinicalimpression">' + patientSymptoms + '</b></span></div><div class="col-md-3 form-group">Height : <span><b id="patient-height">' + patientHeight + '</b></span></div><div class="col-md-3 form-group">Weight : <span><b id="patient-weight">' + patientWeight + '</b></span></div></div><table id="current-prescriptions" class="table table-bordered table-striped"><thead><tr><th>BrandName</th><th>Per Serving</th><th>Days</th><th>Quantity</th><th>Remarks</th></tr></thead><tbody>';
+        var content1 = '<div class="accordion-row row"><div class="col-md-2"><h4>' + patientName + '</h4></div><div class="col-md-offset-2 col-md-3"><h4>' + dateStr + '</h4></div><div class="col-md-2"><h4 style="padding-left:18%;">' + patientAge + '</h4 style="padding-left:1%;"></div><div class="col-md-3"></div></div>' + '<div class="accordion-row-child" ><div class="box-body"><div style="margin-top:-14px;" class="col-md-12 form-group"><div class="col-md-3 form-group">Gender :<span><b id="patient-gender">' + patientGender + '</b></span></div><div class="col-md-3 form-group">Blood Pressure : <span><b id="patient-bp">' + patientBloodPressure + '</b></span></div><div class="col-md-3 form-group">Temperature :<span><b  id="patient-temperature">' + patientTemperature + '</b></span></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group">Symptoms : <span><b id="mypres-clinicalimpression">' + patientSymptoms + '</b></span></div><div class="col-md-3 form-group">Height : <span><b id="patient-height">' + patientHeight + '</b></span></div><div class="col-md-3 form-group">Weight : <span><b id="patient-weight">' + patientWeight + '</b></span></div></div><table id="current-prescriptions" class="table table-bordered table-striped"><thead><tr><th>BrandName</th><th>Per Serving</th><th>Days</th><th>Quantity</th><th>Remarks</th></tr></thead><tbody>';
         for (var dd in drugDosageArray) {
             var drug = drugDosageArray[dd];
             var brandName = "";
@@ -621,6 +623,7 @@
         $(id).pageMe({
             pagerSelector: '#myPager',
             childSelector: '.accordion-row',
+			accordionChildSelector: '.accordion-row-child',
             showPrevNext: true,
             hidePageNumbers: false,
             perPage: 5
