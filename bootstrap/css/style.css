@@ -500,8 +500,8 @@ button{
 .icon-semi-rounded-b{
 	margin:0 auto;
 	border:2px solid transparent;
-	border-radius: 0 20px;
-	padding: 32px 30px 26px 30px;
+	border-radius: 200px;
+	padding: 22px 20px 20px 30px;
 	min-width:80px;
 }
 .icon-round,.icon-md,.icon-square.icon-md,.icon-rounded.icon-md{
