@@ -707,7 +707,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 $scope.patientDataInNextDiv.name = addPatientResponse[0].firstName;
                 $scope.book.label = addPatientResponse[0].firstName;
                 $scope.book.patientId = addPatientResponse[0].id;
-                $scope.addPatientBtn=true;
+                $scope.addPatientBtn = true;
             }, function() {});
         } else {
             swal({

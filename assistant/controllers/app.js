@@ -24,28 +24,36 @@ angular.module('oitozero.ngSweetAlert', [])
     }]);
 
 angular.module('personalAssistant').config(function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/login');
+    $urlRouterProvider.otherwise('/');
 
     $stateProvider
         .state('login', {
-            url: '/login',
+            url: '/',
             templateUrl: 'views/login.html'
         })
         .state('home', {
-            url: '/home',
+            /*url: '/home',*/
             templateUrl: 'views/home.html'
         })
         .state('home.patientManagement', {
             url: '/patientManagement',
             templateUrl: 'views/patientManagement.html'
         })
-        .state('home.labReports', {
-            url: '/labReports',
-            templateUrl: 'views/labReports.html'
+        .state('home.inventory', {
+            url: '/inventory',
+            templateUrl: 'views/inventory.html'
         })
         .state('home.billManagement', {
             url: '/billManagement',
             templateUrl: 'views/billManagement.html'
+        })
+        .state('home.itemInfo', {
+            url: '/itemInfo',
+            templateUrl: 'views/itemInfo.html'
+        })
+        .state('home.admin', {
+            url: '/admin',
+            templateUrl: 'views/admin.html'
         })
         .state('home.analyticReports', {
             url: '/analyticReports',

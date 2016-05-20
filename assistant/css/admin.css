@@ -1,0 +1,60 @@
+.adminHeader {
+    margin-left: 0px;
+    margin-top: -10px;
+}
+
+#selectDoctor {
+    /*margin-left:20px;*/
+    margin-top: 3px;
+    border-radius: 4px;
+    height: 28px;
+    border-color: #367fa9;
+    width: 20%;
+}
+
+
+/*@media screen and (max-width:1400px){
+	.selectDoctorSection{
+		margin-left:100px;
+	}
+}*/
+
+.addProcedureBtn {
+    margin-top: 6px;
+    background-color: #3c8dbc;
+    color: white;
+}
+
+.addProcedureBtn:hover {
+    background-color: #367fa9;
+    color: white;
+}
+
+#exampleInputProcedureName,
+#exampleInputRemarks,
+#exampleInputCostAdmin {
+    width: 50%;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    border-color: #367fa9;
+}
+
+.tableInAdmin {
+    margin-top: 6px;
+}
+
+
+/*@media screen and (max-width:991px) {
+    .selectDoctorSection {
+        margin-left: 100px;
+    }
+}*/
+
+.selectDoctorSection {
+    margin-left: 50px;
+}
+
+
+/*.procedureInputForm {
+	    margin-left: 110px;
+	}*/

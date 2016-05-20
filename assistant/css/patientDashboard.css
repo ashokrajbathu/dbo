@@ -15,9 +15,27 @@
      color: white;
  }
  
+ [ng\:cloak],
+ [ng-cloak],
+ [data-ng-cloak],
+ [x-ng-cloak],
+ .ng-cloak,
+ .x-ng-cloak {
+     display: none !important;
+ }
+ 
+ .dosageForm {
+     margin-top: 8px;
+ }
+ 
+ .dosage {
+     margin-bottom: 8px;
+     margin-right: 5px;
+ }
+ 
  #immunizationDatepicker {
      height: 30px;
-     width: 160px;
+     /*width: 160px;*/
      border-radius: 4px;
      border: 1px solid #00bd9c;
      margin-left: 10px;
@@ -49,21 +67,49 @@
      height: 30px;
  }
  
+ .dropdown-toggle {
+     overflow: hidden;
+     /*padding-right: 24px;*/
+     text-align: left;
+     text-overflow: ellipsis;
+     width: 100%;
+ }
+ 
+ .familyFirstRow {
+     margin-left: 5px;
+ }
+ 
+ .familyRow {
+     margin-top: 10px;
+     margin-left: 10px;
+ }
+ 
  .heightWeightAddBtn:hover {
      color: white;
      background-color: #00bd9c;
  }
  
+ #remarks {
+     width: 97%;
+ }
+ 
  #exampleInputHeight,
  #exampleInputWeight {
      margin-right: 15px;
-     width: 45px;
+     width: 54px;
  }
  
  .immunityBtn,
  .addRelativeBtn {
+     /*width: 120px;*/
+     margin-bottom: 6px;
      background-color: white;
      border: 1px solid #00bd9c;
+ }
+ 
+ .addRelativeBtn,
+ #remarks {
+     height: 35px;
  }
  
  .relationDropdown {
@@ -72,22 +118,39 @@
  
  .relationBtn,
  .diseaseBtn {
+     margin-top: 8px;
      margin-left: 4px;
-     margin-right: 10px;
+     /* margin-right: 10px;*/
      background-color: white;
      border: 1px solid #00bd9c;
+ }
+ 
+ .diseaseBtn {
+     width: 96%;
+ }
+ 
+ .relationBtn {
+     width: 95%;
  }
  
  #remarks {
      border-radius: 4px;
      border: 1px solid #00bd9c;
      border-color: #00bd9c;
-     height: 30px;
-     margin-right: 5px;
-     width: 180px;
+     /*height: 30px;*/
+     margin-left: 12px;
+     margin-bottom: 5px;
+     /*width: 180px;*/
+ }
+ 
+ @media screen and (max-width:991px) {
+     #remarks {
+         width: 95%;
+     }
  }
  
  .addRelativeBtn {
+     /*margin-left: 10px;*/
      color: #00bd9c;
  }
  
@@ -180,7 +243,6 @@
      /*border: 1px solid #f5f5f5;*/
  }
  
- .patientDashBoardBody,
  .detailsHeading {
      margin-left: 25px;
  }
@@ -252,6 +314,23 @@
      margin-bottom: 8px;
  }
  
+ .immunizationBtn,
+ .modalVaccineBtn {
+     border-color: #00bd9c;
+     color: #00bd9c;
+     background-color: white;
+ }
+ 
+ .comments {
+     height: 30px;
+     margin-top: -15px;
+     margin-bottom: 5px;
+ }
+ 
+ .modalVaccineBtn {
+     margin-right: 5px;
+ }
+ 
  #exampleInputHeight,
  #exampleInputWeight,
  #heightWeightDatepicker {
@@ -260,22 +339,56 @@
  }
  
  #bloodPressureDatepicker,
- #exampleInputBloodPressure,
+ #exampleInputBloodPressureFirstPart,
  #exampleInputBloodPressureSecondPart {
      border-radius: 4px;
      border: 1px solid #00bd9c;
      height: 30px;
  }
  
- #exampleInputBloodPressure,
+ #diseaseSelect {
+     margin-bottom: 5px;
+     border-radius: 4px;
+     height: 30px;
+     border: 1px solid #00bd9c;
+     width: 100%;
+ }
+ 
+ #relationSelect {
+     border-radius: 4px;
+     height: 30px;
+     width: 100%;
+     border: 1px solid #00bd9c;
+ }
+ 
+ .vaccineNameInRow,
+ .vaccineRemarks {
+     vertical-align: middle;
+ }
+ 
+ .form-control[readonly] {
+     background-color: white;
+ }
+ 
+ #exampleInputBloodPressureFirstPart,
  #exampleInputBloodPressureSecondPart {
-     width: 40px;
+     width: 52px;
  }
  
  .heightWeightBtn:hover,
- .bloodPressureBtn:hover {
+ .bloodPressureBtn:hover,
+ .immunizationBtn:hover,
+ .modalVaccineBtn:hover {
      color: white;
      background-color: #00bd9c;
+ }
+ 
+ .immunizationInfo {
+     margin-left: 10px;
+ }
+ 
+ .vaccinationTable {
+     margin-left: 10px;
  }
  
  .patientDetailsTable>tbody>tr>td:first-child {

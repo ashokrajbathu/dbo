@@ -1,7 +1,30 @@
 <div ng-controller="billManagementCtrl">
     <div class="container-fluid">
         <div class="row">
-            <div class="billInfo col-md-9">
+            <div class="patientDetailsSearch col-md-3 col-md-push-9 col-xs-12 col-sm-12">
+                <div class="panel panel-default">
+                    <div class="heading panel-heading">
+                        <h4 class="headerInfo">Patient Search : </h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="patientSearchForm">
+                            <form class=" patientSearchForm form-horizontal">
+                                <div class="form-group">
+                                    <div class="col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+                                        <input type="text" placeholder="Mobile Number" class="patientSearchBtns billTxtBox input-sm form-control" id="exampleInputpatientSearchNumber">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+                                        <button id="patientSearchBtn" type="submit" class="patientSearchBtns billBtn form-control btn">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="billInfo col-md-9 col-md-pull-3 col-xs-12 col-sm-12">
                 <div class="panel panel-default">
                     <div class="heading panel-heading">
                         <h4 class="headerInfo">Patient Bill : </h4>
@@ -9,85 +32,193 @@
                     <div class="panel-body">
                         <div class="patientInfo">
                             <div class="patientDetailsRow row">
-                                <div class="col-md-3">
-                                    <label>First Name :</label>
+                                <div class="col-md-3 col-sm-12 col-xs-12">
+                                    <label>Name :</label>
                                     <span></span>
                                 </div>
-                                <div class="col-md-2">
-                                    <label>Last Name :</label>
-                                    <span></span>
-                                </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-sm-12 col-xs-12">
                                     <label>Phone :</label>
                                     <span></span>
                                 </div>
-                                <div class="col-md-1">
-                                    <label>Age :</label>
+                                <div class="col-md-2 col-sm-12 col-xs-12">
+                                    <label id="age">Age :</label>
                                     <span></span>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2 col-sm-12 col-xs-12">
                                     <label>Gaurdian :</label>
                                     <span></span>
                                 </div>
+                                <div class="col-md-3 col-sm-4 col-xs-4">
+                                    <select id="consultationForm" class="doctorSelectBox">
+                                        <option ng-repeat="doctor in doctorsListInBillManagement">{{doctor.firstName}} {{doctor.lastName}}
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
                             <hr class="horizontalLine">
-                            <div class="patientConsultation row">
-                                <div class="dropdown">
-                                    <button class="btn billTxtBox dropdown-toggle" type="button" data-toggle="dropdown">Consultation
-                                        <span class="caret"></span></button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="javascript:void">HTML</a></li>
-                                        <li><a href="javascript:void">CSS</a></li>
-                                        <li><a href="javascript:void">JavaScript</a></li>
-                                    </ul>
-                                </div>
-<<<<<<< HEAD
-                                <div>
-                                    <label for="exampleInputConsultationCost">Cost :</label>
-                                    <input type="text" class="billTxtBox form-control" id="exampleInputConsultationCost">
+                            <div style="margin-left:8px;" class="patientConsultation row">
+                                <div class="row">
+                                    <form class="form-inline" id="consultationForm">
+                                        <!-- <div class="form-group consultationFormItems">
+                                            <select class="doctorSelectBox">
+                                                <option ng-repeat="doctor in doctorsListInBillManagement">{{doctor.firstName}} {{doctor.lastName}}
+                                                </option>
+                                            </select>
+                                        </div> -->
+                                        <div class="form-group consultationFormItems">
+                                            <select class="billSelectBoxes">
+                                                <option>Consultation</option>
+                                                <option>Checkup</option>
+                                                <option>Dbotica</option>
+                                                <option>Banglore</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group consultationFormItems">
+                                            <input type="text" class="form-control billTxtBox" id="exampleInputCost" placeholder="Cost">
+                                        </div>
+                                        <div class="form-group consultationFormItems">
+                                            <input type="text" class="form-control billTxtBox" id="sessionDatepickerCost" placeholder="Due Date">
+                                        </div>
+                                        <div class="form-group consultationFormItems">
+                                            <select class="billSelectBoxes">
+                                                <option>Completed</option>
+                                                <option>In Future-Must</option>
+                                                <option>In Future-Tentative</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" style="width:100%;" id="consultationSubmitBtn" class="btn form-control billBtn">Add</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-=======
-                            </div>
-                            <hr>
->>>>>>> 1b11e47e8862fdb3ecc136c73190dd3c523b290f
                             <hr class="horizontalLine">
                             <div class="patientInfoSearchMedicine">
-                                <form class="form-inline">
-                                    <div class="col-md-6 form-group">
-                                        <label for="exampleInputMedicine">Medicine</label>
-                                        <input type="text" class="billTxtBox billTxtBoxMedicine form-control" id="exampleInputMedicine">
+                                <div class="row">
+                                    <div class="col-md-7 col-sm-8 col-xs-12">
+                                        <input type="text" placeholder="Medicine" class="billTxtBox billTxtBoxMedicine form-control input-large" id="exampleInputMedicine">
                                     </div>
-                                    <div class="col-md-4 form-group">
-                                        <label for="exampleInputmedicineAvalilability">Availability</label>
-                                        <input type="text" class="billTxtBox form-control" id="exampleInputmedicineAvailability">
+                                    <div class="col-md-3 col-sm-8 col-xs-12">
+                                        <input type="text" placeholder="Availability" class="billTxtBox form-control" id="exampleInputmedicineAvailability">
                                     </div>
-                                    <button type="submit" class="btn billBtn">+</button>
-                                </form>
+                                    <div class="col-md-2 col-sm-8 col-xs-12">
+                                        <button type="submit" style="width:100%;padding-left:2px;" id="medicineAvailabilityBtn" class="btn btn-block form-control billBtn">Add Medicine</button>
+                                    </div>
+                                </div>
                             </div>
                             <hr class="horizontalLine">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="patientDetailsSearch col-md-3">
-                <div class="panel panel-default">
-                    <div class="heading panel-heading">
-                        <h4 class="headerInfo">Patient Search : </h4>
-                    </div>
-                    <div class="panel-body">
-                        <div class="patientSearchForm">
-                            <form class="form-inline">
-                                <div class="form-group">
-                                    <label for="examplepatientSearchPhoneNumber">Phone:</label>
-                                    <input type="text" class="billTxtBox" class="form-control" id="exampleInputpatientSearchNumber">
+                            <div class="tests">
+                                <div class="row">
+                                    <div class="col-md-7 col-sm-8 col-xs-12">
+                                        <input type="text" placeholder="Tests" class="billTxtBox billTxtBoxMedicine form-control" id="exampleInputTests">
+                                    </div>
+                                    <div class="col-md-3 col-sm-8 col-xs-12">
+                                        <input type="text" placeholder="Cost" class="billTxtBox billTxtBoxMedicine form-control" id="exampleInputTestsCost">
+                                    </div>
+                                    <div class="col-md-2 col-sm-8 col-xs-12">
+                                        <button type="submit" style="width:100%;" id="TestsSubmitBtn" class="btn btn-block form-control billBtn">Add Test</button>
+                                    </div>
                                 </div>
-                                <button type="submit" class="billBtn btn">Search</button>
-                            </form>
+                            </div>
+                            <hr>
+                            <div class="invoiceNumberRow row">
+                                <div class="col-md-2 col-sm-12 col-xs-12 invoiceNumberRowItem">
+                                    <label>Invoice No. :</label>
+                                    <span></span>
+                                </div>
+                                <div class="col-md-2 col-sm-12 col-xs-12 invoiceNumberRowItem">
+                                    <label>Date :</label>
+                                    <span></span>
+                                </div>
+                                <div class="col-md-2 col-sm-12 col-xs-12 invoiceNumberRowItem">
+                                    <label>Due :</label>
+                                    <span></span>
+                                </div>
+                                <div class="col-md-2 col-sm-12 col-xs-12 invoiceNumberRowItem">
+                                    <button class="btn billManagementBtn" data-toggle="modal" data-target="#addPay">Add Pay</button>
+                                </div>
+                                <div class="col-md-2 col-sm-3 col-xs-3 invoiceNumberRowItem">
+                                    <button id="remainderBtn" class="btn billManagementBtn">Remainder</button>
+                                </div>
+                                <div class="col-md-2 col-sm-3 col-xs-3 invoiceNumberRowItem">
+                                    <button id="remainderBtn" class="btn billManagementBtn">Settle Invoice</button>
+                                </div>
+                            </div>
+                            <div id="addPay" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Payment Details</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form class="form-inline">
+                                                <div class="form-group">
+                                                    <label for="exampleDate">Date :</label>
+                                                    <input type="text" class="form-control" id="exampleDate" placeholder="Date">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleCost">Cost :</label>
+                                                    <input type="text" class="form-control" id="exampleCost" placeholder="Cost">
+                                                </div>
+                                                <button type="submit" class="btn billManagementBtn">Add Cost</button>
+                                            </form>
+                                            <table class="table costsTable table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S.No.</th>
+                                                        <th>Date</th>
+                                                        <th>Cost</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="invoiceRow row">
+                                <div class="col-md-2 col-sm-12 col-xs-12">
+                                    <label>Name :</label>
+                                    <span></span>
+                                </div>
+                                <div class="col-md-2 col-sm-12 col-xs-12">
+                                    <label>Doctor :</label>
+                                    <span></span>
+                                </div>
+                                <div class="col-md-2 col-sm-12 col-xs-12">
+                                    <label>Cost :</label>
+                                    <span></span>
+                                </div>
+                                <div class="col-md-1 col-sm-12 col-xs-12">
+                                    <label>Discount</label>
+                                    <input type="text" class="form-control" id="discountTxtBox">
+                                </div>
+                                <div class="col-md-1 col-sm-12 col-xs-12">
+                                    <label>VAT</label>
+                                    <input type="text" class="form-control" id="vatTxtBox">
+                                </div>
+                                <div class="col-md-1 col-sm-12 col-xs-12">
+                                    <label>Qty :</label>
+                                    <span></span>
+                                </div>
+                                <div class="col-md-1 col-sm-12 col-xs-12">
+                                    <label>Total :</label>
+                                    <span></span>
+                                </div>
+                                <div class="col-md-2 col-sm-12 col-xs-12">
+                                    <label>Paid/Unpaid :</label>
+                                    <span></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- part2 -->
         </div>
     </div>
 </div>

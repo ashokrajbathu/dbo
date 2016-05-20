@@ -9,7 +9,21 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', 'dboticaSe
         case 'billManagement':
             $state.go('home.billManagement');
             break;
+
+        case 'itemInfo':
+            $state.go('home.itemInfo');
+            break;
+
+        case 'inventory':
+            $state.go('home.inventory');
+            break;
+
+        case 'admin':
+            $state.go('home.admin');
+            break;
     }
+
+
 
     $scope.logout = function() {
         var promise = dboticaServices.logout();
@@ -21,9 +35,5 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', 'dboticaSe
         }, function(errorResponse) {
             console.log("in logout error response");
         });
-
-
     }
-
-
 }]);

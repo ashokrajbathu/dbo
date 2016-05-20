@@ -1,0 +1,225 @@
+<div ng-controller="inventoryCtrl" class="ng-cloak">
+    <div class="inventory" ng-cloak>
+        <div class="container-fluid">
+            <div class="inventoryHeader row">
+                <h3 class="inventoryHeaderHeading">Inventory</h3>
+                <form class="form-inline inventoryButtonsGrp clearfix">
+                    <button type="submit" data-toggle="modal" ng-click="addItem()" data-target="#addPatientModal" class="btn headerBtn inventoryBtn">Add Item</button>
+                    <!-- <button type="submit" class="btn headerBtn inventoryBtn">Button</button>
+                    <button type="submit" class="btn headerBtn inventoryBtn">Button</button> -->
+                </form>
+            </div>
+            <div id="addPatientModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Modal Header</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="inputOrganizationId" class="col-sm-3 control-label">Organization Id</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" ng-model="addItemObject.organizationId" id="inputOrganizationId " readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="inputItemType " class="col-sm-3 control-label ">Type</label>
+                                    <div class="col-sm-6 ">
+                                        <select class="form-control" ng-model="addItemObject.itemType">
+                                            <option>DRUG</option>
+                                            <option>SUPPLIES</option>
+                                            <option>EQUIPMENT</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="inputItemName " class="col-sm-3 control-label ">Item Name</label>
+                                    <div class="col-sm-6 ">
+                                        <input type="text " class="form-control " ng-model="addItemObject.itemName " id="inputItemName ">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="inputItemCode " class="col-sm-3 control-label ">Code</label>
+                                    <div class="col-sm-6 ">
+                                        <input type="text " class="form-control " ng-model="addItemObject.itemCode " id="inputItemCode ">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="inputItemManufacturer " class="col-sm-3 control-label ">Manufacturer</label>
+                                    <div class="col-sm-6 ">
+                                        <input type="text " class="form-control " ng-model="addItemObject.manufacturer " id="inputItemManufacturer ">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="inputItemRequiredStock " class="col-sm-3 control-label ">Required Stock</label>
+                                    <div class="col-sm-6 ">
+                                        <input type="text " class="form-control " ng-model="addItemObject.requiredStock" id="inputItemRequiredStock ">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="inputItemRetailPrice " class="col-sm-3 control-label ">Retail Price</label>
+                                    <div class="col-sm-6 ">
+                                        <input type="text " class="form-control " ng-model="addItemObject.retailPrice" id="inputItemRetailPrice ">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="inputItemTax " class="col-sm-3 control-label ">Tax</label>
+                                    <div class="col-sm-6 ">
+                                        <input type="text " class="form-control" ng-model="addItemObject.tax" id="inputItemTax ">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputItemType " class="col-sm-3 control-label"></label>
+                                    <div class="col-sm-6 ">
+                                        <button type="button" ng-click="addItemIntoStock()" class="btn inventoryBtn">Save Item</button>
+                                        <button type="button " data-dismiss="modal" class="btn inventoryBtn ">Cancel</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="inventorySearchRow row ">
+                <div class="col-md-3 col-sm-4 col-xs-12 ">
+                    <div class="input-group">
+                        <input type="text" id="itemInputTextBox" ng-model="itemSearch.itemName" placeholder="Item Name" class="form-control itemSearchBox">
+                        <span class="input-group-btn">
+                            <button ng-click="itemSearchFromDB()" class="btn glyphicon itemSearchGlyphicon glyphicon-search"></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-offset-1 col-md-4 ">
+                    <form class="form-inline ">
+                        <div class=" stockLevelForm form-group ">
+                            <label id="stockLevelLabel " for="exampleStockLevel ">Stock Level</label>
+                            <button type="submit " class="btn inventoryBtn ">All</button>
+                            <button type="submit " class="btn inventoryBtn ">Low</button>
+                            <button type="submit " class="btn inventoryBtn ">Expired</button>
+                        </div>
+                    </form>
+                </div>
+                <form class="form-inline ">
+                    <div class=" stockLevelForm form-group ">
+                        <label id="stockLevelTypeLabel " for="exampleStockLevel ">Type</label>
+                        <!--inventoryBtn  -->
+                        <button type="submit " class="btn inventoryBtn ">All</button>
+                        <button type="submit " class="btn inventoryBtn ">Drugs</button>
+                        <button type="submit " class="btn inventoryBtn ">Equipments</button>
+                        <button type="submit " class="btn inventoryBtn ">Others</button>
+                    </div>
+                </form>
+            </div>
+            <div class="countDetailsAndPrevNext">
+                <div class="row">
+                    <div class=" col-md-2">
+                        <button ng-if="viewAllItemsBtn" ng-click="viewAllItems()" class="btn viewAllItemsBtn">View All Items</button>
+                    </div>
+                    <div ng-if="prevNextBtnsRow" class="col-md-offset-6 col-md-4">
+                        <label>{{startDisplay}}-{{endDisplay}}</label>&nbsp; of &nbsp;
+                        <label>{{totalDrugsCount}}</label>&nbsp;&nbsp;<span>drugs</span>
+                        <span ng-if="prevBtnDisabled"><button class="btn prevNextBtns prevBtnDisabled">Prev</button></span>
+                        <span ng-if="prevBtnEnabled"><button ng-click="prevBtnEnabledFunction()" class="btn prevNextBtns prevBtnEnabled">Prev</button></span>
+                        <span ng-if="nextBtnDisabled"><button class="btn prevNextBtns nextBtnDisabled">Next</button></span>
+                        <span ng-if="nextBtnEnabled"><button ng-click="nextBtnEnabledFunction()" class="btn prevNextBtns nextBtnEnabled">Next</button></span>
+                    </div>
+                </div>
+            </div>
+            <p ng-if="warning" id="warning">No results are found for the search item</p>
+            <table class="table table-bordered itemsList">
+                <thead class="itemListHeader">
+                    <tr class="itemsListHeaderRow">
+                        <th>ITEM NAME</th>
+                        <th>CODE</th>
+                        <th>TYPE</th>
+                        <th>REQUIRED LEVEL</th>
+                        <th>TOTAL STOCK</th>
+                        <th>AVAILABLE STOCK</th>
+                        <th>EXPIRED STOCK</th>
+                        <th>STOCKING UNIT</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody id="itemsBody">
+                    <tr ng-repeat="item in itemsDisplayArray">
+                        <td>{{item.itemName | uppercase}}</td>
+                        <td>{{item.itemCode}}</td>
+                        <td>{{item.itemType}}</td>
+                        <td class="requiredLevel">{{item.requiredStock}}</td>
+                        <td>{{item.availableStock+item.expiredStock+item.consumedStock}}</td>
+                        <td>{{item.availableStock}}</td>
+                        <td>{{item.expiredStock}}</td>
+                        <td></td>
+                        <td>
+                            <button ng-click="viewInfo(item)" class="glyphicon glyphicon-info-sign"></button>
+                            <button class="glyphicon glyphicon-plus-sign" ng-click="additionOfBatch(item)" data-toggle="modal" data-target="#addNewBatch"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="addNewBatch" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h3 class="modal-title">Add New Batch</h3>
+                        </div>
+                        <div class="modal-body">
+                            <p ng-if="warningMessage" id="warningMessage">Please enter the (*) marked Fields</p>
+                            <form class="form-horizontal" name="addBatchForm">
+                                <div class="form-group ">
+                                    <label for="addBatchOrganizationId" class="col-sm-3 control-label">Organization Id</label>
+                                    <div class="col-sm-6 ">
+                                        <input type="text " class="form-control " ng-model="addBatch.organizationId" id="addBatchOrganizationId" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="inputItemNameAddBatch" class="col-sm-3 control-label ">Item Name</label>
+                                    <div class="col-sm-6 ">
+                                        <input type="text " class="form-control " ng-model="addBatch.itemName" id="inputItemNameAddBatch">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="addBatchNumber" class="col-sm-3 control-label ">Batch No.</label>
+                                    <div class="col-sm-6 ">
+                                        <input type="text " class="form-control " ng-model="addBatch.batchNumber" id="addBatchNumber">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="addBatchCostPrice" class="col-sm-3 control-label ">Cost Price</label>
+                                    <div class="col-sm-6 ">
+                                        <input type="text " class="form-control" ng-model="addBatch.costPrice" id="addBatchCostPrice">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="addBatchUnits" class="col-sm-3 control-label ">Units(*)</label>
+                                    <div class="col-sm-6 ">
+                                        <input type="text " name="units" class="form-control" ng-model="addBatch.units" id="addBatchUnits">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="addBatchExpiryTime" class="col-sm-3 control-label ">Expiry Date(*)</label>
+                                    <div class="col-sm-6">
+                                        <input type="text " class="form-control " name="expiryDate" ng-model="addBatch.expiryDate" id="addBatchExpiryTime" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputAddBatch" class="col-sm-3 control-label"></label>
+                                    <div class="col-sm-6">
+                                        <button type="button submit" ng-click="addBatchForSelectedItem()" class="btn inventoryBtn">Add Batch</button>
+                                        <button type="button" data-dismiss="modal" class="btn inventoryBtn">Cancel</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

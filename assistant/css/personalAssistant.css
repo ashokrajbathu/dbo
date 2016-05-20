@@ -16,6 +16,39 @@
     margin-top: 51px;
 }
 
+[ng\:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+    display: none !important;
+}
+
+.itemListHeader {
+    border-radius: 4px;
+    background-color: #3c8dbc;
+}
+
+.itemListHeader>tr>th {
+    color: white;
+}
+
+.itemsListHeaderRow >th {
+    border: 1px solid #3c8dbc;
+}
+
+.itemsList {
+    border: 2px solid #696969;
+    margin-left: -15px;
+}
+
+#itemsBody>tr>td,
+.itemsList>thead>tr>th {
+    border: 1px solid #3c8dbc;
+    text-align: center;
+}
+
 .skin-blue .sidebar a {
     color: white;
 }
@@ -232,6 +265,10 @@ li.ui-timepicker-disabled {
     background-color: #00bd9c;
 }
 
+.buttonsRow {
+    margin-right: 60px;
+}
+
 .btn.cancelBookingsBtn {
     border: 1px solid #00bd9c;
     background-color: white;
@@ -239,6 +276,21 @@ li.ui-timepicker-disabled {
     margin-bottom: 10px;
     margin-top: 15px;
 }
+
+
+/*@media screen and (min-width:992px) {
+    .patientManagement {
+        position: fixed;
+    }
+}*/
+
+
+/*@media screen and (min-width:992px) {
+    .main-sidebar {
+        
+        margin-top: -21px;
+    }
+}*/
 
 .btn.patientSearchBtn {
     border: 1px solid #00bd9c;
@@ -556,6 +608,10 @@ a {
 .tabActive {
     font-size: 18px;
     color: white;
+}
+
+.patientDetails {
+    margin-bottom: 5px;
 }
 
 .patientsTable {
