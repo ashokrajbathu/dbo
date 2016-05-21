@@ -128,12 +128,13 @@
             <ol id="report-tests">
             </ol>
             <div><b id="refer-to-label">Refer To : </b><span id="refer-to-report">Dr.</span></div>
+            <b id="patient-comments">Remarks:</b><span id="patient-remarks"></span><br>
             <b id="revisit-label">Revisit On : </b><span id="revisit-date-report"></span>
             <div>
                 <h4 class="pull-right" id="signature">(Doctor Signature)</h4>
             </div>
             <div class="pull-right">
-                <span  id="pr-bar-code" ></span></div>
+                <span id="pr-bar-code"></span></div>
             <!-- <table id="report-tests" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -169,15 +170,12 @@
     <!-- DataTables -->
     <script src="plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
-
     <script src="dist/js/app.min.js"></script>
-	<script src="js/jquery.qrcode.min.js"></script>
-
+    <script src="js/jquery.qrcode.min.js"></script>
     <script src="dist/js/demo.js"></script>
-
     <script type="text/javascript">
-	function getTodayString(){
-		var date = new Date();
+    function getTodayString() {
+        var date = new Date();
 
         var day = date.getDate();
         var month = date.getMonth() + 1;
@@ -218,13 +216,20 @@
 
         /*$('#date').text(DateOfVisit);*/
         $('#date').text(today);
-		
-		console.log("report print prescrition ", prescription);
-		
-		if (!!temperature && temperature.length != 0) {
+
+        console.log("report print prescrition ", prescription);
+
+        if (!!temperature && temperature.length != 0) {
             console.log("temperature is---" + temperature);
             $('#patient-temperature').text(temperature);
         }
+
+        if (!!remarks && remarks.length != 0) {
+            console.log("remarks is---" + remarks);
+            $('#patient-remarks').text(remarks);
+        }
+
+
 
         if (!!referToDoctor && referToDoctor.length != 0) {
             console.log("refer to doctor name---" + referToDoctor);
@@ -272,9 +277,9 @@
         if (!!investigation && investigation.length != 0) {
             $('#patient-investigation').append(investigation);
         }
-		
-		
-		
+
+
+
 
         var drugPojoList1 = $.cookie('drugPojoList');
         var drugData = [];
@@ -342,12 +347,12 @@
             }
         }
 
- 
-        
-        
-        
 
-        
+
+
+
+
+
 
 
         var docname = localStorage.getItem('firstName');
@@ -359,7 +364,7 @@
         var docPhn = localStorage.getItem('doctorPublicPhoneNumber');
         var docRegistrationNo = localStorage.getItem('doctorRegistrationNo');
         var phoneNumber = localStorage.getItem('doctorPublicPhoneNumber');
-        var city=localStorage.getItem('doctorHospitalLocation');
+        var city = localStorage.getItem('doctorHospitalLocation');
         console.log("doc specialization is----" + docSpe);
 
         $('#pr-doctor-name').text(docname);
@@ -392,26 +397,26 @@
 
         populateBarCode();
         // $('#report-prescriptions').DataTable();
-		
-	}
-	
+
+    }
+
     $(document).ready(function() {
-		try {
+        try {
             openDb();
         } catch (e) {
             console.log("error opeining indexeddb", e);
         }
-	
-		var prescriptionCookie = $.cookie('currentPrescription');
+
+        var prescriptionCookie = $.cookie('currentPrescription');
         var prescription = {};
         if (!!prescriptionCookie) {
 
             prescription = JSON.parse(prescriptionCookie);
 
         }
-		var prescriptionString = JSON.stringify(prescription);
-		
-		$.ajax({
+        var prescriptionString = JSON.stringify(prescription);
+
+        $.ajax({
             type: "POST",
             url: "http://localhost:8081/dbotica-spring/prescription/updatePrescription",
             beforeSend: function(xhr) {
@@ -428,12 +433,12 @@
                     switch (errorCode) {
                         case "NO_USER_LOGGED_IN":
                             localStorage.setItem("isLoggedIn", false);
-							window.location.replace("login.html");
+                            window.location.replace("login.html");
                             break;
                     }
-                }                
-                
-				var prescription = $.parseJSON(response.response);
+                }
+
+                var prescription = $.parseJSON(response.response);
                 //Adding prescriptioninfo to indexedDB
 
                 try {
@@ -443,13 +448,13 @@
                 }
                 $.cookie('currentPrescription', response.response);
                 console.log(prescription);
-                console.log("currentPrescrition ",$.cookie('currentPrescription'));
-                
-				
+                console.log("currentPrescrition ", $.cookie('currentPrescription'));
+
+
             }
         });
-		printPrescription();
-        
+        printPrescription();
+
 
     });
     </script>

@@ -22,6 +22,9 @@
     <!--Datepicker srcs -->
     <link rel="stylesheet" href="css/datepicker.css" type="text/css" />
     <script src="plugins/jQuery/jquery-1.9.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/jquery.jscrollpane.css">
+    <script type="text/javascript" src="bootstrap/js/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="bootstrap/js/jquery.jscrollpane.min.js"></script>
     <script type="text/javascript">
     $.holdReady(true);
     if (localStorage.getItem('isLoggedIn') === 'true') {
@@ -1382,10 +1385,10 @@
 
 
     });
-	
-	var loadPatientReport = function(){
-		window.location.href = 'patientReport.html';		
-	}
+
+    var loadPatientReport = function() {
+        window.location.href = 'patientReport.html';
+    }
 
     $('#prescription-save-cont').click(function(e) {
 
@@ -1618,7 +1621,7 @@
                 });
 
                 var prescription = $.parseJSON(response.response);
-				$.cookie('currentPrescription', response.response);
+                $.cookie('currentPrescription', response.response);
 
                 //Adding prescriptioninfo to indexedDB
 
@@ -1627,10 +1630,10 @@
                 } catch (e) {
 
                 }
-                
+
                 //console.log(prescription);
                 //console.log("currentPrescrition ", $.cookie('currentPrescription'));
-                
+
             }
         });
 
@@ -1743,6 +1746,8 @@
             console.log("in check");
             window.location.href = "login.html";
         }*/
+        $('#prescription-form-patient-name').val("");
+        $('#prescription-form-drug-allergy').val("");
         var doctorIdActive = $.cookie('doctorCurrentlyLoggedInId');
         var patientsListOfThatDoctorParsed = [];
         $('.patientsListToBeDisplayed').remove();
@@ -1764,6 +1769,30 @@
             async: false,
             success: function(response) {
                 console.log("patients list of doctor in entry prescription----", response);
+                var errorCode = response.errorCode;
+                console.log("error code is----" + errorCode);
+                if (!!errorCode) {
+                    switch (errorCode) {
+                        case "NO_USER_LOGGED_IN":
+                            localStorage.setItem("isLoggedIn", false);
+                            swal({
+                                    title: "Error",
+                                    text: "You are not logged into your account. Kindly login again to view this page",
+                                    type: "error",
+                                    confirmButtonText: "OK",
+                                    allowOutsideClick: true
+                                },
+                                function() {
+                                    localStorage.clear();
+                                    removeCookies();
+                                    localStorage.setItem("isLoggedIn", false);
+                                    window.location.href = "login.html";
+                                }
+                            );
+                            break;
+                    }
+                }
+
                 patientsListOfThatDoctorParsed = JSON.parse(response.response);
                 console.log("list of patients in entry prescription---", patientsListOfThatDoctorParsed);
             }
@@ -2044,8 +2073,15 @@
         updatePatientFields();
 
         var phoneNumberSearch = getQueryStringValue("phoneNumber");
+        var patientIdOfThePatient = getQueryStringValue("patientId");
         console.log("phone number while searching----" + phoneNumberSearch);
+        console.log("patient id while searching is----" + patientIdOfThePatient);
+        if (patientIdOfThePatient !== "") {
+            console.log("in query if----");
+            phoneNumberSearch = patientIdOfThePatient;
+        }
         if (phoneNumberSearch !== "") {
+            console.log("in second if----");
             $('#patientSearchAside').hide();
             $('#patient-search-result').text('');
 
@@ -2139,7 +2175,12 @@
                     removeCookies();
                     localStorage.setItem("isLoggedIn", false);
                     window.location.href = "login.html";
-                    
+                },
+                error: function() {
+                    localStorage.clear();
+                    removeCookies();
+                    localStorage.setItem("isLoggedIn", false);
+                    window.location.href = "login.html";
                 }
             });
         });
@@ -2282,7 +2323,7 @@
                                     },
                                     function() {
                                         localStorage.setItem("isLoggedIn", false);
-										console.log("Redirecting to login page");
+                                        console.log("Redirecting to login page");
                                         window.location.href = "login.html";
                                     }
                                 );

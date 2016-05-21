@@ -29,7 +29,38 @@ td {
     color: white;
 }
 
+#current-prescriptions,
+.testsHead {
+    border-left: 2px solid #3c8dbc;
+    border-right: 2px solid #3c8dbc;
+    border-bottom: 2px solid #3c8dbc;
+    border-top: 2px solid #3c8dbc;
+    background-color: #3c8dbc;
+}
 
+.testsHead>tr:hover {
+    background-color: #3c8dbc;
+}
+
+.testsHead>tr>th {
+    color: white;
+}
+
+.drugsHead>tr:hover {
+    background-color: #3c8dbc;
+}
+
+#current-prescriptions>thead>tr>th {
+    color: white;
+}
+
+.testsTable>tbody>tr>td {
+    border: 2px solid #3c8dbc;
+}
+
+#current-prescriptions>tbody>tr>td {
+    border: 2px solid #3c8dbc;
+}
 
 .accordionHeader>thead>tr:hover {
     border-radius: 5px;
@@ -39,7 +70,7 @@ td {
 }
 
 .accordionHeader>thead>tr>th {
-    font-family: 'Source Sans Pro',sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 18px;
     height: 40px;
 }

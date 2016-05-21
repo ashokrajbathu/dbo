@@ -428,6 +428,13 @@
         var patientSymptoms = "";
         var patientHeight = "";
         var patientWeight = "";
+        var patientBmi = "";
+        var patientPulse = "";
+        var patientRevisitDate = "";
+        var patientSaturation = "";
+        var patientReferTo = "";
+        var patientInvestigation = "";
+        var patientRemarks = "";
         var prescriptionObject = {};
         var drugDosageArray = [];
         console.log("prescription Data is-----", prescriptionData);
@@ -442,10 +449,45 @@
                 console.log("in bp---" + prescriptionObject['bloodPressure']);
                 patientBloodPressure = prescriptionObject['bloodPressure'];
             }
+            if (!prescriptionObject.hasOwnProperty('investigation')) {
+                patientInvestigation = emptySpace;
+            } else {
+                patientInvestigation = prescriptionObject['investigation'];
+            }
+            if (!prescriptionObject.hasOwnProperty('remarks')) {
+                patientRemarks = emptySpace;
+            } else {
+                patientRemarks = prescriptionObject['remarks'];
+            }
             if (!prescriptionObject.hasOwnProperty('temperature')) {
                 patientTemperature = emptySpace;
             } else {
                 patientTemperature = prescriptionObject['temperature'];
+            }
+            if (!prescriptionObject.hasOwnProperty('revisitDate')) {
+                patientRevisitDate = emptySpace;
+            } else {
+                patientRevisitDate = prescriptionObject['revisitDate'];
+            }
+            if (!prescriptionObject.hasOwnProperty('saturation')) {
+                patientSaturation = emptySpace;
+            } else {
+                patientSaturation = prescriptionObject['saturation'];
+            }
+            if (!prescriptionObject.hasOwnProperty('references')) {
+                patientReferTo = emptySpace;
+            } else {
+                patientReferTo = prescriptionObject['references'];
+            }
+            if (!prescriptionObject.hasOwnProperty('pulse')) {
+                patientPulse = emptySpace;
+            } else {
+                patientPulse = prescriptionObject['pulse'];
+            }
+            if (!prescriptionObject.hasOwnProperty('bmi')) {
+                patientBmi = emptySpace;
+            } else {
+                patientBmi = prescriptionObject['bmi'];
             }
             if (!prescriptionObject.hasOwnProperty('symptoms')) {
                 patientSymptoms = emptySpace;
@@ -470,13 +512,20 @@
 
         } else {
             console.log("in not ====");
+            patientRemarks = emptySpace;
+            patientInvestigation = emptySpace;
+            patientRevisitDate = emptySpace;
+            patientSaturation = emptySpace;
+            patientReferTo = emptySpace;
+            patientPulse = emptySpace;
+            patientBmi = emptySpace;
             patientBloodPressure = emptySpace;
             patientTemperature = emptySpace;
             patientSymptoms = emptySpace;
             patientHeight = emptySpace;
             patientWeight = emptySpace;
         }
-        var content1 = '<div class="accordion-row row"><div class="col-md-2"><h4>' + patientName + '</h4></div><div class="col-md-offset-2 col-md-3"><h4>' + dateStr + '</h4></div><div class="col-md-2"><h4 style="padding-left:18%;">' + patientAge + '</h4 style="padding-left:1%;"></div><div class="col-md-3"></div></div>' + '<div class="accordion-row-child" ><div class="box-body"><div style="margin-top:-14px;" class="col-md-12 form-group"><div class="col-md-3 form-group">Gender :<span><b id="patient-gender">' + patientGender + '</b></span></div><div class="col-md-3 form-group">Blood Pressure : <span><b id="patient-bp">' + patientBloodPressure + '</b></span></div><div class="col-md-3 form-group">Temperature :<span><b  id="patient-temperature">' + patientTemperature + '</b></span></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group">Symptoms : <span><b id="mypres-clinicalimpression">' + patientSymptoms + '</b></span></div><div class="col-md-3 form-group">Height : <span><b id="patient-height">' + patientHeight + '</b></span></div><div class="col-md-3 form-group">Weight : <span><b id="patient-weight">' + patientWeight + '</b></span></div></div><table id="current-prescriptions" class="table table-bordered table-striped"><thead><tr><th>BrandName</th><th>Per Serving</th><th>Days</th><th>Quantity</th><th>Remarks</th></tr></thead><tbody>';
+        var content1 = '<div class="accordion-row row"><div class="col-md-2"><h4>' + patientName + '</h4></div><div class="col-md-offset-2 col-md-3"><h4>' + dateStr + '</h4></div><div class="col-md-2"><h4 style="padding-left:18%;">' + patientAge + '</h4 style="padding-left:1%;"></div><div class="col-md-3"></div></div>' + '<div class="accordion-row-child" ><div class="box-body"><div style="margin-top:-14px;" class="col-md-12 form-group"><div class="col-md-3 form-group">Gender :<span><b id="patient-gender">' + patientGender + '</b></span></div><div class="col-md-3 form-group">Blood Pressure : <span><b id="patient-bp">' + patientBloodPressure + '</b></span></div><div class="col-md-3 form-group">Temperature :<span><b  id="patient-temperature">' + patientTemperature + '</b></span></div><div class="col-md-3 form-group">BMI:<span><b id="patient-bmi">' + patientBmi + '</b></span></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group">Symptoms : <span><b id="mypres-clinicalimpression">' + patientSymptoms + '</b></span></div><div class="col-md-3 form-group">Height : <span><b id="patient-height">' + patientHeight + '</b></span></div><div class="col-md-3 form-group">Weight : <span><b id="patient-weight">' + patientWeight + '</b></span></div><div class="col-md-3 form-group">Pulse:<span><b id="patient-pulse">' + patientPulse + '</b></span></div></div><div class="col-md-12 form-group"><div class="col-md-3 form-group">Saturation:<span><b id="patient-saturation">' + patientSaturation + '</b></span></div><div class="col-md-3 form-group">Revisit On:<span><b id="patient-revisitOn">' + patientRevisitDate + '</b></span></div><div class="col-md-3 form-group">Refer To:<span><b id="patient-referTo">' + patientReferTo + '</b></span></div></div><div class="col-md-12 form-group"><div class="col-md-6 form-group">Investigation Report:<span><b id="patient-investigationReport">' + patientInvestigation + '</b></span></div><div class="col-md-6 form-group">Comments:<span><b id="patient-comments">' + patientRemarks + '</b></span></div></div><table id="current-prescriptions" class="table table-bordered table-striped"><thead class="drugsHead"><tr><th>BrandName</th><th>Per Serving</th><th>Days</th><th>Quantity</th><th>Remarks</th></tr></thead><tbody>';
         for (var dd in drugDosageArray) {
             var drug = drugDosageArray[dd];
             var brandName = "";
@@ -529,10 +578,10 @@
         if (!!testData && testData.length > 0) {
             var newCount1 = 1;
             /*console.log("test new count1 is----"+newCount1);*/
-            content1+='<div id="test-details-myPrescription">';
+            content1 += '<div id="test-details-myPrescription">';
             content1 += '<h4>Test Details</h4>';
-            content1+='<table class="table table-bordered table-striped"><thead><tr><th>S.No.</th><th>Test Name</th><th>Remarks</th></tr></thead><tbody>';
-           /* content1 += '<table id="test-details-myPrescription" class="table table-bordered table-striped"><thead><tr><th>S.No</th><th>Test Name</th><th>Remarks</th></tr></thead><tbody>';*/
+            content1 += '<table class="table table-bordered table-striped testsTable"><thead class="testsHead"><tr><th>S.No.</th><th>Test Name</th><th>Remarks</th></tr></thead><tbody class="testsBody">';
+            /* content1 += '<table id="test-details-myPrescription" class="table table-bordered table-striped"><thead><tr><th>S.No</th><th>Test Name</th><th>Remarks</th></tr></thead><tbody>';*/
             for (k in testData) {
                 console.log("in for loop test data----");
                 /*console.log("new count 1----" + newCount1);*/

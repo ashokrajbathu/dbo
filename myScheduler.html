@@ -290,7 +290,7 @@
                 removeCookies();
                 localStorage.setItem('isLoggedIn', false);
                 window.location.replace("login.html");
-                
+
             }
         });
     });
@@ -408,12 +408,16 @@
                 //}
             },
             eventClick: function(calEvent, jsEvent, view) {
-
-                alert('Redirecting to entryPrescriptions');
+                console.log("cal event is----", calEvent);
                 console.log(calEvent.patientId);
                 $.cookie('patientId_Event', calEvent.patientId);
+                var url = "entryPrescriptions.html";
+                if (!!calEvent.patientId) {
+                    url += "?patientId=" + calEvent.patientId;
+                }
+                window.open(url, '_self');
 
-                window.location.href = "entryPrescriptions.html";
+                /* window.location.href = "entryPrescriptions.html";*/
 
             },
 
@@ -881,7 +885,10 @@
     function calcLocalTime(time) {
         return time - 19800000;
     }
-    
+
+    function getQueryStringValue(key) {
+        return unescape(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + escape(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
+    }
     </script>
 </body>
 

@@ -31,92 +31,106 @@
                 <label style="margin-left:-20px;">Patients:</label>
             </div>
         </div> -->
-        <div class="patientsListOfNumber">
-        </div>
-        <div class="myForm">
-            <ul style="list-style-type:none;" id="familypatientsListOfNumber" class="familypatientsListOfNumber"></ul>
-        </div>
-        <br>
-        <div class="row">
-            <p class="patient-details-message">Please Enter Family Member Details</p>
-            <p id="login-box-msg" class="login-box-msg">Update Patient details</p>
-        </div>
-        <form id="patient-register" method="post">
-            <div class="form-group has-feedback">
-                <input type="text" class="form-control" id="patient-reg-name" placeholder="Full name">
-                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <div id="registerPatientInEntry">
+            <div class="patientsListOfNumber">
             </div>
-            <div class="form-group has-feedback">
-                <input type="email" class="form-control" id="patient-reg-email" placeholder="Email">
-                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-            </div>
-            <div class="form-group has-feedback">
-                <input type="text" class="form-control" id="patient-reg-phone" placeholder="Mobile Number">
-                <span class="glyphicon glyphicon-phone form-control-feedback"></span>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                      <input type="radio" value="MALE" id="genderMale" name="gender"/>
-                    </span>
-                        <input type="text" class="form-control" placeholder="Male" disabled="true">
-                        <span class="input-group-addon">
-                      <input type="radio" value="FEMALE" id="genderFemale" name="gender"/>
-                    </span>
-                        <input type="text" style="" class="form-control" placeholder="Female" disabled="true">
-                    </div>
-                </div>
-                <!-- /input-group -->
+            <div class="myForm">
+                <ul style="list-style-type:none;" id="familypatientsListOfNumber" class="familypatientsListOfNumber"></ul>
             </div>
             <br>
             <div class="row">
-                <div class="col-xs-6">
-                    <input type="text" class="form-control" placeholder="Age" id="patient-reg-age">
-                </div>
-                <div class="col-xs-2"></div>
-                <div class="col-xs-6">
-                    <select type="text" class="form-control" placeholder="Female" id="patient-reg-bloodgrp">
-                        <option value="O_POSITIVE">O+</option>
-                        <option value="O_NEGATIVE">O-</option>
-                        <option value="A_POSITIVE">A+</option>
-                        <option value="A_NEGATIVE">A-</option>
-                        <option value="B_POSITIVE">B+</option>
-                        <option value="B_NEGATIVE">B-</option>
-                        <option value="AB_POSITIVE">AB+</option>
-                        <option value="AB_NEGATIVE">AB-</option>
-                        <option value="OTHER">OTHER</option>
-                    </select>
-                </div>
+                <p class="patient-details-message">Please Enter Family Member Details</p>
+                <p id="login-box-msg" class="login-box-msg">Update Patient details</p>
             </div>
-            </br>
-            <div class="form-group has-feedback">
-                <input type="text" class="form-control" id="patient-reg-allergy-disp" disabled="true" placeholder="Allergies">
-            </div>
-            <div class="row">
-                <div class="col-xs-7">
-                    <input type="text" class="form-control" id="patient-reg-allergy" placeholder="Allergic to" />
+            <form id="patient-register" method="post">
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control" id="patient-reg-name" placeholder="Full name">
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
                 </div>
-                <div class="col-xs-4">
-                    <div type="submit" id="patient-register-alr-btn" class="btn btn-primary btn-block btn-flat" style="margin-bottom:60%">Add</div>
+                <div class="form-group has-feedback">
+                    <input type="email" class="form-control" id="patient-reg-email" placeholder="Email">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 </div>
-            </div>
-            <!-- <div class="row">
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control" id="patient-reg-phone" placeholder="Mobile Number">
+                    <span class="glyphicon glyphicon-phone form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="input-group radioBtnGrp">
+                            <span class="input-group-addon">
+                      <input type="radio" value="MALE" id="genderMale" name="gender"/>
+                    </span>
+                            <input type="text" class="form-control" placeholder="Male" disabled="true">
+                            <span class="input-group-addon">
+                      <input type="radio" value="FEMALE" id="genderFemale" name="gender"/>
+                    </span>
+                            <input type="text" style="" class="form-control" placeholder="Female" disabled="true">
+                        </div>
+                    </div>
+                    <!-- /input-group -->
+                </div>
+                <br>
+                <div class="row ageGenderRow">
+                    <div class="col-xs-6">
+                        <input type="text" class="form-control" placeholder="Age" id="patient-reg-age">
+                    </div>
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-6">
+                        <select type="text" class="form-control" placeholder="Female" id="patient-reg-bloodgrp">
+                            <option value="O_POSITIVE">O+</option>
+                            <option value="O_NEGATIVE">O-</option>
+                            <option value="A_POSITIVE">A+</option>
+                            <option value="A_NEGATIVE">A-</option>
+                            <option value="B_POSITIVE">B+</option>
+                            <option value="B_NEGATIVE">B-</option>
+                            <option value="AB_POSITIVE">AB+</option>
+                            <option value="AB_NEGATIVE">AB-</option>
+                            <option value="OTHER">OTHER</option>
+                        </select>
+                    </div>
+                </div>
+                </br>
+                <div class="form-group has-feedback allergyTxtBox">
+                    <input type="text" class="form-control" id="patient-reg-allergy-disp" disabled="true" placeholder="Allergies">
+                </div>
+                <div class="row allergyTxtBtn">
+                    <div class="col-xs-7">
+                        <input type="text" class="form-control" id="patient-reg-allergy" placeholder="Allergic to" />
+                    </div>
+                    <div class="col-xs-4">
+                        <div type="submit" id="patient-register-alr-btn" class="btn btn-primary btn-block btn-flat" style="margin-bottom:60%">Add</div>
+                    </div>
+                </div>
+                <!-- <div class="row">
         <div class="col-xs-4">
         </div>
         <div class="col-xs-4">
             <div type="submit" id="patient-register-btn" class="btn btn-primary btn-block btn-flat" style="margin-top:-25px;">Update</div>
         </div>
     </div> -->
-            <div type="submit" id="patient-register-btn" style="margin-top:-5px;margin-bottom:5px;" class="btn btn-primary btn-block btn-flat">Update</div>
-            <div type="submit" id="patient-addFamily-btn" class="btn btn-primary btn-block btn-flat">Add Family Members</div>
-        </form>
+                <div type="submit" id="patient-register-btn" style="margin-top:-5px;margin-bottom:5px;" class="btn btn-primary btn-block btn-flat">Update</div>
+                <div type="submit" id="patient-addFamily-btn" class="btn btn-primary btn-block btn-flat">Add Family Members</div>
+            </form>
+        </div>
     </div>
     </div>
     <!-- /.form-box -->
 </body>
 <script type="text/javascript">
 $(document).ready(function() {
+    /*$('#registerPatientInEntry').jScrollPane({
+        horizontalGutter:5,
+        verticalGutters: 5,
+        'showArrows': false
+    });
+    $('.jspDrag').hide();
+    $('.jspScrollable').mouseenter(function() {
+        $(this).find('.jspDrag').stop(true, true).fadeIn('slow');
+    });
+    $('.jspScrollable').mouseleave(function() {
+        $(this).find('.jspDrag').stop(true, true).fadeOut('slow');
+    });*/
     onLoadTasks();
 });
 var cookieLength;
@@ -153,7 +167,7 @@ function onLoadTasks() {
                 $('.patientsListOfNumber').append('<div class="row"><div class="col-md-6"><label style="margin-left:-20px;">Patients:</label></div></div>');
                 for (var count = 0; count < patientsCountOfThatNumber; count++) {
                     console.log("in for ----------");
-                    $('.familypatientsListOfNumber').append('<li style="text-align:left;"><input class="patientRadio" id="patient' + count + '"  type="radio" class="patientsRadioButton" value="' + data1[count]['firstName'] + '"name="patientOfThatNumber">' + data1[count]['firstName'] + '</li>');
+                    $('.familypatientsListOfNumber').append('<li class="patientsLi" style="text-align:left;"><input class="patientRadio" id="patient' + count + '"  type="radio" class="patientsRadioButton" value="' + data1[count]['firstName'] + '"name="patientOfThatNumber"><label class="patientLabel" for="patient' + count + '">' + data1[count]['firstName'] + '</label></li>');
                 }
                 $('#patient0').prop('checked', true);
             }
@@ -322,11 +336,11 @@ $('#patient-register-btn').click(function() {
                     requestString = JSON.stringify(data1[radiobuttonclickedindex]);
 
                 } else {
-                    
+
                     var dataindex = $.parseJSON($.cookie('patientsInRegister'));
-                    
+
                     dataindex.splice(radiobuttonclickedindex, 1);
-                    
+
                     $.cookie('patientsInRegister', JSON.stringify(dataindex));
                     data1[radiobuttonclickedindex]['gender'] = $('input[name=gender]:checked').val();
                     data1[radiobuttonclickedindex]['firstName'] = $('#patient-reg-name').val();
@@ -339,7 +353,7 @@ $('#patient-register-btn').click(function() {
                     requestString = JSON.stringify(data1[radiobuttonclickedindex]);
                 }
             }
-           
+
 
         }
     } else {
@@ -390,7 +404,7 @@ $('#patient-register-btn').click(function() {
             }
 
             $.cookie('currentPatientInfo', response.response);
-            
+
             updatedObject = $.parseJSON(response.response);
             try {
                 addPatientObjecttoIndexedDB(updatedObject[0]);
@@ -407,7 +421,7 @@ $('#patient-register-btn').click(function() {
             });
             updatePatientFields();
             var patientInfoCookieUpdated = $.parseJSON($.cookie('patientsInRegister'));
-            
+
             if ($('.familypatientsListOfNumber').is(':empty')) {
                 radiobuttonclickedindex = 0;
             } else {
@@ -416,22 +430,26 @@ $('#patient-register-btn').click(function() {
                 } else {
                     var radiobuttonclickedrequired = $('input[name=patientOfThatNumber]:checked', '.myForm').attr('id');
                     radiobuttonclickedindex = radiobuttonclickedrequired.slice(-1);
+                    console.log("in check");
+                    var value = $('input[id=patient' + radiobuttonclickedindex + ']:checked', '.myForm').val();
+                    console.log("value is---", value);
+                    $('label[for=patient' + radiobuttonclickedindex + ']').html(updatedObject[0]['firstName']);
                 }
             }
-            
+
             patientInfoCookieUpdated.splice(radiobuttonclickedindex, 0, updatedObject[0]);
             if (patientInfoCookieUpdated.length == 1 && $('.familypatientsListOfNumber').is(':empty')) {
                 $('.patientsListOfNumber').append('<div class="row"><div class="col-md-6"><label style="margin-left:-20px;">Patients:</label></div></div>');
-                $('.familypatientsListOfNumber').append('<li style="text-align:left;"><input class="patientRadio" id="patient' + 0 + '"  type="radio" class="patientsRadioButton" value="' + updatedObject[0]['firstName'] + '"name="patientOfThatNumber">' + updatedObject[0]['firstName'] + '</li>');
+                $('.familypatientsListOfNumber').append('<li class="patientsLi" style="text-align:left;"><input class="patientRadio" id="patient' + 0 + '"  type="radio" class="patientsRadioButton" value="' + updatedObject[0]['firstName'] + '"name="patientOfThatNumber"><label class="patientLabel">' + updatedObject[0]['firstName'] + '</label></li>');
                 $('#patient0').prop('checked', true);
 
             }
             $.cookie('patientsInRegister', JSON.stringify(patientInfoCookieUpdated));
-            
+
             var cookieLengthOfUpdated = patientInfoCookieUpdated.length - 1;
             $("#patient-addFamily-btn").show();
             if (($('#patient-register-btn').text() == "Add Member")) {
-                $('.familypatientsListOfNumber').append('<li style="text-align:left;"><input class="patientRadio" id="patient' + cookieLengthOfUpdated + '"  type="radio" class="patientsRadioButton" value="' + updatedObject[0]['firstName'] + '"name="patientOfThatNumber">' + updatedObject[0]['firstName'] + '</li>');
+                $('.familypatientsListOfNumber').append('<li class="patientsLi" style="text-align:left;"><input class="patientRadio" id="patient' + cookieLengthOfUpdated + '"  type="radio" class="patientsRadioButton" value="' + updatedObject[0]['firstName'] + '"name="patientOfThatNumber"><label class="patientLabel">' + updatedObject[0]['firstName'] + '</label></li>');
                 $('#patient' + cookieLengthOfUpdated).prop('checked', true);
             }
             $("#login-box-msg").show();
