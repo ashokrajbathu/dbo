@@ -187,7 +187,7 @@ input::-webkit-inner-spin-button {
 .radioBtnGrp,
 .ageGenderRow,
 .allergyTxtBtn,
-.allergyTxtBox,
+
 .ageGenderRow {
     margin-top: -12px;
 }
@@ -197,6 +197,13 @@ input::-webkit-inner-spin-button {
     margin-top: -10px;
 }
 
+.allergyTxtBox{
+    margin-top: -16px;
+}
+
+.radioBtnGrp{
+    margin-bottom:-4px;
+}
 
 /*.jspVerticalBar {
     width: 8px;

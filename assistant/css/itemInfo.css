@@ -13,9 +13,7 @@
     }
 }
 
-@media screen and (max-width:991px){
-	
-}
+@media screen and (max-width:991px) {}
 
 .selectInBatchesTable {
     margin-top: 2px;
@@ -23,14 +21,31 @@
     border: 1px solid #3c8dbc;
 }
 
-.form-control.batchInputTextBoxes{
-	border:1px solid #3c8dbc;
-	border-radius:4px;
+#addBatchInItem{
+    margin-right:50px;
 }
 
-.batchUpdateBtns{
-	padding-top: 1px;
-	height:25px;
+.form-control.batchInputTextBoxes {
+    border: 1px solid #3c8dbc;
+    border-radius: 4px;
+}
+
+.viewItemsBtn{
+    margin-right:40px;
+    margin-bottom:8px;
+    margin-right:10px;
+}
+
+.batchUpdateBtns {
+    background-color: #3c8dbc;
+    color: white;
+    padding-top: 1px;
+    height: 25px;
+}
+
+.batchUpdateBtns:hover {
+    background-color: #367fa9;
+    color: white;
 }
 
 .updateBtn {

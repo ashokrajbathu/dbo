@@ -19,8 +19,8 @@
     folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="entryPrescription.css">
-    <!--Datepicker srcs -->
-    <link rel="stylesheet" href="css/datepicker.css" type="text/css" />
+    <!--Datepicker srcs 
+    <link rel="stylesheet" href="css/datepicker.css" type="text/css" />-->
     <script src="plugins/jQuery/jquery-1.9.1.js"></script>
     <link rel="stylesheet" type="text/css" href="bootstrap/css/jquery.jscrollpane.css">
     <script type="text/javascript" src="bootstrap/js/jquery.mousewheel.js"></script>
@@ -34,12 +34,12 @@
     }
     </script>
     <link href="//code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
-    <!--  <link rel="stylesheet" media="screen" type="text/css" href="css/layout.css" />-->
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <!--  <link rel="stylesheet" media="screen" type="text/css" href="css/layout.css" />
     <script type="text/javascript" src="js/datepicker.js"></script>
+    <script type="text/javascript" src="js/layout.js?ver=1.0.2"></script>-->
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script type="text/javascript" src="js/eye.js"></script>
     <script type="text/javascript" src="js/utils.js"></script>
-    <script type="text/javascript" src="js/layout.js?ver=1.0.2"></script>
     <script src="plugins/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="plugins/sweetalert/dist/sweetalert.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
@@ -399,11 +399,11 @@
                                     Revisit after :
                                     <input type="number" id="inputDatetxt" name="inputDatetxt" style="width :50px" /> days &nbsp;&nbsp;&nbsp;&nbsp;
                                     <input type="text" class="inputDate" id="inputDate" name="inputDate" value="" style="width :100px">
-                                    <span class="glyphicon glyphicon-calendar" class="inputDate" id="inputDateSpan"></span>
+                                    <!-- <span class="glyphicon glyphicon-calendar" class="inputDate" id="inputDateSpan"></span>
                                     <p hidden>
                                         <label id="closeOnSelect">
                                             <input type="checkbox" checked="true" /> Close on selection</label>
-                                    </p>
+                                    </p> -->
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     <input type="button" id="prescription-book-appointment" name="book-appointment" value="Book Appointment" />
                                 </div>
@@ -1732,7 +1732,11 @@
 
 
     $(document).ready(function() {
-
+        $("#inputDate").datepicker({
+            dateFormat: "dd/mm/yy",
+            autoclose: true,
+            'minDate': 0
+        });
         /*var totalDrugObjectsOnReady;*/
         /*setInterval(function() {*/
 

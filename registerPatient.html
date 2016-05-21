@@ -370,95 +370,109 @@ $('#patient-register-btn').click(function() {
         });
     }
 
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8081/dbotica-spring/doctor/addPatient",
-        beforeSend: function(xhr) {
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.setRequestHeader("Accept", "application/json");
-        },
-        xhrFields: {
-            withCredentials: true
-        },
-        data: requestString,
-        success: function(response) {
-            var errorCode = response.errorCode;
-            if (!!errorCode) {
-                switch (errorCode) {
-                    case "NO_USER_LOGGED_IN":
-                        localStorage.setItem("isLoggedIn", false);
-                        swal({
-                                title: "Error",
-                                text: "You are not logged into your account. Kindly login again to view this page",
-                                type: "error",
-                                confirmButtonText: "OK",
-                                allowOutsideClick: true
-                            },
-                            function() {
-                                localStorage.setItem("isLoggedIn", false);
-                                window.location.replace("login.html");
-                            }
-                        );
-                        break;
+    console.log("request entity before update is----", requestString);
+    var requestStringObject = $.parseJSON(requestString);
+    console.log("request entity object is----", requestStringObject);
+    if (requestStringObject.firstName == "") {
+        swal({
+            title: "Error",
+            text: "Please Enter Patient Name to update",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/dbotica-spring/doctor/addPatient",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            data: requestString,
+            success: function(response) {
+                var errorCode = response.errorCode;
+                if (!!errorCode) {
+                    switch (errorCode) {
+                        case "NO_USER_LOGGED_IN":
+                            localStorage.setItem("isLoggedIn", false);
+                            swal({
+                                    title: "Error",
+                                    text: "You are not logged into your account. Kindly login again to view this page",
+                                    type: "error",
+                                    confirmButtonText: "OK",
+                                    allowOutsideClick: true
+                                },
+                                function() {
+                                    localStorage.setItem("isLoggedIn", false);
+                                    window.location.replace("login.html");
+                                }
+                            );
+                            break;
+                    }
                 }
-            }
 
-            $.cookie('currentPatientInfo', response.response);
+                $.cookie('currentPatientInfo', response.response);
 
-            updatedObject = $.parseJSON(response.response);
-            try {
-                addPatientObjecttoIndexedDB(updatedObject[0]);
-            } catch (e) {
+                updatedObject = $.parseJSON(response.response);
+                try {
+                    addPatientObjecttoIndexedDB(updatedObject[0]);
+                } catch (e) {
 
-            }
+                }
 
-            swal({
-                title: "Success",
-                text: "Patient details successfully updated.",
-                type: "success",
-                confirmButtonText: "OK",
-                allowOutsideClick: true
-            });
-            updatePatientFields();
-            var patientInfoCookieUpdated = $.parseJSON($.cookie('patientsInRegister'));
+                swal({
+                    title: "Success",
+                    text: "Patient details successfully updated.",
+                    type: "success",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: true
+                });
+                updatePatientFields();
+                var patientInfoCookieUpdated = $.parseJSON($.cookie('patientsInRegister'));
 
-            if ($('.familypatientsListOfNumber').is(':empty')) {
-                radiobuttonclickedindex = 0;
-            } else {
-                if (($('#patient-register-btn').text() == "Add Member")) {
-                    radiobuttonclickedindex = patientInfoCookieUpdated.length;
+                if ($('.familypatientsListOfNumber').is(':empty')) {
+                    radiobuttonclickedindex = 0;
                 } else {
-                    var radiobuttonclickedrequired = $('input[name=patientOfThatNumber]:checked', '.myForm').attr('id');
-                    radiobuttonclickedindex = radiobuttonclickedrequired.slice(-1);
-                    console.log("in check");
-                    var value = $('input[id=patient' + radiobuttonclickedindex + ']:checked', '.myForm').val();
-                    console.log("value is---", value);
-                    $('label[for=patient' + radiobuttonclickedindex + ']').html(updatedObject[0]['firstName']);
+                    if (($('#patient-register-btn').text() == "Add Member")) {
+                        radiobuttonclickedindex = patientInfoCookieUpdated.length;
+                    } else {
+                        var radiobuttonclickedrequired = $('input[name=patientOfThatNumber]:checked', '.myForm').attr('id');
+                        radiobuttonclickedindex = radiobuttonclickedrequired.slice(-1);
+                        console.log("in check");
+                        var value = $('input[id=patient' + radiobuttonclickedindex + ']:checked', '.myForm').val();
+                        console.log("value is---", value);
+                        $('label[for=patient' + radiobuttonclickedindex + ']').html(updatedObject[0]['firstName']);
+                    }
                 }
+
+                patientInfoCookieUpdated.splice(radiobuttonclickedindex, 0, updatedObject[0]);
+                if (patientInfoCookieUpdated.length == 1 && $('.familypatientsListOfNumber').is(':empty')) {
+                    $('.patientsListOfNumber').append('<div class="row"><div class="col-md-6"><label style="margin-left:-20px;">Patients:</label></div></div>');
+                    $('.familypatientsListOfNumber').append('<li class="patientsLi" style="text-align:left;"><input class="patientRadio" id="patient' + 0 + '"  type="radio" class="patientsRadioButton" value="' + updatedObject[0]['firstName'] + '"name="patientOfThatNumber"><label class="patientLabel">' + updatedObject[0]['firstName'] + '</label></li>');
+                    $('#patient0').prop('checked', true);
+
+                }
+                $.cookie('patientsInRegister', JSON.stringify(patientInfoCookieUpdated));
+
+                var cookieLengthOfUpdated = patientInfoCookieUpdated.length - 1;
+                $("#patient-addFamily-btn").show();
+                if (($('#patient-register-btn').text() == "Add Member")) {
+                    $('.familypatientsListOfNumber').append('<li class="patientsLi" style="text-align:left;"><input class="patientRadio" id="patient' + cookieLengthOfUpdated + '"  type="radio" class="patientsRadioButton" value="' + updatedObject[0]['firstName'] + '"name="patientOfThatNumber"><label class="patientLabel">' + updatedObject[0]['firstName'] + '</label></li>');
+                    $('#patient' + cookieLengthOfUpdated).prop('checked', true);
+                }
+                $("#login-box-msg").show();
+                $(".patient-details-message").hide();
+
+                $('#patient-register-btn').text("Update Details");
+
             }
-
-            patientInfoCookieUpdated.splice(radiobuttonclickedindex, 0, updatedObject[0]);
-            if (patientInfoCookieUpdated.length == 1 && $('.familypatientsListOfNumber').is(':empty')) {
-                $('.patientsListOfNumber').append('<div class="row"><div class="col-md-6"><label style="margin-left:-20px;">Patients:</label></div></div>');
-                $('.familypatientsListOfNumber').append('<li class="patientsLi" style="text-align:left;"><input class="patientRadio" id="patient' + 0 + '"  type="radio" class="patientsRadioButton" value="' + updatedObject[0]['firstName'] + '"name="patientOfThatNumber"><label class="patientLabel">' + updatedObject[0]['firstName'] + '</label></li>');
-                $('#patient0').prop('checked', true);
-
-            }
-            $.cookie('patientsInRegister', JSON.stringify(patientInfoCookieUpdated));
-
-            var cookieLengthOfUpdated = patientInfoCookieUpdated.length - 1;
-            $("#patient-addFamily-btn").show();
-            if (($('#patient-register-btn').text() == "Add Member")) {
-                $('.familypatientsListOfNumber').append('<li class="patientsLi" style="text-align:left;"><input class="patientRadio" id="patient' + cookieLengthOfUpdated + '"  type="radio" class="patientsRadioButton" value="' + updatedObject[0]['firstName'] + '"name="patientOfThatNumber"><label class="patientLabel">' + updatedObject[0]['firstName'] + '</label></li>');
-                $('#patient' + cookieLengthOfUpdated).prop('checked', true);
-            }
-            $("#login-box-msg").show();
-            $(".patient-details-message").hide();
-
-            $('#patient-register-btn').text("Update Details");
-
-        }
-    }); //ajax
+        });
+    } //ajax
 });
 </script>
 </script>
