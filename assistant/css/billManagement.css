@@ -1,5 +1,5 @@
 .patientDetailsSearch {
-    width: 24%;
+    margin-right: 0px;
 }
 
 .heading {
@@ -14,19 +14,64 @@
     background-color: #3c8dbc;
 }
 
+.billManagementBtn {
+    padding-top: 3px;
+    height: 30px;
+    color: white;
+    background-color: #3c8dbc;
+    border: 1px solid #367fa9;
+}
+
+.billManagementBtn:hover {
+    background-color: #367fa9;
+    color: white;
+}
+
+.invoiceNumberRow {
+    margin-bottom: 15px;
+}
+
+
+/*.invoiceRow {
+    margin-left: 10px;
+}*/
+
 .patientDetailsRow {
     padding-top: 8px;
-    margin-left: 14px;
+    /*margin-left: 0px;*/
+}
+
+.patientConsultation {
+    margin-left: 8px;
 }
 
 .patientInfoSearchMedicine,
 .patientConsultation {
+    margin-left: 0px;
+    margin-bottom: 10px;
+}
+
+
+/*#exampleInputTests {
     margin-left: 14px;
     margin-bottom: 10px;
+}
+*/
+
+#consultationSubmitBtn {
+    margin-left: 4px;
+}
+
+#TestsSubmitBtn {
+    margin-top: 5px;
 }
 
 .horizontalLine {
     margin-top: 4px;
+}
+
+#testsLabel {
+    margin-right: 24px;
 }
 
 .headerInfo {
@@ -34,35 +79,143 @@
 }
 
 .btn.billBtn {
-    background-color: white;
-    border: 1px solid #00bd9c;
-    color: #00bd9c;
+    background-color: #3c8dbc;
+    border: 1px solid #367fa9;
+    color: white;
 }
 
 .btn.billBtn:hover {
     color: white;
-    background-color: #00bd9c;
+    background-color: #367fa9;
+}
+
+#patientPhoneLabel {
+    margin-right: 4px;
 }
 
 .billTxtBox,
 .form-control.billTxtBox {
-    padding-left: 6px;
+    /*padding-left: 6px;*/
     height: 32px;
     border-radius: 4px;
-    border: 1px solid #00bd9c;
+    border: 1px solid #3c8dbc;
+}
+
+
+/*#exampleInputpatientSearchNumber {
+    padding-right: 4px;
+}*/
+
+
+/*#patientSearchBtn {
+    width:150px;
+}*/
+
+.patientSearchBtns,
+#exampleInputpatientSearchNumber {
+    height: 38px;
+}
+
+.consultationRow {
+    margin-top: 12px;
 }
 
 .dropdown>button {
-    width: 20%;
-    border: 1px solid #00bd9c;
+    margin-left: 10px;
+    /*width: 200px;*/
+    border: 1px solid #3c8dbc;
     background-color: #fff;
 }
 
 .dropdown>ul {
-    width: 20%;
+    /* width: 68%;*/
+    margin-left: 4px;
+    /*margin-top: 34px;*/
+}
+
+
+/*.col-sm-4>ul {
+    margin-top: 0px;
+}*/
+
+
+/*#exampleInputConsultationCost,
+#sessionDatepickerCost,
+#consultationDropdown,
+#dueDateDropdown,
+#consultationSubmitBtn {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+*/
+
+#dueDateBtn,
+#consultationBtn {
+    width: 130px;
+}
+
+
+/*#consultationSubmitBtn {
+    margin-left: 4px;
+}*/
+
+
+/*#age {
+    margin-left: 10px;
+}*/
+
+
+/*#consultationDropdown {
+    margin-bottom: 5px;
+}
+*/
+
+#exampleInputCost,
+#sessionDatepickerCost {
+    margin-left: 4px;
+}
+
+#sessionDatepickerCost {
+    /*margin-bottom: 5px;*/
+    /*padding: 2px 2px 2px 2px;*/
+}
+
+#consultationForm,
+.patientInfoSearchMedicine,
+.tests {
     margin-left: 0px;
 }
 
-.form-control.billTxtBoxMedicine {
-    width: 80%;
+
+/*#medicineAvailabilityBtn{
+    margin-left: 10px;
+}*/
+
+.invoiceNumberRowItem {
+    margin-bottom: 5px;
+}
+
+.costsTable {
+    margin-top: 10px;
+}
+
+#remainderBtn {
+    width: 100%;
+}
+
+.billSelectBoxes,
+.doctorSelectBox {
+    height: 32px;
+    border: 1px solid #3c8dbc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.form-control.billTxtBoxMedicine,
+#exampleInputmedicineAvailability,
+#medicineAvailabilityBtn {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }

@@ -1,0 +1,66 @@
+#itemInfoHeader {
+    margin-left: 30px;
+    margin-top: 2px;
+}
+
+.itemInfo {
+    margin-left: 30px;
+}
+
+@media screen and (min-width:991px) {
+    .itemTable {
+        width: 72%;
+    }
+}
+
+@media screen and (max-width:991px){
+	
+}
+
+.selectInBatchesTable {
+    margin-top: 2px;
+    border-radius: 4px;
+    border: 1px solid #3c8dbc;
+}
+
+.form-control.batchInputTextBoxes{
+	border:1px solid #3c8dbc;
+	border-radius:4px;
+}
+
+.batchUpdateBtns{
+	padding-top: 1px;
+	height:25px;
+}
+
+.updateBtn {
+    background-color: #3c8dbc;
+    padding-top: 3px;
+    padding-left: 10px;
+    padding-right: 4px;
+    height: 22px;
+    width: 55px;
+    font-size: 10px;
+}
+
+.itemInfoTable {
+    border: 1px solid #3c8dbc;
+}
+
+.itemInfoTable>thead>tr>th {
+    border: 1px solid #3c8dbc;
+}
+
+#batchesRow>td {
+    border: 1px solid #3c8dbc;
+    text-align: center;
+}
+
+#itemInfoTableHeaderRow {
+    background-color: #3c8dbc;
+}
+
+#itemInfoTableHeaderRow>th {
+    color: white;
+    text-align: center;
+}

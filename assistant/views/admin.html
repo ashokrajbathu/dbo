@@ -1,0 +1,39 @@
+<div ng-controller="adminCtrl">
+    <div class="admin">
+        <div class="container">
+            <h3 class="adminHeader">Admin</h3>
+            <div class="selectDoctorSection">
+                <form>
+                    <div class="form-group">
+                        <label for="selectDoctorLabel">Select Doctor:</label>
+                        <br>
+                        <select id="selectDoctor">
+                            <option ng-repeat="doctor in doctorsListInAdmin">{{doctor.firstName}} {{doctor.lastName}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Procedure Name" id="exampleInputProcedureName">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Cost" id="exampleInputCostAdmin">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Remarks" id="exampleInputRemarks">
+                    </div>
+                    <button type="submit" class="btn addProcedureBtn">Add</button>
+                </form>
+                <table class="table table-bordered tableInAdmin">
+                    <thead>
+                        <tr>
+                            <th>S.No.</th>
+                            <th>Procedure Name</th>
+                            <th>Cost</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

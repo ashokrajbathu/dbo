@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>dbotica</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="css/sweet-alert.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" type="text/css" href="patientDashboard.css">
+    <link rel="stylesheet" href="plugins/iCheck/flat/blue.css">
+    <!-- Morris chart -->
+    <link rel="stylesheet" href="plugins/morris/morris.css">
+    <!-- jvectormap -->
+    <link rel="stylesheet" href="plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker-bs3.css">
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="plugins/timepicker/jquery-timepicker.css"> -->
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+
+<body id="body" class="hold-transition skin-blue sidebar-mini" ng-app="personalAssistant">
+    <div class="wrapper">
+        <header class="main-header">
+            <a href="#" class="logo">
+                <span class="logo-mini"><b>db</b></span>
+                <span class="logo-lg"><b>dbotica</b></span>
+            </a>
+            <nav class="navbar navbar-static-top" role="navigation">
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                    </ul>
+                </div>
+            </nav>
+        </header>
+    </div>
+    <div class="patientDashBoard">
+        <div class="container-fluid">
+            <div class="patientDashBoardBody row">
+                <div class="personalDetails">
+                    <div class="details col-md-4 col-sm-12 col-xs-12">
+                        <div class="panel patientHistoryPanel">
+                            <div class="panel-heading">
+                                <h4>Patient History</h4>
+                            </div>
+                            <div class="panel-body">
+                                <table class="patientDetailsTable table table-striped">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Id</td>
+                                            <td id="patientId"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Reg Date</td>
+                                            <td id="patientRegId"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td id="patientName"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Mobile</td>
+                                            <td id="patientMobile"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>DOB</td>
+                                            <td id="patientDOB"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Age</td>
+                                            <td id="patientAge"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Gender</td>
+                                            <td id="patientGender"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Status</td>
+                                            <td id="patientStatus"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Blood Group</td>
+                                            <td id="patientBloodGroup"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <button class="btn heightWeightBtn" data-toggle="modal" data-target="#heightWeightModal">Weight/Height</button>
+                                <span>
+                                        <button class="btn bloodPressureBtn" data-toggle="modal" data-target="#bloodPressureModal">Blood Pressure(B.P.)</button>
+                                    </span>
+                                <div id="bloodPressureModal" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modalHeader modal-title">Blood Pressure :  </h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form class="form-inline">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputBloodPressure">Blood Pressure :</label>
+                                                        <input type="text" class="form-control" id="exampleInputBloodPressureFirstPart">
+                                                        <span>/</span>
+                                                        <input type="text" class="form-control" id="exampleInputBloodPressureSecondPart">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" placeholder="Date" id="bloodPressureDatepicker">
+                                                    </div>
+                                                    <button type="submit" id="bloddPressureAddBtn" class="heightWeightAddBtn btn">Add</button>
+                                                </form>
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S.No.</th>
+                                                            <th>Blood Pressure</th>
+                                                            <th>Date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="bloodPressureBody">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="heightWeightModal" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modalHeader modal-title">Height - Weight :  </h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form class="form-inline">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputHeight">Height (in cms.)</label>
+                                                        <input type="text" class="form-control" id="exampleInputHeight">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="exampleInputWeight">Weight(in Kgs.)</label>
+                                                        <input type="text" class="form-control" id="exampleInputWeight">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" placeholder="Date" id="heightWeightDatepicker">
+                                                    </div>
+                                                    <button id="addHeightWeight" type="submit" class="heightWeightAddBtn btn">Add</button>
+                                                </form>
+                                                <table class="heightWeightTable table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <td>S.No.</td>
+                                                            <td>Height(in cms.)</td>
+                                                            <td>Weight(in kgs.)</td>
+                                                            <td>Date</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="heightWeightBody">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="immunizationHistory">
+                    <div class="immunization col-md-4 col-sm-12 col-xs-12">
+                        <div class="panel immunizationHistoryPanel">
+                            <div class="panel-heading">
+                                <h4>Immunization Details</h4>
+                            </div>
+                            <div class="immunizationBody panel-body">
+                                <p class="immunizationInfo">Click on the button to add vaccine
+                                    <button class="btn immunizationBtn" id="addVaccineBtn" data-toggle="modal" data-target="#immunizationModal">Add Vaccine</button>
+                                </p>
+                                <div class="vaccinationTable">
+                                    <label>Vaccination Table :</label>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <th>Vaccine</th>
+                                            <th>Date</th>
+                                            <th>Comments</th>
+                                        </thead>
+                                        <tbody id="immunizationBody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="immunizationModal" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Vaccinations</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div>
+                                                    <select id="vaccineSelect">
+                                                        <option class="2" value="Vaqta Vaccine">Vaqta Vaccine</option>
+                                                        <option class="2" value="Havrix Vaccine">Havrix Vaccine</option>
+                                                        <option class="2" value="Chicken Pox Vaccine">Chicken Pox Vaccine</option>
+                                                        <option class="1" value="DPT Vaccine">DPT Vaccine</option>
+                                                        <option class="1" value="Pneumococcal Polysaccharide vaccine">Pneumococcal Polysaccharide vaccine</option>
+                                                        <option class="3" value="Twinrix">Twinrix</option>
+                                                        <option class="3" value="Energix-B/Recombivax HB vaccine">Energix-B/Recombivax HB vaccine</option>
+                                                        <option class="3" value="HPV5 vaccine">HPV5 vaccine</option>
+                                                    </select>
+                                                    <form class="form-inline dosageForm">
+                                                        <div class="form-group">
+                                                            <input id="firstDoseDate" type="text" class="form-control dosage vaccine" placeholder="First Dose Date">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input id="secondDoseDate" type="text" class="form-control dosage vaccine" placeholder="Second Dose Date">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input id="thirdDoseDate" type="text" class="form-control dosage vaccine" placeholder="Third Dose Date">
+                                                        </div>
+                                                    </form>
+                                                    <input type="text" id="commentsTextBox" class="form-control" placeholder="Comments">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" id="addImmunizationBtn" class="btn modalVaccineBtn">Add</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel familyHistoryPanel">
+                            <div class="panel-heading">
+                                <h4>Family History</h4>
+                            </div>
+                            <div class="familyHistoryBody panel-body">
+                                <div class="familyFirstRow row">
+                                    <div class="col-md-6 form-inline col-sm-4 col-xs-12">
+                                        <select id="diseaseSelect">
+                                            <option>Fever</option>
+                                            <option>Cold</option>
+                                            <option>Cough</option>
+                                            <option>Viral Fever</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-5 form-inline col-sm-4 col-xs-12">
+                                        <select id="relationSelect">
+                                            <option>Father</option>
+                                            <option>Mother</option>
+                                            <option>Son</option>
+                                            <option>Daughter</option>
+                                            <option>GrandFather</option>
+                                            <option>GrandMother</option>
+                                            <option>GrandSon</option>
+                                            <option>GrandDaughter</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="familyRow">
+                                    <div class="row">
+                                        <div class="col-md-11 col-sm-8 col-xs-12">
+                                            <input id="remarks" type="text" placeholder="Remarks">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <button style="width:100%;" id="addFamilyMemberBtn" class="addRelativeBtn btn">Add</button>
+                                    </div>
+                                </div>
+                                <table style="margin-top:20px;" class="familyTable table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Relative</th>
+                                            <th>Disease</th>
+                                            <th>Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="addFamilyHistoryBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- <div class="familyHistoryBody panel-body"></div> -->
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="medicalHistory">
+                        <div class="history col-md-4">
+                            <div class="panel panel-danger">
+                                <div class="panel-heading">
+                                    <h4>Medical History</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <h1>Ravi Teja</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                <div class="medicalHistory">
+                    <div id="medicalHistory" class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="medicalHistoryPanel panel">
+                            <div class="panel-heading">
+                                <h4>Medical History</h4>
+                            </div>
+                            <div class="panel-body">
+                                <!-- <h1>Ravi Teja</h1> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $("#immunizationDatepicker").datepicker({
+            dateFormat: "dd/mm/yy",
+            autoclose: true,
+            minDate: new Date()
+
+        });
+        $("#heightWeightDatepicker").datepicker({
+            dateFormat: "dd/mm/yy",
+            autoclose: true,
+            minDate: new Date()
+
+        });
+
+        $(".vaccine").datepicker({
+            dateFormat: "dd/mm/yy",
+            autoclose: true,
+            minDate: new Date()
+
+        });
+
+        $("#bloodPressureDatepicker").datepicker({
+            dateFormat: "dd/mm/yy",
+            autoclose: true,
+            minDate: new Date()
+
+        });
+
+        $("#firstDoseDate").show();
+        $("#secondDoseDate").show();
+        $("#thirdDoseDate").hide();
+
+        $("#vaccineSelect").change(function() {
+            selected = $(this).children(":selected").attr("class");
+            var vaccineName = $("#vaccineSelect").val();
+            var dosageTimings = "";
+            var remarks = "";
+            $("#commentsTextBox").val("");
+            switch (selected) {
+                case '1':
+                    $("#firstDoseDate").show();
+                    $("#firstDoseDate").val("");
+                    $("#secondDoseDate").hide();
+                    $("#thirdDoseDate").hide();
+                    break;
+
+                case '2':
+                    $("#firstDoseDate").show();
+                    $("#firstDoseDate").val("");
+                    $("#secondDoseDate").show();
+                    $("#secondDoseDate").val("");
+                    $("#thirdDoseDate").hide();
+                    break;
+
+                case '3':
+                    $("#firstDoseDate").show();
+                    $("#firstDoseDate").val("");
+                    $("#secondDoseDate").show();
+                    $("#secondDoseDate").val("");
+                    $("#thirdDoseDate").show();
+                    $("#thirdDoseDate").val("");
+                    break;
+            }
+            if (immunizationArrayFromResponse.length > 0) {
+
+                for (var index = 0; index < immunizationArrayFromResponse.length; index++) {
+                    if (vaccineName === immunizationArrayFromResponse[index].vaccineName) {
+                        console.log("comment is----" + immunizationArrayFromResponse[index].comment);
+                        $("#commentsTextBox").val(immunizationArrayFromResponse[index].comment);
+                        var dosageArray = immunizationArrayFromResponse[index].dosageDates;
+                        if (dosageArray.length === 1) {
+                            var date = dateFormatChange(dosageArray[0].dosageDate);
+                            date = date.split("-").join("/");
+                            $("#firstDoseDate").val(date);
+                        }
+                        if (dosageArray.length === 2) {
+                            for (var index = 0; index < dosageArray.length; index++) {
+                                var date = dateFormatChange(dosageArray[index].dosageDate);
+                                date = date.split("-").join("/");
+                                if (index === 0) {
+                                    $("#firstDoseDate").val(date);
+                                } else {
+                                    $("#secondDoseDate").val(date);
+                                }
+                            }
+                        }
+                        if (dosageArray.length === 3) {
+                            for (var index = 0; index < dosageArray.length; index++) {
+                                var date = dateFormatChange(dosageArray[index].dosageDate);
+                                date = date.split("-").join("/");
+                                if (index === 0) {
+
+                                    $("#firstDoseDate").val(date);
+                                }
+                                if (index === 1) {
+
+                                    $("#secondDoseDate").val(date);
+                                }
+                                if (index === 2) {
+
+                                    $("#thirdDoseDate").val(date);
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        });
+
+        $("#addVaccineBtn").click(function() {
+
+            $("#vaccineSelect").val("Vaqta Vaccine");
+            $("#firstDoseDate").show();
+            $("#secondDoseDate").show();
+            $("#thirdDoseDate").hide();
+            $("#firstDoseDate").val("");
+            $("#secondDoseDate").val("");
+            $("#thirdDoseDate").val("");
+            $("#commentsTextBox").val("");
+            var vaccineName = $("#vaccineSelect").val();
+            if (immunizationArrayForModal.length > 0) {
+                for (var index = 0; index < immunizationArrayForModal.length; index++) {
+                    if (vaccineName == immunizationArrayForModal[index].vaccineName) {
+                        $("#commentsTextBox").val(immunizationArrayForModal[index].comment);
+                        var dosageArray = immunizationArrayForModal[index].dosageDates;
+                        if (dosageArray.length === 2) {
+                            for (var indexCount = 0; indexCount < dosageArray.length; indexCount++) {
+                                var date = dateFormatChange(dosageArray[indexCount].dosageDate);
+                                date = date.split("-").join("/");
+                                if (indexCount === 0) {
+                                    $("#firstDoseDate").val(date);
+                                } else {
+                                    $("#secondDoseDate").val(date);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        var patientDetailsList = [];
+        var patientDetailsObject = {};
+        var heightWeightList = [];
+        var bloodPressureList = [];
+        var currentPatientId = "";
+        var patientIdOfcurrentPatient = "5737721d26b64605eb3c3983";
+        var doctorId = "56fcd9b8e2c60ef16dfac3ad";
+        var countHeightWeight = 1;
+        var countBloodPressure = 1;
+        var selected;
+        var vaccineRequestList = [];
+        var firstDoseObject = {};
+        var secondDoseObject = {};
+        var thirdDoseObject = {};
+        var immunizationArrayFromResponse = [];
+        var immunizationArrayForModal = [];
+        var immunizationHistoryRowCount = 0;
+
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8081/dbotica-spring/doctor/getPatients",
+            data: {
+                'patientIds': "5737721d26b64605eb3c3983"
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(response) {
+                var responseEntries = $.parseJSON(response.response);
+                console.log("direct response---", responseEntries);
+                patientDetailsList = responseEntries;
+                console.log("response---", patientDetailsList);
+                for (var index = 0; index < patientDetailsList.length; index++) {
+                    if (patientDetailsList[index].id === patientIdOfcurrentPatient) {
+                        patientDetailsObject = patientDetailsList[index];
+                        console.log("patient details list is-----", patientDetailsList[index]);
+                    }
+                }
+                currentPatientId = patientDetailsObject['id'];
+                $("#patientId").text(patientDetailsObject['id']);
+                $("#patientAge").text(patientDetailsObject['age']);
+                var name = patientDetailsObject['firstName'] + ' ' + patientDetailsObject['lastName'];
+                $("#patientName").text(name);
+                var date = patientDetailsObject['registeredDate'];
+                var readableDate = dateFormatChange(date);
+                $("#patientRegId").text(readableDate);
+                $("#patientMobile").text(patientDetailsObject['phoneNumber']);
+                $("#patientGender").text(patientDetailsObject['gender']);
+                var bloodGroup = patientDetailsObject['bloodGroup'];
+                var bloodGroupPositiveOrNegative = bloodGroup.split("_")[1];
+                if (bloodGroupPositiveOrNegative === "POSITIVE") {
+                    bloodGroupPositiveOrNegative = "+";
+                } else {
+                    bloodGroupPositiveOrNegative = "-";
+                }
+                bloodGroup = bloodGroup.split("_")[0] + bloodGroupPositiveOrNegative;
+                $("#patientBloodGroup").text(bloodGroup);
+                $("#patientDOB").text(patientDetailsObject['dateOfBirth']);
+                if (patientDetailsObject.hasOwnProperty('physicalAttributes')) {
+                    var heightweightAndBPArray = patientDetailsObject.physicalAttributes;
+                    if (heightweightAndBPArray.length > 0) {
+                        for (var index = 0; index < heightweightAndBPArray.length; index++) {
+                            if (heightweightAndBPArray[index].hasOwnProperty('height') && heightweightAndBPArray[index].hasOwnProperty('weight')) {
+                                var date = heightweightAndBPArray[index]['updatedDate'];
+                                var readableDate = dateFormatChange(date);
+                                $("#heightWeightBody").append('<tr><td>' + countHeightWeight + '</td><td>' + heightweightAndBPArray[index].height + '</td><td>' + heightweightAndBPArray[index].weight + '</td><td>' + readableDate + '</td></tr>');
+                                countHeightWeight++;
+                            }
+                            if (heightweightAndBPArray[index].hasOwnProperty('bloodPressure')) {
+                                var date = heightweightAndBPArray[index]['updatedDate'];
+                                var readableDate = dateFormatChange(date);
+                                $("#bloodPressureBody").append('<tr><td>' + countBloodPressure + '</td><td>' + heightweightAndBPArray[index].bloodPressure + '</td><td>' + readableDate + '</td></tr>');
+                                countBloodPressure++;
+                            }
+                        }
+                    }
+                }
+                if (patientDetailsObject.hasOwnProperty('immunizationDetails')) {
+                    var immunizationArray = patientDetailsObject.immunizationDetails;
+                    console.log("details check is-----", patientDetailsObject.immunizationDetails);
+                    immunizationArrayFromResponse = patientDetailsObject.immunizationDetails;
+                    immunizationArrayForModal = patientDetailsObject.immunizationDetails;
+                    if (immunizationArray.length > 0) {
+                        for (var index = 0; index < immunizationArray.length; index++) {
+                            var vaccineName = "";
+                            var dosageTimings = "";
+                            var remarks = "";
+                            vaccineName = immunizationArray[index].vaccineName;
+                            remarks = immunizationArray[index].comment;
+                            var dosageArray = immunizationArray[index].dosageDates;
+                            for (var dosageIndex = 0; dosageIndex < dosageArray.length; dosageIndex++) {
+                                var changedFormatTime = dateFormatChange(dosageArray[dosageIndex].dosageDate);
+                                dosageTimings = dosageTimings + changedFormatTime;
+                                if (dosageIndex != dosageArray.length - 1) {
+                                    dosageTimings = dosageTimings + ',';
+                                }
+                            }
+                            $("#immunizationBody").append('<tr><td style="vertical-align:middle;" id="vaccineName' + immunizationHistoryRowCount + '">' + vaccineName + '</td><td id="dosageTimings' + immunizationHistoryRowCount + '"></td><td style="vertical-align:middle;" id="vaccineRemarks' + immunizationHistoryRowCount + '">' + remarks + '</td></tr>');
+                            var dosageArray = dosageTimings.split(',');
+                            var rowId = "#dosageTimings" + immunizationHistoryRowCount;
+                            for (var dosageArrayIndex = 0; dosageArrayIndex < dosageArray.length; dosageArrayIndex++) {
+                                $(rowId).append('<span>' + dosageArray[dosageArrayIndex] + '</span><br>');
+                            }
+                            immunizationHistoryRowCount++;
+                        }
+                    }
+                }
+
+                if (patientDetailsObject.hasOwnProperty('familyHistory')) {
+                    var familyMemArray = patientDetailsObject.familyHistory;
+                    for (var memIndex = 0; memIndex < familyMemArray.length; memIndex++) {
+                        $("#addFamilyHistoryBody").append('<tr><td>' + familyMemArray[memIndex]['relationName'] + '</td><td>' + familyMemArray[memIndex]['diseaseName'] + '</td><td>' + familyMemArray[memIndex]['comments'] + '</td></tr>');
+                    }
+                }
+            }
+        });
+
+        $("#firstDoseDate").change(function() {
+            var selectedDate = $("#firstDoseDate").val();
+            var check = ((selectedDate.charAt(2) == "/") && (selectedDate.charAt(5) == "/"));
+            if (selectedDate.length == 10 && check) {
+                selectedDate = dateFormat(selectedDate);
+                console.log("selected date change is--------" + selectedDate);
+                firstDoseObject.dosageDate = selectedDate;
+                firstDoseObject.updatedUserId = doctorId;
+            } else {
+                firstDoseObject = {};
+            }
+        });
+
+        $("#secondDoseDate").change(function() {
+            var selectedDate = $("#secondDoseDate").val();
+            var check = ((selectedDate.charAt(2) == "/") && (selectedDate.charAt(5) == "/"));
+            if (selectedDate.length == 10 && check) {
+                selectedDate = dateFormat(selectedDate);
+
+                secondDoseObject.dosageDate = selectedDate;
+                secondDoseObject.updatedUserId = doctorId;
+            } else {
+                secondDoseObject = {};
+            }
+        });
+
+        $("#thirdDoseDate").change(function() {
+            var selectedDate = $("#thirdDoseDate").val();
+            var check = ((selectedDate.charAt(2) == "/") && (selectedDate.charAt(5) == "/"));
+            if (selectedDate.length == 10 && check) {
+                selectedDate = dateFormat(selectedDate);
+
+                thirdDoseObject.dosageDate = selectedDate;
+                thirdDoseObject.updatedUserId = doctorId;
+            } else {
+                thirdDoseObject = {};
+            }
+        });
+
+        var dateFormat = function(selectedDate) {
+            var selectedDateArray = selectedDate.split("/");
+            selectedDate = selectedDateArray[1] + '/' + selectedDateArray[0] + '/' + selectedDateArray[2];
+            selectedDate = new Date(selectedDate);
+            selectedDate = selectedDate.getTime();
+            return selectedDate;
+        }
+
+        $("#addHeightWeight").click(function() {
+            var height = $("#exampleInputHeight").val();
+            var weight = $("#exampleInputWeight").val();
+            var date = $("#heightWeightDatepicker").val();
+            var dateArray = date.split("/");
+            date = dateArray[1] + '/' + dateArray[0] + '/' + dateArray[2];
+            var readableDate = new Date(date);
+            date = readableDate.getTime();
+            var requestEntity = {};
+            requestEntity['patientId'] = currentPatientId;
+            requestEntity.patientPhysicalDetails = {};
+            requestEntity.patientPhysicalDetails.height = height;
+            requestEntity.patientPhysicalDetails.weight = weight;
+            requestEntity.patientPhysicalDetails.updatedDate = date;
+            requestEntity.patientPhysicalDetails.updatedLocation = "patientProfilePage";
+            requestEntity = JSON.stringify(requestEntity);
+            $.ajax({
+                type: "POST",
+                url: " http://localhost:8081/dbotica-spring/doctor/addPatientPhysicalDetails",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.setRequestHeader("Accept", "application/json");
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                data: requestEntity,
+                success: function(response) {
+                    var patientDetailsObject = {};
+                    patientDetailsObject = $.parseJSON(response.response);
+                    if (patientDetailsObject.physicalAttributes.length > 0) {
+                        var heightWeightObject = [];
+                        heightWeightObject = patientDetailsObject.physicalAttributes.slice(-1);
+                        var date = heightWeightObject[0]['updatedDate'];
+                        var readableDate = dateFormatChange(date);
+                        $("#heightWeightBody").append('<tr><td>' + countHeightWeight + '</td><td>' + heightWeightObject[0]['height'] + '</td><td>' + heightWeightObject[0]['weight'] + '</td><td>' + readableDate + '</td></tr>');
+                        countHeightWeight++;
+                    }
+                }
+            });
+
+        });
+
+        $("#bloddPressureAddBtn").click(function() {
+            var bloodPressure = $("#exampleInputBloodPressureFirstPart").val() + '/' + $("#exampleInputBloodPressureSecondPart").val();
+            var bloodPressureDate = $("#bloodPressureDatepicker").val();
+            var dateArray = bloodPressureDate.split("/");
+            bloodPressureDate = dateArray[1] + '/' + dateArray[0] + '/' + dateArray[2];
+            var readableDate = new Date(bloodPressureDate);
+            bloodPressureDate = readableDate.getTime();
+            var requestEntity = {};
+            requestEntity['patientId'] = currentPatientId;
+            requestEntity.patientPhysicalDetails = {};
+            requestEntity.patientPhysicalDetails.bloodPressure = bloodPressure;
+            requestEntity.patientPhysicalDetails.updatedDate = bloodPressureDate;
+            requestEntity.patientPhysicalDetails.updatedLocation = "patientProfilePage";
+            requestEntity = JSON.stringify(requestEntity);
+            $.ajax({
+                type: "POST",
+                url: " http://localhost:8081/dbotica-spring/doctor/addPatientPhysicalDetails",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.setRequestHeader("Accept", "application/json");
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                data: requestEntity,
+                success: function(response) {
+                    var patientDetailsObject = {};
+                    patientDetailsObject = $.parseJSON(response.response);
+                    if (patientDetailsObject.physicalAttributes.length > 0) {
+                        var BloodPressureObject = [];
+                        BloodPressureObject = patientDetailsObject.physicalAttributes.slice(-1);
+                        var date = BloodPressureObject[0]['updatedDate'];
+                        var readableDate = dateFormatChange(date);
+                        $("#bloodPressureBody").append('<tr><td>' + countBloodPressure + '</td><td>' + BloodPressureObject[0]['bloodPressure'] + '</td><td>' + readableDate + '</td></tr>');
+                        countBloodPressure++;
+                    }
+                }
+            });
+        });
+
+        $("#addImmunizationBtn").click(function() {
+            var vaccineName = $("#vaccineSelect").val();
+            var dosageCount = $("#vaccineSelect").children(":selected").attr("class");
+            var requestEntity = {};
+            requestEntity.patientId = currentPatientId;
+            requestEntity.immunizationDetail = {};
+            requestEntity.immunizationDetail.vaccineName = vaccineName;
+            requestEntity.immunizationDetail.dosageCount = dosageCount;
+            requestEntity.immunizationDetail.comment = $("#commentsTextBox").val();
+            requestEntity.immunizationDetail.dosageDates = [];
+            if (firstDoseObject.hasOwnProperty('dosageDate')) {
+
+                requestEntity.immunizationDetail.dosageDates.push(firstDoseObject);
+            }
+            if (secondDoseObject.hasOwnProperty('dosageDate')) {
+
+                requestEntity.immunizationDetail.dosageDates.push(secondDoseObject);
+            }
+            if (thirdDoseObject.hasOwnProperty('dosageDate')) {
+
+                requestEntity.immunizationDetail.dosageDates.push(thirdDoseObject);
+            }
+
+            requestEntity = JSON.stringify(requestEntity);
+
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8081/dbotica-spring/doctor/addPatientImmunizationDetails",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.setRequestHeader("Accept", "application/json");
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                data: requestEntity,
+                success: function(response) {
+                    var patientDetailsObject = {};
+                    patientDetailsObject = $.parseJSON(response.response);
+                    console.log("patient Details vaccine---", patientDetailsObject);
+
+                    var immunizationArray = patientDetailsObject.immunizationDetails;
+                    if (immunizationArray.length > 0) {
+                        var immunizationVaccine = immunizationArray.slice(-1);
+                        console.log("sdsad---", immunizationVaccine);
+                        var immunizationVaccineArray = immunizationVaccine[0].dosageDates;
+                        console.log("sdhsa----", immunizationVaccineArray);
+                        var vaccineName = immunizationVaccine[0].vaccineName;
+                        var dosageTimings = "";
+                        var remarks = immunizationVaccine[0].comment;
+                        for (var dosageIndex = 0; dosageIndex < immunizationVaccineArray.length; dosageIndex++) {
+                            var changedTime = dateFormatChange(immunizationVaccineArray[dosageIndex].dosageDate);
+                            dosageTimings = dosageTimings + changedTime;
+                            if (dosageIndex != immunizationVaccineArray.length - 1) {
+                                dosageTimings = dosageTimings + ',';
+                            }
+                        }
+                        var count = 0;
+                        var rowWithVaccineName = 0;
+                        for (var vaccineIndex = 0; vaccineIndex < immunizationHistoryRowCount; vaccineIndex++) {
+
+                            var selector = "#vaccineName" + vaccineIndex;
+                            if ($(selector).text() === vaccineName) {
+                                rowWithVaccineName = vaccineIndex;
+
+                                count++;
+                            }
+                        }
+                        if (count === 0) {
+
+                            $("#immunizationBody").append('<tr><td style="vertical-align:middle;" id="vaccineName' + immunizationHistoryRowCount + '">' + vaccineName + '</td><td id="dosageTimings' + immunizationHistoryRowCount + '"></td><td style="vertical-align:middle;" id="vaccineRemarks' + immunizationHistoryRowCount + '">' + remarks + '</td></tr>');
+                            var dosageArray = dosageTimings.split(',');
+
+                            var rowId = "#dosageTimings" + immunizationHistoryRowCount;
+
+
+                            for (var dosageindex = 0; dosageindex < dosageArray.length; dosageindex++) {
+
+
+                                $(rowId).append('<span>' + dosageArray[dosageindex] + '</span><br>');
+                            }
+                            immunizationHistoryRowCount++;
+                        } else {
+                            var dosageArray = dosageTimings.split(',');
+
+                            var rowId = "#dosageTimings" + rowWithVaccineName;
+                            var remarksRowId = "#vaccineRemarks" + rowWithVaccineName;
+                            $(remarksRowId).text(remarks);
+
+                            $(rowId).empty();
+                            for (var dosageArrayIndex = 0; dosageArrayIndex < dosageArray.length; dosageArrayIndex++) {
+
+                                $(rowId).append('<span>' + dosageArray[dosageArrayIndex] + '</span><br>');
+                            }
+
+                        }
+
+
+                    }
+
+                }
+            });
+        });
+
+        $("#addFamilyMemberBtn").click(function() {
+            var diseaseName = "";
+            var relationName = "";
+            var comments = "";
+            var requestEntity = {};
+            requestEntity.familyDiseaseInfo = {};
+            diseaseName = $("#diseaseSelect").val();
+            relationName = $("#relationSelect").val();
+            comments = $("#remarks").val();
+            requestEntity.patientId = currentPatientId;
+            requestEntity.familyDiseaseInfo.diseaseName = diseaseName;
+            requestEntity.familyDiseaseInfo.relationName = relationName;
+            requestEntity.familyDiseaseInfo.comments = comments;
+            requestEntity.familyDiseaseInfo.updatedUserId = doctorId;
+            requestEntity = JSON.stringify(requestEntity);
+            console.log("req entity is----", requestEntity);
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8081/dbotica-spring/doctor/addPatientFamilyHistory",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.setRequestHeader("Accept", "application/json");
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                data: requestEntity,
+                success: function(response) {
+                    var patientFamilyDetailsObject = {};
+                    patientFamilyDetailsObject = $.parseJSON(response.response);
+                    var familyArray = [];
+                    familyArray = patientFamilyDetailsObject.familyHistory;
+                    console.log("add family response is----", patientFamilyDetailsObject);
+                    console.log("family array is----", familyArray);
+                    var familyMember = familyArray.slice(-1);
+                    console.log("family member is-----", familyMember);
+                    $("#addFamilyHistoryBody").append('<tr><td>' + familyMember[0]['relationName'] + '</td><td>' + familyMember[0]['diseaseName'] + '</td><td>' + familyMember[0]['comments'] + '</td></tr>');
+                }
+            });
+        });
+
+
+
+        var dateFormatChange = function(date) {
+            var readableDate = new Date(date);
+            readableDate = readableDate.toLocaleString();
+            readableDate = readableDate.split(",")[0];
+            readableDateArray = readableDate.split("/");
+            readableDate = readableDateArray[1] + '-' + readableDateArray[0] + '-' + readableDateArray[2];
+            return readableDate;
+        }
+    });
+    </script>
+</body>
+
+</html>

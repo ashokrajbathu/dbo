@@ -4,6 +4,7 @@ myapp.service('dboticaServices', ['$http', '$q', function($http, $q) {
 
     var loginResponseSuccessValue, loginResponseErrorCode, loginResponseDoctorsList, loginResponseDoctorName, loginResponseDoctorSpecialization, loginResponseDoctorId, loginResponseDayStartTime, loginResponseDayEndTime, loginResponseTimePerPatient;
     var loginResponsePatientsList = [];
+    var itemSelected;
 
     this.login = function(userEmailId, password) {
         var inputData = {};
@@ -189,6 +190,113 @@ myapp.service('dboticaServices', ['$http', '$q', function($http, $q) {
         return deferred.promise;
     }
 
+    this.addItemIntoStock = function(object) {
+        console.log("object is----", object);
+        var deferred = $q.defer();
+        var requestEntity = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/inventory/addItem',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(object)
+        }
+        $http(requestEntity).then(function(response) {
+            deferred.resolve(response);
+        }, function(errorResponse) {
+            deferred.reject(errorResponse);
+        });
+        return deferred.promise;
+    }
+
+    this.getItemsOfTheTable = function(start, limit, organizationId) {
+        var deferred = $q.defer();
+        var requestEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId }),
+            withCredentials: true,
+            async: false
+        }
+        $http(requestEntity).then(function(response) {
+            deferred.resolve(response);
+        }, function(errorResponse) {
+            deferred.reject(errorResponse);
+        });
+        return deferred.promise;
+    }
+
+    this.addBatchToTheDrug = function(requestEntity) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/inventory/addBatch',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: requestEntity
+        }
+        $http(req).then(function(response) {
+            deferred.resolve(response);
+        }, function(errorResponse) {
+            deferred.reject(response);
+        });
+        return deferred.promise;
+    }
+
+    this.getAllBatches = function(itemId, organizationId) {
+        var deferred = $q.defer();
+        var requestEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/inventory/getItemDetails?itemId=' + itemId + '&organizationId=' + organizationId,
+            withCredentials: true
+        }
+        $http(requestEntity).then(function(response) {
+            deferred.resolve(response);
+        }, function(errorResponse) {
+            deferred.reject(errorResponse);
+        });
+        return deferred.promise;
+    }
+
+    this.getItemFromDB = function(itemName, organizationId) {
+        var deferred = $q.defer();
+        var requestEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "itemName": itemName, "organizationId": organizationId }),
+            withCredentials: true,
+        }
+        $http(requestEntity).then(function(response) {
+            deferred.resolve(response);
+        }, function(errorResponse) {
+            deferred.reject(errorResponse);
+        });
+        return deferred.promise;
+    }
+
+    this.updateTheBatch = function(req) {
+        var deferred = $q.defer();
+        var requestEntity = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/inventory/updateBatchCount',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: req
+        }
+        $http(requestEntity).then(function(response) {
+            deferred.resolve(response);
+        }, function(errorResponse) {
+            deferred.reject(response);
+        });
+        return deferred.promise;
+    }
+
     this.getPatientsListOfDoctorSorted = function(patientsList) {
         var walkInPatientsList = [];
         var appointmentPatientsList = [];
@@ -306,6 +414,14 @@ myapp.service('dboticaServices', ['$http', '$q', function($http, $q) {
 
     this.getFirstDoctorPatientsList = function() {
         return loginResponsePatientsList;
+    }
+
+    this.setItemSelected = function(value) {
+        itemSelected = value;
+    }
+
+    this.getSelectedItem = function() {
+        return itemSelected;
     }
 
 

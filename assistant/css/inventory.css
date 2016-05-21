@@ -1,0 +1,156 @@
+.inventory {
+    margin-left: 40px;
+}
+
+.inventoryHeader {
+    margin-top: -25px;
+}
+
+.itemSearchBox {
+    padding-bottom: 8px;
+    padding-left: 20px;
+    border: 1px solid #3c8dbc;
+    border-radius: 4px;
+    width: 95%;
+    height: 30px;
+}
+
+.viewAllItemsBtn {
+    margin-bottom: 4px;
+    padding-top: 2px;
+    height: 28px;
+    background-color: #3c8dbc;
+    color: white;
+}
+
+#warning {
+    color: red;
+}
+
+.viewAllItemsBtn:hover {
+    color: white;
+    background-color: #367fa9;
+}
+
+.prevNextBtns {
+    height: 22px;
+    padding-top: 0px;
+}
+
+.prevBtnDisabled,
+.nextBtnDisabled {
+    cursor: default;
+}
+
+.prevBtnEnabled,
+.prevBtnDisabled {
+    margin-left: 20px;
+    margin-right: 5px;
+}
+
+.prevBtnEnabled,
+.nextBtnEnabled {
+    color: white;
+    background-color: #3c8dbc;
+}
+
+.prevBtnEnabled:hover,
+.nextBtnEnabled:hover {
+    color: white;
+    background-color: #367fa9;
+}
+
+#itemInputTextBox {
+    border-radius: 4px;
+    border: 1px solid #3c8dbc;
+}
+
+.input-group {
+    margin-bottom: 8px;
+}
+
+.glyphicon-search {
+    border: 1px solid #3c8dbc;
+}
+
+.input-group-btn:last-child>.btn {
+    border-radius: 4px;
+    margin-top: 5px;
+    height: 30px;
+    border: 1px solid #3c8dbc;
+}
+
+.glyphicon {
+    color: #3c8dbc;
+    background-color: white;
+    border: none;
+}
+
+#warningMessage {
+    color: red;
+    margin-left: 50px;
+}
+
+.ui-datepicker select.ui-datepicker-month,
+.ui-datepicker select.ui-datepicker-year {
+    color: black;
+}
+
+.stockLevelBtn {}
+
+#stockLevelLabel,
+#stockLevelTypeLabel {
+    padding-right: 5px;
+}
+
+#stockLevelTypeLabel {
+    padding-right: 32px;
+    margin-left: 14px;
+}
+
+.itemSearchBox,
+.stockLevelForm {
+    margin-bottom: 6px;
+    margin-top: 6px;
+}
+
+
+/*.stockLevelForm {
+    margin-top: 12px;
+}*/
+
+#info {
+    margin-top: 3px;
+}
+
+.inventorySearchRow {
+    margin-left: -30px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.inventoryHeaderHeading {
+    display: inline-block;
+}
+
+.btn.inventoryBtn {
+    color: white;
+    background-color: #3c8dbc;
+    border: 1px solid #367fa9;
+}
+
+.headerBtn {
+    width: 100px;
+}
+
+.inventoryBtn:hover {
+    background-color: #367fa9;
+    color: white;
+}
+
+.inventoryButtonsGrp {
+    margin-top: 20px;
+    float: right;
+    position: relative;
+    margin-right: 30px;
+}
