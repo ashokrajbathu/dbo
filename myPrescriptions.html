@@ -292,7 +292,7 @@
         var listElement = $this;
         var perPage = settings.perPage;
         var children = listElement.children();
-		var accordionChildren = listElement.find(settings.accordionChildSelector);
+        var accordionChildren = listElement.find(settings.accordionChildSelector);
         var pager = $('.pagination');
 
         if (typeof settings.childSelector != "undefined") {
@@ -366,7 +366,7 @@
                 endOn = startAt + perPage;
 
             children.css('display', 'none').slice(startAt, endOn).show();
-			accordionChildren.hide();
+            accordionChildren.hide();
 
             if (page >= 1) {
                 pager.find('.prev_link').show();
@@ -528,21 +528,24 @@
         console.log("test data object is-----", testData);
         if (!!testData && testData.length > 0) {
             var newCount1 = 1;
-            content1 += '<h4>Test Details</h4><table id="test-details-myPrescription" style="width:100%;" class="table-bordered table-striped"><thead><tr><th>S.No</th><th>Test Name</th><th>Remarks</th></tr></thead><tbody>';
-            for (s in testData) {
+            /*console.log("test new count1 is----"+newCount1);*/
+            content1+='<div id="test-details-myPrescription">';
+            content1 += '<h4>Test Details</h4>';
+            content1+='<table class="table table-bordered table-striped"><thead><tr><th>S.No.</th><th>Test Name</th><th>Remarks</th></tr></thead><tbody>';
+           /* content1 += '<table id="test-details-myPrescription" class="table table-bordered table-striped"><thead><tr><th>S.No</th><th>Test Name</th><th>Remarks</th></tr></thead><tbody>';*/
+            for (k in testData) {
                 console.log("in for loop test data----");
-                console.log("new count 1----" + newCount1);
-                console.log("test name is------" + testData[s]['testName']);
-                console.log("test remarks is----------" + testData[s]['remark']);
-                content1 += '<tr><td>' + newCount1 + '</td><td>' + testData[s]['testName'] + '</td><td>' + testData[s]['remark'] + '</td></tr>';
+                /*console.log("new count 1----" + newCount1);*/
+                console.log("test name is------" + testData[k]['testName']);
+                console.log("test remarks is----------" + testData[k]['remark']);
+                content1 += '<tr><td>' + newCount1 + '</td><td>' + testData[k]['testName'] + '</td><td>' + testData[k]['remark'] + '</td></tr>';
                 newCount1++;
             }
-            content1 += '</tbody></table>';
+            content1 += '</tbody></table></div>';
         } else {
             console.log("hide------");
 
-            $('#test-details-myPrescription').hide();
-            $('#test-details-myPrescription').hide();
+            /*$('#test-details-myPrescription').hide();*/
 
         }
         content1 += '</div></div></div>';
@@ -623,7 +626,7 @@
         $(id).pageMe({
             pagerSelector: '#myPager',
             childSelector: '.accordion-row',
-			accordionChildSelector: '.accordion-row-child',
+            accordionChildSelector: '.accordion-row-child',
             showPrevNext: true,
             hidePageNumbers: false,
             perPage: 5
@@ -677,7 +680,7 @@
                 removeCookies();
                 localStorage.setItem("isLoggedIn", false);
                 window.location.replace("login.html");
-                
+
             },
         });
     });
