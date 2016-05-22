@@ -6,6 +6,11 @@
     margin-top: -25px;
 }
 
+.activeBtnInventory{
+    color:white;
+    background-color: #ff4c4c;
+}
+
 .itemSearchBox {
     padding-bottom: 8px;
     padding-left: 20px;

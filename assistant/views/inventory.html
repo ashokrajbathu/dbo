@@ -97,9 +97,9 @@
                     <form class="form-inline ">
                         <div class=" stockLevelForm form-group ">
                             <label id="stockLevelLabel " for="exampleStockLevel ">Stock Level</label>
-                            <button type="submit " class="btn inventoryBtn ">All</button>
-                            <button type="submit " class="btn inventoryBtn ">Low</button>
-                            <button type="submit " class="btn inventoryBtn ">Expired</button>
+                            <button type="submit" ng-click="viewAllItemsSelect()" ng-class="{'activeBtnInventory':isAllRedActive,'inventoryBtn':isAllBlueActive}" class="btn">All</button>
+                            <button type="submit" ng-click="viewLowItemsSelect()" ng-class="{'activeBtnInventory':isLowRedActive,'inventoryBtn':isLowBlueActive}" class="btn">Low</button>
+                            <button type="submit" ng-click="viewExpiredItemsSelect()" ng-class="{'activeBtnInventory':isExpiredRedActive,'inventoryBtn':isExpiredBlueActive}" class="btn">Expired</button>
                         </div>
                     </form>
                 </div>

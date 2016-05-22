@@ -8,13 +8,55 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
+                    <h3 class="modal-title">Add New Batch</h3>
                 </div>
                 <div class="modal-body">
-                    <p>Some text in the modal.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <p ng-if="warningMessageItemInfo" id="warningMessage">Please enter the (*) marked Fields</p>
+                    <form class="form-horizontal" name="addBatchForm">
+                        <div class="form-group ">
+                            <label for="addBatchOrganizationId" class="col-sm-3 control-label">Organization Id</label>
+                            <div class="col-sm-6 ">
+                                <input type="text " class="form-control " ng-model="addBatchInItemInfo.organizationId" id="addBatchOrganizationIdItemInfo" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="inputItemNameAddBatch" class="col-sm-3 control-label ">Item Name</label>
+                            <div class="col-sm-6 ">
+                                <input type="text " class="form-control " ng-model="addBatchInItemInfo.itemName" id="inputItemNameAddBatchItemInfo" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="addBatchNumber" class="col-sm-3 control-label ">Batch No.</label>
+                            <div class="col-sm-6 ">
+                                <input type="text " class="form-control " ng-model="addBatchInItemInfo.batchNumber" id="addBatchNumberItemInfo">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="addBatchCostPrice" class="col-sm-3 control-label ">Cost Price</label>
+                            <div class="col-sm-6 ">
+                                <input type="text " class="form-control" ng-model="addBatchInItemInfo.costPrice" id="addBatchCostPriceItemInfo">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="addBatchUnits" class="col-sm-3 control-label ">Units(*)</label>
+                            <div class="col-sm-6 ">
+                                <input type="text " name="units" class="form-control" ng-model="addBatchInItemInfo.units" id="addBatchUnitsItemInfo">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="addBatchExpiryTime" class="col-sm-3 control-label ">Expiry Date(*)</label>
+                            <div class="col-sm-6">
+                                <input type="text " class="form-control " name="expiryDate" ng-model="addBatchInItemInfo.expiryDate" id="addBatchExpiryTimeItemInfo" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputAddBatchItemInfo" class="col-sm-3 control-label"></label>
+                            <div class="col-sm-6">
+                                <button type="button submit" ng-click="addBatchForSelectedItemInItemInfo()" class="btn inventoryBtn">Add Batch</button>
+                                <button type="button" data-dismiss="modal" class="btn inventoryBtn">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

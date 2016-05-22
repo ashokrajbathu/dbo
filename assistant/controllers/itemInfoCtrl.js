@@ -1,17 +1,33 @@
 angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     localStorage.setItem("currentState", "itemInfo");
+
+    angular.element("#addBatchExpiryTimeItemInfo").datepicker({
+        dateFormat: "dd/mm/yy",
+        autoclose: true,
+        'minDate': 0,
+        changeMonth: true,
+        changeYear: true
+    });
+
+
     var itemSelected;
     $scope.batches = {};
     var batchesInfo = [];
+    $scope.warningMessageItemInfo = false;
+    $scope.addBatchInItemInfo = {};
     $scope.informationOfBatches = [];
     itemSelected = dboticaServices.getSelectedItem();
     console.log("selected item is----", itemSelected);
     if (itemSelected !== undefined) {
         localStorage.setItem('currentItemId', itemSelected.id);
         localStorage.setItem('organizationId', itemSelected.organizationId);
+        localStorage.setItem('itemName', itemSelected.itemName);
     }
     var currentItemId = localStorage.getItem('currentItemId');
     var organizationId = localStorage.getItem('organizationId');
+    var itemName = localStorage.getItem('itemName');
+    $scope.addBatchInItemInfo.itemName = itemName;
+    $scope.addBatchInItemInfo.organizationId = organizationId;
 
     var promise = dboticaServices.getAllBatches(currentItemId, organizationId);
     promise.then(function(response) {
@@ -70,17 +86,99 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', 'dboti
         requestEntity.organizationId = item.organizationId;
         requestEntity.batchState = valueInSelectBox;
         requestEntity.units = valueInTextBox;
-        requestEntity = JSON.stringify(requestEntity);
-        console.log("request entity is---", requestEntity);
-        var promise = dboticaServices.updateTheBatch(requestEntity);
-        promise.then(function(response) {
-            console.log("response after updating is----", response);
-            var updatedBatchInfo = $.parseJSON(response.data.response);
-            console.log("updated batch is-----", updatedBatchInfo);
-        }, function(errorResponse) {
-            console.log("in error response of update batch");
-        });
+        if (parseInt(valueInTextBox) <= item.availableStock) {
+            requestEntity = JSON.stringify(requestEntity);
+            console.log("request entity is---", requestEntity);
+            var promise = dboticaServices.updateTheBatch(requestEntity);
+            promise.then(function(response) {
+                console.log("response after updating is----", response);
+                var updatedBatchInfo = $.parseJSON(response.data.response);
+                for (var itemBatchIndex = 0; itemBatchIndex < $scope.informationOfBatches.length; itemBatchIndex++) {
+                    if ($scope.informationOfBatches[itemBatchIndex].id == updatedBatchInfo.id) {
+                        $scope.informationOfBatches[itemBatchIndex].availableStock = updatedBatchInfo.units;
+                        $scope.informationOfBatches[itemBatchIndex].totalStock = updatedBatchInfo.units;
+                        if (updatedBatchInfo.hasOwnProperty('consumedUnits')) {
+                            $scope.informationOfBatches[itemBatchIndex].consumedUnits = updatedBatchInfo.consumedUnits;
+                            $scope.informationOfBatches[itemBatchIndex].totalStock += updatedBatchInfo.consumedUnits;
+                        }
+                        if (updatedBatchInfo.hasOwnProperty('expiredUnits')) {
+                            $scope.informationOfBatches[itemBatchIndex].expiredUnits = updatedBatchInfo.expiredUnits;
+                            $scope.informationOfBatches[itemBatchIndex].totalStock += updatedBatchInfo.expiredUnits;
+                        }
+                        if (updatedBatchInfo.hasOwnProperty('returnedUnits')) {
+                            $scope.informationOfBatches[itemBatchIndex].returnedUnits = updatedBatchInfo.returnedUnits;
+                            $scope.informationOfBatches[itemBatchIndex].totalStock += updatedBatchInfo.returnedUnits;
+                        }
+                    }
+                }
+                console.log("updated batch is-----", updatedBatchInfo);
+            }, function(errorResponse) {
+                console.log("in error response of update batch");
+            });
+        } else {
+            swal({
+                title: "Error",
+                text: "Please enter units below available stock.",
+                type: "error",
+                confirmButtonText: "OK"
+            }, function() {
+
+            });
+        }
         angular.element(idOfTheTextBox).val('');
+    }
+
+    $scope.addBatchForSelectedItemInItemInfo = function() {
+        var requestEntity = {};
+        if ($scope.addBatchInItemInfo.units == undefined || $scope.addBatchInItemInfo.expiryDate == undefined) {
+            $scope.warningMessageItemInfo = true;
+        } else {
+            requestEntity.organizationId = organizationId;
+            requestEntity.batchNo = $scope.addBatchInItemInfo.batchNumber;
+            requestEntity.itemId = currentItemId;
+            requestEntity.costPrice = $scope.addBatchInItemInfo.costPrice * 100;
+            requestEntity.units = $scope.addBatchInItemInfo.units;
+            requestEntity.consumedUnits = 0;
+            var dateSelectedForBatch = $scope.addBatchInItemInfo.expiryDate;
+            var dateSelectedArray = dateSelectedForBatch.split('/');
+            dateSelectedForBatch = dateSelectedArray[1] + '/' + dateSelectedArray[0] + '/' + dateSelectedArray[2];
+            dateSelectedForBatch = new Date(dateSelectedForBatch);
+            dateSelectedForBatch = dateSelectedForBatch.getTime();
+            requestEntity.expiryTime = dateSelectedForBatch;
+            requestEntity.batchState = "ACTIVE";
+            requestEntity.entityState = "ACTIVE";
+            requestEntity = JSON.stringify(requestEntity);
+            console.log("added batch is----", requestEntity);
+            var promise = dboticaServices.addBatchToTheDrug(requestEntity);
+            promise.then(function(response) {
+                var success = response.data.success;
+                if (success) {
+                    swal({
+                        title: "Info",
+                        text: "Batch Successfully Added.",
+                        type: "info",
+                        confirmButtonText: "OK",
+                        allowOutsideClick: true
+                    });
+                }
+                var itemObject = $.parseJSON(response.data.response);
+                console.log("item after adding batch is-----", itemObject);
+                var newObject = {};
+                newObject.id = itemObject.id;
+                newObject.organizationId = itemObject.organizationId;
+                newObject.batchNo = itemObject.batchNo;
+                newObject.expiryTime = itemObject.expiryTime;
+                newObject.availableStock = itemObject.units;
+                newObject.totalStock = itemObject.units;
+                newObject.consumedUnits = 0;
+                newObject.returnedUnits = 0;
+                newObject.expiredUnits = 0;
+                $scope.informationOfBatches.push(newObject);
+                console.log("array after adding batch is-----", $scope.informationOfBatches);
+            }, function(errorResponse) {
+
+            });
+        }
 
     }
 }]);

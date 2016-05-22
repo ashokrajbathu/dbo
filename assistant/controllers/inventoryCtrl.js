@@ -8,6 +8,12 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
     $scope.prevNextBtnsRow = true;
     $scope.viewAllItemsBtn = false;
     $scope.warning = false;
+    $scope.isAllRedActive = true;
+    $scope.isAllBlueActive = false;
+    $scope.isLowBlueActive = true;
+    $scope.isExpiredBlueActive = true;
+    $scope.isLowRedActive = false;
+    $scope.isExpiredRedActive = false;
 
     $scope.itemsDisplayArray = [];
     $scope.start = 0;
@@ -202,6 +208,39 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
             }, function(errorResponse) {
 
             });
+        }
+    }
+
+    $scope.viewLowItemsSelect = function() {
+        if ($scope.isLowBlueActive) {
+            $scope.isLowBlueActive = false;
+            $scope.isLowRedActive = true;
+            $scope.isAllRedActive = false;
+            $scope.isExpiredRedActive = false;
+            $scope.isAllBlueActive = true;
+            $scope.isExpiredBlueActive = true;
+        }
+    }
+
+    $scope.viewAllItemsSelect = function() {
+        if ($scope.isAllBlueActive) {
+            $scope.isAllBlueActive = false;
+            $scope.isAllRedActive = true;
+            $scope.isLowBlueActive = true;
+            $scope.isLowRedActive = false;
+            $scope.isExpiredBlueActive = true;
+            $scope.isExpiredRedActive = false;
+        }
+    }
+
+    $scope.viewExpiredItemsSelect = function() {
+        if ($scope.isExpiredBlueActive) {
+            $scope.isExpiredBlueActive = false;
+            $scope.isExpiredRedActive = true;
+            $scope.isAllRedActive = false;
+            $scope.isAllBlueActive = true;
+            $scope.isLowRedActive = false;
+            $scope.isLowBlueActive = true;
         }
     }
 
