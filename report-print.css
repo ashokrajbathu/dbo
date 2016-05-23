@@ -14,8 +14,8 @@ hr {
     margin-left: 25px;
 }
 
-#pr-doctor-name{
-    width:100%;
+#pr-doctor-name {
+    width: 100%;
 }
 
 #patientDetails1 {
@@ -106,8 +106,28 @@ label {
     margin-left: -20px;
 }
 
-#pr-doctor-phoneNumber {
+.phoneRow{
+    margin-top: -12px;
+}
+
+.specializationRow {
+    margin-top: -3px;
+    margin-left: 2px;
+    font-weight: 500;
+}
+
+#pr-doctor-specialization{
+    font-style: bold;
+}
+
+#pr-doctor-phoneNumber,
+#pr-doctor-registrationNo {
+    font-weight: 800;
     margin-right: 10%;
+}
+
+#registrationRow {
+    margin-top: -12px;
 }
 
 #billNo {

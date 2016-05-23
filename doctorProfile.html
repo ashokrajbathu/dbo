@@ -250,7 +250,7 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                                <span class="hidden-xs">Doctor 1</span>
+                                <span id="doctorNameInTheHeader" class="hidden-xs"></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
@@ -285,7 +285,7 @@
                         <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
-                        <p>Doctor 1</p>
+                        <p id="doctorNameInSideBar"></p>
                         <!-- Status -->
                         <a href="doctorProfile.html">Profile</a>
                     </div>
@@ -558,20 +558,20 @@
 
 
     })(jQuery);
-	
-	function removeCookies(){
-		$.removeCookie('currentPrescription');
-		$.removeCookie('newPatientPhoneNumber');
+
+    function removeCookies() {
+        $.removeCookie('currentPrescription');
+        $.removeCookie('newPatientPhoneNumber');
         $.removeCookie('drugHtml');
         $.removeCookie('drugEntryCount');
         $.removeCookie('testHtml');
         $.removeCookie('testEntryCount');
-		$.removeCookie('currentPatientInfo');
+        $.removeCookie('currentPatientInfo');
         $.removeCookie('drugPojoList');
         $.removeCookie('testPojoList');
-	}
-	
-	$('#logoutButton').click(function(e) {
+    }
+
+    $('#logoutButton').click(function(e) {
         $.ajax({
             type: "POST",
             url: "http://localhost:8081/dbotica-spring/doctor/logout",
@@ -587,7 +587,7 @@
                 removeCookies();
                 localStorage.setItem('isLoggedIn', false);
                 window.location.replace("login.html");
-                
+
             }
         });
     });
@@ -678,18 +678,18 @@
         var doctorName = localStorage.getItem('firstName');
         console.log("doctor name is----" + doctorName);
         $("#doctorName").text(doctorName);
+        $("#doctorNameInTheHeader").text(doctorName);
+        $("#doctorNameInSideBar").text(doctorName);
 
         if (localStorage.getItem("isLoggedIn") == "false") {
             window.location.replace("login.html");
         }
 
-        var doctorName = localStorage.getItem('firstName');
-        console.log("doctor name is----" + doctorName);
-        $("#doctorName").text(doctorName);
+        
         // console.log('hi');
         // console.log(localStorage.getItem('doctorPojo'));
         var doctorData = $.parseJSON(localStorage.getItem('doctorPojo'));
-        console.log("doctor data in profile----",doctorData);
+        console.log("doctor data in profile----", doctorData);
         //alert("12312" + doctorData);
         //console.log('doctor data'+doctorData['firstName'] );
         if (doctorData['firstName'] != "" && doctorData['firstName'] != null)

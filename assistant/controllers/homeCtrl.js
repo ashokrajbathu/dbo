@@ -1,4 +1,4 @@
-angular.module('personalAssistant').controller('homeCtrl', ['$scope', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
 
     var currentStateActive = localStorage.getItem("currentState");
     switch (currentStateActive) {
@@ -28,12 +28,12 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', 'dboticaSe
     $scope.logout = function() {
         var promise = dboticaServices.logout();
         promise.then(function(response) {
-            console.log("in logout success");
+            $log.log("in logout success");
             localStorage.setItem("isLoggedIn", false);
             localStorage.clear();
             $state.go('login');
         }, function(errorResponse) {
-            console.log("in logout error response");
+            $log.log("in logout error response");
         });
     }
 }]);

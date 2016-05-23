@@ -1,6 +1,6 @@
 var myapp = angular.module('appServices', []);
 
-myapp.service('dboticaServices', ['$http', '$q', function($http, $q) {
+myapp.service('dboticaServices', ['$http', '$log', '$q', function($http, $log, $q) {
 
     var loginResponseSuccessValue, loginResponseErrorCode, loginResponseDoctorsList, loginResponseDoctorName, loginResponseDoctorSpecialization, loginResponseDoctorId, loginResponseDayStartTime, loginResponseDayEndTime, loginResponseTimePerPatient;
     var loginResponsePatientsList = [];
@@ -53,11 +53,11 @@ myapp.service('dboticaServices', ['$http', '$q', function($http, $q) {
             withCredentials: true
         }
         $http(req).then(function(response) {
-            console.log("selected doctor response is----", response);
+            $log.log("selected doctor response is----", response);
             deferred.resolve(response);
 
         }, function(errorResponse) {
-            console.log("In doctor selected error response.");
+            $log.log("In doctor selected error response.");
             deferred.reject(errorResponse);
 
         });
@@ -139,8 +139,8 @@ myapp.service('dboticaServices', ['$http', '$q', function($http, $q) {
         var req = {
             method: 'GET',
             url: 'http://localhost:8081/dbotica-spring/assistant/getDoctorEvents?doctorId=' + doctorId + '&requestTime=' + milliSecsOfDate,
-            withCredentials: true,
-            async: false
+            withCredentials: true
+
         }
         $http(req).then(function(response) {
             deferred.resolve(response);
@@ -191,7 +191,7 @@ myapp.service('dboticaServices', ['$http', '$q', function($http, $q) {
     }
 
     this.addItemIntoStock = function(object) {
-        console.log("object is----", object);
+        $log.log("object is----", object);
         var deferred = $q.defer();
         var requestEntity = {
             method: 'POST',
@@ -211,13 +211,81 @@ myapp.service('dboticaServices', ['$http', '$q', function($http, $q) {
         return deferred.promise;
     }
 
-    this.getItemsOfTheTable = function(start, limit, organizationId) {
+    this.getItemsOfTheTable = function(start, limit, stockType, itemType, organizationId) {
         var deferred = $q.defer();
+        var localUrl;
+        if (itemType == "All") {
+            switch (stockType) {
+                case 'All':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId });
+                    break;
+                case 'Low':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "lowStock": true });
+                    break;
+                case 'Expired':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "expired": true });
+                    break;
+            }
+
+        }
+        if (itemType == "Drug") {
+            switch (stockType) {
+                case 'All':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "inventoryItemType": "DRUG" });
+                    break;
+                case 'Low':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "lowStock": true, "inventoryItemType": "DRUG" });
+                    break;
+                case 'Expired':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "expired": true, "inventoryItemType": "DRUG" });
+                    break;
+            }
+
+        }
+        if (itemType == "Supplies") {
+            switch (stockType) {
+                case 'All':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "inventoryItemType": "SUPPLIES" });
+                    break;
+                case 'Low':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "lowStock": true, "inventoryItemType": "SUPPLIES" });
+                    break;
+                case 'Expired':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "expired": true, "inventoryItemType": "SUPPLIES" });
+                    break;
+            }
+
+        }
+        if (itemType == "Equipments") {
+            switch (stockType) {
+                case 'All':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "inventoryItemType": "EQUIPMENT" });
+                    break;
+                case 'Low':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "lowStock": true, "inventoryItemType": "EQUIPMENT" });
+                    break;
+                case 'Expired':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "expired": true, "inventoryItemType": "EQUIPMENT" });
+                    break;
+            }
+        }
+        if (itemType == "Others") {
+            switch (stockType) {
+                case 'All':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "inventoryItemType": "OTHERS" });
+                    break;
+                case 'Low':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "lowStock": true, "inventoryItemType": "OTHERS" });
+                    break;
+                case 'Expired':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "expired": true, "inventoryItemType": "OTHERS" });
+                    break;
+            }
+        }
         var requestEntity = {
             method: 'GET',
-            url: 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId }),
-            withCredentials: true,
-            async: false
+            url: localUrl,
+            withCredentials: true
         }
         $http(requestEntity).then(function(response) {
             deferred.resolve(response);
@@ -242,7 +310,7 @@ myapp.service('dboticaServices', ['$http', '$q', function($http, $q) {
         $http(req).then(function(response) {
             deferred.resolve(response);
         }, function(errorResponse) {
-            deferred.reject(response);
+            deferred.reject(errorResponse);
         });
         return deferred.promise;
     }
@@ -292,7 +360,178 @@ myapp.service('dboticaServices', ['$http', '$q', function($http, $q) {
         $http(requestEntity).then(function(response) {
             deferred.resolve(response);
         }, function(errorResponse) {
-            deferred.reject(response);
+            deferred.reject(errorResponse);
+        });
+        return deferred.promise;
+    }
+
+    this.lowStockExpiredStockItems = function(lowOrExpired, start, limit, itemType, organizationId) {
+        var deferred = $q.defer();
+        var requestEntity = {};
+        if (lowOrExpired == "lowItems") {
+            var localUrl;
+            switch (itemType) {
+                case 'All':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
+                    break;
+                case 'Drug':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "inventoryItemType": "DRUG", "organizationId": organizationId });
+                    break;
+                case 'Supplies':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "inventoryItemType": "SUPPLIES", "organizationId": organizationId });
+                    break;
+                case 'Equipments':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "inventoryItemType": "EQUIPMENT", "organizationId": organizationId });
+                    break;
+                case 'Others':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "inventoryItemType": "OTHERS", "organizationId": organizationId });
+                    break;
+            }
+            requestEntity = {
+                method: 'GET',
+                url: localUrl,
+                withCredentials: true
+            }
+        } else {
+            $log.log("in expired");
+            var localUrl;
+            switch (itemType) {
+                case 'All':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
+                    break;
+                case 'Drug':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "inventoryItemType": "DRUG", "organizationId": organizationId });
+                    break;
+                case 'Supplies':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "inventoryItemType": "SUPPLIES", "organizationId": organizationId });
+                    break;
+                case 'Equipments':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "inventoryItemType": "EQUIPMENT", "organizationId": organizationId });
+                    break;
+                case 'Others':
+                    localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "inventoryItemType": "OTHERS", "organizationId": organizationId });
+                    break;
+            }
+            requestEntity = {
+                method: 'GET',
+                url: localUrl,
+                withCredentials: true
+            }
+        }
+
+        $http(requestEntity).then(function(response) {
+            deferred.resolve(response);
+        }, function(errorResponse) {
+            deferred.reject(errorResponse);
+        });
+
+        return deferred.promise;
+    }
+
+    this.getStockItemsForTheTable = function(type, start, limit, stockType, organizationId) {
+        var localUrl;
+        var deferred = $q.defer();
+        var requestEntity;
+        switch (type) {
+            case 'All':
+                switch (stockType) {
+                    case 'All':
+                        localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId });
+                        break;
+                    case 'Low':
+                        localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        break;
+                    case 'Expired':
+                        localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        break;
+                }
+                break;
+            case 'DrugItems':
+                switch (stockType) {
+                    case 'All':
+                        localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "DRUG", "start": start, "limit": limit, "organizationId": organizationId });
+                        break;
+                    case 'Low':
+                        localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "DRUG", "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        break;
+                    case 'Expired':
+                        localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "DRUG", "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        break;
+                }
+                break;
+            case 'EquipmentItems':
+                $log.log("in equipment items");
+                switch (stockType) {
+                    case 'All':
+                        $log.log("in stock type of equipment----");
+                        localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "EQUIPMENT", "start": start, "limit": limit, "organizationId": organizationId });
+                        $log.log("local url is----", localUrl);
+                        break;
+                    case 'Low':
+                        localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "EQUIPMENT", "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        break;
+                    case 'Expired':
+                        localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "EQUIPMENT", "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        break;
+                }
+                break;
+            case 'SuppliesItems':
+                switch (stockType) {
+                    case 'All':
+                        localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "SUPPLIES", "start": start, "limit": limit, "organizationId": organizationId });
+                        break;
+                    case 'Low':
+                        localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "SUPPLIES", "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        break;
+                    case 'Expired':
+                        localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "SUPPLIES", "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        break;
+                }
+                break;
+            case 'OtherItems':
+                switch (stockType) {
+                    case 'All':
+                        localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "OTHERS", "start": start, "limit": limit, "organizationId": organizationId });
+                        break;
+                    case 'Low':
+                        localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "OTHERS", "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        break;
+                    case 'Expired':
+                        localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "OTHERS", "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        break;
+                }
+                break;
+        }
+        requestEntity = {
+            method: 'GET',
+            url: localUrl,
+            withCredentials: true
+        }
+        $log.log("req entity is----", requestEntity);
+        $http(requestEntity).then(function(response) {
+            deferred.resolve(response);
+        }, function(errorResponse) {
+            deferred.reject(errorResponse);
+        });
+        return deferred.promise;
+    }
+
+    this.submitServiceRequest = function(serviceRequestEntity) {
+        var deferred = $q.defer();
+        var serviceRequestIs = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/organization/updateDoctorPrices',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(serviceRequestEntity)
+        }
+        $http(serviceRequestIs).then(function(successResponse) {
+            deferred.resolve(successResponse);
+        }, function(errorResponse) {
+            deferred.reject(errorResponse);
         });
         return deferred.promise;
     }
@@ -315,7 +554,7 @@ myapp.service('dboticaServices', ['$http', '$q', function($http, $q) {
                 continue;
             } else {
                 if (!!appointmentPatientsList[appointmentPatientsListIndex].patientId && appointmentPatientsList[appointmentPatientsListIndex].patientId.length > 0) {
-                    console.log("in final appointment list---");
+                    $log.log("in final appointment list---");
                     loginResponsePatientsList.push(appointmentPatientsList[appointmentPatientsListIndex]);
                 }
             }
@@ -325,16 +564,16 @@ myapp.service('dboticaServices', ['$http', '$q', function($http, $q) {
                 continue;
             } else {
                 if (!!walkInPatientsList[walkInPatientsListIndex].patientId && walkInPatientsList[walkInPatientsListIndex].patientId.length > 0) {
-                    console.log("in final walkinList---");
+                    $log.log("in final walkinList---");
                     loginResponsePatientsList.push(walkInPatientsList[walkInPatientsListIndex]);
                 }
             }
         }
 
-        console.log("walk in patients list is----", walkInPatientsList);
-        console.log("appointment patients list is----", appointmentPatientsList);
-        console.log("patients list to be displayed is----", loginResponsePatientsList);
-        console.log("patients List is----", patientsList);
+        $log.log("walk in patients list is----", walkInPatientsList);
+        $log.log("appointment patients list is----", appointmentPatientsList);
+        $log.log("patients list to be displayed is----", loginResponsePatientsList);
+        $log.log("patients List is----", patientsList);
         return loginResponsePatientsList;
 
     }

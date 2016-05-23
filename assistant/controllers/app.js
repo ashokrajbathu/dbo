@@ -61,7 +61,7 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
         });
 });
 
-angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     $scope.singleModel = 1;
     $scope.radioModel = 'morning';
     $scope.checkModel = {
@@ -89,6 +89,7 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
         var promise = dboticaServices.login(userId, password);
         promise.then(function(response) {
             var success = response.data.success;
+            var currentAssistantObject = response.data.response;
             if (success === false) {
                 var errorCode = response.data.errorCode;
                 console.log("error code in is----" + errorCode);
@@ -101,8 +102,15 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
                             type: "error",
                             confirmButtonText: "OK"
                         }, function() {});
+                        break;
+                    case "USER_ALREADY_LOGGED_IN":
+                        localStorage.setItem('assistantCurrentlyLoggedIn', currentAssistantObject);
+                        $state.go('home');
+                        break;
                 }
             } else {
+                localStorage.setItem('assistantCurrentlyLoggedIn', currentAssistantObject);
+                $log.log("assistant info is----", $.parseJSON(response.data.response));
                 localStorage.setItem("isLoggedIn", true);
                 $state.go('home');
             }

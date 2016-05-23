@@ -1,4 +1,4 @@
-angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log', '$filter', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, $filter, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     localStorage.setItem("currentState", "inventory");
 
     $scope.prevBtnDisabled = true;
@@ -14,6 +14,16 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
     $scope.isExpiredBlueActive = true;
     $scope.isLowRedActive = false;
     $scope.isExpiredRedActive = false;
+    $scope.isAllTypeActive = true;
+    $scope.isDrugTypeActive = false;
+    $scope.isSuppliesTypeActive = false;
+    $scope.isEquipmentsTypeActive = false;
+    $scope.isOthersTypeActive = false;
+    $scope.isAllTypeBlueActive = false;
+    $scope.isDrugTypeBlueActive = true;
+    $scope.isSuppliesTypeBlueActive = true;
+    $scope.isEquipmentsTypeBlueActive = true;
+    $scope.isOthersTypeBlueActive = true;
 
     $scope.itemsDisplayArray = [];
     $scope.start = 0;
@@ -35,27 +45,29 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
         changeYear: true
     });
 
-    var promise = dboticaServices.getItemsOfTheTable($scope.start, $scope.limit, organizationId);
+    var promise = dboticaServices.getItemsOfTheTable($scope.start, $scope.limit, "All", "All", organizationId);
     promise.then(function(response) {
         itemsDisplayFunction(response);
     }, function(errorResponse) {
-        console.log("in inventory error response");
+        $log.log("in inventory error response");
     });
 
     $scope.nextBtnEnabledFunction = function() {
         var limit = 0;
+        var itemType = "";
+        var stockType = "";
         if ($scope.endDisplay < $scope.totalDrugsCount) {
             $scope.prevBtnEnabled = true;
             $scope.prevBtnDisabled = false;
             $scope.startDisplay = $scope.startDisplay + $scope.limit - 1;
             if (($scope.totalDrugsCount - $scope.endDisplay) <= displayListLength) {
-                console.log("check-----");
+                $log.log("check-----");
                 $scope.endCorrection = $scope.totalDrugsCount - $scope.endDisplay;
                 $scope.endDisplay = $scope.totalDrugsCount;
                 $scope.nextBtnEnabled = false;
                 $scope.nextBtnDisabled = true;
                 limit = $scope.endCorrection + 1;
-                console.log("limit value is----" + limit);
+                $log.log("limit value is----" + limit);
             } else {
                 $scope.endDisplay = $scope.endDisplay + $scope.limit - 1;
                 limit = $scope.limit;
@@ -64,7 +76,11 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
             $scope.nextBtnEnabled = false;
             $scope.nextBtnDisabled = true;
         }
-        var promise = dboticaServices.getItemsOfTheTable($scope.startDisplay - 1, limit, organizationId);
+        itemType = returnItemTypeActive();
+        stockType = returnStockType();
+        $log.log("item type is---", itemType);
+        $log.log("stock type is----", stockType);
+        var promise = dboticaServices.getItemsOfTheTable($scope.startDisplay - 1, limit, stockType, itemType, organizationId);
         promise.then(function(response) {
             var errorCode = response.data.errorCode;
             if (!!errorCode) {
@@ -82,7 +98,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
                         break;
                 }
             }
-            console.log("in next btn response----", response.data.response);
+            $log.log("in next btn response----", response.data.response);
             var nextBtnFetchedItemsObject = $.parseJSON(response.data.response);
             var nextBtnFetchedItems = nextBtnFetchedItemsObject.inventoryItems;
             if (nextBtnFetchedItems.length > displayListLength) {
@@ -92,11 +108,13 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
             }
 
         }, function(errorResponse) {
-            console.log("in error response of nex tbutton enabled");
+            $log.log("in error response of nex tbutton enabled");
         });
     }
 
     $scope.prevBtnEnabledFunction = function() {
+        var itemType = "";
+        var stockType = "";
         $scope.startDisplay = $scope.startDisplay - $scope.limit + 1;
         if ($scope.startDisplay == 1) {
             $scope.prevBtnDisabled = true;
@@ -109,14 +127,16 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
         } else {
             $scope.endDisplay = $scope.endDisplay - $scope.limit + 1;
         }
-        var promise = dboticaServices.getItemsOfTheTable($scope.startDisplay - 1, $scope.limit, organizationId);
+        itemType = returnItemTypeActive();
+        stockType = returnStockType();
+        var promise = dboticaServices.getItemsOfTheTable($scope.startDisplay - 1, $scope.limit, stockType, itemType, organizationId);
         promise.then(function(response) {
-            console.log("in prev btn response----", response.data.response);
+            $log.log("in prev btn response----", response.data.response);
             var previousBtnFetchedItemsObject = $.parseJSON(response.data.response);
             var previousBtnFetchedItems = previousBtnFetchedItemsObject.inventoryItems;
             $scope.itemsDisplayArray = previousBtnFetchedItems.slice(0, previousBtnFetchedItems.length - 1);
         }, function(errorResponse) {
-            console.log("in previous button error response");
+            $log.log("in previous button error response");
         });
     }
 
@@ -131,6 +151,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
     $scope.addItemIntoStock = function() {
         var promise = dboticaServices.addItemIntoStock($scope.addItemObject);
         promise.then(function(response) {
+            $log.log("response after adding item is----", response);
             var success = response.data.success;
             if (success) {
                 swal({
@@ -142,12 +163,12 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
                 });
             }
             var drugObject = $.parseJSON(response.data.response);
-            console.log("drug object is----", drugObject);
+            $log.log("drug object is----", drugObject);
             $scope.itemsDisplayArray.push(drugObject);
             $scope.totalDrugsCount = $scope.totalDrugsCount + 1;
-            console.log("items array-----", $scope.itemsDisplayArray);
+            $log.log("items array-----", $scope.itemsDisplayArray);
         }, function(errorResponse) {
-            console.log("Error in add item into stock");
+            $log.log("Error in add item into stock");
         });
     }
 
@@ -184,7 +205,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
             requestEntity.batchState = "ACTIVE";
             requestEntity.entityState = "ACTIVE";
             requestEntity = JSON.stringify(requestEntity);
-            console.log("added batch is----", requestEntity);
+            $log.log("added batch is----", requestEntity);
             var promise = dboticaServices.addBatchToTheDrug(requestEntity);
             promise.then(function(response) {
                 var success = response.data.success;
@@ -198,13 +219,13 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
                     });
                 }
                 var itemObject = $.parseJSON(response.data.response);
-                console.log("item after adding batch is-----", itemObject);
+                $log.log("item after adding batch is-----", itemObject);
                 for (itemIndex = 0; itemIndex < $scope.itemsDisplayArray.length; itemIndex++) {
                     if ($scope.itemsDisplayArray[itemIndex].id === itemObject.itemId) {
                         $scope.itemsDisplayArray[itemIndex].availableStock += itemObject.units;
                     }
                 }
-                console.log("array after adding batch is-----", $scope.itemsDisplayArray);
+                $log.log("array after adding batch is-----", $scope.itemsDisplayArray);
             }, function(errorResponse) {
 
             });
@@ -213,34 +234,66 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
 
     $scope.viewLowItemsSelect = function() {
         if ($scope.isLowBlueActive) {
+            var itemType = "";
             $scope.isLowBlueActive = false;
             $scope.isLowRedActive = true;
             $scope.isAllRedActive = false;
             $scope.isExpiredRedActive = false;
             $scope.isAllBlueActive = true;
             $scope.isExpiredBlueActive = true;
+            $scope.startDisplay = $scope.start + 1;
+            $scope.endDisplay = displayListLength;
+            itemType = returnItemTypeActive();
+            var promise = dboticaServices.lowStockExpiredStockItems("lowItems", $scope.start, $scope.limit, itemType, organizationId);
+            promise.then(function(response) {
+                itemsDisplayFunction(response);
+            }, function(errorResponse) {
+                $log.log("in error response of low items view----");
+            });
         }
     }
 
     $scope.viewAllItemsSelect = function() {
         if ($scope.isAllBlueActive) {
+            var itemType = "";
+            var stockType = "";
             $scope.isAllBlueActive = false;
             $scope.isAllRedActive = true;
             $scope.isLowBlueActive = true;
             $scope.isLowRedActive = false;
             $scope.isExpiredBlueActive = true;
             $scope.isExpiredRedActive = false;
+            $scope.startDisplay = $scope.start + 1;
+            $scope.endDisplay = displayListLength;
+            itemType = returnItemTypeActive();
+            stockType = returnStockType();
+            var promise = dboticaServices.getItemsOfTheTable($scope.start, $scope.limit, stockType, itemType, organizationId);
+            promise.then(function(response) {
+                itemsDisplayFunction(response);
+            }, function(errorResponse) {
+                $log.log("in error response of view all items---");
+            });
         }
     }
 
     $scope.viewExpiredItemsSelect = function() {
         if ($scope.isExpiredBlueActive) {
+            var itemType = "";
             $scope.isExpiredBlueActive = false;
             $scope.isExpiredRedActive = true;
             $scope.isAllRedActive = false;
             $scope.isAllBlueActive = true;
             $scope.isLowRedActive = false;
             $scope.isLowBlueActive = true;
+            $scope.startDisplay = $scope.start + 1;
+            $scope.endDisplay = displayListLength;
+            itemType = returnItemTypeActive();
+            var promise = dboticaServices.lowStockExpiredStockItems("expiredStockItems", $scope.start, $scope.limit, itemType, organizationId);
+            promise.then(function(response) {
+                itemsDisplayFunction(response);
+            }, function(errorResponse) {
+                $log.log("in error response of view expired items---");
+            });
         }
     }
 
@@ -248,10 +301,10 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
         if ($scope.itemSearch.itemName !== "") {
             $scope.prevNextBtnsRow = false;
             $scope.viewAllItemsBtn = true;
-            console.log("item to be searched is------", $scope.itemSearch.itemName);
+            $log.log("item to be searched is------", $scope.itemSearch.itemName);
             var promise = dboticaServices.getItemFromDB($scope.itemSearch.itemName, organizationId);
             promise.then(function(response) {
-                console.log("response after search is---------", response);
+                $log.log("response after search is---------", response);
                 var itemSearchResponse = $.parseJSON(response.data.response);
                 $scope.itemsDisplayArray = itemSearchResponse.inventoryItems;
                 if (itemSearchResponse.totalCount === 0) {
@@ -259,24 +312,152 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
                 } else {
                     $scope.warning = false;
                 }
-                console.log("response for search is----", itemSearchResponse);
+                $log.log("response for search is----", itemSearchResponse);
             }, function(errorResponse) {
-                console.log("in error Response of item search from db");
+                $log.log("in error Response of item search from db");
             });
         }
     }
 
     $scope.viewAllItems = function() {
         $scope.warning = false;
-        var promise = dboticaServices.getItemsOfTheTable($scope.start, $scope.limit, organizationId);
+        $scope.startDisplay = $scope.start + 1;
+        $scope.endDisplay = displayListLength;
+        var promise = dboticaServices.getItemsOfTheTable($scope.start, $scope.limit, 'All', 'All', organizationId);
         promise.then(function(response) {
             itemsDisplayFunction(response);
             $scope.itemSearch.itemName = "";
             $scope.viewAllItemsBtn = false;
             $scope.prevNextBtnsRow = true;
         }, function(errorResponse) {
-            console.log("in error response of view all items");
+            $log.log("in error response of view all items");
         });
+    }
+
+    $scope.viewAllInventoryItems = function() {
+        if ($scope.isAllTypeBlueActive) {
+            var stockType = "";
+            $scope.startDisplay = $scope.start + 1;
+            $scope.endDisplay = displayListLength;
+            $scope.isAllTypeBlueActive = false;
+            $scope.isAllTypeActive = true;
+            $scope.isDrugTypeBlueActive = true;
+            $scope.isDrugTypeActive = false;
+            $scope.isEquipmentsTypeBlueActive = true;
+            $scope.isEquipmentsTypeActive = false;
+            $scope.isSuppliesTypeBlueActive = true;
+            $scope.isSuppliesTypeActive = false;
+            $scope.isOthersTypeBlueActive = true;
+            $scope.isOthersTypeActive = false;
+            stockType = returnStockType();
+            var promise = dboticaServices.getStockItemsForTheTable("All", $scope.start, $scope.limit, stockType, organizationId);
+            promise.then(function(response) {
+                itemsDisplayFunction(response);
+            }, function(errorResponse) {
+                $log.log("in error response of view all inventory items---");
+            });
+        }
+    }
+
+    $scope.viewDrugInventoryItems = function() {
+        if ($scope.isDrugTypeBlueActive) {
+            var stockType = "";
+            $scope.startDisplay = $scope.start + 1;
+            $scope.endDisplay = displayListLength;
+            $scope.isAllTypeBlueActive = true;
+            $scope.isAllTypeActive = false;
+            $scope.isDrugTypeBlueActive = false;
+            $scope.isDrugTypeActive = true;
+            $scope.isEquipmentsTypeBlueActive = true;
+            $scope.isEquipmentsTypeActive = false;
+            $scope.isSuppliesTypeBlueActive = true;
+            $scope.isSuppliesTypeActive = false;
+            $scope.isOthersTypeBlueActive = true;
+            $scope.isOthersTypeActive = false;
+            stockType = returnStockType();
+            var promise = dboticaServices.getStockItemsForTheTable("DrugItems", $scope.start, $scope.limit, stockType, organizationId);
+            promise.then(function(response) {
+                itemsDisplayFunction(response);
+            }, function(errorResponse) {
+                $log.log("in error response of view drug inventory items---");
+            });
+        }
+
+    }
+
+    $scope.viewSuppliesInventoryItems = function() {
+        if ($scope.isSuppliesTypeBlueActive) {
+            var stockType = "";
+            $scope.startDisplay = $scope.start + 1;
+            $scope.endDisplay = displayListLength;
+            $scope.isAllTypeBlueActive = true;
+            $scope.isAllTypeActive = false;
+            $scope.isDrugTypeBlueActive = true;
+            $scope.isDrugTypeActive = false;
+            $scope.isEquipmentsTypeBlueActive = true;
+            $scope.isEquipmentsTypeActive = false;
+            $scope.isSuppliesTypeBlueActive = false;
+            $scope.isSuppliesTypeActive = true;
+            $scope.isOthersTypeBlueActive = true;
+            $scope.isOthersTypeActive = false;
+            stockType = returnStockType();
+            var promise = dboticaServices.getStockItemsForTheTable("SuppliesItems", $scope.start, $scope.limit, stockType, organizationId);
+            promise.then(function(response) {
+                itemsDisplayFunction(response);
+            }, function(errorResponse) {
+                $log.log("in error response of view supplies inventory  items---");
+            });
+        }
+    }
+
+    $scope.viewEquipmentsInventoryItems = function() {
+        if ($scope.isEquipmentsTypeBlueActive) {
+            var stockType = "";
+            $log.log("in equipment---");
+            $scope.isAllTypeBlueActive = true;
+            $scope.isAllTypeActive = false;
+            $scope.isDrugTypeBlueActive = true;
+            $scope.isDrugTypeActive = false;
+            $scope.isEquipmentsTypeBlueActive = false;
+            $scope.isEquipmentsTypeActive = true;
+            $scope.isSuppliesTypeBlueActive = true;
+            $scope.isSuppliesTypeActive = false;
+            $scope.isOthersTypeBlueActive = true;
+            $scope.isOthersTypeActive = false;
+            stockType = returnStockType();
+            $scope.startDisplay = $scope.start + 1;
+            $scope.endDisplay = displayListLength;
+            var promise = dboticaServices.getStockItemsForTheTable("EquipmentItems", $scope.start, $scope.limit, stockType, organizationId);
+            promise.then(function(response) {
+                itemsDisplayFunction(response);
+            }, function(errorResponse) {
+                $log.log("in error response of view equipments inventory items---");
+            });
+        }
+    }
+
+    $scope.viewOthersInventoryItems = function() {
+        if ($scope.isOthersTypeBlueActive) {
+            var stockType = "";
+            $scope.isAllTypeBlueActive = true;
+            $scope.isAllTypeActive = false;
+            $scope.isDrugTypeBlueActive = true;
+            $scope.isDrugTypeActive = false;
+            $scope.isEquipmentsTypeBlueActive = true;
+            $scope.isEquipmentsTypeActive = false;
+            $scope.isSuppliesTypeBlueActive = true;
+            $scope.isSuppliesTypeActive = false;
+            $scope.isOthersTypeBlueActive = false;
+            $scope.isOthersTypeActive = true;
+            stockType = returnStockType();
+            $log.log("stock type is----", stockType);
+            var promise = dboticaServices.getStockItemsForTheTable("OtherItems", $scope.start, $scope.limit, stockType, organizationId);
+            promise.then(function(response) {
+                itemsDisplayFunction(response);
+            }, function(errorResponse) {
+                $log.log("in error response of view others inventory  items---");
+            });
+        }
     }
 
     var itemsDisplayFunction = function(response) {
@@ -296,19 +477,28 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
                     break;
             }
         }
-        console.log(response.data.response);
+        $log.log(response.data.response);
         var itemsFetchedFromApi = $.parseJSON(response.data.response);
-        console.log("items fetched from Api----", itemsFetchedFromApi.inventoryItems);
+        $log.log("items fetched from Api----", itemsFetchedFromApi.inventoryItems);
         $scope.totalDrugsCount = itemsFetchedFromApi.totalCount;
         var itemsFetchedFromApiFromStart = itemsFetchedFromApi.inventoryItems;
         if (itemsFetchedFromApiFromStart.length >= displayListLength) {
+            $log.log("in greater than length-----");
             if (itemsFetchedFromApiFromStart.length == displayListLength) {
+                $scope.prevBtnDisabled = true;
+                $scope.nextBtnDisabled = true;
+                $scope.prevBtnEnabled = false;
+                $scope.nextBtnEnabled = false;
                 $scope.itemsDisplayArray = itemsFetchedFromApiFromStart;
             } else {
+                $scope.prevBtnDisabled = true;
+                $scope.nextBtnDisabled = false;
+                $scope.prevBtnEnabled = false;
+                $scope.nextBtnEnabled = true;
                 $scope.itemsDisplayArray = itemsFetchedFromApiFromStart.slice(0, itemsFetchedFromApiFromStart.length - 1);
             }
         } else {
-            console.log("in not display");
+            $log.log("in not display");
             $scope.prevBtnEnabled = false;
             $scope.nextBtnEnabled = false;
             $scope.prevBtnDisabled = true;
@@ -318,4 +508,54 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', 'dbot
         }
 
     }
+
+    var returnItemTypeActive = function() {
+        var itemType = "";
+        if ($scope.isDrugTypeActive) {
+            itemType = "Drug";
+        }
+        if ($scope.isEquipmentsTypeActive) {
+            itemType = "Equipments";
+        }
+        if ($scope.isSuppliesTypeActive) {
+            itemType = "Supplies";
+        }
+        if ($scope.isAllTypeActive) {
+            $log.log("in alll---");
+            itemType = "All";
+        }
+        if ($scope.isOthersTypeActive) {
+            itemType = "Others";
+        }
+        return itemType;
+    }
+
+    var returnStockType = function() {
+        var stockType = "";
+        if ($scope.isAllRedActive) {
+            stockType = "All";
+        }
+        if ($scope.isLowRedActive) {
+            stockType = "Low";
+        }
+        if ($scope.isExpiredRedActive) {
+            stockType = "Expired";
+        }
+        return stockType;
+    }
+
+    angular.module('personalAssistant').filter("billingAndBatchConsumed", function() {
+        $log.log("in filter---");
+        return function(input) {
+            $log.log("in filter---", input);
+            var result;
+            if (input == "") {
+                $log.log("in filter");
+                result = 0;
+            } else {
+                result = input;
+            }
+            return result;
+        };
+    });
 }]);

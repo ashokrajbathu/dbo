@@ -209,6 +209,7 @@
                         localStorage.setItem('doctorPojo', response.response);
                         localStorage.setItem("isLoggedIn", true);
                         localStorage.setItem("firstName", data['firstName']);
+                        localStorage.setItem("lastName",data['lastName']);
                         localStorage.setItem("doctorId", data['id']);
                         var idOfLoggedInDoctor = data['id'];
                         console.log("doctor id of the doctor who is logging in-----" + idOfLoggedInDoctor);

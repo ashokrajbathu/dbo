@@ -32,6 +32,7 @@
                                             <option>DRUG</option>
                                             <option>SUPPLIES</option>
                                             <option>EQUIPMENT</option>
+                                            <option>OTHERS</option>
                                         </select>
                                     </div>
                                 </div>
@@ -107,10 +108,11 @@
                     <div class=" stockLevelForm form-group ">
                         <label id="stockLevelTypeLabel " for="exampleStockLevel ">Type</label>
                         <!--inventoryBtn  -->
-                        <button type="submit " class="btn inventoryBtn ">All</button>
-                        <button type="submit " class="btn inventoryBtn ">Drugs</button>
-                        <button type="submit " class="btn inventoryBtn ">Equipments</button>
-                        <button type="submit " class="btn inventoryBtn ">Others</button>
+                        <button type="submit" ng-click="viewAllInventoryItems()" ng-class="{'activeBtnInventory':isAllTypeActive,'inventoryBtn':isAllTypeBlueActive}" class="btn">All</button>
+                        <button type="submit" ng-click="viewDrugInventoryItems()" ng-class="{'activeBtnInventory':isDrugTypeActive,'inventoryBtn':isDrugTypeBlueActive}" class="btn">Drugs</button>
+                        <button type="submit" ng-click="viewSuppliesInventoryItems()" ng-class="{'activeBtnInventory':isSuppliesTypeActive,'inventoryBtn':isSuppliesTypeBlueActive}" class="btn">Supplies</button>
+                        <button type="submit" ng-click="viewEquipmentsInventoryItems()" ng-class="{'activeBtnInventory':isEquipmentsTypeActive,'inventoryBtn':isEquipmentsTypeBlueActive}" class="btn">Equipments</button>
+                        <button type="submit" ng-click="viewOthersInventoryItems()" ng-class="{'activeBtnInventory':isOthersTypeActive,'inventoryBtn':isOthersTypeBlueActive}" class="btn">Others</button>
                     </div>
                 </form>
             </div>
@@ -140,20 +142,26 @@
                         <th>TOTAL STOCK</th>
                         <th>AVAILABLE STOCK</th>
                         <th>EXPIRED STOCK</th>
+                        <th>RETURNED STOCK</th>
                         <th>STOCKING UNIT</th>
+                        <th>BILLING CONSUMED STOCK</th>
+                        <th>BATCH CONSUMED STOCK</th>
                         <th>ACTIONS</th>
                     </tr>
                 </thead>
                 <tbody id="itemsBody">
                     <tr ng-repeat="item in itemsDisplayArray">
-                        <td>{{item.itemName | uppercase}}</td>
-                        <td>{{item.itemCode}}</td>
-                        <td>{{item.itemType}}</td>
-                        <td class="requiredLevel">{{item.requiredStock}}</td>
-                        <td>{{item.availableStock+item.expiredStock+item.consumedStock}}</td>
-                        <td>{{item.availableStock}}</td>
-                        <td>{{item.expiredStock}}</td>
+                        <td ng-bind="item.itemName | uppercase"></td>
+                        <td ng-bind="item.itemCode"></td>
+                        <td ng-bind="item.itemType"></td>
+                        <td class="requiredLevel" ng-bind="item.requiredStock"></td>
+                        <td ng-bind="item.availableStock+item.expiredStock+item.consumedStock+item.billingConsumedStock+item.returnedStock"></td>
+                        <td ng-bind="item.availableStock"></td>
+                        <td ng-bind="item.expiredStock"></td>
+                        <td ng-bind="item.returnedStock"></td>
                         <td></td>
+                        <td ng-bind="item.billingConsumedStock"></td>
+                        <td ng-bind="item.batchConsumedStock"></td>
                         <td>
                             <button ng-click="viewInfo(item)" class="glyphicon glyphicon-info-sign"></button>
                             <button class="glyphicon glyphicon-plus-sign" ng-click="additionOfBatch(item)" data-toggle="modal" data-target="#addNewBatch"></button>

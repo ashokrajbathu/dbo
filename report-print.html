@@ -36,15 +36,15 @@
         <!-- Main content -->
         <section class="invoice">
             <div class="row invoice-info">
-                <div class="col-md-12 col-sm-12 col-xs-12 invoice-col">
+                <div class="col-md-6 col-sm-12 col-xs-12 invoice-col">
                     <address>
-                        <strong><span id="pr-doctor-name" ></span></strong><span placeholder="docqual" id="doctor-qual"></span><span style="margin-left:250%;" id="pr-doctor-phoneNumber"></span>
-                        <br>
-                        <span id="pr-doctor-specialization"></span><span style="margin-left:251%;" id="pr-doctor-hospitalLocation"></span>
-                        <br>
-                        <span id="pr-doctor-organization"></span>
-                        <br>
-                        <span id="pr-doctor-registrationNo"></span>
+                        <strong><span id="pr-doctor-name" ></span></strong><span placeholder="docqual" id="doctor-qual"></span>
+                        <div class="row specializationRow">
+                            <p><span id="pr-doctor-specialization"></span></p>
+                        </div>
+                        <p class="phoneRow">Phone:<span id="pr-doctor-phoneNumber"></span></p>
+                        <!-- <span style="margin-left:251%;" id="pr-doctor-hospitalLocation"></span> -->
+                        <p id="registrationRow">Registration No.<span id="pr-doctor-registrationNo"></span></p>
                         <!-- <div class="row">
                             <div class="col-md-8 pull-right">
                                 <strong><span id="pr-doctor-name"></span></strong>
@@ -63,6 +63,12 @@
                         </table> -->
                     </address>
                 </div>
+                <div class="col-md-6">
+                    <p class="pull-right"><span style="font-weight:600;" id="pr-doctor-organization"></span>
+                        <br>
+                        <span id="pr-doctor-hospitalLocation"></span>
+                    </p>
+                </div>
             </div>
             <hr>
             <div>
@@ -75,7 +81,7 @@
                 <span id="patient-age">
                       </span>
                 <strong>Gender : </strong><span id="patient-gender"></span>
-                <span id="exampleVisitDate"><strong id="exampleDate">Date : </strong><span id="date"></span></span>
+                <span id="exampleVisitDate"><strong style="margin-left:12px;" id="exampleDate">Date : </strong><span id="date"></span></span>
             </div>
             <p class="assessment"><strong>ASSESSMENT</strong></p>
             <table class="details">
@@ -128,7 +134,8 @@
             <ol id="report-tests">
             </ol>
             <div><b id="refer-to-label">Refer To : </b><span id="refer-to-report">Dr.</span></div>
-            <b id="patient-comments">Remarks:</b><span id="patient-remarks"></span><br>
+            <b id="patient-comments">Remarks:</b><span id="patient-remarks"></span>
+            <br>
             <b id="revisit-label">Revisit On : </b><span id="revisit-date-report"></span>
             <div>
                 <h4 class="pull-right" id="signature">(Doctor Signature)</h4>
@@ -356,6 +363,7 @@
 
 
         var docname = localStorage.getItem('firstName');
+        var docLastName = localStorage.getItem('lastName');
         var docid = localStorage.getItem('doctorId');
         var docOrg = localStorage.getItem('doctorOrganization');
         var docSpe = localStorage.getItem('doctorSpeciality');
@@ -367,7 +375,9 @@
         var city = localStorage.getItem('doctorHospitalLocation');
         console.log("doc specialization is----" + docSpe);
 
-        $('#pr-doctor-name').text(docname);
+        var doctorName = docname + '.' + docLastName;
+
+        $('#pr-doctor-name').text(doctorName);
         $('#pr-doctor-qual').text(docQua);
         $('#pr-doctor-specialization').text(docSpe);
         $('#pr-doctor-ards').text(docAdrs);

@@ -1,4 +1,4 @@
-angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     localStorage.setItem("currentState", "itemInfo");
 
     angular.element("#addBatchExpiryTimeItemInfo").datepicker({
@@ -17,7 +17,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', 'dboti
     $scope.addBatchInItemInfo = {};
     $scope.informationOfBatches = [];
     itemSelected = dboticaServices.getSelectedItem();
-    console.log("selected item is----", itemSelected);
+    $log.log("selected item is----", itemSelected);
     if (itemSelected !== undefined) {
         localStorage.setItem('currentItemId', itemSelected.id);
         localStorage.setItem('organizationId', itemSelected.organizationId);
@@ -32,7 +32,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', 'dboti
     var promise = dboticaServices.getAllBatches(currentItemId, organizationId);
     promise.then(function(response) {
         var batchesInfo = $.parseJSON(response.data.response);
-        console.log("batches info is-----", batchesInfo);
+        $log.log("batches info is-----", batchesInfo);
         $scope.inventoryItem = batchesInfo.inventoryItem;
         batchesInfo = batchesInfo.batchInfos;
         for (var itemIndex = 0; itemIndex < batchesInfo.length; itemIndex++) {
@@ -63,11 +63,11 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', 'dboti
             }
             $scope.informationOfBatches.push(newObject);
         }
-        console.log("batches in scope are----", $scope.informationOfBatches);
-        console.log("inventory item is----", $scope.inventoryItem);
-        console.log("batches information is----", batchesInfo);
+        $log.log("batches in scope are----", $scope.informationOfBatches);
+        $log.log("inventory item is----", $scope.inventoryItem);
+        $log.log("batches information is----", batchesInfo);
     }, function(errorResponse) {
-        console.log("in items info error response");
+        $log.log("in items info error response");
 
     });
 
@@ -76,7 +76,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', 'dboti
     }
 
     $scope.updateBatch = function(item, index) {
-        console.log("item selected for update is----", item);
+        $log.log("item selected for update is----", item);
         var idOfTheTextBox = "#batchTextBoxes" + index;
         var idOfTheSelectBox = "#batchSelectBoxes" + index;
         var valueInTextBox = angular.element(idOfTheTextBox).val();
@@ -88,10 +88,10 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', 'dboti
         requestEntity.units = valueInTextBox;
         if (parseInt(valueInTextBox) <= item.availableStock) {
             requestEntity = JSON.stringify(requestEntity);
-            console.log("request entity is---", requestEntity);
+            $log.log("request entity is---", requestEntity);
             var promise = dboticaServices.updateTheBatch(requestEntity);
             promise.then(function(response) {
-                console.log("response after updating is----", response);
+                $log.log("response after updating is----", response);
                 var updatedBatchInfo = $.parseJSON(response.data.response);
                 for (var itemBatchIndex = 0; itemBatchIndex < $scope.informationOfBatches.length; itemBatchIndex++) {
                     if ($scope.informationOfBatches[itemBatchIndex].id == updatedBatchInfo.id) {
@@ -111,9 +111,9 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', 'dboti
                         }
                     }
                 }
-                console.log("updated batch is-----", updatedBatchInfo);
+                $log.log("updated batch is-----", updatedBatchInfo);
             }, function(errorResponse) {
-                console.log("in error response of update batch");
+                $log.log("in error response of update batch");
             });
         } else {
             swal({
@@ -148,7 +148,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', 'dboti
             requestEntity.batchState = "ACTIVE";
             requestEntity.entityState = "ACTIVE";
             requestEntity = JSON.stringify(requestEntity);
-            console.log("added batch is----", requestEntity);
+            $log.log("added batch is----", requestEntity);
             var promise = dboticaServices.addBatchToTheDrug(requestEntity);
             promise.then(function(response) {
                 var success = response.data.success;
@@ -162,7 +162,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', 'dboti
                     });
                 }
                 var itemObject = $.parseJSON(response.data.response);
-                console.log("item after adding batch is-----", itemObject);
+                $log.log("item after adding batch is-----", itemObject);
                 var newObject = {};
                 newObject.id = itemObject.id;
                 newObject.organizationId = itemObject.organizationId;
@@ -174,7 +174,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', 'dboti
                 newObject.returnedUnits = 0;
                 newObject.expiredUnits = 0;
                 $scope.informationOfBatches.push(newObject);
-                console.log("array after adding batch is-----", $scope.informationOfBatches);
+                $log.log("array after adding batch is-----", $scope.informationOfBatches);
             }, function(errorResponse) {
 
             });

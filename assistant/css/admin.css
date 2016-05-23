@@ -3,20 +3,41 @@
     margin-top: -10px;
 }
 
-#selectDoctor {
+.serviceDoctorBtn {
     /*margin-left:20px;*/
     margin-top: 3px;
     border-radius: 4px;
     height: 28px;
     border-color: #367fa9;
-    width: 20%;
+    width: 180px;
+}
+
+.adminDropDown>button {
+    padding-top: 2px;
+}
+
+.adminDropDown>ul {
+    width: 50%;
+}
+
+.adminDropDown {
+    margin-left: -3px;
 }
 
 
+/*#selectService {
+    margin-top: 5px;
+    border-radius: 4px;
+    height: 28px;
+    border-color: #367fa9;
+    width: 20%;
+}*/
+
+
 /*@media screen and (max-width:1400px){
-	.selectDoctorSection{
-		margin-left:100px;
-	}
+    .selectDoctorSection{
+        margin-left:100px;
+    }
 }*/
 
 .addProcedureBtn {
@@ -34,27 +55,63 @@
 #exampleInputRemarks,
 #exampleInputCostAdmin {
     width: 50%;
+    height: 28px;
     border-radius: 4px;
     margin-bottom: 4px;
     border-color: #367fa9;
+}
+
+.doctorsServicesInDropDown {
+    cursor: pointer;
+}
+
+#exampleInputProcedureName {
+    margin-top: 2px;
+    width: 50%;
+    height: 28px;
 }
 
 .tableInAdmin {
     margin-top: 6px;
 }
 
+#doctorServicesHeader {
+    background-color: #3c8dbc;
+}
 
-/*@media screen and (max-width:991px) {
-    .selectDoctorSection {
-        margin-left: 100px;
+.tableInAdmin>thead>tr>th {
+    border-right: 1px solid white;
+    text-align: center;
+    color: white;
+}
+
+.tableInAdmin>tbody>tr>td {
+    text-align: center;
+    border: 1px solid #367fa9;
+}
+
+.adminEntity {
+    margin-top: -10px;
+}
+
+@media screen and (max-width:991px) {
+    #exampleInputProcedureName,
+    #exampleInputRemarks,
+    #exampleInputCostAdmin {
+        width: 70%;
+        height: 28px;
+        border-radius: 4px;
+        margin-bottom: 4px;
+        border-color: #367fa9;
     }
-}*/
+}
 
 .selectDoctorSection {
+    margin-top: -9px;
     margin-left: 50px;
 }
 
 
 /*.procedureInputForm {
-	    margin-left: 110px;
-	}*/
+        margin-left: 110px;
+    }*/

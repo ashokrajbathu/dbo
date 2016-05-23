@@ -53,7 +53,7 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                                <span class="hidden-xs">Doctor 1</span>
+                                <span id="doctorNameInTheHeader" class="hidden-xs"></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
@@ -89,7 +89,7 @@
                         <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
-                        <p>Doctor 1</p>
+                        <p id="doctorNameInSideBar"></p>
                         <!-- Status -->
                         <a href="doctorProfile.html">Profile</a>
                     </div>
@@ -314,9 +314,9 @@
     <!-- /.control-sidebar -->
     <!-- Add the sidebar's background. This div must be placed
            immediately after the control sidebar -->
-      <div class="control-sidebar-bg"></div>
-    </div><!-- ./wrapper -->
-
+    <div class="control-sidebar-bg"></div>
+    </div>
+    <!-- ./wrapper -->
     <!-- jQuery 2.1.4 -->
     <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <script type="text/javascript">
@@ -333,18 +333,16 @@
     <script src="bootstrap/js/jquery.cookie.js"></script>
     <!-- FastClick -->
     <script src="plugins/fastclick/fastclick.min.js"></script>
-     <!-- DataTables -->
+    <!-- DataTables -->
     <script src="plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="dist/js/demo.js"></script>
-
     <script type="text/javascript">
-  
-  $(document).on('click','.deletebutton',function(e){
-       var result = confirm('Are you sure, you want to delete ?');
+    $(document).on('click', '.deletebutton', function(e) {
+        var result = confirm('Are you sure, you want to delete ?');
         //console.log(this.id);
 
         if (result) {
@@ -368,13 +366,13 @@
                         console.log(drugData);
                         break;
 
-          }
-        }
-      }
-      var newCount=1;
-      $('#report-prescriptions > tbody').text("");
-      drugPojoList =[];
-      $.cookie('drugPojoList',"");
+                    }
+                }
+            }
+            var newCount = 1;
+            $('#report-prescriptions > tbody').text("");
+            drugPojoList = [];
+            $.cookie('drugPojoList', "");
 
             for (s in drugData) {
                 $('#report-prescriptions > tbody').append('<tr ><td>' + newCount + '</td><td>' + drugData[s]['brandName'] + '</td><td>' + drugData[s]['perServing'] + '</td><td>' + drugData[s]['noOfDays'] + '</td><td>' + drugData[s]['usageDirection'] + '</td><td>' + drugData[s]['remarks'] + '</td><td id="deliD' + newCount + '"><button type="submit" name="delbtn" class="deletebutton" id="del' + newCount + '" value="delID' + newCount + '">Delete</button></td>');
@@ -384,22 +382,22 @@
 
                 } catch (e) {
 
+                }
+
+
+            }
+
+
+            $.cookie('drugPojoList', JSON.stringify(drugPojoList));
+            console.log('pushed');
+            $.cookie('drugEntryCount', newCount);
+
+            $.cookie('drugHtml', $('#report-prescriptions > tbody').html());
+
         }
 
-            
-      }
 
-          
-      $.cookie('drugPojoList', JSON.stringify(drugPojoList));
-            console.log('pushed');
-      $.cookie('drugEntryCount',newCount);
-      
-      $.cookie('drugHtml', $('#report-prescriptions > tbody').html());
-
-      }
-
-
-});
+    });
 
     $(document).on('click', '#newPatientBtn', function(e) {
         resetAll();
@@ -409,28 +407,29 @@
     function resetAll() {
 
         $.cookie('currentPrescription', "");
-		$.cookie('newPatientPhoneNumber',"");
+        $.cookie('newPatientPhoneNumber', "");
         $.cookie('drugHtml', "");
         $.cookie('drugEntryCount', "");
         $.cookie('testHtml', "");
         $.cookie('testEntryCount', "");
-		$.cookie('currentPatientInfo',"");
+        $.cookie('currentPatientInfo', "");
         $.cookie('drugPojoList', "");
         $.cookie('testPojoList', "");
-      
+
     }
-	function removeCookies(){
-		$.removeCookie('currentPrescription');
-		$.removeCookie('newPatientPhoneNumber');
+
+    function removeCookies() {
+        $.removeCookie('currentPrescription');
+        $.removeCookie('newPatientPhoneNumber');
         $.removeCookie('drugHtml');
         $.removeCookie('drugEntryCount');
         $.removeCookie('testHtml');
         $.removeCookie('testEntryCount');
-		$.removeCookie('currentPatientInfo');
+        $.removeCookie('currentPatientInfo');
         $.removeCookie('drugPojoList');
         $.removeCookie('testPojoList');
-	}
-	$('#logoutButton').click(function(e) {
+    }
+    $('#logoutButton').click(function(e) {
         $.ajax({
             type: "POST",
             url: "http://localhost:8081/dbotica-spring/doctor/logout",
@@ -443,7 +442,7 @@
             },
             success: function(response) {
                 localStorage.clear();
-				removeCookies();
+                removeCookies();
                 window.location.replace("login.html");
                 localStorage.setItem('isLoggedInCheck', false);
             }
@@ -487,19 +486,21 @@
             }
             $.cookie('testPojoList', JSON.stringify(testPojoList));
             console.log('pushed');
-      $.cookie('testEntryCount',newCount);
-      
-      $.cookie('testHtml', $('#report-tests > tbody').html());
+            $.cookie('testEntryCount', newCount);
 
-    }
-  });
-  
+            $.cookie('testHtml', $('#report-tests > tbody').html());
 
-   $(document).ready(function(){
+        }
+    });
+
+
+    $(document).ready(function() {
 
         var doctorName = localStorage.getItem('firstName');
         console.log("doctor name is----" + doctorName);
         $("#doctorName").text(doctorName);
+        $("#doctorNameInTheHeader").text(doctorName);
+        $("#doctorNameInSideBar").text(doctorName);
 
         $(window).scroll(function() {
             var sticky = $('.fixed-content'),
@@ -511,33 +512,33 @@
 
         $('#patient-search-result').load('registerPatient.html');
 
-		$('#report-prescriptions > tbody').append($.cookie('drugHtml'));
-		$('#report-tests > tbody').append($.cookie('testHtml'));
-          
-		var prescriptionCookie = $.cookie('currentPrescription');
+        $('#report-prescriptions > tbody').append($.cookie('drugHtml'));
+        $('#report-tests > tbody').append($.cookie('testHtml'));
+
+        var prescriptionCookie = $.cookie('currentPrescription');
         var prescription = {};
         if (!!prescriptionCookie) {
 
             prescription = JSON.parse(prescriptionCookie);
 
-        }       
-		
-		var temperature 	= 	prescription['temperature'];
-		var height 			=	prescription['height'];
-		var weight 			=	prescription['weight'];
-		var bloodPressure	=	prescription['bloodPressure'];
-		var symptoms 		=	prescription['symptoms'];
-		var bmi 			=	prescription['bmi'];
-		var saturation 		=	prescription['saturation'];
-		var pulse 			=	prescription['pulse'];
-		var investigation	=	prescription['investigation']; 
-		var remarks 		=	prescription['remarks'];
-		var revisitDate 	=	prescription['revisitDate'];
-		var referToDoctor	=	prescription['references']; 
-		
-        
+        }
 
-		
+        var temperature = prescription['temperature'];
+        var height = prescription['height'];
+        var weight = prescription['weight'];
+        var bloodPressure = prescription['bloodPressure'];
+        var symptoms = prescription['symptoms'];
+        var bmi = prescription['bmi'];
+        var saturation = prescription['saturation'];
+        var pulse = prescription['pulse'];
+        var investigation = prescription['investigation'];
+        var remarks = prescription['remarks'];
+        var revisitDate = prescription['revisitDate'];
+        var referToDoctor = prescription['references'];
+
+
+
+
         if (!!temperature && temperature.length != 0) {
             $('#patient-temperature').text(temperature);
         } else {
@@ -554,7 +555,7 @@
 
         }
 
-        if (!!revisitDate && revisitDate.length != 0 ) {
+        if (!!revisitDate && revisitDate.length != 0) {
             console.log("revisit date is----------" + revisitDate);
             $('#patient-revisit').text(revisitDate);
         } else {
@@ -636,32 +637,24 @@
         }
         // console.log("docname "+docname +" docid "+docid+" docorg "+docOrg+" docspe "+docSpe+" docadr "+docAdrs+" docphn "+docPhn);
 
-		currentPatientInfoCookie = $.cookie('currentPatientInfo');
-		var data1 =[];
-		if(!!currentPatientInfoCookie)
-			var data1 = $.parseJSON(currentPatientInfoCookie);
-      if (data1.length != 0) {
-        $('#patient-name').text(data1[0]['firstName']);
-        $('#patient-gender').text(data1[0]['gender']);        
-       // $('#patient-reg-phone').val(data1[0]['gender']);
-        
-        $('#patient-age').text(data1[0]['age']);
-        //$('#patient-reg-bloodgrp').val(data1[0]['bloodGroup']);
+        currentPatientInfoCookie = $.cookie('currentPatientInfo');
+        var data1 = [];
+        if (!!currentPatientInfoCookie)
+            var data1 = $.parseJSON(currentPatientInfoCookie);
+        if (data1.length != 0) {
+            $('#patient-name').text(data1[0]['firstName']);
+            $('#patient-gender').text(data1[0]['gender']);
+            // $('#patient-reg-phone').val(data1[0]['gender']);
+
+            $('#patient-age').text(data1[0]['age']);
+            //$('#patient-reg-bloodgrp').val(data1[0]['bloodGroup']);
 
         }
 
-       
-
-
-});
 
 
 
-
-  
-
-
-
+    });
     </script>
 </body>
 
