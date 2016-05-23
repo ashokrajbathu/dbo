@@ -1,271 +1,311 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DBotica</title>
-<meta name="description" content="">
-<meta name="author" content="">
-
-<!-- Favicons
-    ================================================== -->
-<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="72x72" href="img/apple-touch-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="114x114" href="img/apple-touch-icon-114x114.png">
-<link href='//fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
-
-<!-- Bootstrap -->
-<link rel="stylesheet" type="text/css"  href="css/bootstrap.css">
-<link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.css">
-
-<!-- Slider
-    ================================================== -->
-<link href="css/owl.carousel.css" rel="stylesheet" media="screen">
-<link href="css/owl.theme.css" rel="stylesheet" media="screen">
-
-<!-- Stylesheet
-    ================================================== -->
-<link rel="stylesheet" type="text/css"  href="css/style.css">
-<link rel="stylesheet" type="text/css" href="css/animate.min.css">
-<link href='//fonts.googleapis.com/css?family=Lato:400,700,900,300' rel='stylesheet' type='text/css'>
-<link href='//fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300' rel='stylesheet' type='text/css'>
-<script type="text/javascript" src="js/modernizr.custom.js"></script>
-
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <link rel="shortcut icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/style.css">
+    <link rel="stylesheet" href="bootstrap/css/animate.min.css" />
+    <link rel='stylesheet' href='bootstrap/css/font-awesome.min.css' />
+    <link rel='stylesheet' href='bootstrap/css/linecons.min.css' />
+    <link href='bootstrap/css/fontcss1.css' rel='stylesheet' type='text/css'>
+    <link href='bootstrap/css/fontcss2.css' rel='stylesheet' type='text/css'>
+    <link href='bootstrap/css/fontcss3.css' rel='stylesheet' type='text/css'>
+    <link href='bootstrap/css/fontcss4.css' rel='stylesheet' type='text/css'>
+    <link href='bootstrap/css/fontcss5.css' rel='stylesheet' type='text/css'>
+    <link href='bootstrap/css/fontcss6.css' rel='stylesheet' type='text/css'>
+    <!-- <link href='http://fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Sans&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Pacifico&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lobster+Two&subset=latin,latin-ext' rel='stylesheet' type='text/css'> -->
+    <script src="bootstrap/js/jquery-2.1.0.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/blocs.min.js"></script>
+    <script src="bootstrap/js/jqBootstrapValidation.js"></script>
+    <script src="bootstrap/js/formHandler.js"></script>
+    <title>Home</title>
 </head>
+
 <body>
-<div id="preloader">
-  <div id="status"> <img src="img/preloader.gif" height="64" width="64" alt=""> </div>
-</div>
-<!-- Navigation
-    ==========================================-->
-<nav id="menu" class="navbar navbar-default navbar-fixed-top">
-  <div class="container"> 
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-	  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-
-      <a class="navbar-brand" href="index.html"><img class="img-responsive img-centered" src="img/portfolio/top_logo.png" alt=""></a> </div>
-   
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#home" class="page-scroll">Home</a></li>
-        <li><a href="#services-section" class="page-scroll">Services</a></li>
-        <li><a href="#about-section" class="page-scroll">About</a></li>
-        <li><a href="https://angel.co/dbotica" target="_blank" class="page-scroll">We're Hiring</a></li>
-        <li><a href="#contact-section" class="page-scroll">Contact</a></li>
-		<li><a href="login.html" class="login page-scroll">Login</a></li>
-      </ul>
-    </div>
-    <!-- /.navbar-collapse --> 
-  </div>
-  <!-- /.container-fluid --> 
-</nav>
-
-<!-- Header -->
-<header class="text-center" name="home">
-  <div class="intro-text">
-    <img class="img-responsive img-centered" src="img/portfolio/logo.png" alt="">
-	<br/>
-    <h1> <span style="font-size:130%;font-family:'Calibri',serif;"> Digitalised Healthcare for all. Anytime. Anywhere <span> </h1>
-	<br/>
-	<br/>
-    <a href="#services-section" class="btn btn-default btn-lg page-scroll wow fadeInUp" data-wow-delay="200ms" style="background:#E4BC11">Our Services</a> </div>
-</header>
-
-<!-- Services Section
-<div id="services-section" class="text-center">
-  <div class="container">
-    <div class="section-title wow fadeInDown">
-      <h2>Our <strong>Services</strong></h2>
-      <hr>
-      <div class="clearfix"></div>
-      <p>Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus. Eleifend pellentesque natoque faucibus magna ut etiam.</p>
-    </div>
-    <div class="space"></div>
-    <div class="row">
-      <div class="col-md-3 col-sm-6 service wow fadeInUp" data-wow-delay="200ms"> <i class="fa fa-desktop"></i>
-        <h4><strong>Web design</strong></h4>
-        <p>Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam.</p>
-      </div>
-      <div class="col-md-3 col-sm-6 service wow fadeInUp" data-wow-delay="400ms"> <i class="fa fa-gears"></i>
-        <h4><strong>App Development</strong></h4>
-        <p>Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque.</p>
-      </div>
-      <div class="col-md-3 col-sm-6 service wow fadeInUp" data-wow-delay="600ms"> <i class="fa fa-bullhorn"></i>
-        <h4><strong>Marketing</strong></h4>
-        <p>Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam.</p>
-      </div>
-      <div class="col-md-3 col-sm-6 service wow fadeInUp" data-wow-delay="800ms"> <i class="fa fa-rocket"></i>
-        <h4><strong>Branding</strong></h4>
-        <p>Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque.</p>
-      </div>
-    </div>
-  </div>
-</div> -->
-<!-- Services Section -->
-<div id="services-section" class="text-center">
-<!-- <div id="works-section" class="text-center"> -->
-  <div class="container"> <!-- Container -->
-    <div class="section-title wow fadeInDown">
-      <h2>Our <strong>Services</strong></h2>
-      <hr>
-    </div>
-    <div class="categories">
-      <ul class="cat">
-        <li>
-          <ol class="type">
-            <li><a href="#" data-filter="*" class="active">All</a></li>
-            <li><a href="#" data-filter=".web">Online Appointment Booking</a></li>
-            <li><a href="#" data-filter=".app">Clinic Management Software</a></li>
-            <li><a href="#" data-filter=".reminder">Medicine Delivery</a></li>
-            <li><a href="#" data-filter=".box">Health Wallet</a></li>
-          </ol>
-        </li>
-      </ul>
-      <div class="clearfix"></div>
-    </div>
-    <div class="row">
-      <div class="portfolio-items">
-        <div class="col-sm-6 col-md-3 col-lg-3 web">
-          <div class="portfolio-item wow fadeInUp" data-wow-delay="300ms">
-		     <div class="hover-bg"> 
-              <div class="hover-text">
-              <h4>Online Appointment Booking</h4>
-			  </div> 
-              <img src="img/portfolio/01.png" class="img-responsive" alt="Project Title">  </div> 
-          </div>
-        </div>
-        <div class="col-sm-6 col-md-3 col-lg-3 app">
-          <div class="portfolio-item wow fadeInUp" data-wow-delay="100ms">
-            <div class="hover-bg"> 
-              <div class="hover-text">
-                <h4>Clinic Management Software</h4>
-              </div>
-              <img src="img/portfolio/02.png" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-md-3 col-lg-3 reminder">
-          <div class="portfolio-item wow fadeInUp" data-wow-delay="500ms">
-            <div class="hover-bg">
-              <div class="hover-text">
-                <h4>Medicine Delivery</h4>
-              </div>
-              <img src="img/portfolio/03.png" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-md-3 col-lg-3 box">
-          <div class="portfolio-item wow fadeInUp" data-wow-delay="700ms">
-            <div class="hover-bg"> 
-               <div class="hover-text">
-                <h4>Health Wallet</h4>
-              </div>
-              <img src="img/portfolio/04.png" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- About Section -->
-<div id="about-section">
-    <div class="section-title text-center wow">
-      <h2><strong>About</strong> us</h2>
-	  <hr>
-	</div>  
-    <p style="font-size: 158%" class="text-center">Dbotica mobile application helps users to get medical prescriptions delivered to their doorstep.  Users can track their medical history and can consult/refer to new doctors. It is a new age technology that is providing a comprehensive and economical healthcare solution to users. We are currently operational in Bangalore and Delhi NCR.</p>     
-</div>
-
-<!-- Contact Section -->
-<div id="contact-section" class="text-center">
-  <div class="container">
-    <div class="section-title wow fadeInDown">
-      <h2><strong>Contact</strong> us</h2>
-      <hr>
-      <p></p>
-    </div>
-    <div class="col-md-8 col-md-offset-2 wow fadeInUp" data-wow-delay="200ms">
-      <div class="col-md-4"> <i class="fa fa-map-marker fa-2x"></i>
-        <p style="font-size: 17px">213, Rifco Santhosh<br>
-          Murugeshpalya, Bangalore</p>
-      </div>
-      <div class="col-md-4"> <i class="fa fa-envelope-o fa-2x"></i>
-        <p  style="font-size: 17px" >info@dbotica.in</p>
-      </div>
-      <div class="col-md-4"> <i class="fa fa-phone fa-2x"></i>
-        <p  style="font-size: 17px">+91-9035153955</p>
-      </div>
-      <div class="clearfix"></div>
-    </div>
-    <div class="col-md-8 col-md-offset-2 wow fadeInUp" data-wow-delay="400ms">
-	<h3>Leave us a message</h3>
-      <form name="sentMessage" id="contactForm" novalidate>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <input type="text" id="name" class="form-control" placeholder="Name" required="required">
-              <p class="help-block text-danger"></p>
+    <!-- Main container -->
+    <div class="page-container">
+        <!-- hero-bloc -->
+        <div id="hero-bloc" class="bloc bg-iphone-mockup-okorkmaz-copy bloc-fill-screen bgc-indigo-dye d-bloc">
+            <div class="container sticky-nav fill-bloc-top-edge">
+                <nav class="navbar row">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="index.html"><img src="img/full%20LOGO%201.png" alt="logo" width="170" /></a>
+                        <button id="nav-toggle" type="button" class="ui-navbar-toggle navbar-toggle" data-toggle="collapse" data-target=".navbar-1">
+                            <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse navbar-1">
+                        <ul class="site-navigation nav navbar-nav">
+                            <li>
+                                <a href="index.html" class="ltc-white">Home</a>
+                            </li>
+                            <li>
+                                <a class="ltc-white" href="for-patients.html">For Patients</a>
+                            </li>
+                            <li>
+                                <a class="ltc-white" href="for-clincs-doctors.html">For Clincs/Doctors</a>
+                            </li>
+                            <li>
+                                <a class="ltc-white" href="for-clincs-doctors.html">For Labs</a>
+                            </li>
+                            <li>
+                                <a class="ltc-white animated pulse-hvr" href="login.html" id="pl-undefined" target="_self">Login</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <input type="email" id="email" class="form-control" placeholder="Email" required="required">
-              <p class="help-block text-danger"></p>
+            <div class="container fill-bloc-bottom-edge">
+                <div class="row">
+                    <div class="col-md-offset-2 col-sm-12">
+                        <a href="#bloc-2" class="fa fa-chevron-down icon-semi-rounded-b icon-md icon-white"></a>
+                    </div>
+                </div>
             </div>
-          </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h1 class=" text-left text-center tc-caribbean-green animated zoomIn">
+                    <br /><br /><br />DIGITALIZED HEALTHCARE
+                </h1>
+                        <h3 class=" mg-lg text-left text-center animated zoomIn tc-caribbean-green">
+                    ( Fetched • Secured • Delivered )
+                </h3>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="divider-h">
+                                    <span class="divider"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-3"><img src="img/google-play-store.png" class="img-responsive" width="300" />
+                            </div>
+                            <div class="col-sm-3"><img src="img/app_store.png" class="img-responsive" width="300" />
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="divider-h">
+                                    <span class="divider"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-          <textarea name="message" id="message" class="form-control" rows="4" placeholder="Message" required></textarea>
-          <p class="help-block text-danger"></p>
+        <!-- hero-bloc END -->
+        <!-- bloc-2 -->
+        <div class="bloc l-bloc bgc-white tc-black" id="bloc-2">
+            <div class="container bloc-xl">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="text-center tc-caribbean-green mg-lg">
+                    <strong>ABOUT US</strong>
+                </h3>
+                        <p class=" text-justify">
+                            Dbotica mobile application helps users to get medical prescriptions delivered to their doorstep. Users can track their medical history and can consult/refer to new doctors and Laboratories. Being a new technological advancement in the medical field, Dbotica provides economical and digital healthcare solutions. With an ever increasing scope the company is currently benefiting residents of Bangalore.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="success"></div>
-        <button type="submit" class="btn btn-default">Send Message</button>
-      </form>
-      <div class="social">
-        <ul>
-          <li><a target="_blank" href="https://www.facebook.com/Dboticalabs/?fref=ts"><i class="fa fa-facebook"></i></a></li>
-          <li><a target="_blank" href="https://twitter.com/Dbotica_labs"><i class="fa fa-twitter"></i></a></li>
-          <li><a target="_blank" href="https://www.instagram.com/dbotica/"><i class="fa fa-instagram"></i></a></li>
-          <li><a target="_blank" href="https://www.linkedin.com/company/6653196"><i class="fa fa-linkedin"></i></a></li>
-        </ul>
-      </div>
+        <!-- bloc-2 END -->
+        <!-- bloc-3 -->
+        <div class="bloc bg-repeat bgc-white-smoke tc-outer-space" id="bloc-3">
+            <div class="container bloc-md">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h1 class="mg-md text-center tc-black">
+                    Our Services
+                </h1>
+                    </div>
+                </div>
+                <div class="row voffset">
+                    <div class="col-sm-6">
+                        <a href="for-patients.html"><img src="img/final.gif" class="img-responsive" width="300" /></a>
+                    </div>
+                    <div class="col-sm-6">
+                        <h3 class=" mg-lg text-left">
+                    <br /><br /><br />One-Stop Solution
+                </h3>
+                        <p class="mg-md ">
+                            Dbotica mobile application provides end to end solutions to all your medical needs. Users can consult doctors, book laboratories, upload/ track medical records and can have a home delivery of their medical prescriptions in 120 minutes.
+                        </p> <a href="for-patients.html" class="btn   btn-lg animated zoomIn btn-caribbean-green">For Patients</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- bloc-3 END -->
+        <!-- bloc-4 -->
+        <div class="bloc bgc-white tc-outer-space" id="bloc-4">
+            <div class="container bloc-lg">
+                <div class="row voffset">
+                    <div class="col-sm-6">
+                        <h3 class=" mg-lg text-left">
+                    <br /><br />Comprehensive Clinic Management
+                </h3>
+                        <p class="mg-md ">
+                            Management Tool to handle end-to-end administration of the clinics. Dbotica helps in streamlining operations of the clinics by managing appointments, walk-in patients, inventory and billing system coupled with a smart e-prescription platform to digitalize the practice of doctors.
+                        </p><a href="for-clincs-doctors.html" class="btn   btn-lg animated zoomIn btn-caribbean-green">For Clinics/Doctors</a>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="for-clincs-doctors.html"><img src="img/Apple%20Macbook%20Pro%202.jpg" class="img-responsive" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- bloc-4 END -->
+        <!-- bloc-5 -->
+        <div class="bloc bgc-white-smoke l-bloc tc-black" id="bloc-5">
+            <div class="container bloc-md">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h1 class="mg-md text-center tc-caribbean-green">
+                    Contact Us
+                </h1>
+                    </div>
+                </div>
+                <div class="row voffset">
+                    <div class="col-sm-4">
+                        <div class="text-center">
+                            <span class="li_location icon-lg icon-indigo-dye"></span>
+                        </div>
+                        <p class="text-center">
+                            <br />213, Rifco Santosh
+                            <br />Murugeshpalya, Bengaluru
+                            <br />Pincode - 560017
+                        </p>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="text-center">
+                            <span class="li_mail icon-lg icon-indigo-dye"></span>
+                        </div>
+                        <p class="text-center">
+                            <br />info@dbotica.in
+                        </p>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="text-center">
+                            <span class="li_phone icon-lg icon-indigo-dye"></span>
+                        </div>
+                        <p class="text-center">
+                            <br />+91-9035153955
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- bloc-5 END -->
+        <!-- bloc-6 -->
+        <div class="bloc bgc-white-smoke l-bloc" id="bloc-6">
+            <div class="container bloc-sm">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-md-offset-3">
+                        <div class="col-sm-3 text-center">
+                            <a class="social" href="https://twitter.com/Dbotica_labs"><span class="fa fa-twitter icon-md"></span></a>
+                        </div>
+                        <div class="col-sm-3 text-center">
+                            <a class="social" href="https://www.facebook.com/Dboticalabs/?fref=ts"><span class="fa fa-facebook icon-md"></span></a>
+                        </div>
+                        <div class="col-sm-3 text-center">
+                            <a class="social" href="https://www.linkedin.com/company/6653196"><span class="fa fa-linkedin icon-md"></span></a>
+                        </div>
+                        <div class="col-sm-3 text-center">
+                            <a class="social" href="https://www.instagram.com/dbotica/"><span class="fa fa-instagram icon-md"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- bloc-6 END -->
+        <!-- bloc-7 -->
+        <div class="bloc bg-squared-bg bg-repeat bgc-caribbean-green d-bloc" id="bloc-7">
+            <div class="container bloc-lg">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="mg-md text-center  tc-black-2">
+                    Leave us a Message
+                </h3>
+                    </div>
+                </div>
+                <div class="row voffset">
+                    <div class="col-sm-12">
+                        <form id="form_1" novalidate>
+                            <div class="form-group">
+                                <label>
+                                    Name
+                                </label>
+                                <input id="name" class="form-control" required />
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    Email
+                                </label>
+                                <input id="email" class="form-control" type="email" required />
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    Message
+                                </label>
+                                <textarea id="message" class="form-control" rows="4" cols="50" required></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button class="bloc-button btn btn-lg btn-black animated bounceIn" type="submit">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- bloc-7 END -->
+        <!-- Footer - bloc-27 -->
+        <div class="bloc bgc-outer-space bg-city-overlay d-bloc" id="bloc-27">
+            <div class="container bloc-sm">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h4 class="mg-md">
+                    Company
+                </h4><a class="a-btn a-block" onclick="scrollToTarget('#bloc-2')">About Us</a><a href="https://angel.co/dbotica" class="a-btn a-block" target="_blank">Careers</a><a href="index.html" class="a-btn a-block">Mission</a><a href="https://www.facebook.com/Dboticalabs/?fref=ts" class="a-btn a-block" target="_blank">Our Blog</a>
+                    </div>
+                    <div class="col-sm-3">
+                        <h4 class="mg-md">
+                    Get the App
+                </h4><a class="a-btn a-block" onclick="scrollToTarget('2')">Android</a><a class="a-btn a-block" onclick="scrollToTarget(2)">iOS</a>
+                    </div>
+                    <div class="col-sm-3">
+                        <h4 class="mg-md">
+                    Product
+                </h4><a href="for-patients.html" class="a-btn a-block">For Patients</a><a href="for-clincs-doctors.html" class="a-btn a-block">For Clinics/Doctors</a><a href="for-clincs-doctors.html" class="a-btn a-block">For laboratories</a>
+                    </div>
+                    <div class="col-sm-3">
+                        <a href="terms-and-conditions.html" class="a-btn a-block">Terms and Conditions</a><a href="privacy-policy.html" class="a-btn a-block">Privacy Policy</a><a href="index.html" class="a-btn a-block">FAQs</a><a href="https://www.facebook.com/Dboticalabs/?fref=ts" class="a-btn a-block">News and Press</a>
+                    </div>
+                </div>
+                <div class="row voffset">
+                    <div class="col-sm-12">
+                        <img src="img/full%20LOGO%2014.png" class="img-responsive pull-right" width="200" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer - bloc-27 END -->
     </div>
-  </div>
-</div>
-<div id="footer">
-  <div class="container">
-      <p>Copyright © Histobiotic Healthcare Pvt. Ltd. 2016</p>
-  </div>
-</div>
-
-<!-- Portfolio Modals --> 
-
-
-
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
-<script type="text/javascript" src="js/jquery.1.11.1.js"></script> 
-<!-- Include all compiled plugins (below), or include individual files as needed --> 
-<script type="text/javascript" src="js/bootstrap.js"></script> 
-<script type="text/javascript" src="js/SmoothScroll.js"></script> 
-<script type="text/javascript" src="js/wow.min.js"></script> 
-<script type="text/javascript" src="js/jquery.prettyPhoto.js"></script> 
-<script type="text/javascript" src="js/jquery.isotope.js"></script> 
-<script type="text/javascript" src="js/jqBootstrapValidation.js"></script> 
-<script type="text/javascript" src="js/contact_me.js"></script> 
-<script type="text/javascript" src="js/owl.carousel.js"></script> 
-<!-- Go to www.addthis.com/dashboard to customize your tools 
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-54ad860153fa6ad0" async="async"></script> -->
-<!-- Javascripts
-    ================================================== --> 
-<script type="text/javascript" src="js/main.js"></script>
+    <!-- Main container END -->
 </body>
+<!-- Google Analytics -->
+<!-- Google Analytics END -->
+
 </html>
