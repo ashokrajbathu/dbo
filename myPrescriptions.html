@@ -641,6 +641,7 @@
         var doctorName = localStorage.getItem('firstName');
         console.log("doctor name is----" + doctorName);
         $("#doctorName").text(doctorName);
+        doctorName = "Dr. " + doctorName;
         $("#doctorNameInTheHeader").text(doctorName);
         $("#doctorNameInSideBar").text(doctorName);
         /*$(window).scroll(function() {

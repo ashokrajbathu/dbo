@@ -12,6 +12,13 @@
     width: 180px;
 }
 
+.adminActiveInactiveBtns {
+    padding-top:0px;
+    color: white;
+    background-color: #3c8dbc;
+    height: 20px;
+}
+
 .adminDropDown>button {
     padding-top: 2px;
 }

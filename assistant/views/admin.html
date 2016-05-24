@@ -44,6 +44,7 @@
                             <th>Procedure Name</th>
                             <th>Cost</th>
                             <th>Remarks</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody class="tableInAdminBody">
@@ -52,6 +53,10 @@
                             <td ng-bind="doctorService.billingName"></td>
                             <td ng-bind="doctorService.price/100"></td>
                             <td ng-bind="doctorService.remark"></td>
+                            <td>
+                                <button class="btn adminActiveInactiveBtns">ACTIVE</button>
+                                <button class="btn adminActiveInactiveBtns">INACTIVE</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

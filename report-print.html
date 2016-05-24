@@ -38,7 +38,7 @@
             <div class="row invoice-info">
                 <div class="col-md-6 col-sm-12 col-xs-12 invoice-col">
                     <address>
-                        <strong><span id="pr-doctor-name" ></span></strong><span placeholder="docqual" id="doctor-qual"></span>
+                        <strong style="font-size:20px;"><span id="pr-doctor-name"></span></strong><span placeholder="docqual" id="doctor-qual"></span>
                         <div class="row specializationRow">
                             <p><span id="pr-doctor-specialization"></span></p>
                         </div>
@@ -64,9 +64,9 @@
                     </address>
                 </div>
                 <div class="col-md-6">
-                    <p class="pull-right"><span style="font-weight:600;" id="pr-doctor-organization"></span>
+                    <p class="pull-right"><span style="font-weight:700;font-size:25px;" id="pr-doctor-organization"></span>
                         <br>
-                        <span id="pr-doctor-hospitalLocation"></span>
+                        <span style="font-weight:600;" id="pr-doctor-hospitalLocation"></span>
                     </p>
                 </div>
             </div>
@@ -158,7 +158,9 @@
         </section>
     </div>
     <footer id="footer" align="center">
-        <hr>Terms and conditions apply,Powered by Dbotica
+        <hr>
+        <strong>Address:</strong>
+        <span style="font-size:16px;" id="footerInPrescription"></span>
     </footer>
     <!-- /.row -->
     <!-- /.content -->
@@ -375,7 +377,7 @@
         var city = localStorage.getItem('doctorHospitalLocation');
         console.log("doc specialization is----" + docSpe);
 
-        var doctorName = docname + '.' + docLastName;
+        var doctorName = "Dr. " + docname + '.' + docLastName;
 
         $('#pr-doctor-name').text(doctorName);
         $('#pr-doctor-qual').text(docQua);
@@ -384,10 +386,12 @@
         $('#pr-doctor-registrationNo').text(docRegistrationNo);
         $('#pr-doctor-phoneNumber').text(phoneNumber);
         $('#pr-doctor-hospitalLocation').text(city);
+        var cityAtFooter = city + ' .Powered By Dbotica';
+        $('#footerInPrescription').text(cityAtFooter);
         if (!!docPhn && docPhn.length != 0 && docPhn != "undefined") {
             $('#pr-doctor-phn').text(docPhn);
         }
-
+        docOrg = docOrg.toUpperCase();
         $('#pr-doctor-organization').text(docOrg);
         try {
             var data1 = $.parseJSON($.cookie('currentPatientInfo'));
