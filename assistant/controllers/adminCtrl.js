@@ -121,7 +121,8 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                     var updatedDoctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
                     updatedDoctorsOfThatAssistant.then(function(successResponse) {
                         var updatedDoctorsOfThatAssistantResponse = $.parseJSON(successResponse.data.response);
-                        $scope.doctorsListInAdmin = [];
+                        updateTheServices(updatedDoctorsOfThatAssistantResponse);
+                        /*$scope.doctorsListInAdmin = [];
                         $scope.admin.servicesListOfTheDoctor = [];
                         for (doctorIndex in updatedDoctorsOfThatAssistantResponse) {
                             $scope.doctorsListInAdmin.push(updatedDoctorsOfThatAssistantResponse[doctorIndex]);
@@ -134,7 +135,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                                     $scope.servicesList.unshift($scope.admin.servicesListOfTheDoctor[eachService].billingName);
                                 }
                             }
-                        }
+                        }*/
                     }, function(errorResponse) {});
                 }
                 swal({
@@ -161,6 +162,69 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 allowOutsideClick: true
             });
         }
+    }
+
+    $scope.btnActiveInServicesTable = function(doctorService) {
+        var changeStateRequestEntity = {};
+        changeStateRequestEntity.doctorPriceInfos = [];
+        changeStateRequestEntity.doctorId = $scope.admin.doctorActive.id;
+        for (doctorServiceIndex in $scope.admin.servicesListOfTheDoctor) {
+            var object = {};
+            object.billingName = $scope.admin.servicesListOfTheDoctor[doctorServiceIndex].billingName;
+            object.price = $scope.admin.servicesListOfTheDoctor[doctorServiceIndex].price;
+            object.remark = $scope.admin.servicesListOfTheDoctor[doctorServiceIndex].remark;
+            object.updatedBy = $scope.admin.servicesListOfTheDoctor[doctorServiceIndex].updatedBy;
+            check = (doctorService.billingName == $scope.admin.servicesListOfTheDoctor[doctorServiceIndex].billingName) && (doctorService.price == $scope.admin.servicesListOfTheDoctor[doctorServiceIndex].price);
+            if (check) {
+                var date = new Date();
+                object.updatedDate = date.getTime();
+                if (doctorService.state == "ACTIVE") {
+                    object.state = "INACTIVE";
+                } else {
+                    object.state = "ACTIVE";
+                }
+                changeStateRequestEntity.doctorPriceInfos.push(object);
+            } else {
+                object.updatedDate = $scope.admin.servicesListOfTheDoctor[doctorServiceIndex].updatedDate;
+                object.state = $scope.admin.servicesListOfTheDoctor[doctorServiceIndex].state;
+                changeStateRequestEntity.doctorPriceInfos.push(object);
+            }
+        }
+        $log.log("req entity is---", changeStateRequestEntity);
+        var changeServiceStateRequestPromise = dboticaServices.submitServiceRequest(changeStateRequestEntity);
+        changeServiceStateRequestPromise.then(function(successResponseOfChangeStateRequest) {
+            if (successResponseOfChangeStateRequest.data.success === true && successResponseOfChangeStateRequest.data.errorCode === null) {
+                var updatedDoctors = dboticaServices.doctorsOfAssistant();
+                updatedDoctors.then(function(successResponse) {
+                    var updatedDoctorsResponse = $.parseJSON(successResponse.data.response);
+                    updateTheServices(updatedDoctorsResponse);
+                }, function(errorResponse) {
+
+                });
+            }
+
+        }, function(changeStateRequestErrorResponse) {
+
+        });
+
+    }
+
+    var updateTheServices = function(doctorServiceResponse) {
+        $scope.doctorsListInAdmin = [];
+        $scope.admin.servicesListOfTheDoctor = [];
+        for (doctorIndex in doctorServiceResponse) {
+            $scope.doctorsListInAdmin.push(doctorServiceResponse[doctorIndex]);
+            if (doctorServiceResponse[doctorIndex].id == $scope.admin.doctorActive.id) {
+                $scope.admin.doctorActive = doctorServiceResponse[doctorIndex];
+                $log.log("updated docs are---", $scope.admin.doctorActive);
+                $scope.admin.servicesListOfTheDoctor = doctorServiceResponse[doctorIndex].doctorPriceInfos;
+                $scope.servicesList = ["Others"];
+                for (eachService in $scope.admin.servicesListOfTheDoctor) {
+                    $scope.servicesList.unshift($scope.admin.servicesListOfTheDoctor[eachService].billingName);
+                }
+            }
+        }
+
     }
 
     var getServiceRequestObject = function() {

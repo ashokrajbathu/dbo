@@ -12,11 +12,25 @@
     width: 180px;
 }
 
-.adminActiveInactiveBtns {
-    padding-top:0px;
+.adminActiveInactiveBtnsGreen {
+    padding-top: 0px;
     color: white;
-    background-color: #3c8dbc;
+    background-color: #73AD21;
     height: 20px;
+}
+
+.ACTIVE {
+    background-color: #73AD21;
+}
+
+.INACTIVE {
+    background-color: #ff4c4c;
+}
+
+.adminActiveInactiveBtnsBlue {
+    padding-top: 0px;
+    color: white;
+    height: 22px;
 }
 
 .adminDropDown>button {
