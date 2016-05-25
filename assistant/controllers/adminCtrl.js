@@ -1,15 +1,16 @@
 angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     localStorage.setItem("currentState", "admin");
+    var adminElement = this;
 
-    $scope.admin = {};
-    $scope.admin.procedureName = false;
-    $scope.admin.doctorInDropdown;
-    $scope.admin.doctorActive;
-    $scope.admin.servicesListOfTheDoctor = [];
-    $scope.servicesList = ["Others"];
-    $scope.admin.serviceInDropDown = "Select Service"
-    $scope.admin.procedureCostTextBox = "";
-    $scope.admin.procedureRemarksTextBox = "";
+    adminElement.admin = {};
+    adminElement.admin.procedureName = false;
+    adminElement.admin.doctorInDropdown;
+    adminElement.admin.doctorActive;
+    adminElement.admin.servicesListOfTheDoctor = [];
+    adminElement.servicesList = ["Others"];
+    adminElement.admin.serviceInDropDown = "Select Service"
+    adminElement.admin.procedureCostTextBox = "";
+    adminElement.admin.procedureRemarksTextBox = "";
     var doctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
     doctorsOfThatAssistant.then(function(response) {
         var errorCode = response.data.errorCode;
@@ -23,21 +24,21 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                         confirmButtonText: "OK",
                         allowOutsideClick: true
                     });
-                    localStorage.setItem('isLoggedIn', false);
+                    localStorage.setItem('isLoggedInAssistant', false);
                     $state.go('login');
                     break;
             }
         } else {
-            $scope.doctorsListInAdmin = $.parseJSON(response.data.response);
-            $scope.admin.doctorActive = $scope.doctorsListInAdmin[0];
-            $scope.admin.doctorInDropdown = $scope.doctorsListInAdmin[0].firstName + ' ' + $scope.doctorsListInAdmin[0].lastName;
-            if ($scope.admin.doctorActive.hasOwnProperty('doctorPriceInfos')) {
-                $scope.admin.servicesListOfTheDoctor = $scope.admin.doctorActive.doctorPriceInfos;
-                for (service in $scope.admin.servicesListOfTheDoctor) {
-                    $scope.servicesList.unshift($scope.admin.servicesListOfTheDoctor[service].billingName);
+            adminElement.doctorsListInAdmin = $.parseJSON(response.data.response);
+            adminElement.admin.doctorActive = adminElement.doctorsListInAdmin[0];
+            adminElement.admin.doctorInDropdown = adminElement.doctorsListInAdmin[0].firstName + ' ' + adminElement.doctorsListInAdmin[0].lastName;
+            if (adminElement.admin.doctorActive.hasOwnProperty('doctorPriceInfos')) {
+                adminElement.admin.servicesListOfTheDoctor = adminElement.admin.doctorActive.doctorPriceInfos;
+                for (service in adminElement.admin.servicesListOfTheDoctor) {
+                    adminElement.servicesList.unshift(adminElement.admin.servicesListOfTheDoctor[service].billingName);
                 }
             }
-            $log.log("docs list is----", $scope.doctorsListInAdmin);
+            $log.log("docs list is----", adminElement.doctorsListInAdmin);
         }
     }, function(errorResponse) {
         $log.log("in error response of getting doctors");
@@ -45,61 +46,61 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
 
 
 
-    $scope.selectOthersService = function() {
-        var serviceSelected = $scope.admin.selectService;
+    adminElement.selectOthersService = function() {
+        var serviceSelected = adminElement.admin.selectService;
         if (serviceSelected.name == "Others") {
             $log.log("in others---");
-            $scope.admin.procedureName = true;
+            adminElement.admin.procedureName = true;
         } else {
-            $scope.admin.procedureName = false;
+            adminElement.admin.procedureName = false;
         }
     };
 
-    $scope.doctorSelect = function(doctor) {
-        $scope.admin.doctorActive = doctor;
-        $scope.servicesList = ["Others"];
+    adminElement.doctorSelect = function(doctor) {
+        adminElement.admin.doctorActive = doctor;
+        adminElement.servicesList = ["Others"];
         $log.log("doctor selected is---", doctor);
         if (doctor.hasOwnProperty('doctorPriceInfos')) {
-            $scope.admin.servicesListOfTheDoctor = doctor.doctorPriceInfos;
+            adminElement.admin.servicesListOfTheDoctor = doctor.doctorPriceInfos;
             for (service in doctor.doctorPriceInfos) {
-                $scope.servicesList.unshift(doctor.doctorPriceInfos[service].billingName);
+                adminElement.servicesList.unshift(doctor.doctorPriceInfos[service].billingName);
             }
         } else {
-            $scope.admin.servicesListOfTheDoctor = [];
+            adminElement.admin.servicesListOfTheDoctor = [];
         }
-        $scope.admin.doctorInDropdown = doctor.firstName + ' ' + doctor.lastName;
+        adminElement.admin.doctorInDropdown = doctor.firstName + ' ' + doctor.lastName;
     }
 
-    $scope.serviceSelect = function(service) {
-        $scope.admin.serviceInDropDown = service;
+    adminElement.serviceSelect = function(service) {
+        adminElement.admin.serviceInDropDown = service;
         if (service == "Others") {
-            $scope.admin.procedureName = true;
+            adminElement.admin.procedureName = true;
         } else {
-            $scope.admin.procedureNameTxtBox = service;
-            $scope.admin.procedureName = false;
+            adminElement.admin.procedureNameTxtBox = service;
+            adminElement.admin.procedureName = false;
         }
     }
 
-    $scope.submitServiceRequest = function() {
+    adminElement.submitServiceRequest = function() {
         var serviceRequestEntity = {};
-        serviceRequestEntity.doctorId = $scope.admin.doctorActive.id;
+        serviceRequestEntity.doctorId = adminElement.admin.doctorActive.id;
         serviceRequestEntity.doctorPriceInfos = [];
-        $log.log("cost is---" + $scope.admin.procedureCostTextBox);
-        $log.log("remark is----" + $scope.admin.procedureRemarksTextBox);
-        if ($scope.admin.serviceInDropDown !== "Select Service" && $scope.admin.procedureCostTextBox !== "" && $scope.admin.procedureRemarksTextBox !== "") {
+        $log.log("cost is---" + adminElement.admin.procedureCostTextBox);
+        $log.log("remark is----" + adminElement.admin.procedureRemarksTextBox);
+        if (adminElement.admin.serviceInDropDown !== "Select Service" && adminElement.admin.procedureCostTextBox !== "" && adminElement.admin.procedureRemarksTextBox !== "") {
             $log.log("in required---");
-            if ($scope.admin.doctorActive.hasOwnProperty('doctorPriceInfos')) {
+            if (adminElement.admin.doctorActive.hasOwnProperty('doctorPriceInfos')) {
                 $log.log("in first if--");
-                if ($scope.admin.doctorActive.doctorPriceInfos.length > 0) {
-                    for (var doctorPriceInfoIndex = 0; doctorPriceInfoIndex < $scope.admin.doctorActive.doctorPriceInfos.length; doctorPriceInfoIndex++) {
+                if (adminElement.admin.doctorActive.doctorPriceInfos.length > 0) {
+                    for (var doctorPriceInfoIndex = 0; doctorPriceInfoIndex < adminElement.admin.doctorActive.doctorPriceInfos.length; doctorPriceInfoIndex++) {
                         var existingInfoObject = {};
-                        if ($scope.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].billingName == $scope.admin.serviceInDropDown) {} else {
-                            existingInfoObject.billingName = $scope.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].billingName;
-                            existingInfoObject.price = $scope.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].price;
-                            existingInfoObject.updatedDate = $scope.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].updatedDate;
-                            existingInfoObject.remark = $scope.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].remark;
-                            existingInfoObject.updatedBy = $scope.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].updatedBy;
-                            existingInfoObject.state = $scope.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].state;
+                        if (adminElement.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].billingName == adminElement.admin.serviceInDropDown) {} else {
+                            existingInfoObject.billingName = adminElement.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].billingName;
+                            existingInfoObject.price = adminElement.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].price;
+                            existingInfoObject.updatedDate = adminElement.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].updatedDate;
+                            existingInfoObject.remark = adminElement.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].remark;
+                            existingInfoObject.updatedBy = adminElement.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].updatedBy;
+                            existingInfoObject.state = adminElement.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].state;
                             serviceRequestEntity.doctorPriceInfos.push(existingInfoObject);
                         }
                     }
@@ -122,17 +123,17 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                     updatedDoctorsOfThatAssistant.then(function(successResponse) {
                         var updatedDoctorsOfThatAssistantResponse = $.parseJSON(successResponse.data.response);
                         updateTheServices(updatedDoctorsOfThatAssistantResponse);
-                        /*$scope.doctorsListInAdmin = [];
-                        $scope.admin.servicesListOfTheDoctor = [];
+                        /*adminElement.doctorsListInAdmin = [];
+                        adminElement.admin.servicesListOfTheDoctor = [];
                         for (doctorIndex in updatedDoctorsOfThatAssistantResponse) {
-                            $scope.doctorsListInAdmin.push(updatedDoctorsOfThatAssistantResponse[doctorIndex]);
-                            if (updatedDoctorsOfThatAssistantResponse[doctorIndex].id == $scope.admin.doctorActive.id) {
-                                $scope.admin.doctorActive = updatedDoctorsOfThatAssistantResponse[doctorIndex];
-                                $log.log("updated docs are---", $scope.admin.doctorActive);
-                                $scope.admin.servicesListOfTheDoctor = updatedDoctorsOfThatAssistantResponse[doctorIndex].doctorPriceInfos;
-                                $scope.servicesList = ["Others"];
-                                for (eachService in $scope.admin.servicesListOfTheDoctor) {
-                                    $scope.servicesList.unshift($scope.admin.servicesListOfTheDoctor[eachService].billingName);
+                            adminElement.doctorsListInAdmin.push(updatedDoctorsOfThatAssistantResponse[doctorIndex]);
+                            if (updatedDoctorsOfThatAssistantResponse[doctorIndex].id == adminElement.admin.doctorActive.id) {
+                                adminElement.admin.doctorActive = updatedDoctorsOfThatAssistantResponse[doctorIndex];
+                                $log.log("updated docs are---", adminElement.admin.doctorActive);
+                                adminElement.admin.servicesListOfTheDoctor = updatedDoctorsOfThatAssistantResponse[doctorIndex].doctorPriceInfos;
+                                adminElement.servicesList = ["Others"];
+                                for (eachService in adminElement.admin.servicesListOfTheDoctor) {
+                                    adminElement.servicesList.unshift(adminElement.admin.servicesListOfTheDoctor[eachService].billingName);
                                 }
                             }
                         }*/
@@ -145,11 +146,11 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                     confirmButtonText: "OK",
                     allowOutsideClick: true
                 });
-                $scope.admin.procedureName = false;
-                $scope.admin.procedureNameTxtBox = "";
-                $scope.admin.procedureCostTextBox = "";
-                $scope.admin.procedureRemarksTextBox = "";
-                $scope.admin.serviceInDropDown = "Select Service";
+                adminElement.admin.procedureName = false;
+                adminElement.admin.procedureNameTxtBox = "";
+                adminElement.admin.procedureCostTextBox = "";
+                adminElement.admin.procedureRemarksTextBox = "";
+                adminElement.admin.serviceInDropDown = "Select Service";
             }, function(errorResponseOfServiceRequest) {
                 $log.log("in error response of submit service request---");
             });
@@ -164,17 +165,17 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
         }
     }
 
-    $scope.btnActiveInServicesTable = function(doctorService) {
+    adminElement.btnActiveInServicesTable = function(doctorService) {
         var changeStateRequestEntity = {};
         changeStateRequestEntity.doctorPriceInfos = [];
-        changeStateRequestEntity.doctorId = $scope.admin.doctorActive.id;
-        for (doctorServiceIndex in $scope.admin.servicesListOfTheDoctor) {
+        changeStateRequestEntity.doctorId = adminElement.admin.doctorActive.id;
+        for (doctorServiceIndex in adminElement.admin.servicesListOfTheDoctor) {
             var object = {};
-            object.billingName = $scope.admin.servicesListOfTheDoctor[doctorServiceIndex].billingName;
-            object.price = $scope.admin.servicesListOfTheDoctor[doctorServiceIndex].price;
-            object.remark = $scope.admin.servicesListOfTheDoctor[doctorServiceIndex].remark;
-            object.updatedBy = $scope.admin.servicesListOfTheDoctor[doctorServiceIndex].updatedBy;
-            check = (doctorService.billingName == $scope.admin.servicesListOfTheDoctor[doctorServiceIndex].billingName) && (doctorService.price == $scope.admin.servicesListOfTheDoctor[doctorServiceIndex].price);
+            object.billingName = adminElement.admin.servicesListOfTheDoctor[doctorServiceIndex].billingName;
+            object.price = adminElement.admin.servicesListOfTheDoctor[doctorServiceIndex].price;
+            object.remark = adminElement.admin.servicesListOfTheDoctor[doctorServiceIndex].remark;
+            object.updatedBy = adminElement.admin.servicesListOfTheDoctor[doctorServiceIndex].updatedBy;
+            check = (doctorService.billingName == adminElement.admin.servicesListOfTheDoctor[doctorServiceIndex].billingName) && (doctorService.price == adminElement.admin.servicesListOfTheDoctor[doctorServiceIndex].price);
             if (check) {
                 var date = new Date();
                 object.updatedDate = date.getTime();
@@ -185,8 +186,8 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 }
                 changeStateRequestEntity.doctorPriceInfos.push(object);
             } else {
-                object.updatedDate = $scope.admin.servicesListOfTheDoctor[doctorServiceIndex].updatedDate;
-                object.state = $scope.admin.servicesListOfTheDoctor[doctorServiceIndex].state;
+                object.updatedDate = adminElement.admin.servicesListOfTheDoctor[doctorServiceIndex].updatedDate;
+                object.state = adminElement.admin.servicesListOfTheDoctor[doctorServiceIndex].state;
                 changeStateRequestEntity.doctorPriceInfos.push(object);
             }
         }
@@ -210,17 +211,17 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     }
 
     var updateTheServices = function(doctorServiceResponse) {
-        $scope.doctorsListInAdmin = [];
-        $scope.admin.servicesListOfTheDoctor = [];
+        adminElement.doctorsListInAdmin = [];
+        adminElement.admin.servicesListOfTheDoctor = [];
         for (doctorIndex in doctorServiceResponse) {
-            $scope.doctorsListInAdmin.push(doctorServiceResponse[doctorIndex]);
-            if (doctorServiceResponse[doctorIndex].id == $scope.admin.doctorActive.id) {
-                $scope.admin.doctorActive = doctorServiceResponse[doctorIndex];
-                $log.log("updated docs are---", $scope.admin.doctorActive);
-                $scope.admin.servicesListOfTheDoctor = doctorServiceResponse[doctorIndex].doctorPriceInfos;
-                $scope.servicesList = ["Others"];
-                for (eachService in $scope.admin.servicesListOfTheDoctor) {
-                    $scope.servicesList.unshift($scope.admin.servicesListOfTheDoctor[eachService].billingName);
+            adminElement.doctorsListInAdmin.push(doctorServiceResponse[doctorIndex]);
+            if (doctorServiceResponse[doctorIndex].id == adminElement.admin.doctorActive.id) {
+                adminElement.admin.doctorActive = doctorServiceResponse[doctorIndex];
+                $log.log("updated docs are---", adminElement.admin.doctorActive);
+                adminElement.admin.servicesListOfTheDoctor = doctorServiceResponse[doctorIndex].doctorPriceInfos;
+                adminElement.servicesList = ["Others"];
+                for (eachService in adminElement.admin.servicesListOfTheDoctor) {
+                    adminElement.servicesList.unshift(adminElement.admin.servicesListOfTheDoctor[eachService].billingName);
                 }
             }
         }
@@ -231,11 +232,11 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
         var newObject = {};
         var assistantCurrentlyLoggedIn = localStorage.getItem('assistantCurrentlyLoggedIn');
         assistantCurrentlyLoggedIn = $.parseJSON(assistantCurrentlyLoggedIn);
-        newObject.billingName = $scope.admin.procedureNameTxtBox;
-        newObject.price = $scope.admin.procedureCostTextBox * 100;
+        newObject.billingName = adminElement.admin.procedureNameTxtBox;
+        newObject.price = adminElement.admin.procedureCostTextBox * 100;
         var date = new Date();
         newObject.updatedDate = date.getTime();
-        newObject.remark = $scope.admin.procedureRemarksTextBox;
+        newObject.remark = adminElement.admin.procedureRemarksTextBox;
         newObject.updatedBy = assistantCurrentlyLoggedIn.id;
         newObject.state = "ACTIVE";
         return newObject;

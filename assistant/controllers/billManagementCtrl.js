@@ -32,7 +32,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                         confirmButtonText: "OK",
                         allowOutsideClick: true
                     });
-                    localStorage.setItem('isLoggedIn', false);
+                    localStorage.setItem('isLoggedInAssistant', false);
                     $state.go('login');
                     break;
             }

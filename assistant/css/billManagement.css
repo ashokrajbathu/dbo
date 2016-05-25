@@ -8,7 +8,7 @@
     height: 40px;
 }
 
-.doctorsListInBill{
+.doctorsListInBill {
     cursor: pointer;
 }
 
@@ -222,4 +222,10 @@
 #medicineAvailabilityBtn {
     margin-top: 5px;
     margin-bottom: 5px;
+}
+
+@media screen and (min-width:1000px) {
+    .doctorBillsDropdown {
+        width: 140px;
+    }
 }

@@ -1,4 +1,4 @@
-angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
 
     localStorage.setItem("currentState", "patientManagement");
     angular.element("#sessionDatepicker").datepicker({
@@ -133,10 +133,10 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             var patientsList = JSON.parse(response.data.response);
             $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
         }, function(error) {
-            $log.log("in patient controller patients error");
+            console.log("in patient controller patients error");
         });
     }, function(error) {
-        $log.log("doctors error response", error);
+        console.log("doctors error response", error);
     });
 
     $scope.cancelBookingsModal = function() {
@@ -175,8 +175,8 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         $scope.addPatientBtn = true;
         $scope.viewDetailsLink = false;
         var phoneNumberForSearch = $scope.patientDataSearch.phoneNumberSearch;
-        $log.log("scope phone number is----" + $scope.patientDataSearch.phoneNumberSearch);
-        $log.log("phoneNumberForSearch is----" + phoneNumberForSearch);
+        console.log("scope phone number is----" + $scope.patientDataSearch.phoneNumberSearch);
+        console.log("phoneNumberForSearch is----" + phoneNumberForSearch);
         if (phoneNumberForSearch === undefined || phoneNumberForSearch === "") {
             swal({
                 title: "Error",
@@ -193,11 +193,11 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 $scope.patientAvailable = true;
                 $scope.nextForm = false;
                 $scope.addPatientBtn = false;
-                $log.log("patients length is---" + response.data.response.length);
+                console.log("patients length is---" + response.data.response.length);
                 if (response.data.success === true && response.data.response.length > 2) {
-                    $log.log("inside if of patient search");
+                    console.log("inside if of patient search");
                     var patientData = JSON.parse(response.data.response);
-                    $log.log("patient data in patient search----", patientData);
+                    console.log("patient data in patient search----", patientData);
                     $scope.patientData.gender = patientData[0].gender;
                     $scope.patientData.bloodGroup = patientData[0].bloodGroup;
                     $scope.patientData.drugAllergy = patientData[0].bloodAllergy;
@@ -210,14 +210,14 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 } else {
                     $scope.patientData = {};
                     $scope.patientData.phoneNumber = phoneNumberForSearch;
-                    $log.log("no details of the patient");
+                    console.log("no details of the patient");
                 }
 
-                $log.log("patient search details are----", response);
+                console.log("patient search details are----", response);
 
             }, function(errorResponse) {
-                $log.log("error response in the search is------", errorResponse);
-                $log.log("patient search is unsuccessful");
+                console.log("error response in the search is------", errorResponse);
+                console.log("patient search is unsuccessful");
             });
         }
         $scope.patientDataSearch.phoneNumberSearch = "";
@@ -226,16 +226,16 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
     $scope.cancelBookings = function() {
         $scope.bookingsForCancelling = [];
         $scope.cancelAppointmentsTable = true;
-        $log.log("patient phone number for cancelling-----" + $scope.cancelBook.phoneNumber);
+        console.log("patient phone number for cancelling-----" + $scope.cancelBook.phoneNumber);
         var patientPhoneNumberForCancelling = $scope.cancelBook.phoneNumber;
-        $log.log("number is---" + patientPhoneNumberForCancelling);
+        console.log("number is---" + patientPhoneNumberForCancelling);
         var doctorId = $scope.book.doctorId;
-        $log.log("cancelling doctor id----" + doctorId);
+        console.log("cancelling doctor id----" + doctorId);
         var promise = dboticaServices.futureAppointmentListOfNumber(patientPhoneNumberForCancelling, doctorId);
         promise.then(function(response) {
-            $log.log("cancelling response is-----", response);
+            console.log("cancelling response is-----", response);
             var objectsList = JSON.parse(response.data.response);
-            $log.log("bookings for cancelling----", objectsList);
+            console.log("bookings for cancelling----", objectsList);
             for (var i = 0, l = objectsList.length; i < l; i++) {
                 if (objectsList[i].state === "INACTIVE") {
                     continue;
@@ -244,12 +244,12 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 }
             }
         }, function(errorResponse) {
-            $log.log("in error response of cancelling");
+            console.log("in error response of cancelling");
         });
     }
 
     $scope.cancelAppointmentBookingOfFutureDays = function(appointment, index) {
-        $log.log("in modal---", appointment);
+        console.log("in modal---", appointment);
         var cancelBook = {};
         cancelBook.calendarStatus = appointment.calendarStatus;
         cancelBook.doctorId = appointment.doctorId;
@@ -259,16 +259,16 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         cancelBook.startTime = appointment.startTime;
         cancelBook.id = appointment.id;
         cancelBook.state = "INACTIVE";
-        $log.log("cancel book object is----", cancelBook);
+        console.log("cancel book object is----", cancelBook);
         var promise = dboticaServices.cancelAppointmentOfADateOrUpdateDoctorEvent(cancelBook);
         promise.then(function(response) {
-            $log.log("after cancelling is----", response);
+            console.log("after cancelling is----", response);
             $scope.bookingsForCancelling.splice(index, 1);
         }, function(errorResponse) {});
     }
 
     $scope.addTimingsBtn = function() {
-        $log.log("time object is----", $scope.addTime);
+        console.log("time object is----", $scope.addTime);
         var addTimeObj = {};
         addTimeObj.doctorId = $scope.book.doctorId;
         var dateSelected = $scope.dateSelected;
@@ -277,19 +277,19 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         var dateInFormat = new Date(date);
         var milliSecsOfDate = dateInFormat.getTime();
         var secondsOfStartTime = timeConverter($scope.addTime.dayStartTime);
-        $log.log("secs of startTime---" + secondsOfStartTime);
+        console.log("secs of startTime---" + secondsOfStartTime);
         var milliSecondsOfStartTime = secondsOfStartTime * 1000;
         var secondsOfEndTime = timeConverter($scope.addTime.dayEndTime);
-        $log.log("secs of end time---" + secondsOfEndTime);
+        console.log("secs of end time---" + secondsOfEndTime);
         var milliSecondsOfEndTime = secondsOfEndTime * 1000;
         addTimeObj.dayStartTime = milliSecondsOfStartTime;
         addTimeObj.dayEndTime = milliSecondsOfEndTime;
         var timePerPatientOfThatDoctor = $scope.addTime.timePerPatient * 60 * 1000;
         addTimeObj.timePerPatient = $scope.addTime.timePerPatient * 60 * 1000;
-        $log.log("time object is----", addTimeObj);
+        console.log("time object is----", addTimeObj);
         var promise = dboticaServices.updateDoctorTimings(addTimeObj);
         promise.then(function(response) {
-            $log.log("update doctor timings response---", response);
+            console.log("update doctor timings response---", response);
             $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = milliSecondsOfStartTime;
             $scope.doctorObjectForChangingStartAndEndTime.dayEndTime = milliSecondsOfEndTime;
             $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = timePerPatientOfThatDoctor;
@@ -300,7 +300,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
     var timeConverter = function(time) {
         $scope.seconds = 0;
         var seconds = 0;
-        $log.log("time in time converter---" + time);
+        console.log("time in time converter---" + time);
         var session = time.slice(-2);
         if (time.length == 11) {
             time = time.slice(0, -3);
@@ -308,31 +308,31 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         var hoursAndMins = time.split(":");
         var mins = hoursAndMins[1];
         var hours = hoursAndMins[0];
-        $log.log("hours value is--" + hours);
-        $log.log("mins value is----" + mins);
-        $log.log("session is--" + session);
+        console.log("hours value is--" + hours);
+        console.log("mins value is----" + mins);
+        console.log("session is--" + session);
         hours = parseInt(hours);
         mins = parseInt(mins);
         switch (session) {
             case 'AM':
-                $log.log("in AM section");
+                console.log("in AM section");
                 seconds = (hours * 60 * 60) + (mins * 60);
-                $log.log("seconds in AM sec---" + seconds);
+                console.log("seconds in AM sec---" + seconds);
                 break;
 
             case 'PM':
-                $log.log("in pm section");
+                console.log("in pm section");
                 if (hours === parseInt(12)) {
-                    $log.log("in hours 12");
+                    console.log("in hours 12");
                     seconds = (12 * 60 * 60) + (mins * 60);
-                    $log.log("seconds for 12---" + seconds);
+                    console.log("seconds for 12---" + seconds);
 
                 } else {
-                    $log.log("in not 12 hrs");
-                    $log.log("hours in pm section---" + hours);
-                    $log.log("minutes in pm swction---" + mins);
+                    console.log("in not 12 hrs");
+                    console.log("hours in pm section---" + hours);
+                    console.log("minutes in pm swction---" + mins);
                     seconds = (12 * 60 * 60) + (hours * 60 * 60) + (mins * 60);
-                    $log.log("seconds in pm section----" + seconds);
+                    console.log("seconds in pm section----" + seconds);
                 }
                 break;
             default:
@@ -352,9 +352,9 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         var promise = dboticaServices.getPatientDetailsOfThatNumber(patientId);
         promise.then(function(response) {
             if (response.data.success) {
-                $log.log("inside if of edit details patient search");
+                console.log("inside if of edit details patient search");
                 var patientData = JSON.parse(response.data.response);
-                $log.log("patient data in edit details patient search----", patientData);
+                console.log("patient data in edit details patient search----", patientData);
                 if (patientData.length > 0) {
                     $scope.patientData.gender = patientData[0].gender;
                     $scope.patientData.bloodGroup = patientData[0].bloodGroup;
@@ -367,15 +367,15 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 }
             } else {
                 $scope.patientData = {};
-                $log.log("in else response of edit details patient search--");
+                console.log("in else response of edit details patient search--");
             }
         }, function(errorResponse) {});
-        $log.log("patient id value is---" + patientId);
+        console.log("patient id value is---" + patientId);
     }
 
     $scope.cancelAppointment = function(cancelPatientAppointment, index) {
-        $log.log("index of the cancelling object is----" + index);
-        $log.log("patient for cancelling appointment is----", cancelPatientAppointment);
+        console.log("index of the cancelling object is----" + index);
+        console.log("patient for cancelling appointment is----", cancelPatientAppointment);
         var cancelBook = {};
         cancelBook.calendarStatus = cancelPatientAppointment.calendarStatus;
         cancelBook.doctorId = cancelPatientAppointment.doctorId;
@@ -385,7 +385,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         cancelBook.startTime = cancelPatientAppointment.startTime;
         cancelBook.id = cancelPatientAppointment.id;
         cancelBook.state = "INACTIVE";
-        $log.log("cancel book object is----", cancelBook);
+        console.log("cancel book object is----", cancelBook);
         swal({
             title: "Are you sure?",
             text: "Appointment will be permanently cancelled!",
@@ -397,7 +397,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         }, function() {
             var promise = dboticaServices.cancelAppointmentOfADateOrUpdateDoctorEvent(cancelBook);
             promise.then(function(response) {
-                $log.log("after cancelling is----", response);
+                console.log("after cancelling is----", response);
                 $scope.patientsList.splice(index, 1);
             }, function(errorResponse) {});
             swal("Cancelled!", "Appointment has been successfully cancelled", "success");
@@ -414,7 +414,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
     }
 
     $scope.selectOption = function(option) {
-        $log.log("in option function");
+        console.log("in option function");
         $scope.patientEntryType = option;
         if ($scope.patientEntryType === "WALK_IN") {
             $scope.dateSelectBox = false;
@@ -423,7 +423,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             $scope.afternoonTimings = false;
             $scope.eveningTimings = false;
         } else {
-            $log.log("in appointment loop");
+            console.log("in appointment loop");
             $scope.dateSelectBox = true;
             $scope.sessionTypes = true;
             angular.element("#morningLabel").addClass("active");
@@ -448,11 +448,11 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             $scope.dateSelectedForBooking = todayToDisplay;
             $scope.dateTimings(today);
         }
-        $log.log("option value is---" + $scope.patientEntryType);
+        console.log("option value is---" + $scope.patientEntryType);
     }
 
     $scope.doctorSelected = function(doctor) {
-        $log.log("doctor in doctor selected is----", doctor);
+        console.log("doctor in doctor selected is----", doctor);
         $scope.doctorTimings = false;
         $scope.addTime = {};
         $scope.addTime.doctorId = doctor.id;
@@ -469,16 +469,16 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         var doctorId = doctor.id;
         var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor(doctorId);
         patientsListOfDoctor.then(function(response) {
-            $log.log("in patients list of doctor selected");
+            console.log("in patients list of doctor selected");
             var patientsList = JSON.parse(response.data.response);
             $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
         }, function(error) {
-            $log.log("in patient controller patients error");
+            console.log("in patient controller patients error");
         });
     }
 
     $scope.dateTimings = function(dateSelectedToBook) {
-        $log.log("date select to book checking----" + dateSelectedToBook);
+        console.log("date select to book checking----" + dateSelectedToBook);
         angular.element("#morningLabel").addClass("active");
         angular.element("#afternoonLabel").removeClass("active");
         angular.element("#eveningLabel").removeClass("active");
@@ -488,7 +488,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         $scope.morningArray = [];
         $scope.afternoonArray = [];
         $scope.eveningArray = [];
-        $log.log("selected date in ng-change is-----" + $scope.dateSelectedForBooking);
+        console.log("selected date in ng-change is-----" + $scope.dateSelectedForBooking);
         var dateSelected = $scope.dateSelectedForBooking;
         var dateArray = dateSelected.split('/');
         var date = dateArray[1] + '/' + dateArray[0] + '/' + dateArray[2];
@@ -505,8 +505,8 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         var dayStartTimeOfDoctor = 0;
         var dayEndTimeOfDoctor = 0;
         var timePerPatientForThatDoctor = 0;
-        $log.log("milliseconds of present date----" + milliSecsOfDate);
-        $log.log("doctor timings after selecting date---", $scope.doctorsList);
+        console.log("milliseconds of present date----" + milliSecsOfDate);
+        console.log("doctor timings after selecting date---", $scope.doctorsList);
         for (var i = 0, l = $scope.doctorsList.length; i < l; i++) {
             if ($scope.book.doctorId == $scope.doctorsList[i].id) {
                 dayStartTimeOfDoctor = $scope.doctorObjectForChangingStartAndEndTime.dayStartTime + milliSecsOfDate;
@@ -514,9 +514,9 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 timePerPatientForThatDoctor = $scope.doctorObjectForChangingStartAndEndTime.timePerPatient;
             }
         }
-        $log.log("day start time is----" + dayStartTimeOfDoctor);
-        $log.log("day end time is----" + dayEndTimeOfDoctor);
-        $log.log("time per patient----" + timePerPatientForThatDoctor);
+        console.log("day start time is----" + dayStartTimeOfDoctor);
+        console.log("day end time is----" + dayEndTimeOfDoctor);
+        console.log("time per patient----" + timePerPatientForThatDoctor);
         if (dayStartTimeOfDoctor === 0) {
             dayStartTimeOfDoctor = morningStartTime;
         }
@@ -536,7 +536,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 var timeObject = {};
                 timeObject.time = displayTime;
                 timeObject.count = 0;
-                $log.log("time object is----", timeObject);
+                console.log("time object is----", timeObject);
                 $scope.morningArray.push(timeObject);
             }
             if (displayTime > morningEndTime && displayTime <= afternoonEndTime) {
@@ -555,34 +555,34 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         }
         var promise = dboticaServices.getDoctorEventsOfDocOnADate($scope.book.doctorId, milliSecsOfDate);
         promise.then(function(response) {
-                $log.log("response in ng-change is----", response);
+                console.log("response in ng-change is----", response);
                 var doctorResponseAfterDateSelect = JSON.parse(response.data.response);
-                $log.log("response in ng-change----", doctorResponseAfterDateSelect);
+                console.log("response in ng-change----", doctorResponseAfterDateSelect);
                 $scope.morningArrayLength = $scope.morningArray.length;
                 $scope.afternoonArrayLength = $scope.afternoonArray.length;
                 $scope.eveningArrayLength = $scope.eveningArray.length;
-                $log.log("selected doctor response----" + doctorResponseAfterDateSelect.length);
-                $log.log("scope and morning array length---" + $scope.morningArrayLength);
+                console.log("selected doctor response----" + doctorResponseAfterDateSelect.length);
+                console.log("scope and morning array length---" + $scope.morningArrayLength);
                 if (doctorResponseAfterDateSelect !== null && doctorResponseAfterDateSelect.length > 0) {
                     for (var i = 0; i < doctorResponseAfterDateSelect.length; i++) {
                         if ((doctorResponseAfterDateSelect[i].label !== null) && (doctorResponseAfterDateSelect[i].label.toLowerCase() == "blocked")) {
                             var startTime = doctorResponseAfterDateSelect[i].startTime;
                             startTime = startTime - startTime % timePerPatientForThatDoctor;
-                            $log.log("start time after selec----" + startTime);
-                            $log.log("end time is after selec---" + doctorResponseAfterDateSelect[i].endTime);
+                            console.log("start time after selec----" + startTime);
+                            console.log("end time is after selec---" + doctorResponseAfterDateSelect[i].endTime);
                             for (var j = startTime; j < doctorResponseAfterDateSelect[i].endTime; j = j + timePerPatientForThatDoctor) {
-                                $log.log("j value--" + j);
+                                console.log("j value--" + j);
                                 if ($scope.blockedTimingsArray.indexOf(j) === -1) {
                                     $scope.blockedTimingsArray.push(j);
                                 }
                             }
                         }
-                        /*$log.log("blocked array---", $scope.blockedTimingsArray);*/
+                        /*console.log("blocked array---", $scope.blockedTimingsArray);*/
                         var state = null;
                         try {
                             state = doctorResponseAfterDateSelect[i].state;
                         } catch (e) {
-                            $log.log(e);
+                            console.log(e);
                         }
 
                         if (!!state && state === "ACTIVE") {
@@ -604,7 +604,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                             }
 
                         } else {
-                            $log.log("state ", state);
+                            console.log("state ", state);
                             continue;
                         }
                     }
@@ -634,7 +634,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 }
             },
             function(errorResponse) {
-                $log.log("errorResponse ", errorResponse);
+                console.log("errorResponse ", errorResponse);
             });
         for (var mrngArrayIndex = 0; mrngArrayIndex < $scope.morningArray.length; mrngArrayIndex++) {
             $scope['morningArrayBtnDisabled' + mrngArrayIndex] = false;
@@ -663,7 +663,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 /*angular.element(id).removeClass("activeButton");*/
             }
         }
-        $log.log("final morning array after selecting date----", $scope.morningArray);
+        console.log("final morning array after selecting date----", $scope.morningArray);
     }
 
     $scope.addPatient = function() {
@@ -686,20 +686,20 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         newPatientData.phoneNumber = $scope.patientData.phoneNumber;
         newPatientData.age = $scope.patientData.age;
         if ($scope.patientId !== "") {
-            $log.log("inside patient id loop---");
+            console.log("inside patient id loop---");
             newPatientData.id = $scope.patientId;
         } else {
 
         }
         var newPatientDetails = JSON.stringify(newPatientData);
         if (firstName != undefined && phoneNumber != undefined) {
-            $log.log("patient data is----", newPatientDetails);
+            console.log("patient data is----", newPatientDetails);
             var promise = dboticaServices.addNewPatient(newPatientDetails);
-            $log.log("add patient response is---", promise);
+            console.log("add patient response is---", promise);
             promise.then(function(response) {
-                $log.log("add patient actual response is----", response.data.response);
+                console.log("add patient actual response is----", response.data.response);
                 var addPatientResponse = JSON.parse(response.data.response);
-                $log.log("add patient response required is----", addPatientResponse);
+                console.log("add patient response required is----", addPatientResponse);
                 $scope.nextForm = true;
                 $scope.nextBtn = false;
                 $scope.patientAvailable = false;
@@ -753,64 +753,64 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             var timeArray = time.split(",");
             $scope.seconds = timeConverter(timeArray[1]);
         } else {
-            $log.log("wrong time selected");
+            console.log("wrong time selected");
         }
     }
 
     $scope.selectAfternoonButton = function(time, index) {
         if ($scope['afternoonArrayBtnDisabled' + index] === false) {
-            $log.log("in right time selected");
+            console.log("in right time selected");
             $scope.activeBtnAfternoon = index;
             var date = new Date(time);
             var time = date.toLocaleString();
             var timeArray = time.split(",");
             $scope.seconds = timeConverter(timeArray[1]);
-            $log.log("$scope.seconds in the afternoon is---" + $scope.seconds);
+            console.log("$scope.seconds in the afternoon is---" + $scope.seconds);
         } else {
-            $log.log("wrong time selected");
+            console.log("wrong time selected");
         }
 
     }
 
     $scope.selectEveningButton = function(time, index) {
-        $log.log("index value selected is----" + index);
-        $log.log("boolean value is----" + $scope['eveningArrayBtnDisabled' + index]);
+        console.log("index value selected is----" + index);
+        console.log("boolean value is----" + $scope['eveningArrayBtnDisabled' + index]);
         if ($scope['eveningArrayBtnDisabled' + index] === false) {
-            $log.log("in right time selected");
+            console.log("in right time selected");
             $scope.activeBtnEvening = index;
             var date = new Date(time);
             var time = date.toLocaleString();
             var timeArray = time.split(",");
             $scope.seconds = timeConverter(timeArray[1]);
         } else {
-            $log.log("wrong time selected");
+            console.log("wrong time selected");
         }
     }
 
     $scope.bookSlot = function() {
-        $log.log("date selected---" + $scope.dateSelectedForBooking);
+        console.log("date selected---" + $scope.dateSelectedForBooking);
         var dateSelected = $scope.dateSelectedForBooking;
         var dateArray = dateSelected.split('/');
         var date = dateArray[1] + '/' + dateArray[0] + '/' + dateArray[2];
         var dateInFormat = new Date(date);
         var milliSecsOfDate = dateInFormat.getTime();
-        $log.log("date millisecs is-----" + milliSecsOfDate);
+        console.log("date millisecs is-----" + milliSecsOfDate);
         $scope.book.state = "ACTIVE";
-        $log.log("seconds in book---" + $scope.seconds);
+        console.log("seconds in book---" + $scope.seconds);
         $scope.book.startTime = milliSecsOfDate + $scope.seconds * 1000;
         $scope.book.calendarStatus = $scope.patientEntryType;
-        $log.log("book for-----", $scope.book);
+        console.log("book for-----", $scope.book);
         var promise = dboticaServices.cancelAppointmentOfADateOrUpdateDoctorEvent($scope.book);
         promise.then(function(response) {
-            $log.log("in book---");
-            $log.log("book response is----", response);
+            console.log("in book---");
+            console.log("book response is----", response);
             if (response.data.success === true) {
                 var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
                 patientsListOfDoctor.then(function(response) {
                     var patientsList = JSON.parse(response.data.response);
                     $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
                 }, function(error) {
-                    $log.log("in patient controller patients error");
+                    console.log("in patient controller patients error");
                 });
                 swal({
                     title: "Success",
@@ -827,7 +827,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 });
             }
         }, function(errorResponse) {
-            $log.log("book error response is---", errorResponse);
+            console.log("book error response is---", errorResponse);
         });
     }
 }]);

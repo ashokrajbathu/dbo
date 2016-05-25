@@ -21,6 +21,10 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', 'd
         case 'admin':
             $state.go('home.admin');
             break;
+
+        case 'analyticReport':
+            $state.go('home.analyticReports');
+            break;
     }
 
 
@@ -29,7 +33,7 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', 'd
         var promise = dboticaServices.logout();
         promise.then(function(response) {
             $log.log("in logout success");
-            localStorage.setItem("isLoggedIn", false);
+            localStorage.setItem("isLoggedInAssistant", false);
             localStorage.clear();
             $state.go('login');
         }, function(errorResponse) {

@@ -1,6 +1,8 @@
 angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     localStorage.setItem("currentState", "itemInfo");
 
+    var itemInfoElement=this;
+
     angular.element("#addBatchExpiryTimeItemInfo").datepicker({
         dateFormat: "dd/mm/yy",
         autoclose: true,
@@ -11,11 +13,11 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
 
 
     var itemSelected;
-    $scope.batches = {};
+    itemInfoElement.batches = {};
     var batchesInfo = [];
-    $scope.warningMessageItemInfo = false;
-    $scope.addBatchInItemInfo = {};
-    $scope.informationOfBatches = [];
+    itemInfoElement.warningMessageItemInfo = false;
+    itemInfoElement.addBatchInItemInfo = {};
+    itemInfoElement.informationOfBatches = [];
     itemSelected = dboticaServices.getSelectedItem();
     $log.log("selected item is----", itemSelected);
     if (itemSelected !== undefined) {
@@ -26,14 +28,14 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
     var currentItemId = localStorage.getItem('currentItemId');
     var organizationId = localStorage.getItem('organizationId');
     var itemName = localStorage.getItem('itemName');
-    $scope.addBatchInItemInfo.itemName = itemName;
-    $scope.addBatchInItemInfo.organizationId = organizationId;
+    itemInfoElement.addBatchInItemInfo.itemName = itemName;
+    itemInfoElement.addBatchInItemInfo.organizationId = organizationId;
 
     var promise = dboticaServices.getAllBatches(currentItemId, organizationId);
     promise.then(function(response) {
         var batchesInfo = $.parseJSON(response.data.response);
         $log.log("batches info is-----", batchesInfo);
-        $scope.inventoryItem = batchesInfo.inventoryItem;
+        itemInfoElement.inventoryItem = batchesInfo.inventoryItem;
         batchesInfo = batchesInfo.batchInfos;
         for (var itemIndex = 0; itemIndex < batchesInfo.length; itemIndex++) {
             var newObject = {};
@@ -61,21 +63,21 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             } else {
                 newObject.returnedUnits = 0;
             }
-            $scope.informationOfBatches.push(newObject);
+            itemInfoElement.informationOfBatches.push(newObject);
         }
-        $log.log("batches in scope are----", $scope.informationOfBatches);
-        $log.log("inventory item is----", $scope.inventoryItem);
+        $log.log("batches in scope are----", itemInfoElement.informationOfBatches);
+        $log.log("inventory item is----", itemInfoElement.inventoryItem);
         $log.log("batches information is----", batchesInfo);
     }, function(errorResponse) {
         $log.log("in items info error response");
 
     });
 
-    $scope.backToItems = function() {
+    itemInfoElement.backToItems = function() {
         $state.go('home.inventory');
     }
 
-    $scope.updateBatch = function(item, index) {
+    itemInfoElement.updateBatch = function(item, index) {
         $log.log("item selected for update is----", item);
         var idOfTheTextBox = "#batchTextBoxes" + index;
         var idOfTheSelectBox = "#batchSelectBoxes" + index;
@@ -93,21 +95,21 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             promise.then(function(response) {
                 $log.log("response after updating is----", response);
                 var updatedBatchInfo = $.parseJSON(response.data.response);
-                for (var itemBatchIndex = 0; itemBatchIndex < $scope.informationOfBatches.length; itemBatchIndex++) {
-                    if ($scope.informationOfBatches[itemBatchIndex].id == updatedBatchInfo.id) {
-                        $scope.informationOfBatches[itemBatchIndex].availableStock = updatedBatchInfo.units;
-                        $scope.informationOfBatches[itemBatchIndex].totalStock = updatedBatchInfo.units;
+                for (var itemBatchIndex = 0; itemBatchIndex < itemInfoElement.informationOfBatches.length; itemBatchIndex++) {
+                    if (itemInfoElement.informationOfBatches[itemBatchIndex].id == updatedBatchInfo.id) {
+                        itemInfoElement.informationOfBatches[itemBatchIndex].availableStock = updatedBatchInfo.units;
+                        itemInfoElement.informationOfBatches[itemBatchIndex].totalStock = updatedBatchInfo.units;
                         if (updatedBatchInfo.hasOwnProperty('consumedUnits')) {
-                            $scope.informationOfBatches[itemBatchIndex].consumedUnits = updatedBatchInfo.consumedUnits;
-                            $scope.informationOfBatches[itemBatchIndex].totalStock += updatedBatchInfo.consumedUnits;
+                            itemInfoElement.informationOfBatches[itemBatchIndex].consumedUnits = updatedBatchInfo.consumedUnits;
+                            itemInfoElement.informationOfBatches[itemBatchIndex].totalStock += updatedBatchInfo.consumedUnits;
                         }
                         if (updatedBatchInfo.hasOwnProperty('expiredUnits')) {
-                            $scope.informationOfBatches[itemBatchIndex].expiredUnits = updatedBatchInfo.expiredUnits;
-                            $scope.informationOfBatches[itemBatchIndex].totalStock += updatedBatchInfo.expiredUnits;
+                            itemInfoElement.informationOfBatches[itemBatchIndex].expiredUnits = updatedBatchInfo.expiredUnits;
+                            itemInfoElement.informationOfBatches[itemBatchIndex].totalStock += updatedBatchInfo.expiredUnits;
                         }
                         if (updatedBatchInfo.hasOwnProperty('returnedUnits')) {
-                            $scope.informationOfBatches[itemBatchIndex].returnedUnits = updatedBatchInfo.returnedUnits;
-                            $scope.informationOfBatches[itemBatchIndex].totalStock += updatedBatchInfo.returnedUnits;
+                            itemInfoElement.informationOfBatches[itemBatchIndex].returnedUnits = updatedBatchInfo.returnedUnits;
+                            itemInfoElement.informationOfBatches[itemBatchIndex].totalStock += updatedBatchInfo.returnedUnits;
                         }
                     }
                 }
@@ -128,18 +130,18 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
         angular.element(idOfTheTextBox).val('');
     }
 
-    $scope.addBatchForSelectedItemInItemInfo = function() {
+    itemInfoElement.addBatchForSelectedItemInItemInfo = function() {
         var requestEntity = {};
-        if ($scope.addBatchInItemInfo.units == undefined || $scope.addBatchInItemInfo.expiryDate == undefined) {
-            $scope.warningMessageItemInfo = true;
+        if (itemInfoElement.addBatchInItemInfo.units == undefined || itemInfoElement.addBatchInItemInfo.expiryDate == undefined) {
+            itemInfoElement.warningMessageItemInfo = true;
         } else {
             requestEntity.organizationId = organizationId;
-            requestEntity.batchNo = $scope.addBatchInItemInfo.batchNumber;
+            requestEntity.batchNo = itemInfoElement.addBatchInItemInfo.batchNumber;
             requestEntity.itemId = currentItemId;
-            requestEntity.costPrice = $scope.addBatchInItemInfo.costPrice * 100;
-            requestEntity.units = $scope.addBatchInItemInfo.units;
+            requestEntity.costPrice = itemInfoElement.addBatchInItemInfo.costPrice * 100;
+            requestEntity.units = itemInfoElement.addBatchInItemInfo.units;
             requestEntity.consumedUnits = 0;
-            var dateSelectedForBatch = $scope.addBatchInItemInfo.expiryDate;
+            var dateSelectedForBatch = itemInfoElement.addBatchInItemInfo.expiryDate;
             var dateSelectedArray = dateSelectedForBatch.split('/');
             dateSelectedForBatch = dateSelectedArray[1] + '/' + dateSelectedArray[0] + '/' + dateSelectedArray[2];
             dateSelectedForBatch = new Date(dateSelectedForBatch);
@@ -173,8 +175,8 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                 newObject.consumedUnits = 0;
                 newObject.returnedUnits = 0;
                 newObject.expiredUnits = 0;
-                $scope.informationOfBatches.push(newObject);
-                $log.log("array after adding batch is-----", $scope.informationOfBatches);
+                itemInfoElement.informationOfBatches.push(newObject);
+                $log.log("array after adding batch is-----", itemInfoElement.informationOfBatches);
             }, function(errorResponse) {
 
             });

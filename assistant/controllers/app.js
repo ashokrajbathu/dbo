@@ -41,6 +41,8 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
         })
         .state('home.inventory', {
             url: '/inventory',
+            controller: 'inventoryCtrl',
+            controllerAs: 'inventory',
             templateUrl: 'views/inventory.html'
         })
         .state('home.billManagement', {
@@ -49,14 +51,20 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
         })
         .state('home.itemInfo', {
             url: '/itemInfo',
+            controller: 'itemInfoCtrl',
+            controllerAs: 'itemInfo',
             templateUrl: 'views/itemInfo.html'
         })
         .state('home.admin', {
             url: '/admin',
+            controller: 'adminCtrl',
+            controllerAs: 'adminView',
             templateUrl: 'views/admin.html'
         })
         .state('home.analyticReports', {
             url: '/analyticReports',
+            controller: 'analyticReportsCtrl',
+            controllerAs: 'analyticReport',
             templateUrl: 'views/analyticReports.html'
         });
 });
@@ -78,7 +86,7 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
             }
         });
     });
-    if (localStorage.getItem("isLoggedIn") == "true") {
+    if (localStorage.getItem("isLoggedInAssistant") == "true") {
         $state.go('home');
     }
 
@@ -111,7 +119,7 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
             } else {
                 localStorage.setItem('assistantCurrentlyLoggedIn', currentAssistantObject);
                 $log.log("assistant info is----", $.parseJSON(response.data.response));
-                localStorage.setItem("isLoggedIn", true);
+                localStorage.setItem("isLoggedInAssistant", true);
                 $state.go('home');
             }
         }, function(errorResponse) {

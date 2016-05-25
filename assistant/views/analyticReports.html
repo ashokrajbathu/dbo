@@ -1,1 +1,54 @@
-<h1>Banglore</h1>
+<div ng-controller="analyticReportsCtrl as analyticReport">
+    <div class="container-fluid">
+        <h3 id="analyticReportHeader" ng-bind="analyticReport.name"></h3>
+        <div class="row searchSection">
+            <label for="exampleInputSearchLabel">Search Using:</label>
+            <form class="form-inline">
+                <div class="form-group">
+                    <div class="dropdown">
+                        <button class="btn inventoryHistoryBtn dropdown-toggle" id="searchTypeSelect" type="button" data-toggle="dropdown">{{analyticReport.searchSelected}}
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li ng-repeat="search in analyticReport.searchTypes">
+                                <a ng-click="analyticReport.selectSearchType(search)" class="searchTypes" ng-bind="search"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div ng-show="analyticReport.searchBox" class="form-group">
+                    <input type="text" class="form-control inventoryHistoryTxtBox" id="exampleInputSearch">
+                </div>
+                <div ng-show="analyticReport.searchBoxDate" class="form-group">
+                    <input type="text" class="form-control inventoryHistoryTxtBox" id="date">
+                </div>
+                <button type="submit" class="btn searchBtnInventoryHistory">Search</button>
+            </form>
+        </div>
+        <div class="invoiceHistoryTab col-md-11">
+            <table class="table invoiceHistoryTable">
+                <thead>
+                    <tr>
+                        <th>Invoice No.</th>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Doctor</th>
+                        <th>Cost Due</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="invoiceHistoryTableBody">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <button class="btn searchBtnInventoryHistory viewInvoicesBtn">View All Invoices</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

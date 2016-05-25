@@ -1,7 +1,7 @@
-<div ng-controller="itemInfoCtrl">
+<div ng-controller="itemInfoCtrl as itemInfo">
     <h3 id="itemInfoHeader">Item Details</h3>
     <button id="addBatchInItem" type="button" class="pull-right btn batchUpdateBtns" data-toggle="modal" data-target="#myModal">Add Batch</button>
-    <button ng-click="backToItems()" class="pull-right btn batchUpdateBtns viewItemsBtn">Back To Items</button>
+    <button ng-click="itemInfo.backToItems()" class="pull-right btn batchUpdateBtns viewItemsBtn">Back To Items</button>
     <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -11,48 +11,48 @@
                     <h3 class="modal-title">Add New Batch</h3>
                 </div>
                 <div class="modal-body">
-                    <p ng-if="warningMessageItemInfo" id="warningMessage">Please enter the (*) marked Fields</p>
+                    <p ng-if="itemInfo.warningMessageItemInfo" id="warningMessage">Please enter the (*) marked Fields</p>
                     <form class="form-horizontal" name="addBatchForm">
                         <div class="form-group ">
                             <label for="addBatchOrganizationId" class="col-sm-3 control-label">Organization Id</label>
                             <div class="col-sm-6 ">
-                                <input type="text " class="form-control " ng-model="addBatchInItemInfo.organizationId" id="addBatchOrganizationIdItemInfo" readonly>
+                                <input type="text " class="form-control " ng-model="itemInfo.addBatchInItemInfo.organizationId" id="addBatchOrganizationIdItemInfo" readonly>
                             </div>
                         </div>
                         <div class="form-group ">
                             <label for="inputItemNameAddBatch" class="col-sm-3 control-label ">Item Name</label>
                             <div class="col-sm-6 ">
-                                <input type="text " class="form-control " ng-model="addBatchInItemInfo.itemName" id="inputItemNameAddBatchItemInfo" readonly>
+                                <input type="text " class="form-control " ng-model="itemInfo.addBatchInItemInfo.itemName" id="inputItemNameAddBatchItemInfo" readonly>
                             </div>
                         </div>
                         <div class="form-group ">
                             <label for="addBatchNumber" class="col-sm-3 control-label ">Batch No.</label>
                             <div class="col-sm-6 ">
-                                <input type="text " class="form-control " ng-model="addBatchInItemInfo.batchNumber" id="addBatchNumberItemInfo">
+                                <input type="text " class="form-control " ng-model="itemInfo.addBatchInItemInfo.batchNumber" id="addBatchNumberItemInfo">
                             </div>
                         </div>
                         <div class="form-group ">
                             <label for="addBatchCostPrice" class="col-sm-3 control-label ">Cost Price</label>
                             <div class="col-sm-6 ">
-                                <input type="text " class="form-control" ng-model="addBatchInItemInfo.costPrice" id="addBatchCostPriceItemInfo">
+                                <input type="text " class="form-control" ng-model="itemInfo.addBatchInItemInfo.costPrice" id="addBatchCostPriceItemInfo">
                             </div>
                         </div>
                         <div class="form-group ">
                             <label for="addBatchUnits" class="col-sm-3 control-label ">Units(*)</label>
                             <div class="col-sm-6 ">
-                                <input type="text " name="units" class="form-control" ng-model="addBatchInItemInfo.units" id="addBatchUnitsItemInfo">
+                                <input type="text " name="units" class="form-control" ng-model="itemInfo.addBatchInItemInfo.units" id="addBatchUnitsItemInfo">
                             </div>
                         </div>
                         <div class="form-group ">
                             <label for="addBatchExpiryTime" class="col-sm-3 control-label ">Expiry Date(*)</label>
                             <div class="col-sm-6">
-                                <input type="text " class="form-control " name="expiryDate" ng-model="addBatchInItemInfo.expiryDate" id="addBatchExpiryTimeItemInfo" readonly>
+                                <input type="text " class="form-control " name="expiryDate" ng-model="itemInfo.addBatchInItemInfo.expiryDate" id="addBatchExpiryTimeItemInfo" readonly>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputAddBatchItemInfo" class="col-sm-3 control-label"></label>
                             <div class="col-sm-6">
-                                <button type="button submit" ng-click="addBatchForSelectedItemInItemInfo()" class="btn inventoryBtn">Add Batch</button>
+                                <button type="button submit" ng-click="itemInfo.addBatchForSelectedItemInItemInfo()" class="btn inventoryBtn">Add Batch</button>
                                 <button type="button" data-dismiss="modal" class="btn inventoryBtn">Cancel</button>
                             </div>
                         </div>
@@ -68,31 +68,31 @@
                     <div class="form-group">
                         <label for="itemName" class="col-sm-2 col-md-6 col-xs-3 control-label">Item Name :</label>
                         <div class="col-sm-1 col-md-3 col-xs-6">
-                            <h5>{{inventoryItem.itemName}}</h5>
+                            <h5>{{itemInfo.inventoryItem.itemName}}</h5>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="itemCode" class="col-sm-2 col-md-6 col-xs-3 control-label">Item Code :</label>
                         <div class="col-sm-1 col-md-3 col-xs-6">
-                            <h5>{{inventoryItem.itemCode}}</h5>
+                            <h5>{{itemInfo.inventoryItem.itemCode}}</h5>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="itemType" class="col-sm-2 col-md-6 col-xs-3 control-label">Item Type :</label>
                         <div class="col-sm-1 col-md-3 col-xs-6">
-                            <h5>{{inventoryItem.itemType}}</h5>
+                            <h5>{{itemInfo.inventoryItem.itemType}}</h5>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="requiredLevel" class="col-sm-2 col-md-6 col-xs-3 control-label">Required Level :</label>
                         <div class="col-sm-1 col-md-3 col-xs-6">
-                            <h5>{{inventoryItem.requiredStock}}</h5>
+                            <h5>{{itemInfo.inventoryItem.requiredStock}}</h5>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="manufacturer" class="col-sm-2 col-md-6 col-xs-3 control-label">Manufacturer :</label>
                         <div class="col-sm-1 col-md-3 col-xs-6">
-                            <h5>{{inventoryItem.manufacturer}}</h5>
+                            <h5>{{itemInfo.inventoryItem.manufacturer}}</h5>
                         </div>
                     </div>
                 </form>
@@ -114,7 +114,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr id="batchesRow" ng-repeat="batch in informationOfBatches">
+                        <tr id="batchesRow" ng-repeat="batch in itemInfo.informationOfBatches">
                             <td>{{batch.batchNo}}</td>
                             <td>{{batch.expiryTime | date}}</td>
                             <td>{{batch.totalStock}}</td>
@@ -133,7 +133,7 @@
                                 </select>
                             </td>
                             <td>
-                                <button class="btn batchUpdateBtns" ng-click="updateBatch(batch,$index)">Update</button>
+                                <button class="btn batchUpdateBtns" ng-click="itemInfo.updateBatch(batch,$index)">Update</button>
                             </td>
                         </tr>
                     </tbody>

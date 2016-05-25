@@ -1,4 +1,4 @@
-<div ng-controller="adminCtrl">
+<div ng-controller="adminCtrl as adminView">
     <div class="admin">
         <div class="container">
             <h3 class="adminHeader">Admin</h3>
@@ -7,35 +7,35 @@
                     <div class="form-group adminEntity">
                         <div class="form-inline adminEntity">
                             <div class="form-group adminDropDown dropdown">
-                                <button class="btn serviceDoctorBtn" type="button" data-toggle="dropdown">{{admin.doctorInDropdown}}
+                                <button class="btn serviceDoctorBtn" type="button" data-toggle="dropdown">{{adminView.admin.doctorInDropdown}}
                                     <span class="caret"></span></button>
                                 <ul class="dropdown-menu">
-                                    <li ng-repeat="doctor in doctorsListInAdmin">
-                                        <a class="doctorsServicesInDropDown" ng-click="doctorSelect(doctor)" ng-bind="doctor.firstName +' '+doctor.lastName"></a>
+                                    <li ng-repeat="doctor in adminView.doctorsListInAdmin">
+                                        <a class="doctorsServicesInDropDown" ng-click="adminView.doctorSelect(doctor)" ng-bind="doctor.firstName +' '+doctor.lastName"></a>
                                     </li>
                                 </ul>
                             </div>
                             <div class="form-group adminDropDown dropdown">
-                                <button class="btn serviceDoctorBtn" type="button" data-toggle="dropdown">{{admin.serviceInDropDown}}
+                                <button class="btn serviceDoctorBtn" type="button" data-toggle="dropdown">{{adminView.admin.serviceInDropDown}}
                                     <span class="caret"></span></button>
                                 <ul class="dropdown-menu">
-                                    <li ng-repeat="service in servicesList">
-                                        <a ng-click="serviceSelect(service)" ng-bind="service" class="doctorsServicesInDropDown"></a>
+                                    <li ng-repeat="service in adminView.servicesList">
+                                        <a ng-click="adminView.serviceSelect(service)" ng-bind="service" class="doctorsServicesInDropDown"></a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <div ng-if="admin.procedureName" class="form-group adminEntity">
-                        <input type="text" class="form-control" ng-model="admin.procedureNameTxtBox" placeholder="Procedure Name" id="exampleInputProcedureName">
+                    <div ng-if="adminView.admin.procedureName" class="form-group adminEntity">
+                        <input type="text" class="form-control" ng-model="adminView.admin.procedureNameTxtBox" placeholder="Procedure Name" id="exampleInputProcedureName">
                     </div>
                     <div class="form-group adminEntity">
-                        <input type="text" class="form-control" ng-model="admin.procedureCostTextBox" placeholder="Cost" id="exampleInputCostAdmin">
+                        <input type="text" class="form-control" ng-model="adminView.admin.procedureCostTextBox" placeholder="Cost" id="exampleInputCostAdmin">
                     </div>
                     <div class="form-group adminEntity">
-                        <input type="text" class="form-control" ng-model="admin.procedureRemarksTextBox" placeholder="Remarks" id="exampleInputRemarks">
+                        <input type="text" class="form-control" ng-model="adminView.admin.procedureRemarksTextBox" placeholder="Remarks" id="exampleInputRemarks">
                     </div>
-                    <button type="submit" ng-click="submitServiceRequest()" class="btn addProcedureBtn adminEntity">Add</button>
+                    <button type="submit" ng-click="adminView.submitServiceRequest()" class="btn addProcedureBtn adminEntity">Add</button>
                 </form>
                 <table class="table tableInAdmin">
                     <thead>
@@ -48,13 +48,13 @@
                         </tr>
                     </thead>
                     <tbody class="tableInAdminBody">
-                        <tr ng-repeat="doctorService in admin.servicesListOfTheDoctor">
+                        <tr ng-repeat="doctorService in adminView.admin.servicesListOfTheDoctor">
                             <td ng-bind="$index+1"></td>
                             <td ng-bind="doctorService.billingName"></td>
                             <td ng-bind="doctorService.price/100"></td>
                             <td ng-bind="doctorService.remark"></td>
                             <td>
-                                <button ng-class="[doctorService.state]" ng-click="btnActiveInServicesTable(doctorService)" ng-attr-id="{{'activeBtn'+$index}}" class="btn adminActiveInactiveBtnsBlue">{{doctorService.state}}</button>
+                                <button ng-class="[doctorService.state]" ng-click="adminView.btnActiveInServicesTable(doctorService)" ng-attr-id="{{'activeBtn'+$index}}" class="btn adminActiveInactiveBtnsBlue">{{doctorService.state}}</button>
                             </td>
                         </tr>
                     </tbody>
