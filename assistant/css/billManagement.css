@@ -8,6 +8,10 @@
     height: 40px;
 }
 
+.doctorsListInBill{
+    cursor: pointer;
+}
+
 .panel-default>.panel-heading {
     color: white;
     background-image: none;

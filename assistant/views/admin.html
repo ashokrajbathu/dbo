@@ -54,7 +54,7 @@
                             <td ng-bind="doctorService.price/100"></td>
                             <td ng-bind="doctorService.remark"></td>
                             <td>
-                                <button ng-class="[doctorService.state]" ng-click="btnActiveInServicesTable(doctorService)" ng-attr-id="{{'activeBtn'+$index}}" class="btn adminActiveInactiveBtnsBlue">ACTIVE</button>
+                                <button ng-class="[doctorService.state]" ng-click="btnActiveInServicesTable(doctorService)" ng-attr-id="{{'activeBtn'+$index}}" class="btn adminActiveInactiveBtnsBlue">{{doctorService.state}}</button>
                             </td>
                         </tr>
                     </tbody>

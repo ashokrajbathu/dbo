@@ -49,32 +49,34 @@
                                     <span></span>
                                 </div>
                                 <div class="col-md-3 col-sm-4 col-xs-4">
-                                    <select id="consultationForm" class="doctorSelectBox">
-                                        <option ng-repeat="doctor in doctorsListInBillManagement">{{doctor.firstName}} {{doctor.lastName}}
-                                        </option>
-                                    </select>
+                                    <div class="dropdown">
+                                        <button class="btn doctorSelectBox dropdown-toggle" type="button" data-toggle="dropdown">{{bill.doctorActiveName}}
+                                            <span class="caret"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li ng-repeat="doctor in bill.doctorsListInBillManagement">
+                                                <a ng-click="selectDoctorFromDropdown(doctor)" class="doctorsListInBill" ng-bind="doctor.firstName +' '+doctor.lastName"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                             <hr class="horizontalLine">
                             <div style="margin-left:8px;" class="patientConsultation row">
                                 <div class="row">
                                     <form class="form-inline" id="consultationForm">
-                                        <!-- <div class="form-group consultationFormItems">
-                                            <select class="doctorSelectBox">
-                                                <option ng-repeat="doctor in doctorsListInBillManagement">{{doctor.firstName}} {{doctor.lastName}}
-                                                </option>
-                                            </select>
-                                        </div> -->
                                         <div class="form-group consultationFormItems">
-                                            <select class="billSelectBoxes">
-                                                <option>Consultation</option>
-                                                <option>Checkup</option>
-                                                <option>Dbotica</option>
-                                                <option>Banglore</option>
-                                            </select>
+                                            <div class="dropdown">
+                                                <button class="btn billSelectBoxes dropdown-toggle" type="button" data-toggle="dropdown">{{bill.doctorActiveService}}
+                                                    <span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li ng-repeat="billIndex in bill.billTypes track by $index">
+                                                        <a ng-click="selectBillFromDropdown(billIndex)" class="doctorsListInBill" ng-bind="billIndex.billingName"></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                         <div class="form-group consultationFormItems">
-                                            <input type="text" class="form-control billTxtBox" id="exampleInputCost" placeholder="Cost">
+                                            <input type="text" ng-model="bill.billCost" class="form-control billTxtBox" id="exampleInputCost" placeholder="Cost">
                                         </div>
                                         <div class="form-group consultationFormItems">
                                             <input type="text" class="form-control billTxtBox" id="sessionDatepickerCost" placeholder="Due Date">
