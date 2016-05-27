@@ -33,8 +33,8 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', 'd
         var promise = dboticaServices.logout();
         promise.then(function(response) {
             $log.log("in logout success");
-            localStorage.setItem("isLoggedInAssistant", false);
             localStorage.clear();
+            localStorage.setItem("isLoggedInAssistant", "false");
             $state.go('login');
         }, function(errorResponse) {
             $log.log("in logout error response");

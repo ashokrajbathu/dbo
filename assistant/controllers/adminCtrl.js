@@ -24,7 +24,8 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                         confirmButtonText: "OK",
                         allowOutsideClick: true
                     });
-                    localStorage.setItem('isLoggedInAssistant', false);
+                    localStorage.clear();
+                    localStorage.setItem('isLoggedInAssistant', "false");
                     $state.go('login');
                     break;
             }

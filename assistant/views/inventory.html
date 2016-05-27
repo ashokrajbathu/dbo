@@ -5,8 +5,6 @@
                 <h3 class="inventoryHeaderHeading">Inventory</h3>
                 <form class="form-inline inventoryButtonsGrp clearfix">
                     <button type="submit" data-toggle="modal" ng-click="inventory.addItem()" data-target="#addPatientModal" class="btn headerBtn inventoryBtn">Add Item</button>
-                    <!-- <button type="submit" class="btn headerBtn inventoryBtn">Button</button>
-                    <button type="submit" class="btn headerBtn inventoryBtn">Button</button> -->
                 </form>
             </div>
             <div id="addPatientModal" class="modal fade" role="dialog">
@@ -155,7 +153,7 @@
                         <td ng-bind="item.itemCode"></td>
                         <td ng-bind="item.itemType"></td>
                         <td class="requiredLevel" ng-bind="item.requiredStock"></td>
-                        <td ng-bind="item.availableStock+item.expiredStock+item.consumedStock+item.billingConsumedStock+item.returnedStock"></td>
+                        <td ng-bind="item.availableStock+item.expiredStock+item.billingConsumedStock+item.returnedStock"></td>
                         <td ng-bind="item.availableStock"></td>
                         <td ng-bind="item.expiredStock"></td>
                         <td ng-bind="item.returnedStock"></td>

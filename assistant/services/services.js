@@ -1,6 +1,6 @@
 var myapp = angular.module('appServices', []);
 
-myapp.service('dboticaServices', ['$http', '$log', '$q', function($http, $log, $q) {
+myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($http, $state, $log, $q) {
 
     var loginResponseSuccessValue, loginResponseErrorCode, loginResponseDoctorsList, loginResponseDoctorName, loginResponseDoctorSpecialization, loginResponseDoctorId, loginResponseDayStartTime, loginResponseDayEndTime, loginResponseTimePerPatient;
     var loginResponsePatientsList = [];
@@ -534,6 +534,23 @@ myapp.service('dboticaServices', ['$http', '$log', '$q', function($http, $log, $
             deferred.reject(errorResponse);
         });
         return deferred.promise;
+    }
+
+    this.logoutFromThePage = function(errorCode) {
+        switch (errorCode) {
+            case "NO_USER_LOGGED_IN":
+                localStorage.setItem("isLoggedInAssistant", "false");
+                swal({
+                    title: "Error",
+                    text: "You are not logged into your account. Kindly login again to view this page",
+                    type: "error",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: true
+                });
+                $state.go('login');
+                break;
+        }
+
     }
 
     this.getPatientsListOfDoctorSorted = function(patientsList) {

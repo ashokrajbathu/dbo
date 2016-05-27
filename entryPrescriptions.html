@@ -8,11 +8,12 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
+    <link href="css/jquery-ui.css" rel="stylesheet">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -25,6 +26,7 @@
     <link rel="stylesheet" type="text/css" href="bootstrap/css/jquery.jscrollpane.css">
     <script type="text/javascript" src="bootstrap/js/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="bootstrap/js/jquery.jscrollpane.min.js"></script>
+
     <script type="text/javascript">
     $.holdReady(true);
     if (localStorage.getItem('isLoggedIn') === 'true') {
@@ -33,16 +35,16 @@
         window.location.href = 'login.html';
     }
     </script>
-    <link href="//code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    
     <!--  <link rel="stylesheet" media="screen" type="text/css" href="css/layout.css" />
     <script type="text/javascript" src="js/datepicker.js"></script>
     <script type="text/javascript" src="js/layout.js?ver=1.0.2"></script>-->
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="js/jquery-ui.js"></script>
     <script type="text/javascript" src="js/eye.js"></script>
     <script type="text/javascript" src="js/utils.js"></script>
     <script src="plugins/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="plugins/sweetalert/dist/sweetalert.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
+    <script src="js/moment.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -498,6 +500,7 @@
     <script src="dist/js/demo.js"></script>
     <!-- IndexedDB for local storage-->
     <script src="indexedDB/indexedDbotica.js"></script>
+    <link rel="stylesheet" href="css/ionicons.css">
     <script type="text/javascript">
     var totalDrugObjectsOnReady = [];
     /*$.fn.pageMe = function(opts) {
@@ -2521,7 +2524,7 @@
 </script> -->
     </script>
     <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/jquery.form-validator.min.js"></script>
+    <script src="js/jquery.form-validator.min.js"></script>
     <script>
     $.validate();
     </script>

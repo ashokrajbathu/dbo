@@ -86,29 +86,18 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         promise.then(function(response) {
             var errorCode = response.data.errorCode;
             if (!!errorCode) {
-                switch (errorCode) {
-                    case "NO_USER_LOGGED_IN":
-                        localStorage.setItem("isLoggedInAssistant", false);
-                        swal({
-                            title: "Error",
-                            text: "You are not logged into your account. Kindly login again to view this page",
-                            type: "error",
-                            confirmButtonText: "OK",
-                            allowOutsideClick: true
-                        });
-                        $state.go('login');
-                        break;
-                }
-            }
-            $log.log("in next btn response----", response.data.response);
-            var nextBtnFetchedItemsObject = $.parseJSON(response.data.response);
-            var nextBtnFetchedItems = nextBtnFetchedItemsObject.inventoryItems;
-            if (nextBtnFetchedItems.length > displayListLength) {
-                inventoryElement.itemsDisplayArray = nextBtnFetchedItems.slice(0, nextBtnFetchedItems.length - 1);
+                dboticaServices.logoutFromThePage(errorCode);
             } else {
-                inventoryElement.itemsDisplayArray = nextBtnFetchedItems;
-            }
+                $log.log("in next btn response----", response.data.response);
+                var nextBtnFetchedItemsObject = $.parseJSON(response.data.response);
+                var nextBtnFetchedItems = nextBtnFetchedItemsObject.inventoryItems;
+                if (nextBtnFetchedItems.length > displayListLength) {
+                    inventoryElement.itemsDisplayArray = nextBtnFetchedItems.slice(0, nextBtnFetchedItems.length - 1);
+                } else {
+                    inventoryElement.itemsDisplayArray = nextBtnFetchedItems;
+                }
 
+            }
         }, function(errorResponse) {
             $log.log("in error response of nex tbutton enabled");
         });
@@ -465,19 +454,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
     var itemsDisplayFunction = function(response) {
         var errorCode = response.data.errorCode;
         if (!!errorCode) {
-            switch (errorCode) {
-                case "NO_USER_LOGGED_IN":
-                    localStorage.setItem("isLoggedInAssistant", false);
-                    swal({
-                        title: "Error",
-                        text: "You are not logged into your account. Kindly login again to view this page",
-                        type: "error",
-                        confirmButtonText: "OK",
-                        allowOutsideClick: true
-                    });
-                    $state.go('login');
-                    break;
-            }
+            dboticaServices.logoutFromThePage(errorCode);
         } else {
             $log.log(response.data.response);
             var itemsFetchedFromApi = $.parseJSON(response.data.response);

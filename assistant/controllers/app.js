@@ -47,6 +47,8 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
         })
         .state('home.billManagement', {
             url: '/billManagement',
+            controller:'billManagementCtrl',
+            controllerAs:'billView',
             templateUrl: 'views/billManagement.html'
         })
         .state('home.itemInfo', {
@@ -119,7 +121,7 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
             } else {
                 localStorage.setItem('assistantCurrentlyLoggedIn', currentAssistantObject);
                 $log.log("assistant info is----", $.parseJSON(response.data.response));
-                localStorage.setItem("isLoggedInAssistant", true);
+                localStorage.setItem("isLoggedInAssistant", "true");
                 $state.go('home');
             }
         }, function(errorResponse) {

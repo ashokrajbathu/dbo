@@ -26,7 +26,13 @@
     border: 1px solid #367fa9;
 }
 
-.billManagementBtn:hover {
+.billDelete {
+    color: white;
+    background-color: #3c8dbc;
+}
+
+.billManagementBtn:hover,
+.billDelete:hover {
     background-color: #367fa9;
     color: white;
 }
@@ -35,14 +41,8 @@
     margin-bottom: 15px;
 }
 
-
-/*.invoiceRow {
-    margin-left: 10px;
-}*/
-
 .patientDetailsRow {
     padding-top: 8px;
-    /*margin-left: 0px;*/
 }
 
 .patientConsultation {
@@ -55,16 +55,19 @@
     margin-bottom: 10px;
 }
 
-
-/*#exampleInputTests {
-    margin-left: 14px;
-    margin-bottom: 10px;
+.finalBillTable>thead>tr>th,
+.finalBillTable>tbody>tr>td {
+    border: 2px solid #f5f5f5;
 }
-*/
 
-#consultationSubmitBtn {
+.finalBillTable>thead>tr {
+    border-top: 2px solid #f5f5f5;
+}
+
+
+/*#consultationSubmitBtn {
     margin-left: 4px;
-}
+}*/
 
 #TestsSubmitBtn {
     margin-top: 5px;
@@ -99,21 +102,10 @@
 
 .billTxtBox,
 .form-control.billTxtBox {
-    /*padding-left: 6px;*/
     height: 32px;
     border-radius: 4px;
     border: 1px solid #3c8dbc;
 }
-
-
-/*#exampleInputpatientSearchNumber {
-    padding-right: 4px;
-}*/
-
-
-/*#patientSearchBtn {
-    width:150px;
-}*/
 
 .patientSearchBtns,
 #exampleInputpatientSearchNumber {
@@ -126,34 +118,13 @@
 
 .dropdown>button {
     margin-left: 10px;
-    /*width: 200px;*/
     border: 1px solid #3c8dbc;
     background-color: #fff;
 }
 
 .dropdown>ul {
-    /* width: 68%;*/
     margin-left: 4px;
-    /*margin-top: 34px;*/
 }
-
-
-/*.col-sm-4>ul {
-    margin-top: 0px;
-}*/
-
-
-/*#exampleInputConsultationCost,
-#sessionDatepickerCost,
-#consultationDropdown,
-#dueDateDropdown,
-#consultationSubmitBtn {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    margin-right: 5px;
-    margin-left: 5px;
-}
-*/
 
 #dueDateBtn,
 #consultationBtn {
@@ -161,41 +132,18 @@
 }
 
 
-/*#consultationSubmitBtn {
+/*#exampleInputCost,
+#sessionDatepickerCost {
     margin-left: 4px;
 }*/
 
-
-/*#age {
-    margin-left: 10px;
-}*/
-
-
-/*#consultationDropdown {
-    margin-bottom: 5px;
-}
-*/
-
-#exampleInputCost,
-#sessionDatepickerCost {
-    margin-left: 4px;
-}
-
-#sessionDatepickerCost {
-    /*margin-bottom: 5px;*/
-    /*padding: 2px 2px 2px 2px;*/
-}
+#sessionDatepickerCost {}
 
 #consultationForm,
 .patientInfoSearchMedicine,
 .tests {
     margin-left: 0px;
 }
-
-
-/*#medicineAvailabilityBtn{
-    margin-left: 10px;
-}*/
 
 .invoiceNumberRowItem {
     margin-bottom: 5px;
@@ -214,18 +162,103 @@
     height: 32px;
     border: 1px solid #3c8dbc;
     border-radius: 4px;
-    width: 100%;
+}
+
+.patientDetails {
+    margin-left: 4px;
+}
+
+
+/*.consultationFormItems {
+    margin-right: 45px;
+}*/
+
+@media only screen and (min-width:1262px) {
+    .consultationFormItems,
+    #exampleInputTestsCost {
+        margin-right: 45px;
+    }
+}
+
+@media only screen and (max-width:1262px) {
+    .billSelectBoxes {
+        width: 135px;
+    }
+}
+
+@media only screen and (min-width:1262px) {
+    #exampleInputMedicine {
+        width: 350px;
+        margin-right: 45px;
+    }
+}
+
+@media only screen and (min-width:1262px) {
+    #exampleInputTests {
+        width: 350px;
+        margin-right: 45px;
+    }
+}
+
+@media only screen and (min-width:1262px) {
+    #TestsSubmitBtn,
+    #consultationSubmitBtn {
+        width: 95px;
+    }
+}
+
+@media only screen and (min-width:1262px) {
+    #exampleInputmedicineAvailability,
+    #exampleInputTestDate {
+        width: 135px;
+    }
+}
+
+@media only screen and (min-width:1262px) {
+    #exampleInputMedicineCost,
+    #exampleInputmedicineAvailability,
+    #exampleInputTestDate {
+        margin-right: 45px;
+    }
+}
+
+.patientDrpDwn>button {
+    margin-right: 0px;
 }
 
 .form-control.billTxtBoxMedicine,
 #exampleInputmedicineAvailability,
-#medicineAvailabilityBtn {
+#medicineAvailabilityBtn,
+.billTxtMedicineCost {
     margin-top: 5px;
     margin-bottom: 5px;
 }
 
-@media screen and (min-width:1000px) {
+.patientDrpDwn>button {
+    margin-right: 0px;
+}
+
+@media only screen and (min-width:1262px) {
     .doctorBillsDropdown {
         width: 140px;
+    }
+}
+
+
+/*.patientDetailsSearchRow{
+    display:inline-block;
+}*/
+
+@media only screen and (min-width:1262px) {
+    .patientDetailsSearch {
+        width: 25%;
+        float: left;
+    }
+}
+
+@media only screen and (min-width:1262px) {
+    .billInfo {
+        float: right;
+        width: 75%;
     }
 }
