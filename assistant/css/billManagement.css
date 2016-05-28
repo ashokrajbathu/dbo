@@ -26,13 +26,15 @@
     border: 1px solid #367fa9;
 }
 
-.billDelete {
+.billDelete,
+.finalBillSubmit {
     color: white;
     background-color: #3c8dbc;
 }
 
 .billManagementBtn:hover,
-.billDelete:hover {
+.billDelete:hover,
+.finalBillSubmit:hover {
     background-color: #367fa9;
     color: white;
 }

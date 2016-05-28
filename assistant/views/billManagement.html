@@ -104,16 +104,16 @@
                             <hr class="horizontalLine">
                             <form class="form-inline">
                                 <div class="form-group">
-                                    <input auto-complete ui-items="billView.addMedicineNames" type="text" placeholder="Medicine" ng-model="billView.addMedicine.medicine" class="billTxtBox billTxtBoxMedicine form-control" id="exampleInputMedicine">
+                                    <input auto-complete ng-change="billView.medicineCostUpdate()" type="text" placeholder="Medicine" ng-model="billView.add.medicine" class="billTxtBox billTxtBoxMedicine form-control" id="exampleInputMedicine">
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" placeholder="Cost" class="billTxtBox billTxtMedicineCost form-control" id="exampleInputMedicineCost">
+                                    <input type="text" ng=model="billView.add.cost" placeholder="Cost" class="billTxtBox billTxtMedicineCost form-control" id="exampleInputMedicineCost">
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" placeholder="Quantity" class="billTxtBox form-control" id="exampleInputmedicineAvailability">
+                                    <input type="text" ng-model="billView.add.quantity" placeholder="Quantity" class="billTxtBox form-control" id="exampleInputmedicineAvailability">
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" style="width:100%;padding-left:2px;" id="medicineAvailabilityBtn" class="btn btn-block form-control billBtn">Add Medicine</button>
+                                    <button type="submit" ng-click="billView.addMedicineToBill()" style="width:100%;padding-left:2px;" id="medicineAvailabilityBtn" class="btn btn-block form-control billBtn">Add Medicine</button>
                                 </div>
                             </form>
                             <hr class="horizontalLine">
@@ -169,13 +169,13 @@
                                             <form class="form-inline">
                                                 <div class="form-group">
                                                     <label for="exampleDate">Date :</label>
-                                                    <input type="text" class="form-control" id="exampleDate" placeholder="Date">
+                                                    <input type="text" class="form-control" ng-model="billView.dueDateBill.dueDate" id="exampleDate" placeholder="Date">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleCost">Cost :</label>
-                                                    <input type="text" class="form-control" id="exampleCost" placeholder="Cost">
+                                                    <input type="text" class="form-control" ng-model="billView.dueDateBill.dueCost" id="exampleCost" placeholder="Cost">
                                                 </div>
-                                                <button type="submit" class="btn billManagementBtn">Add Cost</button>
+                                                <button type="submit" ng-click="billView.addDueDateBill()" class="btn billManagementBtn">Add Cost</button>
                                             </form>
                                             <table class="table costsTable table-bordered">
                                                 <thead>
@@ -185,6 +185,13 @@
                                                         <th>Cost</th>
                                                     </tr>
                                                 </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="billInModal in billView.addPay">
+                                                        <td ng-bind="$index+1"></td>
+                                                        <td ng-bind="billInModal.updatedAt"></td>
+                                                        <td ng-bind="billInModal.amountPaid"></td>
+                                                    </tr>
+                                                </tbody>
                                             </table>
                                         </div>
                                         <div class="modal-footer">
@@ -210,7 +217,7 @@
                                 <tbody>
                                     <tr ng-repeat="billEle in billView.bill.billsListing">
                                         <td ng-bind="billEle.itemName"></td>
-                                        <td ng-bind="billEle.nextPaymentDate"></td>
+                                        <td ng-bind="billView.bill.nextPaymentDate"></td>
                                         <td>
                                             <input type="text" ng-change="billView.updateAmount(billEle,$index)" ng-model="billEle.cost" class="form-control">
                                         </td>
@@ -233,6 +240,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <button ng-click="billView.billFinalSubmisssion()" class="btn finalBillSubmit pull-right">Bill Submit</button>
                         </div>
                     </div>
                 </div>

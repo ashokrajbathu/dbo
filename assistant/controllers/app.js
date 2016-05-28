@@ -47,8 +47,8 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
         })
         .state('home.billManagement', {
             url: '/billManagement',
-            controller:'billManagementCtrl',
-            controllerAs:'billView',
+            controller: 'billManagementCtrl',
+            controllerAs: 'billView',
             templateUrl: 'views/billManagement.html'
         })
         .state('home.itemInfo', {
@@ -114,12 +114,19 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
                         }, function() {});
                         break;
                     case "USER_ALREADY_LOGGED_IN":
-                        localStorage.setItem('assistantCurrentlyLoggedIn', currentAssistantObject);
+                        /*localStorage.setItem('assistantCurrentlyLoggedIn', currentAssistantObject);*/
+                        var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
+                        var assistantObj = $.parseJSON(loggedInAss);
+                        var organizationIdActive = assistantObj.organizationId;
+                        localStorage.setItem('orgId', organizationIdActive);
                         $state.go('home');
                         break;
                 }
             } else {
                 localStorage.setItem('assistantCurrentlyLoggedIn', currentAssistantObject);
+                var assistantObject = $.parseJSON(response.data.response);
+                var organizationId = assistantObject.organizationId;
+                localStorage.setItem('orgId', organizationId);
                 $log.log("assistant info is----", $.parseJSON(response.data.response));
                 localStorage.setItem("isLoggedInAssistant", "true");
                 $state.go('home');

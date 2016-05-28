@@ -33,7 +33,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
     var displayListLength = 10;
     inventoryElement.startDisplay = inventoryElement.start + 1;
     inventoryElement.endDisplay = displayListLength;
-    var organizationId = "2345673212";
+    var organizationId = localStorage.getItem('orgId');
     var itemSelectedForAddingBatch = {};
     inventoryElement.warningMessage = false;
     inventoryElement.itemSearch = {};
@@ -135,7 +135,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
     inventoryElement.addItem = function() {
         inventoryElement.addItemObject = {};
         inventoryElement.addItemObject.itemType = "DRUG";
-        inventoryElement.addItemObject.organizationId = "2345673212";
+        inventoryElement.addItemObject.organizationId = organizationId;
 
     }
 

@@ -4,6 +4,8 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
 
     var loginResponseSuccessValue, loginResponseErrorCode, loginResponseDoctorsList, loginResponseDoctorName, loginResponseDoctorSpecialization, loginResponseDoctorId, loginResponseDayStartTime, loginResponseDayEndTime, loginResponseTimePerPatient;
     var loginResponsePatientsList = [];
+    var medicineNames = [];
+    var medicine = [];
     var itemSelected;
 
     this.login = function(userEmailId, password) {
@@ -606,6 +608,24 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
 
     this.getErrorCode = function() {
         return loginResponseErrorCode;
+    }
+
+    this.setMedicine = function(value) {
+        medicine = value;
+    }
+
+    this.getMedicine = function() {
+        return medicine;
+    }
+
+    this.setMedicineNames = function(value) {
+        medicineNames = value;
+
+    }
+
+    this.getMedicineNames = function() {
+
+        return medicineNames;
     }
 
     this.setDoctorsOfThatAssistant = function(value) {
