@@ -3,6 +3,24 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
 
     var inventoryElement = this;
 
+    inventoryElement.nextBtnEnabledFunction=nextBtnEnabledFunction;
+    inventoryElement.prevBtnEnabledFunction=prevBtnEnabledFunction;
+    inventoryElement.addItem=addItem;
+    inventoryElement.addItemIntoStock=addItemIntoStock;
+    inventoryElement.additionOfBatch=additionOfBatch;
+    inventoryElement.viewInfo=viewInfo;
+    inventoryElement.addBatchForSelectedItem=addBatchForSelectedItem;
+    inventoryElement.viewLowItemsSelect=viewLowItemsSelect;
+    inventoryElement.viewAllItemsSelect=viewAllItemsSelect;
+    inventoryElement.viewExpiredItemsSelect=viewExpiredItemsSelect;
+    inventoryElement.itemSearchFromDB=itemSearchFromDB;
+    inventoryElement.viewAllItems=viewAllItems;
+    inventoryElement.viewAllInventoryItems=viewAllInventoryItems;
+    inventoryElement.viewDrugInventoryItems=viewDrugInventoryItems;
+    inventoryElement.viewSuppliesInventoryItems=viewSuppliesInventoryItems;
+    inventoryElement.viewEquipmentsInventoryItems=viewEquipmentsInventoryItems;
+    inventoryElement.viewOthersInventoryItems=viewOthersInventoryItems;
+
     inventoryElement.prevBtnDisabled = true;
     inventoryElement.prevBtnEnabled = false;
     inventoryElement.nextBtnDisabled = false;
@@ -54,7 +72,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         $log.log("in inventory error response");
     });
 
-    inventoryElement.nextBtnEnabledFunction = function() {
+    function nextBtnEnabledFunction() {
         var limit = 0;
         var itemType = "";
         var stockType = "";
@@ -103,7 +121,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         });
     }
 
-    inventoryElement.prevBtnEnabledFunction = function() {
+    function prevBtnEnabledFunction() {
         var itemType = "";
         var stockType = "";
         inventoryElement.startDisplay = inventoryElement.startDisplay - inventoryElement.limit + 1;
@@ -132,14 +150,14 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
     }
 
 
-    inventoryElement.addItem = function() {
+    function addItem() {
         inventoryElement.addItemObject = {};
         inventoryElement.addItemObject.itemType = "DRUG";
         inventoryElement.addItemObject.organizationId = organizationId;
 
     }
 
-    inventoryElement.addItemIntoStock = function() {
+    function addItemIntoStock() {
         var promise = dboticaServices.addItemIntoStock(inventoryElement.addItemObject);
         promise.then(function(response) {
             $log.log("response after adding item is----", response);
@@ -163,7 +181,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         });
     }
 
-    inventoryElement.additionOfBatch = function(item) {
+    function additionOfBatch(item) {
         inventoryElement.addBatch = {};
         inventoryElement.warningMessage = false;
         inventoryElement.addBatch.organizationId = item.organizationId;
@@ -171,12 +189,12 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         itemSelectedForAddingBatch = item;
     }
 
-    inventoryElement.viewInfo = function(item) {
+    function viewInfo(item) {
         dboticaServices.setItemSelected(item);
         $state.go('home.itemInfo');
     }
 
-    inventoryElement.addBatchForSelectedItem = function() {
+    function addBatchForSelectedItem() {
         var requestEntity = {};
         if (inventoryElement.addBatch.units == undefined || inventoryElement.addBatch.expiryDate == undefined) {
             inventoryElement.warningMessage = true;
@@ -223,7 +241,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         }
     }
 
-    inventoryElement.viewLowItemsSelect = function() {
+    function viewLowItemsSelect() {
         if (inventoryElement.isLowBlueActive) {
             var itemType = "";
             inventoryElement.isLowBlueActive = false;
@@ -244,7 +262,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         }
     }
 
-    inventoryElement.viewAllItemsSelect = function() {
+    function viewAllItemsSelect() {
         if (inventoryElement.isAllBlueActive) {
             var itemType = "";
             var stockType = "";
@@ -267,7 +285,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         }
     }
 
-    inventoryElement.viewExpiredItemsSelect = function() {
+    function viewExpiredItemsSelect() {
         if (inventoryElement.isExpiredBlueActive) {
             var itemType = "";
             inventoryElement.isExpiredBlueActive = false;
@@ -288,7 +306,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         }
     }
 
-    inventoryElement.itemSearchFromDB = function() {
+    function itemSearchFromDB() {
         if (inventoryElement.itemSearch.itemName !== "") {
             inventoryElement.prevNextBtnsRow = false;
             inventoryElement.viewAllItemsBtn = true;
@@ -310,7 +328,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         }
     }
 
-    inventoryElement.viewAllItems = function() {
+    function viewAllItems() {
         inventoryElement.warning = false;
         inventoryElement.startDisplay = inventoryElement.start + 1;
         inventoryElement.endDisplay = displayListLength;
@@ -325,7 +343,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         });
     }
 
-    inventoryElement.viewAllInventoryItems = function() {
+    function viewAllInventoryItems() {
         if (inventoryElement.isAllTypeBlueActive) {
             var stockType = "";
             inventoryElement.startDisplay = inventoryElement.start + 1;
@@ -350,7 +368,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         }
     }
 
-    inventoryElement.viewDrugInventoryItems = function() {
+    function viewDrugInventoryItems() {
         if (inventoryElement.isDrugTypeBlueActive) {
             var stockType = "";
             inventoryElement.startDisplay = inventoryElement.start + 1;
@@ -376,7 +394,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
 
     }
 
-    inventoryElement.viewSuppliesInventoryItems = function() {
+    function viewSuppliesInventoryItems() {
         if (inventoryElement.isSuppliesTypeBlueActive) {
             var stockType = "";
             inventoryElement.startDisplay = inventoryElement.start + 1;
@@ -401,7 +419,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         }
     }
 
-    inventoryElement.viewEquipmentsInventoryItems = function() {
+    function viewEquipmentsInventoryItems() {
         if (inventoryElement.isEquipmentsTypeBlueActive) {
             var stockType = "";
             $log.log("in equipment---");
@@ -427,7 +445,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         }
     }
 
-    inventoryElement.viewOthersInventoryItems = function() {
+    function viewOthersInventoryItems() {
         if (inventoryElement.isOthersTypeBlueActive) {
             var stockType = "";
             inventoryElement.isAllTypeBlueActive = true;

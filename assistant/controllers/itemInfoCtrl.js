@@ -11,6 +11,10 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
         changeYear: true
     });
 
+    itemInfoElement.backToItems=backToItems;
+    itemInfoElement.updateBatch=updateBatch;
+    itemInfoElement.addBatchForSelectedItemInItemInfo=addBatchForSelectedItemInItemInfo;
+
 
     var itemSelected;
     itemInfoElement.batches = {};
@@ -73,11 +77,11 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
 
     });
 
-    itemInfoElement.backToItems = function() {
+    function backToItems() {
         $state.go('home.inventory');
     }
 
-    itemInfoElement.updateBatch = function(item, index) {
+    function updateBatch(item, index) {
         $log.log("item selected for update is----", item);
         var idOfTheTextBox = "#batchTextBoxes" + index;
         var idOfTheSelectBox = "#batchSelectBoxes" + index;
@@ -130,7 +134,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
         angular.element(idOfTheTextBox).val('');
     }
 
-    itemInfoElement.addBatchForSelectedItemInItemInfo = function() {
+    function addBatchForSelectedItemInItemInfo() {
         var requestEntity = {};
         if (itemInfoElement.addBatchInItemInfo.units == undefined || itemInfoElement.addBatchInItemInfo.expiryDate == undefined) {
             itemInfoElement.warningMessageItemInfo = true;

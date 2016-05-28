@@ -1,5 +1,7 @@
 angular.module('personalAssistant').controller('analyticReportsCtrl', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var analyticReport = this;
+    analyticReport.selectSearchType = selectSearchType;
+
     angular.element("#date").datepicker({
         dateFormat: "dd/mm/yy",
         autoclose: true,
@@ -12,13 +14,12 @@ angular.module('personalAssistant').controller('analyticReportsCtrl', ['$scope',
     analyticReport.searchBoxDate = false;
     analyticReport.searchSelected = "Phone Number";
 
-    analyticReport.selectSearchType = function(search) {
-    	analyticReport.searchSelected = search;
+    function selectSearchType(search) {
+        analyticReport.searchSelected = search;
         if (search == "Date") {
             analyticReport.searchBoxDate = true;
             analyticReport.searchBox = false;
-        }
-        else {
+        } else {
             analyticReport.searchBoxDate = false;
             analyticReport.searchBox = true;
         }

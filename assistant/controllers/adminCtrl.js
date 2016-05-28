@@ -2,6 +2,12 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     localStorage.setItem("currentState", "admin");
     var adminElement = this;
 
+    adminElement.selectOthersService=selectOthersService;
+    adminElement.doctorSelect=doctorSelect;
+    adminElement.serviceSelect=serviceSelect;
+    adminElement.submitServiceRequest=submitServiceRequest;
+    adminElement.btnActiveInServicesTable=btnActiveInServicesTable;
+
     adminElement.admin = {};
     adminElement.admin.procedureName = false;
     adminElement.admin.doctorInDropdown;
@@ -47,7 +53,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
 
 
 
-    adminElement.selectOthersService = function() {
+    function selectOthersService() {
         var serviceSelected = adminElement.admin.selectService;
         if (serviceSelected.name == "Others") {
             $log.log("in others---");
@@ -57,7 +63,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
         }
     };
 
-    adminElement.doctorSelect = function(doctor) {
+    function doctorSelect(doctor) {
         adminElement.admin.doctorActive = doctor;
         adminElement.servicesList = ["Others"];
         $log.log("doctor selected is---", doctor);
@@ -72,7 +78,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
         adminElement.admin.doctorInDropdown = doctor.firstName + ' ' + doctor.lastName;
     }
 
-    adminElement.serviceSelect = function(service) {
+    function serviceSelect(service) {
         adminElement.admin.serviceInDropDown = service;
         if (service == "Others") {
             adminElement.admin.procedureName = true;
@@ -82,7 +88,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
         }
     }
 
-    adminElement.submitServiceRequest = function() {
+    function submitServiceRequest() {
         var serviceRequestEntity = {};
         serviceRequestEntity.doctorId = adminElement.admin.doctorActive.id;
         serviceRequestEntity.doctorPriceInfos = [];
@@ -166,7 +172,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
         }
     }
 
-    adminElement.btnActiveInServicesTable = function(doctorService) {
+    function btnActiveInServicesTable(doctorService) {
         var changeStateRequestEntity = {};
         changeStateRequestEntity.doctorPriceInfos = [];
         changeStateRequestEntity.doctorId = adminElement.admin.doctorActive.id;

@@ -20,6 +20,17 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         'minDate': 0
     });
 
+    billElement.selectDoctorFromDropdown = selectDoctorFromDropdown;
+    billElement.selectBillFromDropdown = selectBillFromDropdown;
+    billElement.patientSearchOftheNumber = patientSearchOftheNumber;
+    billElement.updateBillForm = updateBillForm;
+    billElement.addConsultationOfDoctor = addConsultationOfDoctor;
+    billElement.updateAmount = updateAmount;
+    billElement.deleteABill = deleteABill;
+    billElement.addMedicineToBill = addMedicineToBill;
+    billElement.billFinalSubmisssion = billFinalSubmisssion;
+    billElement.addDueDateBill = addDueDateBill;
+
     billElement.bill = {};
     billElement.patientSearch = {};
     billElement.patient = {};
@@ -96,7 +107,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         $log.log("in error response of getting doctors");
     });
 
-    billElement.selectDoctorFromDropdown = function(doctor) {
+    function selectDoctorFromDropdown(doctor) {
         billElement.bill.doctorActive = doctor;
         if (doctor.hasOwnProperty('doctorPriceInfos')) {
             billElement.bill.doctorActiveService = doctor.doctorPriceInfos[0].billingName;
@@ -109,13 +120,13 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         billElement.bill.doctorActiveName = doctor.firstName + ' ' + doctor.lastName;
     }
 
-    billElement.selectBillFromDropdown = function(billing) {
+    function selectBillFromDropdown(billing) {
         billElement.bill.doctorActiveService = billing.billingName;
         billElement.bill.billCost = billing.price / 100;
         /*billElement.bill.serviceId=billing.*/
     }
 
-    billElement.patientSearchOftheNumber = function(phoneNumber) {
+    function patientSearchOftheNumber(phoneNumber) {
         var patientSearchPromise = dboticaServices.getPatientDetailsOfThatNumber(phoneNumber);
         patientSearchPromise.then(function(patientSearchSuccessResponse) {
             var errorCode = patientSearchSuccessResponse.data.errorCode;
@@ -137,14 +148,14 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         }, function(patientSearchErrorResponse) {});
     }
 
-    billElement.updateBillForm = function(patient, index) {
+    function updateBillForm(patient, index) {
         billElement.patient = patient;
         $scope.radio0 = false;
         $scope['radio' + index] = true;
         billElement.finalBill.patientId = patient.id;
     }
 
-    billElement.addConsultationOfDoctor = function() {
+    function addConsultationOfDoctor() {
         var newService = {};
         newService.itemName = billElement.bill.doctorActiveService;
         newService.cost = billElement.bill.billCost;
@@ -170,7 +181,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         billElement.bill.billsListing.push(newService);
     }
 
-    billElement.updateAmount = function(billUnderEdit, index) {
+    function updateAmount(billUnderEdit, index) {
         $log.log("bill under edit is----", billUnderEdit.discount);
         billElement.invoice.amount -= billUnderEdit.amountCharged;
         var amountOnWhichDisOrVat = billUnderEdit.cost * billUnderEdit.quantity;
@@ -183,12 +194,12 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         $log.log('amount is---' + billUnderEdit.amountCharged);
     }
 
-    billElement.deleteABill = function(billToBeRemoved, index) {
+    function deleteABill(billToBeRemoved, index) {
         billElement.invoice.amount -= billToBeRemoved.amountCharged;
         billElement.bill.billsListing.splice(index, 1);
     }
 
-    billElement.addMedicineToBill = function() {
+    function addMedicineToBill() {
         var newMedicine = {};
         newMedicine.itemName = angular.element('#exampleInputMedicine').val();
         $log.log("medicine is----" + billElement.add.medicine);
@@ -203,7 +214,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         billElement.bill.billsListing.push(newMedicine);
     }
 
-    billElement.billFinalSubmisssion = function() {
+    function billFinalSubmisssion() {
         billElement.finalBill.items = [];
         billElement.finalBill.paymentEntries = [];
         billElement.finalBill.items = billElement.bill.billsListing;
@@ -211,7 +222,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         $log.log("final bill is----", billElement.finalBill);
     }
 
-    billElement.addDueDateBill = function() {
+    function addDueDateBill() {
         var newDueDateBill = {};
         var newDueDateToFinalBill = {};
         newDueDateBill.amountPaid = billElement.dueDateBill.dueCost;
@@ -246,13 +257,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
 
         return today;
     }
-
-    billElement.formatDate = function(date) {
-        var dateOut = new Date(date);
-        return dateOut;
-    }
-
-
 }]);
 
 angular.module('personalAssistant').directive('autoComplete', function(dboticaServices, $timeout, $log) {
