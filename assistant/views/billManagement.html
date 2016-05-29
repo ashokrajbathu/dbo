@@ -25,7 +25,7 @@
                         <div ng-if="billView.bill.patientSearchPatients">
                             <p>Patients:</p>
                             <div ng-repeat="patient in billView.bill.patientsListOfThatNumber">
-                                <input type="radio" name="patients" ng-click="billView.updateBillForm(patient,$index)" ng-checked="{{'radio'+$index}}" ng-attr-value="{{patient.firstName}}" ng-attr-id="{{'patient'+$index}}">{{patient.firstName}}
+                                <input class="radiosInPatientSearch" type="radio" name="patients" ng-click="billView.updateBillForm(patient,$index)" ng-checked="{{'radio'+$index}}" ng-attr-value="{{patient.firstName}}" ng-attr-id="{{'patient'+$index}}">{{patient.firstName}}
                             </div>
                         </div>
                     </div>

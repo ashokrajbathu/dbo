@@ -12,6 +12,10 @@
     cursor: pointer;
 }
 
+.radiosInPatientSearch:hover {
+    transform: scale(2);
+}
+
 .panel-default>.panel-heading {
     color: white;
     background-image: none;
