@@ -25,5 +25,4 @@ angular.module('personalAssistant').controller('analyticReportsCtrl', ['$scope',
         }
     }
 
-
 }]);

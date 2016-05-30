@@ -26,7 +26,6 @@
     <link rel="stylesheet" type="text/css" href="bootstrap/css/jquery.jscrollpane.css">
     <script type="text/javascript" src="bootstrap/js/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="bootstrap/js/jquery.jscrollpane.min.js"></script>
-
     <script type="text/javascript">
     $.holdReady(true);
     if (localStorage.getItem('isLoggedIn') === 'true') {
@@ -35,7 +34,6 @@
         window.location.href = 'login.html';
     }
     </script>
-    
     <!--  <link rel="stylesheet" media="screen" type="text/css" href="css/layout.css" />
     <script type="text/javascript" src="js/datepicker.js"></script>
     <script type="text/javascript" src="js/layout.js?ver=1.0.2"></script>-->
@@ -1394,7 +1392,7 @@
     }
 
     $('#prescription-save-cont').click(function(e) {
-
+        console.log("Prescription save cont started");
 
         var drugPojoListCookie = $.cookie('drugPojoList'); // Object
         var drugPojoList = [];
@@ -1450,8 +1448,26 @@
 
         var patientInfoCookie = $.cookie('currentPatientInfo');
         var patientInfo = $.parseJSON(patientInfoCookie);
-        console.log("patientInfoCookie", patientInfoCookie);
+        var prescriptionString = "";
 
+        if (patientInfo == null) {
+            console.log("Prescription save cont - No patient found");
+            swal({
+                title: "Update Patient Details",
+                text: "Are you sure you want to update patient Details?",
+                type: "info",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+                allowOutsideClick: true
+            }, function() {
+                updatePatientDetails("savePrescription");
+            });
+            console.log("in return===");
+            return;
+        }
+
+        console.log("patientInfoCookie", patientInfoCookie);
         var prescriptionCookie = $.cookie('currentPrescription');
         var prescription = {};
         if (!!prescriptionCookie) {
@@ -1461,7 +1477,7 @@
         }
         var today = getTodayString();
 
-        var prescriptionString = "";
+
         console.log("remarks", remarks);
         if (!jQuery.isEmptyObject(prescription)) {
             prescription['patientId'] = patientInfo[0].id;
@@ -1613,8 +1629,6 @@
                             break;
                     }
                 }
-
-
                 swal({
                     title: "Success",
                     text: "Prescrition details are saved successfully",
@@ -1626,17 +1640,10 @@
                 var prescription = $.parseJSON(response.response);
                 $.cookie('currentPrescription', response.response);
 
-                //Adding prescriptioninfo to indexedDB
-
                 try {
                     addPrescriptionToIndexedDB(prescription, patientInfo[0], localStorage.getItem('doctorId'), loadPatientReport);
                 } catch (e) {
-
                 }
-
-                //console.log(prescription);
-                //console.log("currentPrescrition ", $.cookie('currentPrescription'));
-
             }
         });
 

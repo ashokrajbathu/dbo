@@ -274,6 +274,11 @@ $(".myForm").on('click', '.patientRadio', function() {
 });
 
 $('#patient-register-btn').click(function() {
+    updatePatientDetails();
+});
+
+function updatePatientDetails(callbackStr) {
+    console.log("pateint update click");
     var patientInfoCookie = $.cookie('patientsInRegister');
     var data1 = [];
     if (patientInfoCookie.length != null) {
@@ -430,7 +435,15 @@ $('#patient-register-btn').click(function() {
                     text: "Patient details successfully updated.",
                     type: "success",
                     confirmButtonText: "OK",
-                    allowOutsideClick: true
+                    allowOutsideClick: true,
+                }, function() {
+                    console.log("sdhsdfsdsd");
+                    console.log("arg 0 is--" + arguments[0]);
+                    if (callbackStr == "savePrescription") {
+                        console.log("sdhsd");
+                        $('#prescription-save-cont').click();
+                        console.log("sdhsd");
+                    }
                 });
                 updatePatientFields();
                 var patientInfoCookieUpdated = $.parseJSON($.cookie('patientsInRegister'));
@@ -473,6 +486,6 @@ $('#patient-register-btn').click(function() {
             }
         });
     } //ajax
-});
+};
 </script>
 </script>

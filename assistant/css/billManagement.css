@@ -12,6 +12,10 @@
     cursor: pointer;
 }
 
+.nextDueDateTxtBox {
+    margin-right: 50px;
+}
+
 .radiosInPatientSearch:hover {
     transform: scale(2);
 }
@@ -255,7 +259,8 @@
     display:inline-block;
 }*/
 
-@media only screen and (min-width:1262px) {
+
+/* @media only screen and (min-width:1262px) {
     .patientDetailsSearch {
         width: 25%;
         float: left;
@@ -268,3 +273,4 @@
         width: 75%;
     }
 }
+ */

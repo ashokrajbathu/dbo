@@ -1,7 +1,7 @@
 <div ng-controller="billManagementCtrl as billView" ng-cloak>
     <div class="container-fluid">
         <div class="row patientDetailsSearchRow">
-            <div class="patientDetailsSearch col-xs-12 col-sm-6">
+            <div class="patientDetailsSearch col-md-3 col-xs-12 col-sm-6">
                 <div class="panel panel-default">
                     <div class="heading panel-heading">
                         <h4 class="headerInfo">Patient Search : </h4>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div class="billInfo col-xs-12 col-sm-12">
+            <div class="billInfo col-md-9 col-xs-12 col-sm-12">
                 <div class="panel panel-default">
                     <div class="heading panel-heading">
                         <h4 class="headerInfo">Patient Bill : </h4>
@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="col-md-3 col-sm-4 col-xs-4">
                                     <div class="dropdown">
-                                        <button class="btn doctorSelectBox dropdown-toggle" type="button" data-toggle="dropdown">{{billView.bill.doctorActiveName}}
+                                        <button class="btn doctorSelectBox dropdown-toggle" ng-cloak type="button" data-toggle="dropdown">{{billView.bill.doctorActiveName}}
                                             <span class="caret"></span></button>
                                         <ul class="dropdown-menu">
                                             <li ng-repeat="doctor in billView.bill.doctorsListInBillManagement">
@@ -200,6 +200,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <label for="exampleInputDueDate">Next Due Date:</label>
+                                    <input ng-model="billView.invoice.nextPaymentDate" type="text" class="nextDueDateTxtBox billTxtBox form-control" id="exampleInputnextDueDate">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputDueAmount">Next Due Amount:</label>
+                                    <input ng-model="billView.invoice.nextPaymentAmount" type="text" class="billTxtBox form-control" id="exampleInputnextDueAmount">
+                                </div>
+                            </form>
                             <table class="table finalBillTable">
                                 <thead>
                                     <tr>
@@ -217,7 +227,7 @@
                                 <tbody>
                                     <tr ng-repeat="billEle in billView.bill.billsListing">
                                         <td ng-bind="billEle.itemName"></td>
-                                        <td ng-bind="billView.bill.nextPaymentDate"></td>
+                                        <td ng-bind="billEle.dueDate | longDateIntoReadableDate"></td>
                                         <td>
                                             <input type="text" ng-change="billView.updateAmount(billEle,$index)" ng-model="billEle.cost" class="form-control">
                                         </td>
@@ -232,7 +242,7 @@
                                         </td>
                                         <td ng-bind="billEle.amountCharged"></td>
                                         <td>
-                                            <input type="checkbox" ng-attr-name="billEle.paid">
+                                            <input type="checkbox" ng-click="billEle.paid=!billEle.paid" ng-checked="{{'checkBox'+$index}}" ng-attr-name="billEle.paid">
                                         </td>
                                         <td>
                                             <button ng-click="billView.deleteABill(billEle,$index)" class="btn billDelete">Delete</button>

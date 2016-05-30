@@ -2,23 +2,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     localStorage.setItem("currentState", "billManagement");
 
     var billElement = this;
-    angular.element("#sessionDatepickerCost").datepicker({
-        dateFormat: "dd/mm/yy",
-        autoclose: true,
-        'minDate': 0
-    });
-
-    angular.element("#exampleDate").datepicker({
-        dateFormat: "dd/mm/yy",
-        autoclose: true,
-        'minDate': 0
-    });
-
-    angular.element("#exampleInputTestDate").datepicker({
-        dateFormat: "dd/mm/yy",
-        autoclose: true,
-        'minDate': 0
-    });
 
     billElement.selectDoctorFromDropdown = selectDoctorFromDropdown;
     billElement.selectBillFromDropdown = selectBillFromDropdown;
@@ -32,6 +15,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     billElement.addDueDateBill = addDueDateBill;
 
     billElement.bill = {};
+
     billElement.patientSearch = {};
     billElement.patient = {};
     billElement.bill.viewOrHide = false;
@@ -44,6 +28,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     billElement.bill.doctorActiveService = "No Bill Type";
     billElement.bill.paymentDueType = "Completed";
     billElement.invoice = {};
+    billElement.invoice.nextPaymentAmount = "";
     billElement.invoice.amount = 0;
     billElement.add = {};
     billElement.addMedicine = [];
@@ -51,6 +36,8 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     billElement.addPay = [];
     billElement.dueDateBill = {};
     billElement.addToBill = [];
+    var consultation = "consultation";
+    billElement.invoice.nextPaymentDate = "";
 
     billElement.addMedicine.medicine = '';
     billElement.addMedicineNames = [];
@@ -96,8 +83,12 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             billElement.finalBill.doctorId = billElement.bill.doctorActive.id;
             if (billElement.bill.doctorActive.hasOwnProperty('doctorPriceInfos')) {
                 billElement.bill.billTypes = billElement.bill.doctorActive.doctorPriceInfos;
-                billElement.bill.doctorActiveService = billElement.bill.billTypes[0].billingName;
-                billElement.bill.billCost = billElement.bill.billTypes[0].price / 100;
+                for (var billTypeIndex in billElement.bill.billTypes) {
+                    if (billElement.bill.billTypes[billTypeIndex].billingName.toLowerCase() == consultation) {
+                        billElement.bill.doctorActiveService = billElement.bill.billTypes[billTypeIndex].billingName;
+                        billElement.bill.billCost = billElement.bill.billTypes[billTypeIndex].price / 100;
+                    }
+                }
                 $log.log("bill types are---", billElement.bill.billTypes);
             }
             billElement.bill.doctorActiveName = billElement.bill.doctorActive.firstName + ' ' + billElement.bill.doctorActive.lastName;
@@ -164,6 +155,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         newService.discount = 0;
         newService.tax = 0;
         newService.amountCharged = billElement.bill.billCost;
+        newService.dueDate = dboticaServices.getLongValueOfDate(billElement.bill.nextPaymentDate);
         billElement.invoice.amount += billElement.bill.billCost;
         switch (billElement.bill.paymentDueType) {
             case 'Completed':
@@ -176,22 +168,18 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                 newService.paymentDueType = "FUTURE_TENTITIVE";
                 break;
         }
-        newService.paid = true;
+        newService.paid = false;
         $log.log("new Service is----", newService);
         billElement.bill.billsListing.push(newService);
     }
 
     function updateAmount(billUnderEdit, index) {
-        $log.log("bill under edit is----", billUnderEdit.discount);
         billElement.invoice.amount -= billUnderEdit.amountCharged;
         var amountOnWhichDisOrVat = billUnderEdit.cost * billUnderEdit.quantity;
         var discount = (100 - billUnderEdit.discount) / 100;
-        $log.log("disc is----" + discount);
         var vat = (billUnderEdit.tax) / 100;
-        $log.log("vat is-----" + vat);
         billUnderEdit.amountCharged = ((amountOnWhichDisOrVat * discount) + (amountOnWhichDisOrVat * vat));
         billElement.invoice.amount += billUnderEdit.amountCharged;
-        $log.log('amount is---' + billUnderEdit.amountCharged);
     }
 
     function deleteABill(billToBeRemoved, index) {
@@ -210,16 +198,46 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         newMedicine.tax = 0;
         newMedicine.amountCharged = newMedicine.cost * billElement.add.quantity;
         billElement.invoice.amount += newMedicine.amountCharged;
-        newMedicine.paid = true;
+        newMedicine.paid = false;
         billElement.bill.billsListing.push(newMedicine);
+        angular.element('#exampleInputMedicine').val("");
+        angular.element('#exampleInputMedicineCost').val("");
+        billElement.add.quantity = "";
     }
 
     function billFinalSubmisssion() {
         billElement.finalBill.items = [];
         billElement.finalBill.paymentEntries = [];
-        billElement.finalBill.items = billElement.bill.billsListing;
-        billElement.finalBill.paymentEntries = billElement.addToBill;
+        if (billElement.invoice.nextPaymentDate !== "") {
+            billElement.finalBill.nextPaymentDate = dboticaServices.getLongValueOfDate(billElement.invoice.nextPaymentDate);
+        }
+        billElement.finalBill.nextPaymentAmount = billElement.invoice.nextPaymentAmount * 100;
+        angular.copy(billElement.bill.billsListing, billElement.finalBill.items);
+        for (var itemsIndex in billElement.finalBill.items) {
+            if (billElement.finalBill.items[itemsIndex].hasOwnProperty('cost')) {
+                billElement.finalBill.items[itemsIndex].cost = billElement.finalBill.items[itemsIndex].cost * 100;
+            }
+            if (billElement.finalBill.items[itemsIndex].hasOwnProperty('amountCharged')) {
+                billElement.finalBill.items[itemsIndex].amountCharged = billElement.finalBill.items[itemsIndex].amountCharged * 100;
+            }
+        }
+        angular.copy(billElement.addToBill, billElement.finalBill.paymentEntries);
+        $log.log("pay ----", billElement.finalBill.paymentEntries);
+        for (var billIndex in billElement.finalBill.paymentEntries) {
+            if (billElement.finalBill.paymentEntries[billIndex].hasOwnProperty('amountPaid')) {
+                $log.log("in entries");
+                billElement.finalBill.paymentEntries[billIndex].amountPaid = billElement.finalBill.paymentEntries[billIndex].amountPaid * 100;
+            }
+        }
+        $log.log("listin arr---", billElement.bill.billsListing);
         $log.log("final bill is----", billElement.finalBill);
+        var invoiceUpdatePromise = dboticaServices.updateInvoice(billElement.finalBill);
+        invoiceUpdatePromise.then(function(invoiceUpdateSuccessResponse) {
+            var invoiceSuccessResponse = invoiceUpdateSuccessResponse.data.response;
+            $log.log("success response is---", invoiceUpdateSuccessResponse);
+        }, function(invoiceUpdateErrorResponse) {
+
+        });
     }
 
     function addDueDateBill() {
@@ -232,13 +250,9 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         newDueDateToFinalBill.updatedUserId = currentActiveAssistant.id;
         newDueDateToFinalBill.amountPaid = billElement.dueDateBill.dueCost;
         newDueDateToFinalBill.state = "ACTIVE";
-        var dateArray = billElement.dueDateBill.dueDate.split('/');
-        var date = dateArray[1] + '/' + dateArray[0] + '/' + dateArray[2];
-        date = new Date(date);
-        date = date.getTime();
-        newDueDateToFinalBill.updatedAt = date;
+        newDueDateToFinalBill.updatedAt = dboticaServices.getLongValueOfDate(billElement.dueDateBill.dueDate);
         billElement.addToBill.push(newDueDateToFinalBill);
-        $log.log("add pay is----", billElement.addPay);
+        $log.log("add pay is----", newDueDateToFinalBill.updatedAt);
         billElement.dueDateBill.dueCost = "";
         billElement.dueDateBill.dueDate = "";
     }
@@ -257,6 +271,31 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
 
         return today;
     }
+
+    angular.element("#sessionDatepickerCost").datepicker({
+        dateFormat: "dd/mm/yy",
+        autoclose: true,
+        'minDate': 0
+    });
+
+    angular.element("#exampleDate").datepicker({
+        dateFormat: "dd/mm/yy",
+        autoclose: true,
+        'minDate': 0
+    });
+
+    angular.element("#exampleInputTestDate").datepicker({
+        dateFormat: "dd/mm/yy",
+        autoclose: true,
+        'minDate': 0
+    });
+
+    angular.element("#exampleInputnextDueDate").datepicker({
+        dateFormat: "dd/mm/yy",
+        autoclose: true,
+        'minDate': 0
+    });
+
 }]);
 
 angular.module('personalAssistant').directive('autoComplete', function(dboticaServices, $timeout, $log) {
@@ -284,5 +323,22 @@ angular.module('personalAssistant').directive('autoComplete', function(dboticaSe
             });
         }
 
+    };
+});
+
+angular.module('personalAssistant').filter("longDateIntoReadableDate", function() {
+    return function(input) {
+        var result;
+        if (input == undefined) {
+            result = "";
+        } else {
+            result = new Date(input);
+            result = result.toLocaleString();
+            var resultArray = result.split(',');
+            var resultArrayDate = resultArray[0];
+            var resultArrayDateReadable = resultArrayDate.split('/');
+            result = resultArrayDateReadable[1] + '/' + resultArrayDateReadable[0] + '/' + resultArrayDateReadable[2];
+        }
+        return result;
     };
 });

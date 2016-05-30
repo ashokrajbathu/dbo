@@ -6,7 +6,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     var loginResponsePatientsList = [];
     var medicineNames = [];
     var medicine = [];
-    var itemSelected;
+    var itemSelected, longDate;
 
     this.login = function(userEmailId, password) {
         var inputData = {};
@@ -555,6 +555,34 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
 
     }
 
+    this.getLongValueOfDate = function(dateSelected) {
+        var dateArray = dateSelected.split('/');
+        longDate = dateArray[1] + '/' + dateArray[0] + '/' + dateArray[2];
+        longDate = new Date(longDate);
+        longDate = longDate.getTime();
+        return longDate;
+    }
+
+    this.updateInvoice = function(invoice) {
+        var deferred = $q.defer();
+        var invoiceRequest = {
+            method: 'POST',
+            url: ' http://localhost:8081/dbotica-spring/billing/updateInvoice',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(invoice)
+        }
+        $http(invoiceRequest).then(function(invoiceSuccessResponse) {
+            deferred.resolve(invoiceSuccessResponse);
+        }, function(invoiceErrorResponse) {
+            deferred.reject(invoiceErrorResponse);
+        });
+        return deferred.promise;
+    }
+
     this.getPatientsListOfDoctorSorted = function(patientsList) {
         var walkInPatientsList = [];
         var appointmentPatientsList = [];
@@ -683,10 +711,6 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     this.getFirstDoctorTimePerPatient = function() {
         return loginResponseTimePerPatient;
     }
-
-    /*this.setFirstDoctorPatientsList = function(value) {
-        loginResponsePatientsList = value;
-    }*/
 
     this.getFirstDoctorPatientsList = function() {
         return loginResponsePatientsList;
