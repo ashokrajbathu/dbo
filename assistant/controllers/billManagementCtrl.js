@@ -225,11 +225,9 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         $log.log("pay ----", billElement.finalBill.paymentEntries);
         for (var billIndex in billElement.finalBill.paymentEntries) {
             if (billElement.finalBill.paymentEntries[billIndex].hasOwnProperty('amountPaid')) {
-                $log.log("in entries");
                 billElement.finalBill.paymentEntries[billIndex].amountPaid = billElement.finalBill.paymentEntries[billIndex].amountPaid * 100;
             }
         }
-        $log.log("listin arr---", billElement.bill.billsListing);
         $log.log("final bill is----", billElement.finalBill);
         var invoiceUpdatePromise = dboticaServices.updateInvoice(billElement.finalBill);
         invoiceUpdatePromise.then(function(invoiceUpdateSuccessResponse) {
@@ -322,7 +320,6 @@ angular.module('personalAssistant').directive('autoComplete', function(dboticaSe
                 });
             });
         }
-
     };
 });
 

@@ -538,6 +538,50 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
+    this.submitTestRequest = function(testObject) {
+        var deferred = $q.defer();
+        var testRequest = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/organization/updateTest',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(testObject)
+        }
+        $http(testRequest).then(function(testRequestSuccessResponse) {
+            deferred.resolve(testRequestSuccessResponse);
+        }, function(testRequestErrorResponse) {
+            deferred.reject(testRequestErrorResponse);
+        });
+        return deferred.promise;
+    }
+
+    this.getTests = function() {
+        var deferred = $q.defer();
+        var active = "ACTIVE";
+        var getTestsRequest = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/organization/getTests',
+            withCredentials: true,
+            data: JSON.stringify({
+                "state": active
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }
+        $http(getTestsRequest).then(function(getTestsSuccessResponse) {
+            deferred.resolve(getTestsSuccessResponse);
+        }, function(getTestsErrorResponse) {
+            deferred.reject(getTestsErrorResponse);
+        });
+
+        return deferred.promise;
+    }
+
     this.logoutFromThePage = function(errorCode) {
         switch (errorCode) {
             case "NO_USER_LOGGED_IN":
