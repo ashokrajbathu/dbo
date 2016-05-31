@@ -5,6 +5,8 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     var loginResponseSuccessValue, loginResponseErrorCode, loginResponseDoctorsList, loginResponseDoctorName, loginResponseDoctorSpecialization, loginResponseDoctorId, loginResponseDayStartTime, loginResponseDayEndTime, loginResponseTimePerPatient;
     var loginResponsePatientsList = [];
     var medicineNames = [];
+    var testsList = [];
+    var testsNameList = [];
     var medicine = [];
     var itemSelected, longDate;
 
@@ -768,6 +770,19 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return itemSelected;
     }
 
+    this.setTestsFromBillManagement = function(value) {
+        testsList = value;
+    }
 
+    this.getTestsFromService = function() {
+        return testsList;
+    }
 
+    this.setTestsNamesFromBillManagement = function(value) {
+        testsNameList = value;
+    }
+
+    this.getTestsNamesList = function() {
+        return testsNameList;
+    }
 }]);

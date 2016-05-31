@@ -13,6 +13,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     billElement.addMedicineToBill = addMedicineToBill;
     billElement.billFinalSubmisssion = billFinalSubmisssion;
     billElement.addDueDateBill = addDueDateBill;
+    billElement.addTestToFinalBill = addTestToFinalBill;
 
     billElement.bill = {};
 
@@ -39,8 +40,11 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     var consultation = "consultation";
     billElement.invoice.nextPaymentDate = "";
 
+
     billElement.addMedicine.medicine = '';
     billElement.addMedicineNames = [];
+    var activeTestsList = [];
+    var activeTestsNamesList = [];
     var organizationId = localStorage.getItem('orgId');
     billElement.bill.nextPaymentDate = getTodayString();
     billElement.finalBill.organizationId = organizationId;
@@ -67,6 +71,27 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     }, function(errorResponse) {
 
     });
+
+    var testsPromise = dboticaServices.getTests();
+    $log.log("tests list promise is-----", testsPromise);
+    testsPromise.then(function(testsPromiseSuccessResponse) {
+        var testsList = $.parseJSON(testsPromiseSuccessResponse.data.response);
+        for (var testIndex in testsList) {
+            if (testsList[testIndex].organizationId == organizationId) {
+                if (testsList[testIndex].state == "ACTIVE") {
+                    activeTestsList.push(testsList[testIndex]);
+                    activeTestsNamesList.push(testsList[testIndex].testName);
+                }
+            }
+        }
+        dboticaServices.setTestsFromBillManagement(activeTestsList);
+        dboticaServices.setTestsNamesFromBillManagement(activeTestsNamesList);
+        console.log("sjdhjsd--", dboticaServices.getTestsFromService());
+        console.log("sjhcbxv---", dboticaServices.getTestsNamesList());
+    }, function(testsPromiseErrorResponse) {
+        $log.log("in error response of getting tests list----");
+    });
+
 
 
 
@@ -205,6 +230,24 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         billElement.add.quantity = "";
     }
 
+    function addTestToFinalBill() {
+        var newTestObject = {}
+        newTestObject.itemName = angular.element('#exampleInputTests').val();
+        newTestObject.itemType = "TEST";
+        newTestObject.cost = angular.element('#exampleInputTestsCost').val();
+        newTestObject.discount = 0;
+        newTestObject.tax = 0;
+        newTestObject.quantity = 1;
+        newTestObject.amountCharged = newTestObject.cost;
+        billElement.invoice.amount += parseInt(newTestObject.amountCharged);
+        newTestObject.paid = false;
+        newTestObject.dueDate = dboticaServices.getLongValueOfDate(billElement.add.testDate);
+        billElement.bill.billsListing.push(newTestObject);
+        angular.element('#exampleInputTests').val("");
+        angular.element('#exampleInputTestsCost').val("");
+        billElement.add.testDate = "";
+    }
+
     function billFinalSubmisssion() {
         billElement.finalBill.items = [];
         billElement.finalBill.paymentEntries = [];
@@ -299,20 +342,48 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
 angular.module('personalAssistant').directive('autoComplete', function(dboticaServices, $timeout, $log) {
     return {
         restrict: 'A',
+        bindToController: true,
+        link: function(scope, elem) {
+            scope.$watch(function() {
+                elem.autocomplete({
+                    source: dboticaServices.getMedicineNames(),
+                    minLength: 2,
+                    select: function(event, ui) {
+                        var medicines = dboticaServices.getMedicine();
+                        var medicineEntered = ui.item.value;
+                        for (var medicineIndex = 0; medicineIndex < medicines.length - 1; medicineIndex++) {
+                            if (medicineEntered.toLowerCase() == medicines[medicineIndex].itemName.toLowerCase()) {
+                                angular.element('#exampleInputMedicineCost').val(medicines[medicineIndex].retailPrice);
+
+                            }
+                        }
+                    }
+                });
+            });
+        }
+    };
+});
+
+angular.module('personalAssistant').directive('testSelection', function(dboticaServices, $timeout, $log) {
+    return {
+        restrict: 'A',
+        controller: 'billManagementCtrl',
+        controllerAs: 'billView',
+        bindToController: true,
+        scope: { max: '=' },
         link: function(scope, elem) {
             scope.$watch(function() {
                 $timeout(function() {
                     elem.autocomplete({
-                        source: dboticaServices.getMedicineNames(),
+                        source: dboticaServices.getTestsNamesList(),
                         minLength: 2,
                         select: function(event, ui) {
-                            var medicines = dboticaServices.getMedicine();
-                            var medicineEntered = ui.item.value;
-                            for (var medicineIndex = 0; medicineIndex < medicines.length - 1; medicineIndex++) {
-                                if (medicineEntered.toLowerCase() == medicines[medicineIndex].itemName.toLowerCase()) {
-                                    angular.element('#exampleInputMedicineCost').val(medicines[medicineIndex].retailPrice);
-                                    /*scope.add.cost = medicines[medicineIndex].retailPrice;
-                                    scope.$apply;*/
+                            var tests = dboticaServices.getTestsFromService();
+                            console.log("in directive----", tests);
+                            var testEntered = ui.item.value;
+                            for (var testIndex = 0; testIndex < tests.length; testIndex++) {
+                                if (testEntered.toLowerCase() == tests[testIndex].testName.toLowerCase()) {
+                                    angular.element('#exampleInputTestsCost').val(tests[testIndex].price / 100);
                                 }
                             }
                         }
@@ -322,6 +393,8 @@ angular.module('personalAssistant').directive('autoComplete', function(dboticaSe
         }
     };
 });
+
+
 
 angular.module('personalAssistant').filter("longDateIntoReadableDate", function() {
     return function(input) {

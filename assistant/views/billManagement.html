@@ -120,16 +120,16 @@
                             <div class="tests">
                                 <form class="form-inline">
                                     <div class="form-group">
-                                        <input type="text" placeholder="Tests" class="billTxtBox billTxtTests billTxtBoxMedicine form-control" id="exampleInputTests">
+                                        <input type="text" test-selection max="77" ng-model="billView.add.testName" placeholder="Tests" class="billTxtBox billTxtTests billTxtBoxMedicine form-control" id="exampleInputTests">
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" placeholder="Cost" class="billTxtBox billTxtBoxMedicine form-control" id="exampleInputTestsCost">
+                                        <input type="text" placeholder="Cost" ng-model="billView.add.testCost" class="billTxtBox billTxtBoxMedicine form-control" id="exampleInputTestsCost">
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" placeholder="Date" class="billTxtBox billTxtBoxMedicine form-control" id="exampleInputTestDate">
+                                        <input type="text" placeholder="Date" ng-model="billView.add.testDate" class="billTxtBox billTxtBoxMedicine form-control" id="exampleInputTestDate">
                                     </div>
                                     <div class="form-group">
-                                        <button type="submit" id="TestsSubmitBtn" class="btn btn-block form-control billBtn">Add Test</button>
+                                        <button type="submit" ng-click="billView.addTestToFinalBill()" id="TestsSubmitBtn" class="btn btn-block form-control billBtn">Add Test</button>
                                     </div>
                                 </form>
                             </div>

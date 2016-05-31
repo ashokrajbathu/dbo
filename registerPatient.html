@@ -10,9 +10,9 @@
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="css/ionicons.min.css">
+    <link rel="stylesheet" href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -111,6 +111,7 @@
     </div> -->
                 <div type="submit" id="patient-register-btn" style="margin-top:-5px;margin-bottom:5px;" class="btn btn-primary btn-block btn-flat">Update</div>
                 <div type="submit" id="patient-addFamily-btn" class="btn btn-primary btn-block btn-flat">Add Family Members</div>
+                <a id="patientDashBoardLink" class="pull-right" target="_blank" href="patientDashboard.html">Patient Dashboard</a>
             </form>
         </div>
     </div>
@@ -147,6 +148,7 @@ function onLoadTasks() {
         var newPhoneNumber = $.cookie('newPatientPhoneNumber');
         console.log("num is---" + newPhoneNumber);
         var data1 = $.parseJSON($.cookie('currentPatientInfo'));
+
         console.log("data in try is------", data1);
         var emptyArray = [];
         if (data1 !== null) {
@@ -159,6 +161,7 @@ function onLoadTasks() {
         console.log("data in try check is is------", datacheck);
         if ($.cookie('currentPatientInfo') != 'null') {
             var patientsCountOfThatNumber = data1.length;
+            localStorage.setItem("idOfPatientInDashBoard", data1[0].id);
             console.log("patients count in register----" + patientsCountOfThatNumber);
             if (patientsCountOfThatNumber >= 1) {
                 $("#patient-addFamily-btn").show();
@@ -189,8 +192,8 @@ function onLoadTasks() {
             }
         }
         if ($.cookie('currentPatientInfo') == 'null') {
-
-
+            $('#patientDashBoardLink').hide();
+            localStorage.setItem("idOfPatientInDashBoard", "");
             $('#patient-reg-phone').val(newPhoneNumber);
         }
 
@@ -259,6 +262,7 @@ $(".myForm").on('click', '.patientRadio', function() {
     console.log("data6 is-----", data6);
     updatePatientFields();
     if (data1.length != 0) {
+        localStorage.setItem("idOfPatientInDashBoard", data1[radioIndex]['id']);
         $('#patient-reg-name').val(data1[radioIndex]['firstName']);
         $('#patient-reg-email').val(data1[radioIndex]['emailId']);
         $('#patient-reg-phone').val(data1[radioIndex]['phoneNumber']);
@@ -447,6 +451,8 @@ function updatePatientDetails(callbackStr) {
                 });
                 updatePatientFields();
                 var patientInfoCookieUpdated = $.parseJSON($.cookie('patientsInRegister'));
+                localStorage.setItem("idOfPatientInDashBoard", updatedObject[0].id);
+                $("#patientDashBoardLink").show();
 
                 if ($('.familypatientsListOfNumber').is(':empty')) {
                     radiobuttonclickedindex = 0;

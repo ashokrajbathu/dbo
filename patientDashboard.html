@@ -483,8 +483,8 @@
         var heightWeightList = [];
         var bloodPressureList = [];
         var currentPatientId = "";
-        var patientIdOfcurrentPatient = "5737721d26b64605eb3c3983";
-        var doctorId = "56fcd9b8e2c60ef16dfac3ad";
+        var patientIdOfcurrentPatient = localStorage.getItem("idOfPatientInDashBoard");;
+        var doctorId = localStorage.getItem('doctorId');
         var countHeightWeight = 1;
         var countBloodPressure = 1;
         var selected;
@@ -500,7 +500,8 @@
             type: "GET",
             url: "http://localhost:8081/dbotica-spring/doctor/getPatients",
             data: {
-                'patientIds': "5737721d26b64605eb3c3983"
+
+                'patientIds': patientIdOfcurrentPatient
             },
             xhrFields: {
                 withCredentials: true
@@ -518,24 +519,62 @@
                 }
                 currentPatientId = patientDetailsObject['id'];
                 $("#patientId").text(patientDetailsObject['id']);
-                $("#patientAge").text(patientDetailsObject['age']);
-                var name = patientDetailsObject['firstName'] + ' ' + patientDetailsObject['lastName'];
-                $("#patientName").text(name);
-                var date = patientDetailsObject['registeredDate'];
-                var readableDate = dateFormatChange(date);
-                $("#patientRegId").text(readableDate);
-                $("#patientMobile").text(patientDetailsObject['phoneNumber']);
-                $("#patientGender").text(patientDetailsObject['gender']);
-                var bloodGroup = patientDetailsObject['bloodGroup'];
-                var bloodGroupPositiveOrNegative = bloodGroup.split("_")[1];
-                if (bloodGroupPositiveOrNegative === "POSITIVE") {
-                    bloodGroupPositiveOrNegative = "+";
+                if (patientDetailsObject.hasOwnProperty('age')) {
+                    $("#patientAge").text(patientDetailsObject['age']);
                 } else {
-                    bloodGroupPositiveOrNegative = "-";
+                    $("#patientAge").text("");
                 }
-                bloodGroup = bloodGroup.split("_")[0] + bloodGroupPositiveOrNegative;
-                $("#patientBloodGroup").text(bloodGroup);
-                $("#patientDOB").text(patientDetailsObject['dateOfBirth']);
+                var firstName = "";
+                var lastName = "";
+
+                if (patientDetailsObject.hasOwnProperty('firstName')) {
+                    firstName = patientDetailsObject['firstName'];
+                }
+
+                if (patientDetailsObject.hasOwnProperty('lastName')) {
+                    lastName = patientDetailsObject['lastName'];
+                }
+
+                var name = firstName + ' ' + lastName;
+                $("#patientName").text(name);
+                if (patientDetailsObject.hasOwnProperty('registeredDate')) {
+                    var date = patientDetailsObject['registeredDate'];
+                    var readableDate = dateFormatChange(date);
+                    $("#patientRegId").text(readableDate);
+                } else {
+                    $("#patientRegId").text("");
+                }
+                if (patientDetailsObject.hasOwnProperty('phoneNumber')) {
+                    $("#patientMobile").text(patientDetailsObject['phoneNumber']);
+                } else {
+                    $("#patientMobile").text("");
+                }
+
+                if (patientDetailsObject.hasOwnProperty('gender')) {
+                    $("#patientGender").text(patientDetailsObject['gender']);
+                } else {
+                    $("#patientGender").text("");
+                }
+
+                if (patientDetailsObject.hasOwnProperty('bloodGroup')) {
+                    var bloodGroup = patientDetailsObject['bloodGroup'];
+                    var bloodGroupPositiveOrNegative = bloodGroup.split("_")[1];
+                    if (bloodGroupPositiveOrNegative === "POSITIVE") {
+                        bloodGroupPositiveOrNegative = "+";
+                    } else {
+                        bloodGroupPositiveOrNegative = "-";
+                    }
+                    bloodGroup = bloodGroup.split("_")[0] + bloodGroupPositiveOrNegative;
+                    $("#patientBloodGroup").text(bloodGroup);
+                } else {
+                    $("#patientBloodGroup").text("");
+                }
+
+                if (patientDetailsObject.hasOwnProperty('dateOfBirth')) {
+                    $("#patientDOB").text(patientDetailsObject['dateOfBirth']);
+                } else {
+                    $("#patientDOB").text("");
+                }
                 if (patientDetailsObject.hasOwnProperty('physicalAttributes')) {
                     var heightweightAndBPArray = patientDetailsObject.physicalAttributes;
                     if (heightweightAndBPArray.length > 0) {
