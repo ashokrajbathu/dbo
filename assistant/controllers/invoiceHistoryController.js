@@ -67,8 +67,6 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
             invoiceHistoryArray = $.parseJSON(invoiceSuccessResponse.data.response);
             angular.copy(invoiceHistoryArray, invoiceElement.invoiceGlobal.invoiceHistoryList);
             $log.log("invoice success response is----", invoiceHistoryArray);
-
-
             /*for (var invoiceIndex in invoiceHistoryArray) {
                 var invoiceObject = {};
                 invoiceObject.id = invoiceHistoryArray[invoiceIndex].id;
@@ -270,6 +268,8 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
 
     function editInvoice(invoiceSelected) {
         $log.log("invoice selected is----", invoiceSelected);
+        dboticaServices.setInvoice(invoiceSelected);
+        $state.go('home.billManagement');
     }
 
     function clearAllTextBoxes() {

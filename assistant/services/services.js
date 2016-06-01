@@ -4,9 +4,10 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
 
     var loginResponseSuccessValue, loginResponseErrorCode, loginResponseDoctorsList, loginResponseDoctorName, loginResponseDoctorSpecialization, loginResponseDoctorId, loginResponseDayStartTime, loginResponseDayEndTime, loginResponseTimePerPatient;
     var loginResponsePatientsList = [];
+    var invoiceObject, doctorActive, patientData = {};
     var patientName = "";
     var doctorName = "";
-    var medicineNames = [];
+    var medicineNames, doctorsListArray = [];
     var testsList = [];
     var testsNameList = [];
     var medicine = [];
@@ -870,5 +871,89 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
 
     this.getTestsNamesList = function() {
         return testsNameList;
+    }
+
+    this.setInvoice = function(value) {
+        invoiceObject = value;
+    }
+
+    this.getInvoice = function() {
+        return invoiceObject;
+    }
+
+    this.setDoctorsDetailsArray = function(value) {
+        doctorsListArray = value;
+    }
+
+    this.getDoctorsDetailsArray = function(doctorId) {
+        for (var doctorIndex in doctorsListArray) {
+            if (doctorsListArray[doctorIndex].id == doctorId) {
+                doctorActive = doctorsListArray[doctorIndex];
+            }
+        }
+        return doctorActive;
+    }
+
+    this.getPatientDetails = function(patientId) {
+
+        var patientPromise = this.getPatientDetailsOfThatNumber(patientId);
+
+        patientPromise.then(function(patientSuccess) {
+            var errorCode = patientSuccess.data.errorCode;
+            if (!!errorCode) {
+                this.logoutFromThePage();
+            } else {
+                var patientDetails = $.parseJSON(patientSuccess.data.response);
+
+                patientData = patientDetails[0];
+            }
+        }, function(patientError) {
+
+        });
+
+        return patientData;
+    }
+
+    this.longDateToReadableDate = function(longDate) {
+        var result;
+        if (longDate == undefined) {
+            result = "";
+        } else {
+            result = new Date(longDate);
+            result = result.toLocaleString();
+            var resultArray = result.split(',');
+            var resultArrayDate = resultArray[0];
+            var resultArrayDateReadable = resultArrayDate.split('/');
+            result = resultArrayDateReadable[1] + '/' + resultArrayDateReadable[0] + '/' + resultArrayDateReadable[2];
+        }
+        return result;
+    }
+
+    this.getPaymentEntriesToDisplay = function(paymentEntries) {
+        var paymentEntriesAndTotalPaidAmount = [];
+        var totalAmountPaid = 0;
+        var paymentEntriesAfterSorting = [];
+        if (paymentEntries.length > 0) {
+            for (paymentIndex in paymentEntries) {
+                var paymentObject = {};
+                paymentObject.amountPaid = paymentEntries[paymentIndex].amountPaid / 100;
+                totalAmountPaid += paymentEntries[paymentIndex].amountPaid / 100;
+                paymentObject.updatedAt = this.longDateToReadableDate(paymentEntries[paymentIndex].updatedAt);
+                paymentEntriesAfterSorting.push(paymentObject);
+            }
+        }
+        paymentEntriesAndTotalPaidAmount.push(paymentEntriesAfterSorting);
+        paymentEntriesAndTotalPaidAmount.push(totalAmountPaid);
+        return paymentEntriesAndTotalPaidAmount;
+    }
+
+    this.getItemsToBeDisplayed = function(itemsFromInvoice) {
+        $log.log("items before----", itemsFromInvoice);
+        for (var itemIndex in itemsFromInvoice) {
+            itemsFromInvoice[itemIndex].cost = itemsFromInvoice[itemIndex].cost / 100;
+            itemsFromInvoice[itemIndex].amountCharged = itemsFromInvoice[itemIndex].amountCharged / 100;
+        }
+        $log.log("items after----", itemsFromInvoice);
+        return itemsFromInvoice;
     }
 }]);

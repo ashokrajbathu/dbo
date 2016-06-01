@@ -1,7 +1,7 @@
 <div ng-controller="billManagementCtrl as billView" ng-cloak>
     <div class="container-fluid">
         <div class="row patientDetailsSearchRow">
-            <div class="patientDetailsSearch col-md-3 col-xs-12 col-sm-6">
+            <div ng-if="billView.patientSearchDiv" class="patientDetailsSearch col-md-3 col-xs-12 col-sm-6">
                 <div class="panel panel-default">
                     <div class="heading panel-heading">
                         <h4 class="headerInfo">Patient Search : </h4>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div class="billInfo col-md-9 col-xs-12 col-sm-12">
+            <div ng-class="{'col-md-11':billView.patientBillFullGrid,'col-md-9':billView.patientBillGridNine}" class="billInfo col-xs-12 col-sm-12">
                 <div class="panel panel-default">
                     <div class="heading panel-heading">
                         <h4 class="headerInfo">Patient Bill : 

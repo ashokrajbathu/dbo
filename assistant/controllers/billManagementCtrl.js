@@ -20,8 +20,12 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
 
     billElement.patientSearch = {};
     billElement.patient = {};
+    billElement.patientBillFullGrid = false;
+    billElement.patientBillGridNine = true;
+    billElement.patientSearchDiv = true;
     billElement.bill.viewOrHide = false;
     billElement.bill.patientSearchPatients = false;
+    var fetchDoctorDetails = true;
     billElement.bill.doctorsListInBillManagement = [];
     billElement.bill.patientsListOfThatNumber = [];
     billElement.bill.billTypes = [];
@@ -39,6 +43,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     billElement.dueDateBill = {};
     billElement.addToBill = [];
     var consultation = "consultation";
+    var currentActiveInvoice = {};
     billElement.invoice.nextPaymentDate = "";
 
 
@@ -52,7 +57,48 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     var currentActiveAssistant = $.parseJSON(localStorage.getItem('assistantCurrentlyLoggedIn'));
     billElement.finalBill.assistantId = currentActiveAssistant.id;
 
-    $log.log("org id is----" + organizationId);
+    currentActiveInvoice = dboticaServices.getInvoice();
+    if (!jQuery.isEmptyObject(currentActiveInvoice)) {
+        fetchDoctorDetails = false;
+        billElement.patientSearchDiv = false;
+        billElement.patientBillGridNine = false;
+        billElement.patientBillFullGrid = true;
+        var getDetailsOfThePatient = dboticaServices.getPatientDetailsOfThatNumber(currentActiveInvoice.patientId);
+        getDetailsOfThePatient.then(function(getDetailsSuccess) {
+            var errorCode = getDetailsSuccess.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage();
+            } else {
+                var patientDetails = $.parseJSON(getDetailsSuccess.data.response);
+                billElement.patient = patientDetails[0];
+            }
+        }, function(getDetailsError) {});
+        billElement.bill.doctorActive = dboticaServices.getDoctorsDetailsArray(currentActiveInvoice.doctorId);
+        setDoctorNameAndDoctorServices(billElement.bill.doctorActive);
+        billElement.invoice.nextPaymentDate = dboticaServices.longDateToReadableDate(currentActiveInvoice.nextPaymentDate);
+        billElement.invoice.nextPaymentAmount = currentActiveInvoice.nextPaymentAmount / 100;
+        angular.copy(currentActiveInvoice.paymentEntries, billElement.addToBill);
+        var paymentEntriesAndTotalAmount = dboticaServices.getPaymentEntriesToDisplay(currentActiveInvoice.paymentEntries);
+        billElement.addPay = paymentEntriesAndTotalAmount[0];
+        var itemsToBeDisplayed = [];
+        var totalAmountCharged = 0;
+        angular.copy(currentActiveInvoice.items, itemsToBeDisplayed);
+        for (itemIndex in itemsToBeDisplayed) {
+            itemsToBeDisplayed[itemIndex].cost = itemsToBeDisplayed[itemIndex].cost / 100;
+            itemsToBeDisplayed[itemIndex].amountCharged = itemsToBeDisplayed[itemIndex].amountCharged / 100;
+            itemsToBeDisplayed[itemIndex].quantity = itemsToBeDisplayed[itemIndex].count;
+            totalAmountCharged += itemsToBeDisplayed[itemIndex].amountCharged;
+        }
+        $log.log('total amount charged is---' + totalAmountCharged);
+        billElement.invoice.amount = totalAmountCharged - paymentEntriesAndTotalAmount[1];
+        angular.copy(itemsToBeDisplayed, billElement.bill.billsListing);
+        /* billElement.bill.billsListing = dboticaServices.getItemsToBeDisplayed(currentActiveInvoice.items);*/
+    }
+    $log.log("listing bills is----", billElement.bill.billsListing);
+    $log.log("current active invoice is----", currentActiveInvoice);
+
+
+
     var medicinesPromise = dboticaServices.getItemsOfTheTable(0, 100, 'All', 'Drug', organizationId);
     $log.log("medicine promise is----", medicinesPromise);
     medicinesPromise.then(function(successResponse) {
@@ -97,33 +143,25 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         $log.log("in error response of getting tests list----");
     });
 
-    var doctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
-    doctorsOfThatAssistant.then(function(successResponse) {
-        $log.log("bill response is----", successResponse);
-        var errorCode = successResponse.data.errorCode;
-        if (!!errorCode) {
-            dboticaServices.logoutFromThePage(errorCode);
-        } else {
-            billElement.bill.doctorsListInBillManagement = $.parseJSON(successResponse.data.response);
-            $log.log("ele---", billElement.bill.doctorsListInBillManagement);
-            billElement.bill.doctorActive = billElement.bill.doctorsListInBillManagement[0];
-            billElement.finalBill.doctorId = billElement.bill.doctorActive.id;
-            if (billElement.bill.doctorActive.hasOwnProperty('doctorPriceInfos')) {
-                billElement.bill.billTypes = billElement.bill.doctorActive.doctorPriceInfos;
-                for (var billTypeIndex in billElement.bill.billTypes) {
-                    if (billElement.bill.billTypes[billTypeIndex].billingName.toLowerCase() == consultation) {
-                        billElement.bill.doctorActiveService = billElement.bill.billTypes[billTypeIndex].billingName;
-                        billElement.bill.billCost = billElement.bill.billTypes[billTypeIndex].price / 100;
-                    }
-                }
-                $log.log("bill types are---", billElement.bill.billTypes);
+    if (fetchDoctorDetails) {
+        var doctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
+        doctorsOfThatAssistant.then(function(successResponse) {
+            $log.log("bill response is----", successResponse);
+            var errorCode = successResponse.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                billElement.bill.doctorsListInBillManagement = $.parseJSON(successResponse.data.response);
+                dboticaServices.setDoctorsDetailsArray(billElement.bill.doctorsListInBillManagement);
+                $log.log("ele---", billElement.bill.doctorsListInBillManagement);
+                billElement.bill.doctorActive = billElement.bill.doctorsListInBillManagement[0];
+                setDoctorNameAndDoctorServices(billElement.bill.doctorActive);
+                $log.log("doctors list is---", billElement.bill.doctorsListInBillManagement);
             }
-            billElement.bill.doctorActiveName = billElement.bill.doctorActive.firstName + ' ' + billElement.bill.doctorActive.lastName;
-            $log.log("doctors list is---", billElement.bill.doctorsListInBillManagement);
-        }
-    }, function(errorResponse) {
-        $log.log("in error response of getting doctors");
-    });
+        }, function(errorResponse) {
+            $log.log("in error response of getting doctors");
+        });
+    }
 
     function selectDoctorFromDropdown(doctor) {
         billElement.bill.doctorActive = doctor;
@@ -306,6 +344,21 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         $log.log("add pay is----", newDueDateToFinalBill.updatedAt);
         billElement.dueDateBill.dueCost = "";
         billElement.dueDateBill.dueDate = "";
+    }
+
+    function setDoctorNameAndDoctorServices(doctor) {
+        billElement.finalBill.doctorId = doctor.id;
+        if (doctor.hasOwnProperty('doctorPriceInfos')) {
+            billElement.bill.billTypes = doctor.doctorPriceInfos;
+            for (var billTypeIndex in billElement.bill.billTypes) {
+                if (billElement.bill.billTypes[billTypeIndex].billingName.toLowerCase() == consultation) {
+                    billElement.bill.doctorActiveService = billElement.bill.billTypes[billTypeIndex].billingName;
+                    billElement.bill.billCost = billElement.bill.billTypes[billTypeIndex].price / 100;
+                }
+            }
+            $log.log("bill types are---", billElement.bill.billTypes);
+        }
+        billElement.bill.doctorActiveName = doctor.firstName + ' ' + doctor.lastName;
     }
 
     function getTodayString() {
