@@ -14,6 +14,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     billElement.billFinalSubmisssion = billFinalSubmisssion;
     billElement.addDueDateBill = addDueDateBill;
     billElement.addTestToFinalBill = addTestToFinalBill;
+    billElement.goToInvoicePage = goToInvoicePage;
 
     billElement.bill = {};
 
@@ -72,6 +73,10 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
 
     });
 
+    function goToInvoicePage() {
+        $state.go('home.invoiceHistory');
+    }
+
     var testsPromise = dboticaServices.getTests();
     $log.log("tests list promise is-----", testsPromise);
     testsPromise.then(function(testsPromiseSuccessResponse) {
@@ -91,9 +96,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     }, function(testsPromiseErrorResponse) {
         $log.log("in error response of getting tests list----");
     });
-
-
-
 
     var doctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
     doctorsOfThatAssistant.then(function(successResponse) {
@@ -125,6 +127,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
 
     function selectDoctorFromDropdown(doctor) {
         billElement.bill.doctorActive = doctor;
+        billElement.finalBill.doctorId = doctor.id;
         if (doctor.hasOwnProperty('doctorPriceInfos')) {
             billElement.bill.doctorActiveService = doctor.doctorPriceInfos[0].billingName;
             billElement.bill.billTypes = doctor.doctorPriceInfos;
@@ -139,7 +142,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     function selectBillFromDropdown(billing) {
         billElement.bill.doctorActiveService = billing.billingName;
         billElement.bill.billCost = billing.price / 100;
-        /*billElement.bill.serviceId=billing.*/
     }
 
     function patientSearchOftheNumber(phoneNumber) {
@@ -251,12 +253,15 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     function billFinalSubmisssion() {
         billElement.finalBill.items = [];
         billElement.finalBill.paymentEntries = [];
+        billElement.finalBill.totalAmount = 0;
+        billElement.finalBill.amountPaid = 0;
         if (billElement.invoice.nextPaymentDate !== "") {
             billElement.finalBill.nextPaymentDate = dboticaServices.getLongValueOfDate(billElement.invoice.nextPaymentDate);
         }
         billElement.finalBill.nextPaymentAmount = billElement.invoice.nextPaymentAmount * 100;
         angular.copy(billElement.bill.billsListing, billElement.finalBill.items);
         for (var itemsIndex in billElement.finalBill.items) {
+            billElement.finalBill.totalAmount += billElement.finalBill.items[itemsIndex].amountCharged;
             if (billElement.finalBill.items[itemsIndex].hasOwnProperty('cost')) {
                 billElement.finalBill.items[itemsIndex].cost = billElement.finalBill.items[itemsIndex].cost * 100;
             }
@@ -264,13 +269,18 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                 billElement.finalBill.items[itemsIndex].amountCharged = billElement.finalBill.items[itemsIndex].amountCharged * 100;
             }
         }
+
+        billElement.finalBill.totalAmount = billElement.finalBill.totalAmount * 100;
         angular.copy(billElement.addToBill, billElement.finalBill.paymentEntries);
         $log.log("pay ----", billElement.finalBill.paymentEntries);
         for (var billIndex in billElement.finalBill.paymentEntries) {
             if (billElement.finalBill.paymentEntries[billIndex].hasOwnProperty('amountPaid')) {
+                billElement.finalBill.amountPaid += billElement.finalBill.paymentEntries[billIndex].amountPaid;
                 billElement.finalBill.paymentEntries[billIndex].amountPaid = billElement.finalBill.paymentEntries[billIndex].amountPaid * 100;
             }
         }
+        billElement.finalBill.amountPaid = billElement.finalBill.amountPaid * 100;
+        $log.log("amount paid is------" + billElement.finalBill)
         $log.log("final bill is----", billElement.finalBill);
         var invoiceUpdatePromise = dboticaServices.updateInvoice(billElement.finalBill);
         invoiceUpdatePromise.then(function(invoiceUpdateSuccessResponse) {

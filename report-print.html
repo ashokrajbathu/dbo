@@ -12,7 +12,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <!-- Ionicons -->
-   <link rel="stylesheet" href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
     <link rel="stylesheet" type="text/css" href="report-print.css">
@@ -38,7 +38,7 @@
             <div class="row invoice-info">
                 <div class="col-md-6 col-sm-12 col-xs-12 invoice-col">
                     <address>
-                        <strong style="font-size:20px;"><span id="pr-doctor-name"></span></strong><span placeholder="docqual" id="doctor-qual"></span>
+                        <strong style="font-size:16px;"><span id="pr-doctor-name"></span></strong><span placeholder="docqual" id="doctor-qual"></span>
                         <div class="row specializationRow">
                             <p><span id="pr-doctor-specialization"></span></p>
                         </div>
@@ -64,7 +64,7 @@
                     </address>
                 </div>
                 <div class="col-md-6">
-                    <p class="pull-right"><span style="font-weight:700;font-size:25px;" id="pr-doctor-organization"></span>
+                    <p class="pull-right"><span style="font-weight:700;font-size:20px;" id="pr-doctor-organization"></span>
                         <br>
                         <span style="font-weight:600;" id="pr-doctor-hospitalLocation"></span>
                     </p>
@@ -377,7 +377,7 @@
         var city = localStorage.getItem('doctorHospitalLocation');
         console.log("doc specialization is----" + docSpe);
 
-        var doctorName = "Dr. " + docname + '.' + docLastName;
+        var doctorName = "Dr. " + docname + ' ' + docLastName;
 
         $('#pr-doctor-name').text(doctorName);
         $('#pr-doctor-qual').text(docQua);

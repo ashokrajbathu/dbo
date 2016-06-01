@@ -1,0 +1,71 @@
+#analyticReportHeader {
+    margin-top: -10px;
+    margin-left: 40px;
+}
+
+.searchSection {
+    margin-left: 40px;
+}
+
+.searchTypes {
+    cursor: pointer;
+}
+
+.inventoryHistoryBtn {
+    border: 1px solid #367fa9;
+}
+
+.form-control.inventoryHistoryTxtBox {
+    border-radius: 4px;
+    border-color: #367fa9;
+}
+
+.invoiceListElements:hover {
+    transform: scale(1);
+    background-color: #F5DEB3;
+}
+
+.invoiceHistoryTable>thead>tr {
+    background-color: #3c8dbc;
+}
+
+.viewInvoicesBtn {
+    padding-top: 1px;
+    height: 25px;
+}
+
+.invoiceHistoryTab {
+    margin-right: 16px;
+    margin-top: 8px;
+    margin-left: 40px;
+}
+
+.invoiceHistoryTable>thead>tr>th,
+.invoiceHistoryTableBody>tr>td {
+    text-align: center;
+    color: black;
+}
+
+.invoiceHistoryTableBody>tr>td {
+    border: 1px solid #367fa9;
+}
+
+.searchBtnInventoryHistory {
+    background-color: #3c8dbc;
+    color: white;
+}
+
+.buttonsGroup {
+    margin-left: 30px;
+}
+
+@media screen and (min-width:1000px) {
+    #searchTypeSelect {
+        width: 140px;
+    }
+}
+
+.searchBtnInventoryHistory:hover {
+    background-color: #367fa9;
+    color: white;
+}

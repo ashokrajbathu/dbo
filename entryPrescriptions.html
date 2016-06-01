@@ -114,6 +114,8 @@
                     <div class="pull-left info">
                         <p id="doctorNameInSideBar"></p>
                         <!-- Status -->
+                        <span style="margin-bottom:2px;">Credits:<b style="color:white;" id="creditsInSideBar"></b></span>
+                        <br>
                         <a href="doctorProfile.html">Profile</a>
                     </div>
                 </div>
@@ -1289,6 +1291,12 @@
 
     });*/
 
+   var doctorCredits= localStorage.getItem('creditsOfDoctor');
+
+    if (doctorCredits != "" && doctorCredits != null) {
+            $('#creditsInSideBar').text(doctorCredits);
+        }
+
     $('#prescription-form-drug').autocomplete({
         source: function(request, callback) {
             var searchParam = request.term;
@@ -1642,8 +1650,7 @@
 
                 try {
                     addPrescriptionToIndexedDB(prescription, patientInfo[0], localStorage.getItem('doctorId'), loadPatientReport);
-                } catch (e) {
-                }
+                } catch (e) {}
             }
         });
 

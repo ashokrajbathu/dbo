@@ -25,6 +25,10 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', 'd
         case 'analyticReport':
             $state.go('home.analyticReports');
             break;
+
+        case 'invoiceHistory':
+            $state.go('home.invoiceHistory');
+            break;
     }
 
 

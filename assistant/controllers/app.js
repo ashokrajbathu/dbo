@@ -68,6 +68,12 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
             controller: 'analyticReportsCtrl',
             controllerAs: 'analyticReport',
             templateUrl: 'views/analyticReports.html'
+        })
+        .state('home.invoiceHistory', {
+            url: '/invoiceHistory',
+            controller: 'invoiceHistoryController',
+            controllerAs: 'invoice',
+            templateUrl: 'views/invoiceHistory.html'
         });
 });
 
