@@ -41,10 +41,12 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
     invoiceElement.invoiceGlobal.invoiceHistoryList = [];
     invoiceElement.doctorsList = [];
     var doctorActive = {};
+    var invoiceActive = {};
     invoiceElement.searchDate = "";
     invoiceElement.searchEndDate = "";
 
     var doctorsOfThatAssistantForInvoices = dboticaServices.doctorsOfAssistant();
+    dboticaServices.setInvoice(invoiceActive);
 
     doctorsOfThatAssistantForInvoices.then(function(doctorsSuccessResponse) {
         var errorCode = doctorsSuccessResponse.data.errorCode;
