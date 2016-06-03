@@ -11,7 +11,7 @@
                             <form class=" patientSearchForm form-horizontal">
                                 <div class="form-group">
                                     <div class="col-md-offset-1 col-md-10 col-sm-6 col-xs-12">
-                                        <input valid-number ng-change="billView.validPhoneNumber(billView.patientSearch.phoneNumber)" type="text" ng-model="billView.patientSearch.phoneNumber" placeholder="Mobile Number" class="patientSearchBtns billTxtBox input-sm form-control" id="exampleInputpatientSearchNumber">
+                                        <input numbers-only ng-change="billView.validPhoneNumber(billView.patientSearch.phoneNumber)" type="text" ng-model="billView.patientSearch.phoneNumber" placeholder="Mobile Number" class="patientSearchBtns billTxtBox input-sm form-control" id="exampleInputpatientSearchNumber">
                                     </div>
                                 </div>
                                 <p ng-if="billView.enterDigits" id="enterDigitsSpan" class="warningParagraphs">*Please Enter digits Only</p>

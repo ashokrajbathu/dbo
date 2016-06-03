@@ -25,9 +25,39 @@
     display: none !important;
 }
 
+.loginSubmitBtn {
+    color: white;
+    background-color: #3c8dbc;
+}
+
+.loginSubmitBtn:hover {
+    color: white;
+    background-color: #367fa9;
+}
+
+.signInPanelBody {
+    border: 1px solid #3c8dbc;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+#loginPanelHeader {
+    margin-top: 5px;
+    color: white;
+}
+
 .itemListHeader {
     border-radius: 4px;
     background-color: #3c8dbc;
+}
+
+.loginPanelHeading {
+    height: 50px;
+    background-color: #3c8dbc;
+}
+
+.signinPanel {
+    margin-top: 30px;
 }
 
 .itemListHeader>tr>th {

@@ -13,27 +13,43 @@
                     </div>
                 </nav>
             </header>
-            <h3 style="text-align:center;">Login</h3>
-            <hr id="loginHorizontal">
-            <form id="assistantLoginForm" class="col-sm-offset-1 form-horizontal">
-                <div class="form-group">
-                    <label for="inputUserId" class="col-sm-2 control-label">User ID</label>
-                    <div class="col-sm-4">
-                        <input type="text" ng-model="loginData.userId" class="form-control" id="inputUserId" placeholder="User Id">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-6">
+                        <div class="signInForm">
+                            <div class="panel signinPanel">
+                                <div class="panel-heading loginPanelHeading">
+                                    <h4 id="loginPanelHeader">Login</h4>
+                                </div>
+                                <div class="panel-body signInPanelBody">
+                                    <form class="form-horizontal">
+                                        <div class="form-group">
+                                            <label for="inputLoginEmail" class="col-md-2 col-sm-2 control-label">User ID</label>
+                                            <div class="col-sm-10  col-md-8">
+                                                <input type="text" ng-model="loginData.userId" class="form-control" id="inputUserId" placeholder="User Id">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputLoginPassword" class="col-sm-2 control-label">Password</label>
+                                            <div class="col-sm-10  col-md-8">
+                                                <input type="password" ng-model="loginData.password" class="form-control" id="inputPassword" placeholder="Password">
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <form class="form-inline">
+                                        <div class="col-md-offset-2 col-sm-offset-2 checkbox">
+                                            <label>
+                                                <input type="checkbox"> Remember me
+                                            </label>
+                                        </div>
+                                        <button type="submit" id="loginBtn" ng-click="loginIntoAssistant()" class="btn loginSubmitBtn">Login</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputPassword" class="col-sm-2 control-label">Password</label>
-                    <div class="col-sm-4">
-                        <input type="password" ng-model="loginData.password" class="form-control" id="inputPassword" placeholder="Password">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-2">
-                        <button type="submit" id="loginBtn" ng-click="loginIntoAssistant()" class="btn btn-primary">Login</button>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
