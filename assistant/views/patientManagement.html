@@ -1,4 +1,4 @@
-<div class="patientManagement" ng-controller="patientManagementCtrl">
+<div class="patientManagement" ng-controller="patientManagementCtrl" ng-cloak>
     <aside class="main-sidebar">
         <section class="sidebar">
             <h4 class="asideDoctorsHeader">Doctors</h4>
@@ -32,7 +32,7 @@
                             <div class="form-group pull-right">
                                 <button type="button" ng-click="viewDoctorsSection()" class="doctorTimingsBtn pull-right btn">Doctor Timings</button>
                                 <button type="button" class="addPatientBtn pull-right btn" data-toggle="modal" ng-click="patientSearch()" data-target="#myModal">Patient Search</button>
-                                <input ng-maxlength=10 is-number type="text" class="pull-right" id="inputPatientPhoneNumberSearch" ng-model="patientDataSearch.phoneNumberSearch" placeholder="Phone Number">
+                                <input ng-maxlength=10 valid-number type="text" class="pull-right" id="inputPatientPhoneNumberSearch" ng-model="patientDataSearch.phoneNumberSearch" placeholder="Phone Number">
                             </div>
                         </form>
                     </div>
@@ -146,10 +146,10 @@
                                     <h4 style="color:black;" class="modal-title">Patient Details</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <div ng-if="viewDetailsLink" class="patient-form-group form-group">
-                                        <a class="viewDetailsLink" ng-click="viewDetails()" href="javascript:void">View/Hide Patient Details</a>
-                                        <hr>
-                                    </div>
+                                    <!--  <div ng-if="viewDetailsLink" class="patient-form-group form-group">
+                                       <a class="viewDetailsLink" ng-click="viewDetails()" href="javascript:void">View/Hide Patient Details</a>
+                                       <hr>
+                                   </div> -->
                                     <div ng-show="patientAvailable">
                                         <form class="patient-form-inline form-inline">
                                             <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">

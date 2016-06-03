@@ -96,7 +96,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         }
         var paymentEntriesAndTotalAmount = dboticaServices.getPaymentEntriesToDisplay(currentActiveInvoice.paymentEntries);
         billElement.addPay = paymentEntriesAndTotalAmount[0];
-        $log.log("bills in modal are---", billElement.addPay);
         var itemsToBeDisplayed = [];
         var totalAmountCharged = 0;
         angular.copy(currentActiveInvoice.items, itemsToBeDisplayed);
@@ -106,7 +105,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             itemsToBeDisplayed[itemIndex].quantity = itemsToBeDisplayed[itemIndex].count;
             totalAmountCharged += itemsToBeDisplayed[itemIndex].amountCharged;
         }
-        $log.log('total amount charged is---' + totalAmountCharged);
+
         billElement.invoice.amount = totalAmountCharged - paymentEntriesAndTotalAmount[1];
         angular.copy(itemsToBeDisplayed, billElement.bill.billsListing);
     }
@@ -175,9 +174,18 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         billElement.bill.doctorActive = doctor;
         billElement.finalBill.doctorId = doctor.id;
         if (doctor.hasOwnProperty('doctorPriceInfos')) {
-            billElement.bill.doctorActiveService = doctor.doctorPriceInfos[0].billingName;
+            for (var serviceIndex in doctor.doctorPriceInfos) {
+                if (doctor.doctorPriceInfos[serviceIndex].billingName.toLowerCase() == "consultation") {
+                    billElement.bill.doctorActiveService = doctor.doctorPriceInfos[serviceIndex].billingName;
+                    billElement.bill.billCost = doctor.doctorPriceInfos[serviceIndex].price / 100;
+                    break;
+                } else {
+                    billElement.bill.doctorActiveService = doctor.doctorPriceInfos[0].billingName;
+                    billElement.bill.billCost = doctor.doctorPriceInfos[0].price / 100;
+                }
+            }
             billElement.bill.billTypes = doctor.doctorPriceInfos;
-            billElement.bill.billCost = doctor.doctorPriceInfos[0].price / 100;
+
         } else {
             billElement.bill.doctorActiveService = "No Service";
             billElement.bill.billTypes = [];
@@ -310,9 +318,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             newTestObject.amountCharged = newTestObject.cost;
             billElement.invoice.amount += parseInt(newTestObject.amountCharged);
             newTestObject.paid = false;
-            if (billElement.add.testDate == "") {
-                $log.log("in empty date");
-            } else {
+            if (billElement.add.testDate == "") {} else {
                 newTestObject.dueDate = dboticaServices.getLongValueOfDate(billElement.add.testDate);
             }
             billElement.bill.billsListing.push(newTestObject);
@@ -462,7 +468,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     }
 
     function newBill() {
-        $log.log("in new bill");
         $state.go('home.billManagement');
         billElement.patientSearchDiv = true;
         billElement.patientBillFullGrid = false;
@@ -549,7 +554,6 @@ angular.module('personalAssistant').directive('testSelection', function(dboticaS
                         minLength: 2,
                         select: function(event, ui) {
                             var tests = dboticaServices.getTestsFromService();
-                            console.log("in directive----", tests);
                             var testEntered = ui.item.value;
                             for (var testIndex = 0; testIndex < tests.length; testIndex++) {
                                 if (testEntered.toLowerCase() == tests[testIndex].testName.toLowerCase()) {

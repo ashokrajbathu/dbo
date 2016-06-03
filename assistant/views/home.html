@@ -1,4 +1,4 @@
-<div ng-cloak ng-controller="homeCtrl">
+<div ng-controller="homeCtrl" ng-cloak>
     <div class="wrapper" style="background-color:white;">
         <header>
             <nav class="navbar navbar-default">
@@ -17,11 +17,11 @@
                     </div>
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li ui-sref=".patientManagement"><a href="javascript:void">Patient management</a></li>
-                            <li ui-sref=".billManagement"><a href="javascript:void">Bill Management</a></li>
-                            <li ui-sref=".inventory"><a href="javascript:void">Inventory</a></li>
-                            <li ui-sref=".analyticReports"><a href="javascript:void">Analytic reports</a></li>
-                            <li ui-sref=".admin"><a href="javascript:void">Admin</a></li>
+                            <li ui-sref=".patientManagement"><a class="navbarLinks">Patient management</a></li>
+                            <li ui-sref=".billManagement"><a class="navbarLinks">Bill Management</a></li>
+                            <li ui-sref=".inventory"><a class="navbarLinks">Inventory</a></li>
+                            <li ui-sref=".analyticReports"><a class="navbarLinks">Analytic reports</a></li>
+                            <li ui-sref=".admin"><a class="navbarLinks">Admin</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a ng-click="logout()" href="javascript:void">Logout</a></li>
@@ -31,4 +31,4 @@
             </nav>
     </div>
 </div>
-<div ui-view></div>
+<div ui-view autoscroll="false"></div>

@@ -1,9 +1,10 @@
-angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$location', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, $location, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
 
     var currentStateActive = localStorage.getItem("currentState");
     switch (currentStateActive) {
         case 'patientManagement':
             $state.go('home.patientManagement');
+           /* $location.path('patientManagement');*/
             break;
 
         case 'billManagement':

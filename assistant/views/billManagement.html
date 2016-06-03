@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="col-md-3 col-sm-4 col-xs-4">
                                     <div class="dropdown">
-                                        <button class="btn doctorSelectBox dropdown-toggle" ng-cloak type="button" data-toggle="dropdown">{{billView.bill.doctorActiveName}}
+                                        <button class="doctorSelectBox dropdown-toggle" ng-cloak type="button" data-toggle="dropdown">{{billView.bill.doctorActiveName}}
                                             <span class="caret"></span></button>
                                         <ul class="dropdown-menu">
                                             <li ng-repeat="doctor in billView.bill.doctorsListInBillManagement">
@@ -78,7 +78,7 @@
                                     <form class="form-inline" id="consultationForm">
                                         <div class="form-group consultationFormItems">
                                             <div class="dropdown patientDrpDwn">
-                                                <button class="btn billSelectBoxes doctorBillsDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{billView.bill.doctorActiveService}}
+                                                <button class="billSelectBoxes doctorBillsDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{billView.bill.doctorActiveService}}
                                                     <span class="caret"></span></button>
                                                 <ul class="dropdown-menu">
                                                     <li ng-repeat="billIndex in billView.bill.billTypes">

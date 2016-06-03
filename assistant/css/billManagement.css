@@ -65,6 +65,14 @@
     color: white;
 }
 
+.btn:active {
+    color: white;
+}
+
+.btn:focus {
+    color: white;
+}
+
 .invoiceNumberRow {
     margin-top: -10px;
     margin-bottom: 5px;

@@ -448,12 +448,17 @@ li.ui-timepicker-disabled {
     }
 }
 
+
 /* .modal-Form-control {
     padding-right: 20px;
 } */
 
 .disableTimeBtn {
     pointer-events: none;
+}
+
+.navbarLinks {
+    cursor: pointer;
 }
 
 .patient-form-inline {

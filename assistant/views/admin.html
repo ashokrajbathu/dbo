@@ -1,4 +1,4 @@
-<div ng-controller="adminCtrl as adminView">
+<div ng-controller="adminCtrl as adminView" ng-cloak>
     <div class="admin">
         <div class="container">
             <h3 class="adminHeader">Admin</h3>
@@ -7,7 +7,7 @@
                     <div class="form-group adminEntity">
                         <div class="form-inline adminEntity">
                             <div class="form-group adminDropDown dropdown">
-                                <button class="btn serviceDoctorBtn" type="button" data-toggle="dropdown">{{adminView.admin.doctorInDropdown}}
+                                <button class="serviceDoctorBtn" type="button" data-toggle="dropdown">{{adminView.admin.doctorInDropdown}}
                                     <span class="caret"></span></button>
                                 <ul class="dropdown-menu">
                                     <li ng-repeat="doctor in adminView.doctorsListInAdmin">
@@ -16,7 +16,7 @@
                                 </ul>
                             </div>
                             <div class="form-group adminDropDown dropdown">
-                                <button class="btn serviceDoctorBtn" type="button" data-toggle="dropdown">{{adminView.admin.serviceInDropDown}}
+                                <button class="serviceDoctorBtn" type="button" data-toggle="dropdown">{{adminView.admin.serviceInDropDown}}
                                     <span class="caret"></span></button>
                                 <ul class="dropdown-menu">
                                     <li ng-repeat="service in adminView.servicesList">

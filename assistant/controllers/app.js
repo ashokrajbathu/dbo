@@ -77,7 +77,7 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
         });
 });
 
-angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope', '$log', '$location', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, $location, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     $scope.singleModel = 1;
     $scope.radioModel = 'morning';
     $scope.checkModel = {
@@ -143,22 +143,3 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
     }
 }]);
 
-
-/************** directive  *********************/
-
-/*angular.module('personalAssistant').directive('isNumber', function() {
-    return {
-        require: 'ngModel',
-        link: function(scope) {
-            scope.$watch('patientDataSearch.phoneNumberSearch', function(newValue, oldValue) {
-                var arr = String(newValue).split("");
-                if (arr.length === 0) return;
-                if (arr.length === 1 && (arr[0] == '-' || arr[0] === '.')) return;
-                if (arr.length === 2 && newValue === '-.') return;
-                if (isNaN(newValue)) {
-                    scope.patientDataSearch.phoneNumberSearch = oldValue;
-                }
-            });
-        }
-    };
-});*/

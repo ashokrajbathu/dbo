@@ -12,6 +12,11 @@
     width: 180px;
 }
 
+.serviceDoctorBtn:focus,
+.serviceDoctorBtn:active {
+    color: black;
+}
+
 .adminActiveInactiveBtnsGreen {
     padding-top: 0px;
     color: white;
