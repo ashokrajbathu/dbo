@@ -956,4 +956,45 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         $log.log("items after----", itemsFromInvoice);
         return itemsFromInvoice;
     }
+
+    this.validPhoneNumberSwal = function() {
+        swal({
+            title: "Error",
+            text: "Please Enter Valid Phone Number",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.showNoPhoneNumberSwal = function() {
+        swal({
+            title: "Error",
+            text: "Please Enter Phone Number Before Search",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.showNoPatientSwal = function() {
+        swal({
+            title: "Error",
+            text: "Enter Patient Details Before Billing",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+
+    this.nextDueErrorSwal = function() {
+        swal({
+            title: "Error",
+            text: "Enter next Due Amount Less than Total Due",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
 }]);

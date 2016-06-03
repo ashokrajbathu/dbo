@@ -11,7 +11,7 @@
                             <form class=" patientSearchForm form-horizontal">
                                 <div class="form-group">
                                     <div class="col-md-offset-1 col-md-10 col-sm-6 col-xs-12">
-                                        <input ng-change="billView.validPhoneNumber(billView.patientSearch.phoneNumber)" type="text" ng-model="billView.patientSearch.phoneNumber" placeholder="Mobile Number" class="patientSearchBtns billTxtBox input-sm form-control" id="exampleInputpatientSearchNumber">
+                                        <input valid-number ng-change="billView.validPhoneNumber(billView.patientSearch.phoneNumber)" type="text" ng-model="billView.patientSearch.phoneNumber" placeholder="Mobile Number" class="patientSearchBtns billTxtBox input-sm form-control" id="exampleInputpatientSearchNumber">
                                     </div>
                                 </div>
                                 <p ng-if="billView.enterDigits" id="enterDigitsSpan" class="warningParagraphs">*Please Enter digits Only</p>
@@ -37,7 +37,8 @@
                 <div class="panel panel-default">
                     <div class="heading panel-heading">
                         <h4 class="headerInfo">Patient Bill : 
-                            <a ng-click="billView.goToInvoicePage()" class="invoiceHistoryLink pull-right">View Invoice History</a>
+                            <a ng-click="billView.newBill()" class="invoiceHistoryLink pull-right">New Bill</a>
+                            <a style="margin-right:30px;" ng-click="billView.goToInvoicePage()" class="invoiceHistoryLink pull-right">View Invoice History</a>
                         </h4>
                     </div>
                     <div class="panel-body">
@@ -178,10 +179,11 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleCost">Cost :</label>
-                                                    <input valid-number type="text" class="form-control" ng-model="billView.dueDateBill.dueCost" id="exampleCost" placeholder="Cost">
+                                                    <input ng-change="billView.paidAndDueCheck(billView.dueDateBill.dueCost)" valid-number type="text" class="form-control" ng-model="billView.dueDateBill.dueCost" id="exampleCost" placeholder="Cost">
                                                 </div>
                                                 <button type="submit" ng-click="billView.addDueDateBill()" class="btn billManagementBtn">Add Cost</button>
                                             </form>
+                                            <span ng-if="billView.checkPaidAndDue" class="warningParagraphs">*Enter amount less than due amount</span>
                                             <table class="table costsTable table-bordered">
                                                 <thead>
                                                     <tr>
@@ -212,7 +214,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputDueAmount">Next Due Amount:</label>
-                                    <input valid-number ng-model="billView.invoice.nextPaymentAmount" type="text" class="billTxtBox form-control" id="exampleInputnextDueAmount">
+                                    <input ng-change="billView.nextDueCheck(billView.invoice.nextPaymentAmount)" valid-number ng-model="billView.invoice.nextPaymentAmount" type="text" class="billTxtBox form-control" id="exampleInputnextDueAmount">
+                                    <span ng-if="billView.nextDueErrorMsg" class="warningParagraphs">*Enter next due less than total due</span>
                                 </div>
                             </form>
                             <div ng-switch="billView.bill.billsListing.length">

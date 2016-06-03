@@ -196,18 +196,30 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 var submitTestRequestPromise = dboticaServices.submitTestRequest(testObject);
                 submitTestRequestPromise.then(function(testRequestSuccessResponse) {
                     $log.log("test success is----", testRequestSuccessResponse);
-                    var testSuccess = $.parseJSON(testRequestSuccessResponse.data.response);
-                    if (testObject.hasOwnProperty('id')) {
-                        for (var testInTableIndex in adminElement.admin.servicesListOfTheDoctor) {
-                            if (testSuccess.id == adminElement.admin.servicesListOfTheDoctor[testInTableIndex].id) {
-                                adminElement.admin.servicesListOfTheDoctor[testInTableIndex].price = testSuccess.price;
-                                adminElement.admin.servicesListOfTheDoctor[testInTableIndex].remark = testSuccess.remark;
+                    var errorCode = testRequestSuccessResponse.data.errorCode;
+                    var success = testRequestSuccessResponse.data.success;
+                    if (errorCode == null && success == true) {
+                        var testSuccess = $.parseJSON(testRequestSuccessResponse.data.response);
+                        if (testObject.hasOwnProperty('id')) {
+                            for (var testInTableIndex in adminElement.admin.servicesListOfTheDoctor) {
+                                if (testSuccess.id == adminElement.admin.servicesListOfTheDoctor[testInTableIndex].id) {
+                                    adminElement.admin.servicesListOfTheDoctor[testInTableIndex].price = testSuccess.price;
+                                    adminElement.admin.servicesListOfTheDoctor[testInTableIndex].remark = testSuccess.remark;
+                                }
                             }
+                            adminElement.admin.procedureCostTextBox = "";
+                            adminElement.admin.procedureRemarksTextBox = "";
+                            adminElement.admin.procedureNameTxtBox = "";
+                        } else {
+                            testSuccess['billingName'] = testSuccess.testName;
+                            delete testSuccess.testName;
+                            adminElement.servicesList.unshift(testSuccess['billingName']);
+                            $log.log("services list after adding test is----", adminElement.servicesList);
+                            adminElement.admin.servicesListOfTheDoctor.push(testSuccess);
+                            adminElement.admin.procedureCostTextBox = "";
+                            adminElement.admin.procedureRemarksTextBox = "";
+                            adminElement.admin.procedureNameTxtBox = "";
                         }
-                    } else {
-                        testSuccess['billingName'] = testSuccess.testName;
-                        delete testSuccess.testName;
-                        adminElement.admin.servicesListOfTheDoctor.push(testSuccess);
                     }
                 }, function(testRequestErrorResponse) {
                     $log.log("in error response of submit test request promise----");

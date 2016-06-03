@@ -16,11 +16,14 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     billElement.addTestToFinalBill = addTestToFinalBill;
     billElement.goToInvoicePage = goToInvoicePage;
     billElement.validPhoneNumber = validPhoneNumber;
+    billElement.newBill = newBill;
+    billElement.paidAndDueCheck = paidAndDueCheck;
+    billElement.nextDueCheck = nextDueCheck;
 
     billElement.bill = {};
-
     billElement.patientSearch = {};
     billElement.patient = {};
+    billElement.nextDueErrorMsg = false;
     billElement.enterDigits = false;
     billElement.enterPhoneNumber = false;
     billElement.patientBillFullGrid = false;
@@ -36,6 +39,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     billElement.bill.doctorActiveName = "";
     billElement.bill.doctorActiveService = "No Bill Type";
     billElement.bill.paymentDueType = "Completed";
+    billElement.checkPaidAndDue = false;
     billElement.invoice = {};
     billElement.invoice.nextPaymentAmount = "";
     billElement.invoice.amount = 0;
@@ -188,7 +192,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
 
     function patientSearchOftheNumber(phoneNumber) {
         if (phoneNumber === undefined) {
-            showNoPhoneNumberSwal();
+            dboticaServices.showNoPhoneNumberSwal();
         } else {
             if (!billElement.enterDigits && !billElement.enterPhoneNumber) {
                 var patientSearchPromise = dboticaServices.getPatientDetailsOfThatNumber(phoneNumber);
@@ -211,7 +215,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                     }
                 }, function(patientSearchErrorResponse) {});
             } else {
-                validPhoneNumberSwal();
+                dboticaServices.validPhoneNumberSwal();
             }
         }
     }
@@ -225,7 +229,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
 
     function addConsultationOfDoctor() {
         if (billElement.finalBill.patientId == "") {
-            showNoPatientSwal();
+            dboticaServices.showNoPatientSwal();
         } else {
             var newService = {};
             newService.itemName = billElement.bill.doctorActiveService;
@@ -269,7 +273,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
 
     function addMedicineToBill() {
         if (billElement.finalBill.patientId == "") {
-            showNoPatientSwal();
+            dboticaServices.showNoPatientSwal();
         } else {
             var newMedicine = {};
             newMedicine.itemName = angular.element('#exampleInputMedicine').val();
@@ -294,7 +298,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
 
     function addTestToFinalBill() {
         if (billElement.finalBill.patientId == "") {
-            showNoPatientSwal();
+            dboticaServices.showNoPatientSwal();
         } else {
             var newTestObject = {}
             newTestObject.itemName = angular.element('#exampleInputTests').val();
@@ -320,7 +324,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
 
     function billFinalSubmisssion() {
         if (billElement.finalBill.patientId == "") {
-            showNoPatientSwal();
+            dboticaServices.showNoPatientSwal();
         } else {
             billElement.finalBill.items = [];
             billElement.finalBill.paymentEntries = [];
@@ -350,42 +354,49 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             }
             billElement.finalBill.amountPaid = billElement.finalBill.amountPaid * 100;
             $log.log("final bill is----", billElement.finalBill);
-            var invoiceUpdatePromise = dboticaServices.updateInvoice(billElement.finalBill);
-            invoiceUpdatePromise.then(function(invoiceUpdateSuccessResponse) {
-                var errorCode = invoiceUpdateSuccessResponse.data.errorCode;
-                var success = invoiceUpdateSuccessResponse.data.success;
-                var invoiceSuccessResponse = invoiceUpdateSuccessResponse.data.response;
-                if (errorCode == null && success == true && invoiceSuccessResponse == null) {
-                    billElement.bill.billsListing = [];
-                    billElement.addToBill = [];
-                    billElement.invoice.nextPaymentDate = "";
-                    billElement.invoice.nextPaymentAmount = "";
-                    billElement.invoice.amount = 0;
-                    billElement.patient = {};
-                    currentActiveInvoice = {};
-                }
-                $log.log("success response is---", invoiceUpdateSuccessResponse);
-            }, function(invoiceUpdateErrorResponse) {});
+            if (!billElement.nextDueErrorMsg) {
+                var invoiceUpdatePromise = dboticaServices.updateInvoice(billElement.finalBill);
+                invoiceUpdatePromise.then(function(invoiceUpdateSuccessResponse) {
+                    var errorCode = invoiceUpdateSuccessResponse.data.errorCode;
+                    var success = invoiceUpdateSuccessResponse.data.success;
+                    var invoiceSuccessResponse = invoiceUpdateSuccessResponse.data.response;
+                    if (errorCode == null && success == true && invoiceSuccessResponse == null) {
+                        newBill();
+                    }
+                    $log.log("success response is---", invoiceUpdateSuccessResponse);
+                }, function(invoiceUpdateErrorResponse) {});
+            } else {
+                dboticaServices.nextDueErrorSwal();
+            }
         }
     }
 
     function addDueDateBill() {
         if (billElement.finalBill.patientId == "") {
-            showNoPatientSwal();
+            dboticaServices.showNoPatientSwal();
         } else {
             var newDueDateBill = {};
             var newDueDateToFinalBill = {};
-            newDueDateBill.amountPaid = billElement.dueDateBill.dueCost;
-            newDueDateBill.updatedAt = billElement.dueDateBill.dueDate;
-            billElement.addPay.push(newDueDateBill);
-            billElement.invoice.amount -= billElement.dueDateBill.dueCost;
-            newDueDateToFinalBill.updatedUserId = currentActiveAssistant.id;
-            newDueDateToFinalBill.amountPaid = billElement.dueDateBill.dueCost;
-            newDueDateToFinalBill.state = "ACTIVE";
-            newDueDateToFinalBill.updatedAt = dboticaServices.getLongValueOfDate(billElement.dueDateBill.dueDate);
-            billElement.addToBill.push(newDueDateToFinalBill);
-            billElement.dueDateBill.dueCost = "";
-            billElement.dueDateBill.dueDate = "";
+            if (!billElement.checkPaidAndDue) {
+                newDueDateBill.amountPaid = billElement.dueDateBill.dueCost;
+                newDueDateBill.updatedAt = billElement.dueDateBill.dueDate;
+                billElement.addPay.push(newDueDateBill);
+                billElement.invoice.amount -= billElement.dueDateBill.dueCost;
+                newDueDateToFinalBill.updatedUserId = currentActiveAssistant.id;
+                newDueDateToFinalBill.amountPaid = billElement.dueDateBill.dueCost;
+                newDueDateToFinalBill.state = "ACTIVE";
+                newDueDateToFinalBill.updatedAt = dboticaServices.getLongValueOfDate(billElement.dueDateBill.dueDate);
+                billElement.addToBill.push(newDueDateToFinalBill);
+                if (billElement.invoice.nextPaymentAmount !== "") {
+                    if (billElement.invoice.nextPaymentAmount > billElement.invoice.amount) {
+                        billElement.nextDueErrorMsg = true;
+                    } else {
+                        billElement.nextDueErrorMsg = false;
+                    }
+                }
+                billElement.dueDateBill.dueCost = "";
+                billElement.dueDateBill.dueDate = "";
+            }
         }
     }
 
@@ -418,6 +429,15 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         }
     }
 
+    function nextDueCheck(nextDueAmount) {
+        if (nextDueAmount <= billElement.invoice.amount) {
+            billElement.nextDueErrorMsg = false;
+
+        } else {
+            billElement.nextDueErrorMsg = true;
+        }
+    }
+
     function getTodayString() {
         var date = new Date();
 
@@ -433,34 +453,34 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         return today;
     }
 
-    function showNoPatientSwal() {
-        swal({
-            title: "Error",
-            text: "Enter Patient Details Before Billing",
-            type: "error",
-            confirmButtonText: "OK",
-            allowOutsideClick: true
-        });
+    function paidAndDueCheck(amountInTextBox) {
+        if (amountInTextBox <= billElement.invoice.amount) {
+            billElement.checkPaidAndDue = false;
+        } else {
+            billElement.checkPaidAndDue = true;
+        }
     }
 
-    function showNoPhoneNumberSwal() {
-        swal({
-            title: "Error",
-            text: "Please Enter Phone Number Before Search",
-            type: "error",
-            confirmButtonText: "OK",
-            allowOutsideClick: true
-        });
-    }
-
-    function validPhoneNumberSwal() {
-        swal({
-            title: "Error",
-            text: "Please Enter Valid Phone Number",
-            type: "error",
-            confirmButtonText: "OK",
-            allowOutsideClick: true
-        });
+    function newBill() {
+        $log.log("in new bill");
+        $state.go('home.billManagement');
+        billElement.patientSearchDiv = true;
+        billElement.patientBillFullGrid = false;
+        billElement.patientBillGridNine = true;
+        currentActiveInvoice = {};
+        billElement.patient = {};
+        billElement.bill.patientsListOfThatNumber = [];
+        billElement.patientSearch.phoneNumber = "";
+        billElement.bill.patientSearchPatients = false;
+        billElement.bill.viewOrHide = false;
+        billElement.add = {};
+        billElement.invoice = {};
+        billElement.bill.billsListing = [];
+        billElement.invoice.amount = 0;
+        billElement.dueDateBill = {};
+        billElement.addPay = [];
+        billElement.finalBill = {};
+        billElement.finalBill.patientId = "";
     }
 
     angular.element("#sessionDatepickerCost").datepicker({

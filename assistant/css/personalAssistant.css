@@ -448,9 +448,9 @@ li.ui-timepicker-disabled {
     }
 }
 
-.modal-Form-control {
+/* .modal-Form-control {
     padding-right: 20px;
-}
+} */
 
 .disableTimeBtn {
     pointer-events: none;
