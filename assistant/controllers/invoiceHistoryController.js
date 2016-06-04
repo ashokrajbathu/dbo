@@ -69,69 +69,11 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
             invoiceHistoryArray = $.parseJSON(invoiceSuccessResponse.data.response);
             angular.copy(invoiceHistoryArray, invoiceElement.invoiceGlobal.invoiceHistoryList);
             $log.log("invoice success response is----", invoiceHistoryArray);
-            /*for (var invoiceIndex in invoiceHistoryArray) {
-                var invoiceObject = {};
-                invoiceObject.id = invoiceHistoryArray[invoiceIndex].id;
-                invoiceObject.creationDate = invoiceHistoryArray[invoiceIndex].creationTime;
-                invoiceObject.costDue = invoiceHistoryArray[invoiceIndex].totalAmount - invoiceHistoryArray[invoiceIndex].amountPaid;
-                invoiceObject.costDue = invoiceObject.costDue / 100;
-*/
-            /*var firstName = "";
-            var lastName = "";
-            var getPatientPromise = dboticaServices.getPatientDetailsOfThatNumber(invoiceHistoryArray[invoiceIndex].patientId);
-            getPatientPromise.then(function(getPatientSuccess) {
-                var errorCode = getPatientSuccess.data.errorCode;
-                if (!!errorCode) {
-                    dboticaServices.logoutFromThePage(errorCode);
-                } else {
-                    var patientSuccess = $.parseJSON(getPatientSuccess.data.response);
-                    $log.log("patient data is----", patientSuccess);
-                    if (patientSuccess[0].hasOwnProperty('firstName')) {
-                        firstName = patientSuccess[0].firstName;
-                    }
-                    if (patientSuccess[0].hasOwnProperty('lastName')) {
-                        lastName = patientSuccess[0].lastName;
-                    }
-                    invoiceObject.patientName = firstName + ' ' + lastName;
-                    $log.log("oatnam is----" + invoiceObject.patientName);
-                }
-            }, function(getPatientError) {});*/
-
-            /* var docFirstName = "";
-             var docLastName = "";
-             var doctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
-             doctorsOfThatAssistant.then(function(doctorsOfAssistantSuccess) {
-                 var errorCode = doctorsOfAssistantSuccess.data.errorCode;
-                 if (!!errorCode) {
-                     dboticaServices.logoutFromThePage(errorCode);
-                 } else {
-                     var doctorsList = $.parseJSON(doctorsOfAssistantSuccess.data.response);
-                     $log.log("doc data is----", doctorsList);
-                     for (var docIndex in doctorsList) {
-                         if (doctorsList[docIndex].id == invoiceHistoryArray[invoiceIndex].doctorId) {
-                             if (doctorsList[docIndex].hasOwnProperty('firstName')) {
-                                 docFirstName = doctorsList[docIndex].firstName;
-                             }
-                             if (doctorsList[docIndex].hasOwnProperty('lastName')) {
-                                 docLastName = doctorsList[docIndex].lastName;
-                             }
-                         }
-                     }
-                     invoiceObject.doctorName = docFirstName + ' ' + docLastName;
-                     $log.log("doctnam is----" + invoiceObject.doctorName);
-                 }
-             }, function(doctorsOfAssistantError) {});*/
-
-            /* invoiceElement.invoiceGlobal.invoiceHistoryList.push(invoiceObject);
-            }
-            $log.log("invoice list to be displayed is-----", invoiceElement.invoiceGlobal.invoiceHistoryList);*/
         }
     }, function(invoiceErrorResponse) {
         $log.log("invoice error response");
     });
-
-
-
+    
     function selectSearchType(search) {
         invoiceElement.searchSelected = search;
         switch (search) {
@@ -234,6 +176,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
             invoiceElement.isPendingRedActive = false;
             invoiceElement.isPendingBlueActive = true;
             var viewAllInvoicesPromise = dboticaServices.getInvoiceHistoryOnLoad(organizationId);
+            $log.log("view all invoices is----", viewAllInvoicesPromise);
             viewAllInvoicesPromise.then(function(viewAllInvoicesSuccess) {
                 var errorCode = viewAllInvoicesSuccess.data.errorCode;
                 if (!!errorCode) {
@@ -295,19 +238,8 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
     }
 
     function displayInvoicesInTheTable(invoicesArray) {
+        $log.log("invoicesArray is----", invoicesArray);
         invoiceElement.invoiceGlobal.invoiceHistoryList = [];
-        for (var invoiceIndex in invoicesArray) {
-            var invoiceObject = {};
-            invoiceObject.id = invoicesArray[invoiceIndex].id;
-            invoiceObject.creationDate = invoicesArray[invoiceIndex].creationTime;
-            invoiceObject.costDue = invoicesArray[invoiceIndex].totalAmount - invoicesArray[invoiceIndex].amountPaid;
-            invoiceObject.costDue = invoiceObject.costDue / 100;
-            invoiceElement.invoiceGlobal.invoiceHistoryList.push(invoiceObject);
-
-        }
+        invoiceElement.invoiceGlobal.invoiceHistoryList = invoicesArray;
     }
-
-
-
-
 }]);

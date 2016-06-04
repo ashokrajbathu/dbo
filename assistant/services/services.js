@@ -916,7 +916,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
 
     this.longDateToReadableDate = function(longDate) {
         var result;
-        if (longDate == undefined) {
+        if (longDate == undefined || longDate == "") {
             result = "";
         } else {
             result = new Date(longDate);
@@ -1056,5 +1056,23 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
+    }
+
+    this.getPatientOrDoctorName = function(value) {
+        var patientFirstName = "";
+        var patientLastName = "";
+        var name = "";
+        if (value.hasOwnProperty('firstName')) {
+            patientFirstName = value.firstName;
+        }
+        if (value.hasOwnProperty('lastName')) {
+            if (patientFirstName !== "") {
+                patientLastName = " " + value.lastName;
+            } else {
+                patientLastName = value.lastName;
+            }
+        }
+        name = patientFirstName + patientLastName;
+        return name;
     }
 }]);

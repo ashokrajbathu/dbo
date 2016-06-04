@@ -12,7 +12,14 @@
 }
 
 .inventoryHistoryBtn {
+    color: black;
     border: 1px solid #367fa9;
+}
+
+.inventoryHistoryBtn:hover,
+.inventoryHistoryBtn:active,
+.inventoryHistoryBtn:focus {
+    color: black !important;
 }
 
 .form-control.inventoryHistoryTxtBox {

@@ -492,7 +492,8 @@
                                             <th>Credit Type</th>
                                             <th>Transaction Type</th>
                                             <th>Creation Time</th>
-                                            <th>Remarks</th>
+                                            <th>Credits</th>
+                                            <th>Reference Id</th>
                                         </tr>
                                     </thead>
                                     <tbody id="myCreditsBody">
@@ -625,6 +626,65 @@
             }
         });
     });
+
+    $('#myCredits').click(function() {
+        console.log("in my credits---");
+        var newCount = 1;
+        var start = 0;
+        var limit = 10;
+        var type = "";
+        var doctorId = localStorage.getItem("doctorId");
+        var creditsHistory = [];
+        $('#myCreditsBody').empty();
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/doctor/getCreditHistory',
+            data: {
+                'start': start,
+                'limit': limit,
+                'doctorId': doctorId
+            },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(response) {
+                console.log("credits list response is----", response);
+                var creditsList = $.parseJSON(response.response);
+                console.log("credits list is----", creditsList);
+                for (var s in creditsList) {
+                    var referenceId = "";
+                    if (creditsList[s]['referenceId'] == undefined) {
+
+                    } else {
+                        referenceId = creditsList[s]['referenceId'];
+                    }
+                    var readableDate = longDateToReadableDate(creditsList[s]['creationTime']);
+                    $('#myCreditsBody').append('<tr style="text-align:center;"><td>' + creditsList[s]['creditType'] + '</td><td>' + creditsList[s]['transactionType'] + '</td><td>' + readableDate + '</td><td>' + creditsList[s]['credits'] + '</td><td>' + referenceId + '</td></tr>');
+                }
+            }
+
+        });
+
+    });
+
+    function longDateToReadableDate(longDate) {
+        var result;
+        if (longDate == undefined || longDate == "") {
+            result = "";
+        } else {
+            result = new Date(longDate);
+            result = result.toLocaleString();
+            var resultArray = result.split(',');
+            var resultArrayDate = resultArray[0];
+            var resultArrayDateReadable = resultArrayDate.split('/');
+            result = resultArrayDateReadable[1] + '/' + resultArrayDateReadable[0] + '/' + resultArrayDateReadable[2];
+        }
+        return result;
+    }
 
     $('#myAssistantsBody').on('click', '.assistantsListBtn', function() {
         var patientIdValues = $.cookie('patientidList');

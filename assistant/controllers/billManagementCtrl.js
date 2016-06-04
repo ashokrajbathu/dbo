@@ -107,7 +107,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             itemsToBeDisplayed[itemIndex].quantity = itemsToBeDisplayed[itemIndex].count;
             totalAmountCharged += itemsToBeDisplayed[itemIndex].amountCharged;
         }
-
         billElement.invoice.amount = totalAmountCharged - paymentEntriesAndTotalAmount[1];
         angular.copy(itemsToBeDisplayed, billElement.bill.billsListing);
     }
@@ -362,10 +361,24 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             billElement.finalBill.paymentEntries = [];
             billElement.finalBill.totalAmount = parseInt(0);
             billElement.finalBill.amountPaid = parseInt(0);
+            /*var patientFirstName = "";
+            var patientLastName = "";
+            if (billElement.patient.hasOwnProperty('firstName')) {
+                patientFirstName = billElement.patient.firstName;
+            }
+            if (billElement.patient.hasOwnProperty('lastName')) {
+                if (patientFirstName !== "") {
+                    patientLastName = " " + billElement.patient.lastName;
+                } else {
+                    patientLastName = billElement.patient.lastName;
+                }
+            }*/
+            billElement.finalBill.patientName = dboticaServices.getPatientOrDoctorName(billElement.patient);
+            billElement.finalBill.doctorName = dboticaServices.getPatientOrDoctorName(billElement.bill.doctorActive);
             if (billElement.invoice.nextPaymentDate !== "") {
                 billElement.finalBill.nextPaymentDate = dboticaServices.getLongValueOfDate(billElement.invoice.nextPaymentDate);
             }
-            billElement.finalBill.nextPaymentAmount = billElement.invoice.nextPaymentAmount * 100;
+            billElement.finalBill.nextPaymentAmount = parseInt(billElement.invoice.nextPaymentAmount) * 100;
             angular.copy(billElement.bill.billsListing, billElement.finalBill.items);
             for (var itemsIndex in billElement.finalBill.items) {
                 billElement.finalBill.totalAmount += parseInt(billElement.finalBill.items[itemsIndex].amountCharged);
