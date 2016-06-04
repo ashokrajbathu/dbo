@@ -1007,4 +1007,54 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             allowOutsideClick: true
         });
     }
+
+    this.noMedicineCostSwal = function() {
+        swal({
+            title: "Error",
+            text: "Please enter the medicine cost details",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.noMedicineNameSwal = function() {
+        swal({
+            title: "Error",
+            text: "Please enter the Medicine Name",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.noTestNameSwal = function() {
+        swal({
+            title: "Error",
+            text: "Please enter the Test Name",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.noTestCostSwal = function() {
+        swal({
+            title: "Error",
+            text: "Please enter the Test Cost Details",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.noConsultationCostSwal = function() {
+        swal({
+            title: "Error",
+            text: "Please enter the Doctor Service Cost Details",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
 }]);
