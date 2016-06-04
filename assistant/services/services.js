@@ -997,4 +997,14 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             allowOutsideClick: true
         });
     }
+
+    this.loginErrorSwal = function() {
+        swal({
+            title: "Error",
+            text: "User Id or Password is Missing!!!",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
 }]);

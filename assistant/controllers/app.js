@@ -99,47 +99,55 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
     }
 
     localStorage.setItem("currentState", "patientManagement");
+
+    $scope.loginData = {};
+    $scope.loginData.userId = "";
+    $scope.loginData.password = "";
+
     $scope.loginIntoAssistant = function() {
         var userId = $scope.loginData.userId;
         var password = $scope.loginData.password;
-        var promise = dboticaServices.login(userId, password);
-        promise.then(function(response) {
-            var success = response.data.success;
-            var currentAssistantObject = response.data.response;
-            if (success === false) {
-                var errorCode = response.data.errorCode;
-                console.log("error code in is----" + errorCode);
-                switch (errorCode) {
-                    case "BAD_CREDENTIALS":
-                        console.log("in bad credentials");
-                        swal({
-                            title: "Error",
-                            text: "Invalid User Name or Password.",
-                            type: "error",
-                            confirmButtonText: "OK"
-                        }, function() {});
-                        break;
-                    case "USER_ALREADY_LOGGED_IN":
-                        /*localStorage.setItem('assistantCurrentlyLoggedIn', currentAssistantObject);*/
-                        var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
-                        var assistantObj = $.parseJSON(loggedInAss);
-                        var organizationIdActive = assistantObj.organizationId;
-                        localStorage.setItem('orgId', organizationIdActive);
-                        $state.go('home');
-                        break;
+        if ($scope.loginData.userId !== "" && $scope.loginData.password !== "") {
+            var promise = dboticaServices.login(userId, password);
+            promise.then(function(response) {
+                var success = response.data.success;
+                var currentAssistantObject = response.data.response;
+                if (success === false) {
+                    var errorCode = response.data.errorCode;
+                    console.log("error code in is----" + errorCode);
+                    switch (errorCode) {
+                        case "BAD_CREDENTIALS":
+                            console.log("in bad credentials");
+                            swal({
+                                title: "Error",
+                                text: "Invalid User Name or Password.",
+                                type: "error",
+                                confirmButtonText: "OK"
+                            }, function() {});
+                            break;
+                        case "USER_ALREADY_LOGGED_IN":
+                            /*localStorage.setItem('assistantCurrentlyLoggedIn', currentAssistantObject);*/
+                            var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
+                            var assistantObj = $.parseJSON(loggedInAss);
+                            var organizationIdActive = assistantObj.organizationId;
+                            localStorage.setItem('orgId', organizationIdActive);
+                            $state.go('home');
+                            break;
+                    }
+                } else {
+                    localStorage.setItem('assistantCurrentlyLoggedIn', currentAssistantObject);
+                    var assistantObject = $.parseJSON(response.data.response);
+                    var organizationId = assistantObject.organizationId;
+                    localStorage.setItem('orgId', organizationId);
+                    $log.log("assistant info is----", $.parseJSON(response.data.response));
+                    localStorage.setItem("isLoggedInAssistant", "true");
+                    $state.go('home');
                 }
-            } else {
-                localStorage.setItem('assistantCurrentlyLoggedIn', currentAssistantObject);
-                var assistantObject = $.parseJSON(response.data.response);
-                var organizationId = assistantObject.organizationId;
-                localStorage.setItem('orgId', organizationId);
-                $log.log("assistant info is----", $.parseJSON(response.data.response));
-                localStorage.setItem("isLoggedInAssistant", "true");
-                $state.go('home');
-            }
-        }, function(errorResponse) {
-            console.log("login error response", errorResponse);
-        });
+            }, function(errorResponse) {
+                console.log("login error response", errorResponse);
+            });
+        } else {
+            dboticaServices.loginErrorSwal();
+        }
     }
 }]);
-

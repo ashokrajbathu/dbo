@@ -4,7 +4,7 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
     switch (currentStateActive) {
         case 'patientManagement':
             $state.go('home.patientManagement');
-           /* $location.path('patientManagement');*/
+            /* $location.path('patientManagement');*/
             break;
 
         case 'billManagement':
@@ -34,15 +34,15 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
 
 
 
-    $scope.logout = function() {
-        var promise = dboticaServices.logout();
+    $scope.logoutFromAssistant = function() {
+        var promise = {};
+        promise = dboticaServices.logout();
         promise.then(function(response) {
-            $log.log("in logout success");
             localStorage.clear();
             localStorage.setItem("isLoggedInAssistant", "false");
             $state.go('login');
         }, function(errorResponse) {
             $log.log("in logout error response");
         });
-    }
+    };
 }]);
