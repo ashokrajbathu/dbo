@@ -16,11 +16,11 @@
             <!-- Navbar Links -->
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li ui-sref=".patientManagement"><a style="color:white;" class="navbarLinks">Patient management</a></li>
-                    <li ui-sref=".billManagement"><a style="color:white;" class="navbarLinks">Bill Management</a></li>
-                    <li ui-sref=".inventory"><a style="color:white;" class="navbarLinks">Inventory</a></li>
-                    <li ui-sref=".analyticReports"><a style="color:white;" class="navbarLinks">Analytic reports</a></li>
-                    <li ui-sref=".admin"><a style="color:white;" class="navbarLinks">Admin</a></li>
+                    <li ng-class="{'activeSectionBlack':isPatientBlack,'activeSectionBlue':isPatientBlue}" ng-click="activeSectionBackGroundToggle('patient')" ui-sref=".patientManagement"><a style="color:white;" class="navbarLinks">Patient management</a></li>
+                    <li ng-class="{'activeSectionBlack':isBillBlack,'activeSectionBlue':isBillBlue}" ng-click="activeSectionBackGroundToggle('bill')" ui-sref=".billManagement"><a style="color:white;" class="navbarLinks">Bill Management</a></li>
+                    <li ng-class="{'activeSectionBlack':isInventoryBlack,'activeSectionBlue':isInventoryBlue}" ng-click="activeSectionBackGroundToggle('inventory')" ui-sref=".inventory"><a style="color:white;" class="navbarLinks">Inventory</a></li>
+                    <li ng-class="{'activeSectionBlack':isAnalyticBlack,'activeSectionBlue':isAnalyticBlue}" ng-click="activeSectionBackGroundToggle('analytic')" ui-sref=".analyticReports"><a style="color:white;" class="navbarLinks">Analytic reports</a></li>
+                    <li ng-class="{'activeSectionBlack':isAdminBlack,'activeSectionBlue':isAdminBlue}" ng-click="activeSectionBackGroundToggle('admin')" ui-sref=".admin"><a style="color:white;" class="navbarLinks">Admin</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a style="color:white;" ng-click="logoutFromAssistant()" href="javascript:void">Logout</a></li>

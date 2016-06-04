@@ -518,6 +518,14 @@ li.ui-timepicker-disabled {
     }
 }
 
+.activeSectionBlack {
+    background-color: #323232;
+}
+
+.activeSectionBlue {
+    background-color: #3c8dbc;
+}
+
 .navbar-collapse.in {
     overflow: hidden;
 }
