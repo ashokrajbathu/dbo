@@ -488,6 +488,7 @@ li.ui-timepicker-disabled {
 }
 
 .navbarLinks {
+    color: white;
     cursor: pointer;
 }
 
@@ -497,6 +498,28 @@ li.ui-timepicker-disabled {
 
 .patient-form-inline .patient-form-group {
     padding-right: 50px;
+}
+
+@media only screen and (max-width: 974px) {
+    .navbarLinks {
+        margin-right: 0px;
+        font-size: 14px;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+}
+
+@media only screen and (max-width: 974px) {
+    .navbar-collapse>.navbar-nav>li {
+        padding-left: 2px;
+        padding-right: 2px;
+        margin-left: -12px;
+        margin-right: -12px;
+    }
+}
+
+.navbar-collapse.in {
+    overflow: hidden;
 }
 
 
@@ -730,10 +753,56 @@ a {
     display: none;
 }
 
+.navbar-inverse {
+    color: white;
+    background-color: #3c8dbc;
+    border-color: #3c8dbc;
+    background-image: none !important;
+}
+
 
 /*#loginBtn {
     margin-left: 50%;
 }*/
+
+
+/* @media only screen and (min-width: 956px) {
+    .container-fluid > .navbar-header,
+    .container-fluid > .navbar-collapse {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+}
+
+@media only screen and (min-width: 956px) {
+    .navbar-header {
+        float: left !important;
+    }
+}
+
+@media only screen and (min-width: 956px) {
+    .navbar-toggle {
+        display: none !important;
+    }
+}
+
+@media only screen and (min-width: 956px) {
+    .navbar-collapse.collapse {
+        display: block !important;
+        height: auto !important;
+        padding-bottom: 0 !important;
+        overflow: visible !important;
+    }
+}
+
+@media only screen and (min-width: 956px) {
+    .navbar-collapse {
+        width: auto !important;
+        border-top: 0 !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+    }
+} */
 
 #loginHorizontal {
     width: 68%;
