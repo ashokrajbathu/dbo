@@ -80,7 +80,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         getDetailsOfThePatient.then(function(getDetailsSuccess) {
             var errorCode = getDetailsSuccess.data.errorCode;
             if (!!errorCode) {
-                dboticaServices.logoutFromThePage();
+                dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var patientDetails = $.parseJSON(getDetailsSuccess.data.response);
                 billElement.patient = patientDetails[0];

@@ -121,21 +121,28 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
     $scope.entryType = ["WALK_IN", "APPOINTMENT"];
 
     $scope.doctorsData = dboticaServices.doctorsOfAssistant();
+    console.log("doctorsData promise is----", $scope.doctorsData);
     $scope.doctorsData.then(function(doctorresponse) {
-        $scope.doctorsList = JSON.parse(doctorresponse.data.response);
-        $scope.doctorName = $scope.doctorsList[0].firstName;
-        $scope.doctorSpecialization = $scope.doctorsList[0].speciality;
-        $scope.book.doctorId = $scope.doctorsList[0].id;
-        $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = $scope.doctorsList[0].dayStartTime;
-        $scope.doctorObjectForChangingStartAndEndTime.dayEndTime = $scope.doctorsList[0].dayEndTime;
-        $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = $scope.doctorsList[0].timePerPatient;
-        var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
-        patientsListOfDoctor.then(function(response) {
-            var patientsList = JSON.parse(response.data.response);
-            $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
-        }, function(error) {
-            console.log("in patient controller patients error");
-        });
+        console.log("doctors response is-----", doctorresponse);
+        var errorCode = doctorresponse.data.errorCode;
+        if (!!errorCode) {
+            dboticaServices.logoutFromThePage(errorCode);
+        } else {
+            $scope.doctorsList = JSON.parse(doctorresponse.data.response);
+            $scope.doctorName = $scope.doctorsList[0].firstName;
+            $scope.doctorSpecialization = $scope.doctorsList[0].speciality;
+            $scope.book.doctorId = $scope.doctorsList[0].id;
+            $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = $scope.doctorsList[0].dayStartTime;
+            $scope.doctorObjectForChangingStartAndEndTime.dayEndTime = $scope.doctorsList[0].dayEndTime;
+            $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = $scope.doctorsList[0].timePerPatient;
+            var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
+            patientsListOfDoctor.then(function(response) {
+                var patientsList = JSON.parse(response.data.response);
+                $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
+            }, function(error) {
+                console.log("in patient controller patients error");
+            });
+        }
     }, function(error) {
         console.log("doctors error response", error);
     });

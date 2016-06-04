@@ -51,7 +51,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
     doctorsOfThatAssistantForInvoices.then(function(doctorsSuccessResponse) {
         var errorCode = doctorsSuccessResponse.data.errorCode;
         if (!!errorCode) {
-            dboticaServices.logoutFromThePage();
+            dboticaServices.logoutFromThePage(errorCode);
         } else {
             invoiceElement.doctorsList = $.parseJSON(doctorsSuccessResponse.data.response);
             doctorActiveId = invoiceElement.doctorsList[0].id;
@@ -237,7 +237,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
             viewAllInvoicesPromise.then(function(viewAllInvoicesSuccess) {
                 var errorCode = viewAllInvoicesSuccess.data.errorCode;
                 if (!!errorCode) {
-                    dboticaServices.logoutFromThePage();
+                    dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var viewAllInvoicesList = $.parseJSON(viewAllInvoicesSuccess.data.response);
                     displayInvoicesInTheTable(viewAllInvoicesList);
@@ -258,7 +258,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
                 $log.log("penting success response is----", pendingInvoicesSuccess);
                 var errorCode = pendingInvoicesSuccess.data.errorCode;
                 if (!!errorCode) {
-                    dboticaServices.logoutFromThePage();
+                    dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var viewPendingInvoicesList = $.parseJSON(pendingInvoicesSuccess.data.response);
                     $log.log("pending list is-----", viewPendingInvoicesList);
