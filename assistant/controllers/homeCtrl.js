@@ -49,6 +49,9 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
             break;
     }
 
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
+
 
 
     $scope.activeSectionBackGroundToggle = function(sectionName) {

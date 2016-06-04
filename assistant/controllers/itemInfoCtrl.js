@@ -1,7 +1,7 @@
 angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     localStorage.setItem("currentState", "itemInfo");
 
-    var itemInfoElement=this;
+    var itemInfoElement = this;
 
     angular.element("#addBatchExpiryTimeItemInfo").datepicker({
         dateFormat: "dd/mm/yy",
@@ -11,10 +11,11 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
         changeYear: true
     });
 
-    itemInfoElement.backToItems=backToItems;
-    itemInfoElement.updateBatch=updateBatch;
-    itemInfoElement.addBatchForSelectedItemInItemInfo=addBatchForSelectedItemInItemInfo;
-
+    itemInfoElement.backToItems = backToItems;
+    itemInfoElement.updateBatch = updateBatch;
+    itemInfoElement.addBatchForSelectedItemInItemInfo = addBatchForSelectedItemInItemInfo;
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
 
     var itemSelected;
     itemInfoElement.batches = {};

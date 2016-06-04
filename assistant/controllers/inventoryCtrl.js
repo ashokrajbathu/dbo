@@ -3,23 +3,23 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
 
     var inventoryElement = this;
 
-    inventoryElement.nextBtnEnabledFunction=nextBtnEnabledFunction;
-    inventoryElement.prevBtnEnabledFunction=prevBtnEnabledFunction;
-    inventoryElement.addItem=addItem;
-    inventoryElement.addItemIntoStock=addItemIntoStock;
-    inventoryElement.additionOfBatch=additionOfBatch;
-    inventoryElement.viewInfo=viewInfo;
-    inventoryElement.addBatchForSelectedItem=addBatchForSelectedItem;
-    inventoryElement.viewLowItemsSelect=viewLowItemsSelect;
-    inventoryElement.viewAllItemsSelect=viewAllItemsSelect;
-    inventoryElement.viewExpiredItemsSelect=viewExpiredItemsSelect;
-    inventoryElement.itemSearchFromDB=itemSearchFromDB;
-    inventoryElement.viewAllItems=viewAllItems;
-    inventoryElement.viewAllInventoryItems=viewAllInventoryItems;
-    inventoryElement.viewDrugInventoryItems=viewDrugInventoryItems;
-    inventoryElement.viewSuppliesInventoryItems=viewSuppliesInventoryItems;
-    inventoryElement.viewEquipmentsInventoryItems=viewEquipmentsInventoryItems;
-    inventoryElement.viewOthersInventoryItems=viewOthersInventoryItems;
+    inventoryElement.nextBtnEnabledFunction = nextBtnEnabledFunction;
+    inventoryElement.prevBtnEnabledFunction = prevBtnEnabledFunction;
+    inventoryElement.addItem = addItem;
+    inventoryElement.addItemIntoStock = addItemIntoStock;
+    inventoryElement.additionOfBatch = additionOfBatch;
+    inventoryElement.viewInfo = viewInfo;
+    inventoryElement.addBatchForSelectedItem = addBatchForSelectedItem;
+    inventoryElement.viewLowItemsSelect = viewLowItemsSelect;
+    inventoryElement.viewAllItemsSelect = viewAllItemsSelect;
+    inventoryElement.viewExpiredItemsSelect = viewExpiredItemsSelect;
+    inventoryElement.itemSearchFromDB = itemSearchFromDB;
+    inventoryElement.viewAllItems = viewAllItems;
+    inventoryElement.viewAllInventoryItems = viewAllInventoryItems;
+    inventoryElement.viewDrugInventoryItems = viewDrugInventoryItems;
+    inventoryElement.viewSuppliesInventoryItems = viewSuppliesInventoryItems;
+    inventoryElement.viewEquipmentsInventoryItems = viewEquipmentsInventoryItems;
+    inventoryElement.viewOthersInventoryItems = viewOthersInventoryItems;
 
     inventoryElement.prevBtnDisabled = true;
     inventoryElement.prevBtnEnabled = false;
@@ -56,6 +56,8 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
     inventoryElement.warningMessage = false;
     inventoryElement.itemSearch = {};
     inventoryElement.itemSearch.itemName = "";
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
 
     angular.element("#addBatchExpiryTime").datepicker({
         dateFormat: "dd/mm/yy",

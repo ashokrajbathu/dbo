@@ -44,7 +44,8 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         ]
     });
 
-
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
 
     $scope.patientsList = [];
     $scope.doctorName = "";

@@ -29,6 +29,9 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     var organizationId = localStorage.getItem('orgId');
     var generalObject = { 'firstName': "General", 'lastName': "" };
 
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
+
 
     var doctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
     doctorsOfThatAssistant.then(function(response) {
