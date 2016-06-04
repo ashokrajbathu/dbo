@@ -41,8 +41,10 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     billElement.bill.paymentDueType = "Completed";
     billElement.checkPaidAndDue = false;
     billElement.invoice = {};
+    billElement.add = {};
+    billElement.add.quantity = "";
     billElement.invoice.nextPaymentAmount = "";
-    billElement.invoice.amount = 0;
+    billElement.invoice.amount = parseInt(0);
     billElement.add = {};
     billElement.add.testDate = "";
     billElement.addMedicine = [];
@@ -248,7 +250,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             newService.tax = 0;
             newService.amountCharged = billElement.bill.billCost;
             newService.dueDate = dboticaServices.getLongValueOfDate(billElement.bill.nextPaymentDate);
-            billElement.invoice.amount += billElement.bill.billCost;
+            billElement.invoice.amount += parseInt(billElement.bill.billCost);
             switch (billElement.bill.paymentDueType) {
                 case 'Completed':
                     newService.paymentDueType = "COMPLETED";
@@ -285,17 +287,20 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         } else {
             var newMedicine = {};
             newMedicine.itemName = angular.element('#exampleInputMedicine').val();
-            if (billElement.add.quantity == "") {
-                newMedicine.quantity = 1;
+            $log.log("quantity is----", billElement.add.quantity);
+            if (billElement.add.quantity == undefined) {
+                $log.log("in empty");
+                newMedicine.quantity = parseInt(1);
             } else {
-                newMedicine.quantity = billElement.add.quantity;
+                $log.log("in not empty");
+                newMedicine.quantity = parseInt(billElement.add.quantity);
             }
             newMedicine.itemType = "MEDICINE";
             newMedicine.cost = angular.element('#exampleInputMedicineCost').val();
-            newMedicine.discount = 0;
-            newMedicine.tax = 0;
-            newMedicine.amountCharged = newMedicine.cost * newMedicine.quantity;
-            billElement.invoice.amount += newMedicine.amountCharged;
+            newMedicine.discount = parseInt(0);
+            newMedicine.tax = parseInt(0);
+            newMedicine.amountCharged = parseInt(newMedicine.cost) * newMedicine.quantity;
+            billElement.invoice.amount += parseInt(newMedicine.amountCharged);
             newMedicine.paid = false;
             billElement.bill.billsListing.push(newMedicine);
             angular.element('#exampleInputMedicine').val("");
@@ -387,7 +392,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                 newDueDateBill.amountPaid = billElement.dueDateBill.dueCost;
                 newDueDateBill.updatedAt = billElement.dueDateBill.dueDate;
                 billElement.addPay.push(newDueDateBill);
-                billElement.invoice.amount -= billElement.dueDateBill.dueCost;
+                billElement.invoice.amount -= parseInt(billElement.dueDateBill.dueCost);
                 newDueDateToFinalBill.updatedUserId = currentActiveAssistant.id;
                 newDueDateToFinalBill.amountPaid = billElement.dueDateBill.dueCost;
                 newDueDateToFinalBill.state = "ACTIVE";
@@ -481,7 +486,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         billElement.add = {};
         billElement.invoice = {};
         billElement.bill.billsListing = [];
-        billElement.invoice.amount = 0;
+        billElement.invoice.amount = parseInt(0);
         billElement.dueDateBill = {};
         billElement.addPay = [];
         billElement.finalBill = {};

@@ -456,7 +456,7 @@
                         <div class="box-header with-border">
                             <h3 class="box-title">My Assistants</h3>
                             <div class="box-tools pull-right">
-                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                                <button class="btn btn-box-tool" data-widget="collapse"><i id="myAssistants" class="fa fa-plus"></i></button>
                             </div>
                         </div>
                         <div class="box-body">
@@ -481,7 +481,7 @@
                         <div class="box-header with-border">
                             <h3 class="box-title">My Credits : <span style="font-weight:600;" id="doctorCredits"></span></h3>
                             <div class="box-tools pull-right">
-                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                                <button class="btn btn-box-tool" data-widget="collapse"><i id="myCredits" class="fa fa-plus"></i></button>
                             </div>
                         </div>
                         <div class="box-body">
@@ -496,12 +496,6 @@
                                         </tr>
                                     </thead>
                                     <tbody id="myCreditsBody">
-                                        <tr>
-                                            <td id="creditType"></td>
-                                            <td id="transactionType"></td>
-                                            <td id="creationTime"></td>
-                                            <td id="remarksOfCredits"></td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -599,7 +593,7 @@
         });
     });
 
-    $('.fa-plus').click(function() {
+    $('#myAssistants').click(function() {
         console.log("in fa-plus section");
         console.log("my profile");
         var newCount = 1;
