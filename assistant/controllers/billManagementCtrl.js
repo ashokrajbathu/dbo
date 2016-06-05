@@ -361,18 +361,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             billElement.finalBill.paymentEntries = [];
             billElement.finalBill.totalAmount = parseInt(0);
             billElement.finalBill.amountPaid = parseInt(0);
-            /*var patientFirstName = "";
-            var patientLastName = "";
-            if (billElement.patient.hasOwnProperty('firstName')) {
-                patientFirstName = billElement.patient.firstName;
-            }
-            if (billElement.patient.hasOwnProperty('lastName')) {
-                if (patientFirstName !== "") {
-                    patientLastName = " " + billElement.patient.lastName;
-                } else {
-                    patientLastName = billElement.patient.lastName;
-                }
-            }*/
             billElement.finalBill.patientName = dboticaServices.getPatientOrDoctorName(billElement.patient);
             billElement.finalBill.doctorName = dboticaServices.getPatientOrDoctorName(billElement.bill.doctorActive);
             if (billElement.invoice.nextPaymentDate !== "") {
@@ -428,6 +416,18 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                 newDueDateBill.updatedAt = billElement.dueDateBill.dueDate;
                 billElement.addPay.push(newDueDateBill);
                 billElement.invoice.amount -= parseInt(billElement.dueDateBill.dueCost);
+                if (!jQuery.isEmptyObject(currentActiveInvoice)) {
+                    if (billElement.invoice.nextPaymentAmount !== undefined && billElement.invoice.nextPaymentAmount !== "" && billElement.invoice.nextPaymentAmount !== 0) {
+                        $log.log("in check 1");
+                        if (parseInt(billElement.dueDateBill.dueCost) <= parseInt(billElement.invoice.nextPaymentAmount)) {
+                            $log.log("in check 2");
+                            billElement.invoice.nextPaymentAmount -= parseInt(billElement.dueDateBill.dueCost);
+                        } else {
+                            billElement.invoice.nextPaymentDate = "";
+                            billElement.invoice.nextPaymentAmount = parseInt(0);
+                        }
+                    }
+                }
                 newDueDateToFinalBill.updatedUserId = currentActiveAssistant.id;
                 newDueDateToFinalBill.amountPaid = billElement.dueDateBill.dueCost;
                 newDueDateToFinalBill.state = "ACTIVE";
