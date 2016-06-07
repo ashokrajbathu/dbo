@@ -13,271 +13,276 @@
     </aside>
     <div class="content-wrapper" style="background-color:white;" ng-cloak>
         <img class="spinner" src="css/images/default (2).gif" ng-show="loading"></img>
-        <h4 style="font-size:22px;color:#49b181;">Dr.{{doctorName}}</h4>
-        <h5><b> {{doctorSpecialization}}</b></h5>
-        <div id="exTab2" class="container">
-            <ul class="tabContents nav nav-tabs">
+        <h4 style="font-size:22px;color:#49b181;">Dr.{{doctorName}}
+        <button type="button" ng-click="viewDoctorsSection()" class="doctorTimingsBtn pull-right btn">Doctor Timings</button>
+        <button type="button" ng-click="cancelBookingsModal()" data-toggle="modal" data-target="#myCancelBookingsModal" class="cancelBookingsBtn pull-right btn">Cancel Bookings</button>
+         </h4>
+        <h5><b> {{doctorSpecialization}}</b>
+        </h5>
+        <!-- <div id="exTab2" class="container"> -->
+        <div class="container">
+            <!-- <ul class="tabContents nav nav-tabs">
                 <li class="tabActive active">
                     <a href="javascript:void" style="font-size:16px;" data-toggle="tab">Patients</a>
                 </li>
                 <li><a href="javascript:void" style="font-size:16px;" data-toggle="tab">Doctor Scheduler</a>
                 </li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane active" id="1">
-                    <div class=" buttonsRow">
-                        <form class="form-inline">
-                            <div class="form-group">
-                                <button type="button" ng-click="cancelBookingsModal()" data-toggle="modal" data-target="#myCancelBookingsModal" class="cancelBookingsBtn pull-left btn">Cancel Bookings</button>
-                            </div>
-                            <div class="form-group pull-right">
-                                <button type="button" ng-click="viewDoctorsSection()" class="doctorTimingsBtn pull-right btn">Doctor Timings</button>
-                                <button type="button" class="addPatientBtn pull-right btn" data-toggle="modal" ng-click="patientSearch()" data-target="#myModal">Patient Search</button>
-                                <input ng-maxlength=10 numbers-only type="text" class="pull-right" id="inputPatientPhoneNumberSearch" ng-model="patientDataSearch.phoneNumberSearch" placeholder="Phone Number">
-                            </div>
-                        </form>
+            </ul> -->
+            <!-- <div class="tab-content">
+                <div class="tab-pane active" id="1"> -->
+            <div class=" buttonsRow">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <input ng-maxlength=10 numbers-only type="text" id="inputPatientPhoneNumberSearch" ng-model="patientDataSearch.phoneNumberSearch" placeholder="Phone Number">
+                        <button type="button" class="addPatientBtn btn" data-toggle="modal" ng-click="patientSearch()" data-target="#myModal">Patient Search</button>
                     </div>
-                    <div id="myCancelBookingsModal" class="modal fade" role="dialog">
-                        <div class="modal-dialog">
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Cancel Bookings</h4>
+                    <!-- <div class="form-group">
+                        <button type="button" ng-click="viewDoctorsSection()" class="doctorTimingsBtn btn">Doctor Timings</button>
+                        <button type="button" ng-click="cancelBookingsModal()" data-toggle="modal" data-target="#myCancelBookingsModal" class="cancelBookingsBtn btn">Cancel Bookings</button>
+                    </div> -->
+                </form>
+            </div>
+            <div id="myCancelBookingsModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Cancel Bookings</h4>
+                        </div>
+                        <div class="modal-body">
+                            <label for="exampleInputEmail2">Phone Number : </label>
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <input ng-model="cancelBook.phoneNumber" numbers-only type="text" class="form-control" id="exampleInputphoneNumberForCancelling" placeholder="Phone Number">
                                 </div>
-                                <div class="modal-body">
-                                    <label for="exampleInputEmail2">Phone Number : </label>
-                                    <form class="form-inline">
-                                        <div class="form-group">
-                                            <input ng-model="cancelBook.phoneNumber" numbers-only type="text" class="form-control" id="exampleInputphoneNumberForCancelling" placeholder="Phone Number">
-                                        </div>
-                                        <button type="submit" id="modalCancelBookingsSearchBtn" ng-click="cancelBookings()" class="btn">Search Bookings</button>
-                                    </form>
-                                    <hr>
-                                    <div ng-if="cancelAppointmentsTable">
-                                        <label>Slots : </label>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>S.No.</th>
-                                                    <th>Name</th>
-                                                    <th>Date</th>
-                                                    <th>Time</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr class="itemsAnimation" ng-repeat="booking in bookingsForCancelling">
-                                                    <td>{{$index+1}}</td>
-                                                    <td>{{booking.label}}</td>
-                                                    <td>{{booking.startTime | date:'dd/MM/yyyy'}}</td>
-                                                    <td>{{booking.startTime | date:"h:mm a"}}</td>
-                                                    <td>
-                                                        <button type="button" ng-click="cancelAppointmentBookingOfFutureDays(booking,$index)" class="btn cancelBookingsModalCloseBtn btn-xs">Cancel</button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
+                                <button type="submit" id="modalCancelBookingsSearchBtn" ng-click="cancelBookings()" class="btn">Search Bookings</button>
+                            </form>
+                            <hr>
+                            <div ng-if="cancelAppointmentsTable">
+                                <label>Slots : </label>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No.</th>
+                                            <th>Name</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="itemsAnimation" ng-repeat="booking in bookingsForCancelling">
+                                            <td>{{$index+1}}</td>
+                                            <td>{{booking.label}}</td>
+                                            <td>{{booking.startTime | date:'dd/MM/yyyy'}}</td>
+                                            <td>{{booking.startTime | date:"h:mm a"}}</td>
+                                            <td>
+                                                <button type="button" ng-click="cancelAppointmentBookingOfFutureDays(booking,$index)" class="btn cancelBookingsModalCloseBtn btn-xs">Cancel</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    </div>
-                    <div ng-show="doctorTimings" class="doctorTimings">
-                        <form class="form-inline">
-                            <div class="form-group sessionDateSelect">
-                                <p style="margin:0px 10px 0 0;" class="dataPara">
-                                    <label>Date:</label>
-                                    <input ng-model="dateSelected" type="text" id="sessionDatepicker">
-                                </p>
-                            </div>
-                            <div class="form-group">
-                                <p class="startTimeBox">
-                                    <label>Start Time:</label>
-                                    <input class="time ui-timepicker-input" ng-model="addTime.dayStartTime" type="text" id="timepicker">
-                                </p>
-                            </div>
-                            <div class="form-group">
-                                <p class="endTimeBox">
-                                    <label>End Time:</label>
-                                    <input class="time ui-timepicker-input" ng-model="addTime.dayEndTime" type="text" id="timepickerEndTime">
-                                </p>
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputEndTime">Step Size(in mins):</label>
-                                <input type="text" class="ui-timepicker-input time" ng-model="addTime.timePerPatient" class="form-control" id="exampleInputStepSize">
-                            </div>
-                            <button type="submit" ng-click="addTimingsBtn()" class="btn btn-default">Add Timings</button>
-                        </form>
-                    </div>
-                    <table class="patientsTable table">
-                        <thead class="thead-default">
-                            <tr class="patientsListHeaderRow">
-                                <th>S.No.</th>
-                                <th>Patient Name</th>
-                                <th>Entry Type</th>
-                                <th>Time</th>
-                                <th id="actions">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="patientRow" ng-repeat="patient in patientsList">
-                                <td>{{$index+1}}</td>
-                                <td>{{patient.label}}</td>
-                                <td>{{patient.calendarStatus}}</td>
-                                <td>{{patient.startTime | date:"h:mma"}}</td>
-                                <td id="actionsOnPatient">
-                                    <button class="btn checkin">Check-In</button>
-                                    <button data-toggle="modal" data-target="#myModal" ng-click="editDetailsOfPatient(patient.patientId)" class="btn btn-default neutral">Edit Details</button>
-                                    <button ng-click="cancelAppointment(patient,$index)" class="btn warning">Cancel Appointment</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <!-- Modal -->
-                    <div id="myModal" class="modal fade" role="dialog">
-                        <div class="modal-dialog">
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 style="color:black;" class="modal-title">Patient Details</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <!--  <div ng-if="viewDetailsLink" class="patient-form-group form-group">
-                                       <a class="viewDetailsLink" ng-click="viewDetails()" href="javascript:void">View/Hide Patient Details</a>
-                                       <hr>
-                                   </div> -->
-                                    <div ng-show="patientAvailable">
-                                        <form class="patient-form-inline form-inline">
-                                            <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
-                                                <span class="modalInfo">* Name </span>
-                                                <input type="text" class="modal-Form-control form-control" id="inputPatientFirstName" ng-model="patientData.firstName" placeholder="Name">
-                                            </div>
-                                            <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
-                                                <span class="modalInfo">Email Id</span>
-                                                <input type="text" class="modal-Form-control form-control" id="inputPatientEmailId" ng-model="patientData.emailId" placeholder="Email Id">
-                                            </div>
-                                            <div class="col-md-3 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
-                                                <span class="modalInfo">* Phone</span>
-                                                <input type="text" class="modal-Form-control form-control" id="inputPatientPhoneNumber" ng-model="patientData.phoneNumber" placeholder="Phone Number" readonly>
-                                            </div>
-                                        </form>
-                                        <hr>
-                                        <form class="patient-form-inline form-inline">
-                                            <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
-                                                <span class="modalInfo">Age</span>
-                                                <input type="text" class="modal-Form-control form-control" id="inputPatientAge" ng-model="patientData.age" placeholder="Age">
-                                            </div>
-                                            <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
-                                                <span class="modalInfo">Gender</span>
-                                                <select type="text" style="width:160px;" id="inputPatientGender" ng-model="patientData.gender" type="text" class="modal-Form-control form-control" id="patient-reg-bloodgrp">
-                                                    <option value="MALE">MALE</option>
-                                                    <option value="FEMALE">FEMALE</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
-                                                <span class="modalInfo">Blood Group</span>
-                                                <select style="width:160px;" ng-model="patientData.bloodGroup" type="text" class="form-control modal-Form-control" id="inputPatientBloodGroup" id="patient-reg-bloodgrp">
-                                                    <option value="O_POSITIVE">O_POSITIVE</option>
-                                                    <option value="O_NEGATIVE">O_NEGATIVE</option>
-                                                    <option value="A_POSITIVE">A_POSITIVE</option>
-                                                    <option value="A_NEGATIVE">A_NEGATIVE</option>
-                                                    <option value="B_POSITIVE">B_POSITIVE</option>
-                                                    <option value="B_NEGATIVE">B_NEGATIVE</option>
-                                                    <option value="AB_POSITIVE">AB_POSITIVE</option>
-                                                    <option value="AB_NEGATIVE">AB_NEGATIVE</option>
-                                                    <option value="OTHER">OTHER</option>
-                                                </select>
-                                            </div>
-                                        </form>
-                                        <form class="patient-form-inline form-inline">
-                                            <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
-                                                <span class="modalInfo">Address</span>
-                                                <input type="text" class="modal-Form-control form-control" id="inputPatientAddress" ng-model="patientData.city" placeholder="Address">
-                                            </div>
-                                            <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
-                                                <span class="modalInfo">Drug Allergy</span>
-                                                <input type="text" class="modal-Form-control form-control" id="inputPatientDrugAllergy" ng-model="patientData.drugAllergy" placeholder="Drug Allergy">
-                                            </div>
-                                        </form>
-                                        <hr>
-                                        <form class="patient-form-inline form-inline">
-                                            <div class="col-md-3 col-sm-4 col-xs-4 patientDetails patient-form-group form-group">
-                                                <span class="modalInfo">Weight</span>
-                                                <input type="text" style="width:160px;" class="modal-Form-control form-control" id="inputPatientWeight" ng-model="patientData.weight" placeholder="Weight">
-                                            </div>
-                                            <div class="col-md-4 col-sm-4 col-xs-4 patientDetails patient-form-group form-group">
-                                                <span class="modalInfo">Height</span>
-                                                <input type="text" style="width:160px;" class="modal-Form-control form-control" id="inputPatientHeight" ng-model="patientData.height" placeholder="Height">
-                                            </div>
-                                        </form>
-                                        <form class="patient-form-inline form-inline">
-                                            <div class="col-md-4 col-sm-4 col-xs-4 patientDetails patient-form-group form-group">
-                                                <span class="modalInfo">Pulse</span>
-                                                <input type="text" style="width:160px;" class="modal-Form-control form-control" id="inputPatientPulse" ng-model="patientData.pulse" placeholder="Pulse">
-                                            </div>
-                                            <div class="col-md-3 col-sm-4 col-xs-4 patientDetails patient-form-group form-group">
-                                                <span class="modalInfo">Blood Pressure</span>
-                                                <input type="text" class="modal-Form-control form-control" id="inputPatientBloodPressure" style="width:160px;" ng-model="patientData.bloodPressure" placeholder="B.P.">
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="nextForm" ng-show="nextForm">
-                                    <b id="bookAppointmentLabel">Book Appointment:</b>
-                                    <form class="patient-form-inline form-inline">
-                                        <div class="col-md-4 patient-form-group form-group">
-                                            <span class="modalInfo">Name</span>
-                                            <input type="text" class="modal-Form-control form-control" id="inputPatientNameInNextDiv" ng-model="patientDataInNextDiv.name" placeholder="Name">
-                                        </div>
-                                        <div class="col-md-4 patient-form-group form-group">
-                                            <span class="modalInfo">Entry Type</span>
-                                            <button ng-change="changeEntryTypeView()" id="entryTypeBtn" class="btn dropdown-toggle" ng-model="entryTypeSelected.value" type="button" data-toggle="dropdown">{{patientEntryType}}
-                                                <span class="caret"></span></button>
-                                            <ul class="dropdown-menu">
-                                                <li ng-repeat="option in entryType"><a ng-click="selectOption(option)">{{option}}</a></li>
-                                            </ul>
-                                        </div>
-                                    </form>
-                                    <form ng-show="dateSelectBox" class="patient-form-inline form-inline">
-                                        <div class="col-md-4 patient-form-group form-group">
-                                            <p class="modalInfo">Date:
-                                                <br>
-                                                <input readonly="readonly" ng-model="dateSelectedForBooking" ng-change="dateTimings()" class="modal-Form-control form-control datepicker" type="text" id="datepicker">
-                                            </p>
-                                        </div>
-                                    </form>
-                                    <div ng-if="sessionTypes" class="col-md-12">
-                                        <div class="btn-group">
-                                            <label class="btn btn-default" ng-model="radioModel" btn-radio="'morning'" id="morningLabel" ng-click="viewTime('morning')" uncheckable>Morning</label>
-                                            <label class="btn btn-default" ng-model="radioModel" btn-radio="'afternoon'" id="afternoonLabel" ng-click="viewTime('afternoon')" uncheckable>Afternoon</label>
-                                            <label class="btn btn-default" ng-model="radioModel" btn-radio="'evening'" id="eveningLabel" ng-click="viewTime('evening')" uncheckable>Evening</label>
-                                        </div>
-                                    </div>
-                                    <div class="timings" ng-if="morningTimings">
-                                        <span ng-repeat="element in morningArray" ng-attr-id="{{'morningArrayBtn'+$index}}" ng-attr-ng-disabled="{{'morningArrayBtnDisabled'+$index}}" class="btn morningTimingsArray buttonTimings" ng-class="{true:'activeButton'}[activeBtn == $index]" ng-click="selectButton(element.time,$index);">{{element.time | date:"h:mm a"}} ({{element.count}})</span>
-                                    </div>
-                                    <div class="timings" ng-if="afternoonTimings">
-                                        <span ng-repeat="element in afternoonArray" ng-attr-id="{{'afternoonArrayBtn'+$index}}" ng-attr-ng-disabled="{{'afternoonArrayBtnDisabled'+$index}}" class="btn afternoonTimingsArray buttonTimings" ng-class="{true:'activeButton'}[activeBtnAfternoon == $index]" ng-click="selectAfternoonButton(element.time,$index);">{{element.time | date:"h:mm a"}} ({{element.count}})</span>
-                                    </div>
-                                    <div class="timings" ng-if="eveningTimings">
-                                        <span ng-repeat="element in eveningArray" ng-attr-id="{{'eveningArrayBtn'+$index}}" ng-attr-ng-disabled="{{'eveningArrayBtnDisabled'+$index}}" class="btn eveningTimingsArray buttonTimings" ng-class="{true:'activeButton'}[activeBtnEvening == $index]" ng-click="selectEveningButton(element.time,$index);">{{element.time | date:"h:mm a"}} ({{element.count}})</span>
-                                    </div>
-                                </div>
-                                <div class="row modal-footer" style="margin-top:100px;border-top:0px;">
-                                    <button ng-disabled="nextBtn" type="submit" ng-click="bookSlot()" class="btn btn-primary" data-dismiss="modal">Book</button>
-                                    <button id="modalSubmitBtn" ng-disabled="addPatientBtn" type="submit" ng-click="addPatient()" class="btn btn-primary">{{modalSubmitButtonText}}</button>
-                                    <button type="button" ng-click="close()" style="margin-right:10px;" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane" id="2">
+            </div>
+            <div ng-show="doctorTimings" class="doctorTimings">
+                <form class="form-inline">
+                    <div class="form-group sessionDateSelect">
+                        <p style="margin:0px 10px 0 0;" class="dataPara">
+                            <label>Date:</label>
+                            <input ng-model="dateSelected" type="text" id="sessionDatepicker">
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <p class="startTimeBox">
+                            <label>Start Time:</label>
+                            <input class="time ui-timepicker-input" ng-model="addTime.dayStartTime" type="text" id="timepicker">
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <p class="endTimeBox">
+                            <label>End Time:</label>
+                            <input class="time ui-timepicker-input" ng-model="addTime.dayEndTime" type="text" id="timepickerEndTime">
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEndTime">Step Size(in mins):</label>
+                        <input type="text" class="ui-timepicker-input time" ng-model="addTime.timePerPatient" class="form-control" id="exampleInputStepSize">
+                    </div>
+                    <button type="submit" ng-click="addTimingsBtn()" class="btn btn-default">Add Timings</button>
+                </form>
+            </div>
+            <table class="patientsTable table">
+                <thead class="thead-default">
+                    <tr class="patientsListHeaderRow">
+                        <th>S.No.</th>
+                        <th>Patient Name</th>
+                        <th>Entry Type</th>
+                        <th>Time</th>
+                        <th id="actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="patientRow" ng-repeat="patient in patientsList">
+                        <td>{{$index+1}}</td>
+                        <td>{{patient.label}}</td>
+                        <td>{{patient.calendarStatus}}</td>
+                        <td>{{patient.startTime | date:"h:mma"}}</td>
+                        <td id="actionsOnPatient">
+                            <button class="btn checkin">Check-In</button>
+                            <button data-toggle="modal" data-target="#myModal" ng-click="editDetailsOfPatient(patient.patientId)" class="btn btn-default neutral">Edit Details</button>
+                            <button ng-click="cancelAppointment(patient,$index)" class="btn warning">Cancel Appointment</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 style="color:black;" class="modal-title">Patient Details</h4>
+                        </div>
+                        <div class="modal-body">
+                            <!--  <div ng-if="viewDetailsLink" class="patient-form-group form-group">
+                                       <a class="viewDetailsLink" ng-click="viewDetails()" href="javascript:void">View/Hide Patient Details</a>
+                                       <hr>
+                                   </div> -->
+                            <div ng-show="patientAvailable">
+                                <form class="patient-form-inline form-inline">
+                                    <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
+                                        <span class="modalInfo">* Name </span>
+                                        <input type="text" class="modal-Form-control form-control" id="inputPatientFirstName" ng-model="patientData.firstName" placeholder="Name">
+                                    </div>
+                                    <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
+                                        <span class="modalInfo">Email Id</span>
+                                        <input type="text" class="modal-Form-control form-control" id="inputPatientEmailId" ng-model="patientData.emailId" placeholder="Email Id">
+                                    </div>
+                                    <div class="col-md-3 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
+                                        <span class="modalInfo">* Phone</span>
+                                        <input type="text" class="modal-Form-control form-control" id="inputPatientPhoneNumber" ng-model="patientData.phoneNumber" placeholder="Phone Number" readonly>
+                                    </div>
+                                </form>
+                                <hr>
+                                <form class="patient-form-inline form-inline">
+                                    <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
+                                        <span class="modalInfo">Age</span>
+                                        <input type="text" class="modal-Form-control form-control" id="inputPatientAge" ng-model="patientData.age" placeholder="Age">
+                                    </div>
+                                    <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
+                                        <span class="modalInfo">Gender</span>
+                                        <select type="text" style="width:160px;" id="inputPatientGender" ng-model="patientData.gender" type="text" class="modal-Form-control form-control" id="patient-reg-bloodgrp">
+                                            <option value="MALE">MALE</option>
+                                            <option value="FEMALE">FEMALE</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
+                                        <span class="modalInfo">Blood Group</span>
+                                        <select style="width:160px;" ng-model="patientData.bloodGroup" type="text" class="form-control modal-Form-control" id="inputPatientBloodGroup" id="patient-reg-bloodgrp">
+                                            <option value="O_POSITIVE">O_POSITIVE</option>
+                                            <option value="O_NEGATIVE">O_NEGATIVE</option>
+                                            <option value="A_POSITIVE">A_POSITIVE</option>
+                                            <option value="A_NEGATIVE">A_NEGATIVE</option>
+                                            <option value="B_POSITIVE">B_POSITIVE</option>
+                                            <option value="B_NEGATIVE">B_NEGATIVE</option>
+                                            <option value="AB_POSITIVE">AB_POSITIVE</option>
+                                            <option value="AB_NEGATIVE">AB_NEGATIVE</option>
+                                            <option value="OTHER">OTHER</option>
+                                        </select>
+                                    </div>
+                                </form>
+                                <form class="patient-form-inline form-inline">
+                                    <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
+                                        <span class="modalInfo">Address</span>
+                                        <input type="text" class="modal-Form-control form-control" id="inputPatientAddress" ng-model="patientData.city" placeholder="Address">
+                                    </div>
+                                    <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
+                                        <span class="modalInfo">Drug Allergy</span>
+                                        <input type="text" class="modal-Form-control form-control" id="inputPatientDrugAllergy" ng-model="patientData.drugAllergy" placeholder="Drug Allergy">
+                                    </div>
+                                </form>
+                                <hr>
+                                <form class="patient-form-inline form-inline">
+                                    <div class="col-md-3 col-sm-4 col-xs-4 patientDetails patient-form-group form-group">
+                                        <span class="modalInfo">Weight</span>
+                                        <input type="text" style="width:160px;" class="modal-Form-control form-control" id="inputPatientWeight" ng-model="patientData.weight" placeholder="Weight">
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4 patientDetails patient-form-group form-group">
+                                        <span class="modalInfo">Height</span>
+                                        <input type="text" style="width:160px;" class="modal-Form-control form-control" id="inputPatientHeight" ng-model="patientData.height" placeholder="Height">
+                                    </div>
+                                </form>
+                                <form class="patient-form-inline form-inline">
+                                    <div class="col-md-4 col-sm-4 col-xs-4 patientDetails patient-form-group form-group">
+                                        <span class="modalInfo">Pulse</span>
+                                        <input type="text" style="width:160px;" class="modal-Form-control form-control" id="inputPatientPulse" ng-model="patientData.pulse" placeholder="Pulse">
+                                    </div>
+                                    <div class="col-md-3 col-sm-4 col-xs-4 patientDetails patient-form-group form-group">
+                                        <span class="modalInfo">Blood Pressure</span>
+                                        <input type="text" class="modal-Form-control form-control" id="inputPatientBloodPressure" style="width:160px;" ng-model="patientData.bloodPressure" placeholder="B.P.">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="nextForm" ng-show="nextForm">
+                            <b id="bookAppointmentLabel">Book Appointment:</b>
+                            <form class="patient-form-inline form-inline">
+                                <div class="col-md-4 patient-form-group form-group">
+                                    <span class="modalInfo">Name</span>
+                                    <input type="text" class="modal-Form-control form-control" id="inputPatientNameInNextDiv" ng-model="patientDataInNextDiv.name" placeholder="Name">
+                                </div>
+                                <div class="col-md-4 patient-form-group form-group">
+                                    <span class="modalInfo">Entry Type</span>
+                                    <button ng-change="changeEntryTypeView()" id="entryTypeBtn" class="btn dropdown-toggle" ng-model="entryTypeSelected.value" type="button" data-toggle="dropdown">{{patientEntryType}}
+                                        <span class="caret"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li ng-repeat="option in entryType"><a ng-click="selectOption(option)">{{option}}</a></li>
+                                    </ul>
+                                </div>
+                            </form>
+                            <form ng-show="dateSelectBox" class="patient-form-inline form-inline">
+                                <div class="col-md-4 patient-form-group form-group">
+                                    <p class="modalInfo">Date:
+                                        <br>
+                                        <input readonly="readonly" ng-model="dateSelectedForBooking" ng-change="dateTimings()" class="modal-Form-control form-control datepicker" type="text" id="datepicker">
+                                    </p>
+                                </div>
+                            </form>
+                            <div ng-if="sessionTypes" class="col-md-12">
+                                <div class="btn-group">
+                                    <label class="btn btn-default" ng-model="radioModel" btn-radio="'morning'" id="morningLabel" ng-click="viewTime('morning')" uncheckable>Morning</label>
+                                    <label class="btn btn-default" ng-model="radioModel" btn-radio="'afternoon'" id="afternoonLabel" ng-click="viewTime('afternoon')" uncheckable>Afternoon</label>
+                                    <label class="btn btn-default" ng-model="radioModel" btn-radio="'evening'" id="eveningLabel" ng-click="viewTime('evening')" uncheckable>Evening</label>
+                                </div>
+                            </div>
+                            <div class="timings" ng-if="morningTimings">
+                                <span ng-repeat="element in morningArray" ng-attr-id="{{'morningArrayBtn'+$index}}" ng-attr-ng-disabled="{{'morningArrayBtnDisabled'+$index}}" class="btn morningTimingsArray buttonTimings" ng-class="{true:'activeButton'}[activeBtn == $index]" ng-click="selectButton(element.time,$index);">{{element.time | date:"h:mm a"}} ({{element.count}})</span>
+                            </div>
+                            <div class="timings" ng-if="afternoonTimings">
+                                <span ng-repeat="element in afternoonArray" ng-attr-id="{{'afternoonArrayBtn'+$index}}" ng-attr-ng-disabled="{{'afternoonArrayBtnDisabled'+$index}}" class="btn afternoonTimingsArray buttonTimings" ng-class="{true:'activeButton'}[activeBtnAfternoon == $index]" ng-click="selectAfternoonButton(element.time,$index);">{{element.time | date:"h:mm a"}} ({{element.count}})</span>
+                            </div>
+                            <div class="timings" ng-if="eveningTimings">
+                                <span ng-repeat="element in eveningArray" ng-attr-id="{{'eveningArrayBtn'+$index}}" ng-attr-ng-disabled="{{'eveningArrayBtnDisabled'+$index}}" class="btn eveningTimingsArray buttonTimings" ng-class="{true:'activeButton'}[activeBtnEvening == $index]" ng-click="selectEveningButton(element.time,$index);">{{element.time | date:"h:mm a"}} ({{element.count}})</span>
+                            </div>
+                        </div>
+                        <div class="row modal-footer" style="margin-top:100px;border-top:0px;">
+                            <button ng-disabled="nextBtn" type="submit" ng-click="bookSlot()" class="btn btn-primary" data-dismiss="modal">Book</button>
+                            <button id="modalSubmitBtn" ng-disabled="addPatientBtn" type="submit" ng-click="addPatient()" class="btn btn-primary">{{modalSubmitButtonText}}</button>
+                            <button type="button" ng-click="close()" style="margin-right:10px;" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- </div> -->
+            <!-- <div class="tab-pane" id="2">
                     <section class="content-header">
                         <div class="col-md-14">
                             <div style="border-top:0px solid white;" class="box">
@@ -285,8 +290,8 @@
                             </div>
                         </div>
                         <h1>
-                Calendar
-              </h1>
+                            Calendar
+                        </h1>
                         <section class="content">
                             <div class="row">
                                 <div class="col-md-3">
@@ -295,7 +300,7 @@
                                             <h4 class="box-title">Draggable Events</h4>
                                         </div>
                                         <div class="box-body">
-                                            <!-- the events -->
+                                            the events
                                             <div id="external-events">
                                                 <div class="external-event bg-green">Lunch</div>
                                                 <div class="external-event bg-yellow">Home</div>
@@ -306,9 +311,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- /.box-body -->
+                                        /.box-body
                                     </div>
-                                    <!-- /. box -->
+                                    /. box
                                     <div class="box box-solid">
                                         <div class="box-header with-border">
                                             <h3 class="box-title">Create Event</h3>
@@ -331,38 +336,38 @@
                                                     <li><a class="text-navy" href="javascript:void"><i class="fa fa-square"></i></a></li>
                                                 </ul>
                                             </div>
-                                            <!-- /btn-group -->
+                                            /btn-group
                                             <div class="input-group">
                                                 <input id="new-event" type="text" class="form-control" placeholder="Event Title">
                                                 <div class="input-group-btn">
                                                     <button id="add-new-event" type="button" class="btn btn-primary btn-flat">Add</button>
                                                 </div>
-                                                <!-- /btn-group -->
+                                                /btn-group
                                             </div>
-                                            <!-- /input-group -->
+                                            /input-group
                                         </div>
                                     </div>
                                 </div>
-                                <!-- /.col -->
+                                /.col
                                 <div class="col-md-9">
                                     <div class="box box-primary">
                                         <div class="box-body no-padding">
-                                            <!-- THE CALENDAR -->
+                                            THE CALENDAR
                                             <div id="calendar"></div>
                                         </div>
-                                        <!-- /.box-body -->
+                                        /.box-body
                                     </div>
-                                    <!-- /. box -->
+                                    /. box
                                 </div>
-                                <!-- /.col -->
+                                /.col
                             </div>
-                            <!-- /.row -->
+                            /.row
                         </section>
                     </section>
-                </div>
-            </div>
+                </div> -->
         </div>
     </div>
+</div>
 </div>
 <script>
 $(function() {
