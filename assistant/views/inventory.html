@@ -148,7 +148,7 @@
                     </tr>
                 </thead>
                 <tbody id="itemsBody">
-                    <tr ng-repeat="item in inventory.itemsDisplayArray">
+                    <tr ng-class="itemsAnimation" ng-repeat="item in inventory.itemsDisplayArray">
                         <td ng-bind="item.itemName | uppercase"></td>
                         <td ng-bind="item.itemCode"></td>
                         <td ng-bind="item.itemType"></td>

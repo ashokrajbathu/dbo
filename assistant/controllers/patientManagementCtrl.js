@@ -145,6 +145,9 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         }
     }, function(error) {
         console.log("doctors error response", error);
+        localStorage.clear();
+        localStorage.setItem("isLoggedInAssistant", "false");
+        $state.go('login');
     });
 
     $scope.cancelBookingsModal = function() {

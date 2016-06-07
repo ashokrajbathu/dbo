@@ -24,9 +24,9 @@
                             </form>
                         </div>
                         <a style="cursor:pointer;" ng-click="billView.bill.patientSearchPatients=!billView.bill.patientSearchPatients" class="pull-right" ng-if="billView.bill.viewOrHide">View/Hide Patients</a>
-                        <div ng-if="billView.bill.patientSearchPatients">
+                        <div class="animate-if" ng-if="billView.bill.patientSearchPatients">
                             <p>Patients:</p>
-                            <div ng-repeat="patient in billView.bill.patientsListOfThatNumber">
+                            <div class="itemsAnimation" ng-repeat="patient in billView.bill.patientsListOfThatNumber">
                                 <input class="radiosInPatientSearch" type="radio" name="patients" ng-click="billView.updateBillForm(patient,$index)" ng-checked="{{'radio'+$index}}" ng-attr-value="{{patient.firstName}}" ng-attr-id="{{'patient'+$index}}">{{patient.firstName}}
                             </div>
                         </div>
@@ -234,7 +234,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-switch-default ng-repeat="billEle in billView.bill.billsListing">
+                                        <tr class="itemsAnimation" ng-switch-default ng-repeat="billEle in billView.bill.billsListing">
                                             <td ng-bind="billEle.itemName"></td>
                                             <td ng-bind="billEle.dueDate | longDateIntoReadableDate"></td>
                                             <td>

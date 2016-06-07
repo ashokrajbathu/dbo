@@ -1,0 +1,16 @@
+#myTemplatesHeader {
+    color: black;
+    font-size: 20px;
+}
+
+#myPrescriptionsBody {
+    background-color: white;
+}
+
+.activeTemplate {
+    background-color: white;
+}
+
+#addImageHeading {
+    margin-left: 2px;
+}

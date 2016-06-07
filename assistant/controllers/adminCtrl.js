@@ -81,6 +81,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
         if (serviceSelected.name == "Others") {
             $log.log("in others---");
             adminElement.admin.procedureName = true;
+            adminElement.admin.procedureNameTxtBox = "";
         } else {
             adminElement.admin.procedureName = false;
         }

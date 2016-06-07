@@ -128,6 +128,7 @@
                     <li><a href="myPatients.html"><i class="fa fa-link"></i> <span>My Patients</span></a></li>
                     <li><a href="myScheduler.html"><i class="fa fa-link"></i> <span>My Scheduler</span></a></li>
                     <li><a href="referADoctor.html"><i class="fa fa-link"></i> <span>Refer dbotica</span></a></li>
+                    <li><a href="settings.html"><i class="fa fa-link"></i> <span>Settings</span></a></li>
                     <!--  <li class="active"><a href="../forms/PatientSearch.html"><i class="fa fa-link"></i> <span>Patient Search</span></a></li>  -->
                     <li class="treeview">
                         <!--  <a href="../tables/data.html"><i class="fa fa-link"></i> <span>Drug database</span> <i class="fa fa-angle-left pull-right"></i></a> -->
@@ -1291,11 +1292,11 @@
 
     });*/
 
-   var doctorCredits= localStorage.getItem('creditsOfDoctor');
+    var doctorCredits = localStorage.getItem('creditsOfDoctor');
 
     if (doctorCredits != "" && doctorCredits != null) {
-            $('#creditsInSideBar').text(doctorCredits);
-        }
+        $('#creditsInSideBar').text(doctorCredits);
+    }
 
     $('#prescription-form-drug').autocomplete({
         source: function(request, callback) {

@@ -26,8 +26,8 @@
                             </div>
                         </div>
                     </div>
-                    <div ng-if="adminView.admin.procedureName" class="form-group adminEntity">
-                        <input type="text" class="form-control" ng-model="adminView.admin.procedureNameTxtBox" placeholder="Name" id="exampleInputProcedureName">
+                    <div ng-if="adminView.admin.procedureName" class="form-group animate-if adminEntity">
+                        <input type="text" class="form-control procedureNameTxtBox" ng-model="adminView.admin.procedureNameTxtBox" placeholder="Name" id="exampleInputProcedureName">
                     </div>
                     <div class="form-group adminEntity">
                         <input type="text" class="form-control" valid-number ng-model="adminView.admin.procedureCostTextBox" placeholder="Cost" id="exampleInputCostAdmin">
@@ -48,7 +48,7 @@
                         </tr>
                     </thead>
                     <tbody class="tableInAdminBody">
-                        <tr ng-repeat="doctorService in adminView.admin.servicesListOfTheDoctor">
+                        <tr class="itemsAnimation" ng-repeat="doctorService in adminView.admin.servicesListOfTheDoctor">
                             <td ng-bind="$index+1"></td>
                             <td ng-bind="doctorService.billingName"></td>
                             <td ng-bind="doctorService.price/100"></td>

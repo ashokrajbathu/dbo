@@ -23,10 +23,10 @@
                     <li ng-class="{'activeSectionBlack':isAdminBlack,'activeSectionBlue':isAdminBlue}" ng-click="activeSectionBackGroundToggle('admin')" ui-sref=".admin"><a style="color:white;" class="navbarLinks">Admin</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a style="color:white;" ng-click="logoutFromAssistant()" href="javascript:void">Logout</a></li>
+                    <li><a style="color:white;cursor:pointer;" ng-click="logoutFromAssistant()">Logout</a></li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
-<div ui-view autoscroll="false"></div>
+<div class="uiViewAnimation" ui-view autoscroll="false"></div>

@@ -126,13 +126,25 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
                             }, function() {});
                             break;
                         case "USER_ALREADY_LOGGED_IN":
-                            /*localStorage.setItem('assistantCurrentlyLoggedIn', currentAssistantObject);*/
                             var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
                             var assistantObj = $.parseJSON(loggedInAss);
-                            var organizationIdActive = assistantObj.organizationId;
-                            localStorage.setItem('orgId', organizationIdActive);
-                            $state.go('home');
-                            break;
+                            $log.log("assis obj is----", assistantObj);
+                            if (assistantObj !== null) {
+                                var organizationIdActive = assistantObj.organizationId;
+                                localStorage.setItem('orgId', organizationIdActive);
+                                $state.go('home');
+                                break;
+                            } else {
+                                var logoutPromise = {};
+                                logoutPromise = dboticaServices.logout();
+                                logoutPromise.then(function(response) {
+                                    localStorage.clear();
+                                    localStorage.setItem("isLoggedInAssistant", "false");
+                                    loginIntoAssistant();
+                                }, function(errorResponse) {
+                                    $log.log("in error response of logout in home page");
+                                });
+                            }
                     }
                 } else {
                     localStorage.setItem('assistantCurrentlyLoggedIn', currentAssistantObject);

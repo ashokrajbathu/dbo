@@ -5,7 +5,7 @@
             <hr class="asideHr">
             <ul class="docList nav">
                 <li data-toggle="tab" id="menu_text" ng-repeat="doctor in doctorsList" ng-click="doctorSelected(doctor)">
-                    <a class="docLinks" style="color:#00bd9c;" href="javascript:void">{{doctor.firstName}} {{doctor.lastName}}<br>{{doctor.speciality}}</a>
+                    <a class="docLinks itemsAnimation" style="color:#00bd9c;" href="javascript:void">{{doctor.firstName}} {{doctor.lastName}}<br>{{doctor.speciality}}</a>
                     <hr class="doctorLine">
                 </li>
             </ul>
@@ -66,7 +66,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="booking in bookingsForCancelling">
+                                                <tr class="itemsAnimation" ng-repeat="booking in bookingsForCancelling">
                                                     <td>{{$index+1}}</td>
                                                     <td>{{booking.label}}</td>
                                                     <td>{{booking.startTime | date:'dd/MM/yyyy'}}</td>
