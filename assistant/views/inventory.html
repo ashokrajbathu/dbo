@@ -1,6 +1,7 @@
 <div ng-controller="inventoryCtrl as inventory" ng-cloak>
     <div class="inventory" ng-cloak>
         <div class="container-fluid">
+            <img class="spinner" src="css/images/default (2).gif" ng-show="inventory.loading"></img>
             <div class="inventoryHeader row">
                 <h3 class="inventoryHeaderHeading">Inventory</h3>
                 <form class="form-inline inventoryButtonsGrp clearfix">

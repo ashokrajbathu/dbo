@@ -20,6 +20,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
     var itemSelected;
     itemInfoElement.batches = {};
     var batchesInfo = [];
+    itemInfoElement.loading = false;
     itemInfoElement.warningMessageItemInfo = false;
     itemInfoElement.addBatchInItemInfo = {};
     itemInfoElement.informationOfBatches = [];
@@ -38,6 +39,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
 
     var promise = dboticaServices.getAllBatches(currentItemId, organizationId);
     promise.then(function(response) {
+        itemInfoElement.loading = true;
         var batchesInfo = $.parseJSON(response.data.response);
         $log.log("batches info is-----", batchesInfo);
         itemInfoElement.inventoryItem = batchesInfo.inventoryItem;
@@ -73,7 +75,9 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
         $log.log("batches in scope are----", itemInfoElement.informationOfBatches);
         $log.log("inventory item is----", itemInfoElement.inventoryItem);
         $log.log("batches information is----", batchesInfo);
+        itemInfoElement.loading = false;
     }, function(errorResponse) {
+        itemInfoElement.loading = true;
         $log.log("in items info error response");
 
     });
@@ -98,6 +102,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             $log.log("request entity is---", requestEntity);
             var promise = dboticaServices.updateTheBatch(requestEntity);
             promise.then(function(response) {
+                itemInfoElement.loading = true;
                 $log.log("response after updating is----", response);
                 var updatedBatchInfo = $.parseJSON(response.data.response);
                 for (var itemBatchIndex = 0; itemBatchIndex < itemInfoElement.informationOfBatches.length; itemBatchIndex++) {
@@ -119,7 +124,9 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                     }
                 }
                 $log.log("updated batch is-----", updatedBatchInfo);
+                itemInfoElement.loading = false;
             }, function(errorResponse) {
+                itemInfoElement.loading = true;
                 $log.log("in error response of update batch");
             });
         } else {
@@ -158,6 +165,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             $log.log("added batch is----", requestEntity);
             var promise = dboticaServices.addBatchToTheDrug(requestEntity);
             promise.then(function(response) {
+                itemInfoElement.loading = true;
                 var success = response.data.success;
                 if (success) {
                     swal({
@@ -182,8 +190,9 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                 newObject.expiredUnits = 0;
                 itemInfoElement.informationOfBatches.push(newObject);
                 $log.log("array after adding batch is-----", itemInfoElement.informationOfBatches);
+                itemInfoElement.loading = false;
             }, function(errorResponse) {
-
+                itemInfoElement.loading = true;
             });
         }
 

@@ -21,7 +21,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
         autoclose: true
 
     });
-
+    invoiceElement.loading = false;
     invoiceElement.name = "Invoice History";
     invoiceElement.searchTypes = ['Phone Number', 'Bill Number', 'Date', 'Doctor', 'Next Due Date'];
     invoiceElement.searchBox = true;
@@ -49,6 +49,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
     dboticaServices.setInvoice(invoiceActive);
 
     doctorsOfThatAssistantForInvoices.then(function(doctorsSuccessResponse) {
+        invoiceElement.loading = true;
         var errorCode = doctorsSuccessResponse.data.errorCode;
         if (!!errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
@@ -56,12 +57,14 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
             invoiceElement.doctorsList = $.parseJSON(doctorsSuccessResponse.data.response);
             doctorActiveId = invoiceElement.doctorsList[0].id;
         }
+        invoiceElement.loading = false;
     }, function(doctorsErrorResponse) {
-
+        invoiceElement.loading = true;
     });
 
     var invoiceHistoryPromise = dboticaServices.getInvoiceHistoryOnLoad(organizationId);
     invoiceHistoryPromise.then(function(invoiceSuccessResponse) {
+        invoiceElement.loading = true;
         var errorCode = invoiceSuccessResponse.data.errorCode;
         if (!!errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
@@ -70,10 +73,12 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
             angular.copy(invoiceHistoryArray, invoiceElement.invoiceGlobal.invoiceHistoryList);
             $log.log("invoice success response is----", invoiceHistoryArray);
         }
+        invoiceElement.loading = false;
     }, function(invoiceErrorResponse) {
+        invoiceElement.loading = true;
         $log.log("invoice error response");
     });
-    
+
     function selectSearchType(search) {
         invoiceElement.searchSelected = search;
         switch (search) {
@@ -159,12 +164,14 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
                 break;
         }
         searchResultPromise.then(function(searchInvoiceSuccess) {
+            invoiceElement.loading = true;
             $log.log("search success invoice is----", searchInvoiceSuccess);
             var invoicesListOnSuccess = $.parseJSON(searchInvoiceSuccess.data.response);
             displayInvoicesInTheTable(invoicesListOnSuccess);
             $log.log("invoices list is-----", invoicesListOnSuccess);
+            invoiceElement.loading = false;
         }, function(searchInvoiceError) {
-
+            invoiceElement.loading = true;
         });
     }
 
@@ -178,6 +185,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
             var viewAllInvoicesPromise = dboticaServices.getInvoiceHistoryOnLoad(organizationId);
             $log.log("view all invoices is----", viewAllInvoicesPromise);
             viewAllInvoicesPromise.then(function(viewAllInvoicesSuccess) {
+                invoiceElement.loading = true;
                 var errorCode = viewAllInvoicesSuccess.data.errorCode;
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
@@ -185,7 +193,10 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
                     var viewAllInvoicesList = $.parseJSON(viewAllInvoicesSuccess.data.response);
                     displayInvoicesInTheTable(viewAllInvoicesList);
                 }
-            }, function(viewAllInvoicesError) {});
+                invoiceElement.loading = false;
+            }, function(viewAllInvoicesError) {
+                invoiceElement.loading = true;
+            });
         }
     }
 
@@ -198,6 +209,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
             invoiceElement.isAllBlueActive = true;
             var viewPendingInvoicesPromise = dboticaServices.getPendingInvoices(organizationId);
             viewPendingInvoicesPromise.then(function(pendingInvoicesSuccess) {
+                invoiceElement.loading = true;
                 $log.log("penting success response is----", pendingInvoicesSuccess);
                 var errorCode = pendingInvoicesSuccess.data.errorCode;
                 if (!!errorCode) {
@@ -207,7 +219,10 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
                     $log.log("pending list is-----", viewPendingInvoicesList);
                     displayInvoicesInTheTable(viewPendingInvoicesList);
                 }
-            }, function(pendingInvoicesError) {});
+                invoiceElement.loading = false;
+            }, function(pendingInvoicesError) {
+                invoiceElement.loading = true;
+            });
         }
     }
 

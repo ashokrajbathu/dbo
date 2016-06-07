@@ -1,5 +1,6 @@
 <div ng-controller="itemInfoCtrl as itemInfo" ng-cloak>
     <h3 id="itemInfoHeader">Item Details</h3>
+    <img class="spinner" src="css/images/default (2).gif" ng-show="itemInfo.loading"></img>
     <button id="addBatchInItem" type="button" class="pull-right btn batchUpdateBtns" data-toggle="modal" data-target="#myModal">Add Batch</button>
     <button ng-click="itemInfo.backToItems()" class="pull-right btn batchUpdateBtns viewItemsBtn">Back To Items</button>
     <div id="myModal" class="modal fade" role="dialog">

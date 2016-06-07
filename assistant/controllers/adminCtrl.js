@@ -9,6 +9,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     adminElement.btnActiveInServicesTable = btnActiveInServicesTable;
 
     adminElement.admin = {};
+    adminElement.loading = false;
     adminElement.admin.procedureName = false;
     adminElement.admin.doctorInDropdown;
     adminElement.admin.doctorActive;
@@ -35,6 +36,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
 
     var doctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
     doctorsOfThatAssistant.then(function(response) {
+        adminElement.loading = true;
         var errorCode = response.data.errorCode;
         if (!!errorCode) {
             switch (errorCode) {
@@ -70,7 +72,9 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             }
             $log.log("docs list is----", adminElement.doctorsListInAdmin);
         }
+        adminElement.loading = false;
     }, function(errorResponse) {
+        adminElement.loading = true;
         $log.log("in error response of getting doctors");
     });
 
@@ -97,6 +101,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             adminElement.admin.doctorInDropdown = doctor.firstName + doctor.lastName;
             var getTestsPromise = dboticaServices.getTests();
             getTestsPromise.then(function(getTestsSuccessResponse) {
+                adminElement.loading = true;
                 $log.log("get tests success is-----", getTestsSuccessResponse);
                 getTestsSuccess = $.parseJSON(getTestsSuccessResponse.data.response);
                 for (test in getTestsSuccess) {
@@ -110,8 +115,9 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 }
                 $log.log("table array is----", getTestsSuccess);
                 angular.copy(getTestsSuccess, adminElement.admin.servicesListOfTheDoctor);
+                adminElement.loading = false;
             }, function(getTestsErrorResponse) {
-
+                adminElement.loading = true;
             });
             adminElement.admin.servicesListOfTheDoctor = [];
         } else {
@@ -149,7 +155,11 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     function submitServiceRequest() {
         var serviceRequestEntity = {};
         var testObject = {};
-        serviceRequestEntity.doctorId = adminElement.admin.doctorActive.id;
+        if (adminElement.admin.doctorInDropdown == general) {
+            serviceRequestEntity.doctorId = "";
+        } else {
+            serviceRequestEntity.doctorId = adminElement.admin.doctorActive.id;
+        }
         serviceRequestEntity.doctorPriceInfos = [];
         $log.log("cost is---" + adminElement.admin.procedureCostTextBox);
         $log.log("remark is----" + adminElement.admin.procedureRemarksTextBox);
@@ -199,6 +209,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             if (adminElement.admin.doctorInDropdown == general) {
                 var submitTestRequestPromise = dboticaServices.submitTestRequest(testObject);
                 submitTestRequestPromise.then(function(testRequestSuccessResponse) {
+                    adminElement.loading = true;
                     $log.log("test success is----", testRequestSuccessResponse);
                     var errorCode = testRequestSuccessResponse.data.errorCode;
                     var success = testRequestSuccessResponse.data.success;
@@ -225,12 +236,15 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                             adminElement.admin.procedureNameTxtBox = "";
                         }
                     }
+                    adminElement.loading = false;
                 }, function(testRequestErrorResponse) {
+                    adminElement.loading = true;
                     $log.log("in error response of submit test request promise----");
                 });
             } else {
                 var submitServiceRequestPromise = dboticaServices.submitServiceRequest(serviceRequestEntity);
                 submitServiceRequestPromise.then(function(successResponseOfServiceRequest) {
+                    adminElement.loading = true;
                     if (successResponseOfServiceRequest.data.success === true && successResponseOfServiceRequest.data.errorCode === null) {
                         var updatedDoctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
                         updatedDoctorsOfThatAssistant.then(function(successResponse) {
@@ -250,7 +264,9 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                     adminElement.admin.procedureCostTextBox = "";
                     adminElement.admin.procedureRemarksTextBox = "";
                     adminElement.admin.serviceInDropDown = selectService;
+                    adminElement.loading = false;
                 }, function(errorResponseOfServiceRequest) {
+                    adminElement.loading = true;
                     $log.log("in error response of submit service request---");
                 });
             }
@@ -286,13 +302,17 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             }
             var submitTestStatePromise = dboticaServices.submitTestRequest(changeTestStateRequestEntity);
             submitTestStatePromise.then(function(submitTestStateChangeSuccess) {
+                adminElement.loading = true;
                 var successtestStateChange = $.parseJSON(submitTestStateChangeSuccess.data.response);
                 $log.log("success state change is----", successtestStateChange);
                 if (submitTestStateChangeSuccess.data.success === true && submitTestStateChangeSuccess.data.errorCode === null) {
                     $log.log("in ste----");
                     doctorService.state = successtestStateChange.state;
                 }
-            }, function(submitTestStateChangeError) {});
+                adminElement.loading = false;
+            }, function(submitTestStateChangeError) {
+                adminElement.loading = true;
+            });
 
         } else {
             changeStateRequestEntity.doctorId = adminElement.admin.doctorActive.id;
@@ -321,6 +341,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             $log.log("req entity is---", changeStateRequestEntity);
             var changeServiceStateRequestPromise = dboticaServices.submitServiceRequest(changeStateRequestEntity);
             changeServiceStateRequestPromise.then(function(successResponseOfChangeStateRequest) {
+                adminElement.loading = true;
                 if (successResponseOfChangeStateRequest.data.success === true && successResponseOfChangeStateRequest.data.errorCode === null) {
                     var updatedDoctors = dboticaServices.doctorsOfAssistant();
                     updatedDoctors.then(function(successResponse) {
@@ -330,7 +351,9 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                         $log.log("in error response of updated Doctors Response");
                     });
                 }
+                adminElement.loading = false;
             }, function(changeStateRequestErrorResponse) {
+                adminElement.loading = true;
                 $log.log("in error response of change state request");
             });
         }

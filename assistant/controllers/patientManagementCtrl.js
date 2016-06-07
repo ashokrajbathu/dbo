@@ -47,6 +47,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
     var billInvoice = {};
     dboticaServices.setInvoice(billInvoice);
 
+    $scope.loading = false;
     $scope.patientsList = [];
     $scope.doctorName = "";
     $scope.doctorSpecialization = "";
@@ -123,6 +124,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
     $scope.doctorsData = dboticaServices.doctorsOfAssistant();
     console.log("doctorsData promise is----", $scope.doctorsData);
     $scope.doctorsData.then(function(doctorresponse) {
+        $scope.loading = true;
         console.log("doctors response is-----", doctorresponse);
         var errorCode = doctorresponse.data.errorCode;
         if (!!errorCode) {
@@ -137,13 +139,18 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = $scope.doctorsList[0].timePerPatient;
             var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
             patientsListOfDoctor.then(function(response) {
+                $scope.loading = true;
                 var patientsList = JSON.parse(response.data.response);
                 $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
+                $scope.loading = false;
             }, function(error) {
+                $scope.loading = true;
                 console.log("in patient controller patients error");
             });
         }
+        $scope.loading = false;
     }, function(error) {
+        $scope.loading = true;
         console.log("doctors error response", error);
         localStorage.clear();
         localStorage.setItem("isLoggedInAssistant", "false");
@@ -201,6 +208,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         } else {
             var promise = dboticaServices.getPatientDetailsOfThatNumber(phoneNumberForSearch);
             promise.then(function(response) {
+                $scope.loading = true;
                 $scope.patientAvailable = true;
                 $scope.nextForm = false;
                 $scope.addPatientBtn = false;
@@ -225,8 +233,9 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 }
 
                 console.log("patient search details are----", response);
-
+                $scope.loading = false;
             }, function(errorResponse) {
+                $scope.loading = true;
                 console.log("error response in the search is------", errorResponse);
                 console.log("patient search is unsuccessful");
             });
@@ -244,6 +253,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         console.log("cancelling doctor id----" + doctorId);
         var promise = dboticaServices.futureAppointmentListOfNumber(patientPhoneNumberForCancelling, doctorId);
         promise.then(function(response) {
+            $scope.loading = true;
             console.log("cancelling response is-----", response);
             var objectsList = JSON.parse(response.data.response);
             console.log("bookings for cancelling----", objectsList);
@@ -254,7 +264,9 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                     $scope.bookingsForCancelling.push(objectsList[i]);
                 }
             }
+            $scope.loading = false;
         }, function(errorResponse) {
+            $scope.loading = true;
             console.log("in error response of cancelling");
         });
     }
@@ -273,9 +285,13 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         console.log("cancel book object is----", cancelBook);
         var promise = dboticaServices.cancelAppointmentOfADateOrUpdateDoctorEvent(cancelBook);
         promise.then(function(response) {
+            $scope.loading = true;
             console.log("after cancelling is----", response);
             $scope.bookingsForCancelling.splice(index, 1);
-        }, function(errorResponse) {});
+            $scope.loading = false;
+        }, function(errorResponse) {
+            $scope.loading = true;
+        });
     }
 
     $scope.addTimingsBtn = function() {
@@ -300,11 +316,15 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         console.log("time object is----", addTimeObj);
         var promise = dboticaServices.updateDoctorTimings(addTimeObj);
         promise.then(function(response) {
+            $scope.loading = true;
             console.log("update doctor timings response---", response);
             $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = milliSecondsOfStartTime;
             $scope.doctorObjectForChangingStartAndEndTime.dayEndTime = milliSecondsOfEndTime;
             $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = timePerPatientOfThatDoctor;
-        }, function(errorResponse) {});
+            $scope.loading = false;
+        }, function(errorResponse) {
+            $scope.loading = true;
+        });
         $scope.doctorTimings = false;
     }
 
@@ -362,6 +382,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         $scope.nextBtn = true;
         var promise = dboticaServices.getPatientDetailsOfThatNumber(patientId);
         promise.then(function(response) {
+            $scope.loading = true;
             if (response.data.success) {
                 console.log("inside if of edit details patient search");
                 var patientData = JSON.parse(response.data.response);
@@ -380,7 +401,10 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 $scope.patientData = {};
                 console.log("in else response of edit details patient search--");
             }
-        }, function(errorResponse) {});
+            $scope.loading = false;
+        }, function(errorResponse) {
+            $scope.loading = true;
+        });
         console.log("patient id value is---" + patientId);
     }
 
@@ -408,9 +432,13 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         }, function() {
             var promise = dboticaServices.cancelAppointmentOfADateOrUpdateDoctorEvent(cancelBook);
             promise.then(function(response) {
+                $scope.loading = true;
                 console.log("after cancelling is----", response);
                 $scope.patientsList.splice(index, 1);
-            }, function(errorResponse) {});
+                $scope.loading = false;
+            }, function(errorResponse) {
+                $scope.loading = true;
+            });
             swal("Cancelled!", "Appointment has been successfully cancelled", "success");
         });
 
@@ -480,10 +508,13 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         var doctorId = doctor.id;
         var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor(doctorId);
         patientsListOfDoctor.then(function(response) {
+            $scope.loading = true;
             console.log("in patients list of doctor selected");
             var patientsList = JSON.parse(response.data.response);
             $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
+            $scope.loading = false;
         }, function(error) {
+            $scope.loading = true;
             console.log("in patient controller patients error");
         });
     }
@@ -566,6 +597,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         }
         var promise = dboticaServices.getDoctorEventsOfDocOnADate($scope.book.doctorId, milliSecsOfDate);
         promise.then(function(response) {
+                $scope.loading = true;
                 console.log("response in ng-change is----", response);
                 var doctorResponseAfterDateSelect = JSON.parse(response.data.response);
                 console.log("response in ng-change----", doctorResponseAfterDateSelect);
@@ -643,8 +675,10 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
 
                     }
                 }
+                $scope.loading = false;
             },
             function(errorResponse) {
+                $scope.loading = true;
                 console.log("errorResponse ", errorResponse);
             });
         for (var mrngArrayIndex = 0; mrngArrayIndex < $scope.morningArray.length; mrngArrayIndex++) {
@@ -708,6 +742,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             var promise = dboticaServices.addNewPatient(newPatientDetails);
             console.log("add patient response is---", promise);
             promise.then(function(response) {
+                $scope.loading = true;
                 console.log("add patient actual response is----", response.data.response);
                 var addPatientResponse = JSON.parse(response.data.response);
                 console.log("add patient response required is----", addPatientResponse);
@@ -719,7 +754,10 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 $scope.book.label = addPatientResponse[0].firstName;
                 $scope.book.patientId = addPatientResponse[0].id;
                 $scope.addPatientBtn = true;
-            }, function() {});
+                $scope.loading = false;
+            }, function() {
+                $scope.loading = true;
+            });
         } else {
             swal({
                 title: "Error",
@@ -813,14 +851,18 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         console.log("book for-----", $scope.book);
         var promise = dboticaServices.cancelAppointmentOfADateOrUpdateDoctorEvent($scope.book);
         promise.then(function(response) {
+            $scope.loading = true;
             console.log("in book---");
             console.log("book response is----", response);
             if (response.data.success === true) {
                 var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
                 patientsListOfDoctor.then(function(response) {
+                    $scope.loading = true;
                     var patientsList = JSON.parse(response.data.response);
                     $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
+                    $scope.loading = false;
                 }, function(error) {
+                    $scope.loading = true;
                     console.log("in patient controller patients error");
                 });
                 swal({
@@ -837,7 +879,9 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                     confirmButtonText: "OK"
                 });
             }
+            $scope.loading = false;
         }, function(errorResponse) {
+            $scope.loading = true;
             console.log("book error response is---", errorResponse);
         });
     }

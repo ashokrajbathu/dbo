@@ -1,5 +1,6 @@
 <div ng-controller="billManagementCtrl as billView" ng-cloak>
     <div class="container-fluid">
+        <img class="spinner" src="css/images/default (2).gif" ng-show="billView.loading"></img>
         <div class="row patientDetailsSearchRow">
             <div ng-if="billView.patientSearchDiv" class="patientDetailsSearch col-md-3 col-xs-12 col-sm-6">
                 <div class="panel panel-default">
