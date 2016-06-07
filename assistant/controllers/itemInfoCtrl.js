@@ -36,10 +36,9 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
     var itemName = localStorage.getItem('itemName');
     itemInfoElement.addBatchInItemInfo.itemName = itemName;
     itemInfoElement.addBatchInItemInfo.organizationId = organizationId;
-
+    itemInfoElement.loading = true;
     var promise = dboticaServices.getAllBatches(currentItemId, organizationId);
     promise.then(function(response) {
-        itemInfoElement.loading = true;
         var batchesInfo = $.parseJSON(response.data.response);
         $log.log("batches info is-----", batchesInfo);
         itemInfoElement.inventoryItem = batchesInfo.inventoryItem;
@@ -100,9 +99,9 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
         if (parseInt(valueInTextBox) <= item.availableStock) {
             requestEntity = JSON.stringify(requestEntity);
             $log.log("request entity is---", requestEntity);
+            itemInfoElement.loading = true;
             var promise = dboticaServices.updateTheBatch(requestEntity);
             promise.then(function(response) {
-                itemInfoElement.loading = true;
                 $log.log("response after updating is----", response);
                 var updatedBatchInfo = $.parseJSON(response.data.response);
                 for (var itemBatchIndex = 0; itemBatchIndex < itemInfoElement.informationOfBatches.length; itemBatchIndex++) {
@@ -163,9 +162,9 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             requestEntity.entityState = "ACTIVE";
             requestEntity = JSON.stringify(requestEntity);
             $log.log("added batch is----", requestEntity);
+            itemInfoElement.loading = true;
             var promise = dboticaServices.addBatchToTheDrug(requestEntity);
             promise.then(function(response) {
-                itemInfoElement.loading = true;
                 var success = response.data.success;
                 if (success) {
                     swal({

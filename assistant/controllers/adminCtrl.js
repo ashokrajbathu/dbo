@@ -33,10 +33,10 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     var billInvoice = {};
     dboticaServices.setInvoice(billInvoice);
 
-
+    adminElement.loading = true;
     var doctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
     doctorsOfThatAssistant.then(function(response) {
-        adminElement.loading = true;
+
         var errorCode = response.data.errorCode;
         if (!!errorCode) {
             switch (errorCode) {
@@ -99,9 +99,10 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             adminElement.servicesList = ["New Test"];
             adminElement.admin.procedureName = false;
             adminElement.admin.doctorInDropdown = doctor.firstName + doctor.lastName;
+            adminElement.loading = true;
             var getTestsPromise = dboticaServices.getTests();
             getTestsPromise.then(function(getTestsSuccessResponse) {
-                adminElement.loading = true;
+
                 $log.log("get tests success is-----", getTestsSuccessResponse);
                 getTestsSuccess = $.parseJSON(getTestsSuccessResponse.data.response);
                 for (test in getTestsSuccess) {
@@ -207,9 +208,10 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             }
             $log.log("req entity is---", serviceRequestEntity);
             if (adminElement.admin.doctorInDropdown == general) {
+                adminElement.loading = true;
                 var submitTestRequestPromise = dboticaServices.submitTestRequest(testObject);
                 submitTestRequestPromise.then(function(testRequestSuccessResponse) {
-                    adminElement.loading = true;
+
                     $log.log("test success is----", testRequestSuccessResponse);
                     var errorCode = testRequestSuccessResponse.data.errorCode;
                     var success = testRequestSuccessResponse.data.success;
@@ -242,9 +244,10 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                     $log.log("in error response of submit test request promise----");
                 });
             } else {
+                adminElement.loading = true;
                 var submitServiceRequestPromise = dboticaServices.submitServiceRequest(serviceRequestEntity);
                 submitServiceRequestPromise.then(function(successResponseOfServiceRequest) {
-                    adminElement.loading = true;
+
                     if (successResponseOfServiceRequest.data.success === true && successResponseOfServiceRequest.data.errorCode === null) {
                         var updatedDoctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
                         updatedDoctorsOfThatAssistant.then(function(successResponse) {
@@ -300,9 +303,10 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             } else {
                 changeTestStateRequestEntity.state = "ACTIVE";
             }
+            adminElement.loading = true;
             var submitTestStatePromise = dboticaServices.submitTestRequest(changeTestStateRequestEntity);
             submitTestStatePromise.then(function(submitTestStateChangeSuccess) {
-                adminElement.loading = true;
+
                 var successtestStateChange = $.parseJSON(submitTestStateChangeSuccess.data.response);
                 $log.log("success state change is----", successtestStateChange);
                 if (submitTestStateChangeSuccess.data.success === true && submitTestStateChangeSuccess.data.errorCode === null) {
@@ -339,9 +343,10 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 }
             }
             $log.log("req entity is---", changeStateRequestEntity);
+            adminElement.loading = true;
             var changeServiceStateRequestPromise = dboticaServices.submitServiceRequest(changeStateRequestEntity);
             changeServiceStateRequestPromise.then(function(successResponseOfChangeStateRequest) {
-                adminElement.loading = true;
+
                 if (successResponseOfChangeStateRequest.data.success === true && successResponseOfChangeStateRequest.data.errorCode === null) {
                     var updatedDoctors = dboticaServices.doctorsOfAssistant();
                     updatedDoctors.then(function(successResponse) {

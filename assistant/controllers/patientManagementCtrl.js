@@ -121,10 +121,11 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
     $scope.entryTypeSelected.value = "WALK_IN";
     $scope.entryType = ["WALK_IN", "APPOINTMENT"];
 
+    $scope.loading = true;
     $scope.doctorsData = dboticaServices.doctorsOfAssistant();
     console.log("doctorsData promise is----", $scope.doctorsData);
     $scope.doctorsData.then(function(doctorresponse) {
-        $scope.loading = true;
+
         console.log("doctors response is-----", doctorresponse);
         var errorCode = doctorresponse.data.errorCode;
         if (!!errorCode) {
@@ -137,9 +138,10 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = $scope.doctorsList[0].dayStartTime;
             $scope.doctorObjectForChangingStartAndEndTime.dayEndTime = $scope.doctorsList[0].dayEndTime;
             $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = $scope.doctorsList[0].timePerPatient;
+            $scope.loading = true;
             var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
             patientsListOfDoctor.then(function(response) {
-                $scope.loading = true;
+
                 var patientsList = JSON.parse(response.data.response);
                 $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
                 $scope.loading = false;
@@ -206,9 +208,10 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             });
 
         } else {
+            $scope.loading = true;
             var promise = dboticaServices.getPatientDetailsOfThatNumber(phoneNumberForSearch);
             promise.then(function(response) {
-                $scope.loading = true;
+
                 $scope.patientAvailable = true;
                 $scope.nextForm = false;
                 $scope.addPatientBtn = false;
@@ -251,9 +254,10 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         console.log("number is---" + patientPhoneNumberForCancelling);
         var doctorId = $scope.book.doctorId;
         console.log("cancelling doctor id----" + doctorId);
+        $scope.loading = true;
         var promise = dboticaServices.futureAppointmentListOfNumber(patientPhoneNumberForCancelling, doctorId);
         promise.then(function(response) {
-            $scope.loading = true;
+
             console.log("cancelling response is-----", response);
             var objectsList = JSON.parse(response.data.response);
             console.log("bookings for cancelling----", objectsList);
@@ -283,9 +287,10 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         cancelBook.id = appointment.id;
         cancelBook.state = "INACTIVE";
         console.log("cancel book object is----", cancelBook);
+        $scope.loading = true;
         var promise = dboticaServices.cancelAppointmentOfADateOrUpdateDoctorEvent(cancelBook);
         promise.then(function(response) {
-            $scope.loading = true;
+
             console.log("after cancelling is----", response);
             $scope.bookingsForCancelling.splice(index, 1);
             $scope.loading = false;
@@ -314,9 +319,10 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         var timePerPatientOfThatDoctor = $scope.addTime.timePerPatient * 60 * 1000;
         addTimeObj.timePerPatient = $scope.addTime.timePerPatient * 60 * 1000;
         console.log("time object is----", addTimeObj);
+        $scope.loading = true;
         var promise = dboticaServices.updateDoctorTimings(addTimeObj);
         promise.then(function(response) {
-            $scope.loading = true;
+
             console.log("update doctor timings response---", response);
             $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = milliSecondsOfStartTime;
             $scope.doctorObjectForChangingStartAndEndTime.dayEndTime = milliSecondsOfEndTime;
@@ -380,9 +386,10 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         $scope.patientSearchWithNumber = false;
         $scope.nextForm = false;
         $scope.nextBtn = true;
+        $scope.loading = true;
         var promise = dboticaServices.getPatientDetailsOfThatNumber(patientId);
         promise.then(function(response) {
-            $scope.loading = true;
+
             if (response.data.success) {
                 console.log("inside if of edit details patient search");
                 var patientData = JSON.parse(response.data.response);
@@ -430,9 +437,10 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             confirmButtonText: "Yes, delete it!",
             closeOnConfirm: false
         }, function() {
+            $scope.loading = true;
             var promise = dboticaServices.cancelAppointmentOfADateOrUpdateDoctorEvent(cancelBook);
             promise.then(function(response) {
-                $scope.loading = true;
+
                 console.log("after cancelling is----", response);
                 $scope.patientsList.splice(index, 1);
                 $scope.loading = false;
@@ -506,9 +514,10 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = doctor.timePerPatient;
         $scope.book.doctorId = doctor.id;
         var doctorId = doctor.id;
+        $scope.loading = true;
         var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor(doctorId);
         patientsListOfDoctor.then(function(response) {
-            $scope.loading = true;
+
             console.log("in patients list of doctor selected");
             var patientsList = JSON.parse(response.data.response);
             $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
@@ -595,9 +604,10 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             }
             displayTime = displayTime + timePerPatientForThatDoctor;
         }
+        $scope.loading = true;
         var promise = dboticaServices.getDoctorEventsOfDocOnADate($scope.book.doctorId, milliSecsOfDate);
         promise.then(function(response) {
-                $scope.loading = true;
+
                 console.log("response in ng-change is----", response);
                 var doctorResponseAfterDateSelect = JSON.parse(response.data.response);
                 console.log("response in ng-change----", doctorResponseAfterDateSelect);
@@ -739,11 +749,11 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         var newPatientDetails = JSON.stringify(newPatientData);
         if (firstName != undefined && phoneNumber != undefined) {
             console.log("patient data is----", newPatientDetails);
+            $scope.loading = true;
             var promise = dboticaServices.addNewPatient(newPatientDetails);
             console.log("add patient response is---", promise);
             promise.then(function(response) {
-                $scope.loading = true;
-                console.log("add patient actual response is----", response.data.response);
+                                console.log("add patient actual response is----", response.data.response);
                 var addPatientResponse = JSON.parse(response.data.response);
                 console.log("add patient response required is----", addPatientResponse);
                 $scope.nextForm = true;
@@ -849,15 +859,16 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         $scope.book.startTime = milliSecsOfDate + $scope.seconds * 1000;
         $scope.book.calendarStatus = $scope.patientEntryType;
         console.log("book for-----", $scope.book);
+        $scope.loading = true;
         var promise = dboticaServices.cancelAppointmentOfADateOrUpdateDoctorEvent($scope.book);
         promise.then(function(response) {
-            $scope.loading = true;
-            console.log("in book---");
+                        console.log("in book---");
             console.log("book response is----", response);
             if (response.data.success === true) {
+                 $scope.loading = true;
                 var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
                 patientsListOfDoctor.then(function(response) {
-                    $scope.loading = true;
+                   
                     var patientsList = JSON.parse(response.data.response);
                     $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
                     $scope.loading = false;
