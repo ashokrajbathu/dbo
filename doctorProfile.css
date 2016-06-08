@@ -26,3 +26,13 @@ th {
 #myAssistantsBody>tr>td {
     text-align: center;
 }
+
+.linksInDoctor {
+    cursor: pointer;
+    padding-right: 8px;
+}
+
+.linksInDoctor:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}

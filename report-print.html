@@ -355,15 +355,6 @@
                 $('#patient-age').text(data1[0]['age']);
             }
         }
-
-
-
-
-
-
-
-
-
         var docname = localStorage.getItem('firstName');
         var docLastName = localStorage.getItem('lastName');
         var docid = localStorage.getItem('doctorId');
@@ -373,11 +364,31 @@
         var docAdrs = localStorage.getItem('doctorOfficeAddress');
         var docPhn = localStorage.getItem('doctorPublicPhoneNumber');
         var docRegistrationNo = localStorage.getItem('doctorRegistrationNo');
+        console.log("reg no. check is---", docRegistrationNo);
+        if (docRegistrationNo === "undefined" || docRegistrationNo === "" || docRegistrationNo === null) {
+            docRegistrationNo = "";
+        }
         var phoneNumber = localStorage.getItem('doctorPublicPhoneNumber');
         var city = localStorage.getItem('doctorHospitalLocation');
-        console.log("doc specialization is----" + docSpe);
 
+        console.log("doc specialization is----" + docSpe);
+        if (docname === "undefined" || docname === "" || docname === null) {
+            docname = "";
+        }
+        if (docLastName === "undefined" || docLastName === "" || docLastName === null) {
+            docLastName = "";
+        }
         var doctorName = "Dr. " + docname + ' ' + docLastName;
+        if (docPhn === "undefined" || docPhn === "" || docPhn === null) {
+            docPhn = "";
+        }
+        if (docSpe === "undefined" || docSpe === "" || docSpe === null) {
+            docSpe = "";
+        }
+        if (docQua === "undefined" || docQua === "" || docQua === null) {
+            docQua = "";
+        }
+
 
         $('#pr-doctor-name').text(doctorName);
         $('#pr-doctor-qual').text(docQua);

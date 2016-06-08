@@ -139,23 +139,19 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = $scope.doctorsList[0].dayStartTime;
             $scope.doctorObjectForChangingStartAndEndTime.dayEndTime = $scope.doctorsList[0].dayEndTime;
             $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = $scope.doctorsList[0].timePerPatient;
-            $scope.loading = true;
             var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
             patientsListOfDoctor.then(function(response) {
-
                 var patientsList = JSON.parse(response.data.response);
                 $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
-                $scope.loading = false;
             }, function(error) {
-                $scope.loading = true;
                 console.log("in patient controller patients error");
             });
         }
         $scope.loading = false;
         $scope.blurScreen = false;
     }, function(error) {
-        $scope.blurScreen = true;
-        $scope.loading = true;
+        $scope.blurScreen = false;
+        $scope.loading = false;
         console.log("doctors error response", error);
         localStorage.clear();
         localStorage.setItem("isLoggedInAssistant", "false");

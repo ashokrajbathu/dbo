@@ -504,6 +504,53 @@
                             </div>
                         </div>
                     </div>
+                    <div class="box box-default collapsed-box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">My Addresses : <span style="font-weight:600;" id="doctorCredits"></span>
+                          </h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i id="myCredits" class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="tab-pane myAddressesTabPane" id="settings">
+                                <div class="row">
+                                    <a id="addNewAddressLink" class="linksInDoctor pull-right">Add New Address</a>
+                                    <a id="backToAddressLink" class="linksInDoctor pull-right">Back to Addresses</a>
+                                </div>
+                                <div id="addressesListRow" class="row">
+                                </div>
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="inputAddress" class="col-sm-2 control-label">Address Line 1</label>
+                                        <div class="col-md-7 col-sm-10">
+                                            <input type="text" class="form-control" id="inputAddress" placeholder="Address Line 1">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputCity" class="col-sm-2 control-label">City</label>
+                                        <div class="col-md-7 col-sm-10">
+                                            <input type="text" class="form-control" id="inputCity" placeholder="City">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPinCode" class="col-sm-2 control-label">Pin Code</label>
+                                        <div class="col-md-7 col-sm-10">
+                                            <input type="text" class="form-control" id="inputPinCode" placeholder="Pin Code">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div id="updateAddressDiv" class="col-sm-offset-2 col-sm-10">
+                                            <button type="button" id="updateAddressBtn" class="btn btn-danger">Update</button>
+                                        </div>
+                                        <div id="addAddressDiv" class="col-sm-offset-2 col-sm-10">
+                                            <button type="button" id="addAddressBtn" class="btn btn-danger">Add</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.box -->
             </section>
@@ -747,6 +794,198 @@
         });
 
         /*});*/
+
+
+        var addressesList = [];
+        var addressActiveId = "";
+        var role = "DOCTOR";
+        var label = "office";
+        var selectedRadioButtonIndex = 0;
+
+
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/doctor/getAddress',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(response) {
+                addressesList = $.parseJSON(response.response);
+                console.log("addresses are----", addressesList);
+                if (addressesList.length > 0) {
+                    $('#addressesListRow').show();
+                    for (var addressIndex in addressesList) {
+                        var count = parseInt(addressIndex) + 1;
+                        $('#addressesListRow').append('<div class="addressSection col-md-2"><input class="doctorAddress" type="radio" name="address" id="radioAddress' + count + '" value="address' + count + '">Address ' + count + '</div>');
+                    }
+                    $('#radioAddress1').prop("checked", true);
+                    addressActiveId = addressesList[0].id;
+                    $('#inputAddress').val(addressesList[0].address);
+                    $('#inputCity').val(addressesList[0].city);
+                    $('#inputPinCode').val(addressesList[0].pincode);
+                    $('#addAddressBtn').hide();
+                    $('#updateAddressBtn').show();
+                    $('#backToAddressLink').hide();
+                    $('#addNewAddressLink').show();
+                    var addressOfTheDoctor = addressesList[0].address + ' ' + addressesList[0].city;
+                    localStorage.setItem("doctorHospitalLocation", addressOfTheDoctor);
+                } else {
+                    $('#addAddressBtn').show();
+                    $('#updateAddressBtn').hide();
+                    $('#backToAddressLink').hide();
+                    $('#addNewAddressLink').hide();
+                    var address = "";
+                    localStorage.setItem("doctorHospitalLocation", address);
+                }
+            }
+        });
+
+
+        $('#addNewAddressLink').click(function() {
+            $('#addAddressBtn').show();
+            $('#updateAddressBtn').hide();
+            $('#inputAddress').val("");
+            $('#inputCity').val("");
+            $('#inputPinCode').val("");
+            $('#addressesListRow').hide();
+            $('#backToAddressLink').show();
+            $('#addNewAddressLink').hide();
+        });
+
+        $('#backToAddressLink').click(function() {
+            $('#addNewAddressLink').show();
+            $('#backToAddressLink').hide();
+            $('#addressesListRow').show();
+            $('#inputAddress').val(addressesList[0].address);
+            $('#inputCity').val(addressesList[0].city);
+            $('#inputPinCode').val(addressesList[0].pincode);
+            $('#addAddressBtn').hide();
+            $('#updateAddressBtn').show();
+        });
+
+        $("#addressesListRow").on('click', '.doctorAddress', function() {
+            var idOfRadioButton = this.id;
+            selectedRadioButtonIndex = idOfRadioButton.slice(-1) - 1;
+            console.log("id of radio button is---" + selectedRadioButtonIndex);
+            addressActiveId = addressesList[selectedRadioButtonIndex].id;
+            $('#inputAddress').val(addressesList[selectedRadioButtonIndex].address);
+            $('#inputCity').val(addressesList[selectedRadioButtonIndex].city);
+            $('#inputPinCode').val(addressesList[selectedRadioButtonIndex].pincode);
+            var addressOfTheDoctor = "";
+            localStorage.setItem("doctorHospitalLocation", addressOfTheDoctor);
+            addressOfTheDoctor = addressesList[selectedRadioButtonIndex].address + ' ' + addressesList[selectedRadioButtonIndex].city;
+            localStorage.setItem("doctorHospitalLocation", addressOfTheDoctor);
+        })
+
+        $('#addAddressBtn').click(function() {
+            $('#addNewAddressLink').hide();
+            $('#backToAddressLink').show();
+            var address = $('#inputAddress').val();
+            var city = $('#inputCity').val();
+            var pincode = $('#inputPinCode').val();
+            if (address !== "" || city !== "" || pincode !== "") {
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://localhost:8081/dbotica-spring/doctor/updateAddress',
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("Accept", "application/json");
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    data: JSON.stringify({
+                        'userId': doctorId,
+                        'role': role,
+                        'label': label,
+                        'primaryAddress': true,
+                        'state': 'ACTIVE',
+                        'address': address,
+                        'city': city,
+                        'pincode': pincode
+                    }),
+                    success: function(response) {
+                        var newAddressResponse = $.parseJSON(response.response);
+                        var radioIndex = addressesList.length + 1;
+                        $('#addressesListRow').append('<div class="addressSection col-md-2"><input class="doctorAddress" type="radio" name="address" id="radioAddress' + radioIndex + '" value="address' + radioIndex + '">Address ' + radioIndex + '</div>');
+                        addressesList.push(newAddressResponse);
+                        console.log("response after adding address is-----", $.parseJSON(response.response));
+                        swal({
+                            title: "Success",
+                            text: "Address Details has been added successfully",
+                            type: "success",
+                            confirmButtonText: "OK",
+                            allowOutsideClick: true
+                        });
+                    }
+                });
+            } else {
+                swal({
+                    title: "Error",
+                    text: "Please Enter Address Details",
+                    type: "error",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: true
+                });
+            }
+        });
+
+        $('#updateAddressBtn').click(function() {
+            var address = $('#inputAddress').val();
+            var city = $('#inputCity').val();
+            var pincode = $('#inputPinCode').val();
+            if (address !== "" || city !== "" || pincode !== "") {
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://localhost:8081/dbotica-spring/doctor/updateAddress',
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("Accept", "application/json");
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    data: JSON.stringify({
+                        'id': addressActiveId,
+                        'userId': doctorId,
+                        'role': role,
+                        'label': label,
+                        'primaryAddress': true,
+                        'state': 'ACTIVE',
+                        'address': address,
+                        'city': city,
+                        'pincode': pincode
+                    }),
+                    success: function(response) {
+                        var updatedAddressResponse = $.parseJSON(response.response);
+                        console.log("response after adding addresses is-----", updatedAddressResponse);
+                        addressesList[selectedRadioButtonIndex].address = updatedAddressResponse.address;
+                        addressesList[selectedRadioButtonIndex].city = updatedAddressResponse.city;
+                        addressesList[selectedRadioButtonIndex].pincode = updatedAddressResponse.pincode;
+                        swal({
+                            title: "Success",
+                            text: "Address Details has been updated successfully",
+                            type: "success",
+                            confirmButtonText: "OK",
+                            allowOutsideClick: true
+                        });
+                    }
+                });
+            } else {
+                swal({
+                    title: "Error",
+                    text: "Please Enter Address Details",
+                    type: "error",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: true
+                });
+            }
+
+        });
 
 
 
