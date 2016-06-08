@@ -9,6 +9,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     adminElement.btnActiveInServicesTable = btnActiveInServicesTable;
 
     adminElement.admin = {};
+    adminElement.blurScreen = false;
     adminElement.loading = false;
     adminElement.admin.procedureName = false;
     adminElement.admin.doctorInDropdown;
@@ -34,6 +35,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     dboticaServices.setInvoice(billInvoice);
 
     adminElement.loading = true;
+    adminElement.blurScreen = true;
     var doctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
     doctorsOfThatAssistant.then(function(response) {
 
@@ -73,7 +75,9 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             $log.log("docs list is----", adminElement.doctorsListInAdmin);
         }
         adminElement.loading = false;
+        adminElement.blurScreen = false;
     }, function(errorResponse) {
+        adminElement.blurScreen = true;
         adminElement.loading = true;
         $log.log("in error response of getting doctors");
     });

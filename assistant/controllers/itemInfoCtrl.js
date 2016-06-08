@@ -21,6 +21,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
     itemInfoElement.batches = {};
     var batchesInfo = [];
     itemInfoElement.loading = false;
+    itemInfoElement.blurScreen=false;
     itemInfoElement.warningMessageItemInfo = false;
     itemInfoElement.addBatchInItemInfo = {};
     itemInfoElement.informationOfBatches = [];
@@ -37,6 +38,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
     itemInfoElement.addBatchInItemInfo.itemName = itemName;
     itemInfoElement.addBatchInItemInfo.organizationId = organizationId;
     itemInfoElement.loading = true;
+    itemInfoElement.blurScreen=true;
     var promise = dboticaServices.getAllBatches(currentItemId, organizationId);
     promise.then(function(response) {
         var batchesInfo = $.parseJSON(response.data.response);
@@ -75,7 +77,9 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
         $log.log("inventory item is----", itemInfoElement.inventoryItem);
         $log.log("batches information is----", batchesInfo);
         itemInfoElement.loading = false;
+        itemInfoElement.blurScreen=false;
     }, function(errorResponse) {
+        itemInfoElement.blurScreen=true;
         itemInfoElement.loading = true;
         $log.log("in items info error response");
 

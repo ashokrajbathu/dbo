@@ -12,6 +12,7 @@
         </section>
     </aside>
     <div class="content-wrapper" style="background-color:white;" ng-cloak>
+        <div id="blurBackScreen" ng-show="blurScreen"></div>
         <img class="spinner" src="css/images/default (2).gif" ng-show="loading"></img>
         <h4 style="font-size:22px;color:#49b181;">Dr.{{doctorName}}
         <button type="button" ng-click="viewDoctorsSection()" class="doctorTimingsBtn pull-right btn">Doctor Timings</button>

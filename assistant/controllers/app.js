@@ -79,6 +79,8 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
 
 angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope', '$log', '$location', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, $location, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     $scope.singleModel = 1;
+    $scope.loading = false;
+    $scope.blurScreen = false;
     $scope.radioModel = 'morning';
     $scope.checkModel = {
         left: false,
@@ -108,6 +110,8 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
         var userId = $scope.loginData.userId;
         var password = $scope.loginData.password;
         if ($scope.loginData.userId !== "" && $scope.loginData.password !== "") {
+            $scope.loading = true;
+            $scope.blurScreen = true;
             var promise = dboticaServices.login(userId, password);
             promise.then(function(response) {
                 var success = response.data.success;
@@ -155,7 +159,11 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
                     localStorage.setItem("isLoggedInAssistant", "true");
                     $state.go('home');
                 }
+                $scope.loading = false;
+                $scope.blurScreen = false;
             }, function(errorResponse) {
+                $scope.blurScreen = true;
+                $scope.loading = true;
                 console.log("login error response", errorResponse);
             });
         } else {

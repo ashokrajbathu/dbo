@@ -21,6 +21,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
         autoclose: true
 
     });
+    invoiceElement.blurScreen = false;
     invoiceElement.loading = false;
     invoiceElement.name = "Invoice History";
     invoiceElement.searchTypes = ['Phone Number', 'Bill Number', 'Date', 'Doctor', 'Next Due Date'];
@@ -46,6 +47,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
     invoiceElement.searchEndDate = "";
 
     invoiceElement.loading = true;
+    invoiceElement.blurScreen = true;
     var doctorsOfThatAssistantForInvoices = dboticaServices.doctorsOfAssistant();
     dboticaServices.setInvoice(invoiceActive);
     doctorsOfThatAssistantForInvoices.then(function(doctorsSuccessResponse) {
@@ -57,11 +59,14 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
             doctorActiveId = invoiceElement.doctorsList[0].id;
         }
         invoiceElement.loading = false;
+        invoiceElement.blurScreen = false;
     }, function(doctorsErrorResponse) {
+        invoiceElement.blurScreen = true;
         invoiceElement.loading = true;
     });
 
     invoiceElement.loading = true;
+    invoiceElement.blurScreen = true;
     var invoiceHistoryPromise = dboticaServices.getInvoiceHistoryOnLoad(organizationId);
     invoiceHistoryPromise.then(function(invoiceSuccessResponse) {
         var errorCode = invoiceSuccessResponse.data.errorCode;
@@ -73,7 +78,9 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
             $log.log("invoice success response is----", invoiceHistoryArray);
         }
         invoiceElement.loading = false;
+        invoiceElement.blurScreen = false;
     }, function(invoiceErrorResponse) {
+        invoiceElement.blurScreen = true;
         invoiceElement.loading = true;
         $log.log("invoice error response");
     });
