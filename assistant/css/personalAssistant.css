@@ -154,7 +154,7 @@
     
     .asideDoctorsHeader {
         color: white;
-        margin-top: -36px;
+        margin-top: -22px;
         margin-left: 10px;
     }
     
@@ -302,6 +302,10 @@
         margin-bottom: 10px;
         margin-top: 15px;
     }
+    
+    .patientManagement {
+        margin-top: 20px;
+    }
     /*@media screen and (min-width:992px) {
     .patientManagement {
         position: fixed;
@@ -349,6 +353,7 @@
     }
     
     .btn.neutral {
+        margin-bottom: 5px;
         background-color: #d9d9d9;
         color: rgba(46, 67, 89, .65);
     }
@@ -359,6 +364,7 @@
     }
     
     #inputPatientPhoneNumberSearch {
+        padding-left: 12px;
         height: 33px;
         margin-top: 18px;
         margin-right: 8px;
@@ -367,6 +373,7 @@
     }
     
     .btn.checkin {
+        margin-bottom: 5px;
         background-color: #00bd9c;
     }
     
@@ -379,6 +386,7 @@
     }
     
     .btn.warning {
+        width: 168px;
         background-color: rgba(255, 109, 111, .3);
         color: #ff6d6f;
     }
@@ -477,6 +485,21 @@
         pointer-events: none;
     }
     
+    .icon-bar {
+        background-color: white;
+    }
+    
+    .navbar-default {
+        background-image: none !important;
+        background-color: #3c8dbc !important;
+    }
+    
+    #dboticaInHeader {
+        cursor: pointer;
+        color: white;
+        font-weight: 700;
+    }
+    
     .navbarLinks {
         color: white;
         cursor: pointer;
@@ -489,38 +512,39 @@
     .patient-form-inline .patient-form-group {
         padding-right: 50px;
     }
-    
-    @media only screen and (max-width: 974px) {
-        .navbarLinks {
-            margin-right: 0px;
-            font-size: 14px;
-            padding-left: 0px;
-            padding-right: 0px;
-        }
-    }
-    
-    @media only screen and (max-width: 974px) {
-        .collapse>.nav>li>a {
-            padding-right: 28px;
-            padding-left: 0px;
-        }
-    }
-    
-    @media only screen and (max-width: 974px) {
-        .navbar-collapse>.navbar-nav>li {
-            padding-left: 2px;
-            padding-right: 2px;
-            margin-left: -12px;
-            margin-right: -12px;
-        }
-    }
+    /*  @media only screen and (max-width: 974px) {
+       .navbarLinks {
+           margin-right: 0px;
+           font-size: 14px;
+           padding-left: 0px;
+           padding-right: 0px;
+       }
+   }
+   
+   @media only screen and (max-width: 974px) {
+       .collapse>.nav>li>a {
+           padding-right: 28px;
+           padding-left: 0px;
+       }
+   }
+   
+   @media only screen and (max-width: 974px) {
+       .navbar-collapse>.navbar-nav>li {
+           padding-left: 2px;
+           padding-right: 2px;
+           margin-left: -12px;
+           margin-right: -12px;
+       }
+   } */
     
     .activeSectionBlack {
-        background-color: #323232;
+        color: #ff7f7f !important;
+        background-color: white !important;
     }
     
     .activeSectionBlue {
-        background-color: #3c8dbc;
+        color: white !important;
+        background-color: #3c8dbc !important;
     }
     
     .navbar-collapse.in {
@@ -548,7 +572,7 @@
     }
     
     .docList {
-        margin-top: 60px;
+        margin-top: 25px;
     }
     
     .doctorInList {
@@ -565,15 +589,24 @@
     }
     
     .docLinks {
+        cursor: pointer;
         margin-bottom: 4px;
+    }
+    
+    .activeLi,
+    .activeLi:hover {
+        color: white !important;
+        cursor: pointer !important;
+        border-radius: 4px !important;
+        background-color: #3c8dbc !important;
     }
     
     .docList>li.active>a,
     .docList>li.active>a:hover {
         margin-bottom: -5px;
         color: #fff;
-        background-color: white;
-        border-top color: white;
+        background-color: red;
+        border-top-color: white;
     }
     
     .doctorInList:hover {
@@ -742,7 +775,7 @@
     #logo {
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         padding-top: 0px;
-        background-color: #367fa9;
+        background-color: #3c8dbc;
         color: #fff;
         font-size: 20px;
         line-height: 50px;

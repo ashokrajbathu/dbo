@@ -1,17 +1,17 @@
 <div class="patientManagement" ng-controller="patientManagementCtrl" ng-cloak>
-    <aside class="main-sidebar">
+    <aside style="background-color:#f9f9f9;" class="main-sidebar">
         <section class="sidebar">
-            <h4 class="asideDoctorsHeader">Doctors</h4>
+            <h4 style="color:black;" class="asideDoctorsHeader">Doctors</h4>
             <hr class="asideHr">
             <ul class="docList nav">
-                <li data-toggle="tab" id="menu_text" ng-repeat="doctor in doctorsList" ng-click="doctorSelected(doctor)">
-                    <a class="docLinks itemsAnimation" style="color:#00bd9c;" href="javascript:void">{{doctor.firstName}} {{doctor.lastName}}<br>{{doctor.speciality}}</a>
+                <li id="menu_text" ng-repeat="doctor in doctorsList" ng-click="doctorSelected(doctor,$index)">
+                    <a ng-class="{'activeLi':$index==0}" ng-attr-id="{{'doctorLi'+$index}}" style="color:black;" class="docLinks itemsAnimation">{{doctor.firstName}} {{doctor.lastName}}<br>{{doctor.speciality}}</a>
                     <hr class="doctorLine">
                 </li>
             </ul>
         </section>
     </aside>
-    <div class="content-wrapper" style="background-color:white;" ng-cloak>
+    <div class="content-wrapper" style="background-color:white;margin-top:8px;" ng-cloak>
         <div id="blurBackScreen" ng-show="blurScreen"></div>
         <img class="spinner" src="css/images/default (2).gif" ng-show="loading"></img>
         <h4 style="font-size:22px;color:#49b181;">Dr.{{doctorName}}

@@ -1,25 +1,21 @@
 <div ng-controller="homeCtrl" ng-cloak>
-    <div class="navbar navbar-inverse">
+    <nav class="navbar assistantNav navbar-default navbar-static-top">
         <div class="container-fluid">
-            <!-- Header -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <button style="background-color:white;" type="button" aria-expanded="false" aria-controls="navbar" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                    <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="javascript:void" id="logo" class="logo">
-                    <span class="logo-mini"><b>db</b></span>
-                    <span class="logo-lg"><b>dbotica</b></span>
-                </a>
+                <a id="dboticaInHeader" class="navbar-brand">dbotica</a>
             </div>
-            <!-- Navbar Links -->
-            <div class="collapse navbar-collapse">
+            <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li ng-class="{'activeSectionBlack':isPatientBlack,'activeSectionBlue':isPatientBlue}" ng-click="activeSectionBackGroundToggle('patient')" ui-sref=".patientManagement"><a style="color:white;" class="navbarLinks">Patient management</a></li>
-                    <li ng-class="{'activeSectionBlack':isBillBlack,'activeSectionBlue':isBillBlue}" ng-click="activeSectionBackGroundToggle('bill')" ui-sref=".billManagement"><a style="color:white;" class="navbarLinks">Bill Management</a></li>
-                    <li ng-class="{'activeSectionBlack':isInventoryBlack,'activeSectionBlue':isInventoryBlue}" ng-click="activeSectionBackGroundToggle('inventory')" ui-sref=".inventory"><a style="color:white;" class="navbarLinks">Inventory</a></li>
-                    <li ng-class="{'activeSectionBlack':isAnalyticBlack,'activeSectionBlue':isAnalyticBlue}" ng-click="activeSectionBackGroundToggle('analytic')" ui-sref=".analyticReports"><a style="color:white;" class="navbarLinks">Analytic reports</a></li>
+                    <li ng-click="activeSectionBackGroundToggle('patient')" ui-sref=".patientManagement"><a ng-class="{'activeSectionBlack':isPatientBlack,'activeSectionBlue':isPatientBlue}" class="navbarLinks">Patient management</a></li>
+                    <li ng-click="activeSectionBackGroundToggle('bill')" ui-sref=".billManagement"><a class="navbarLinks" ng-class="{'activeSectionBlack':isBillBlack,'activeSectionBlue':isBillBlue}">Bill Management</a></li>
+                    <li ng-class="{'activeSectionBlack':isInventoryBlack,'activeSectionBlue':isInventoryBlue}" ng-click="activeSectionBackGroundToggle('inventory')" ui-sref=".inventory"><a class="navbarLinks">Inventory</a></li>
+                    <li ng-class="{'activeSectionBlack':isAnalyticBlack,'activeSectionBlue':isAnalyticBlue}" ng-click="activeSectionBackGroundToggle('analytic')" ui-sref=".analyticReports"><a class="navbarLinks">Analytic reports</a></li>
                     <li ng-class="{'activeSectionBlack':isAdminBlack,'activeSectionBlue':isAdminBlue}" ng-click="activeSectionBackGroundToggle('admin')" ui-sref=".admin"><a style="color:white;" class="navbarLinks">Admin</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -27,6 +23,6 @@
                 </ul>
             </div>
         </div>
-    </div>
+    </nav>
 </div>
 <div class="uiViewAnimation" ui-view autoscroll="false"></div>

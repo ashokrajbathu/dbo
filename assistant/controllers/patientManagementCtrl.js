@@ -53,6 +53,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
     $scope.doctorName = "";
     $scope.doctorSpecialization = "";
     $scope.cancelBook = {};
+    $scope.doctorSelectedForHighlight = 0;
     $scope.cancelAppointmentsTable = false;
     $scope.doctorTimings = false;
     $scope.dateSelected = "";
@@ -296,6 +297,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         }, function(errorResponse) {
             $scope.loading = true;
         });
+
     }
 
     $scope.addTimingsBtn = function() {
@@ -497,8 +499,12 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         console.log("option value is---" + $scope.patientEntryType);
     }
 
-    $scope.doctorSelected = function(doctor) {
+    $scope.doctorSelected = function(doctor, index) {
         console.log("doctor in doctor selected is----", doctor);
+        console.log("index value is---", index);
+        angular.element('#doctorLi' + $scope.doctorSelectedForHighlight).removeClass('activeLi');
+        angular.element('#doctorLi' + index).addClass('activeLi');
+        $scope.doctorSelectedForHighlight = index;
         $scope.doctorTimings = false;
         $scope.addTime = {};
         $scope.addTime.doctorId = doctor.id;
@@ -525,6 +531,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             $scope.loading = true;
             console.log("in patient controller patients error");
         });
+
     }
 
     $scope.dateTimings = function(dateSelectedToBook) {
