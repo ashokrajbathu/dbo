@@ -913,6 +913,12 @@
                         var radioIndex = addressesList.length + 1;
                         $('#addressesListRow').append('<div class="addressSection col-md-2"><input class="doctorAddress" type="radio" name="address" id="radioAddress' + radioIndex + '" value="address' + radioIndex + '">Address ' + radioIndex + '</div>');
                         addressesList.push(newAddressResponse);
+                        if (addressesList.length == 1) {
+                            var addressOfTheDoctor = "";
+                            localStorage.setItem("doctorHospitalLocation", addressOfTheDoctor);
+                            addressOfTheDoctor = addressesList[0].address + ' ' + addressesList[0].city;
+                            localStorage.setItem("doctorHospitalLocation", addressOfTheDoctor);
+                        }
                         console.log("response after adding address is-----", $.parseJSON(response.response));
                         swal({
                             title: "Success",

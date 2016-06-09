@@ -394,7 +394,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             billElement.finalBill.amountPaid = parseInt(0);
             billElement.finalBill.patientName = dboticaServices.getPatientOrDoctorName(billElement.patient);
             billElement.finalBill.doctorName = dboticaServices.getPatientOrDoctorName(billElement.bill.doctorActive);
-            if (billElement.invoice.nextPaymentDate !== "") {
+            if (billElement.invoice.nextPaymentDate !== undefined && billElement.invoice.nextPaymentDate !== null && billElement.invoice.nextPaymentDate !== "") {
                 billElement.finalBill.nextPaymentDate = dboticaServices.getLongValueOfDate(billElement.invoice.nextPaymentDate);
             }
             billElement.finalBill.nextPaymentAmount = parseInt(billElement.invoice.nextPaymentAmount) * 100;
