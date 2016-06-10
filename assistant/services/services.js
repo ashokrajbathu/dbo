@@ -352,6 +352,21 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
+    this.getItemFromDBWithId = function(itemId, organizationId) {
+        var deferred = $q.defer();
+        var requestEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "itemId": itemId, "organizationId": organizationId }),
+            withCredentials: true,
+        }
+        $http(requestEntity).then(function(successResponse) {
+            deferred.resolve(successResponse);
+        }, function(errorResponse) {
+            deferred.reject(errorResponse);
+        });
+        return deferred.promise;
+    }
+
     this.updateTheBatch = function(req) {
         var deferred = $q.defer();
         var requestEntity = {
@@ -1093,6 +1108,16 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             title: "Success",
             text: "Batch Successfully Added.",
             type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.noConnectivityError = function() {
+        swal({
+            title: "Error",
+            text: "Please try after some time!!!!",
+            type: "error",
             confirmButtonText: "OK",
             allowOutsideClick: true
         });

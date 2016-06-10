@@ -94,8 +94,9 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             billElement.loading = false;
             billElement.blurScreen = false;
         }, function(getDetailsError) {
-            billElement.blurScreen = true;
-            billElement.loading = true;
+            billElement.blurScreen = false;
+            billElement.loading = false;
+            dboticaServices.noConnectivityError();
         });
         billElement.bill.doctorActive = dboticaServices.getDoctorsDetailsArray(currentActiveInvoice.doctorId);
         setDoctorNameAndDoctorServices(billElement.bill.doctorActive);
@@ -140,8 +141,9 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         billElement.loading = false;
         billElement.blurScreen = false;
     }, function(errorResponse) {
-        billElement.blurScreen = true;
-        billElement.loading = true;
+        billElement.blurScreen = false;
+        billElement.loading = false;
+        dboticaServices.noConnectivityError();
     });
 
     function goToInvoicePage() {
@@ -166,8 +168,9 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         billElement.loading = false;
         billElement.blurScreen = false;
     }, function(testsPromiseErrorResponse) {
-        billElement.blurScreen = true;
-        billElement.loading = true;
+        billElement.blurScreen = false;
+        billElement.loading = false;
+        dboticaServices.noConnectivityError();
         $log.log("in error response of getting tests list----");
     });
 
@@ -191,8 +194,9 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             billElement.loading = false;
             billElement.blurScreen = false;
         }, function(errorResponse) {
-            billElement.blurScreen = true;
-            billElement.loading = true;
+            billElement.blurScreen = false;
+            billElement.loading = false;
+            dboticaServices.noConnectivityError();
             $log.log("in error response of getting doctors");
         });
     }
@@ -252,7 +256,8 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                     }
                     billElement.loading = false;
                 }, function(patientSearchErrorResponse) {
-                    billElement.loading = true;
+                    billElement.loading = false;
+                    dboticaServices.noConnectivityError();
                 });
             } else {
                 dboticaServices.validPhoneNumberSwal();
@@ -432,7 +437,9 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                     $log.log("success response is---", invoiceUpdateSuccessResponse);
                     billElement.loading = false;
                 }, function(invoiceUpdateErrorResponse) {
-                    billElement.loading = true;
+                     
+            billElement.loading = false;
+            dboticaServices.noConnectivityError();
                 });
             } else {
                 dboticaServices.nextDueErrorSwal();

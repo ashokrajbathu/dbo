@@ -77,8 +77,9 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
         adminElement.loading = false;
         adminElement.blurScreen = false;
     }, function(errorResponse) {
-        adminElement.blurScreen = true;
-        adminElement.loading = true;
+         adminElement.blurScreen = false;
+        adminElement.loading = false;
+        dboticaServices.noConnectivityError();
         $log.log("in error response of getting doctors");
     });
 
@@ -122,7 +123,8 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 angular.copy(getTestsSuccess, adminElement.admin.servicesListOfTheDoctor);
                 adminElement.loading = false;
             }, function(getTestsErrorResponse) {
-                adminElement.loading = true;
+                        adminElement.loading = false;
+        dboticaServices.noConnectivityError();
             });
             adminElement.admin.servicesListOfTheDoctor = [];
         } else {
@@ -244,7 +246,8 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                     }
                     adminElement.loading = false;
                 }, function(testRequestErrorResponse) {
-                    adminElement.loading = true;
+                            adminElement.loading = false;
+        dboticaServices.noConnectivityError();
                     $log.log("in error response of submit test request promise----");
                 });
             } else {
@@ -273,7 +276,9 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                     adminElement.admin.serviceInDropDown = selectService;
                     adminElement.loading = false;
                 }, function(errorResponseOfServiceRequest) {
-                    adminElement.loading = true;
+                    
+        adminElement.loading = false;
+        dboticaServices.noConnectivityError();
                     $log.log("in error response of submit service request---");
                 });
             }
@@ -319,7 +324,8 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 }
                 adminElement.loading = false;
             }, function(submitTestStateChangeError) {
-                adminElement.loading = true;
+                        adminElement.loading = false;
+        dboticaServices.noConnectivityError();
             });
 
         } else {
@@ -362,7 +368,8 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 }
                 adminElement.loading = false;
             }, function(changeStateRequestErrorResponse) {
-                adminElement.loading = true;
+        adminElement.loading = false;
+        dboticaServices.noConnectivityError();
                 $log.log("in error response of change state request");
             });
         }

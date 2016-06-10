@@ -153,6 +153,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
     }, function(error) {
         $scope.blurScreen = false;
         $scope.loading = false;
+        dboticaServices.noConnectivityError();
         console.log("doctors error response", error);
         localStorage.clear();
         localStorage.setItem("isLoggedInAssistant", "false");
@@ -238,7 +239,8 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 console.log("patient search details are----", response);
                 $scope.loading = false;
             }, function(errorResponse) {
-                $scope.loading = true;
+                $scope.loading = false;
+                dboticaServices.noConnectivityError();
                 console.log("error response in the search is------", errorResponse);
                 console.log("patient search is unsuccessful");
             });
@@ -270,7 +272,8 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             }
             $scope.loading = false;
         }, function(errorResponse) {
-            $scope.loading = true;
+            $scope.loading = false;
+            dboticaServices.noConnectivityError();
             console.log("in error response of cancelling");
         });
     }
@@ -295,7 +298,8 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             $scope.bookingsForCancelling.splice(index, 1);
             $scope.loading = false;
         }, function(errorResponse) {
-            $scope.loading = true;
+            $scope.loading = false;
+            dboticaServices.noConnectivityError();
         });
 
     }
@@ -330,7 +334,9 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = timePerPatientOfThatDoctor;
             $scope.loading = false;
         }, function(errorResponse) {
-            $scope.loading = true;
+
+            $scope.loading = false;
+            dboticaServices.noConnectivityError();
         });
         $scope.doctorTimings = false;
     }
@@ -411,7 +417,9 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             }
             $scope.loading = false;
         }, function(errorResponse) {
-            $scope.loading = true;
+
+            $scope.loading = false;
+            dboticaServices.noConnectivityError();
         });
         console.log("patient id value is---" + patientId);
     }
@@ -446,7 +454,9 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 $scope.patientsList.splice(index, 1);
                 $scope.loading = false;
             }, function(errorResponse) {
-                $scope.loading = true;
+
+                $scope.loading = false;
+                dboticaServices.noConnectivityError();
             });
             swal("Cancelled!", "Appointment has been successfully cancelled", "success");
         });
@@ -528,7 +538,9 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
             $scope.loading = false;
         }, function(error) {
-            $scope.loading = true;
+
+            $scope.loading = false;
+            dboticaServices.noConnectivityError();
             console.log("in patient controller patients error");
         });
 
@@ -772,7 +784,8 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 $scope.addPatientBtn = true;
                 $scope.loading = false;
             }, function() {
-                $scope.loading = true;
+                $scope.loading = false;
+                dboticaServices.noConnectivityError();
             });
         } else {
             swal({
@@ -874,12 +887,12 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
                 $scope.loading = true;
                 var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
                 patientsListOfDoctor.then(function(response) {
-
                     var patientsList = JSON.parse(response.data.response);
                     $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
                     $scope.loading = false;
                 }, function(error) {
-                    $scope.loading = true;
+                    $scope.loading = false;
+                    dboticaServices.noConnectivityError();
                     console.log("in patient controller patients error");
                 });
                 swal({
@@ -898,7 +911,8 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             }
             $scope.loading = false;
         }, function(errorResponse) {
-            $scope.loading = true;
+            $scope.loading = false;
+            dboticaServices.noConnectivityError();
             console.log("book error response is---", errorResponse);
         });
     }

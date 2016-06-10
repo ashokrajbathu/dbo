@@ -3,6 +3,10 @@
     margin-top: 2px;
 }
 
+.inactiveLabel {
+    margin-left: 30px;
+}
+
 .itemInfo {
     margin-left: 30px;
 }
@@ -21,8 +25,8 @@
     border: 1px solid #3c8dbc;
 }
 
-#addBatchInItem{
-    margin-right:50px;
+#addBatchInItem {
+    margin-right: 50px;
 }
 
 .form-control.batchInputTextBoxes {
@@ -30,10 +34,10 @@
     border-radius: 4px;
 }
 
-.viewItemsBtn{
-    margin-right:40px;
-    margin-bottom:8px;
-    margin-right:10px;
+.viewItemsBtn {
+    margin-right: 40px;
+    margin-bottom: 8px;
+    margin-right: 10px;
 }
 
 .batchUpdateBtns {

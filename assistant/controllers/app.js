@@ -164,6 +164,7 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
             }, function(errorResponse) {
                 $scope.blurScreen = false;
                 $scope.loading = false;
+                dboticaServices.noConnectivityError();
                 console.log("login error response", errorResponse);
             });
         } else {

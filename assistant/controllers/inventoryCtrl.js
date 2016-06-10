@@ -74,7 +74,9 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         itemsDisplayFunction(response);
         inventoryElement.loading = false;
     }, function(errorResponse) {
-        inventoryElement.loading = true;
+        
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
         $log.log("in inventory error response");
     });
 
@@ -125,7 +127,9 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             }
             inventoryElement.loading = false;
         }, function(errorResponse) {
-            inventoryElement.loading = true;
+            
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
             $log.log("in error response of nex tbutton enabled");
         });
     }
@@ -156,7 +160,8 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.itemsDisplayArray = previousBtnFetchedItems.slice(0, previousBtnFetchedItems.length - 1);
             inventoryElement.loading = false;
         }, function(errorResponse) {
-            inventoryElement.loading = true;
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
             $log.log("in previous button error response");
         });
     }
@@ -196,7 +201,8 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             }
             inventoryElement.loading = false;
         }, function(errorResponse) {
-            inventoryElement.loading = true;
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
             $log.log("Error in add item into stock");
         });
     }
@@ -255,7 +261,8 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 }
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
             });
         }
     }
@@ -278,7 +285,8 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 itemsDisplayFunction(response);
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
                 $log.log("in error response of low items view----");
             });
         }
@@ -304,7 +312,9 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 itemsDisplayFunction(response);
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+                
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
                 $log.log("in error response of view all items---");
             });
         }
@@ -328,7 +338,9 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 itemsDisplayFunction(response);
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+                
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
                 $log.log("in error response of view expired items---");
             });
         }
@@ -353,7 +365,9 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 $log.log("response for search is----", itemSearchResponse);
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+                
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
                 $log.log("in error Response of item search from db");
             });
         }
@@ -372,7 +386,9 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.prevNextBtnsRow = true;
             inventoryElement.loading = false;
         }, function(errorResponse) {
-            inventoryElement.loading = true;
+            
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
             $log.log("in error response of view all items");
         });
     }
@@ -399,7 +415,9 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 itemsDisplayFunction(response);
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+                
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
                 $log.log("in error response of view all inventory items---");
             });
         }
@@ -427,7 +445,9 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 itemsDisplayFunction(response);
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+               
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
                 $log.log("in error response of view drug inventory items---");
             });
         }
@@ -456,7 +476,9 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 itemsDisplayFunction(response);
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+               
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
                 $log.log("in error response of view supplies inventory  items---");
             });
         }
@@ -485,7 +507,9 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 itemsDisplayFunction(response);
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+               
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
                 $log.log("in error response of view equipments inventory items---");
             });
         }
@@ -512,7 +536,9 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 itemsDisplayFunction(response);
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+                
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
                 $log.log("in error response of view others inventory  items---");
             });
         }
