@@ -48,8 +48,8 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
 
     inventoryElement.itemsDisplayArray = [];
     inventoryElement.start = 0;
-    inventoryElement.limit = 11;
-    var displayListLength = 10;
+    inventoryElement.limit = 4;
+    var displayListLength = 3;
     inventoryElement.startDisplay = inventoryElement.start + 1;
     inventoryElement.endDisplay = displayListLength;
     var organizationId = localStorage.getItem('orgId');
@@ -176,19 +176,24 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             $log.log("response after adding item is----", response);
             var success = response.data.success;
             if (success) {
-                swal({
-                    title: "Info",
-                    text: "Item Added Successfully",
-                    type: "info",
-                    confirmButtonText: "OK",
-                    allowOutsideClick: true
-                });
+                dboticaServices.itemAdditionIntoStockSuccessSwal();
+                var drugObject = $.parseJSON(response.data.response);
+                $log.log("drug object is----", drugObject);
+                if (inventoryElement.itemsDisplayArray.length + 1 <= displayListLength) {
+                    inventoryElement.itemsDisplayArray.push(drugObject);
+                    if (inventoryElement.prevBtnDisabled === true && inventoryElement.nextBtnDisabled === true) {
+                        inventoryElement.startDisplay = 1;
+                        inventoryElement.endDisplay = inventoryElement.endDisplay + 1;
+                    }
+                } else {
+                    inventoryElement.nextBtnDisabled = false;
+                    inventoryElement.nextBtnEnabled = true;
+                }
+                inventoryElement.totalDrugsCount = inventoryElement.totalDrugsCount + 1;
+                $log.log("items array-----", inventoryElement.itemsDisplayArray);
+            } else {
+                dboticaServices.itemAdditionIntoStockUnsuccessfullSwal();
             }
-            var drugObject = $.parseJSON(response.data.response);
-            $log.log("drug object is----", drugObject);
-            inventoryElement.itemsDisplayArray.push(drugObject);
-            inventoryElement.totalDrugsCount = inventoryElement.totalDrugsCount + 1;
-            $log.log("items array-----", inventoryElement.itemsDisplayArray);
             inventoryElement.loading = false;
         }, function(errorResponse) {
             inventoryElement.loading = true;
@@ -235,22 +240,19 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             promise.then(function(response) {
                 var success = response.data.success;
                 if (success) {
-                    swal({
-                        title: "Info",
-                        text: "Batch Successfully Added.",
-                        type: "info",
-                        confirmButtonText: "OK",
-                        allowOutsideClick: true
-                    });
-                }
-                var itemObject = $.parseJSON(response.data.response);
-                $log.log("item after adding batch is-----", itemObject);
-                for (itemIndex = 0; itemIndex < inventoryElement.itemsDisplayArray.length; itemIndex++) {
-                    if (inventoryElement.itemsDisplayArray[itemIndex].id === itemObject.itemId) {
-                        inventoryElement.itemsDisplayArray[itemIndex].availableStock += itemObject.units;
+                    dboticaServices.batchAdditionForItemSuccessSwal();
+
+                    var itemObject = $.parseJSON(response.data.response);
+                    $log.log("item after adding batch is-----", itemObject);
+                    for (itemIndex = 0; itemIndex < inventoryElement.itemsDisplayArray.length; itemIndex++) {
+                        if (inventoryElement.itemsDisplayArray[itemIndex].id === itemObject.itemId) {
+                            inventoryElement.itemsDisplayArray[itemIndex].availableStock += itemObject.units;
+                        }
                     }
+                    $log.log("array after adding batch is-----", inventoryElement.itemsDisplayArray);
+                } else {
+                    dboticaServices.batchAdditionForItemUnsuccessSwal();
                 }
-                $log.log("array after adding batch is-----", inventoryElement.itemsDisplayArray);
                 inventoryElement.loading = false;
             }, function(errorResponse) {
                 inventoryElement.loading = true;
@@ -548,6 +550,9 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 inventoryElement.prevBtnDisabled = true;
                 inventoryElement.nextBtnDisabled = true;
                 inventoryElement.endDisplay = itemsFetchedFromApiFromStart.length;
+                if (itemsFetchedFromApiFromStart.length == 0) {
+                    inventoryElement.startDisplay = 0;
+                }
                 inventoryElement.itemsDisplayArray = itemsFetchedFromApiFromStart;
             }
         }

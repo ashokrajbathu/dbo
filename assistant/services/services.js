@@ -1028,6 +1028,26 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.batchAdditionForItemUnsuccessSwal = function() {
+        swal({
+            title: "Error",
+            text: "Batch Could Not Be Added To Item",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.itemAdditionIntoStockUnsuccessfullSwal = function() {
+        swal({
+            title: "Error",
+            text: "Item Could not be Added Into Stock",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
     this.noTestNameSwal = function() {
         swal({
             title: "Error",
@@ -1053,6 +1073,26 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             title: "Error",
             text: "Please enter the Doctor Service Cost Details",
             type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.itemAdditionIntoStockSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Item Added Successfully",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.batchAdditionForItemSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Batch Successfully Added.",
+            type: "success",
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
