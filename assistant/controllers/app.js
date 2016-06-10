@@ -162,8 +162,8 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
                 $scope.loading = false;
                 $scope.blurScreen = false;
             }, function(errorResponse) {
-                $scope.blurScreen = true;
-                $scope.loading = true;
+                $scope.blurScreen = false;
+                $scope.loading = false;
                 console.log("login error response", errorResponse);
             });
         } else {

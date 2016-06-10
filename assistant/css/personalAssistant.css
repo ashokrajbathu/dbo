@@ -13,7 +13,7 @@
     }
     
     .main-sidebar {
-        margin-top: 51px;
+        margin-top: 48px;
     }
     
     [ng\:cloak],
@@ -490,6 +490,7 @@
     }
     
     .navbar-default {
+        border-bottom-color: #3c8dbc !important;
         background-image: none !important;
         background-color: #3c8dbc !important;
     }
@@ -538,7 +539,7 @@
    } */
     
     .activeSectionBlack {
-        color: #ff7f7f !important;
+        color: #3c8dbc !important;
         background-color: white !important;
     }
     
@@ -590,15 +591,24 @@
     
     .docLinks {
         cursor: pointer;
-        margin-bottom: 4px;
+    }
+    
+    .docLinks:hover {
+        margin-top: 1px;
+        margin-bottom: 1px !important;
+        border-radius: 4px !important;
+        margin-right: 1px !important;
+        color: #3c8dbc !important;
     }
     
     .activeLi,
     .activeLi:hover {
-        color: white !important;
+        margin-top: 1px !important;
+        margin-right: 2px;
+        color: #3c8dbc !important;
         cursor: pointer !important;
         border-radius: 4px !important;
-        background-color: #3c8dbc !important;
+        background-color: white !important;
     }
     
     .docList>li.active>a,
@@ -863,51 +873,52 @@
 }*/
     /* Have to set height explicity on ui-view 
 to prevent collapsing during animation*/
-    /* .well[ui-view] {
-    height: 65px;
-}
-
-.ui-view-container {
-    position: relative;
-}
-
-[ui-view].ng-enter,
-[ui-view].ng-leave {
-    position: absolute;
-    left: 0;
-    right: 0;
-    -webkit-transition: all .3s linear;
-    -moz-transition: all .3s linear;
-    -o-transition: all .3s linear;
-    transition: all .3s linear;
-}
-
-[ui-view].ng-enter {
-    opacity: 0;
-    -webkit-transform: scale3d(0.9, 0.9, 0.9);
-    -moz-transform: scale3d(0.9, 0.9, 0.9);
-    transform: scale3d(0.9, 0.9, 0.9);
-}
-
-[ui-view].ng-enter-active {
-    opacity: 1;
-    -webkit-transform: scale3d(1, 1, 1);
-    -moz-transform: scale3d(1, 1, 1);
-    transform: scale3d(1, 1, 1);
-}
-
-[ui-view].ng-leave {
-    opacity: 1;
-    padding-left: 0px;
-    -webkit-transform: translate3d(0, 0, 0);
-    -moz-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-}
-
-[ui-view].ng-leave-active {
-    opacity: 0;
-    padding-left: 100px;
-    -webkit-transform: translate3d(100px, 0, 0);
-    -moz-transform: translate3d(100px, 0, 0);
-    transform: translate3d(100px, 0, 0);
-} */
+    
+    .well[ui-view] {
+        height: 65px;
+    }
+    
+    .ui-view-container {
+        position: relative;
+    }
+    
+    [ui-view].ng-enter,
+    [ui-view].ng-leave {
+        position: absolute;
+        left: 0;
+        right: 0;
+        -webkit-transition: all .3s linear;
+        -moz-transition: all .3s linear;
+        -o-transition: all .3s linear;
+        transition: all .3s linear;
+    }
+    
+    [ui-view].ng-enter {
+        opacity: 0;
+        -webkit-transform: scale3d(0.9, 0.9, 0.9);
+        -moz-transform: scale3d(0.9, 0.9, 0.9);
+        transform: scale3d(0.9, 0.9, 0.9);
+    }
+    
+    [ui-view].ng-enter-active {
+        opacity: 1;
+        -webkit-transform: scale3d(1, 1, 1);
+        -moz-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+    
+    [ui-view].ng-leave {
+        opacity: 1;
+        padding-left: 0px;
+        -webkit-transform: translate3d(0, 0, 0);
+        -moz-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    
+    [ui-view].ng-leave-active {
+        opacity: 0;
+        padding-left: 100px;
+        -webkit-transform: translate3d(100px, 0, 0);
+        -moz-transform: translate3d(100px, 0, 0);
+        transform: translate3d(100px, 0, 0);
+    }
