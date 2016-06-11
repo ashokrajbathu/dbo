@@ -250,6 +250,7 @@
         });
 
         $('.signInSubmitBtnForm').on('click', '#loginSubmitDoctor', function(e) {
+            e.preventDefault();
             $('.signUpForm').hide();
             var patientsListOfDoctor = [];
             var json_str = [];
@@ -341,8 +342,10 @@
                     }
                 }
             });
+            return false;
         });
-        $(".signUpInsignUpform").on('click', '#signUpSubmitBtn', function() {
+        $(".signUpInsignUpform").on('click', '#signUpSubmitBtn', function(e) {
+            e.preventDefault();
             var name = $("#exampleInputName").val();
             var email = $("#exampleInputEmail").val();
             var phone = $("#exampleInputPhone").val();
