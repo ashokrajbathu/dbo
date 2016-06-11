@@ -62,8 +62,8 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
         invoiceElement.blurScreen = false;
     }, function(doctorsErrorResponse) {
         invoiceElement.blurScreen = false;
-            invoiceElement.loading = false;
-            dboticaServices.noConnectivityError();
+        invoiceElement.loading = false;
+        dboticaServices.noConnectivityError();
     });
 
     invoiceElement.loading = true;
@@ -82,8 +82,8 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
         invoiceElement.blurScreen = false;
     }, function(invoiceErrorResponse) {
         invoiceElement.blurScreen = false;
-            invoiceElement.loading = false;
-            dboticaServices.noConnectivityError();
+        invoiceElement.loading = false;
+        dboticaServices.noConnectivityError();
         $log.log("invoice error response");
     });
 
@@ -174,9 +174,14 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
         }
         searchResultPromise.then(function(searchInvoiceSuccess) {
             $log.log("search success invoice is----", searchInvoiceSuccess);
-            var invoicesListOnSuccess = $.parseJSON(searchInvoiceSuccess.data.response);
-            displayInvoicesInTheTable(invoicesListOnSuccess);
-            $log.log("invoices list is-----", invoicesListOnSuccess);
+            var errorCode = searchInvoiceSuccess.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                var invoicesListOnSuccess = $.parseJSON(searchInvoiceSuccess.data.response);
+                displayInvoicesInTheTable(invoicesListOnSuccess);
+                $log.log("invoices list is-----", invoicesListOnSuccess);
+            }
             invoiceElement.loading = false;
         }, function(searchInvoiceError) {
             invoiceElement.blurScreen = false;
@@ -205,9 +210,9 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
                 }
                 invoiceElement.loading = false;
             }, function(viewAllInvoicesError) {
-               invoiceElement.blurScreen = false;
-            invoiceElement.loading = false;
-            dboticaServices.noConnectivityError();
+                invoiceElement.blurScreen = false;
+                invoiceElement.loading = false;
+                dboticaServices.noConnectivityError();
             });
         }
     }
@@ -234,8 +239,8 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
                 invoiceElement.loading = false;
             }, function(pendingInvoicesError) {
                 invoiceElement.blurScreen = false;
-            invoiceElement.loading = false;
-            dboticaServices.noConnectivityError();
+                invoiceElement.loading = false;
+                dboticaServices.noConnectivityError();
             });
         }
     }

@@ -152,34 +152,38 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     billElement.loading = true;
     billElement.blurScreen = true;
     var testsPromise = dboticaServices.getTests();
-
     testsPromise.then(function(testsPromiseSuccessResponse) {
-        var testsList = $.parseJSON(testsPromiseSuccessResponse.data.response);
-        for (var testIndex in testsList) {
-            if (testsList[testIndex].organizationId == organizationId) {
-                if (testsList[testIndex].state == "ACTIVE") {
-                    activeTestsList.push(testsList[testIndex]);
-                    activeTestsNamesList.push(testsList[testIndex].testName);
+            var errorCode = testsPromiseSuccessResponse.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                var testsList = $.parseJSON(testsPromiseSuccessResponse.data.response);
+                for (var testIndex in testsList) {
+                    if (testsList[testIndex].organizationId == organizationId) {
+                        if (testsList[testIndex].state == "ACTIVE") {
+                            activeTestsList.push(testsList[testIndex]);
+                            activeTestsNamesList.push(testsList[testIndex].testName);
+                        }
+                    }
                 }
+                dboticaServices.setTestsFromBillManagement(activeTestsList);
+                dboticaServices.setTestsNamesFromBillManagement(activeTestsNamesList);
             }
-        }
-        dboticaServices.setTestsFromBillManagement(activeTestsList);
-        dboticaServices.setTestsNamesFromBillManagement(activeTestsNamesList);
-        billElement.loading = false;
-        billElement.blurScreen = false;
-    }, function(testsPromiseErrorResponse) {
-        billElement.blurScreen = false;
-        billElement.loading = false;
-        dboticaServices.noConnectivityError();
-        $log.log("in error response of getting tests list----");
-    });
+            billElement.loading = false;
+            billElement.blurScreen = false;
+        },
+        function(testsPromiseErrorResponse) {
+            billElement.blurScreen = false;
+            billElement.loading = false;
+            dboticaServices.noConnectivityError();
+            $log.log("in error response of getting tests list----");
+        });
 
     if (fetchDoctorDetails) {
         billElement.loading = true;
         billElement.blurScreen = true;
         var doctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
         doctorsOfThatAssistant.then(function(successResponse) {
-
             $log.log("bill response is----", successResponse);
             var errorCode = successResponse.data.errorCode;
             if (!!errorCode) {
@@ -237,7 +241,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                 billElement.loading = true;
                 var patientSearchPromise = dboticaServices.getPatientDetailsOfThatNumber(phoneNumber);
                 patientSearchPromise.then(function(patientSearchSuccessResponse) {
-
                     var errorCode = patientSearchSuccessResponse.data.errorCode;
                     if (!!errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
@@ -427,19 +430,21 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                 billElement.loading = true;
                 var invoiceUpdatePromise = dboticaServices.updateInvoice(billElement.finalBill);
                 invoiceUpdatePromise.then(function(invoiceUpdateSuccessResponse) {
-
                     var errorCode = invoiceUpdateSuccessResponse.data.errorCode;
-                    var success = invoiceUpdateSuccessResponse.data.success;
-                    var invoiceSuccessResponse = invoiceUpdateSuccessResponse.data.response;
-                    if (errorCode == null && success == true && invoiceSuccessResponse == null) {
-                        newBill();
+                    if (!!errorCode) {
+                        dboticaServices.logoutFromThePage(errorCode);
+                    } else {
+                        var success = invoiceUpdateSuccessResponse.data.success;
+                        var invoiceSuccessResponse = invoiceUpdateSuccessResponse.data.response;
+                        if (errorCode == null && success == true && invoiceSuccessResponse == null) {
+                            newBill();
+                        }
+                        $log.log("success response is---", invoiceUpdateSuccessResponse);
                     }
-                    $log.log("success response is---", invoiceUpdateSuccessResponse);
                     billElement.loading = false;
                 }, function(invoiceUpdateErrorResponse) {
-                     
-            billElement.loading = false;
-            dboticaServices.noConnectivityError();
+                    billElement.loading = false;
+                    dboticaServices.noConnectivityError();
                 });
             } else {
                 dboticaServices.nextDueErrorSwal();

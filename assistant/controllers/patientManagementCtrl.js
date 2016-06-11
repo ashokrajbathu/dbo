@@ -212,31 +212,35 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             $scope.loading = true;
             var promise = dboticaServices.getPatientDetailsOfThatNumber(phoneNumberForSearch);
             promise.then(function(response) {
-
-                $scope.patientAvailable = true;
-                $scope.nextForm = false;
-                $scope.addPatientBtn = false;
-                console.log("patients length is---" + response.data.response.length);
-                if (response.data.success === true && response.data.response.length > 2) {
-                    console.log("inside if of patient search");
-                    var patientData = JSON.parse(response.data.response);
-                    console.log("patient data in patient search----", patientData);
-                    $scope.patientData.gender = patientData[0].gender;
-                    $scope.patientData.bloodGroup = patientData[0].bloodGroup;
-                    $scope.patientData.drugAllergy = patientData[0].bloodAllergy;
-                    $scope.patientData.firstName = patientData[0].firstName;
-                    $scope.patientData.emailId = patientData[0].emailId;
-                    $scope.patientData.phoneNumber = patientData[0].phoneNumber;
-                    $scope.patientData.age = patientData[0].age;
-                    $scope.patientData.drugAllergy = patientData[0].drugAllergy;
-                    $scope.patientId = patientData[0].id;
+                var errorCode = response.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
                 } else {
-                    $scope.patientData = {};
-                    $scope.patientData.phoneNumber = phoneNumberForSearch;
-                    console.log("no details of the patient");
-                }
+                    $scope.patientAvailable = true;
+                    $scope.nextForm = false;
+                    $scope.addPatientBtn = false;
+                    console.log("patients length is---" + response.data.response.length);
+                    if (response.data.success === true && response.data.response.length > 2) {
+                        console.log("inside if of patient search");
+                        var patientData = JSON.parse(response.data.response);
+                        console.log("patient data in patient search----", patientData);
+                        $scope.patientData.gender = patientData[0].gender;
+                        $scope.patientData.bloodGroup = patientData[0].bloodGroup;
+                        $scope.patientData.drugAllergy = patientData[0].bloodAllergy;
+                        $scope.patientData.firstName = patientData[0].firstName;
+                        $scope.patientData.emailId = patientData[0].emailId;
+                        $scope.patientData.phoneNumber = patientData[0].phoneNumber;
+                        $scope.patientData.age = patientData[0].age;
+                        $scope.patientData.drugAllergy = patientData[0].drugAllergy;
+                        $scope.patientId = patientData[0].id;
+                    } else {
+                        $scope.patientData = {};
+                        $scope.patientData.phoneNumber = phoneNumberForSearch;
+                        console.log("no details of the patient");
+                    }
 
-                console.log("patient search details are----", response);
+                    console.log("patient search details are----", response);
+                }
                 $scope.loading = false;
             }, function(errorResponse) {
                 $scope.loading = false;
@@ -259,15 +263,19 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         $scope.loading = true;
         var promise = dboticaServices.futureAppointmentListOfNumber(patientPhoneNumberForCancelling, doctorId);
         promise.then(function(response) {
-
-            console.log("cancelling response is-----", response);
-            var objectsList = JSON.parse(response.data.response);
-            console.log("bookings for cancelling----", objectsList);
-            for (var i = 0, l = objectsList.length; i < l; i++) {
-                if (objectsList[i].state === "INACTIVE") {
-                    continue;
-                } else {
-                    $scope.bookingsForCancelling.push(objectsList[i]);
+            var errorCode = response.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                console.log("cancelling response is-----", response);
+                var objectsList = JSON.parse(response.data.response);
+                console.log("bookings for cancelling----", objectsList);
+                for (var i = 0, l = objectsList.length; i < l; i++) {
+                    if (objectsList[i].state === "INACTIVE") {
+                        continue;
+                    } else {
+                        $scope.bookingsForCancelling.push(objectsList[i]);
+                    }
                 }
             }
             $scope.loading = false;
@@ -293,9 +301,13 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         $scope.loading = true;
         var promise = dboticaServices.cancelAppointmentOfADateOrUpdateDoctorEvent(cancelBook);
         promise.then(function(response) {
-
-            console.log("after cancelling is----", response);
-            $scope.bookingsForCancelling.splice(index, 1);
+            var errorCode = response.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                console.log("after cancelling is----", response);
+                $scope.bookingsForCancelling.splice(index, 1);
+            }
             $scope.loading = false;
         }, function(errorResponse) {
             $scope.loading = false;
@@ -327,11 +339,15 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         $scope.loading = true;
         var promise = dboticaServices.updateDoctorTimings(addTimeObj);
         promise.then(function(response) {
-
-            console.log("update doctor timings response---", response);
-            $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = milliSecondsOfStartTime;
-            $scope.doctorObjectForChangingStartAndEndTime.dayEndTime = milliSecondsOfEndTime;
-            $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = timePerPatientOfThatDoctor;
+            var errorCode = response.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                console.log("update doctor timings response---", response);
+                $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = milliSecondsOfStartTime;
+                $scope.doctorObjectForChangingStartAndEndTime.dayEndTime = milliSecondsOfEndTime;
+                $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = timePerPatientOfThatDoctor;
+            }
             $scope.loading = false;
         }, function(errorResponse) {
 
@@ -396,24 +412,28 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         $scope.loading = true;
         var promise = dboticaServices.getPatientDetailsOfThatNumber(patientId);
         promise.then(function(response) {
-
-            if (response.data.success) {
-                console.log("inside if of edit details patient search");
-                var patientData = JSON.parse(response.data.response);
-                console.log("patient data in edit details patient search----", patientData);
-                if (patientData.length > 0) {
-                    $scope.patientData.gender = patientData[0].gender;
-                    $scope.patientData.bloodGroup = patientData[0].bloodGroup;
-                    $scope.patientData.drugAllergy = patientData[0].bloodAllergy;
-                    $scope.patientData.firstName = patientData[0].firstName;
-                    $scope.patientData.emailId = patientData[0].emailId;
-                    $scope.patientData.phoneNumber = patientData[0].phoneNumber;
-                    $scope.patientData.age = patientData[0].age;
-                    $scope.patientData.drugAllergy = patientData[0].drugAllergy;
-                }
+            var errorCode = response.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
             } else {
-                $scope.patientData = {};
-                console.log("in else response of edit details patient search--");
+                if (response.data.success) {
+                    console.log("inside if of edit details patient search");
+                    var patientData = JSON.parse(response.data.response);
+                    console.log("patient data in edit details patient search----", patientData);
+                    if (patientData.length > 0) {
+                        $scope.patientData.gender = patientData[0].gender;
+                        $scope.patientData.bloodGroup = patientData[0].bloodGroup;
+                        $scope.patientData.drugAllergy = patientData[0].bloodAllergy;
+                        $scope.patientData.firstName = patientData[0].firstName;
+                        $scope.patientData.emailId = patientData[0].emailId;
+                        $scope.patientData.phoneNumber = patientData[0].phoneNumber;
+                        $scope.patientData.age = patientData[0].age;
+                        $scope.patientData.drugAllergy = patientData[0].drugAllergy;
+                    }
+                } else {
+                    $scope.patientData = {};
+                    console.log("in else response of edit details patient search--");
+                }
             }
             $scope.loading = false;
         }, function(errorResponse) {
@@ -449,9 +469,13 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             $scope.loading = true;
             var promise = dboticaServices.cancelAppointmentOfADateOrUpdateDoctorEvent(cancelBook);
             promise.then(function(response) {
-
                 console.log("after cancelling is----", response);
-                $scope.patientsList.splice(index, 1);
+                var errorCode = response.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    $scope.patientsList.splice(index, 1);
+                }
                 $scope.loading = false;
             }, function(errorResponse) {
 
@@ -532,13 +556,16 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         $scope.loading = true;
         var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor(doctorId);
         patientsListOfDoctor.then(function(response) {
-
-            console.log("in patients list of doctor selected");
-            var patientsList = JSON.parse(response.data.response);
-            $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
+            var errorCode = response.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                console.log("in patients list of doctor selected");
+                var patientsList = JSON.parse(response.data.response);
+                $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
+            }
             $scope.loading = false;
         }, function(error) {
-
             $scope.loading = false;
             dboticaServices.noConnectivityError();
             console.log("in patient controller patients error");
@@ -625,82 +652,86 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         $scope.loading = true;
         var promise = dboticaServices.getDoctorEventsOfDocOnADate($scope.book.doctorId, milliSecsOfDate);
         promise.then(function(response) {
-
-                console.log("response in ng-change is----", response);
-                var doctorResponseAfterDateSelect = JSON.parse(response.data.response);
-                console.log("response in ng-change----", doctorResponseAfterDateSelect);
-                $scope.morningArrayLength = $scope.morningArray.length;
-                $scope.afternoonArrayLength = $scope.afternoonArray.length;
-                $scope.eveningArrayLength = $scope.eveningArray.length;
-                console.log("selected doctor response----" + doctorResponseAfterDateSelect.length);
-                console.log("scope and morning array length---" + $scope.morningArrayLength);
-                if (doctorResponseAfterDateSelect !== null && doctorResponseAfterDateSelect.length > 0) {
-                    for (var i = 0; i < doctorResponseAfterDateSelect.length; i++) {
-                        if ((doctorResponseAfterDateSelect[i].label !== null) && (doctorResponseAfterDateSelect[i].label.toLowerCase() == "blocked")) {
-                            var startTime = doctorResponseAfterDateSelect[i].startTime;
-                            startTime = startTime - startTime % timePerPatientForThatDoctor;
-                            console.log("start time after selec----" + startTime);
-                            console.log("end time is after selec---" + doctorResponseAfterDateSelect[i].endTime);
-                            for (var j = startTime; j < doctorResponseAfterDateSelect[i].endTime; j = j + timePerPatientForThatDoctor) {
-                                console.log("j value--" + j);
-                                if ($scope.blockedTimingsArray.indexOf(j) === -1) {
-                                    $scope.blockedTimingsArray.push(j);
+                var errorCode = response.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    console.log("response in ng-change is----", response);
+                    var doctorResponseAfterDateSelect = JSON.parse(response.data.response);
+                    console.log("response in ng-change----", doctorResponseAfterDateSelect);
+                    $scope.morningArrayLength = $scope.morningArray.length;
+                    $scope.afternoonArrayLength = $scope.afternoonArray.length;
+                    $scope.eveningArrayLength = $scope.eveningArray.length;
+                    console.log("selected doctor response----" + doctorResponseAfterDateSelect.length);
+                    console.log("scope and morning array length---" + $scope.morningArrayLength);
+                    if (doctorResponseAfterDateSelect !== null && doctorResponseAfterDateSelect.length > 0) {
+                        for (var i = 0; i < doctorResponseAfterDateSelect.length; i++) {
+                            if ((doctorResponseAfterDateSelect[i].label !== null) && (doctorResponseAfterDateSelect[i].label.toLowerCase() == "blocked")) {
+                                var startTime = doctorResponseAfterDateSelect[i].startTime;
+                                startTime = startTime - startTime % timePerPatientForThatDoctor;
+                                console.log("start time after selec----" + startTime);
+                                console.log("end time is after selec---" + doctorResponseAfterDateSelect[i].endTime);
+                                for (var j = startTime; j < doctorResponseAfterDateSelect[i].endTime; j = j + timePerPatientForThatDoctor) {
+                                    console.log("j value--" + j);
+                                    if ($scope.blockedTimingsArray.indexOf(j) === -1) {
+                                        $scope.blockedTimingsArray.push(j);
+                                    }
                                 }
                             }
-                        }
-                        /*console.log("blocked array---", $scope.blockedTimingsArray);*/
-                        var state = null;
-                        try {
-                            state = doctorResponseAfterDateSelect[i].state;
-                        } catch (e) {
-                            console.log(e);
-                        }
-
-                        if (!!state && state === "ACTIVE") {
-                            for (var k = 0; k < $scope.morningArrayLength; k++) {
-                                if ($scope.morningArray[k].time === doctorResponseAfterDateSelect[i].startTime) {
-                                    $scope.morningArray[k].count++;
-                                }
+                            /*console.log("blocked array---", $scope.blockedTimingsArray);*/
+                            var state = null;
+                            try {
+                                state = doctorResponseAfterDateSelect[i].state;
+                            } catch (e) {
+                                console.log(e);
                             }
 
-                            for (var k = 0; k < $scope.afternoonArrayLength; k++) {
-                                if ($scope.afternoonArray[k].time === doctorResponseAfterDateSelect[i].startTime) {
-                                    $scope.afternoonArray[k].count++;
+                            if (!!state && state === "ACTIVE") {
+                                for (var k = 0; k < $scope.morningArrayLength; k++) {
+                                    if ($scope.morningArray[k].time === doctorResponseAfterDateSelect[i].startTime) {
+                                        $scope.morningArray[k].count++;
+                                    }
                                 }
-                            }
-                            for (var k = 0; k < $scope.eveningArrayLength; k++) {
-                                if ($scope.eveningArray[k].time === doctorResponseAfterDateSelect[i].startTime) {
-                                    $scope.eveningArray[k].count++;
-                                }
-                            }
 
-                        } else {
-                            console.log("state ", state);
-                            continue;
+                                for (var k = 0; k < $scope.afternoonArrayLength; k++) {
+                                    if ($scope.afternoonArray[k].time === doctorResponseAfterDateSelect[i].startTime) {
+                                        $scope.afternoonArray[k].count++;
+                                    }
+                                }
+                                for (var k = 0; k < $scope.eveningArrayLength; k++) {
+                                    if ($scope.eveningArray[k].time === doctorResponseAfterDateSelect[i].startTime) {
+                                        $scope.eveningArray[k].count++;
+                                    }
+                                }
+
+                            } else {
+                                console.log("state ", state);
+                                continue;
+                            }
                         }
                     }
-                }
 
-                for (var i = 0; i < $scope.blockedTimingsArray.length; i++) {
-                    for (var j = 0, k = $scope.morningArray.length; j < k; j++) {
-                        if ($scope.blockedTimingsArray[i] === $scope.morningArray[j].time) {
-                            $scope.morningArray.splice(j, 1);
+                    for (var i = 0; i < $scope.blockedTimingsArray.length; i++) {
+                        for (var j = 0, k = $scope.morningArray.length; j < k; j++) {
+                            if ($scope.blockedTimingsArray[i] === $scope.morningArray[j].time) {
+                                $scope.morningArray.splice(j, 1);
+                            }
+
                         }
 
-                    }
+                        for (var j = 0, k = $scope.afternoonArray.length; j < k; j++) {
+                            if ($scope.blockedTimingsArray[i] === $scope.afternoonArray[j].time) {
+                                $scope.afternoonArray.splice(j, 1);
+                            }
 
-                    for (var j = 0, k = $scope.afternoonArray.length; j < k; j++) {
-                        if ($scope.blockedTimingsArray[i] === $scope.afternoonArray[j].time) {
-                            $scope.afternoonArray.splice(j, 1);
                         }
 
-                    }
+                        for (var j = 0, k = $scope.eveningArray.length; j < k; j++) {
+                            if ($scope.blockedTimingsArray[i] === $scope.eveningArray[j].time) {
+                                $scope.eveningArray.splice(j, 1);
+                            }
 
-                    for (var j = 0, k = $scope.eveningArray.length; j < k; j++) {
-                        if ($scope.blockedTimingsArray[i] === $scope.eveningArray[j].time) {
-                            $scope.eveningArray.splice(j, 1);
                         }
-
                     }
                 }
                 $scope.loading = false;
@@ -771,17 +802,22 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             var promise = dboticaServices.addNewPatient(newPatientDetails);
             console.log("add patient response is---", promise);
             promise.then(function(response) {
-                console.log("add patient actual response is----", response.data.response);
-                var addPatientResponse = JSON.parse(response.data.response);
-                console.log("add patient response required is----", addPatientResponse);
-                $scope.nextForm = true;
-                $scope.nextBtn = false;
-                $scope.patientAvailable = false;
-                $scope.viewDetailsLink = true;
-                $scope.patientDataInNextDiv.name = addPatientResponse[0].firstName;
-                $scope.book.label = addPatientResponse[0].firstName;
-                $scope.book.patientId = addPatientResponse[0].id;
-                $scope.addPatientBtn = true;
+                var errorCode = response.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    console.log("add patient actual response is----", response.data.response);
+                    var addPatientResponse = JSON.parse(response.data.response);
+                    console.log("add patient response required is----", addPatientResponse);
+                    $scope.nextForm = true;
+                    $scope.nextBtn = false;
+                    $scope.patientAvailable = false;
+                    $scope.viewDetailsLink = true;
+                    $scope.patientDataInNextDiv.name = addPatientResponse[0].firstName;
+                    $scope.book.label = addPatientResponse[0].firstName;
+                    $scope.book.patientId = addPatientResponse[0].id;
+                    $scope.addPatientBtn = true;
+                }
                 $scope.loading = false;
             }, function() {
                 $scope.loading = false;
@@ -882,32 +918,37 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         var promise = dboticaServices.cancelAppointmentOfADateOrUpdateDoctorEvent($scope.book);
         promise.then(function(response) {
             console.log("in book---");
-            console.log("book response is----", response);
-            if (response.data.success === true) {
-                $scope.loading = true;
-                var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
-                patientsListOfDoctor.then(function(response) {
-                    var patientsList = JSON.parse(response.data.response);
-                    $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
-                    $scope.loading = false;
-                }, function(error) {
-                    $scope.loading = false;
-                    dboticaServices.noConnectivityError();
-                    console.log("in patient controller patients error");
-                });
-                swal({
-                    title: "Success",
-                    text: "Appointment successfully booked!!!",
-                    type: "success",
-                    confirmButtonText: "OK"
-                }, function() {});
+            var errorCode = response.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
             } else {
-                swal({
-                    title: "Error",
-                    text: "Book Appointment is Failed!",
-                    type: "error",
-                    confirmButtonText: "OK"
-                });
+                console.log("book response is----", response);
+                if (response.data.success === true) {
+                    $scope.loading = true;
+                    var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
+                    patientsListOfDoctor.then(function(response) {
+                        var patientsList = JSON.parse(response.data.response);
+                        $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
+                        $scope.loading = false;
+                    }, function(error) {
+                        $scope.loading = false;
+                        dboticaServices.noConnectivityError();
+                        console.log("in patient controller patients error");
+                    });
+                    swal({
+                        title: "Success",
+                        text: "Appointment successfully booked!!!",
+                        type: "success",
+                        confirmButtonText: "OK"
+                    }, function() {});
+                } else {
+                    swal({
+                        title: "Error",
+                        text: "Book Appointment is Failed!",
+                        type: "error",
+                        confirmButtonText: "OK"
+                    });
+                }
             }
             $scope.loading = false;
         }, function(errorResponse) {
