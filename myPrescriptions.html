@@ -154,9 +154,9 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        <label for="inputEmail3" class="col-sm-3 control-label">Patient Name</label>
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Prescription Id</label>
                                         <div class="col-sm-6">
-                                            <input type="text" class="form-control" id="myprescritions-search-name" placeholder="Name">
+                                            <input type="text" class="form-control" id="myprescritions-prescription-id" placeholder="Prescription Id">
                                         </div>
                                     </div>
                                 </div>
@@ -615,10 +615,11 @@
         var fromDate = $("#myprescritions-start-date").val();
         var toDate = $("#myprescritions-end-date").val();
         var phoneNumber = $("#myprescritions-pateint-phone").val();
+		var prescriptionId = $("#myprescritions-prescription-id").val();
         console.log("from date ", fromDate);
         console.log("to date ", toDate);
         console.log("phone number ", phoneNumber);
-        getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addRowToPrescriptionTable, applyAccordion, "#prescription-list");
+        getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, prescriptionId, addRowToPrescriptionTable, applyAccordion, "#prescription-list");
         //getAllPrescriptionsFromIndexedDB(addRowToPrescriptionTable);
 
     });

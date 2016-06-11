@@ -562,6 +562,18 @@ function getAllPrescriptionsFromIndexedDB(addDataToTable,callBackAfterAdding, id
     };
 }*/
 
+function getPrescriptionsById(prescriptionId, addDataToTable, callBackAfterAdding,id){
+	var result = [];
+	var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
+	var request = store.get(prescriptionId);
+	request.onsuccess = function(event) {
+		addDataToTable(event.target.result);
+		callBackAfterAdding(id)
+	}
+	
+	
+}
+
 function getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable,callBackAfterAdding,id) {
     var result = [];
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
@@ -594,18 +606,24 @@ function getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable,ca
 
 }
 
-function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, addDataToTable, callBackAfterAdding,id) {
+function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, prescriptionId, addDataToTable, callBackAfterAdding,id) {
     var result = [];
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
     var index = store.index('patientPhoneNumber-creationTime');
     var range;
     var initDay = new Date("Fri Mar 25 2016 18:53:37 GMT+0530");
     var today = new Date();
-    if (fromDate == "" && toDate == "" && phoneNumber == "") {
+	
+    if (fromDate == "" && toDate == "" && phoneNumber == "" && prescriptionId == "") {
         console.log("No Date range specified");
         getAllPrescriptionsFromIndexedDB(addDataToTable,callBackAfterAdding,id);
         return;
     }
+	
+	if(prescriptionId.trim() != ""){
+		getPrescriptionsById(prescriptionId.trim(), addDataToTable, callBackAfterAdding,id )
+		return;
+	}
 
     if (fromDate != "")
         fromDate = new Date(fromDate);
