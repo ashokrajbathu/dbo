@@ -8,7 +8,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
-    <link class="cssdeck" rel="stylesheet" href="css/bootstrap.min.css">
+    <link class="cssdeck" rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css" class="cssdeck">
     <link rel="stylesheet" href="css/jquery-ui.css">
     <!-- Font Awesome -->
@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
     <!-- iCheck -->
     <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
-    <!-- <link rel="stylesheet" type="text/css" href="login.css"> -->
+    <link rel="stylesheet" type="text/css" href="login.css">
     <script src="plugins/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="plugins/sweetalert/dist/sweetalert.css">
     <style type="text/css">
@@ -37,8 +37,8 @@
     <![endif]-->
 </head>
 
-<body style="background-color:#f5f5f5;">
-    <div class="" id="loginModal">
+<body>
+    <!-- <div class="" id="loginModal">
         <div class="modal-header" style="background-color:#3c8dbc;height:50px;">
             <h2 style="color:white">dbotica</h2>
         </div>
@@ -119,7 +119,7 @@
                                 </div>
                             </div>
                             <div class="form-group" style="margin-top:25px; margin-left:180px;">
-                                <!-- Button -->
+                                Button
                                 <div class="col-md-offset-3 col-md-9">
                                     <div id="signUpSubmitBtn" type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp Sign Up</div>
                                 </div>
@@ -129,10 +129,95 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- <div id="dialog-1" title="You are successfully signed up.....">dbotica team will contact you shortly!!</div> -->
     <!-- /.login-box -->
     <!-- jQuery 2.1.4 -->
+    <div style="background-color:white;" class="loginBody">
+        <div class="header">
+            <h2 id="loginHeader">dbotica</h2>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-offset-3 col-md-6">
+                    <div class="signInForm">
+                        <div class="panel signinPanel">
+                            <div class="panel-heading loginPanelHeading">
+                                <h4 id="loginPanelHeader">Sign In</h4>
+                            </div>
+                            <div class="panel-body signInPanelBody">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="inputLoginEmail" class="col-md-2 col-sm-2 control-label">Email</label>
+                                        <div class="col-sm-10  col-md-6">
+                                            <input type="email" class="form-control" id="emailId" placeholder="UserName or Email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputLoginPassword" class="col-sm-2 control-label">Password</label>
+                                        <div class="col-sm-10 col-md-6">
+                                            <input type="password" class="form-control" id="password" placeholder="Password">
+                                        </div>
+                                    </div>
+                                </form>
+                                <form class="col-md-offset-2 signInSubmitBtnForm col-sm-offset-2 form-inline">
+                                    <div>
+                                        <label>
+                                            <input type="checkbox"> Remember me
+                                        </label>
+                                    </div>
+                                    <button id="loginSubmitDoctor" class="btn btn-primary">Sign in</button>
+                                </form>
+                                <hr class="loginHr">
+                                <form class="form-inline">
+                                    <div>
+                                        <label>Don't have an account! <a id="signupHere">Sign Up Here</a></label>
+                                        <a href="assistant/index.html" class="pull-right" id="assistantLogin">Assistant Login</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="signUpForm hiddenForm">
+                        <div class="panel signupPanel">
+                            <div class="panel-heading signupPanelHeading">
+                                <h4 id="signupPanelHeader">Sign Up</h4>
+                            </div>
+                            <div class="panel-body signupPanelBody">
+                                <a class="pull-right" id="signInSignUp" style="cursor:pointer;">Sign In</a>
+                                <br>
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="inputDoctorName" class="col-sm-2 control-label">Name</label>
+                                        <div class="col-sm-10 col-md-6">
+                                            <input type="text" class="form-control" id="exampleInputName" placeholder="Name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputDoctorPhone" class="col-sm-2 control-label">Phone</label>
+                                        <div class="col-sm-10 col-md-6">
+                                            <input type="text" class="form-control" id="exampleInputPhone" placeholder="Phone">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputDoctorEmail" class="col-sm-2 control-label">Email</label>
+                                        <div class="col-sm-10 col-md-6">
+                                            <input type="email" class="form-control" id="exampleInputEmail" placeholder="Email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="signUpInsignUpform col-sm-offset-2 col-sm-10">
+                                            <button id="signUpSubmitBtn" class="btn btn-primary">Sign Up</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script class="cssdeck" src="js/jquery.min.js"></script>
     <script src="js/jquery-ui.js"></script>
     <script class="cssdeck" src="js/bootstrap.min.js"></script>
@@ -141,8 +226,14 @@
     <script src="bootstrap/js/jquery.cookie.js"></script>
     <script>
     $(document).ready(function() {
-        $("#dialog-1").dialog({
-            autoOpen: false,
+        $('#signupHere').click(function() {
+            $('.signInForm').hide();
+            $('.signUpForm').removeClass('hiddenForm');
+        });
+
+        $('#signInSignUp').click(function() {
+            $('.signInForm').show();
+            $('.signUpForm').addClass('hiddenForm');
         });
 
 
@@ -158,7 +249,8 @@
             }
         });
 
-        $('#login-submit').click(function(e) {
+        $('.signInSubmitBtnForm').on('click', '#loginSubmitDoctor', function(e) {
+            $('.signUpForm').hide();
             var patientsListOfDoctor = [];
             var json_str = [];
             var emailId = $('#emailId').val();
@@ -180,6 +272,7 @@
                     'password': password
                 }),
                 success: function(response) {
+                    console.log("in success---");
                     var errorCode = response.errorCode;
                     if (!!errorCode) {
                         switch (errorCode) {
@@ -196,9 +289,8 @@
                                 });
                                 break;
                             case "USER_ALREADY_LOGGED_IN":
-
                                 localStorage.setItem("isLoggedIn", true);
-                                window.location.replace("entryPrescriptions.html");
+                                window.location = "entryPrescriptions.html";
                                 break;
                         }
                     } else {
@@ -243,18 +335,21 @@
                                     var address = "";
                                     localStorage.setItem("doctorHospitalLocation", address);
                                 }
-                                window.location.replace("entryPrescriptions.html");
+                                window.location = "entryPrescriptions.html";
                             }
                         });
                     }
                 }
             });
         });
-        $("#signUpSubmitBtn").click(function() {
+        $(".signUpInsignUpform").on('click', '#signUpSubmitBtn', function() {
             var name = $("#exampleInputName").val();
             var email = $("#exampleInputEmail").val();
             var phone = $("#exampleInputPhone").val();
             if (name === "" || (email === "" && phone === "")) {
+                console.log("in sign swal---");
+                $('.signInForm').hide();
+                $('.signUpForm').show();
                 swal({
                     title: "Error",
                     text: "Kindly enter the details",
@@ -262,6 +357,7 @@
                     confirmButtonText: "OK",
                     allowOutsideClick: true
                 });
+                console.log("after swal--");
             } else {
                 $.ajax({
                     type: 'POST',
