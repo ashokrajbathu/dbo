@@ -1,9 +1,18 @@
 <div ng-controller="itemInfoCtrl as itemInfo" ng-cloak>
-    <h3 id="itemInfoHeader">Item Details</h3>
+    <div class="row">
+        <button id="addBatchInItem" type="button" class="pull-right btn batchUpdateBtns" data-toggle="modal" data-target="#myModal">Add Batch</button>
+        <button ng-click="itemInfo.backToItems()" class="pull-right btn batchUpdateBtns viewItemsBtn">Back To Items</button>
+    </div>
+    <h3 id="itemInfoHeader">Item Details: </h3>
+    <div class="checkbox">
+        <label class="inactiveLabel" style="font-size:16px;">
+            <input ng-change="itemInfo.stateChanged('itemInfo.itemInactive')" ng-model="itemInfo.itemInactive" ng-checked="itemInfo.itemInactive" type="checkbox"> Make Item In-Active
+        </label>
+        <br>
+        <span class="inactiveLabel" ng-if="itemInfo.itemDetailsUpdateError" style="color:red;">(*Deselect the checkbox to update item Details)</span>
+    </div>
     <div id="blurBackScreen" ng-show="itemInfo.blurScreen"></div>
     <img class="spinner" src="css/images/default (2).gif" ng-show="itemInfo.loading"></img>
-    <button id="addBatchInItem" type="button" class="pull-right btn batchUpdateBtns" data-toggle="modal" data-target="#myModal">Add Batch</button>
-    <button ng-click="itemInfo.backToItems()" class="pull-right btn batchUpdateBtns viewItemsBtn">Back To Items</button>
     <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -65,38 +74,34 @@
     </div>
     <div>
         <div class="row">
-            <div class="col-md-3 col-sm-12 col-xs-12 itemInfo">
-                <form class="form-horizontal">
+            <div class="col-md-3 col-sm-6 col-xs-6 itemInfo">
+                <form>
                     <div class="form-group">
-                        <label for="itemName" class="col-sm-2 col-md-6 col-xs-3 control-label">Item Name :</label>
-                        <div class="col-sm-1 col-md-3 col-xs-6">
-                            <h5>{{itemInfo.inventoryItem.itemName}}</h5>
-                        </div>
+                        <label for="itemName" class="control-label">Item Name :</label>
+                        <input ng-readonly="itemInfo.textBoxFreeze" ng-class="" class="form-control" type="text" ng-model="itemInfo.inventoryItem.itemName">
                     </div>
                     <div class="form-group">
-                        <label for="itemCode" class="col-sm-2 col-md-6 col-xs-3 control-label">Item Code :</label>
-                        <div class="col-sm-1 col-md-3 col-xs-6">
-                            <h5>{{itemInfo.inventoryItem.itemCode}}</h5>
-                        </div>
+                        <label for="itemCode" class="control-label">Item Code :</label>
+                        <input ng-readonly="itemInfo.textBoxFreeze" class="form-control" type="text" ng-model="itemInfo.inventoryItem.itemCode">
                     </div>
                     <div class="form-group">
-                        <label for="itemType" class="col-sm-2 col-md-6 col-xs-3 control-label">Item Type :</label>
-                        <div class="col-sm-1 col-md-3 col-xs-6">
-                            <h5>{{itemInfo.inventoryItem.itemType}}</h5>
-                        </div>
+                        <label for="itemType" class="control-label">Item Type :</label>
+                        <select ng-disabled="itemInfo.disableSelectBox" class="form-control" ng-model="itemInfo.inventoryItem.itemType">
+                            <option>DRUG</option>
+                            <option>SUPPLIES</option>
+                            <option>EQUIPMENT</option>
+                            <option>OTHERS</option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label for="requiredLevel" class="col-sm-2 col-md-6 col-xs-3 control-label">Required Level :</label>
-                        <div class="col-sm-1 col-md-3 col-xs-6">
-                            <h5>{{itemInfo.inventoryItem.requiredStock}}</h5>
-                        </div>
+                        <label for="requiredLevel" class="control-label">Required Level :</label>
+                        <input ng-readonly="itemInfo.textBoxFreeze" ng-class="" type="text" class="form-control" ng-model="itemInfo.inventoryItem.requiredStock">
                     </div>
                     <div class="form-group">
-                        <label for="manufacturer" class="col-sm-2 col-md-6 col-xs-3 control-label">Manufacturer :</label>
-                        <div class="col-sm-1 col-md-3 col-xs-6">
-                            <h5>{{itemInfo.inventoryItem.manufacturer}}</h5>
-                        </div>
+                        <label for="manufacturer" class="control-label">Manufacturer :</label>
+                        <input ng-readonly="itemInfo.textBoxFreeze" ng-class="" type="text" class="form-control" ng-model="itemInfo.inventoryItem.manufacturer">
                     </div>
+                    <button ng-disabled="itemInfo.updateItemDetails" type="submit" class="btn batchUpdateBtns">Update Details</button>
                 </form>
             </div>
             <div class="col-md-9 itemTable">
@@ -125,17 +130,17 @@
                             <td>{{batch.expiredUnits}}</td>
                             <td>{{batch.returnedUnits}}</td>
                             <td>
-                                <input class="form-control batchInputTextBoxes" ng-attr-id="{{'batchTextBoxes'+$index}}" placeholder="units">
+                                <input ng-readonly="itemInfo.textBoxFreeze" class="form-control batchInputTextBoxes" ng-attr-id="{{'batchTextBoxes'+$index}}" placeholder="units">
                             </td>
                             <td>
-                                <select ng-attr-id="{{'batchSelectBoxes'+$index}}" class="selectInBatchesTable">
+                                <select ng-disabled="itemInfo.disableSelectBoxInTable" ng-attr-id="{{'batchSelectBoxes'+$index}}" class="selectInBatchesTable">
                                     <option>CONSUMED</option>
                                     <option>EXPIRED</option>
                                     <option>RETURNED</option>
                                 </select>
                             </td>
                             <td>
-                                <button class="btn batchUpdateBtns" ng-click="itemInfo.updateBatch(batch,$index)">Update</button>
+                                <button ng-disabled="itemInfo.updateItemDetailsInTheTable" class="btn batchUpdateBtns" ng-click="itemInfo.updateBatch(batch,$index)">Update</button>
                             </td>
                         </tr>
                     </tbody>

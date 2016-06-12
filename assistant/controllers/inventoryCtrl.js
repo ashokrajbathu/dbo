@@ -48,8 +48,8 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
 
     inventoryElement.itemsDisplayArray = [];
     inventoryElement.start = 0;
-    inventoryElement.limit = 11;
-    var displayListLength = 10;
+    inventoryElement.limit = 4;
+    var displayListLength = 3;
     inventoryElement.startDisplay = inventoryElement.start + 1;
     inventoryElement.endDisplay = displayListLength;
     var organizationId = localStorage.getItem('orgId');
@@ -71,10 +71,16 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
     inventoryElement.loading = true;
     var promise = dboticaServices.getItemsOfTheTable(inventoryElement.start, inventoryElement.limit, "All", "All", organizationId);
     promise.then(function(response) {
-        itemsDisplayFunction(response);
+        var errorCode = response.data.errorCode;
+        if (!!errorCode) {
+            dboticaServices.logoutFromThePage(errorCode);
+        } else {
+            itemsDisplayFunction(response);
+        }
         inventoryElement.loading = false;
     }, function(errorResponse) {
-        inventoryElement.loading = true;
+        inventoryElement.loading = false;
+        dboticaServices.noConnectivityError();
         $log.log("in inventory error response");
     });
 
@@ -125,7 +131,9 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             }
             inventoryElement.loading = false;
         }, function(errorResponse) {
-            inventoryElement.loading = true;
+
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
             $log.log("in error response of nex tbutton enabled");
         });
     }
@@ -151,12 +159,18 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         var promise = dboticaServices.getItemsOfTheTable(inventoryElement.startDisplay - 1, inventoryElement.limit, stockType, itemType, organizationId);
         promise.then(function(response) {
             $log.log("in prev btn response----", response.data.response);
-            var previousBtnFetchedItemsObject = $.parseJSON(response.data.response);
-            var previousBtnFetchedItems = previousBtnFetchedItemsObject.inventoryItems;
-            inventoryElement.itemsDisplayArray = previousBtnFetchedItems.slice(0, previousBtnFetchedItems.length - 1);
+            var errorCode = response.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                var previousBtnFetchedItemsObject = $.parseJSON(response.data.response);
+                var previousBtnFetchedItems = previousBtnFetchedItemsObject.inventoryItems;
+                inventoryElement.itemsDisplayArray = previousBtnFetchedItems.slice(0, previousBtnFetchedItems.length - 1);
+            }
             inventoryElement.loading = false;
         }, function(errorResponse) {
-            inventoryElement.loading = true;
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
             $log.log("in previous button error response");
         });
     }
@@ -174,24 +188,35 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         var promise = dboticaServices.addItemIntoStock(inventoryElement.addItemObject);
         promise.then(function(response) {
             $log.log("response after adding item is----", response);
-            var success = response.data.success;
-            if (success) {
-                swal({
-                    title: "Info",
-                    text: "Item Added Successfully",
-                    type: "info",
-                    confirmButtonText: "OK",
-                    allowOutsideClick: true
-                });
+            var errorCode = response.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                var success = response.data.success;
+                if (success) {
+                    dboticaServices.itemAdditionIntoStockSuccessSwal();
+                    var drugObject = $.parseJSON(response.data.response);
+                    $log.log("drug object is----", drugObject);
+                    if (inventoryElement.itemsDisplayArray.length + 1 <= displayListLength) {
+                        inventoryElement.itemsDisplayArray.push(drugObject);
+                        if (inventoryElement.prevBtnDisabled === true && inventoryElement.nextBtnDisabled === true) {
+                            inventoryElement.startDisplay = 1;
+                            inventoryElement.endDisplay = inventoryElement.endDisplay + 1;
+                        }
+                    } else {
+                        inventoryElement.nextBtnDisabled = false;
+                        inventoryElement.nextBtnEnabled = true;
+                    }
+                    inventoryElement.totalDrugsCount = inventoryElement.totalDrugsCount + 1;
+                    $log.log("items array-----", inventoryElement.itemsDisplayArray);
+                } else {
+                    dboticaServices.itemAdditionIntoStockUnsuccessfullSwal();
+                }
             }
-            var drugObject = $.parseJSON(response.data.response);
-            $log.log("drug object is----", drugObject);
-            inventoryElement.itemsDisplayArray.push(drugObject);
-            inventoryElement.totalDrugsCount = inventoryElement.totalDrugsCount + 1;
-            $log.log("items array-----", inventoryElement.itemsDisplayArray);
             inventoryElement.loading = false;
         }, function(errorResponse) {
-            inventoryElement.loading = true;
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
             $log.log("Error in add item into stock");
         });
     }
@@ -233,27 +258,29 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.loading = true;
             var promise = dboticaServices.addBatchToTheDrug(requestEntity);
             promise.then(function(response) {
-                var success = response.data.success;
-                if (success) {
-                    swal({
-                        title: "Info",
-                        text: "Batch Successfully Added.",
-                        type: "info",
-                        confirmButtonText: "OK",
-                        allowOutsideClick: true
-                    });
-                }
-                var itemObject = $.parseJSON(response.data.response);
-                $log.log("item after adding batch is-----", itemObject);
-                for (itemIndex = 0; itemIndex < inventoryElement.itemsDisplayArray.length; itemIndex++) {
-                    if (inventoryElement.itemsDisplayArray[itemIndex].id === itemObject.itemId) {
-                        inventoryElement.itemsDisplayArray[itemIndex].availableStock += itemObject.units;
+                var errorCode = response.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var success = response.data.success;
+                    if (success) {
+                        dboticaServices.batchAdditionForItemSuccessSwal();
+                        var itemObject = $.parseJSON(response.data.response);
+                        $log.log("item after adding batch is-----", itemObject);
+                        for (itemIndex = 0; itemIndex < inventoryElement.itemsDisplayArray.length; itemIndex++) {
+                            if (inventoryElement.itemsDisplayArray[itemIndex].id === itemObject.itemId) {
+                                inventoryElement.itemsDisplayArray[itemIndex].availableStock += itemObject.units;
+                            }
+                        }
+                        $log.log("array after adding batch is-----", inventoryElement.itemsDisplayArray);
+                    } else {
+                        dboticaServices.batchAdditionForItemUnsuccessSwal();
                     }
                 }
-                $log.log("array after adding batch is-----", inventoryElement.itemsDisplayArray);
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+                inventoryElement.loading = false;
+                dboticaServices.noConnectivityError();
             });
         }
     }
@@ -273,10 +300,16 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.loading = true;
             var promise = dboticaServices.lowStockExpiredStockItems("lowItems", inventoryElement.start, inventoryElement.limit, itemType, organizationId);
             promise.then(function(response) {
-                itemsDisplayFunction(response);
+                var errorCode = response.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    itemsDisplayFunction(response);
+                }
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+                inventoryElement.loading = false;
+                dboticaServices.noConnectivityError();
                 $log.log("in error response of low items view----");
             });
         }
@@ -299,10 +332,16 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.loading = true;
             var promise = dboticaServices.getItemsOfTheTable(inventoryElement.start, inventoryElement.limit, stockType, itemType, organizationId);
             promise.then(function(response) {
-                itemsDisplayFunction(response);
+                var errorCode = response.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    itemsDisplayFunction(response);
+                }
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+                inventoryElement.loading = false;
+                dboticaServices.noConnectivityError();
                 $log.log("in error response of view all items---");
             });
         }
@@ -323,10 +362,16 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.loading = true;
             var promise = dboticaServices.lowStockExpiredStockItems("expiredStockItems", inventoryElement.start, inventoryElement.limit, itemType, organizationId);
             promise.then(function(response) {
-                itemsDisplayFunction(response);
+                var errorCode = response.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    itemsDisplayFunction(response);
+                }
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+                inventoryElement.loading = false;
+                dboticaServices.noConnectivityError();
                 $log.log("in error response of view expired items---");
             });
         }
@@ -341,17 +386,24 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             var promise = dboticaServices.getItemFromDB(inventoryElement.itemSearch.itemName, organizationId);
             promise.then(function(response) {
                 $log.log("response after search is---------", response);
-                var itemSearchResponse = $.parseJSON(response.data.response);
-                inventoryElement.itemsDisplayArray = itemSearchResponse.inventoryItems;
-                if (itemSearchResponse.totalCount === 0) {
-                    inventoryElement.warning = true;
+                var errorCode = response.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
                 } else {
-                    inventoryElement.warning = false;
+                    var itemSearchResponse = $.parseJSON(response.data.response);
+                    inventoryElement.itemsDisplayArray = itemSearchResponse.inventoryItems;
+                    if (itemSearchResponse.totalCount === 0) {
+                        inventoryElement.warning = true;
+                    } else {
+                        inventoryElement.warning = false;
+                    }
+                    $log.log("response for search is----", itemSearchResponse);
                 }
-                $log.log("response for search is----", itemSearchResponse);
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+
+                inventoryElement.loading = false;
+                dboticaServices.noConnectivityError();
                 $log.log("in error Response of item search from db");
             });
         }
@@ -364,13 +416,20 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         inventoryElement.loading = true;
         var promise = dboticaServices.getItemsOfTheTable(inventoryElement.start, inventoryElement.limit, 'All', 'All', organizationId);
         promise.then(function(response) {
-            itemsDisplayFunction(response);
-            inventoryElement.itemSearch.itemName = "";
-            inventoryElement.viewAllItemsBtn = false;
-            inventoryElement.prevNextBtnsRow = true;
+            var errorCode = response.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                itemsDisplayFunction(response);
+                inventoryElement.itemSearch.itemName = "";
+                inventoryElement.viewAllItemsBtn = false;
+                inventoryElement.prevNextBtnsRow = true;
+            }
             inventoryElement.loading = false;
         }, function(errorResponse) {
-            inventoryElement.loading = true;
+
+            inventoryElement.loading = false;
+            dboticaServices.noConnectivityError();
             $log.log("in error response of view all items");
         });
     }
@@ -394,10 +453,17 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.loading = true;
             var promise = dboticaServices.getStockItemsForTheTable("All", inventoryElement.start, inventoryElement.limit, stockType, organizationId);
             promise.then(function(response) {
-                itemsDisplayFunction(response);
+                var errorCode = response.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    itemsDisplayFunction(response);
+                }
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+
+                inventoryElement.loading = false;
+                dboticaServices.noConnectivityError();
                 $log.log("in error response of view all inventory items---");
             });
         }
@@ -422,10 +488,16 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.loading = true;
             var promise = dboticaServices.getStockItemsForTheTable("DrugItems", inventoryElement.start, inventoryElement.limit, stockType, organizationId);
             promise.then(function(response) {
-                itemsDisplayFunction(response);
+                var errorCode = response.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    itemsDisplayFunction(response);
+                }
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+                inventoryElement.loading = false;
+                dboticaServices.noConnectivityError();
                 $log.log("in error response of view drug inventory items---");
             });
         }
@@ -451,10 +523,16 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.loading = true;
             var promise = dboticaServices.getStockItemsForTheTable("SuppliesItems", inventoryElement.start, inventoryElement.limit, stockType, organizationId);
             promise.then(function(response) {
-                itemsDisplayFunction(response);
+                var errorCode = response.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    itemsDisplayFunction(response);
+                }
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+                inventoryElement.loading = false;
+                dboticaServices.noConnectivityError();
                 $log.log("in error response of view supplies inventory  items---");
             });
         }
@@ -480,10 +558,17 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.loading = true;
             var promise = dboticaServices.getStockItemsForTheTable("EquipmentItems", inventoryElement.start, inventoryElement.limit, stockType, organizationId);
             promise.then(function(response) {
-                itemsDisplayFunction(response);
+                var errorCode = response.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    itemsDisplayFunction(response);
+                }
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+
+                inventoryElement.loading = false;
+                dboticaServices.noConnectivityError();
                 $log.log("in error response of view equipments inventory items---");
             });
         }
@@ -507,10 +592,16 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.loading = true;
             var promise = dboticaServices.getStockItemsForTheTable("OtherItems", inventoryElement.start, inventoryElement.limit, stockType, organizationId);
             promise.then(function(response) {
-                itemsDisplayFunction(response);
+                var errorCode = response.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    itemsDisplayFunction(response);
+                }
                 inventoryElement.loading = false;
             }, function(errorResponse) {
-                inventoryElement.loading = true;
+                inventoryElement.loading = false;
+                dboticaServices.noConnectivityError();
                 $log.log("in error response of view others inventory  items---");
             });
         }
@@ -548,6 +639,9 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 inventoryElement.prevBtnDisabled = true;
                 inventoryElement.nextBtnDisabled = true;
                 inventoryElement.endDisplay = itemsFetchedFromApiFromStart.length;
+                if (itemsFetchedFromApiFromStart.length == 0) {
+                    inventoryElement.startDisplay = 0;
+                }
                 inventoryElement.itemsDisplayArray = itemsFetchedFromApiFromStart;
             }
         }

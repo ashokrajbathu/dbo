@@ -14,9 +14,9 @@
                 <ul class="nav navbar-nav">
                     <li ng-click="activeSectionBackGroundToggle('patient')" ui-sref=".patientManagement"><a ng-class="{'activeSectionBlack':isPatientBlack,'activeSectionBlue':isPatientBlue}" class="navbarLinks">Patient management</a></li>
                     <li ng-click="activeSectionBackGroundToggle('bill')" ui-sref=".billManagement"><a class="navbarLinks" ng-class="{'activeSectionBlack':isBillBlack,'activeSectionBlue':isBillBlue}">Bill Management</a></li>
-                    <li ng-class="{'activeSectionBlack':isInventoryBlack,'activeSectionBlue':isInventoryBlue}" ng-click="activeSectionBackGroundToggle('inventory')" ui-sref=".inventory"><a class="navbarLinks">Inventory</a></li>
-                    <li ng-class="{'activeSectionBlack':isAnalyticBlack,'activeSectionBlue':isAnalyticBlue}" ng-click="activeSectionBackGroundToggle('analytic')" ui-sref=".analyticReports"><a class="navbarLinks">Analytic reports</a></li>
-                    <li ng-class="{'activeSectionBlack':isAdminBlack,'activeSectionBlue':isAdminBlue}" ng-click="activeSectionBackGroundToggle('admin')" ui-sref=".admin"><a style="color:white;" class="navbarLinks">Admin</a></li>
+                    <li ng-click="activeSectionBackGroundToggle('inventory')" ui-sref=".inventory"><a class="navbarLinks" ng-class="{'activeSectionBlack':isInventoryBlack,'activeSectionBlue':isInventoryBlue}">Inventory</a></li>
+                    <li ng-click="activeSectionBackGroundToggle('analytic')" ui-sref=".analyticReports"><a class="navbarLinks" ng-class="{'activeSectionBlack':isAnalyticBlack,'activeSectionBlue':isAnalyticBlue}">Analytic reports</a></li>
+                    <li ng-click="activeSectionBackGroundToggle('admin')" ui-sref=".admin"><a class="navbarLinks" ng-class="{'activeSectionBlack':isAdminBlack,'activeSectionBlue':isAdminBlue}">Admin</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a style="color:white;cursor:pointer;" ng-click="logoutFromAssistant()">Logout</a></li>

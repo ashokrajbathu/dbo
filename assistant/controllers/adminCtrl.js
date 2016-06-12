@@ -38,23 +38,9 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     adminElement.blurScreen = true;
     var doctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
     doctorsOfThatAssistant.then(function(response) {
-
         var errorCode = response.data.errorCode;
         if (!!errorCode) {
-            switch (errorCode) {
-                case 'NO_USER_LOGGED_IN':
-                    swal({
-                        title: "Error",
-                        text: "You are not logged into your account. Kindly login again to view this page",
-                        type: "error",
-                        confirmButtonText: "OK",
-                        allowOutsideClick: true
-                    });
-                    localStorage.clear();
-                    localStorage.setItem('isLoggedInAssistant', "false");
-                    $state.go('login');
-                    break;
-            }
+            dboticaServices.logoutFromThePage(errorCode);
         } else {
             adminElement.doctorsListInAdmin = $.parseJSON(response.data.response);
             $log.log("docs list in admin is-----", adminElement.doctorsListInAdmin);
@@ -77,8 +63,9 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
         adminElement.loading = false;
         adminElement.blurScreen = false;
     }, function(errorResponse) {
-        adminElement.blurScreen = true;
-        adminElement.loading = true;
+        adminElement.blurScreen = false;
+        adminElement.loading = false;
+        dboticaServices.noConnectivityError();
         $log.log("in error response of getting doctors");
     });
 
@@ -106,23 +93,28 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             adminElement.loading = true;
             var getTestsPromise = dboticaServices.getTests();
             getTestsPromise.then(function(getTestsSuccessResponse) {
-
-                $log.log("get tests success is-----", getTestsSuccessResponse);
-                getTestsSuccess = $.parseJSON(getTestsSuccessResponse.data.response);
-                for (test in getTestsSuccess) {
-                    if (getTestsSuccess[test].hasOwnProperty('organizationId')) {
-                        if (getTestsSuccess[test].organizationId == organizationId) {
-                            adminElement.servicesList.unshift(getTestsSuccess[test].testName);
-                            getTestsSuccess[test].billingName = getTestsSuccess[test].testName;
-                            delete getTestsSuccess[test].testName;
+                var errorCode = getTestsSuccessResponse.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    $log.log("get tests success is-----", getTestsSuccessResponse);
+                    getTestsSuccess = $.parseJSON(getTestsSuccessResponse.data.response);
+                    for (test in getTestsSuccess) {
+                        if (getTestsSuccess[test].hasOwnProperty('organizationId')) {
+                            if (getTestsSuccess[test].organizationId == organizationId) {
+                                adminElement.servicesList.unshift(getTestsSuccess[test].testName);
+                                getTestsSuccess[test].billingName = getTestsSuccess[test].testName;
+                                delete getTestsSuccess[test].testName;
+                            }
                         }
                     }
+                    $log.log("table array is----", getTestsSuccess);
+                    angular.copy(getTestsSuccess, adminElement.admin.servicesListOfTheDoctor);
                 }
-                $log.log("table array is----", getTestsSuccess);
-                angular.copy(getTestsSuccess, adminElement.admin.servicesListOfTheDoctor);
                 adminElement.loading = false;
             }, function(getTestsErrorResponse) {
-                adminElement.loading = true;
+                adminElement.loading = false;
+                dboticaServices.noConnectivityError();
             });
             adminElement.admin.servicesListOfTheDoctor = [];
         } else {
@@ -215,65 +207,80 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 adminElement.loading = true;
                 var submitTestRequestPromise = dboticaServices.submitTestRequest(testObject);
                 submitTestRequestPromise.then(function(testRequestSuccessResponse) {
-
-                    $log.log("test success is----", testRequestSuccessResponse);
                     var errorCode = testRequestSuccessResponse.data.errorCode;
-                    var success = testRequestSuccessResponse.data.success;
-                    if (errorCode == null && success == true) {
-                        var testSuccess = $.parseJSON(testRequestSuccessResponse.data.response);
-                        if (testObject.hasOwnProperty('id')) {
-                            for (var testInTableIndex in adminElement.admin.servicesListOfTheDoctor) {
-                                if (testSuccess.id == adminElement.admin.servicesListOfTheDoctor[testInTableIndex].id) {
-                                    adminElement.admin.servicesListOfTheDoctor[testInTableIndex].price = testSuccess.price;
-                                    adminElement.admin.servicesListOfTheDoctor[testInTableIndex].remark = testSuccess.remark;
+                    if (!!errorCode) {
+                        dboticaServices.logoutFromThePage(errorCode);
+                    } else {
+                        $log.log("test success is----", testRequestSuccessResponse);
+                        var errorCode = testRequestSuccessResponse.data.errorCode;
+                        var success = testRequestSuccessResponse.data.success;
+                        if (errorCode == null && success == true) {
+                            var testSuccess = $.parseJSON(testRequestSuccessResponse.data.response);
+                            if (testObject.hasOwnProperty('id')) {
+                                for (var testInTableIndex in adminElement.admin.servicesListOfTheDoctor) {
+                                    if (testSuccess.id == adminElement.admin.servicesListOfTheDoctor[testInTableIndex].id) {
+                                        adminElement.admin.servicesListOfTheDoctor[testInTableIndex].price = testSuccess.price;
+                                        adminElement.admin.servicesListOfTheDoctor[testInTableIndex].remark = testSuccess.remark;
+                                    }
                                 }
+                                adminElement.admin.procedureCostTextBox = "";
+                                adminElement.admin.procedureRemarksTextBox = "";
+                                adminElement.admin.procedureNameTxtBox = "";
+                            } else {
+                                testSuccess['billingName'] = testSuccess.testName;
+                                delete testSuccess.testName;
+                                adminElement.servicesList.unshift(testSuccess['billingName']);
+                                $log.log("services list after adding test is----", adminElement.servicesList);
+                                adminElement.admin.servicesListOfTheDoctor.push(testSuccess);
+                                adminElement.admin.procedureCostTextBox = "";
+                                adminElement.admin.procedureRemarksTextBox = "";
+                                adminElement.admin.procedureNameTxtBox = "";
                             }
-                            adminElement.admin.procedureCostTextBox = "";
-                            adminElement.admin.procedureRemarksTextBox = "";
-                            adminElement.admin.procedureNameTxtBox = "";
-                        } else {
-                            testSuccess['billingName'] = testSuccess.testName;
-                            delete testSuccess.testName;
-                            adminElement.servicesList.unshift(testSuccess['billingName']);
-                            $log.log("services list after adding test is----", adminElement.servicesList);
-                            adminElement.admin.servicesListOfTheDoctor.push(testSuccess);
-                            adminElement.admin.procedureCostTextBox = "";
-                            adminElement.admin.procedureRemarksTextBox = "";
-                            adminElement.admin.procedureNameTxtBox = "";
                         }
                     }
                     adminElement.loading = false;
                 }, function(testRequestErrorResponse) {
-                    adminElement.loading = true;
+                    adminElement.loading = false;
+                    dboticaServices.noConnectivityError();
                     $log.log("in error response of submit test request promise----");
                 });
             } else {
                 adminElement.loading = true;
                 var submitServiceRequestPromise = dboticaServices.submitServiceRequest(serviceRequestEntity);
                 submitServiceRequestPromise.then(function(successResponseOfServiceRequest) {
-
-                    if (successResponseOfServiceRequest.data.success === true && successResponseOfServiceRequest.data.errorCode === null) {
-                        var updatedDoctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
-                        updatedDoctorsOfThatAssistant.then(function(successResponse) {
-                            var updatedDoctorsOfThatAssistantResponse = $.parseJSON(successResponse.data.response);
-                            updateTheServices(updatedDoctorsOfThatAssistantResponse);
-                        }, function(errorResponse) {});
+                    var errorCode = successResponseOfServiceRequest.data.errorCode;
+                    if (!!errorCode) {
+                        dboticaServices.logoutFromThePage(errorCode);
+                    } else {
+                        if (successResponseOfServiceRequest.data.success === true && successResponseOfServiceRequest.data.errorCode === null) {
+                            var updatedDoctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
+                            updatedDoctorsOfThatAssistant.then(function(successResponse) {
+                                var errorCode = successResponse.data.errorCode;
+                                if (!!errorCode) {
+                                    dboticaServices.logoutFromThePage(errorCode);
+                                } else {
+                                    var updatedDoctorsOfThatAssistantResponse = $.parseJSON(successResponse.data.response);
+                                    updateTheServices(updatedDoctorsOfThatAssistantResponse);
+                                }
+                            }, function(errorResponse) {});
+                        }
+                        swal({
+                            title: "Success",
+                            text: "Service successfully updated.",
+                            type: "success",
+                            confirmButtonText: "OK",
+                            allowOutsideClick: true
+                        });
+                        adminElement.admin.procedureName = false;
+                        adminElement.admin.procedureNameTxtBox = "";
+                        adminElement.admin.procedureCostTextBox = "";
+                        adminElement.admin.procedureRemarksTextBox = "";
+                        adminElement.admin.serviceInDropDown = selectService;
                     }
-                    swal({
-                        title: "Success",
-                        text: "Service successfully updated.",
-                        type: "success",
-                        confirmButtonText: "OK",
-                        allowOutsideClick: true
-                    });
-                    adminElement.admin.procedureName = false;
-                    adminElement.admin.procedureNameTxtBox = "";
-                    adminElement.admin.procedureCostTextBox = "";
-                    adminElement.admin.procedureRemarksTextBox = "";
-                    adminElement.admin.serviceInDropDown = selectService;
                     adminElement.loading = false;
                 }, function(errorResponseOfServiceRequest) {
-                    adminElement.loading = true;
+                    adminElement.loading = false;
+                    dboticaServices.noConnectivityError();
                     $log.log("in error response of submit service request---");
                 });
             }
@@ -310,16 +317,21 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             adminElement.loading = true;
             var submitTestStatePromise = dboticaServices.submitTestRequest(changeTestStateRequestEntity);
             submitTestStatePromise.then(function(submitTestStateChangeSuccess) {
-
-                var successtestStateChange = $.parseJSON(submitTestStateChangeSuccess.data.response);
-                $log.log("success state change is----", successtestStateChange);
-                if (submitTestStateChangeSuccess.data.success === true && submitTestStateChangeSuccess.data.errorCode === null) {
-                    $log.log("in ste----");
-                    doctorService.state = successtestStateChange.state;
+                var errorCode = submitTestStateChangeSuccess.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var successtestStateChange = $.parseJSON(submitTestStateChangeSuccess.data.response);
+                    $log.log("success state change is----", successtestStateChange);
+                    if (submitTestStateChangeSuccess.data.success === true && submitTestStateChangeSuccess.data.errorCode === null) {
+                        $log.log("in ste----");
+                        doctorService.state = successtestStateChange.state;
+                    }
                 }
                 adminElement.loading = false;
             }, function(submitTestStateChangeError) {
-                adminElement.loading = true;
+                adminElement.loading = false;
+                dboticaServices.noConnectivityError();
             });
 
         } else {
@@ -350,19 +362,29 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             adminElement.loading = true;
             var changeServiceStateRequestPromise = dboticaServices.submitServiceRequest(changeStateRequestEntity);
             changeServiceStateRequestPromise.then(function(successResponseOfChangeStateRequest) {
-
-                if (successResponseOfChangeStateRequest.data.success === true && successResponseOfChangeStateRequest.data.errorCode === null) {
-                    var updatedDoctors = dboticaServices.doctorsOfAssistant();
-                    updatedDoctors.then(function(successResponse) {
-                        var updatedDoctorsResponse = $.parseJSON(successResponse.data.response);
-                        updateTheServices(updatedDoctorsResponse);
-                    }, function(errorResponse) {
-                        $log.log("in error response of updated Doctors Response");
-                    });
+                var errorCode = successResponseOfChangeStateRequest.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    if (successResponseOfChangeStateRequest.data.success === true && successResponseOfChangeStateRequest.data.errorCode === null) {
+                        var updatedDoctors = dboticaServices.doctorsOfAssistant();
+                        updatedDoctors.then(function(successResponse) {
+                            var errorCode = successResponse.data.errorCode;
+                            if (!!errorCode) {
+                                dboticaServices.logoutFromThePage(errorCode);
+                            } else {
+                                var updatedDoctorsResponse = $.parseJSON(successResponse.data.response);
+                                updateTheServices(updatedDoctorsResponse);
+                            }
+                        }, function(errorResponse) {
+                            $log.log("in error response of updated Doctors Response");
+                        });
+                    }
                 }
                 adminElement.loading = false;
             }, function(changeStateRequestErrorResponse) {
-                adminElement.loading = true;
+                adminElement.loading = false;
+                dboticaServices.noConnectivityError();
                 $log.log("in error response of change state request");
             });
         }

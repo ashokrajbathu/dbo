@@ -352,6 +352,21 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
+    this.getItemFromDBWithId = function(itemId, organizationId) {
+        var deferred = $q.defer();
+        var requestEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "itemId": itemId, "organizationId": organizationId }),
+            withCredentials: true,
+        }
+        $http(requestEntity).then(function(successResponse) {
+            deferred.resolve(successResponse);
+        }, function(errorResponse) {
+            deferred.reject(errorResponse);
+        });
+        return deferred.promise;
+    }
+
     this.updateTheBatch = function(req) {
         var deferred = $q.defer();
         var requestEntity = {
@@ -1028,6 +1043,26 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.batchAdditionForItemUnsuccessSwal = function() {
+        swal({
+            title: "Error",
+            text: "Batch Could Not Be Added To Item",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.itemAdditionIntoStockUnsuccessfullSwal = function() {
+        swal({
+            title: "Error",
+            text: "Item Could not be Added Into Stock",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
     this.noTestNameSwal = function() {
         swal({
             title: "Error",
@@ -1052,6 +1087,36 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         swal({
             title: "Error",
             text: "Please enter the Doctor Service Cost Details",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.itemAdditionIntoStockSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Item Added Successfully",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.batchAdditionForItemSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Batch Successfully Added.",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.noConnectivityError = function() {
+        swal({
+            title: "Error",
+            text: "Please try after some time!!!!",
             type: "error",
             confirmButtonText: "OK",
             allowOutsideClick: true

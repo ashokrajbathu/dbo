@@ -51,7 +51,7 @@
                                 <div class="form-group ">
                                     <label for="inputItemManufacturer " class="col-sm-3 control-label ">Manufacturer</label>
                                     <div class="col-sm-6 ">
-                                        <input type="text " class="form-control " ng-model="inventory.addItemObject.manufacturer " id="inputItemManufacturer ">
+                                        <input type="text " class="form-control " ng-model="inventory.addItemObject.manufacturer" id="inputItemManufacturer ">
                                     </div>
                                 </div>
                                 <div class="form-group ">
@@ -75,7 +75,7 @@
                                 <div class="form-group">
                                     <label for="inputItemType " class="col-sm-3 control-label"></label>
                                     <div class="col-sm-6 ">
-                                        <button type="button" ng-click="inventory.addItemIntoStock()" class="btn inventoryBtn">Save Item</button>
+                                        <button type="button" data-dismiss="modal" ng-click="inventory.addItemIntoStock()" class="btn inventoryBtn">Save Item</button>
                                         <button type="button " data-dismiss="modal" class="btn inventoryBtn ">Cancel</button>
                                     </div>
                                 </div>
@@ -139,12 +139,11 @@
                         <th>CODE</th>
                         <th>TYPE</th>
                         <th>REQUIRED LEVEL</th>
+                        <th>BILLING CONSUMED STOCK</th>
                         <th>TOTAL STOCK</th>
                         <th>AVAILABLE STOCK</th>
                         <th>EXPIRED STOCK</th>
                         <th>RETURNED STOCK</th>
-                        <th>STOCKING UNIT</th>
-                        <th>BILLING CONSUMED STOCK</th>
                         <th>BATCH CONSUMED STOCK</th>
                         <th>ACTIONS</th>
                     </tr>
@@ -154,14 +153,13 @@
                         <td ng-bind="item.itemName | uppercase"></td>
                         <td ng-bind="item.itemCode"></td>
                         <td ng-bind="item.itemType"></td>
-                        <td class="requiredLevel" ng-bind="item.requiredStock"></td>
-                        <td ng-bind="item.availableStock+item.expiredStock+item.billingConsumedStock+item.returnedStock"></td>
-                        <td ng-bind="item.availableStock"></td>
-                        <td ng-bind="item.expiredStock"></td>
-                        <td ng-bind="item.returnedStock"></td>
-                        <td></td>
-                        <td ng-bind="item.billingConsumedStock"></td>
-                        <td ng-bind="item.batchConsumedStock"></td>
+                        <td class="requiredLevel" ng-bind="item.requiredStock || 0"></td>
+                        <td ng-bind="item.billingConsumedStock || 0"></td>
+                        <td ng-bind="item.availableStock+item.expiredStock+item.billingConsumedStock+item.returnedStock || 0"></td>
+                        <td ng-bind="item.availableStock || 0"></td>
+                        <td ng-bind="item.expiredStock || 0"></td>
+                        <td ng-bind="item.returnedStock || 0"></td>
+                        <td ng-bind="item.batchConsumedStock || 0"></td>
                         <td>
                             <button ng-click="inventory.viewInfo(item)" class="glyphicon glyphicon-info-sign"></button>
                             <button class="glyphicon glyphicon-plus-sign" ng-click="inventory.additionOfBatch(item)" data-toggle="modal" data-target="#addNewBatch"></button>
@@ -213,13 +211,13 @@
                                 <div class="form-group ">
                                     <label for="addBatchExpiryTime" class="col-sm-3 control-label ">Expiry Date(*)</label>
                                     <div class="col-sm-6">
-                                        <input type="text " class="form-control " name="expiryDate" ng-model="inventory.addBatch.expiryDate" id="addBatchExpiryTime" readonly>
+                                        <input type="text " class="form-control " name="expiryDate" ng-model="inventory.addBatch.expiryDate" id="addBatchExpiryTime">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputAddBatch" class="col-sm-3 control-label"></label>
                                     <div class="col-sm-6">
-                                        <button type="button submit" ng-click="inventory.addBatchForSelectedItem()" class="btn inventoryBtn">Add Batch</button>
+                                        <button type="button submit" ng-click="inventory.addBatchForSelectedItem()" data-dismiss="modal" class="btn inventoryBtn">Add Batch</button>
                                         <button type="button" data-dismiss="modal" class="btn inventoryBtn">Cancel</button>
                                     </div>
                                 </div>
