@@ -1123,6 +1123,16 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.itemUpdateSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Item Details Updated SuccessFully!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
     this.getPatientOrDoctorName = function(value) {
         var patientFirstName = "";
         var patientLastName = "";

@@ -15,6 +15,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
     itemInfoElement.updateBatch = updateBatch;
     itemInfoElement.stateChanged = stateChanged;
     itemInfoElement.addBatchForSelectedItemInItemInfo = addBatchForSelectedItemInItemInfo;
+    itemInfoElement.updateItem = updateItem;
     var billInvoice = {};
     dboticaServices.setInvoice(billInvoice);
 
@@ -23,6 +24,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
     itemInfoElement.batches = {};
     var batchesInfo = [];
     itemInfoElement.loading = false;
+    itemInfoElement.inventoryItemSelected = {};
     itemInfoElement.itemDetailsUpdateError = false;
     itemInfoElement.blurScreen = false;
     itemInfoElement.disableSelectBox = false;
@@ -63,6 +65,17 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             $log.log("batches info is-----", batchesInfo);
             itemInfoElement.inventoryItem = batchesInfo.inventoryItem;
             batchesInfo = batchesInfo.batchInfos;
+            if (itemInfoElement.inventoryItem.entityState == "INACTIVE") {
+                itemInfoElement.itemInactive = true;
+                itemInfoElement.itemDetailsUpdateError = true;
+                itemInfoElement.textBoxFreeze = true;
+                itemInfoElement.updateItemDetails = true;
+                itemInfoElement.updateItemDetailsInTheTable = true;
+                itemInfoElement.disableSelectBox = true;
+                itemInfoElement.disableSelectBoxInTable = true;
+            } else {
+                itemInfoElement.itemInactive = false;
+            }
             for (var itemIndex = 0; itemIndex < batchesInfo.length; itemIndex++) {
                 var newObject = {};
                 newObject.id = batchesInfo[itemIndex].id;
@@ -125,6 +138,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                 if (errorCode == null && success === true) {
                     var item = $.parseJSON(getItemSuccess.data.response);
                     var itemRequestObject = item.inventoryItem;
+                    itemInfoElement.inventoryItem = item.inventoryItem;
                     $log.log("itm ftched is----", item);
                     if (itemInfoElement.itemInactive === true) {
                         itemInfoElement.textBoxFreeze = true;
@@ -146,15 +160,32 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                     var itemInactivePromise = dboticaServices.addItemIntoStock(itemRequestObject);
                     itemInactivePromise.then(function(itemInactiveSuccess) {
                         $log.log("item change state----", itemInactiveSuccess);
-                    }, function(itemInactiveError) {
-
-                    });
+                    }, function(itemInactiveError) {});
                 }
             }
         }, function(getItemError) {
 
         });
     }
+
+    function updateItem() {
+        $log.log("inventory element to be updated is-----", itemInfoElement.inventoryItem);
+        var itemUpdatePromise = dboticaServices.addItemIntoStock(itemInfoElement.inventoryItem);
+        itemUpdatePromise.then(function(itemUpdateSuccessResponse) {
+            var errorCode = itemUpdateSuccessResponse.data.errorCode;
+            var success = itemUpdateSuccessResponse.data.success;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                if (errorCode == null && success == true) {
+                    dboticaServices.itemUpdateSuccessSwal();
+                }
+            }
+        }, function(itemUpdateErrorResponse) {
+            dboticaServices.noConnectivityError();
+        });
+    }
+
 
     function updateBatch(item, index) {
         $log.log("item selected for update is----", item);

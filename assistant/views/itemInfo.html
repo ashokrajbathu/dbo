@@ -101,7 +101,7 @@
                         <label for="manufacturer" class="control-label">Manufacturer :</label>
                         <input ng-readonly="itemInfo.textBoxFreeze" ng-class="" type="text" class="form-control" ng-model="itemInfo.inventoryItem.manufacturer">
                     </div>
-                    <button ng-disabled="itemInfo.updateItemDetails" type="submit" class="btn batchUpdateBtns">Update Details</button>
+                    <button ng-disabled="itemInfo.updateItemDetails" ng-click="itemInfo.updateItem()" type="submit" class="btn batchUpdateBtns">Update Details</button>
                 </form>
             </div>
             <div class="col-md-9 itemTable">
