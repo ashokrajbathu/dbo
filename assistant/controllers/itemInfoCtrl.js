@@ -14,6 +14,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
     itemInfoElement.backToItems = backToItems;
     itemInfoElement.updateBatch = updateBatch;
     itemInfoElement.stateChanged = stateChanged;
+    
     itemInfoElement.addBatchForSelectedItemInItemInfo = addBatchForSelectedItemInItemInfo;
     itemInfoElement.updateItem = updateItem;
     var billInvoice = {};
@@ -62,7 +63,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var batchesInfo = $.parseJSON(response.data.response);
-            $log.log("batches info is-----", batchesInfo);
+           /* $log.log("batches info is-----", batchesInfo);*/
             itemInfoElement.inventoryItem = batchesInfo.inventoryItem;
             batchesInfo = batchesInfo.batchInfos;
             if (itemInfoElement.inventoryItem.entityState == "INACTIVE") {
@@ -185,7 +186,6 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             dboticaServices.noConnectivityError();
         });
     }
-
 
     function updateBatch(item, index) {
         $log.log("item selected for update is----", item);
