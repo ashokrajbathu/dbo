@@ -14,7 +14,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
     itemInfoElement.backToItems = backToItems;
     itemInfoElement.updateBatch = updateBatch;
     itemInfoElement.stateChanged = stateChanged;
-    
+
     itemInfoElement.addBatchForSelectedItemInItemInfo = addBatchForSelectedItemInItemInfo;
     itemInfoElement.updateItem = updateItem;
     var billInvoice = {};
@@ -63,7 +63,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var batchesInfo = $.parseJSON(response.data.response);
-           /* $log.log("batches info is-----", batchesInfo);*/
+            /* $log.log("batches info is-----", batchesInfo);*/
             itemInfoElement.inventoryItem = batchesInfo.inventoryItem;
             batchesInfo = batchesInfo.batchInfos;
             if (itemInfoElement.inventoryItem.entityState == "INACTIVE") {
@@ -279,13 +279,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                 } else {
                     var success = response.data.success;
                     if (success) {
-                        swal({
-                            title: "Info",
-                            text: "Batch Successfully Added.",
-                            type: "info",
-                            confirmButtonText: "OK",
-                            allowOutsideClick: true
-                        });
+                        dboticaServices.addBatchFromItemInfo();
                     }
                     var itemObject = $.parseJSON(response.data.response);
                     $log.log("item after adding batch is-----", itemObject);
@@ -308,6 +302,5 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                 dboticaServices.noConnectivityError();
             });
         }
-
     }
 }]);

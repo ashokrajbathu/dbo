@@ -110,8 +110,8 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
         var userId = $scope.loginData.userId;
         var password = $scope.loginData.password;
         if ($scope.loginData.userId !== "" && $scope.loginData.password !== "") {
-            $scope.loading = true;
-            $scope.blurScreen = true;
+            $scope.loading = false;
+            $scope.blurScreen = false;
             var promise = dboticaServices.login(userId, password);
             promise.then(function(response) {
                 var success = response.data.success;

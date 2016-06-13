@@ -31,6 +31,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         $http(req).then(function(response) {
             deferred.resolve(response);
         }, function(errorResponse) {
+            console.log("in error response---");
             deferred.reject(errorResponse);
         });
         return deferred.promise;
@@ -1127,6 +1128,16 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         swal({
             title: "Success",
             text: "Item Details Updated SuccessFully!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.addBatchFromItemInfo = function() {
+        swal({
+            title: "Success",
+            text: "Batch Successfully Added.",
             type: "success",
             confirmButtonText: "OK",
             allowOutsideClick: true

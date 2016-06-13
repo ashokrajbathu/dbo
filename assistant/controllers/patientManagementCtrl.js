@@ -123,8 +123,8 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
     $scope.entryTypeSelected.value = "WALK_IN";
     $scope.entryType = ["WALK_IN", "APPOINTMENT"];
 
-    $scope.loading = true;
-    $scope.blurScreen = true;
+    $scope.loading = false;
+    $scope.blurScreen = false;
     $scope.doctorsData = dboticaServices.doctorsOfAssistant();
     console.log("doctorsData promise is----", $scope.doctorsData);
     $scope.doctorsData.then(function(doctorresponse) {
@@ -134,19 +134,25 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             $scope.doctorsList = JSON.parse(doctorresponse.data.response);
-            $scope.doctorName = $scope.doctorsList[0].firstName;
-            $scope.doctorSpecialization = $scope.doctorsList[0].speciality;
-            $scope.book.doctorId = $scope.doctorsList[0].id;
-            $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = $scope.doctorsList[0].dayStartTime;
-            $scope.doctorObjectForChangingStartAndEndTime.dayEndTime = $scope.doctorsList[0].dayEndTime;
-            $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = $scope.doctorsList[0].timePerPatient;
-            var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
-            patientsListOfDoctor.then(function(response) {
-                var patientsList = JSON.parse(response.data.response);
-                $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
-            }, function(error) {
-                console.log("in patient controller patients error");
-            });
+            if ($scope.doctorsList.length == 0) {
+                $scope.loading = false;
+                $scope.blurScreen = false;
+                dboticaServices.noConnectivityError();
+            } else {
+                $scope.doctorName = $scope.doctorsList[0].firstName;
+                $scope.doctorSpecialization = $scope.doctorsList[0].speciality;
+                $scope.book.doctorId = $scope.doctorsList[0].id;
+                $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = $scope.doctorsList[0].dayStartTime;
+                $scope.doctorObjectForChangingStartAndEndTime.dayEndTime = $scope.doctorsList[0].dayEndTime;
+                $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = $scope.doctorsList[0].timePerPatient;
+                var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
+                patientsListOfDoctor.then(function(response) {
+                    var patientsList = JSON.parse(response.data.response);
+                    $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
+                }, function(error) {
+                    console.log("in patient controller patients error");
+                });
+            }
         }
         $scope.loading = false;
         $scope.blurScreen = false;
