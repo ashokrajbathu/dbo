@@ -122,13 +122,13 @@
                     </thead>
                     <tbody>
                         <tr id="batchesRow" ng-repeat="batch in itemInfo.informationOfBatches">
-                            <td>{{batch.batchNo}}</td>
-                            <td>{{batch.expiryTime | date}}</td>
-                            <td>{{batch.totalStock}}</td>
-                            <td>{{batch.availableStock}}</td>
-                            <td>{{batch.consumedUnits}}</td>
-                            <td>{{batch.expiredUnits}}</td>
-                            <td>{{batch.returnedUnits}}</td>
+                            <td ng-bind="batch.batchNo"></td>
+                            <td ng-bind="batch.expiryTime | date"></td>
+                            <td ng-bind="batch.totalStock"></td>
+                            <td ng-bind="batch.availableStock"></td>
+                            <td ng-bind="batch.consumedUnits"></td>
+                            <td ng-bind="batch.expiredUnits"></td>
+                            <td ng-bind="batch.returnedUnits"></td>
                             <td>
                                 <input ng-readonly="itemInfo.textBoxFreeze" class="form-control batchInputTextBoxes" ng-attr-id="{{'batchTextBoxes'+$index}}" placeholder="units">
                             </td>
