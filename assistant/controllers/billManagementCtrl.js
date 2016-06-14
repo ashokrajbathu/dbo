@@ -80,8 +80,8 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         billElement.patientSearchDiv = false;
         billElement.patientBillGridNine = false;
         billElement.patientBillFullGrid = true;
-        billElement.loading = true;
-        billElement.blurScreen = true;
+        billElement.loading = false;
+        billElement.blurScreen = false;
         var getDetailsOfThePatient = dboticaServices.getPatientDetailsOfThatNumber(currentActiveInvoice.patientId);
         getDetailsOfThePatient.then(function(getDetailsSuccess) {
             var errorCode = getDetailsSuccess.data.errorCode;
@@ -122,8 +122,8 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     }
     $log.log("listing bills is----", billElement.bill.billsListing);
     $log.log("current active invoice is----", currentActiveInvoice);
-    billElement.loading = true;
-    billElement.blurScreen = true;
+    billElement.loading = false;
+    billElement.blurScreen = false;
     var medicinesPromise = dboticaServices.getItemsOfTheTable(0, 100, 'All', 'Drug', organizationId);
     medicinesPromise.then(function(successResponse) {
         var errorCode = successResponse.data.errorCode;
@@ -149,8 +149,8 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     function goToInvoicePage() {
         $state.go('home.invoiceHistory');
     }
-    billElement.loading = true;
-    billElement.blurScreen = true;
+    billElement.loading = false;
+    billElement.blurScreen = false;
     var testsPromise = dboticaServices.getTests();
     testsPromise.then(function(testsPromiseSuccessResponse) {
             var errorCode = testsPromiseSuccessResponse.data.errorCode;
@@ -180,8 +180,8 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         });
 
     if (fetchDoctorDetails) {
-        billElement.loading = true;
-        billElement.blurScreen = true;
+        billElement.loading = false;
+        billElement.blurScreen = false;
         var doctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
         doctorsOfThatAssistant.then(function(successResponse) {
             $log.log("bill response is----", successResponse);
@@ -238,7 +238,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             dboticaServices.showNoPhoneNumberSwal();
         } else {
             if (!billElement.enterDigits && !billElement.enterPhoneNumber) {
-                billElement.loading = true;
+                billElement.loading = false;
                 var patientSearchPromise = dboticaServices.getPatientDetailsOfThatNumber(phoneNumber);
                 patientSearchPromise.then(function(patientSearchSuccessResponse) {
                     var errorCode = patientSearchSuccessResponse.data.errorCode;
@@ -427,7 +427,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             billElement.finalBill.amountPaid = billElement.finalBill.amountPaid * 100;
             $log.log("final bill is----", billElement.finalBill);
             if (!billElement.nextDueErrorMsg) {
-                billElement.loading = true;
+                billElement.loading = false;
                 var invoiceUpdatePromise = dboticaServices.updateInvoice(billElement.finalBill);
                 invoiceUpdatePromise.then(function(invoiceUpdateSuccessResponse) {
                     var errorCode = invoiceUpdateSuccessResponse.data.errorCode;

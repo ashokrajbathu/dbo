@@ -54,8 +54,8 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
     } else {
         itemInfoElement.itemInactive = true;
     }
-    itemInfoElement.loading = true;
-    itemInfoElement.blurScreen = true;
+    itemInfoElement.loading = false;
+    itemInfoElement.blurScreen = false;
     var promise = dboticaServices.getAllBatches(currentItemId, organizationId);
     promise.then(function(response) {
         var errorCode = response.data.errorCode;
@@ -201,7 +201,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
         if (parseInt(valueInTextBox) <= item.availableStock) {
             requestEntity = JSON.stringify(requestEntity);
             $log.log("request entity is---", requestEntity);
-            itemInfoElement.loading = true;
+            itemInfoElement.loading = false;
             var promise = dboticaServices.updateTheBatch(requestEntity);
             promise.then(function(response) {
                 $log.log("response after updating is----", response);
@@ -270,7 +270,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             requestEntity.entityState = "ACTIVE";
             requestEntity = JSON.stringify(requestEntity);
             $log.log("added batch is----", requestEntity);
-            itemInfoElement.loading = true;
+            itemInfoElement.loading = false;
             var promise = dboticaServices.addBatchToTheDrug(requestEntity);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
