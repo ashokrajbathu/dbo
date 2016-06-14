@@ -46,8 +46,8 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
     invoiceElement.searchDate = "";
     invoiceElement.searchEndDate = "";
 
-    invoiceElement.loading = false;
-    invoiceElement.blurScreen = false;
+    invoiceElement.loading = true;
+    invoiceElement.blurScreen = true;
     var doctorsOfThatAssistantForInvoices = dboticaServices.doctorsOfAssistant();
     dboticaServices.setInvoice(invoiceActive);
     doctorsOfThatAssistantForInvoices.then(function(doctorsSuccessResponse) {
@@ -66,8 +66,8 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
         dboticaServices.noConnectivityError();
     });
 
-    invoiceElement.loading = false;
-    invoiceElement.blurScreen = false;
+    invoiceElement.loading = true;
+    invoiceElement.blurScreen = true;
     var invoiceHistoryPromise = dboticaServices.getInvoiceHistoryOnLoad(organizationId);
     invoiceHistoryPromise.then(function(invoiceSuccessResponse) {
         var errorCode = invoiceSuccessResponse.data.errorCode;
@@ -167,7 +167,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
                     invoiceElement.searchWarningMessage = true;
                 } else {
                     invoiceElement.searchWarningMessage = false;
-                    invoiceElement.loading = false;
+                    invoiceElement.loading = true;
                     searchResultPromise = dboticaServices.searchResultOfInvoice(organizationId, searchType, invoiceElement.searchDate);
                 }
                 break;
@@ -197,7 +197,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
             invoiceElement.isAllRedActive = true;
             invoiceElement.isPendingRedActive = false;
             invoiceElement.isPendingBlueActive = true;
-            invoiceElement.loading = false;
+            invoiceElement.loading = true;
             var viewAllInvoicesPromise = dboticaServices.getInvoiceHistoryOnLoad(organizationId);
             $log.log("view all invoices is----", viewAllInvoicesPromise);
             viewAllInvoicesPromise.then(function(viewAllInvoicesSuccess) {
@@ -224,7 +224,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
             invoiceElement.isPendingRedActive = true;
             invoiceElement.isAllRedActive = false;
             invoiceElement.isAllBlueActive = true;
-            invoiceElement.loading = false;
+            invoiceElement.loading = true;
             var viewPendingInvoicesPromise = dboticaServices.getPendingInvoices(organizationId);
             viewPendingInvoicesPromise.then(function(pendingInvoicesSuccess) {
                 $log.log("penting success response is----", pendingInvoicesSuccess);

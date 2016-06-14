@@ -68,7 +68,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         changeYear: true
     });
 
-    inventoryElement.loading = false;
+    inventoryElement.loading = true;
     var promise = dboticaServices.getItemsOfTheTable(inventoryElement.start, inventoryElement.limit, "All", "All", organizationId);
     promise.then(function(response) {
         var errorCode = response.data.errorCode;
@@ -112,7 +112,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         stockType = returnStockType();
         $log.log("item type is---", itemType);
         $log.log("stock type is----", stockType);
-        inventoryElement.loading = false;
+        inventoryElement.loading = true;
         var promise = dboticaServices.getItemsOfTheTable(inventoryElement.startDisplay - 1, limit, stockType, itemType, organizationId);
         promise.then(function(response) {
             var errorCode = response.data.errorCode;
@@ -155,7 +155,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         }
         itemType = returnItemTypeActive();
         stockType = returnStockType();
-        inventoryElement.loading = false;
+        inventoryElement.loading = true;
         var promise = dboticaServices.getItemsOfTheTable(inventoryElement.startDisplay - 1, inventoryElement.limit, stockType, itemType, organizationId);
         promise.then(function(response) {
             $log.log("in prev btn response----", response.data.response);
@@ -184,7 +184,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
     }
 
     function addItemIntoStock() {
-        inventoryElement.loading = false;
+        inventoryElement.loading = true;
         var promise = dboticaServices.addItemIntoStock(inventoryElement.addItemObject);
         promise.then(function(response) {
             $log.log("response after adding item is----", response);
@@ -255,7 +255,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             requestEntity.entityState = "ACTIVE";
             requestEntity = JSON.stringify(requestEntity);
             $log.log("added batch is----", requestEntity);
-            inventoryElement.loading = false;
+            inventoryElement.loading = true;
             var promise = dboticaServices.addBatchToTheDrug(requestEntity);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
@@ -297,7 +297,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.startDisplay = inventoryElement.start + 1;
             inventoryElement.endDisplay = displayListLength;
             itemType = returnItemTypeActive();
-            inventoryElement.loading = false;
+            inventoryElement.loading = true;
             var promise = dboticaServices.lowStockExpiredStockItems("lowItems", inventoryElement.start, inventoryElement.limit, itemType, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
@@ -329,7 +329,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.endDisplay = displayListLength;
             itemType = returnItemTypeActive();
             stockType = returnStockType();
-            inventoryElement.loading = false;
+            inventoryElement.loading = true;
             var promise = dboticaServices.getItemsOfTheTable(inventoryElement.start, inventoryElement.limit, stockType, itemType, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
@@ -359,7 +359,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.startDisplay = inventoryElement.start + 1;
             inventoryElement.endDisplay = displayListLength;
             itemType = returnItemTypeActive();
-            inventoryElement.loading = false;
+            inventoryElement.loading = true;
             var promise = dboticaServices.lowStockExpiredStockItems("expiredStockItems", inventoryElement.start, inventoryElement.limit, itemType, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
@@ -382,7 +382,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.prevNextBtnsRow = false;
             inventoryElement.viewAllItemsBtn = true;
             $log.log("item to be searched is------", inventoryElement.itemSearch.itemName);
-            inventoryElement.loading = false;
+            inventoryElement.loading = true;
             var promise = dboticaServices.getItemFromDB(inventoryElement.itemSearch.itemName, organizationId);
             promise.then(function(response) {
                 $log.log("response after search is---------", response);
@@ -413,7 +413,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         inventoryElement.warning = false;
         inventoryElement.startDisplay = inventoryElement.start + 1;
         inventoryElement.endDisplay = displayListLength;
-        inventoryElement.loading = false;
+        inventoryElement.loading = true;
         var promise = dboticaServices.getItemsOfTheTable(inventoryElement.start, inventoryElement.limit, 'All', 'All', organizationId);
         promise.then(function(response) {
             var errorCode = response.data.errorCode;
@@ -450,7 +450,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.isOthersTypeBlueActive = true;
             inventoryElement.isOthersTypeActive = false;
             stockType = returnStockType();
-            inventoryElement.loading = false;
+            inventoryElement.loading = true;
             var promise = dboticaServices.getStockItemsForTheTable("All", inventoryElement.start, inventoryElement.limit, stockType, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
@@ -485,7 +485,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.isOthersTypeBlueActive = true;
             inventoryElement.isOthersTypeActive = false;
             stockType = returnStockType();
-            inventoryElement.loading = false;
+            inventoryElement.loading = true;
             var promise = dboticaServices.getStockItemsForTheTable("DrugItems", inventoryElement.start, inventoryElement.limit, stockType, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
@@ -520,7 +520,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.isOthersTypeBlueActive = true;
             inventoryElement.isOthersTypeActive = false;
             stockType = returnStockType();
-            inventoryElement.loading = false;
+            inventoryElement.loading = true;
             var promise = dboticaServices.getStockItemsForTheTable("SuppliesItems", inventoryElement.start, inventoryElement.limit, stockType, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
@@ -555,7 +555,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             stockType = returnStockType();
             inventoryElement.startDisplay = inventoryElement.start + 1;
             inventoryElement.endDisplay = displayListLength;
-            inventoryElement.loading = false;
+            inventoryElement.loading = true;
             var promise = dboticaServices.getStockItemsForTheTable("EquipmentItems", inventoryElement.start, inventoryElement.limit, stockType, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
@@ -589,7 +589,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.isOthersTypeActive = true;
             stockType = returnStockType();
             $log.log("stock type is----", stockType);
-            inventoryElement.loading = false;
+            inventoryElement.loading = true;
             var promise = dboticaServices.getStockItemsForTheTable("OtherItems", inventoryElement.start, inventoryElement.limit, stockType, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
