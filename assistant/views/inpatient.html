@@ -186,14 +186,10 @@
                             <input type="text" class="form-control" id="exampleInputBedName" placeholder="Bed Name">
                         </div>
                         <div class="form-group">
-                            <!-- 
-                            <select ng-change="inpatient.selectedDoctor(doctor)" ng-model="inpatient.docName" ng-options="doctor.firstName for doctor in inpatient.doctorsListInInpatient" value="{{doctor.firstName}}" name="doctor" id="inpatientDoctorList" class="form-control" id="sel1">
-                                <option ng-select="inpatient.selectedDoctor(doctor)" ng-bind="doctor.firstName"></option>
-                            </select> -->
                             <label for="sel1">Doctor Incharge</label>
                             <div class="dropdown">
                                 <button style="width:100%;" class="docDropdownInInpatient dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorNameInPatient}}
-                                    <span class="caret"></span></button>
+                                    <span id="caret" class="caret"></span></button>
                                 <ul class="dropdown-menu">
                                     <li ng-click="inpatient.selectedDoctor(doctor)" ng-repeat="doctor in inpatient.doctorsListInInpatient">
                                         <a style="cursor:pointer;" ng-bind="doctor.firstName"></a>
