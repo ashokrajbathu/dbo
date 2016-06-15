@@ -74,6 +74,12 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
             controller: 'invoiceHistoryController',
             controllerAs: 'invoice',
             templateUrl: 'views/invoiceHistory.html'
+        })
+        .state('home.ipd', {
+            url: '/ipd',
+            controller: 'inpatientController',
+            controllerAs: 'inpatient',
+            templateUrl: 'views/inpatient.html'
         });
 });
 

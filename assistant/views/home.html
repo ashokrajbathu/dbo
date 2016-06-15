@@ -17,9 +17,10 @@
                     <li ng-click="activeSectionBackGroundToggle('inventory')" ui-sref=".inventory"><a class="navbarLinks" ng-class="{'activeSectionBlack':isInventoryBlack,'activeSectionBlue':isInventoryBlue}">Inventory</a></li>
                     <li ng-click="activeSectionBackGroundToggle('analytic')" ui-sref=".analyticReports"><a class="navbarLinks" ng-class="{'activeSectionBlack':isAnalyticBlack,'activeSectionBlue':isAnalyticBlue}">Analytic reports</a></li>
                     <li ng-click="activeSectionBackGroundToggle('admin')" ui-sref=".admin"><a class="navbarLinks" ng-class="{'activeSectionBlack':isAdminBlack,'activeSectionBlue':isAdminBlue}">Admin</a></li>
+                    <li ng-click="activeSectionBackGroundToggle('ipd')" ui-sref=".ipd"><a class="navbarLinks" ng-class="{'activeSectionBlack':isIpdBlack,'activeSectionBlue':isIpdBlue}">IPD</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a style="color:white;cursor:pointer;" ng-click="logoutFromAssistant()">Logout</a></li>
+                    <li><a class="logoutLink" style="color:white;cursor:pointer;" ng-click="logoutFromAssistant()">Logout</a></li>
                 </ul>
             </div>
         </div>
