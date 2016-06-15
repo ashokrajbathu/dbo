@@ -35,6 +35,7 @@
                         </div>
                     </div>
                     <hr>
+                    <span ng-if="inpatient.nameOrNumberErrorMessage" style="color:red;">(* Patient Name and Phone Number are mandatory fields)</span>
                     <div class="row">
                         <div class="col-md-4 col-sm-8 col-xs-8">
                             <form>
@@ -154,11 +155,110 @@
                     </div>
                     <hr>
                     <div class="row text-center">
-                        <button ng-click="inpatient.addPatient()" class="buttonsInInpatientModal btn addPatientBtn" type="button">Add Patient</button>
+                        <button data-dismiss="modal" ng-click="inpatient.addPatient()" class="buttonsInInpatientModal btn addPatientBtn" type="button">Add Patient</button>
                         <button class="btn buttonsInInpatientModal addPatientBtn" data-dismiss="modal" type="button">Close</button>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="patientDetailsBoxRow row">
+        <div class="col-md-3">
+            <div class="patientDetailsBox box">
+                <div class="box-header">
+                </div>
+                <div class="box-body no-padding">
+                    <div class="box-footer clearfix">
+                        <div class="form-group">
+                            <label for="exampleInpatientName">Patient Name</label>
+                            <input type="text" ng-model="inpatient.patientNameInBox" class="form-control" id="exampleInpatientName" placeholder="Patient Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInpatientNo">Inpatient No.</label>
+                            <input type="text" class="form-control" id="exampleInpatientNumber" placeholder="Inpatient Number">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleRoomName">Room Name</label>
+                            <input type="text" class="form-control" id="exampleInputRoomName" placeholder="Room Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleBedName">Bed Name/No</label>
+                            <input type="text" class="form-control" id="exampleInputBedName" placeholder="Bed Name">
+                        </div>
+                        <div class="form-group">
+                            <!-- 
+                            <select ng-change="inpatient.selectedDoctor(doctor)" ng-model="inpatient.docName" ng-options="doctor.firstName for doctor in inpatient.doctorsListInInpatient" value="{{doctor.firstName}}" name="doctor" id="inpatientDoctorList" class="form-control" id="sel1">
+                                <option ng-select="inpatient.selectedDoctor(doctor)" ng-bind="doctor.firstName"></option>
+                            </select> -->
+                            <label for="sel1">Doctor Incharge</label>
+                            <div class="dropdown">
+                                <button style="width:100%;" class="docDropdownInInpatient dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorNameInPatient}}
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li ng-click="inpatient.selectedDoctor(doctor)" ng-repeat="doctor in inpatient.doctorsListInInpatient">
+                                        <a style="cursor:pointer;" ng-bind="doctor.firstName"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputdiagnosis">Provisional Diagnosis</label>
+                            <textarea class="form-control" name="diagnosis" id="diagnosis" rows="3" placeholder="Provisional Diagnosis"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputdiagnosis">Complaint</label>
+                            <textarea class="form-control" name="complaint" id="complaint" rows="3" placeholder="Complaint"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn form-control addPatientBtn" name="btnSubmit" id="btnSubmit">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+            </div>
+            <table id="myTable" class="table table-hover table-striped" width="100%">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Floor</th>
+                        <th>Room No./Ward No.</th>
+                        <th>Room Type</th>
+                        <th>Total Beds</th>
+                        <th>Occupied Beds</th>
+                        <th>UnOccupied Beds</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table" width="100%">
+                <thead>
+                    <tr>
+                        <th>Admit Here</th>
+                        <th>Bed No.</th>
+                        <th>Patient No.</th>
+                        <th>IOP No.</th>
+                        <th>Patient Name</th>
+                        <th>Date Admit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

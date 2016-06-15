@@ -17,12 +17,47 @@
     }
 }
 
+.patientDetailsBoxRow {
+    margin-top: 8px;
+}
+
+#myTable>thead>tr {
+    border-bottom: 1px #999 solid;
+}
+
+#myTable {
+    height: 300px;
+}
+
+.patientDetailsBox {
+    border: 1px solid #c5c5c5;
+}
+
 .dropdownInModalInpatient {
     border: 1px solid #3c8dbc;
     color: black !important;
 }
 
+.dropdown-menu {
+    width: 100% !important;
+}
+
+.docDropdownInInpatient {
+    margin-left: -2px !important;
+    height: 35px;
+    border-color: #d2d6de !important;
+    color: black !important;
+}
+
+.caret {
+    position: absolute;
+    left: 90%;
+    top: 45%;
+}
+
 .dropdownInModalInpatient:hover,
+.docDropdownInInpatient:hover,
+.docDropdownInInpatient:active,
 .dropdownInModalInpatient:active {
     color: black !important;
 }

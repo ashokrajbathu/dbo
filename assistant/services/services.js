@@ -614,6 +614,8 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
                     confirmButtonText: "OK",
                     allowOutsideClick: true
                 });
+                localStorage.clear();
+                localStorage.setItem("isLoggedInAssistant", "false");
                 $state.go('login');
                 break;
         }
@@ -1115,6 +1117,8 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     }
 
     this.noConnectivityError = function() {
+        localStorage.clear();
+        localStorage.setItem("isLoggedInAssistant", "false");
         swal({
             title: "Error",
             text: "Please try after some time!!!!",
@@ -1122,6 +1126,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
+        $state.go('login');
     }
 
     this.itemUpdateSuccessSwal = function() {
