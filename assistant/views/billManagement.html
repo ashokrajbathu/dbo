@@ -263,7 +263,10 @@
                                 </table>
                                 <span class="emptyTableMessage" style="color:red;" ng-switch-when="0">**Tap the add button in the upper right to add a bill**</span>
                             </div>
-                            <button ng-click="billView.billFinalSubmisssion()" class="btn finalBillSubmit pull-right">Bill Submit</button>
+                            <div class="row generatePrintBillSubmit text-center">
+                                <a href="views/billingPrint.html" style="cursor:pointer" target="_blank" class="btn finalBillSubmit"><i class="fa fa-print"></i>Print</a>
+                                <button ng-click="billView.billFinalSubmisssion()" class="btn finalBillSubmit">Save</button>
+                            </div>
                         </div>
                     </div>
                 </div>

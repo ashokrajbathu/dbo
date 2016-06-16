@@ -14,6 +14,10 @@
     margin-top: 2px;
 }
 
+.generatePrintBillSubmit {
+    margin-top: 6px;
+}
+
 .invoiceHistoryLink {
     font-size: 14px;
     color: white;

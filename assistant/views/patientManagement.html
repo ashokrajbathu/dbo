@@ -245,7 +245,7 @@
                                     <button ng-change="changeEntryTypeView()" id="entryTypeBtn" class="btn dropdown-toggle" ng-model="entryTypeSelected.value" type="button" data-toggle="dropdown">{{patientEntryType}}
                                         <span class="caret"></span></button>
                                     <ul class="dropdown-menu">
-                                        <li ng-repeat="option in entryType"><a ng-click="selectOption(option)">{{option}}</a></li>
+                                        <li style="cursor:pointer;" ng-repeat="option in entryType"><a ng-click="selectOption(option)">{{option}}</a></li>
                                     </ul>
                                 </div>
                             </form>

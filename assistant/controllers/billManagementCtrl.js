@@ -67,84 +67,87 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     billElement.bill.nextPaymentDate = getTodayString();
     billElement.finalBill.organizationId = organizationId;
     var currentActiveAssistant = $.parseJSON(localStorage.getItem('assistantCurrentlyLoggedIn'));
-    billElement.finalBill.assistantId = currentActiveAssistant.id;
-
-    currentActiveInvoice = dboticaServices.getInvoice();
-    if (!jQuery.isEmptyObject(currentActiveInvoice)) {
-        billElement.finalBill.patientId = currentActiveInvoice.patientId;
-        billElement.finalBill.patientPhoneNumber = currentActiveInvoice.patientPhoneNumber;
-        billElement.finalBill.state = currentActiveInvoice.state;
-        billElement.finalBill.creationTime = currentActiveInvoice.creationTime;
-        billElement.finalBill.id = currentActiveInvoice.id;
-        fetchDoctorDetails = false;
-        billElement.patientSearchDiv = false;
-        billElement.patientBillGridNine = false;
-        billElement.patientBillFullGrid = true;
+    if (currentActiveAssistant == null) {
+        dboticaServices.noConnectivityError();
+    } else {
+        billElement.finalBill.assistantId = currentActiveAssistant.id;
+        currentActiveInvoice = dboticaServices.getInvoice();
+        if (!jQuery.isEmptyObject(currentActiveInvoice)) {
+            billElement.finalBill.patientId = currentActiveInvoice.patientId;
+            billElement.finalBill.patientPhoneNumber = currentActiveInvoice.patientPhoneNumber;
+            billElement.finalBill.state = currentActiveInvoice.state;
+            billElement.finalBill.creationTime = currentActiveInvoice.creationTime;
+            billElement.finalBill.id = currentActiveInvoice.id;
+            fetchDoctorDetails = false;
+            billElement.patientSearchDiv = false;
+            billElement.patientBillGridNine = false;
+            billElement.patientBillFullGrid = true;
+            billElement.loading = true;
+            billElement.blurScreen = true;
+            var getDetailsOfThePatient = dboticaServices.getPatientDetailsOfThatNumber(currentActiveInvoice.patientId);
+            getDetailsOfThePatient.then(function(getDetailsSuccess) {
+                var errorCode = getDetailsSuccess.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var patientDetails = $.parseJSON(getDetailsSuccess.data.response);
+                    billElement.patient = patientDetails[0];
+                }
+                billElement.loading = false;
+                billElement.blurScreen = false;
+            }, function(getDetailsError) {
+                billElement.blurScreen = false;
+                billElement.loading = false;
+                dboticaServices.noConnectivityError();
+            });
+            billElement.bill.doctorActive = dboticaServices.getDoctorsDetailsArray(currentActiveInvoice.doctorId);
+            setDoctorNameAndDoctorServices(billElement.bill.doctorActive);
+            billElement.invoice.nextPaymentDate = dboticaServices.longDateToReadableDate(currentActiveInvoice.nextPaymentDate);
+            billElement.invoice.nextPaymentAmount = currentActiveInvoice.nextPaymentAmount / 100;
+            angular.copy(currentActiveInvoice.paymentEntries, billElement.addToBill);
+            for (var paymentIndex in billElement.addToBill) {
+                billElement.addToBill[paymentIndex].amountPaid = billElement.addToBill[paymentIndex].amountPaid / 100;
+            }
+            var paymentEntriesAndTotalAmount = dboticaServices.getPaymentEntriesToDisplay(currentActiveInvoice.paymentEntries);
+            billElement.addPay = paymentEntriesAndTotalAmount[0];
+            var itemsToBeDisplayed = [];
+            var totalAmountCharged = 0;
+            angular.copy(currentActiveInvoice.items, itemsToBeDisplayed);
+            for (itemIndex in itemsToBeDisplayed) {
+                itemsToBeDisplayed[itemIndex].cost = itemsToBeDisplayed[itemIndex].cost / 100;
+                itemsToBeDisplayed[itemIndex].amountCharged = itemsToBeDisplayed[itemIndex].amountCharged / 100;
+                itemsToBeDisplayed[itemIndex].quantity = itemsToBeDisplayed[itemIndex].count;
+                totalAmountCharged += itemsToBeDisplayed[itemIndex].amountCharged;
+            }
+            billElement.invoice.amount = totalAmountCharged - paymentEntriesAndTotalAmount[1];
+            angular.copy(itemsToBeDisplayed, billElement.bill.billsListing);
+        }
+        $log.log("listing bills is----", billElement.bill.billsListing);
+        $log.log("current active invoice is----", currentActiveInvoice);
         billElement.loading = true;
         billElement.blurScreen = true;
-        var getDetailsOfThePatient = dboticaServices.getPatientDetailsOfThatNumber(currentActiveInvoice.patientId);
-        getDetailsOfThePatient.then(function(getDetailsSuccess) {
-            var errorCode = getDetailsSuccess.data.errorCode;
+        var medicinesPromise = dboticaServices.getItemsOfTheTable(0, 100, 'All', 'Drug', organizationId);
+        medicinesPromise.then(function(successResponse) {
+            var errorCode = successResponse.data.errorCode;
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                var patientDetails = $.parseJSON(getDetailsSuccess.data.response);
-                billElement.patient = patientDetails[0];
+                var medicinesSuccessResponse = $.parseJSON(successResponse.data.response);
+                billElement.addMedicine = medicinesSuccessResponse.inventoryItems;
+                dboticaServices.setMedicine(billElement.addMedicine);
+                for (var medicineIndex in billElement.addMedicine) {
+                    billElement.addMedicineNames.push(billElement.addMedicine[medicineIndex].itemName);
+                }
+                dboticaServices.setMedicineNames(billElement.addMedicineNames);
             }
             billElement.loading = false;
             billElement.blurScreen = false;
-        }, function(getDetailsError) {
+        }, function(errorResponse) {
             billElement.blurScreen = false;
             billElement.loading = false;
             dboticaServices.noConnectivityError();
         });
-        billElement.bill.doctorActive = dboticaServices.getDoctorsDetailsArray(currentActiveInvoice.doctorId);
-        setDoctorNameAndDoctorServices(billElement.bill.doctorActive);
-        billElement.invoice.nextPaymentDate = dboticaServices.longDateToReadableDate(currentActiveInvoice.nextPaymentDate);
-        billElement.invoice.nextPaymentAmount = currentActiveInvoice.nextPaymentAmount / 100;
-        angular.copy(currentActiveInvoice.paymentEntries, billElement.addToBill);
-        for (var paymentIndex in billElement.addToBill) {
-            billElement.addToBill[paymentIndex].amountPaid = billElement.addToBill[paymentIndex].amountPaid / 100;
-        }
-        var paymentEntriesAndTotalAmount = dboticaServices.getPaymentEntriesToDisplay(currentActiveInvoice.paymentEntries);
-        billElement.addPay = paymentEntriesAndTotalAmount[0];
-        var itemsToBeDisplayed = [];
-        var totalAmountCharged = 0;
-        angular.copy(currentActiveInvoice.items, itemsToBeDisplayed);
-        for (itemIndex in itemsToBeDisplayed) {
-            itemsToBeDisplayed[itemIndex].cost = itemsToBeDisplayed[itemIndex].cost / 100;
-            itemsToBeDisplayed[itemIndex].amountCharged = itemsToBeDisplayed[itemIndex].amountCharged / 100;
-            itemsToBeDisplayed[itemIndex].quantity = itemsToBeDisplayed[itemIndex].count;
-            totalAmountCharged += itemsToBeDisplayed[itemIndex].amountCharged;
-        }
-        billElement.invoice.amount = totalAmountCharged - paymentEntriesAndTotalAmount[1];
-        angular.copy(itemsToBeDisplayed, billElement.bill.billsListing);
     }
-    $log.log("listing bills is----", billElement.bill.billsListing);
-    $log.log("current active invoice is----", currentActiveInvoice);
-    billElement.loading = true;
-    billElement.blurScreen = true;
-    var medicinesPromise = dboticaServices.getItemsOfTheTable(0, 100, 'All', 'Drug', organizationId);
-    medicinesPromise.then(function(successResponse) {
-        var errorCode = successResponse.data.errorCode;
-        if (!!errorCode) {
-            dboticaServices.logoutFromThePage(errorCode);
-        } else {
-            var medicinesSuccessResponse = $.parseJSON(successResponse.data.response);
-            billElement.addMedicine = medicinesSuccessResponse.inventoryItems;
-            dboticaServices.setMedicine(billElement.addMedicine);
-            for (var medicineIndex in billElement.addMedicine) {
-                billElement.addMedicineNames.push(billElement.addMedicine[medicineIndex].itemName);
-            }
-            dboticaServices.setMedicineNames(billElement.addMedicineNames);
-        }
-        billElement.loading = false;
-        billElement.blurScreen = false;
-    }, function(errorResponse) {
-        billElement.blurScreen = false;
-        billElement.loading = false;
-        dboticaServices.noConnectivityError();
-    });
 
     function goToInvoicePage() {
         $state.go('home.invoiceHistory');
@@ -437,9 +440,13 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                         var success = invoiceUpdateSuccessResponse.data.success;
                         var invoiceSuccessResponse = invoiceUpdateSuccessResponse.data.response;
                         if (errorCode == null && success == true && invoiceSuccessResponse == null) {
+                            var billActiveForPrint = $.parseJSON(invoiceUpdateSuccessResponse.config.data);
+                            localStorage.setItem('billActiveToPrint', JSON.stringify(billActiveForPrint));
+                            localStorage.setItem('patientNameInBillActive', billElement.patient.firstName);
+                            localStorage.setItem('patientNumberInBillActive', billElement.patient.phoneNumber);
                             newBill();
                         }
-                        $log.log("success response is---", invoiceUpdateSuccessResponse);
+                        $log.log("success response is---", $.parseJSON(invoiceUpdateSuccessResponse.config.data));
                     }
                     billElement.loading = false;
                 }, function(invoiceUpdateErrorResponse) {
@@ -507,7 +514,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                     billElement.bill.billCost = billElement.bill.billTypes[billTypeIndex].price / 100;
                 }
             }
-
         }
         billElement.bill.doctorActiveName = doctor.firstName + ' ' + doctor.lastName;
     }
