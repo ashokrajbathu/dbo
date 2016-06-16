@@ -396,6 +396,9 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     }
 
     function billFinalSubmisssion() {
+        localStorage.setItem('billActiveToPrint', '');
+        localStorage.setItem('patientNameInBillActive', '');
+        localStorage.setItem('patientNumberInBillActive', '');
         if (billElement.finalBill.patientId == "") {
             dboticaServices.showNoPatientSwal();
         } else {
