@@ -158,6 +158,21 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
+    this.getDrugsFromDb = function(start, limit, brandName) {
+        var deferred = $q.defer();
+        var requestEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/drug/getDrugs?start=' + start + '&limit=' + limit + '&brandName=' + brandName,
+            withCredentials: true
+        }
+        $http(requestEntity).then(function(getDrugSuccess) {
+            deferred.resolve(getDrugSuccess);
+        }, function(getDrugError) {
+            deferred.reject(getDrugError);
+        });
+        return deferred.promise;
+    }
+
     this.addNewPatient = function(newPatientDetails) {
         var deferred = $q.defer();
         var req = {
@@ -1166,4 +1181,6 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         name = patientFirstName + patientLastName;
         return name;
     }
+
+
 }]);

@@ -1,6 +1,13 @@
 angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$location', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, $location, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
 
     var currentStateActive = localStorage.getItem("currentState");
+    $scope.isVisibleNavs = {};
+    $scope.isVisibleNavs.patientManagement = true;
+    $scope.isVisibleNavs.billManagement = true;
+    $scope.isVisibleNavs.inventory = true;
+    $scope.isVisibleNavs.analyticReports = true;
+    $scope.isVisibleNavs.admin = true;
+    $scope.isVisibleNavs.ipd = true;
     $scope.isPatientBlack = true;
     $scope.isPatientBlue = false;
     $scope.isBillBlue = true;

@@ -49,6 +49,21 @@
     color: black !important;
 }
 
+.roomTypeDropdown {
+    height: 25px !important;
+}
+
+#caretRoomType,
+#caretRoomTypeStatus {
+    position: absolute;
+    left: 95%;
+    top: 43%;
+}
+
+.dropdownInRoomsSection {
+    margin-bottom: 4px;
+}
+
 #caret {
     position: absolute;
     left: 90%;

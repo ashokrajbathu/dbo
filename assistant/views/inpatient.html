@@ -213,8 +213,16 @@
             </div>
         </div>
         <div class="col-md-9">
-            <div class="row">
+            <div class="dropdownInRoomsSection row">
                 <div class="col-md-6">
+                    <div class="dropdown">
+                        <button style="width:100%;" class="docDropdownInInpatient roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorNameInPatient}}<span id="caretRoomType" class="caret"></span></button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="dropdown">
+                        <button style="width:100%;" class="docDropdownInInpatient roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorNameInPatient}}<span id="caretRoomTypeStatus" class="caret"></span></button>
+                    </div>
                 </div>
             </div>
             <table id="myTable" class="table table-hover table-striped" width="100%">

@@ -85,6 +85,10 @@
                         <input ng-readonly="itemInfo.textBoxFreeze" class="form-control" type="text" ng-model="itemInfo.inventoryItem.itemCode">
                     </div>
                     <div class="form-group">
+                        <label for="itemCost" class="control-label">Item Cost:</label>
+                        <input ng-readonly="itemInfo.textBoxFreeze" class="form-control" type="text" ng-model="itemInfo.inventoryItem.retailPrice">
+                    </div>
+                    <div class="form-group">
                         <label for="itemType" class="control-label">Item Type :</label>
                         <select ng-disabled="itemInfo.disableSelectBox" class="form-control" ng-model="itemInfo.inventoryItem.itemType">
                             <option>DRUG</option>
