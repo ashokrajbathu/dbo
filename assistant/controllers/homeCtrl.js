@@ -5,7 +5,12 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
     var currentActiveAssistantPermissions = [];
     currentActiveAssistant = localStorage.getItem("assistantCurrentlyLoggedIn");
     currentActiveAssistant = $.parseJSON(currentActiveAssistant);
-    currentActiveAssistantPermissions = currentActiveAssistant.assistantPermissions;
+    if (currentActiveAssistant == null || currentActiveAssistant == undefined || currentActiveAssistant == '') {
+        var errorCode = 'NO_USER_LOGGED_IN';
+        dboticaServices.logoutFromThePage(errorCode);
+    } else {
+        currentActiveAssistantPermissions = currentActiveAssistant.assistantPermissions;
+    }
     $scope.isVisibleNavs = {};
     $scope.isVisibleNavs.patientManagement = false;
     $scope.isVisibleNavs.billManagement = false;

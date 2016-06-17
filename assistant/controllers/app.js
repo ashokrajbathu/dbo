@@ -106,8 +106,6 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
         $state.go('home');
     }
 
-    /*localStorage.setItem("currentState", "patientManagement");*/
-
     $scope.loginData = {};
     $scope.loginData.userId = "";
     $scope.loginData.password = "";
@@ -138,9 +136,9 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
                         case "USER_ALREADY_LOGGED_IN":
                             var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
                             var assistantObj = $.parseJSON(loggedInAss);
-                            currentStateAllocation(assistantObj.assistantPermissions);
                             $log.log("assis obj is----", assistantObj);
-                            if (assistantObj !== null) {
+                            if (assistantObj !== null && assistantObj !== undefined && assistantObj !== '') {
+                                currentStateAllocation(assistantObj.assistantPermissions);
                                 var organizationIdActive = assistantObj.organizationId;
                                 localStorage.setItem('orgId', organizationIdActive);
                                 $state.go('home');
@@ -196,6 +194,5 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
                 localStorage.setItem("currentState", "admin");
                 break;
         }
-
     }
 }]);
