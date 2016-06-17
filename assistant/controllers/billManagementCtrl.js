@@ -156,6 +156,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     billElement.blurScreen = true;
     var testsPromise = dboticaServices.getTests();
     testsPromise.then(function(testsPromiseSuccessResponse) {
+            $log.log("testsPromiseSuccessResponse is-----", testsPromiseSuccessResponse);
             var errorCode = testsPromiseSuccessResponse.data.errorCode;
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
@@ -169,6 +170,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                         }
                     }
                 }
+                $log.log("active tests list is---", activeTestsList);
                 dboticaServices.setTestsFromBillManagement(activeTestsList);
                 dboticaServices.setTestsNamesFromBillManagement(activeTestsNamesList);
             }

@@ -15,9 +15,9 @@
                     <li ng-if="isVisibleNavs.patientManagement" ng-click="activeSectionBackGroundToggle('patient')" ui-sref=".patientManagement"><a ng-class="{'activeSectionBlack':isPatientBlack,'activeSectionBlue':isPatientBlue}" class="navbarLinks">Patient management</a></li>
                     <li ng-if="isVisibleNavs.billManagement" ng-click="activeSectionBackGroundToggle('bill')" ui-sref=".billManagement"><a class="navbarLinks" ng-class="{'activeSectionBlack':isBillBlack,'activeSectionBlue':isBillBlue}">Bill Management</a></li>
                     <li ng-if="isVisibleNavs.inventory" ng-click="activeSectionBackGroundToggle('inventory')" ui-sref=".inventory"><a class="navbarLinks" ng-class="{'activeSectionBlack':isInventoryBlack,'activeSectionBlue':isInventoryBlue}">Inventory</a></li>
-                    <li ng-if="isVisibleNavs.analyticReports" ng-click="activeSectionBackGroundToggle('analytic')" ui-sref=".analyticReports"><a class="navbarLinks" ng-class="{'activeSectionBlack':isAnalyticBlack,'activeSectionBlue':isAnalyticBlue}">Analytic reports</a></li>
                     <li ng-if="isVisibleNavs.admin" ng-click="activeSectionBackGroundToggle('admin')" ui-sref=".admin"><a class="navbarLinks" ng-class="{'activeSectionBlack':isAdminBlack,'activeSectionBlue':isAdminBlue}">Admin</a></li>
                     <li ng-if="isVisibleNavs.ipd" ng-click="activeSectionBackGroundToggle('ipd')" ui-sref=".ipd"><a class="navbarLinks" ng-class="{'activeSectionBlack':isIpdBlack,'activeSectionBlue':isIpdBlue}">IPD</a></li>
+                    <li ng-if="isVisibleNavs.analyticReports" ng-click="activeSectionBackGroundToggle('analytic')" ui-sref=".analyticReports"><a class="navbarLinks" ng-class="{'activeSectionBlack':isAnalyticBlack,'activeSectionBlue':isAnalyticBlue}">Analytic reports</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a class="logoutLink" style="color:white;cursor:pointer;" ng-click="logoutFromAssistant()">Logout</a></li>

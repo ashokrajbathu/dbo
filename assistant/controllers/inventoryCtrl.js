@@ -1,4 +1,4 @@
-angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log', '$filter', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, $filter, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log', '$timeout', '$filter', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, $timeout, $filter, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     localStorage.setItem("currentState", "inventory");
 
     var inventoryElement = this;
@@ -20,7 +20,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
     inventoryElement.viewSuppliesInventoryItems = viewSuppliesInventoryItems;
     inventoryElement.viewEquipmentsInventoryItems = viewEquipmentsInventoryItems;
     inventoryElement.viewOthersInventoryItems = viewOthersInventoryItems;
-    /*inventoryElement.drugItemSearch = drugItemSearch;*/
+    inventoryElement.drugItemSearch = drugItemSearch;
 
     inventoryElement.loading = false;
     inventoryElement.drugsToBeDisplayedInDropdown = [];
@@ -652,7 +652,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         }
     }
 
-    /*function drugItemSearch(searchParam, callback) {
+    function drugItemSearch() {
         inventoryElement.drugsToBeDisplayedInDropdown.length = 0;
         drugs.length = 0;
         drugsList.length = 0;
@@ -670,17 +670,11 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 angular.copy(drugsList, inventoryElement.drugsToBeDisplayedInDropdown);
                 $log.log("list to dis---", inventoryElement.drugsToBeDisplayedInDropdown);
                 $log.log("get drug success response is----", $.parseJSON(getDrugSuccess.data.response));
-                callback(inventoryElement.drugsToBeDisplayedInDropdown);
-
-            }, function(getDrugErrorResponse) {
-
-            });
-
+            }, function(getDrugErrorResponse) {});
         } else {
             inventoryElement.drugsToBeDisplayedInDropdown = [];
         }
-
-    }*/
+    }
 
     /*angular.element('#inputItemNameInventory').autocomplete({
         source: function(request, callback) {
@@ -738,6 +732,32 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         }
         return stockType;
     }
+
+    /*inventoryElement.drugsToBeDisplayedInDropdown = ['ravi', 'raviteja', 'bhisetti'];*/
+
+    /*angular.module('personalAssistant').directive('inventorySelection', function(dboticaServices, $timeout, $log) {
+        return {
+            require: 'ngModel',
+            restrict: 'A',
+            controller: 'inventoryCtrl',
+            controllerAs: 'inventory',
+            bindToController: true,
+            scope: { drp: '=' },
+            link: function(scope, elem) {
+                scope.$watch(function() {
+                    $timeout(function() {
+                        elem.autocomplete({
+                            source: inventoryElement.drugsToBeDisplayedInDropdown,
+                            minLength: 2,
+                            select: function(event, ui) {
+                                $log.log("in select---");
+                            }
+                        }, 5);
+                    });
+                });
+            }
+        };
+    });*/
 
     angular.module('personalAssistant').filter("billingAndBatchConsumed", function() {
         $log.log("in filter---");

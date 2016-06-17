@@ -1,13 +1,18 @@
 angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$location', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, $location, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
 
     var currentStateActive = localStorage.getItem("currentState");
+    var currentActiveAssistant = {};
+    var currentActiveAssistantPermissions = [];
+    currentActiveAssistant = localStorage.getItem("assistantCurrentlyLoggedIn");
+    currentActiveAssistant = $.parseJSON(currentActiveAssistant);
+    currentActiveAssistantPermissions = currentActiveAssistant.assistantPermissions;
     $scope.isVisibleNavs = {};
-    $scope.isVisibleNavs.patientManagement = true;
-    $scope.isVisibleNavs.billManagement = true;
-    $scope.isVisibleNavs.inventory = true;
-    $scope.isVisibleNavs.analyticReports = true;
-    $scope.isVisibleNavs.admin = true;
-    $scope.isVisibleNavs.ipd = true;
+    $scope.isVisibleNavs.patientManagement = false;
+    $scope.isVisibleNavs.billManagement = false;
+    $scope.isVisibleNavs.inventory = false;
+    $scope.isVisibleNavs.analyticReports = false;
+    $scope.isVisibleNavs.admin = false;
+    $scope.isVisibleNavs.ipd = false;
     $scope.isPatientBlack = true;
     $scope.isPatientBlue = false;
     $scope.isBillBlue = true;
@@ -20,6 +25,27 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
     $scope.isInventoryBlack = false;
     $scope.isIpdBlack = false;
     $scope.isIpdBlue = true;
+
+    for (var assistantPermission in currentActiveAssistantPermissions) {
+        var assistantSection = currentActiveAssistantPermissions[assistantPermission];
+        switch (assistantSection) {
+            case 'PATIENT_MANAGEMENT':
+                $scope.isVisibleNavs.patientManagement = true;
+                break;
+            case 'BILLING_MANAGEMENT':
+                $scope.isVisibleNavs.billManagement = true;
+                break;
+            case 'INVENTORY_MANAGEMENT':
+                $scope.isVisibleNavs.inventory = true;
+                break;
+            case 'ORGANIZATION_MANAGEMENT':
+                $scope.isVisibleNavs.analyticReports = true;
+                $scope.isVisibleNavs.admin = true;
+                $scope.isVisibleNavs.ipd = true;
+                break;
+        }
+
+    }
 
     switch (currentStateActive) {
         case 'patientManagement':

@@ -106,7 +106,7 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
         $state.go('home');
     }
 
-    localStorage.setItem("currentState", "patientManagement");
+    /*localStorage.setItem("currentState", "patientManagement");*/
 
     $scope.loginData = {};
     $scope.loginData.userId = "";
@@ -138,6 +138,7 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
                         case "USER_ALREADY_LOGGED_IN":
                             var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
                             var assistantObj = $.parseJSON(loggedInAss);
+                            currentStateAllocation(assistantObj.assistantPermissions);
                             $log.log("assis obj is----", assistantObj);
                             if (assistantObj !== null) {
                                 var organizationIdActive = assistantObj.organizationId;
@@ -163,6 +164,7 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
                     localStorage.setItem('orgId', organizationId);
                     $log.log("assistant info is----", $.parseJSON(response.data.response));
                     localStorage.setItem("isLoggedInAssistant", "true");
+                    currentStateAllocation(assistantObject.assistantPermissions);
                     $state.go('home');
                 }
                 $scope.loading = false;
@@ -176,5 +178,24 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
         } else {
             dboticaServices.loginErrorSwal();
         }
+    }
+
+    function currentStateAllocation(assistantPermissions) {
+        var assistantPermission = assistantPermissions[0];
+        switch (assistantPermission) {
+            case 'PATIENT_MANAGEMENT':
+                localStorage.setItem("currentState", "patientManagement");
+                break;
+            case 'BILLING_MANAGEMENT':
+                localStorage.setItem("currentState", "billManagement");
+                break;
+            case 'INVENTORY_MANAGEMENT':
+                localStorage.setItem("currentState", "inventory");
+                break;
+            case 'ORGANIZATION_MANAGEMENT':
+                localStorage.setItem("currentState", "admin");
+                break;
+        }
+
     }
 }]);
