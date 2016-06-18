@@ -890,13 +890,26 @@
         drugPojo['drugType'] = drugType;
         console.log("drug type required is-------" + drugType);
         drugPojo['perServing'] = per_serving;
-        if (days === 'Days') {
-            drugPojo['noOfDays'] = units;
-            drugPojo['quantity'] = parseInt(units) * quantCount;
-        } else {
-            drugPojo['quantity'] = units;
-            drugPojo['noOfDays'] = quantCount != 0 ? parseInt(units) / quantCount : 0;
-        }
+		var capsuleTypes = ['TABLET','CAPSULE','INJECTION','SACHET','LOZENGES','SUPPOSITORY','RESPULES','PEN','APLICAPS','ENEMA','PATCH'];
+		if($.inArray(drugType,capsuleTypes)!== -1){
+			if (days === 'Days') {
+				drugPojo['noOfDays'] = units;
+				drugPojo['quantity'] = parseInt(units) * quantCount * parseInt(per_serving);
+			} else {
+				drugPojo['quantity'] = units;
+				drugPojo['noOfDays'] = quantCount != 0 ? parseInt(units) / (parseInt(per_serving) * quantCount) : 1;
+			}
+		}
+		else{
+			if (days === 'Days') {
+				drugPojo['noOfDays'] = units;
+				drugPojo['quantity'] = 1;
+			} else {
+				drugPojo['quantity'] = units;
+				drugPojo['noOfDays'] = 1;
+			}
+		}
+        
         console.log("drug pojo required is-----", drugPojo);
 
         console.log("drug usage is-----", usage);
