@@ -19,9 +19,13 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     billElement.newBill = newBill;
     billElement.paidAndDueCheck = paidAndDueCheck;
     billElement.nextDueCheck = nextDueCheck;
+    billElement.selectDrugInModal = selectDrugInModal;
 
     billElement.loading = false;
+    billElement.checkbox = 'checkBoxInModal';
     billElement.blurScreen = false;
+    billElement.prescriptionsArray = [];
+    billElement.prescriptionOfPatient = false;
     billElement.bill = {};
     billElement.patientSearch = {};
     billElement.patient = {};
@@ -253,6 +257,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                         var patientsList = $.parseJSON(patientSearchSuccessResponse.data.response);
                         if (patientsList.length > 0) {
                             $log.log("patientsList is----", patientsList);
+                            billElement.prescriptionOfPatient = true;
                             billElement.finalBill.patientId = patientsList[0].id;
                             billElement.finalBill.patientPhoneNumber = phoneNumber;
                             billElement.bill.viewOrHide = true;
@@ -260,6 +265,18 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                             billElement.bill.patientSearchPatients = true;
                             billElement.bill.patientsListOfThatNumber = patientsList;
                             billElement.patient = patientsList[0];
+                            var patientPrescriptionsPromise = dboticaServices.getPrescriptionsOfThePatient(patientsList[0].id);
+                            patientPrescriptionsPromise.then(function(getPrescriptionSuccess) {
+                                var patientPrescriptions = $.parseJSON(getPrescriptionSuccess.data.response);
+                                if (patientPrescriptions.length > 0) {
+                                    billElement.prescriptionsArray = patientPrescriptions;
+                                } else {
+                                    billElement.prescriptionsArray = [];
+                                }
+                                $log.log("presc of patient are----", billElement.prescriptionsArray);
+                            }, function(getPrescriptionError) {
+
+                            });
                         }
                     }
                     billElement.loading = false;
@@ -267,6 +284,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                     billElement.loading = false;
                     dboticaServices.noConnectivityError();
                 });
+
             } else {
                 dboticaServices.validPhoneNumberSwal();
             }
@@ -328,40 +346,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         billElement.bill.billsListing.splice(index, 1);
     }
 
-    function addMedicineToBill() {
-        if (billElement.finalBill.patientId == "") {
-            dboticaServices.showNoPatientSwal();
-        } else {
-            var newMedicine = {};
-            medicineName = angular.element('#exampleInputMedicine').val();
-            if (medicineName == undefined || medicineName == "") {
-                dboticaServices.noMedicineNameSwal();
-            } else {
-                newMedicine.itemName = medicineName;
-                if (billElement.add.quantity == undefined || billElement.add.quantity == "") {
-                    newMedicine.quantity = parseInt(1);
-                } else {
-                    newMedicine.quantity = parseInt(billElement.add.quantity);
-                }
-                newMedicine.itemType = "MEDICINE";
-                var medicineCost = angular.element('#exampleInputMedicineCost').val();
-                if (medicineCost == undefined || medicineCost == "") {
-                    dboticaServices.noMedicineCostSwal();
-                } else {
-                    newMedicine.cost = medicineCost;
-                    newMedicine.discount = parseInt(0);
-                    newMedicine.tax = parseInt(0);
-                    newMedicine.amountCharged = parseInt(newMedicine.cost) * newMedicine.quantity;
-                    billElement.invoice.amount += parseInt(newMedicine.amountCharged);
-                    newMedicine.paid = false;
-                    billElement.bill.billsListing.push(newMedicine);
-                    angular.element('#exampleInputMedicine').val("");
-                    angular.element('#exampleInputMedicineCost').val("");
-                    billElement.add.quantity = parseInt(1);
-                }
-            }
-        }
-    }
 
     function addTestToFinalBill() {
         if (billElement.finalBill.patientId == "") {
@@ -523,6 +507,65 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         billElement.bill.doctorActiveName = doctor.firstName + ' ' + doctor.lastName;
     }
 
+    function selectDrugInModal(drugInModal, index) {
+        var drugNameSelected = drugInModal.brandName;
+        var medicineToBeDisplayed = {};
+        for (var medicine in billElement.addMedicine) {
+            if (drugNameSelected == billElement.addMedicine[medicine].itemName) {
+                medicineToBeDisplayed.itemName = drugNameSelected;
+                if(drugInModal.quantity!==null && drugInModal.quantity!==undefined && drugInModal!==''){
+                    
+                }
+                medicineToBeDisplayed.quantity = parseInt(drugInModal.quantity);
+                medicineToBeDisplayed.itemType = "MEDICINE";
+                medicineToBeDisplayed.cost = billElement.addMedicine[medicine].retailPrice;
+                medicineToBeDisplayed.discount = parseInt(0);
+                medicineToBeDisplayed.tax = parseInt(0);
+                medicineToBeDisplayed.amountCharged = parseInt(medicineToBeDisplayed.cost) * medicineToBeDisplayed.quantity;
+                billElement.invoice.amount += parseInt(medicineToBeDisplayed.amountCharged);
+                billElement.bill.billsListing.push(medicineToBeDisplayed);
+            }
+        }
+
+    }
+
+    function addMedicineToBill() {
+        if (billElement.finalBill.patientId == "") {
+            dboticaServices.showNoPatientSwal();
+        } else {
+            var newMedicine = {};
+            medicineName = angular.element('#exampleInputMedicine').val();
+            if (medicineName == undefined || medicineName == "") {
+                dboticaServices.noMedicineNameSwal();
+            } else {
+                newMedicine.itemName = medicineName;
+                if (billElement.add.quantity == undefined || billElement.add.quantity == "") {
+                    newMedicine.quantity = parseInt(1);
+                } else {
+                    newMedicine.quantity = parseInt(billElement.add.quantity);
+                }
+                newMedicine.itemType = "MEDICINE";
+                var medicineCost = angular.element('#exampleInputMedicineCost').val();
+                if (medicineCost == undefined || medicineCost == "") {
+                    dboticaServices.noMedicineCostSwal();
+                } else {
+                    newMedicine.cost = medicineCost;
+                    newMedicine.discount = parseInt(0);
+                    newMedicine.tax = parseInt(0);
+                    newMedicine.amountCharged = parseInt(newMedicine.cost) * newMedicine.quantity;
+                    billElement.invoice.amount += parseInt(newMedicine.amountCharged);
+                    newMedicine.paid = false;
+                    billElement.bill.billsListing.push(newMedicine);
+                    angular.element('#exampleInputMedicine').val("");
+                    angular.element('#exampleInputMedicineCost').val("");
+                    billElement.add.quantity = parseInt(1);
+                }
+            }
+        }
+    }
+
+
+
     function validPhoneNumber(phoneNumber) {
         var numbers = /^[0-9]+$/;
         if (phoneNumber.match(numbers)) {
@@ -588,6 +631,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         billElement.addPay = [];
         billElement.finalBill = {};
         billElement.finalBill.patientId = "";
+        billElement.prescriptionOfPatient = false;
     }
 
     angular.element("#sessionDatepickerCost").datepicker({

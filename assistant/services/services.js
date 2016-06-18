@@ -749,6 +749,23 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
+    this.getPrescriptionsOfThePatient = function(patientId) {
+        var deferred = $q.defer();
+        var start = parseInt(0);
+        var limit = parseInt(3);
+        var getPrescriptionRequestEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/assistant/patient/getPrescriptions?patientId=' + patientId + '&start=' + start + '&limit=' + limit,
+            withCredentials: true
+        }
+        $http(getPrescriptionRequestEntity).then(function(gtPrescriptionSuccess) {
+            deferred.resolve(gtPrescriptionSuccess);
+        }, function(getPrescriptionError) {
+            deferred.reject(getPrescriptionError);
+        });
+        return deferred.promise;
+    }
+
     this.getPatientsListOfDoctorSorted = function(patientsList) {
         var walkInPatientsList = [];
         var appointmentPatientsList = [];
