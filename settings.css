@@ -14,3 +14,40 @@
 #addImageHeading {
     margin-left: 2px;
 }
+
+.imageInSettings {
+    margin-top: 8px;
+    height: 200px;
+    width: 300px;
+}
+
+#images {
+    display: inline-block;
+    float: left;
+    width: 300px;
+    height: 200px;
+    position: relative;
+}
+
+#tools_sketch {
+    /*  background: url(http://farm1.static.flickr.com/91/239595759_3c3626b24a_b.jpg) no-repeat center center; */
+    background-size: 100%;
+    width: 300px;
+    height: 200px;
+    display: inline-block;
+    float: left;
+    position: relative;
+}
+
+.canvasImage {
+    margin-left: 100px;
+}
+
+.del_photo {
+    display: inline-block;
+    float: right;
+    margin: 5px 5px 0 5px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}

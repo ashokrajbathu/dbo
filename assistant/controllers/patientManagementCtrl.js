@@ -1,4 +1,4 @@
-angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope', 'dboticaServices', '$state', '$filter', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, dboticaServices, $state, $http, $filter, $parse, doctorServices, SweetAlert) {
 
     localStorage.setItem("currentState", "patientManagement");
     angular.element("#sessionDatepicker").datepicker({
@@ -123,8 +123,8 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
     $scope.entryTypeSelected.value = "WALK_IN";
     $scope.entryType = ["WALK_IN", "APPOINTMENT"];
 
-    $scope.loading = true;
-    $scope.blurScreen = true;
+    $scope.loading = false;
+    $scope.blurScreen = false;
     $scope.doctorsData = dboticaServices.doctorsOfAssistant();
     console.log("doctorsData promise is----", $scope.doctorsData);
     $scope.doctorsData.then(function(doctorresponse) {
@@ -134,19 +134,25 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             $scope.doctorsList = JSON.parse(doctorresponse.data.response);
-            $scope.doctorName = $scope.doctorsList[0].firstName;
-            $scope.doctorSpecialization = $scope.doctorsList[0].speciality;
-            $scope.book.doctorId = $scope.doctorsList[0].id;
-            $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = $scope.doctorsList[0].dayStartTime;
-            $scope.doctorObjectForChangingStartAndEndTime.dayEndTime = $scope.doctorsList[0].dayEndTime;
-            $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = $scope.doctorsList[0].timePerPatient;
-            var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
-            patientsListOfDoctor.then(function(response) {
-                var patientsList = JSON.parse(response.data.response);
-                $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
-            }, function(error) {
-                console.log("in patient controller patients error");
-            });
+            if ($scope.doctorsList.length == 0) {
+                $scope.loading = false;
+                $scope.blurScreen = false;
+                dboticaServices.noConnectivityError();
+            } else {
+                $scope.doctorName = $scope.doctorsList[0].firstName;
+                $scope.doctorSpecialization = $scope.doctorsList[0].speciality;
+                $scope.book.doctorId = $scope.doctorsList[0].id;
+                $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = $scope.doctorsList[0].dayStartTime;
+                $scope.doctorObjectForChangingStartAndEndTime.dayEndTime = $scope.doctorsList[0].dayEndTime;
+                $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = $scope.doctorsList[0].timePerPatient;
+                var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
+                patientsListOfDoctor.then(function(response) {
+                    var patientsList = JSON.parse(response.data.response);
+                    $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
+                }, function(error) {
+                    console.log("in patient controller patients error");
+                });
+            }
         }
         $scope.loading = false;
         $scope.blurScreen = false;
@@ -790,10 +796,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         newPatientData.phoneNumber = $scope.patientData.phoneNumber;
         newPatientData.age = $scope.patientData.age;
         if ($scope.patientId !== "") {
-            console.log("inside patient id loop---");
             newPatientData.id = $scope.patientId;
-        } else {
-
         }
         var newPatientDetails = JSON.stringify(newPatientData);
         if (firstName != undefined && phoneNumber != undefined) {
@@ -863,8 +866,8 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         if ($scope['morningArrayBtnDisabled' + index] === false) {
             $scope.activeBtn = index;
             var date = new Date(time);
-            var time = date.toLocaleString();
-            var timeArray = time.split(",");
+            var datedSorted = moment(date).format("DD/MM/YYYY,hh:mm:ss A");
+            var timeArray = datedSorted.split(",");
             $scope.seconds = timeConverter(timeArray[1]);
         } else {
             console.log("wrong time selected");
@@ -875,9 +878,12 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         if ($scope['afternoonArrayBtnDisabled' + index] === false) {
             console.log("in right time selected");
             $scope.activeBtnAfternoon = index;
-            var date = new Date(time);
-            var time = date.toLocaleString();
-            var timeArray = time.split(",");
+            console.log("time before arranging----", time);
+            var dateValue = new Date(time);
+            var datedSorted = moment(dateValue).format("DD/MM/YYYY,hh:mm:ss A");
+            console.log("time is----", datedSorted);
+            var timeArray = datedSorted.split(",");
+            console.log("time array is----", timeArray);
             $scope.seconds = timeConverter(timeArray[1]);
             console.log("$scope.seconds in the afternoon is---" + $scope.seconds);
         } else {
@@ -887,14 +893,15 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
     }
 
     $scope.selectEveningButton = function(time, index) {
-        console.log("index value selected is----" + index);
+        console.log("index value selected is----" + time);
         console.log("boolean value is----" + $scope['eveningArrayBtnDisabled' + index]);
         if ($scope['eveningArrayBtnDisabled' + index] === false) {
             console.log("in right time selected");
             $scope.activeBtnEvening = index;
             var date = new Date(time);
-            var time = date.toLocaleString();
-            var timeArray = time.split(",");
+            var datedSorted = moment(date).format("DD/MM/YYYY,hh:mm:ss A");
+            console.log("time after sorting---", datedSorted);
+            var timeArray = datedSorted.split(",");
             $scope.seconds = timeConverter(timeArray[1]);
         } else {
             console.log("wrong time selected");

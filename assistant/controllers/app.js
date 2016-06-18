@@ -74,6 +74,12 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
             controller: 'invoiceHistoryController',
             controllerAs: 'invoice',
             templateUrl: 'views/invoiceHistory.html'
+        })
+        .state('home.ipd', {
+            url: '/ipd',
+            controller: 'inpatientController',
+            controllerAs: 'inpatient',
+            templateUrl: 'views/inpatient.html'
         });
 });
 
@@ -100,8 +106,6 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
         $state.go('home');
     }
 
-    localStorage.setItem("currentState", "patientManagement");
-
     $scope.loginData = {};
     $scope.loginData.userId = "";
     $scope.loginData.password = "";
@@ -110,8 +114,8 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
         var userId = $scope.loginData.userId;
         var password = $scope.loginData.password;
         if ($scope.loginData.userId !== "" && $scope.loginData.password !== "") {
-            $scope.loading = true;
-            $scope.blurScreen = true;
+            $scope.loading = false;
+            $scope.blurScreen = false;
             var promise = dboticaServices.login(userId, password);
             promise.then(function(response) {
                 var success = response.data.success;
@@ -133,7 +137,8 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
                             var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
                             var assistantObj = $.parseJSON(loggedInAss);
                             $log.log("assis obj is----", assistantObj);
-                            if (assistantObj !== null) {
+                            if (assistantObj !== null && assistantObj !== undefined && assistantObj !== '') {
+                                currentStateAllocation(assistantObj.assistantPermissions);
                                 var organizationIdActive = assistantObj.organizationId;
                                 localStorage.setItem('orgId', organizationIdActive);
                                 $state.go('home');
@@ -157,6 +162,7 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
                     localStorage.setItem('orgId', organizationId);
                     $log.log("assistant info is----", $.parseJSON(response.data.response));
                     localStorage.setItem("isLoggedInAssistant", "true");
+                    currentStateAllocation(assistantObject.assistantPermissions);
                     $state.go('home');
                 }
                 $scope.loading = false;
@@ -169,6 +175,24 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
             });
         } else {
             dboticaServices.loginErrorSwal();
+        }
+    }
+
+    function currentStateAllocation(assistantPermissions) {
+        var assistantPermission = assistantPermissions[0];
+        switch (assistantPermission) {
+            case 'PATIENT_MANAGEMENT':
+                localStorage.setItem("currentState", "patientManagement");
+                break;
+            case 'BILLING_MANAGEMENT':
+                localStorage.setItem("currentState", "billManagement");
+                break;
+            case 'INVENTORY_MANAGEMENT':
+                localStorage.setItem("currentState", "inventory");
+                break;
+            case 'ORGANIZATION_MANAGEMENT':
+                localStorage.setItem("currentState", "admin");
+                break;
         }
     }
 }]);

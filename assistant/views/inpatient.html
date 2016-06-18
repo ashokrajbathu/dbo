@@ -1,0 +1,269 @@
+<div class="inpatientContents" ng-controller="inpatientController as inpatient" ng-cloak>
+    <h3>Inpatient Registration</h3>
+    <form id="inpatientSearchForm" class="form-inline" ng-cloak>
+        <div class="form-group">
+            <label for="exampleInpatientPhoneNumber">phone Number</label>
+            <input ng-change="inpatient.phoneNumberLengthValidation(inpatient.number)" numbers-only ng-model="inpatient.number" type="text" class="form-control exampleInpatientPhone" id="exampleInpatientPhone" placeholder="Phone Number">
+        </div>
+        <button ng-click="inpatient.patientSearch()" ng-disabled="inpatient.patientSearchBtnDisabled" type="button" data-toggle="modal" data-target="#inpatientSearchModal" class="btn addPatientBtn">Search</button>
+    </form>
+    <span style="color:red;" ng-if="inpatient.PhoneNumberErrorMessage">(* Please enter phone number of length 10 digits)</span>
+    <div id="inpatientSearchModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Patient Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <form>
+                                <div class="form-group">
+                                    <label for="examplePatientSelect">Patient Select</label>
+                                    <div class="dropdown">
+                                        <button style="width:100%;" class="btn dropdownInModalInpatient dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.patientName}}
+                                            <span class="caret"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li ng-click="inpatient.patientSelectFromDropdown(patient)" ng-repeat="patient in inpatient.patientsListOfThatNumber">
+                                                <a style="cursor:pointer;" ng-bind="patient.firstName"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <hr>
+                    <span ng-if="inpatient.nameOrNumberErrorMessage" style="color:red;">(* Patient Name and Phone Number are mandatory fields)</span>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputName">*Name</label>
+                                    <input type="text" class="form-control exampleInpatientPhone" id="exampleInputFirstName" ng-model="inpatient.patientData.firstName" placeholder="Name">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail">Email</label>
+                                    <input type="email" class="form-control exampleInpatientPhone" id="exampleInputEmail" ng-model="inpatient.patientData.emailId" placeholder="Email">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputPhoneNumber">Phone Number</label>
+                                    <input type="text" class="form-control exampleInpatientPhone" id="exampleInputPhoneNumber" ng-model="inpatient.patientData.phoneNumber" placeholder="Phone Number">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputAge">Age</label>
+                                    <input type="text" class="form-control exampleInpatientPhone" id="exampleInputAge" ng-model="inpatient.patientData.age" placeholder="Age">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputGender">Gender</label>
+                                    <select ng-model="inpatient.patientData.gender" class="form-control exampleInpatientPhone" id="exampleInputGender">
+                                        <option>MALE</option>
+                                        <option>FEMALE</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputBloodGroup">Blood Group</label>
+                                    <select ng-model="inpatient.patientData.bloodGroup" class="form-control exampleInpatientPhone" id="exampleInputBloodGroup">
+                                        <option value="O_POSITIVE">O_POSITIVE</option>
+                                        <option value="O_NEGATIVE">O_NEGATIVE</option>
+                                        <option value="A_POSITIVE">A_POSITIVE</option>
+                                        <option value="A_NEGATIVE">A_NEGATIVE</option>
+                                        <option value="B_POSITIVE">B_POSITIVE</option>
+                                        <option value="B_NEGATIVE">B_NEGATIVE</option>
+                                        <option value="AB_POSITIVE">AB_POSITIVE</option>
+                                        <option value="AB_NEGATIVE">AB_NEGATIVE</option>
+                                        <option value="OTHER">OTHER</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputAddress">Address</label>
+                                    <input ng-model="inpatient.patientData.city" type="text" class="form-control exampleInpatientPhone" id="exampleInputAddress" placeholder="Address">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputDrugAllergy">Drug Allergy</label>
+                                    <input type="text" ng-model="inpatient.patientData.drugAllergy" class="form-control exampleInpatientPhone" id="exampleInputDrugAllergy" placeholder="Drug Allergy">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputWeight">Weight</label>
+                                    <input type="text" class="form-control exampleInpatientPhone" id="exampleInputWeight" ng-model="inpatient.patientData.weight" placeholder="Weight">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputHeight">Height</label>
+                                    <input type="text" class="form-control exampleInpatientPhone" id="exampleInputHeight" ng-model="inpatient.patientData.height" placeholder="Height">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputPulse">Pulse</label>
+                                    <input type="text" class="form-control exampleInpatientPhone" id="exampleInputPulse" ng-model="inpatient.patientData.pulse" placeholder="Pulse">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputBloodPressure">Blood Pressure</label>
+                                    <input type="text" class="form-control exampleInpatientPhone" id="exampleInputBloodPressure" ng-model="inpatient.patientData.bloodPressure" placeholder="Blood Pressure">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row text-center">
+                        <button data-dismiss="modal" ng-click="inpatient.addPatient()" class="buttonsInInpatientModal btn addPatientBtn" type="button">Add Patient</button>
+                        <button class="btn buttonsInInpatientModal addPatientBtn" data-dismiss="modal" type="button">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="patientDetailsBoxRow row">
+        <div class="col-md-3">
+            <div class="patientDetailsBox box">
+                <div class="box-header">
+                </div>
+                <div class="box-body no-padding">
+                    <div class="box-footer clearfix">
+                        <div class="form-group">
+                            <label for="exampleInpatientName">Patient Name</label>
+                            <input type="text" ng-model="inpatient.patientNameInBox" class="form-control" id="exampleInpatientName" placeholder="Patient Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInpatientNo">Inpatient No.</label>
+                            <input type="text" class="form-control" id="exampleInpatientNumber" placeholder="Inpatient Number">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleRoomName">Room Name</label>
+                            <input type="text" class="form-control" id="exampleInputRoomName" placeholder="Room Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleBedName">Bed Name/No</label>
+                            <input type="text" class="form-control" id="exampleInputBedName" placeholder="Bed Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="sel1">Doctor Incharge</label>
+                            <div class="dropdown">
+                                <button style="width:100%;" class="docDropdownInInpatient dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorNameInPatient}}
+                                    <span id="caret" class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li ng-click="inpatient.selectedDoctor(doctor)" ng-repeat="doctor in inpatient.doctorsListInInpatient">
+                                        <a style="cursor:pointer;" ng-bind="doctor.firstName"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputdiagnosis">Provisional Diagnosis</label>
+                            <textarea class="form-control" name="diagnosis" id="diagnosis" rows="3" placeholder="Provisional Diagnosis"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputdiagnosis">Complaint</label>
+                            <textarea class="form-control" name="complaint" id="complaint" rows="3" placeholder="Complaint"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn form-control addPatientBtn" name="btnSubmit" id="btnSubmit">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="dropdownInRoomsSection row">
+                <div class="col-md-6">
+                    <div class="dropdown">
+                        <button style="width:100%;" class="docDropdownInInpatient roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorNameInPatient}}<span id="caretRoomType" class="caret"></span></button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="dropdown">
+                        <button style="width:100%;" class="docDropdownInInpatient roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorNameInPatient}}<span id="caretRoomTypeStatus" class="caret"></span></button>
+                    </div>
+                </div>
+            </div>
+            <table id="myTable" class="table table-hover table-striped" width="100%">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Floor</th>
+                        <th>Room No./Ward No.</th>
+                        <th>Room Type</th>
+                        <th>Total Beds</th>
+                        <th>Occupied Beds</th>
+                        <th>UnOccupied Beds</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table" width="100%">
+                <thead>
+                    <tr>
+                        <th>Admit Here</th>
+                        <th>Bed No.</th>
+                        <th>Patient No.</th>
+                        <th>IOP No.</th>
+                        <th>Patient Name</th>
+                        <th>Date Admit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>

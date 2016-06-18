@@ -604,9 +604,6 @@
 
 
     };
-
-
-
     $('#myprescriptions-search-button').click(function(e) {
         e.preventDefault();
         $("#prescription-list").accordion("destroy");
@@ -621,7 +618,6 @@
         console.log("phone number ", phoneNumber);
         getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, prescriptionId, addRowToPrescriptionTable, applyAccordion, "#prescription-list");
         //getAllPrescriptionsFromIndexedDB(addRowToPrescriptionTable);
-
     });
 
     function getAllPrescriptions() {

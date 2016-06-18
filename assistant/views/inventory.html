@@ -39,7 +39,7 @@
                                 <div class="form-group ">
                                     <label for="inputItemName " class="col-sm-3 control-label ">Item Name</label>
                                     <div class="col-sm-6 ">
-                                        <input type="text " class="form-control " ng-model="inventory.addItemObject.itemName " id="inputItemName ">
+                                        <input typeahead="drugItem for drugItem in inventory.drugsToBeDisplayedInDropdown|filter:$viewValue | limitTo:15" ng-model-options="{debounce:1000}" ng-change="inventory.drugItemSearch()" class="form-control" drp="4567" inventory-selection ng-model="inventory.addItemObject.itemName " id="inputItemNameInventory">
                                     </div>
                                 </div>
                                 <div class="form-group ">

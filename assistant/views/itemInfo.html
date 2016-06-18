@@ -85,6 +85,10 @@
                         <input ng-readonly="itemInfo.textBoxFreeze" class="form-control" type="text" ng-model="itemInfo.inventoryItem.itemCode">
                     </div>
                     <div class="form-group">
+                        <label for="itemCost" class="control-label">Item Cost:</label>
+                        <input ng-readonly="itemInfo.textBoxFreeze" class="form-control" type="text" ng-model="itemInfo.inventoryItem.retailPrice">
+                    </div>
+                    <div class="form-group">
                         <label for="itemType" class="control-label">Item Type :</label>
                         <select ng-disabled="itemInfo.disableSelectBox" class="form-control" ng-model="itemInfo.inventoryItem.itemType">
                             <option>DRUG</option>
@@ -101,7 +105,7 @@
                         <label for="manufacturer" class="control-label">Manufacturer :</label>
                         <input ng-readonly="itemInfo.textBoxFreeze" ng-class="" type="text" class="form-control" ng-model="itemInfo.inventoryItem.manufacturer">
                     </div>
-                    <button ng-disabled="itemInfo.updateItemDetails" type="submit" class="btn batchUpdateBtns">Update Details</button>
+                    <button ng-disabled="itemInfo.updateItemDetails" ng-click="itemInfo.updateItem()" type="submit" class="btn batchUpdateBtns">Update Details</button>
                 </form>
             </div>
             <div class="col-md-9 itemTable">
@@ -122,13 +126,13 @@
                     </thead>
                     <tbody>
                         <tr id="batchesRow" ng-repeat="batch in itemInfo.informationOfBatches">
-                            <td>{{batch.batchNo}}</td>
-                            <td>{{batch.expiryTime | date}}</td>
-                            <td>{{batch.totalStock}}</td>
-                            <td>{{batch.availableStock}}</td>
-                            <td>{{batch.consumedUnits}}</td>
-                            <td>{{batch.expiredUnits}}</td>
-                            <td>{{batch.returnedUnits}}</td>
+                            <td ng-bind="batch.batchNo"></td>
+                            <td ng-bind="batch.expiryTime | date"></td>
+                            <td ng-bind="batch.totalStock"></td>
+                            <td ng-bind="batch.availableStock"></td>
+                            <td ng-bind="batch.consumedUnits"></td>
+                            <td ng-bind="batch.expiredUnits"></td>
+                            <td ng-bind="batch.returnedUnits"></td>
                             <td>
                                 <input ng-readonly="itemInfo.textBoxFreeze" class="form-control batchInputTextBoxes" ng-attr-id="{{'batchTextBoxes'+$index}}" placeholder="units">
                             </td>

@@ -1,0 +1,68 @@
+@media print {
+    #paraCheck {
+        font-size: 40px;
+        color: red;
+    }
+    #patientBillHeader {
+        text-align: center;
+        margin-top: 25px;
+    }
+    #labelsInBill1,
+    #labelsInBill2 {
+        padding-top: 10px !important;
+        font-size: 20px !important;
+    }
+    #billingDate {
+        margin-left: 70%;
+    }
+    .billingTable>thead>tr>th,
+    .billingTable>tbody>tr>td {
+        width: 10%;
+        text-align: center;
+    }
+    .billingTable {
+        border-collapse: collapse;
+        margin-top: 20px;
+        border-left: 1px;
+        border-right: 1px;
+        border-bottom: 0.5px solid black;
+        border-style: solid;
+    }
+    #paymentEntriesTable {
+        width: 100% !important;
+    }
+    .billingTable>thead>tr>th {
+        padding-top: 0.3em;
+        padding-bottom: 0.3em;
+    }
+    .billingTable>tbody>tr>td {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
+    .billingTable>tbody>tr,
+    .billingTable>thead>tr,
+    .billingTable>tbody>tr>td,
+    .billingTable>thead>tr>th {
+        border-collapse: collapse;
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
+    }
+    .amountDetails {
+        padding-top: 1em !important;
+    }
+    .amountDet {
+        font-weight: 600;
+        font-size: 20px;
+    }
+    .authoritySign {
+        margin-top: 3em;
+        margin-left: 35em !important;
+    }
+    .leftMargin {
+        margin-left: 2em !important;
+    }
+    /* .billingTable>thead>tr>th,
+    .billingTable>tbody>tr>td {
+        border: 1px solid black;
+    } */
+}

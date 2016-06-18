@@ -38,8 +38,8 @@ function openDb(callBack) {
         // garbage collection.
         // db = req.result;
         db = event.target.result;
-		syncAllDrugsToIndexedDB();
-		syncAllPrescriptionsToIndexedDB();
+        syncAllDrugsToIndexedDB();
+        syncAllPrescriptionsToIndexedDB();
         if (!!callBack) {
             callBack();
         }
@@ -59,13 +59,13 @@ function openDb(callBack) {
         console.log("openDb.onupgradeneeded");
         db = event.target.result;
         event.target.transaction.oncomplete = function(e) {
-			console.log("Transaction success");
-            
+            console.log("Transaction success");
+
             limitDrugIndex = 1000;
             totalDrugCount = 0;
             //syncAllDrugstoIndexedDB();
 
-            
+
             limitPrescriptionIndex = 100;
             totalPrescriptionCount = 0;
 
@@ -77,25 +77,25 @@ function openDb(callBack) {
         event.target.transaction.onabort = function(e) {
             console.log("abort: " + e.target.error.message);
         };
-		if(!db.objectStoreNames.contains(DB_DRUG_STORE)){
-			var drugStore = db.createObjectStore(DB_DRUG_STORE, { keyPath: "id" });
-			drugStore.createIndex('brandName', 'brandName', { unique: false });
-		}
-		if(!db.objectStoreNames.contains(DB_PATIENT_STORE)){
-			var patientStore = db.createObjectStore(DB_PATIENT_STORE, { keyPath: "id" });
-			patientStore.createIndex('phoneNumber', 'phoneNumber', { unique: false });
-		}
-		if(!db.objectStoreNames.contains(DB_PRESCRIPTION_STORE)){
-			var prescriptionStore = db.createObjectStore(DB_PRESCRIPTION_STORE, { keyPath: "id" });
-			prescriptionStore.createIndex('creationTime', 'creationTime', { unique: true });
-			prescriptionStore.createIndex('patientPhoneNumber-creationTime', ['patientPhoneNumber', 'creationTime'], { unique: false });
+        if (!db.objectStoreNames.contains(DB_DRUG_STORE)) {
+            var drugStore = db.createObjectStore(DB_DRUG_STORE, { keyPath: "id" });
+            drugStore.createIndex('brandName', 'brandName', { unique: false });
+        }
+        if (!db.objectStoreNames.contains(DB_PATIENT_STORE)) {
+            var patientStore = db.createObjectStore(DB_PATIENT_STORE, { keyPath: "id" });
+            patientStore.createIndex('phoneNumber', 'phoneNumber', { unique: false });
+        }
+        if (!db.objectStoreNames.contains(DB_PRESCRIPTION_STORE)) {
+            var prescriptionStore = db.createObjectStore(DB_PRESCRIPTION_STORE, { keyPath: "id" });
+            prescriptionStore.createIndex('creationTime', 'creationTime', { unique: true });
+            prescriptionStore.createIndex('patientPhoneNumber-creationTime', ['patientPhoneNumber', 'creationTime'], { unique: false });
 
-		}
-		if(!db.objectStoreNames.contains(DB_SYNC_STORE)){
-			var syncStore = db.createObjectStore(DB_SYNC_STORE,{keyPath : "store"});
-		}
-		    
-		
+        }
+        if (!db.objectStoreNames.contains(DB_SYNC_STORE)) {
+            var syncStore = db.createObjectStore(DB_SYNC_STORE, { keyPath: "store" });
+        }
+
+
     };
 }
 
@@ -105,11 +105,13 @@ function openDb(callBack) {
  *
  */
 function getObjectStore(store_name, mode) {
+    console.log("in get object store----");
     var tx = db.transaction(store_name, mode);
     return tx.objectStore(store_name);
 }
 
 function clearObjectStore(store_name) {
+
     var store = getObjectStore(store_name, 'readwrite');
     var req = store.clear();
     req.onsuccess = function(evt) {
@@ -135,97 +137,96 @@ var totalDrugCount;
 
 
 function syncAllDrugsToIndexedDB() {
-	var syncStore = getObjectStore(DB_SYNC_STORE, 'readonly');
-	var startDrugIndex=0;
-	var lastUpdatedDrugIndex = 0;
-	var request = syncStore.get(DB_DRUG_STORE);
-	request.onsuccess = function(event){
-		var obj = request.result;
-		/*console.log("syncstore result ",obj);*/
-		if(obj && obj != null){
-			if(obj.store == DB_DRUG_STORE){
-				
-				startDrugIndex = obj["start"];
-				lastUpdatedDrugIndex = (obj["lastUpdated"] && obj["lastUpdated"]!= null) ? obj["lastUpdated"] : 0 ;
-				
-			}
-			
-		}
-		
-		$.ajax({
-			type: "GET",
-			url: "http://localhost:8081/dbotica-spring/drug/getDrugs",
-			data: {
-				'start': startDrugIndex,
-				'limit': 1000,
-				'lastUpdated' : lastUpdatedDrugIndex
-			},
-			xhrFields: {
-				withCredentials: true
-			},
-			success: function(response) {
+    var syncStore = getObjectStore(DB_SYNC_STORE, 'readonly');
+    var startDrugIndex = 0;
+    var lastUpdatedDrugIndex = 0;
+    var request = syncStore.get(DB_DRUG_STORE);
+    request.onsuccess = function(event) {
+        var obj = request.result;
+        /*console.log("syncstore result ",obj);*/
+        if (obj && obj != null) {
+            if (obj.store == DB_DRUG_STORE) {
 
-				var data = $.parseJSON(response.response);
-				//console.log("In sync drugs: " + response.totalCount + " " + data.length);
-				var drugObjectStore = getObjectStore(DB_DRUG_STORE, "readwrite");
-				totalDrugCount = response.totalCount;
-				
-				for (var i = 0, l = data.length; i < l; i++) {
-					var drugObject = data[i];
-					drugObject['brandName'] = drugObject['brandName'].toLowerCase();
-					//console.log(drugObject);
-					drugObjectStore.put(drugObject);
-				}
-				startDrugIndex = startDrugIndex + data.length;
-				var syncStore = getObjectStore(DB_SYNC_STORE, 'readwrite');
-				var request1 =syncStore.get(DB_DRUG_STORE);
-				request1.onsuccess = function(event){
-					
-					
-					if(startDrugIndex < totalDrugCount){
-						var obj1={};
-						obj1["store"] = DB_DRUG_STORE;
-						obj1["start"] = startDrugIndex;
-						obj1["lastUpdated"] = lastUpdatedDrugIndex;
-						var req = syncStore.put(obj1);
-						req.onsuccess = function(event){
-							syncAllDrugsToIndexedDB();
-						}
-						req.onerror = function(){
-							console.error("syncAllDrugstoIndexedDB second req ",this.error);
-						}
-						
-					}
-					else{
-						var obj = {};
-						obj["store"] = DB_DRUG_STORE;
-						obj["start"] = 0;
-						obj["lastUpdated"] = (new Date).getTime();
-						var req1 = syncStore.put(obj);
-						req1.onsuccess = function(event){
-							console.log("Sync all drus to indexedDB Done");
-						}
-						req1.onerror = function(){
-							console.error("syncAllDrugstoIndexedDB third error ",this.error);
-						}
-					}
-						
-						
-					
-				}
-	
-				
-			}
-		});
-		
-		
-		
-	}
-	request.onerror = function(){
-		console.error("syncAllDrugstoIndexedDB first request ",this.error);
-	}
+                startDrugIndex = obj["start"];
+                lastUpdatedDrugIndex = (obj["lastUpdated"] && obj["lastUpdated"] != null) ? obj["lastUpdated"] : 0;
 
-    
+            }
+
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8081/dbotica-spring/drug/getDrugs",
+            data: {
+                'start': startDrugIndex,
+                'limit': 1000,
+                'lastUpdated': lastUpdatedDrugIndex
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(response) {
+
+                var data = $.parseJSON(response.response);
+                //console.log("In sync drugs: " + response.totalCount + " " + data.length);
+                var drugObjectStore = getObjectStore(DB_DRUG_STORE, "readwrite");
+                totalDrugCount = response.totalCount;
+
+                for (var i = 0, l = data.length; i < l; i++) {
+                    var drugObject = data[i];
+                    drugObject['brandName'] = drugObject['brandName'].toLowerCase();
+                    //console.log(drugObject);
+                    drugObjectStore.put(drugObject);
+                }
+                startDrugIndex = startDrugIndex + data.length;
+                var syncStore = getObjectStore(DB_SYNC_STORE, 'readwrite');
+                var request1 = syncStore.get(DB_DRUG_STORE);
+                request1.onsuccess = function(event) {
+
+
+                    if (startDrugIndex < totalDrugCount) {
+                        var obj1 = {};
+                        obj1["store"] = DB_DRUG_STORE;
+                        obj1["start"] = startDrugIndex;
+                        obj1["lastUpdated"] = lastUpdatedDrugIndex;
+                        var req = syncStore.put(obj1);
+                        req.onsuccess = function(event) {
+                            syncAllDrugsToIndexedDB();
+                        }
+                        req.onerror = function() {
+                            console.error("syncAllDrugstoIndexedDB second req ", this.error);
+                        }
+
+                    } else {
+                        var obj = {};
+                        obj["store"] = DB_DRUG_STORE;
+                        obj["start"] = 0;
+                        obj["lastUpdated"] = (new Date).getTime();
+                        var req1 = syncStore.put(obj);
+                        req1.onsuccess = function(event) {
+                            console.log("Sync all drus to indexedDB Done");
+                        }
+                        req1.onerror = function() {
+                            console.error("syncAllDrugstoIndexedDB third error ", this.error);
+                        }
+                    }
+
+
+
+                }
+
+
+            }
+        });
+
+
+
+    }
+    request.onerror = function() {
+        console.error("syncAllDrugstoIndexedDB first request ", this.error);
+    }
+
+
 }
 
 
@@ -238,90 +239,89 @@ var limitPrescriptionIndex;
 var totalPrescriptionCount;
 
 function syncAllPrescriptionsToIndexedDB() {
-	var syncStore = getObjectStore(DB_SYNC_STORE, 'readonly');
-	var startPrescriptionIndex =0 ;
-	var lastUpdatedPrescriptionIndex = 0;
-	var request = syncStore.get(DB_PRESCRIPTION_STORE);
-	request.onsuccess = function(event){
-		var obj = request.result;
-		if(obj && obj != null){
-			if(obj.store == DB_PRESCRIPTION_STORE){
-				startPrescriptionIndex = obj["start"];
-				lastUpdatedPrescriptionIndex = (obj["lastUpdated"] && obj["lastUpdated"]!= null) ? obj["lastUpdated"] : 0 ;
-				
-			}
-			
-		}
-		
-	    $.ajax({
-			type: "GET",
-			url: "http://localhost:8081/dbotica-spring/doctor/myPrescriptions",
-			data: {
-				'doctorId': doctorId,
-				'start': startPrescriptionIndex,
-				'limit': 100,
-				'lastUpdated' : lastUpdatedPrescriptionIndex
+    var syncStore = getObjectStore(DB_SYNC_STORE, 'readonly');
+    var startPrescriptionIndex = 0;
+    var lastUpdatedPrescriptionIndex = 0;
+    var request = syncStore.get(DB_PRESCRIPTION_STORE);
+    request.onsuccess = function(event) {
+        var obj = request.result;
+        if (obj && obj != null) {
+            if (obj.store == DB_PRESCRIPTION_STORE) {
+                startPrescriptionIndex = obj["start"];
+                lastUpdatedPrescriptionIndex = (obj["lastUpdated"] && obj["lastUpdated"] != null) ? obj["lastUpdated"] : 0;
 
-			},
-			xhrFields: {
+            }
+
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8081/dbotica-spring/doctor/myPrescriptions",
+            data: {
+                'doctorId': doctorId,
+                'start': startPrescriptionIndex,
+                'limit': 100,
+                'lastUpdated': lastUpdatedPrescriptionIndex
+
+            },
+            xhrFields: {
                 withCredentials: true
             },
-			success: function(response) {
-				var data = {};
-				data = $.parseJSON(response.response);
-				console.log("prescriptions ", data);
-				var patientObjectStore = getObjectStore(DB_PATIENT_STORE, "readwrite");
-				totalPrescriptionCount = response.totalCount;
-            
-				for (var i = 0, l = data.length; i < l; i++) {
-					if (data[i]["patientInfo"] !== undefined) {
-						patientObjectStore.put(data[i]["patientInfo"]);
-					
-					}else{
-						data[i]['patientInfo']= {};
-					}
-					addPrescriptionToIndexedDB(data[i]["prescription"], data[i]["patientInfo"], doctorId);
+            success: function(response) {
+                var data = {};
+                data = $.parseJSON(response.response);
+                console.log("prescriptions ", data);
+                var patientObjectStore = getObjectStore(DB_PATIENT_STORE, "readwrite");
+                totalPrescriptionCount = response.totalCount;
 
-				}
-				startPrescriptionIndex = startPrescriptionIndex + data.length; 
-				var syncStore = getObjectStore(DB_SYNC_STORE, 'readwrite');
-				var request1 = syncStore.get(DB_PRESCRIPTION_STORE);
-				request1.onsuccess = function(event){
-					
-					
-					if(startPrescriptionIndex < totalPrescriptionCount){
-						var obj1 ={};
-						obj1["store"] = DB_PRESCRIPTION_STORE;
-						obj1["start"] = startPrescriptionIndex;
-						obj1["lastUpdated"] = lastUpdatedPrescriptionIndex;
-						var req = syncStore.put(obj1);
-						req.onsuccess = function(event){
-							syncAllPrescriptionsToIndexedDB()
-						}
-						req.onerror = function(){
-							console.error("SyncAllPrescriptiontoIndexedDB second req ", this.error);
-						}
-					}
-					else{
-						var obj ={};
-						obj["store"] = DB_PRESCRIPTION_STORE;
-						obj["start"] = 0;
-						obj["lastUpdated"] = (new Date).getTime();
-						var req1 = syncStore.put(obj);
-						req1.onsuccess = function(event){
-							console.log("Sync all prescriptions to indexedDb done");
-						}
-						req1.onerror = function(){
-							console.error("SyncAllPrescriptiontoIndexedDB third error ", this.error);
-						}
-					}
-					
-	
-				}
-			}
-        
-		});
-	}
+                for (var i = 0, l = data.length; i < l; i++) {
+                    if (data[i]["patientInfo"] !== undefined) {
+                        patientObjectStore.put(data[i]["patientInfo"]);
+
+                    } else {
+                        data[i]['patientInfo'] = {};
+                    }
+                    addPrescriptionToIndexedDB(data[i]["prescription"], data[i]["patientInfo"], doctorId);
+
+                }
+                startPrescriptionIndex = startPrescriptionIndex + data.length;
+                var syncStore = getObjectStore(DB_SYNC_STORE, 'readwrite');
+                var request1 = syncStore.get(DB_PRESCRIPTION_STORE);
+                request1.onsuccess = function(event) {
+
+
+                    if (startPrescriptionIndex < totalPrescriptionCount) {
+                        var obj1 = {};
+                        obj1["store"] = DB_PRESCRIPTION_STORE;
+                        obj1["start"] = startPrescriptionIndex;
+                        obj1["lastUpdated"] = lastUpdatedPrescriptionIndex;
+                        var req = syncStore.put(obj1);
+                        req.onsuccess = function(event) {
+                            syncAllPrescriptionsToIndexedDB()
+                        }
+                        req.onerror = function() {
+                            console.error("SyncAllPrescriptiontoIndexedDB second req ", this.error);
+                        }
+                    } else {
+                        var obj = {};
+                        obj["store"] = DB_PRESCRIPTION_STORE;
+                        obj["start"] = 0;
+                        obj["lastUpdated"] = (new Date).getTime();
+                        var req1 = syncStore.put(obj);
+                        req1.onsuccess = function(event) {
+                            console.log("Sync all prescriptions to indexedDb done");
+                        }
+                        req1.onerror = function() {
+                            console.error("SyncAllPrescriptiontoIndexedDB third error ", this.error);
+                        }
+                    }
+
+
+                }
+            }
+
+        });
+    }
 }
 
 
@@ -367,39 +367,39 @@ function syncAllPatientsToIndexedDB() {
 
 function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId, callBack) {
     /*console.log("addPrescription argumensts:", arguments);*/
-	var patientName = !$.isEmptyObject(patientInfo) ? patientInfo.firstName : "Unknown" ;
-	var patientPhoneNumber = !$.isEmptyObject(patientInfo) ? patientInfo.phoneNumber : 0;
-    var obj = { "id":prescription.id, "prescription": prescription, "patientInfo": patientInfo, "doctorId": doctorId, "patientName": patientName, "patientPhoneNumber": patientPhoneNumber, "creationTime": new Date(prescription.creationTime) };
+    var patientName = !$.isEmptyObject(patientInfo) ? patientInfo.firstName : "Unknown";
+    var patientPhoneNumber = !$.isEmptyObject(patientInfo) ? patientInfo.phoneNumber : 0;
+    var obj = { "id": prescription.id, "prescription": prescription, "patientInfo": patientInfo, "doctorId": doctorId, "patientName": patientName, "patientPhoneNumber": patientPhoneNumber, "creationTime": new Date(prescription.creationTime) };
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readwrite');
-	
+
     /*console.log("prescription obj", obj);*/
-	var request = store.get(prescription.id);
-	
-    
-	//console.log("came here");
+    var request = store.get(prescription.id);
+
+
+    //console.log("came here");
     request.onsuccess = function(event) {
         var prescriptionObj = event.target.result;
-		console.log("PrescriptionObj old", prescriptionObj);
-		console.log("PrescriptionObj new", obj);
-		var a = !prescriptionObj;
-		var b = a || $.isEmptyObject(prescriptionObj.patientInfo);
-		var c = a || prescriptionObj.patientInfo === undefined ;
-		var d = !$.isEmptyObject(obj.patientInfo);
-		console.log("a b c d",a,b,c,d);
-		if(!prescriptionObj || $.isEmptyObject(prescriptionObj.patientInfo) || prescriptionObj.patientInfo === undefined ||  !$.isEmptyObject(obj.patientInfo)){
-			var prescriptionStore = getObjectStore(DB_PRESCRIPTION_STORE, 'readwrite');
-			var requestUpdate = prescriptionStore.put(obj);
-			requestUpdate.onsuccess = function(event){
-				console.log("Adding prescription object ", obj);
-				if(!!callBack)
-					callBack();
-				
-			}
-		}
-		
-	}
+        console.log("PrescriptionObj old", prescriptionObj);
+        console.log("PrescriptionObj new", obj);
+        var a = !prescriptionObj;
+        var b = a || $.isEmptyObject(prescriptionObj.patientInfo);
+        var c = a || prescriptionObj.patientInfo === undefined;
+        var d = !$.isEmptyObject(obj.patientInfo);
+        console.log("a b c d", a, b, c, d);
+        if (!prescriptionObj || $.isEmptyObject(prescriptionObj.patientInfo) || prescriptionObj.patientInfo === undefined || !$.isEmptyObject(obj.patientInfo)) {
+            var prescriptionStore = getObjectStore(DB_PRESCRIPTION_STORE, 'readwrite');
+            var requestUpdate = prescriptionStore.put(obj);
+            requestUpdate.onsuccess = function(event) {
+                console.log("Adding prescription object ", obj);
+                if (!!callBack)
+                    callBack();
 
-   
+            }
+        }
+
+    }
+
+
 }
 
 /**
@@ -491,36 +491,36 @@ function updatePatientObjectIndexedDB(obj) {
  *
  */
 
- /*
- Get Patient from object store from phone number
- */
- 
- function getPatientByPhoneNumberFromIndexedDB(phoneNumber){
-	 var store = getObjectStore(DB_PATIENT_STORE, 'readonly');
-	 var index = store.index("phoneNumber");
-	 index.get(phoneNumber).onsuccess = function(event){
-		 console.log("getPatientByPhoneNumberFromIndexedDB ", event.target.result);
-		 return event.target.result;
-		 
-	 };
- }
- 
- 
+/*
+Get Patient from object store from phone number
+*/
+
+function getPatientByPhoneNumberFromIndexedDB(phoneNumber) {
+    var store = getObjectStore(DB_PATIENT_STORE, 'readonly');
+    var index = store.index("phoneNumber");
+    index.get(phoneNumber).onsuccess = function(event) {
+        console.log("getPatientByPhoneNumberFromIndexedDB ", event.target.result);
+        return event.target.result;
+
+    };
+}
+
+
 
 /*
  * get all prescriptions of this doctor from indexedDB
  *
  */
 
-function getAllPrescriptionsFromIndexedDB(addDataToTable,callBackAfterAdding, id) {
+function getAllPrescriptionsFromIndexedDB(addDataToTable, callBackAfterAdding, id) {
     var result = [];
 
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
     var index = store.index("creationTime");
 
-    index.openCursor(null,"prev").onsuccess = function(event) {
+    index.openCursor(null, "prev").onsuccess = function(event) {
         var cursor = event.target.result;
-		//console.log(cursor.value);
+        //console.log(cursor.value);
         if (cursor) {
             if (cursor.value.doctorId == doctorId) {
                 result.push(cursor.value);
@@ -562,19 +562,19 @@ function getAllPrescriptionsFromIndexedDB(addDataToTable,callBackAfterAdding, id
     };
 }*/
 
-function getPrescriptionsById(prescriptionId, addDataToTable, callBackAfterAdding,id){
-	var result = [];
-	var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
-	var request = store.get(prescriptionId);
-	request.onsuccess = function(event) {
-		addDataToTable(event.target.result);
-		callBackAfterAdding(id)
-	}
-	
-	
+function getPrescriptionsById(prescriptionId, addDataToTable, callBackAfterAdding, id) {
+    var result = [];
+    var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
+    var request = store.get(prescriptionId);
+    request.onsuccess = function(event) {
+        addDataToTable(event.target.result);
+        callBackAfterAdding(id)
+    }
+
+
 }
 
-function getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable,callBackAfterAdding,id) {
+function getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable, callBackAfterAdding, id) {
     var result = [];
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
     var index = store.index("creationTime");
@@ -586,7 +586,7 @@ function getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable,ca
     } else {
         range = IDBKeyRange.lowerBound(fromDate);
     }
-    index.openCursor(range,"prev").onsuccess = function(event) {
+    index.openCursor(range, "prev").onsuccess = function(event) {
         var cursor = event.target.result;
         if (cursor) {
             if (cursor.value.doctorId == doctorId) {
@@ -606,24 +606,24 @@ function getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable,ca
 
 }
 
-function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, prescriptionId, addDataToTable, callBackAfterAdding,id) {
+function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, prescriptionId, addDataToTable, callBackAfterAdding, id) {
     var result = [];
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
     var index = store.index('patientPhoneNumber-creationTime');
     var range;
     var initDay = new Date("Fri Mar 25 2016 18:53:37 GMT+0530");
     var today = new Date();
-	
+
     if (fromDate == "" && toDate == "" && phoneNumber == "" && prescriptionId == "") {
         console.log("No Date range specified");
-        getAllPrescriptionsFromIndexedDB(addDataToTable,callBackAfterAdding,id);
+        getAllPrescriptionsFromIndexedDB(addDataToTable, callBackAfterAdding, id);
         return;
     }
-	
-	if(prescriptionId.trim() != ""){
-		getPrescriptionsById(prescriptionId.trim(), addDataToTable, callBackAfterAdding,id )
-		return;
-	}
+
+    if (prescriptionId.trim() != "") {
+        getPrescriptionsById(prescriptionId.trim(), addDataToTable, callBackAfterAdding, id)
+        return;
+    }
 
     if (fromDate != "")
         fromDate = new Date(fromDate);
@@ -643,13 +643,13 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, prescripti
             range = IDBKeyRange.bound([phoneNumber, initDay], [phoneNumber, today]);
         }
     } else {
-        getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable,callBackAfterAdding,id);
+        getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable, callBackAfterAdding, id);
 
         return;
     }
 
 
-    index.openCursor(range,"prev").onsuccess = function(event) {
+    index.openCursor(range, "prev").onsuccess = function(event) {
         var cursor = event.target.result;
         if (cursor) {
             if (cursor.value.doctorId == doctorId) {
@@ -662,7 +662,7 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, prescripti
         } else {
             console.log(result);
             //if (!!callBackAfterAdding) {
-                callBackAfterAdding(id);
+            callBackAfterAdding(id);
             //}
         }
     };
@@ -732,7 +732,7 @@ function autocompleteDrugIndexedDB(searchterm, id, handleData, callback) {
 
 function showAllPatients() {
     var store = getObjectStore(DB_PATIENT_STORE, 'readonly');
-	console.log("showAllPateints opened");
+    console.log("showAllPateints opened");
     store.openCursor().onsuccess = function(event) {
         var cursor = event.target.result;
         if (cursor) {
@@ -745,7 +745,7 @@ function showAllPatients() {
 
 function showAllPrescriptions() {
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
-	console.log("showAllPrescriptions opened");
+    console.log("showAllPrescriptions opened");
     store.openCursor().onsuccess = function(event) {
         var cursor = event.target.result;
         if (cursor) {

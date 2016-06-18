@@ -25,11 +25,55 @@
                                 </div>
                             </form>
                         </div>
-                        <a style="cursor:pointer;" ng-click="billView.bill.patientSearchPatients=!billView.bill.patientSearchPatients" class="pull-right" ng-if="billView.bill.viewOrHide">View/Hide Patients</a>
+                        <a style="cursor:pointer;" ng-click="billView.bill.patientSearchPatients=!billView.bill.patientSearchPatients;billView.prescriptionOfPatient=!billView.prescriptionOfPatient" class="pull-right" ng-if="billView.bill.viewOrHide">View/Hide Patients</a>
                         <div class="animate-if" ng-if="billView.bill.patientSearchPatients">
                             <p>Patients:</p>
                             <div class="itemsAnimation" ng-repeat="patient in billView.bill.patientsListOfThatNumber">
                                 <input class="radiosInPatientSearch" type="radio" name="patients" ng-click="billView.updateBillForm(patient,$index)" ng-checked="{{'radio'+$index}}" ng-attr-value="{{patient.firstName}}" ng-attr-id="{{'patient'+$index}}">{{patient.firstName}}
+                            </div>
+                        </div>
+                        <div ng-if="billView.prescriptionOfPatient" class="prescriptionInSearch animate-if">
+                            <p>Prescriptions:</p>
+                            <ul>
+                                <li style="list-style-type:disc;" ng-repeat="prescription in billView.prescriptionsArray">
+                                    <a ng-click="billView.prescriptionSelected=prescription" data-toggle="modal" data-target="#prescriptionsModal" class="prescriptionsList" style="cursor:pointer;" ng-bind="'Prescription - '+(prescription.lastUpdated | longDateIntoReadableDate)"></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="prescriptionsModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Prescription Details:</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="table prescriptionInModal">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.No.</th>
+                                                    <th>Drug Name</th>
+                                                    <th>Quantity</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="drug in billView.prescriptionSelected.drugDosage">
+                                                    <td ng-bind="$index+1"></td>
+                                                    <td ng-bind="drug.brandName"></td>
+                                                    <td ng-bind="drug.quantity"></td>
+                                                    <td>
+                                                        <!-- <input ng-click="billView.selectDrugInModal(drug,$index)" ng-checked="{{'checkbox'+$index}}" type="checkbox" name="{{drug.brandName}}" value="{{drug.brandName}}"> -->
+                                                        <button ng-click="billView.selectDrugInModal(drug,$index)" class="btn billBtn">Add</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -263,7 +307,10 @@
                                 </table>
                                 <span class="emptyTableMessage" style="color:red;" ng-switch-when="0">**Tap the add button in the upper right to add a bill**</span>
                             </div>
-                            <button ng-click="billView.billFinalSubmisssion()" class="btn finalBillSubmit pull-right">Bill Submit</button>
+                            <div class="row generatePrintBillSubmit text-center">
+                                <a href="views/billingPrint.html" style="cursor:pointer" target="_blank" class="btn finalBillSubmit"><i class="fa fa-print"></i>Print</a>
+                                <button ng-click="billView.billFinalSubmisssion()" class="btn finalBillSubmit">Save</button>
+                            </div>
                         </div>
                     </div>
                 </div>

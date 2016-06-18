@@ -52,11 +52,15 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 adminElement.doctorsListInAdmin.push(generalObject);
                 adminElement.admin.doctorInDropdown = adminElement.doctorsListInAdmin[0].firstName + ' ' + adminElement.doctorsListInAdmin[0].lastName;
             }
-            if (adminElement.admin.doctorActive.hasOwnProperty('doctorPriceInfos')) {
-                adminElement.admin.servicesListOfTheDoctor = adminElement.admin.doctorActive.doctorPriceInfos;
-                for (service in adminElement.admin.servicesListOfTheDoctor) {
-                    adminElement.servicesList.unshift(adminElement.admin.servicesListOfTheDoctor[service].billingName);
+            if (adminElement.doctorsListInAdmin.length > 0) {
+                if (adminElement.admin.doctorActive.hasOwnProperty('doctorPriceInfos')) {
+                    adminElement.admin.servicesListOfTheDoctor = adminElement.admin.doctorActive.doctorPriceInfos;
+                    for (service in adminElement.admin.servicesListOfTheDoctor) {
+                        adminElement.servicesList.unshift(adminElement.admin.servicesListOfTheDoctor[service].billingName);
+                    }
                 }
+            } else {
+                dboticaServices.noConnectivityError();
             }
             $log.log("docs list is----", adminElement.doctorsListInAdmin);
         }

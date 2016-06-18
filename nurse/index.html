@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 
 <head>
@@ -12,15 +11,7 @@
     <link rel="stylesheet" type="text/css" href="css/sweet-alert.css">
     <link rel="stylesheet" type="text/css" href="../dist/css/AdminLTE.min.css">
     <link rel="stylesheet" type="text/css" href="../dist/css/skins/_all-skins.min.css">
-    <link rel="stylesheet" type="text/css" href="css/billingPrint.css">
-    <link rel="stylesheet" type="text/css" href="css/invoiceHistory.css">
-    <link rel="stylesheet" type="text/css" href="css/analyticReports.css">
-    <link rel="stylesheet" type="text/css" href="css/inpatient.css">
-    <link rel="stylesheet" type="text/css" href="css/admin.css">
-    <link rel="stylesheet" type="text/css" href="css/itemInfo.css">
-    <link rel="stylesheet" type="text/css" href="css/inventory.css">
-    <link rel="stylesheet" type="text/css" href="css/billManagement.css">
-    <link rel="stylesheet" type="text/css" href="css/personalAssistant.css">
+    <link rel="stylesheet" type="text/css" href="css/login.css">
     <link rel="stylesheet" type="text/css" href="../plugins/iCheck/flat/blue.css">
     <link rel="stylesheet" type="text/css" href="../plugins/fullcalendar/fullcalendar.min.css">
     <link rel="stylesheet" type="text/css" href="../plugins/fullcalendar/fullcalendar.print.css" media="print">
@@ -30,12 +21,9 @@
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
     <script src="../plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <script src="../js/jquery-ui.js"></script>
-    <!-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css"> -->
-    <!-- <link href="//code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet"> -->
 </head>
 
-<body id="body" class="hold-transition skin-blue sidebar-mini" ng-app="personalAssistant" ng-cloak>
-    <div ui-view autoscroll="false"></div>
+<body ng-app="nurse" ng-cloak>
     <script>
     $.widget.bridge('uibutton', $.ui.button);
     </script>
@@ -59,19 +47,6 @@
     <script type="text/javascript" src="../js/sweet-alert.js"></script>
     <script type="text/javascript" src="../js/angular-messages.js"></script>
     <script type="text/javascript" src="controllers/main.js"></script>
-    <script type="text/javascript" src="controllers/billingPrintController.js"></script>
-    <script type="text/javascript" src="controllers/inpatientController.js"></script>
-    <script type="text/javascript" src="controllers/invoiceHistoryController.js"></script>
-    <script type="text/javascript" src="controllers/analyticReportsCtrl.js"></script>
-    <script type="text/javascript" src="controllers/adminCtrl.js"></script>
-    <script type="text/javascript" src="controllers/inventoryCtrl.js"></script>
-    <script type="text/javascript" src="controllers/patientManagementCtrl.js"></script>
-    <script type="text/javascript" src="controllers/billManagementCtrl.js"></script>
-    <script type="text/javascript" src="controllers/homeCtrl.js"></script>
-    <script type="text/javascript" src="controllers/itemInfoCtrl.js"></script>
-    <script type="text/javascript" src="services/services.js"></script>
-    <script type="text/javascript" src="services/doctors.js"></script>
-    <script type="text/javascript" src="controllers/app.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,22 @@
+<html>
+<head>
+<title>Upload Multiple File Request Page</title>
+</head>
+<body>
+	<form method="POST"	action="http://localhost:8081/dbotica-spring/file/upload" enctype="multipart/form-data">
+		File1 to upload: <input type="file" name="file">
+		File2 to upload: <input type="file" name="file2">
+<br><br><br><br>
+<input type="file" accept="image/*" onchange="loadFile(event)">
+<img id="output" style="height:100px; width:100px;"/>
+<script>
+  var loadFile = function(event) {
+    var output = document.getElementById('output');
+    output.src = URL.createObjectURL(event.target.files[0]);
+  };
+</script>
+
+		<button type="submit" value="Upload"> Press here to upload the file!</button>
+	</form>
+</body>
+</html>

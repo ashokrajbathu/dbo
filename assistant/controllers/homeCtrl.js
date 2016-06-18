@@ -1,6 +1,23 @@
 angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$location', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, $location, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
 
     var currentStateActive = localStorage.getItem("currentState");
+    var currentActiveAssistant = {};
+    var currentActiveAssistantPermissions = [];
+    currentActiveAssistant = localStorage.getItem("assistantCurrentlyLoggedIn");
+    currentActiveAssistant = $.parseJSON(currentActiveAssistant);
+    if (currentActiveAssistant == null || currentActiveAssistant == undefined || currentActiveAssistant == '') {
+        var errorCode = 'NO_USER_LOGGED_IN';
+        dboticaServices.logoutFromThePage(errorCode);
+    } else {
+        currentActiveAssistantPermissions = currentActiveAssistant.assistantPermissions;
+    }
+    $scope.isVisibleNavs = {};
+    $scope.isVisibleNavs.patientManagement = false;
+    $scope.isVisibleNavs.billManagement = false;
+    $scope.isVisibleNavs.inventory = false;
+    $scope.isVisibleNavs.analyticReports = false;
+    $scope.isVisibleNavs.admin = false;
+    $scope.isVisibleNavs.ipd = false;
     $scope.isPatientBlack = true;
     $scope.isPatientBlue = false;
     $scope.isBillBlue = true;
@@ -11,6 +28,29 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
     $scope.isAnalyticBlack = false;
     $scope.isInventoryBlue = true;
     $scope.isInventoryBlack = false;
+    $scope.isIpdBlack = false;
+    $scope.isIpdBlue = true;
+
+    for (var assistantPermission in currentActiveAssistantPermissions) {
+        var assistantSection = currentActiveAssistantPermissions[assistantPermission];
+        switch (assistantSection) {
+            case 'PATIENT_MANAGEMENT':
+                $scope.isVisibleNavs.patientManagement = true;
+                break;
+            case 'BILLING_MANAGEMENT':
+                $scope.isVisibleNavs.billManagement = true;
+                break;
+            case 'INVENTORY_MANAGEMENT':
+                $scope.isVisibleNavs.inventory = true;
+                break;
+            case 'ORGANIZATION_MANAGEMENT':
+                $scope.isVisibleNavs.analyticReports = true;
+                $scope.isVisibleNavs.admin = true;
+                $scope.isVisibleNavs.ipd = true;
+                break;
+        }
+
+    }
 
     switch (currentStateActive) {
         case 'patientManagement':
@@ -47,12 +87,15 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
             billSection();
             $state.go('home.invoiceHistory');
             break;
+
+        case 'ipd':
+            ipdSection();
+            $state.go('home.ipd');
+            break;
     }
 
     var billInvoice = {};
     dboticaServices.setInvoice(billInvoice);
-
-
 
     $scope.activeSectionBackGroundToggle = function(sectionName) {
         switch (sectionName) {
@@ -71,11 +114,11 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
             case 'analytic':
                 analyticSection();
                 break;
+            case 'ipd':
+                ipdSection();
+                break;
         }
     }
-
-
-
     $scope.logoutFromAssistant = function() {
         var promise = {};
         promise = dboticaServices.logout();
@@ -84,6 +127,9 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
             localStorage.setItem("isLoggedInAssistant", "false");
             $state.go('login');
         }, function(errorResponse) {
+            localStorage.clear();
+            localStorage.setItem("isLoggedInAssistant", "false");
+            $state.go('login');
             $log.log("in logout error response");
         });
     };
@@ -99,6 +145,8 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
         $scope.isAnalyticBlack = false;
         $scope.isInventoryBlack = false;
         $scope.isInventoryBlue = true;
+        $scope.isIpdBlack = false;
+        $scope.isIpdBlue = true;
     }
 
     function billSection() {
@@ -112,6 +160,8 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
         $scope.isAnalyticBlack = false;
         $scope.isInventoryBlack = false;
         $scope.isInventoryBlue = true;
+        $scope.isIpdBlack = false;
+        $scope.isIpdBlue = true;
     }
 
     function inventorySection() {
@@ -125,6 +175,8 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
         $scope.isAnalyticBlack = false;
         $scope.isInventoryBlack = true;
         $scope.isInventoryBlue = false;
+        $scope.isIpdBlack = false;
+        $scope.isIpdBlue = true;
     }
 
     function adminSection() {
@@ -138,6 +190,8 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
         $scope.isAnalyticBlack = false;
         $scope.isInventoryBlack = false;
         $scope.isInventoryBlue = true;
+        $scope.isIpdBlack = false;
+        $scope.isIpdBlue = true;
     }
 
     function analyticSection() {
@@ -151,5 +205,22 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
         $scope.isAnalyticBlack = true;
         $scope.isInventoryBlack = false;
         $scope.isInventoryBlue = true;
+        $scope.isIpdBlack = false;
+        $scope.isIpdBlue = true;
+    }
+
+    function ipdSection() {
+        $scope.isPatientBlack = false;
+        $scope.isPatientBlue = true;
+        $scope.isBillBlue = true;
+        $scope.isBillBlack = false;
+        $scope.isAdminBlack = false;
+        $scope.isAdminBlue = true;
+        $scope.isAnalyticBlue = true;
+        $scope.isAnalyticBlack = false;
+        $scope.isInventoryBlack = false;
+        $scope.isInventoryBlue = true;
+        $scope.isIpdBlack = true;
+        $scope.isIpdBlue = false;
     }
 }]);

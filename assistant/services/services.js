@@ -31,6 +31,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         $http(req).then(function(response) {
             deferred.resolve(response);
         }, function(errorResponse) {
+            console.log("in error response---");
             deferred.reject(errorResponse);
         });
         return deferred.promise;
@@ -153,6 +154,21 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             deferred.resolve(response);
         }, function(errorResponse) {
             deferred.reject(errorResponse);
+        });
+        return deferred.promise;
+    }
+
+    this.getDrugsFromDb = function(start, limit, brandName) {
+        var deferred = $q.defer();
+        var requestEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/drug/getDrugs?start=' + start + '&limit=' + limit + '&brandName=' + brandName,
+            withCredentials: true
+        }
+        $http(requestEntity).then(function(getDrugSuccess) {
+            deferred.resolve(getDrugSuccess);
+        }, function(getDrugError) {
+            deferred.reject(getDrugError);
         });
         return deferred.promise;
     }
@@ -613,6 +629,8 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
                     confirmButtonText: "OK",
                     allowOutsideClick: true
                 });
+                localStorage.clear();
+                localStorage.setItem("isLoggedInAssistant", "false");
                 $state.go('login');
                 break;
         }
@@ -727,6 +745,23 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             deferred.resolve(pendingInvoiceSuccess);
         }, function(pendingInvoiceError) {
             deferred.reject(pendingInvoiceError);
+        });
+        return deferred.promise;
+    }
+
+    this.getPrescriptionsOfThePatient = function(patientId) {
+        var deferred = $q.defer();
+        var start = parseInt(0);
+        var limit = parseInt(3);
+        var getPrescriptionRequestEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/assistant/patient/getPrescriptions?patientId=' + patientId + '&start=' + start + '&limit=' + limit,
+            withCredentials: true
+        }
+        $http(getPrescriptionRequestEntity).then(function(gtPrescriptionSuccess) {
+            deferred.resolve(gtPrescriptionSuccess);
+        }, function(getPrescriptionError) {
+            deferred.reject(getPrescriptionError);
         });
         return deferred.promise;
     }
@@ -1114,10 +1149,33 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     }
 
     this.noConnectivityError = function() {
+        localStorage.clear();
+        localStorage.setItem("isLoggedInAssistant", "false");
         swal({
             title: "Error",
             text: "Please try after some time!!!!",
             type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+        $state.go('login');
+    }
+
+    this.itemUpdateSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Item Details Updated SuccessFully!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.addBatchFromItemInfo = function() {
+        swal({
+            title: "Success",
+            text: "Batch Successfully Added.",
+            type: "success",
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
@@ -1140,4 +1198,6 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         name = patientFirstName + patientLastName;
         return name;
     }
+
+
 }]);

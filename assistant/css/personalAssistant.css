@@ -513,6 +513,50 @@
     .patient-form-inline .patient-form-group {
         padding-right: 50px;
     }
+    
+    @media only screen and (min-width:995px) {
+        .logoutLink {
+            margin-right: 10px;
+        }
+    }
+    
+    @media (max-width: 860px) {
+        .navbar-header {
+            float: none;
+        }
+        .navbar-left,
+        .navbar-right {
+            float: none !important;
+        }
+        .navbar-toggle {
+            display: block;
+        }
+        .navbar-collapse {
+            border-top: 1px solid transparent;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        .navbar-static-top {
+            top: 0;
+            border-width: 0 0 1px;
+        }
+        .navbar-collapse.collapse {
+            display: none!important;
+        }
+        .navbar-nav {
+            float: none!important;
+            margin-top: 7.5px;
+        }
+        .navbar-nav>li {
+            float: none;
+        }
+        .navbar-nav>li>a {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        .collapse.in {
+            display: block !important;
+        }
+    }
     /*  @media only screen and (max-width: 974px) {
        .navbarLinks {
            margin-right: 0px;
@@ -873,8 +917,7 @@
 }*/
     /* Have to set height explicity on ui-view 
 to prevent collapsing during animation*/
-    
-   /*  .well[ui-view] {
+    /*  .well[ui-view] {
        height: 65px;
    }
    
