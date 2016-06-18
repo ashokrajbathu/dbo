@@ -149,7 +149,6 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
                                 logoutPromise.then(function(response) {
                                     localStorage.clear();
                                     localStorage.setItem("isLoggedInAssistant", "false");
-                                    loginIntoAssistant();
                                 }, function(errorResponse) {
                                     $log.log("in error response of logout in home page");
                                 });

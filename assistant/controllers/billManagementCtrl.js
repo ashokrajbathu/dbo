@@ -511,12 +511,13 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         var drugNameSelected = drugInModal.brandName;
         var medicineToBeDisplayed = {};
         for (var medicine in billElement.addMedicine) {
-            if (drugNameSelected == billElement.addMedicine[medicine].itemName) {
+            if (drugNameSelected.toLowerCase() == billElement.addMedicine[medicine].itemName.toLowerCase()) {
                 medicineToBeDisplayed.itemName = drugNameSelected;
-                if(drugInModal.quantity!==null && drugInModal.quantity!==undefined && drugInModal!==''){
-                    
+                if (drugInModal.quantity !== null && drugInModal.quantity !== undefined && drugInModal !== '') {
+                    medicineToBeDisplayed.quantity = parseInt(drugInModal.quantity);
+                } else {
+                    medicineToBeDisplayed.quantity = parseInt(1);
                 }
-                medicineToBeDisplayed.quantity = parseInt(drugInModal.quantity);
                 medicineToBeDisplayed.itemType = "MEDICINE";
                 medicineToBeDisplayed.cost = billElement.addMedicine[medicine].retailPrice;
                 medicineToBeDisplayed.discount = parseInt(0);
@@ -526,7 +527,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                 billElement.bill.billsListing.push(medicineToBeDisplayed);
             }
         }
-
     }
 
     function addMedicineToBill() {
