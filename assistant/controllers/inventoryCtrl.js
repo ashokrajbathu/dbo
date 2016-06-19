@@ -257,7 +257,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             dateSelectedForBatch = dateSelectedForBatch.getTime();
             requestEntity.expiryTime = dateSelectedForBatch;
             requestEntity.batchState = "ACTIVE";
-            requestEntity.entityState = "ACTIVE";
+            requestEntity.state = "ACTIVE";
             requestEntity = JSON.stringify(requestEntity);
             $log.log("added batch is----", requestEntity);
             inventoryElement.loading = true;

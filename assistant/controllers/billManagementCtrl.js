@@ -79,7 +79,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         if (!jQuery.isEmptyObject(currentActiveInvoice)) {
             billElement.finalBill.patientId = currentActiveInvoice.patientId;
             billElement.finalBill.patientPhoneNumber = currentActiveInvoice.patientPhoneNumber;
-            billElement.finalBill.state = currentActiveInvoice.state;
+            billElement.finalBill.invoiceState = currentActiveInvoice.invoiceState;
             billElement.finalBill.creationTime = currentActiveInvoice.creationTime;
             billElement.finalBill.id = currentActiveInvoice.id;
             fetchDoctorDetails = false;
@@ -274,9 +274,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                                     billElement.prescriptionsArray = [];
                                 }
                                 $log.log("presc of patient are----", billElement.prescriptionsArray);
-                            }, function(getPrescriptionError) {
-
-                            });
+                            }, function(getPrescriptionError) {});
                         }
                     }
                     billElement.loading = false;
@@ -284,7 +282,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                     billElement.loading = false;
                     dboticaServices.noConnectivityError();
                 });
-
             } else {
                 dboticaServices.validPhoneNumberSwal();
             }
@@ -296,6 +293,23 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         $scope.radio0 = false;
         $scope['radio' + index] = true;
         billElement.finalBill.patientId = patient.id;
+        var patientPrescriptionPromise = dboticaServices.getPrescriptionsOfThePatient(patient.id);
+        patientPrescriptionPromise.then(function(selectedRadioPatientSuccess) {
+            var errorCode = selectedRadioPatientSuccess.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                var prescriptionSuccess = $.parseJSON(selectedRadioPatientSuccess.data.response);
+                $log.log("prescs are---", prescriptionSuccess);
+                if (prescriptionSuccess.length > 0) {
+                    billElement.prescriptionsArray = prescriptionSuccess;
+                } else {
+                    billElement.prescriptionsArray = [];
+                }
+            }
+        }, function(selectedPatientRadioError) {
+            dboticaServices.noConnectivityError();
+        });
     }
 
     function addConsultationOfDoctor() {
@@ -462,9 +476,9 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                 billElement.invoice.amount -= parseInt(billElement.dueDateBill.dueCost);
                 if (!jQuery.isEmptyObject(currentActiveInvoice)) {
                     if (billElement.invoice.nextPaymentAmount !== undefined && billElement.invoice.nextPaymentAmount !== "" && billElement.invoice.nextPaymentAmount !== 0) {
-                        $log.log("in check 1");
+
                         if (parseInt(billElement.dueDateBill.dueCost) <= parseInt(billElement.invoice.nextPaymentAmount)) {
-                            $log.log("in check 2");
+
                             billElement.invoice.nextPaymentAmount -= parseInt(billElement.dueDateBill.dueCost);
                         } else {
                             billElement.invoice.nextPaymentDate = "";

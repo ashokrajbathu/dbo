@@ -41,7 +41,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
         localStorage.setItem('currentItemId', itemSelected.id);
         localStorage.setItem('organizationId', itemSelected.organizationId);
         localStorage.setItem('itemName', itemSelected.itemName);
-        localStorage.setItem('itemEntityState', itemSelected.entityState);
+        localStorage.setItem('itemEntityState', itemSelected.state);
     }
     var currentItemId = localStorage.getItem('currentItemId');
     var organizationId = localStorage.getItem('organizationId');
@@ -66,7 +66,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             /* $log.log("batches info is-----", batchesInfo);*/
             itemInfoElement.inventoryItem = batchesInfo.inventoryItem;
             batchesInfo = batchesInfo.batchInfos;
-            if (itemInfoElement.inventoryItem.entityState == "INACTIVE") {
+            if (itemInfoElement.inventoryItem.state == "INACTIVE") {
                 itemInfoElement.itemInactive = true;
                 itemInfoElement.itemDetailsUpdateError = true;
                 itemInfoElement.textBoxFreeze = true;
@@ -148,7 +148,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                         itemInfoElement.disableSelectBox = true;
                         itemInfoElement.disableSelectBoxInTable = true;
                         itemInfoElement.itemDetailsUpdateError = true;
-                        itemRequestObject.entityState = "INACTIVE";
+                        itemRequestObject.state = "INACTIVE";
                     } else {
                         itemInfoElement.textBoxFreeze = false;
                         itemInfoElement.updateItemDetails = false;
@@ -156,7 +156,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                         itemInfoElement.disableSelectBox = false;
                         itemInfoElement.disableSelectBoxInTable = false;
                         itemInfoElement.itemDetailsUpdateError = false;
-                        itemRequestObject.entityState = "ACTIVE";
+                        itemRequestObject.state = "ACTIVE";
                     }
                     var itemInactivePromise = dboticaServices.addItemIntoStock(itemRequestObject);
                     itemInactivePromise.then(function(itemInactiveSuccess) {
@@ -267,7 +267,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             dateSelectedForBatch = dateSelectedForBatch.getTime();
             requestEntity.expiryTime = dateSelectedForBatch;
             requestEntity.batchState = "ACTIVE";
-            requestEntity.entityState = "ACTIVE";
+            requestEntity.state = "ACTIVE";
             requestEntity = JSON.stringify(requestEntity);
             $log.log("added batch is----", requestEntity);
             itemInfoElement.loading = true;

@@ -318,6 +318,12 @@
     }
 }*/
     
+    @media screen and (max-width:390px) {
+        #patientSearchInAppointments {
+            margin-top: 8px;
+        }
+    }
+    
     .btn.patientSearchBtn {
         border: 1px solid #00bd9c;
         background-color: white;
@@ -966,3 +972,5 @@ to prevent collapsing during animation*/
        transform: translate3d(100px, 0, 0);
    }
     */
+
+    

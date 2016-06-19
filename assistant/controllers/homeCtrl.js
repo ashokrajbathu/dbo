@@ -18,6 +18,7 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
     $scope.isVisibleNavs.analyticReports = false;
     $scope.isVisibleNavs.admin = false;
     $scope.isVisibleNavs.ipd = false;
+    $scope.isVisibleNavs.mainAdmin = false;
     $scope.isPatientBlack = true;
     $scope.isPatientBlue = false;
     $scope.isBillBlue = true;
@@ -30,6 +31,8 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
     $scope.isInventoryBlack = false;
     $scope.isIpdBlack = false;
     $scope.isIpdBlue = true;
+    $scope.isMainAdminBlack = false;
+    $scope.isMainAdminBlue = true;
 
     for (var assistantPermission in currentActiveAssistantPermissions) {
         var assistantSection = currentActiveAssistantPermissions[assistantPermission];
@@ -47,6 +50,7 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
                 $scope.isVisibleNavs.analyticReports = true;
                 $scope.isVisibleNavs.admin = true;
                 $scope.isVisibleNavs.ipd = true;
+                $scope.isVisibleNavs.mainAdmin = true;
                 break;
         }
 
@@ -92,6 +96,11 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
             ipdSection();
             $state.go('home.ipd');
             break;
+
+        case 'mainAdmin':
+            mainAdminSection();
+            $state.go('home.mainAdmin');
+            break;
     }
 
     var billInvoice = {};
@@ -116,6 +125,9 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
                 break;
             case 'ipd':
                 ipdSection();
+                break;
+            case 'mainAdmin':
+                mainAdminSection();
                 break;
         }
     }
@@ -147,6 +159,8 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
         $scope.isInventoryBlue = true;
         $scope.isIpdBlack = false;
         $scope.isIpdBlue = true;
+        $scope.isMainAdminBlue = true;
+        $scope.isMainAdminBlack = false;
     }
 
     function billSection() {
@@ -162,6 +176,8 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
         $scope.isInventoryBlue = true;
         $scope.isIpdBlack = false;
         $scope.isIpdBlue = true;
+        $scope.isMainAdminBlue = true;
+        $scope.isMainAdminBlack = false;
     }
 
     function inventorySection() {
@@ -177,6 +193,8 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
         $scope.isInventoryBlue = false;
         $scope.isIpdBlack = false;
         $scope.isIpdBlue = true;
+        $scope.isMainAdminBlue = true;
+        $scope.isMainAdminBlack = false;
     }
 
     function adminSection() {
@@ -192,6 +210,8 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
         $scope.isInventoryBlue = true;
         $scope.isIpdBlack = false;
         $scope.isIpdBlue = true;
+        $scope.isMainAdminBlue = true;
+        $scope.isMainAdminBlack = false;
     }
 
     function analyticSection() {
@@ -207,6 +227,8 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
         $scope.isInventoryBlue = true;
         $scope.isIpdBlack = false;
         $scope.isIpdBlue = true;
+        $scope.isMainAdminBlue = true;
+        $scope.isMainAdminBlack = false;
     }
 
     function ipdSection() {
@@ -222,5 +244,24 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
         $scope.isInventoryBlue = true;
         $scope.isIpdBlack = true;
         $scope.isIpdBlue = false;
+        $scope.isMainAdminBlue = true;
+        $scope.isMainAdminBlack = false;
+    }
+
+    function mainAdminSection() {
+        $scope.isPatientBlack = false;
+        $scope.isPatientBlue = true;
+        $scope.isBillBlue = true;
+        $scope.isBillBlack = false;
+        $scope.isAdminBlack = false;
+        $scope.isAdminBlue = true;
+        $scope.isAnalyticBlue = true;
+        $scope.isAnalyticBlack = false;
+        $scope.isInventoryBlack = false;
+        $scope.isInventoryBlue = true;
+        $scope.isIpdBlack = false;
+        $scope.isIpdBlue = true;
+        $scope.isMainAdminBlue = false;
+        $scope.isMainAdminBlack = true;
     }
 }]);

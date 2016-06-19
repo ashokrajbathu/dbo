@@ -80,6 +80,47 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
             controller: 'inpatientController',
             controllerAs: 'inpatient',
             templateUrl: 'views/inpatient.html'
+        })
+        .state('home.mainAdmin', {
+            url: '/administration',
+            controller: 'mainAdminController',
+            controllerAs: 'mainAdmin',
+            templateUrl: 'views/mainAdmin.html'
+        })
+        .state('home.mainAdmin.addDocCategory', {
+            controller: 'doctorCategoryController',
+            controllerAs: 'doctorCategory',
+            templateUrl: 'views/doctorCategory.html'
+        })
+        .state('home.mainAdmin.addDoctor', {
+            controller: 'doctorController',
+            controllerAs: 'doctor',
+            templateUrl: 'views/addDoctor.html'
+        })
+        .state('home.mainAdmin.addRoomCategory', {
+            controller: 'roomCategoryController',
+            controllerAs: 'roomCategory',
+            templateUrl: 'views/roomCategory.html'
+        })
+        .state('home.mainAdmin.addRoom', {
+            controller: 'roomController',
+            controllerAs: 'room',
+            templateUrl: 'views/addRoom.html'
+        })
+        .state('home.mainAdmin.addBed', {
+            controller: 'bedController',
+            controllerAs: 'bed',
+            templateUrl: 'views/addBed.html'
+        })
+        .state('home.mainAdmin.registerPatient', {
+            controller: 'registerPatientController',
+            controllerAs: 'registerPatient',
+            templateUrl: 'views/registerPatient.html'
+        })
+        .state('home.mainAdmin.patientEvents', {
+            controller: 'patientEventsController',
+            controllerAs: 'patientEvents',
+            templateUrl: 'views/patientEvents.html'
         });
 });
 

@@ -1,0 +1,39 @@
+<div ng-controller="mainAdminController as mainAdmin">
+    <div id="wrapperMainAdmin">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a>
+                        Administration
+                    </a>
+                </li>
+                <li ui-sref=".addDocCategory">
+                    <a class="mainAdminLinks">Add Doctor Category</a>
+                </li>
+                <li ui-sref=".addDoctor">
+                    <a class="mainAdminLinks">Add Doctor</a>
+                </li>
+                <li ui-sref=".addRoomCategory">
+                    <a class="mainAdminLinks">Add Room Category</a>
+                </li>
+                <li ui-sref=".addRoom">
+                    <a class="mainAdminLinks">Add Room</a>
+                </li>
+                <li ui-sref=".addBed">
+                    <a class="mainAdminLinks">Add Bed</a>
+                </li>
+                <li ui-sref=".registerPatient">
+                    <a class="mainAdminLinks">Register Patient</a>
+                </li>
+                <li ui-sref=".patientEvents">
+                    <a class="mainAdminLinks">Patient Events</a>
+                </li>
+            </ul>
+        </div>
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div ui-view autoscroll='false'></div>
+            </div>
+        </div>
+    </div>
+</div>
