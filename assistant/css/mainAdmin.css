@@ -118,3 +118,9 @@
         margin-right: 0;
     }
 }
+
+.mainAdminBtn,
+.mainAdminBtn:hover {
+    color: white;
+    background-color: #3c8dbc;
+}

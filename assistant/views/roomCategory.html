@@ -1,3 +1,19 @@
 <div ng-controller="roomCategoryController as roomCategory">
-    <h3>Add Room Category</h3>
+    <h4>Add Room Category</h4>
+    <button class="btn mainAdminBtn" data-toggle="modal" data-target="#addRoomCategoryModal">Add New</button>
+    <div id="addRoomCategoryModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">New Room Category</h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
