@@ -1,3 +1,81 @@
 <div ng-controller="doctorController as doctor">
-    <h3>add doctor</h3>
+    <h4>Add Doctor</h4>
+    <button class="btn mainAdminBtn" data-toggle="modal" data-target="#addDoctorModal">Add New</button>
+    <div id="addDoctorModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add New Doctor</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputRoomCategory">Doctor Category</label>
+                                    <br>
+                                    <div id="drpBtnDivAdminDoctor" class="dropdown">
+                                        <button style="border-color:#d2d6de;" id="drpBtnRoomDoctor" class="btn roomCategoryBtn dropdown-toggle" type="button" data-toggle="dropdown">{{doctor.doctorType}}
+                                            <span id="caretInDoctor" class="caret"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li ng-click="doctor.doctorTypeSelect(doctorType)" ng-repeat="doctorType in doctor.allDoctorTypes">
+                                                <a style="cursor:pointer;" ng-bind="doctorType.doctorType"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputDoctorName">Doctor Name</label>
+                                    <div id="drpBtnDivAdminDoc" class="dropdown">
+                                        <button style="border-color:#d2d6de;" id="drpBtnRoomDoc" class="btn roomCategoryBtn dropdown-toggle" type="button" data-toggle="dropdown">{{doctor.doctorName}}
+                                            <span id="caretInDoc" class="caret"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li ng-click="doctor.doctorSelectFromDropDown(docEntity)" ng-repeat="docEntity in doctor.doctorsListToBeDisplayed">
+                                                <a style="cursor:pointer;" ng-bind="docEntity.firstName +' '+docEntity.lastName"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputDoctorPhoneNumber">Phone Number</label>
+                                    <input type="text" ng-model="doctor.addNewDoctor.phoneNumber" class="form-control" id="exampleInputDoctorPhoneNumber" placeholder="Phone Number">
+                                </div>
+                                <div class="form-inline">
+                                    <button ng-click="doctor.addNewDoctorInModal()" class="btn mainAdminBtn" data-dismiss="modal">Save</button>
+                                    <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="input-group">
+        <input type="search" class="form-control searchInMainAdmin pull-right" placeholder="Search">
+        <span class="input-group-btn">
+            <button type="submit" class="btn mainAdminBtn searchBtnInMainAdmin"><span class="glyphicon glyphiconSearch glyphicon-search"></span></button>
+        </span>
+    </div>
+    <table class="table mainAdminTable table-hover table-striped">
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Doctor Category</th>
+                <th>Doctor Name</th>
+                <th>Phone Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Nephrology</td>
+                <td>Rama</td>
+                <td>8056851084</td>
+                <td>Edit | Delete</td>
+            </tr>
+        </tbody>
+    </table>
 </div>

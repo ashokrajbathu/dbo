@@ -70,13 +70,13 @@
 
 .sidebar-nav li a:hover {
     text-decoration: none;
-    color: #fff;
+    color: white;
     background: #3c8dbc;
 }
 
 .sidebar-nav li a:active,
 .sidebar-nav li a:focus {
-    color: #fff;
+    color: white;
     background: #3c8dbc;
     text-decoration: none;
 }
@@ -144,19 +144,36 @@
     height: 35px !important;
 }
 
-#drpBtnRoom {
+#drpBtnRoom,
+#drpBtnRoomDoctor,
+#drpBtnRoomDoc {
     margin-left: -1px !important;
     border-color: none !important;
     color: black !important;
     width: 75% !important;
 }
 
-#drpBtnDivAdmin>ul {
+#drpBtnDivAdmin>ul,
+#drpBtnDivAdminDoctor>ul,
+#drpBtnDivAdminDoc>ul {
     width: 75% !important;
 }
 
-#caretInCategory {
+#caretInCategory,
+#caretInDoctor,
+#caretInDoc {
     position: absolute;
     left: 70%;
     top: 43%;
+}
+
+.highlightActiveAdminEntity {
+    color: white !important;
+    background-color: #3c8dbc !important;
+}
+
+.mainAdminLinks:hover,
+.mainAdminLinks:active,
+.mainAdminLinks:focus {
+    color: white !important;
 }

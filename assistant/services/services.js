@@ -1323,6 +1323,16 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.addNewDoctorSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Doctor Details Successfully Added or Updated.",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
     this.getRooms = function(organizationId) {
         var deferred = $q.defer();
         var getRoomsEntity = {
@@ -1369,6 +1379,41 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             deferred.resolve(doctorCategoriesSuccess);
         }, function(doctorCategoriesError) {
             deferred.reject(doctorCategoriesError);
+        });
+        return deferred.promise;
+    }
+
+    this.addNewDoctorToACategory = function(addDoctorToACategoryObject) {
+        var deferred = $q.defer();
+        var addNewDoctorRequestentity = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/updateDoctor',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(addDoctorToACategoryObject)
+        }
+        $http(addNewDoctorRequestentity).then(function(newDoctorSuccess) {
+            deferred.resolve(newDoctorSuccess);
+        }, function(newDoctorError) {
+            deferred.reject(newDoctorError);
+        });
+        return deferred.promise;
+    }
+
+    this.doctorsListInMainAdmin = function(organizationId) {
+        var deferred = $q.defer();
+        var getDoctorListInMainAdminEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/getDoctors?organizationId=' + organizationId,
+            withCredentials: true
+        }
+        $http(getDoctorListInMainAdminEntity).then(function(doctorsListInMainAdminSuccess) {
+            deferred.resolve(doctorsListInMainAdminSuccess);
+        }, function(doctorsListInMainError) {
+            deferred.reject(doctorsListInMainError);
         });
         return deferred.promise;
     }
