@@ -9,11 +9,59 @@
                     <h4 class="modal-title">New Room Category</h4>
                 </div>
                 <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleRoomCategoryName">Room Category Name</label>
+                                    <input type="text" ng-model="roomCategory.newRoomCategory.roomType" class="form-control" id="exampleRoomCategoryName" placeholder="Room Category Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPrice">Price</label>
+                                    <input type="text" ng-model="roomCategory.newRoomCategory.price" class="form-control" id="exampleInputPrice" placeholder="Price">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputDescription">Description</label>
+                                    <input type="text" ng-model="roomCategory.newRoomCategory.description" class="form-control" id="exampleInputDescription" placeholder="Description">
+                                </div>
+                                <div class="form-inline">
+                                    <button ng-click="roomCategory.addNewRoomCategory()" class="btn mainAdminBtn" data-dismiss="modal">Save</button>
+                                    <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
+    <div class="input-group">
+        <input type="search" ng-model="roomCategory.inputItemSearch" class="form-control searchInMainAdmin pull-right" placeholder="Search">
+        <span ng-click="roomCategory.roomCategorySearch()" class="input-group-btn">
+            <button type="submit" class="btn mainAdminBtn searchBtnInMainAdmin"><span class="glyphicon glyphiconSearch glyphicon-search"></span></button>
+        </span>
+    </div>
+    <table ng-table="roomCategory.tableParams" show-filter="true" class="table mainAdminTable table-hover table-striped">
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Room Category Name</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="roomCategoryEntity in roomCategory.activeRoomCategories">
+                <td ng-bind="$index+1"></td>
+                <td ng-bind="roomCategoryEntity.roomType"></td>
+                <td ng-bind="roomCategoryEntity.description"></td>
+                <td>
+                    <a ng-click="roomCategory.editRoomCategory(roomCategoryEntity,$index)" data-toggle="modal" data-target="#addRoomCategoryModal" class="linksInTable mainAdminLinks">Edit</a> |
+                    <a ng-click="roomCategory.deleteRoomCategory(roomCategoryEntity,$index)" class="linksInTable mainAdminLinks">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

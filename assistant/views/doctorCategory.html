@@ -1,3 +1,61 @@
 <div ng-controller="doctorCategoryController as doctorCategory">
-    <h3>Doctor Category</h3>
+    <h4>Add Doctor Category</h4>
+    <button class="btn mainAdminBtn" data-toggle="modal" data-target="#adddoctorCategoryModal">Add New</button>
+    <div id="adddoctorCategoryModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Doctor Category</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputDoctorCategory">Doctor Category</label>
+                                    <input ng-model="doctorCategory.addNewDoctorCategory.doctorType" type="text" class="form-control" id="exampleInputDoctorCategory" placeholder="Doctor Category">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputDescription">Description</label>
+                                    <input type="text" ng-model="doctorCategory.addNewDoctorCategory.description" class="form-control" id="exampleInputDescription" placeholder="Description">
+                                </div>
+                                <div class="form-inline">
+                                    <button ng-click="doctorCategory.addNewDoctorCategoryInModal()" class="btn mainAdminBtn" data-dismiss="modal">Save</button>
+                                    <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="input-group">
+        <input type="search" ng-model="doctorCategory.inputItemSearch" class="form-control searchInMainAdmin pull-right" placeholder="Search">
+        <span ng-click="doctorCategory.doctorCategorySearch()" class="input-group-btn">
+            <button type="submit" class="btn mainAdminBtn searchBtnInMainAdmin"><span class="glyphicon glyphiconSearch glyphicon-search"></span></button>
+        </span>
+    </div>
+    <table class="table mainAdminTable table-hover table-striped">
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Doctor Category</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="doctorCategoryEntity in doctorCategory.doctorCategoriesList">
+                <td ng-bind="$index+1"></td>
+                <td ng-bind="doctorCategoryEntity.doctorType"></td>
+                <td ng-bind="doctorCategoryEntity.description"></td>
+                <td>
+                    <a ng-click="doctorCategory.editDoctorCategory(doctorCategoryEntity,$index)" data-toggle="modal" data-target="#adddoctorCategoryModal" class="linksInTable mainAdminLinks">Edit</a> |
+                    <a ng-click="doctorCategory.deleteDoctorCategory(doctorCategoryEntity,$index)" class="linksInTable mainAdminLinks">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

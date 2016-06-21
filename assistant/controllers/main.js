@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('personalAssistant', ['ui.router', 'ngAnimate', 'ui.bootstrap', 'ngMessages', 'appServices', 'doctorServices', 'oitozero.ngSweetAlert']);
+angular.module('personalAssistant', ['ui.router', 'ngAnimate', 'ui.bootstrap', 'ngMessages', 'appServices', 'doctorServices','ngTable', 'oitozero.ngSweetAlert']);
 
 angular.module('personalAssistant').directive('validNumber', function() {
     return {

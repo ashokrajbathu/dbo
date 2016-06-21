@@ -124,3 +124,39 @@
     color: white;
     background-color: #3c8dbc;
 }
+
+.mainAdminTable>thead>tr>th,
+.mainAdminTable>tbody>tr>td {
+    text-align: center;
+}
+
+.searchInMainAdmin {
+    width: 180px !important;
+}
+
+.glyphiconSearch {
+    background-color: #3c8dbc !important;
+    color: white !important;
+}
+
+.searchBtnInMainAdmin {
+    margin-top: -1px !important;
+    height: 35px !important;
+}
+
+#drpBtnRoom {
+    margin-left: -1px !important;
+    border-color: none !important;
+    color: black !important;
+    width: 75% !important;
+}
+
+#drpBtnDivAdmin>ul {
+    width: 75% !important;
+}
+
+#caretInCategory {
+    position: absolute;
+    left: 70%;
+    top: 43%;
+}

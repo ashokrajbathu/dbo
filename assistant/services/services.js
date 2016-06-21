@@ -11,6 +11,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     var testsList = [];
     var testsNameList = [];
     var medicine = [];
+    var roomCategoriesList = [];
     var itemSelected, longDate;
 
     this.login = function(userEmailId, password) {
@@ -927,6 +928,14 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         invoiceObject = value;
     }
 
+    this.setRoomCategories = function(value) {
+        roomCategoriesList = value;
+    }
+
+    this.getRoomCategoriesList = function() {
+        return roomCategoriesList;
+    }
+
     this.getInvoice = function() {
         return invoiceObject;
     }
@@ -1171,6 +1180,46 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.roomCategorySuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Room Category Added or Updated SuccessFully!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.deleteRoomCategorySuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Room Category Deleted SuccessFully!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.deleteRoomSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Selected Room Deleted SuccessFully!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.deleteDoctorCategorySuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Selected Doctor Category Deleted SuccessFully!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
     this.addBatchFromItemInfo = function() {
         swal({
             title: "Success",
@@ -1199,5 +1248,129 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return name;
     }
 
+    this.addOrUpdateRoomCategory = function(roomCategoryObject) {
+        var deferred = $q.defer();
+        var roomCategoryEntity = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/updateRoomCategory',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(roomCategoryObject)
+        }
+        $http(roomCategoryEntity).then(function(addOrUpdateCategorySuccess) {
+            deferred.resolve(addOrUpdateCategorySuccess);
+        }, function(addOrUpdateCategoryError) {
+            deferred.reject(addOrUpdateCategoryError);
+        });
+        return deferred.promise;
+    }
+
+    this.getRoomCategories = function(organizationId) {
+        var deferred = $q.defer();
+        var getRoomCategoriesEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/getRoomCategories?organizationId=' + organizationId,
+            withCredentials: true
+        }
+        $http(getRoomCategoriesEntity).then(function(getRoomCategoriesSuuccess) {
+            deferred.resolve(getRoomCategoriesSuuccess);
+        }, function(getRoomCategoriesError) {
+            deferred.reject(getRoomCategoriesError);
+        });
+        return deferred.promise;
+    }
+
+    this.addOrUpdateRoom = function(newRoomObject) {
+        var deferred = $q.defer();
+        var newRoomEntity = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/updateRoom',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(newRoomObject)
+        }
+        $http(newRoomEntity).then(function(newRoomSuccess) {
+            deferred.resolve(newRoomSuccess);
+        }, function(newRoomError) {
+            deferred.reject(newRoomError);
+        });
+        return deferred.promise;
+    }
+
+    this.addNewRoomSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Room Details Successfully Added or Updated.",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.addNewDoctorCategorySuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Doctor Category Details Successfully Added or Updated.",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.getRooms = function(organizationId) {
+        var deferred = $q.defer();
+        var getRoomsEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/getRooms?organizationId=' + organizationId,
+            withCredentials: true
+        }
+        $http(getRoomsEntity).then(function(getRoomsSuccess) {
+            deferred.resolve(getRoomsSuccess);
+        }, function(getRoomsError) {
+            deferred.reject(getRoomsError);
+        });
+        return deferred.promise;
+    }
+
+    this.addNewDoctorCategory = function(newDoctorCategoryObject) {
+        var deferred = $q.defer();
+        var addNewDoctorCategoryEntity = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/updateDoctorCategory',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(newDoctorCategoryObject)
+        }
+        $http(addNewDoctorCategoryEntity).then(function(addNewDoctorResponse) {
+            deferred.resolve(addNewDoctorResponse);
+        }, function(addNewDoctorErrorResponse) {
+            deferred.reject(addNewDoctorErrorResponse);
+        });
+        return deferred.promise;
+    }
+
+    this.getDoctorCategories = function(organizationId) {
+        var deferred = $q.defer();
+        var getDoctorCategoriesEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/getDoctorCategories?organizationId=' + organizationId,
+            withCredentials: true
+        }
+        $http(getDoctorCategoriesEntity).then(function(doctorCategoriesSuccess) {
+            deferred.resolve(doctorCategoriesSuccess);
+        }, function(doctorCategoriesError) {
+            deferred.reject(doctorCategoriesError);
+        });
+        return deferred.promise;
+    }
 
 }]);
