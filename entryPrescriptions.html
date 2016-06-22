@@ -244,6 +244,9 @@
                                 <div class="col-md-12 form-group">
                                     <textarea class="form-control" rows="2" placeholder="Investigation Report" id="prescription-form-Investigation"></textarea>
                                 </div>
+                                <div class="col-md-12 form-group">
+                                    <textarea class="form-control" rows="2" placeholder="History" id="prescription-form-history"></textarea>
+                                </div>
                             </div>
                         </div>
                         <!-- /.box-body -->
@@ -261,6 +264,37 @@
                 <!-- right column -->
                 <div class="col-md-14">
                     <!-- general form elements disabled -->
+                    <div class="box box-solid box-primary">
+                        <div class="box-header">
+                            <h3 class="box-title">Tests</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="col-md-6 form-group">
+                                <input type="text" class="form-control" placeholder="Test" id="prescription-form-test"></input>
+                                <ul class="dropdown-menu tests-dropdown-menu">
+                                </ul>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <input type="text" class="form-control" placeholder="Remark" id="prescription-form-test-remark"></input>
+                                </ul>
+                            </div>
+                            <div align="right">
+                                <button type="submit" class="btn btn-primary" id="prescription-test-add">Add</button>
+                            </div>
+                            <table id="current-tests" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Test Name</th>
+                                        <th>Remarks</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
                     <div class="box box-solid box-primary">
                         <div class="box-header">
                             <h3 class="box-title">Fill Prescription</h3>
@@ -360,38 +394,6 @@
                             <!-- /.box-body -->
                         </div>
                         <!-- /.box -->
-                        <div class="box box-solid box-primary">
-                            <div class="box-header">
-                                <h3 class="box-title">Tests</h3>
-                            </div>
-                            <!-- /.box-header -->
-                            <div class="box-body">
-                                <div class="col-md-6 form-group">
-                                    <input type="text" class="form-control" placeholder="Test" id="prescription-form-test"></input>
-                                    <ul class="dropdown-menu tests-dropdown-menu">
-                                    </ul>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <input type="text" class="form-control" placeholder="Remark" id="prescription-form-test-remark"></input>
-                                    </ul>
-                                </div>
-                                <div align="right">
-                                    <button type="submit" class="btn btn-primary" id="prescription-test-add">Add</button>
-                                </div>
-                                <table id="current-tests" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>S.No</th>
-                                            <th>Test Name</th>
-                                            <th>Remarks</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div>
-                            <!-- /.box-body -->
-                        </div>
                         <div class="box box-solid box-primary">
                             <div class="box-header">
                                 <h3 class="box-title">Remarks</h3>

@@ -51,3 +51,9 @@
     top: 0;
     right: 0;
 }
+
+#templateOne,
+#templateTwo,
+#templateThree {
+    cursor: pointer;
+}

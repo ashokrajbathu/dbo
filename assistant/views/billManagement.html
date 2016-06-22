@@ -124,9 +124,9 @@
                                         <div class="form-group consultationFormItems">
                                             <div class="dropdown patientDrpDwn">
                                                 <button class="billSelectBoxes doctorBillsDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{billView.bill.doctorActiveService}}
-                                                    <span class="caret"></span></button>
+                                                    <span id="caretInBillManagement" class="caret"></span></button>
                                                 <ul class="dropdown-menu">
-                                                    <li ng-repeat="billIndex in billView.bill.billTypes">
+                                                    <li style="overflow:hidden;white-space:no-wrap;text-overflow:ellipsis;width:inherit;" ng-repeat="billIndex in billView.bill.billTypes">
                                                         <a ng-click="billView.selectBillFromDropdown(billIndex)" class="doctorsListInBill">{{billIndex.billingName}}</a>
                                                     </li>
                                                 </ul>

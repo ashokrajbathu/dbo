@@ -205,13 +205,44 @@
 }
 
 .dropdown>button {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
     margin-left: 10px;
     border: 1px solid #3c8dbc;
     background-color: #fff;
 }
 
-.dropdown>ul {
+#caretInAdmin {
+    position: absolute;
+    left: 87%;
+    top: 50%;
+}
+
+#caretDoctorInAdmin {
+    position: absolute;
+    left: 85%;
+    top: 50%;
+}
+
+#caretInBillManagement {
+    position: absolute;
+    left: 84%;
+    top: 45%;
+}
+
+
+/* .dropdown>ul {
     margin-left: 4px;
+} */
+
+.dropdown-menu>li>a {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+}
+
+.dropdown-menu>li>a:hover {
+    margin-left: -5px;
 }
 
 #dueDateBtn,

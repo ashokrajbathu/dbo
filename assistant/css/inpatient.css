@@ -38,7 +38,9 @@
     color: black !important;
 }
 
-.dropdown-menu {
+.dropdown-menu,
+.dropdown-menu>li,
+.dropdown-menu>li>a {
     width: 100% !important;
 }
 
