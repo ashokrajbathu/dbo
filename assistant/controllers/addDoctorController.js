@@ -176,13 +176,51 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     function doctorSearchInTheTotalList() {
         if (doctorElement.doctorNameForSearch !== '' && doctorElement.doctorNameForSearch !== undefined) {
             var sortedItemsArray = [];
-            for (var doctorIndexInSearch in doctorElement.allDoctorTypes) {
-                var check = doctorElement.allDoctorTypes[doctorIndexInSearch].roomNo.toLowerCase().indexOf(roomElement.inputItemSearch.toLowerCase()) > -1;
-                if (check) {
-                    sortedItemsArray.push(roomElement.roomsList[roomIndexInSearch]);
+            var sortedDoctorCategoriesArray = [];
+            var sortedDoctorNamesArray = [];
+            var doctorCategoriesListForSorting = dboticaServices.getDoctorCategoriesList();
+            var doctorNamesListForSorting = dboticaServices.getDoctorNames();
+            $log.log("doc categories list is----", doctorCategoriesListForSorting);
+            $log.log("doc names list is----", doctorNamesListForSorting);
+            for (var categoryName in doctorCategoriesListForSorting) {
+                if (doctorCategoriesListForSorting[categoryName].state == 'ACTIVE') {
+                    var categoryCheck = doctorCategoriesListForSorting[categoryName].doctorType.toLowerCase().indexOf(doctorElement.doctorNameForSearch.toLowerCase()) > -1;
+                    if (categoryCheck) {
+                        /* sortedDoctorCategoriesArray.push(doctorCategoriesListForSorting[categoryName]);*/
+                        for (var docListIndexInTable in doctorElement.doctorsListInTheTable) {
+                            if (doctorElement.doctorsListInTheTable[docListIndexInTable].organizationDoctorCategoryId == doctorCategoriesListForSorting[categoryName].id) {
+                                sortedItemsArray.push(doctorElement.doctorsListInTheTable[docListIndexInTable]);
+                            }
+                        }
+                    }
                 }
             }
-            angular.copy(sortedItemsArray, roomElement.roomsList);
+            for (var doctorNameIndex in doctorNamesListForSorting) {
+                if (doctorNamesListForSorting[doctorNameIndex].state == 'ACTIVE') {
+                    var doctorFirstNameCheck = doctorNamesListForSorting[doctorNameIndex].firstName.toLowerCase().indexOf(doctorElement.doctorNameForSearch.toLowerCase()) > -1;
+                    var doctorLastNameCheck = doctorNamesListForSorting[doctorNameIndex].lastName.toLowerCase().indexOf(doctorElement.doctorNameForSearch.toLowerCase()) > -1;
+                    var doctorNameCheck = doctorFirstNameCheck || doctorLastNameCheck;
+                    if (doctorNameCheck) {
+                        for (var docNameIndexInTable in doctorElement.doctorsListInTheTable) {
+                            if (doctorElement.doctorsListInTheTable[docNameIndexInTable].doctorId == doctorNamesListForSorting[doctorNameIndex].id) {
+                                var stringPresenceCheck = false;
+                                for (var sortedItemIndex in sortedItemsArray) {
+                                    if (sortedItemsArray[sortedItemIndex].doctorId == doctorNamesListForSorting[doctorNameIndex].id) {
+                                        stringPresenceCheck = true;
+                                        break;
+                                    } else {
+                                        continue;
+                                    }
+                                }
+                                if (!stringPresenceCheck) {
+                                    sortedItemsArray.push(doctorElement.doctorsListInTheTable[docNameIndexInTable]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            angular.copy(sortedItemsArray, doctorElement.doctorsListInTheTable);
         }
     }
 }]);
