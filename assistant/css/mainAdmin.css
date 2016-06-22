@@ -70,13 +70,13 @@
 
 .sidebar-nav li a:hover {
     text-decoration: none;
-    color: white;
+    color: #fff;
     background: #3c8dbc;
 }
 
 .sidebar-nav li a:active,
 .sidebar-nav li a:focus {
-    color: white;
+    color: #fff;
     background: #3c8dbc;
     text-decoration: none;
 }
@@ -168,12 +168,6 @@
 }
 
 .highlightActiveAdminEntity {
-    color: white !important;
+    color:white !important;
     background-color: #3c8dbc !important;
-}
-
-.mainAdminLinks:hover,
-.mainAdminLinks:active,
-.mainAdminLinks:focus {
-    color: white !important;
 }

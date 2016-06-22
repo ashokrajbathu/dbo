@@ -53,8 +53,8 @@
         </div>
     </div>
     <div class="input-group">
-        <input type="search" class="form-control searchInMainAdmin pull-right" placeholder="Search">
-        <span class="input-group-btn">
+        <input type="search" ng-model="doctor.doctorNameForSearch" class="form-control searchInMainAdmin pull-right" placeholder="Search">
+        <span ng-click="doctor.doctorSearchInTheTotalList()" class="input-group-btn">
             <button type="submit" class="btn mainAdminBtn searchBtnInMainAdmin"><span class="glyphicon glyphiconSearch glyphicon-search"></span></button>
         </span>
     </div>
@@ -69,12 +69,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>Nephrology</td>
-                <td>Rama</td>
-                <td>8056851084</td>
-                <td>Edit | Delete</td>
+            <tr ng-repeat="doctorInTable in doctor.doctorsListInTheTable">
+                <td ng-bind="$index+1"></td>
+                <td ng-bind="doctorInTable.organizationDoctorCategoryId | doctorCategoryNameFromId"></td>
+                <td ng-bind="doctorInTable.doctorId | doctorNameFromDoctorId"></td>
+                <td ng-bind="doctorInTable.phoneNumber"></td>
+                <td>
+                    <a ng-click="doctor.editDoctorInTable(doctorInTable,$index)" data-toggle="modal" data-target="#addDoctorModal" class="linksInTable mainAdminLinks">Edit</a> |
+                    <a ng-click="doctor.deleteDoctorInTable(doctorInTable,$index)" class="linksInTable mainAdminLinks">Delete</a>
+                </td>
             </tr>
         </tbody>
     </table>

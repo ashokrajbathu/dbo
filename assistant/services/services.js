@@ -10,6 +10,8 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     var medicineNames, doctorsListArray = [];
     var testsList = [];
     var testsNameList = [];
+    var doctorCategoriesList = [];
+    var doctorsNamesList = [];
     var medicine = [];
     var roomCategoriesList = [];
     var itemSelected, longDate;
@@ -1407,7 +1409,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getDoctorListInMainAdminEntity = {
             method: 'GET',
-            url: 'http://localhost:8081/dbotica-spring/organization/hospital/getDoctors?organizationId=' + organizationId,
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/getDoctors?organizationId=' + organizationId + '&doctorType=' + '',
             withCredentials: true
         }
         $http(getDoctorListInMainAdminEntity).then(function(doctorsListInMainAdminSuccess) {
@@ -1416,6 +1418,32 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             deferred.reject(doctorsListInMainError);
         });
         return deferred.promise;
+    }
+
+    this.setDoctorTypes = function(value) {
+        doctorCategoriesList = value;
+    }
+
+    this.getDoctorCategoriesList = function() {
+        return doctorCategoriesList;
+    }
+
+    this.setDoctorsNames = function(value) {
+        doctorsNamesList = value;
+    }
+
+    this.getDoctorNames = function() {
+        return doctorsNamesList;
+    }
+
+    this.deleteDoctorSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Selected Doctor Deleted SuccessFully!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
     }
 
 }]);
