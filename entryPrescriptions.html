@@ -72,13 +72,13 @@
                     <ul class="nav navbar-nav">
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                                <img src="dist/img/doctor (1).png" class="user-image" alt="User Image">
                                 <span id="doctorNameInTheHeader" class="hidden-xs"></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                    <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                    <img src="dist/img/doctor (1).png" class="img-circle" alt="User Image">
                                     <p id="doctorName">
                                     </p>
                                 </li>
@@ -107,9 +107,9 @@
                     <span class="logo-lg"><b>dbotica</b></span>
                 </a> -->
                 <!-- Sidebar user panel (optional) -->
-                <div class="user-panel">
+                <div style="height:80px;" class="user-panel">
                     <div class="pull-left image">
-                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                        <img src="dist/img/doctor (1).png" class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
                         <p id="doctorNameInSideBar"></p>
@@ -890,26 +890,25 @@
         drugPojo['drugType'] = drugType;
         console.log("drug type required is-------" + drugType);
         drugPojo['perServing'] = per_serving;
-		var capsuleTypes = ['TABLET','CAPSULE','INJECTION','SACHET','LOZENGES','SUPPOSITORY','RESPULES','PEN','APLICAPS','ENEMA','PATCH'];
-		if($.inArray(drugType,capsuleTypes)!== -1){
-			if (days === 'Days') {
-				drugPojo['noOfDays'] = units;
-				drugPojo['quantity'] = parseInt(units) * quantCount * parseInt(per_serving);
-			} else {
-				drugPojo['quantity'] = units;
-				drugPojo['noOfDays'] = quantCount != 0 ? parseInt(units) / (parseInt(per_serving) * quantCount) : 1;
-			}
-		}
-		else{
-			if (days === 'Days') {
-				drugPojo['noOfDays'] = units;
-				drugPojo['quantity'] = 1;
-			} else {
-				drugPojo['quantity'] = units;
-				drugPojo['noOfDays'] = 1;
-			}
-		}
-        
+        var capsuleTypes = ['TABLET', 'CAPSULE', 'INJECTION', 'SACHET', 'LOZENGES', 'SUPPOSITORY', 'RESPULES', 'PEN', 'APLICAPS', 'ENEMA', 'PATCH'];
+        if ($.inArray(drugType, capsuleTypes) !== -1) {
+            if (days === 'Days') {
+                drugPojo['noOfDays'] = units;
+                drugPojo['quantity'] = parseInt(units) * quantCount * parseInt(per_serving);
+            } else {
+                drugPojo['quantity'] = units;
+                drugPojo['noOfDays'] = quantCount != 0 ? parseInt(units) / (parseInt(per_serving) * quantCount) : 1;
+            }
+        } else {
+            if (days === 'Days') {
+                drugPojo['noOfDays'] = units;
+                drugPojo['quantity'] = 1;
+            } else {
+                drugPojo['quantity'] = units;
+                drugPojo['noOfDays'] = 1;
+            }
+        }
+
         console.log("drug pojo required is-----", drugPojo);
 
         console.log("drug usage is-----", usage);
