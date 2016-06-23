@@ -20,14 +20,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     doctorElement.doctorActiveId = '';
     var doctorItemIndex = '';
     var doctorItemId = '';
-    var object1 = [{ 'name': 'teja', 'firstName': 'ravi' }, { 'name': 'krishnateja' }];
-    var object2 = { 'name': 'teja' };
-    var obj4 = ['a', 'b', 'c', 'd'];
-    var object3 = angular.equals(object1, object2);
-    $log.log('extend object is----', object3);
-    angular.forEach(object1, function(value, index) {
-        $log.log('value is----', value.name);
-    });
+   
 
     var getDoctorTypesPromise = dboticaServices.getDoctorCategories(organizationId);
     $log.log("doc types are----", getDoctorTypesPromise);
@@ -271,39 +264,3 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
         return result;
     }
 }]);
-
-/*angular.module('personalAssistant').filter("doctorCategoryNameFromId", function(dboticaServices) {
-    return function(input) {
-        var result;
-        var doctorCategoriesList = dboticaServices.getDoctorCategoriesList();
-        angular.forEach(doctorCategoriesList, function(doctorCategory) {
-            if (doctorCategory.id == input) {
-                result = doctorCategory.doctorType;
-            }
-        });
-        return result;
-    };
-});
-
-angular.module('personalAssistant').filter("doctorNameFromDoctorId", function(dboticaServices) {
-    return function(input) {
-        var result;
-        var firstName = '';
-        var lastName = '';
-        var doctorNamesList = dboticaServices.getDoctorNames();
-        angular.forEach(doctorNamesList, function(doctorName) {
-            if (doctorName.id == input) {
-                firstName = doctorName.firstName;
-                result = firstName;
-                if (doctorName.hasOwnProperty('lastName')) {
-                    if (doctorName.lastName !== '') {
-                        result = result + ' ' + doctorName.lastName;
-                    }
-                }
-
-            }
-        });
-        return result;
-    };
-});
-*/

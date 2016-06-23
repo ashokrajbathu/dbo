@@ -241,11 +241,9 @@
     word-wrap: break-word !important;
 }
 
-/* .dropdown-menu>li>a:hover {
-    color: white !important;
-    background-color: #3c8dbc !important;
+.dropdown-menu>li>a:hover {
     margin-left: -5px;
-} */
+}
 
 #dueDateBtn,
 #consultationBtn {
