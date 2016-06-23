@@ -42,7 +42,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
         if (!!errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
-            adminElement.doctorsListInAdmin = $.parseJSON(response.data.response);
+            adminElement.doctorsListInAdmin = angular.fromJson(response.data.response);
             $log.log("docs list in admin is-----", adminElement.doctorsListInAdmin);
             if (adminElement.doctorsListInAdmin.length > 0) {
                 adminElement.admin.doctorActive = adminElement.doctorsListInAdmin[0];
@@ -102,7 +102,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     $log.log("get tests success is-----", getTestsSuccessResponse);
-                    getTestsSuccess = $.parseJSON(getTestsSuccessResponse.data.response);
+                    getTestsSuccess = angular.fromJson(getTestsSuccessResponse.data.response);
                     angular.forEach(getTestsSuccess, function(testEntity) {
                         if (testEntity.hasOwnProperty('organizationId')) {
                             if (testEntity.organizationId == organizationId) {
@@ -219,7 +219,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                         var errorCode = testRequestSuccessResponse.data.errorCode;
                         var success = testRequestSuccessResponse.data.success;
                         if (errorCode == null && success == true) {
-                            var testSuccess = $.parseJSON(testRequestSuccessResponse.data.response);
+                            var testSuccess = angular.fromJson(testRequestSuccessResponse.data.response);
                             if (testObject.hasOwnProperty('id')) {
                                 angular.forEach(adminElement.admin.servicesListOfTheDoctor, function(serviceOfDoctor) {
                                     if (testSuccess.id == serviceOfDoctor.id) {
@@ -263,7 +263,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                                 if (!!errorCode) {
                                     dboticaServices.logoutFromThePage(errorCode);
                                 } else {
-                                    var updatedDoctorsOfThatAssistantResponse = $.parseJSON(successResponse.data.response);
+                                    var updatedDoctorsOfThatAssistantResponse = angular.fromJson(successResponse.data.response);
                                     updateTheServices(updatedDoctorsOfThatAssistantResponse);
                                 }
                             }, function(errorResponse) {});
@@ -325,7 +325,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
-                    var successtestStateChange = $.parseJSON(submitTestStateChangeSuccess.data.response);
+                    var successtestStateChange = angular.fromJson(submitTestStateChangeSuccess.data.response);
                     $log.log("success state change is----", successtestStateChange);
                     if (submitTestStateChangeSuccess.data.success === true && submitTestStateChangeSuccess.data.errorCode === null) {
                         $log.log("in ste----");
@@ -377,7 +377,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                             if (!!errorCode) {
                                 dboticaServices.logoutFromThePage(errorCode);
                             } else {
-                                var updatedDoctorsResponse = $.parseJSON(successResponse.data.response);
+                                var updatedDoctorsResponse = angular.fromJson(successResponse.data.response);
                                 updateTheServices(updatedDoctorsResponse);
                             }
                         }, function(errorResponse) {

@@ -1,4 +1,4 @@
-<div ng-controller="doctorController as doctor">
+<div ng-controller="doctorController as doctor" ng-cloak>
     <h4>Add Doctor</h4>
     <button class="btn mainAdminBtn" data-toggle="modal" data-target="#addDoctorModal">Add New</button>
     <div id="addDoctorModal" class="modal fade" role="dialog">
@@ -71,8 +71,8 @@
         <tbody>
             <tr ng-repeat="doctorInTable in doctor.doctorsListInTheTable">
                 <td ng-bind="$index+1"></td>
-                <td ng-bind="doctorInTable.organizationDoctorCategoryId | doctorCategoryNameFromId"></td>
-                <td ng-bind="doctorInTable.doctorId | doctorNameFromDoctorId"></td>
+                <td ng-bind="doctorInTable.doctorCatName"></td>
+                <td ng-bind="doctorInTable.doctorNameToDisplay"></td>
                 <td ng-bind="doctorInTable.phoneNumber"></td>
                 <td>
                     <a ng-click="doctor.editDoctorInTable(doctorInTable,$index)" data-toggle="modal" data-target="#addDoctorModal" class="linksInTable mainAdminLinks">Edit</a> |

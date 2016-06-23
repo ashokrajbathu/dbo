@@ -1420,22 +1420,6 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
-    this.setDoctorTypes = function(value) {
-        doctorCategoriesList = value;
-    }
-
-    this.getDoctorCategoriesList = function() {
-        return doctorCategoriesList;
-    }
-
-    this.setDoctorsNames = function(value) {
-        doctorsNamesList = value;
-    }
-
-    this.getDoctorNames = function() {
-        return doctorsNamesList;
-    }
-
     this.deleteDoctorSuccessSwal = function() {
         swal({
             title: "Success",

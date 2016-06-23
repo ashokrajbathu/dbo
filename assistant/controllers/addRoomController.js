@@ -23,7 +23,7 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
         if (!!errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
-            var roomCategoriesList = $.parseJSON(roomCategoriesSuccess.data.response);
+            var roomCategoriesList = angular.fromJson(roomCategoriesSuccess.data.response);
             angular.forEach(roomCategoriesList, function(roomCategoryEntity) {
                 if (roomCategoryEntity.state == 'ACTIVE') {
                     roomElement.roomCategories.push(roomCategoryEntity);
@@ -31,7 +31,6 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
             });
             roomElement.roomType = roomElement.roomCategories[0].roomType;
             roomElement.addNewRoom.organizationRoomCategoryId = roomElement.roomCategories[0].id;
-            dboticaServices.setRoomCategories(roomElement.roomCategories);
         }
     }, function(roomCategoriesError) {
         dboticaServices.noConnectivityError();
@@ -43,10 +42,11 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
         if (!!errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
-            var roomsListFromAPI = $.parseJSON(getRoomsSuccessResponse.data.response);
+            var roomsListFromAPI = angular.fromJson(getRoomsSuccessResponse.data.response);
             $log.log("room list----", roomsListFromAPI);
             angular.forEach(roomsListFromAPI, function(roomEntity) {
                 if (roomEntity.state == 'ACTIVE') {
+                    roomEntity.roomTypeName = getRoomTypeFromItsId(roomEntity.organizationRoomCategoryId);
                     roomElement.roomsList.push(roomEntity);
                 }
             });
@@ -56,6 +56,9 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
     });
 
     function addNewRoomFunction() {
+        if (roomElement.addNewRoom.hasOwnProperty('roomTypeName')) {
+            delete roomElement.addNewRoom.roomTypeName;
+        }
         if (roomItemId == '' && roomItemIndex == '') {
             roomElement.addNewRoom.organizationId = organizationId;
         }
@@ -67,9 +70,10 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                var addroomSuccess = $.parseJSON(addNewRoomSuccess.data.response);
+                var addroomSuccess = angular.fromJson(addNewRoomSuccess.data.response);
                 if (errorCode == null && addNewRoomSuccess.data.success == true) {
                     dboticaServices.addNewRoomSuccessSwal();
+                    addroomSuccess.roomTypeName = getRoomTypeFromItsId(addroomSuccess.organizationRoomCategoryId);
                     if (roomItemId == '' && roomItemIndex == '') {
                         roomElement.roomsList.unshift(addroomSuccess);
                     } else {
@@ -93,13 +97,14 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
 
     function deleteRoom(room, index) {
         room.state = 'INACTIVE';
+        delete room.roomTypeName;
         var deleteRoomPromise = dboticaServices.addOrUpdateRoom(room);
         deleteRoomPromise.then(function(deleteRoomSuccess) {
             var errorCode = deleteRoomSuccess.data.errorCode;
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                var deleteRoomSuccessEntity = $.parseJSON(deleteRoomSuccess.data.response);
+                var deleteRoomSuccessEntity = angular.fromJson(deleteRoomSuccess.data.response);
                 $log.log("delete is----", deleteRoomSuccessEntity);
                 if (deleteRoomSuccess.data.errorCode == null && deleteRoomSuccess.data.success == true) {
                     dboticaServices.deleteRoomSuccessSwal();
@@ -142,17 +147,15 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
             angular.copy(sortedItemsArray, roomElement.roomsList);
         }
     }
-}]);
 
-angular.module('personalAssistant').filter("roomCategoryNameFromItsId", function(dboticaServices) {
-    return function(input) {
-        var result;
-        var roomCategoriesList = dboticaServices.getRoomCategoriesList();
-        angular.forEach(roomCategoriesList, function(categoryInFilter) {
-            if (categoryInFilter.id == input) {
-                result = categoryInFilter.roomType;
+    var getRoomTypeFromItsId = function(roomTypeId) {
+        var roomTypeInFunction = '';
+        angular.forEach(roomElement.roomCategories, function(roomTypeEntity) {
+            if (roomTypeEntity.id == roomTypeId) {
+                roomTypeInFunction = roomTypeEntity.roomType;
             }
         });
-        return result;
-    };
-});
+        return roomTypeInFunction;
+    }
+}]);
+

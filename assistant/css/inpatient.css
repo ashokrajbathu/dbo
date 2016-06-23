@@ -44,6 +44,18 @@
     width: 100% !important;
 }
 
+/* .dropdown-menu>li>a:hover,
+.dropdown-menu>li:hover {
+    background-color: #3c8dbc !important;
+    color: white !important;
+} */
+
+.dropdown-menu {
+    height: 220px !important;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+}
+
 .docDropdownInInpatient {
     margin-left: -2px !important;
     height: 35px;

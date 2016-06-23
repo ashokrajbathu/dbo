@@ -37,13 +37,12 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var doctorTypes = [];
-            doctorTypes = $.parseJSON(getDoctorsSuccess.data.response);
+            doctorTypes = angular.fromJson(getDoctorsSuccess.data.response);
             angular.forEach(doctorTypes, function(doctorType) {
                 if (doctorType.state == 'ACTIVE') {
                     doctorElement.allDoctorTypes.push(doctorType);
                 }
             });
-            dboticaServices.setDoctorTypes(doctorElement.allDoctorTypes);
             doctorElement.doctorType = doctorElement.allDoctorTypes[0].doctorType;
             doctorElement.addNewDoctor.organizationDoctorCategoryId = doctorElement.allDoctorTypes[0].id;
         }
@@ -57,13 +56,12 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
         if (!!errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
-            doctorsListIs = $.parseJSON(getDoctorsListSuccess.data.response);
+            doctorsListIs = angular.fromJson(getDoctorsListSuccess.data.response);
             angular.forEach(doctorsListIs, function(doctorListElement) {
                 if (doctorListElement.state == 'ACTIVE') {
                     doctorElement.doctorsListToBeDisplayed.push(doctorListElement);
                 }
             });
-            dboticaServices.setDoctorsNames(doctorElement.doctorsListToBeDisplayed);
             if (doctorElement.doctorsListToBeDisplayed[0].lastName == undefined) {
                 doctorElement.doctorsListToBeDisplayed[0].lastName = '';
             }
@@ -82,13 +80,18 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
         if (!!errorCode) {
             dboticaServices.logoutFromThePage();
         } else {
-            var docsListInAdmin = $.parseJSON(doctorsListInMainSuccess.data.response);
+            var docsListInAdmin = angular.fromJson(doctorsListInMainSuccess.data.response);
+            var docsListLocal = [];
             $log.log("docs list in admin-----", docsListInAdmin);
             angular.forEach(docsListInAdmin, function(docsListInAdminElement) {
                 if (docsListInAdminElement.state == 'ACTIVE') {
-                    doctorElement.doctorsListInTheTable.push(docsListInAdminElement);
+                    docsListInAdminElement.doctorCatName = getDoctorCategoryNameFromItsId(docsListInAdminElement.organizationDoctorCategoryId);
+                    docsListInAdminElement.doctorNameToDisplay = getDoctorNameFromId(docsListInAdminElement.doctorId);
+                    docsListLocal.push(docsListInAdminElement);
                 }
             });
+            angular.copy(docsListLocal, doctorElement.doctorsListInTheTable);
+            $log.log('in list in table----', doctorElement.doctorsListInTheTable);
         }
     }, function(doctorsListInMainError) {
         dboticaServices.noConnectivityError();
@@ -100,6 +103,10 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     }
 
     function addNewDoctorInModal() {
+        if (doctorElement.addNewDoctor.hasOwnProperty('doctorCatName') && doctorElement.addNewDoctor.hasOwnProperty('doctorNameToDisplay')) {
+            delete doctorElement.addNewDoctor.doctorCatName;
+            delete doctorElement.addNewDoctor.doctorNameToDisplay;
+        }
         if (doctorItemIndex == '' && doctorItemId == '') {
             doctorElement.addNewDoctor.organizationId = organizationId;
         }
@@ -111,10 +118,12 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                var newDoctorResponse = $.parseJSON(addNewDocSuccess.data.response);
+                var newDoctorResponse = angular.fromJson(addNewDocSuccess.data.response);
                 $log.log("new doctor response is----", newDoctorResponse);
                 if (errorCode == null && addNewDocSuccess.data.success == true) {
                     dboticaServices.addNewDoctorSuccessSwal();
+                    newDoctorResponse.doctorCatName = getDoctorCategoryNameFromItsId(newDoctorResponse.organizationDoctorCategoryId);
+                    newDoctorResponse.doctorNameToDisplay = getDoctorNameFromId(newDoctorResponse.doctorId);
                     if (doctorItemIndex == '' && doctorItemId == '') {
                         doctorElement.doctorsListInTheTable.unshift(newDoctorResponse);
                     } else {
@@ -140,13 +149,15 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
 
     function deleteDoctorInTable(doctorEntryInTable, index) {
         doctorEntryInTable.state = 'INACTIVE';
+        delete doctorEntryInTable.doctorCatName;
+        delete doctorEntryInTable.doctorNameToDisplay;
         var deleteDoctorPromise = dboticaServices.addNewDoctorToACategory(doctorEntryInTable);
         deleteDoctorPromise.then(function(deleteDoctorSuccess) {
             var errorCode = deleteDoctorSuccess.data.errorCode;
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                var deleteDoctorSuccessEntity = $.parseJSON(deleteDoctorSuccess.data.response);
+                var deleteDoctorSuccessEntity = angular.fromJson(deleteDoctorSuccess.data.response);
                 $log.log("delete is----", deleteDoctorSuccessEntity);
                 if (deleteDoctorSuccess.data.errorCode == null && deleteDoctorSuccess.data.success == true) {
                     dboticaServices.deleteDoctorSuccessSwal();
@@ -230,9 +241,38 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
             angular.copy(sortedItemsArray, doctorElement.doctorsListInTheTable);
         }
     }
+
+    var getDoctorCategoryNameFromItsId = function(doctorCategoryId) {
+        var doctorCategoryName = '';
+        angular.forEach(doctorElement.allDoctorTypes, function(docTypeEntity) {
+            if (docTypeEntity.id == doctorCategoryId) {
+                doctorCategoryName = docTypeEntity.doctorType;
+            }
+        });
+        return doctorCategoryName;
+    }
+
+    var getDoctorNameFromId = function(docId) {
+        var result = '';
+        var firstName = '';
+        var lastName = '';
+        angular.forEach(doctorElement.doctorsListToBeDisplayed, function(docNam) {
+            if (docNam.id == docId) {
+                $log.log("in name check---");
+                firstName = docNam.firstName;
+                result = firstName;
+                if (docNam.hasOwnProperty('lastName')) {
+                    if (docNam.lastName !== '') {
+                        result = result + ' ' + docNam.lastName;
+                    }
+                }
+            }
+        });
+        return result;
+    }
 }]);
 
-angular.module('personalAssistant').filter("doctorCategoryNameFromId", function(dboticaServices) {
+/*angular.module('personalAssistant').filter("doctorCategoryNameFromId", function(dboticaServices) {
     return function(input) {
         var result;
         var doctorCategoriesList = dboticaServices.getDoctorCategoriesList();
@@ -266,3 +306,4 @@ angular.module('personalAssistant').filter("doctorNameFromDoctorId", function(db
         return result;
     };
 });
+*/

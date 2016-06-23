@@ -1,3 +1,33 @@
 <div ng-controller="bedController as bed">
-    <h3>add Bed</h3>
+    <h4>Add Bed</h4>
+    <button class="btn mainAdminBtn" data-toggle="modal" data-target="#addBedModal">Add New</button>
+    <div id="addBedModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add New Bed</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputBedNumber">Bed Number</label>
+                            <input type="text" class="form-control" id="exampleInputBedNumber" placeholder="Bed Number">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputBedStatus">Bed Status</label>
+                            <select ng-model="bed.bedStatus">
+                                <option>VACANT</option>
+                                <option>OCCUPIED</option>
+                            </select>
+                        </div>
+                        <div class="form-inline">
+                            <button class="btn mainAdminBtn" data-dismiss="modal">Save</button>
+                            <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

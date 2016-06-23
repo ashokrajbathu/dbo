@@ -80,7 +80,7 @@
                 <td ng-bind="roomEntity.roomNo"></td>
                 <td ng-bind="roomEntity.bedCount"></td>
                 <td ng-bind="roomEntity.floorNo"></td>
-                <td ng-bind="roomEntity.organizationRoomCategoryId | roomCategoryNameFromItsId"></td>
+                <td ng-bind="roomEntity.roomTypeName"></td>
                 <td ng-bind="roomEntity.roomRate/100"></td>
                 <td>
                     <a ng-click="room.editRoom(roomEntity,$index)" class="linksInTable mainAdminLinks" data-toggle="modal" data-target="#addRoomModal">Edit</a> |

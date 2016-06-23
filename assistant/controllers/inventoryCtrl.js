@@ -124,7 +124,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 $log.log("in next btn response----", response.data.response);
-                var nextBtnFetchedItemsObject = $.parseJSON(response.data.response);
+                var nextBtnFetchedItemsObject = angular.fromJson(response.data.response);
                 var nextBtnFetchedItems = nextBtnFetchedItemsObject.inventoryItems;
                 if (nextBtnFetchedItems.length > displayListLength) {
                     inventoryElement.itemsDisplayArray = nextBtnFetchedItems.slice(0, nextBtnFetchedItems.length - 1);
@@ -167,7 +167,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                var previousBtnFetchedItemsObject = $.parseJSON(response.data.response);
+                var previousBtnFetchedItemsObject = angular.fromJson(response.data.response);
                 var previousBtnFetchedItems = previousBtnFetchedItemsObject.inventoryItems;
                 inventoryElement.itemsDisplayArray = previousBtnFetchedItems.slice(0, previousBtnFetchedItems.length - 1);
             }
@@ -198,7 +198,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 var success = response.data.success;
                 if (success) {
                     dboticaServices.itemAdditionIntoStockSuccessSwal();
-                    var drugObject = $.parseJSON(response.data.response);
+                    var drugObject = angular.fromJson(response.data.response);
                     $log.log("drug object is----", drugObject);
                     if (inventoryElement.itemsDisplayArray.length + 1 <= displayListLength) {
                         inventoryElement.itemsDisplayArray.push(drugObject);
@@ -270,7 +270,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                     var success = response.data.success;
                     if (success) {
                         dboticaServices.batchAdditionForItemSuccessSwal();
-                        var itemObject = $.parseJSON(response.data.response);
+                        var itemObject = angular.fromJson(response.data.response);
                         $log.log("item after adding batch is-----", itemObject);
                         angular.forEach(inventoryElement.itemsDisplayArray, function(itemsDisplayArrayElement) {
                             if (itemsDisplayArrayElement.id === itemObject.itemId) {
@@ -395,7 +395,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
-                    var itemSearchResponse = $.parseJSON(response.data.response);
+                    var itemSearchResponse = angular.fromJson(response.data.response);
                     inventoryElement.itemsDisplayArray = itemSearchResponse.inventoryItems;
                     if (itemSearchResponse.totalCount === 0) {
                         inventoryElement.warning = true;
@@ -618,7 +618,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             $log.log(response.data.response);
-            var itemsFetchedFromApi = $.parseJSON(response.data.response);
+            var itemsFetchedFromApi = angular.fromJson(response.data.response);
             $log.log("items fetched from Api----", itemsFetchedFromApi.inventoryItems);
             inventoryElement.totalDrugsCount = itemsFetchedFromApi.totalCount;
             var itemsFetchedFromApiFromStart = itemsFetchedFromApi.inventoryItems;
@@ -662,14 +662,14 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             $log.log("chars in text box are---", inventoryElement.addItemObject.itemName);
             var getDrugsPromise = dboticaServices.getDrugsFromDb(0, 20, inventoryElement.addItemObject.itemName);
             getDrugsPromise.then(function(getDrugSuccess) {
-                drugs = $.parseJSON(getDrugSuccess.data.response);
+                drugs = angular.fromJson(getDrugSuccess.data.response);
                 angular.forEach(drugs, function(drugElement) {
                     var drugEntity = drugElement.brandName;
                     drugsList.push(drugEntity);
                 });
                 angular.copy(drugsList, inventoryElement.drugsToBeDisplayedInDropdown);
                 $log.log("list to dis---", inventoryElement.drugsToBeDisplayedInDropdown);
-                $log.log("get drug success response is----", $.parseJSON(getDrugSuccess.data.response));
+                $log.log("get drug success response is----", angular.fromJson(getDrugSuccess.data.response));
             }, function(getDrugErrorResponse) {});
         } else {
             inventoryElement.drugsToBeDisplayedInDropdown = [];

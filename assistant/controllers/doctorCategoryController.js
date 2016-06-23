@@ -20,7 +20,7 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
         if (!!errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
-            var doctorCategories = $.parseJSON(doctorsCategoriesPromise.data.response);
+            var doctorCategories = angular.fromJson(doctorsCategoriesPromise.data.response);
             angular.forEach(doctorCategories, function(doctorCategoryEntity) {
                 if (doctorCategoryEntity.state == 'ACTIVE') {
                     doctorCategoryElement.doctorCategoriesList.push(doctorCategoryEntity);
@@ -43,7 +43,7 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                var addNewDoctorCategorySuccess = $.parseJSON(addNewDoctorSuccess.data.response);
+                var addNewDoctorCategorySuccess = angular.fromJson(addNewDoctorSuccess.data.response);
                 if (errorCode == null && addNewDoctorSuccess.data.success == true) {
                     dboticaServices.addNewDoctorCategorySuccessSwal();
                     if (doctorCategoryItemId == '' && doctorCategoryItemIndex == '') {
@@ -66,7 +66,7 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                var deleteDoctorEntitySuccess = $.parseJSON(deleteDoctorSuccess.data.response);
+                var deleteDoctorEntitySuccess = angular.fromJson(deleteDoctorSuccess.data.response);
                 $log.log("delete doctor category is----", deleteDoctorEntitySuccess);
                 if (errorCode == null && deleteDoctorSuccess.data.success == true) {
                     dboticaServices.deleteDoctorCategorySuccessSwal();

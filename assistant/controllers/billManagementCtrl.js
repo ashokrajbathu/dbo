@@ -94,7 +94,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
-                    var patientDetails = $.parseJSON(getDetailsSuccess.data.response);
+                    var patientDetails = angular.fromJson(getDetailsSuccess.data.response);
                     billElement.patient = patientDetails[0];
                 }
                 billElement.loading = false;
@@ -136,7 +136,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                var medicinesSuccessResponse = $.parseJSON(successResponse.data.response);
+                var medicinesSuccessResponse = angular.fromJson(successResponse.data.response);
                 billElement.addMedicine = medicinesSuccessResponse.inventoryItems;
                 dboticaServices.setMedicine(billElement.addMedicine);
                 angular.forEach(billElement.addMedicine, function(medicineName) {
@@ -165,7 +165,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                var testsList = $.parseJSON(testsPromiseSuccessResponse.data.response);
+                var testsList = angular.fromJson(testsPromiseSuccessResponse.data.response);
                 angular.forEach(testsList, function(testsListEntity) {
                     if (testsListEntity.organizationId == organizationId) {
                         if (testsListEntity.state == "ACTIVE") {
@@ -198,7 +198,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                billElement.bill.doctorsListInBillManagement = $.parseJSON(successResponse.data.response);
+                billElement.bill.doctorsListInBillManagement = angular.fromJson(successResponse.data.response);
                 dboticaServices.setDoctorsDetailsArray(billElement.bill.doctorsListInBillManagement);
                 $log.log("ele---", billElement.bill.doctorsListInBillManagement);
                 billElement.bill.doctorActive = billElement.bill.doctorsListInBillManagement[0];
@@ -254,7 +254,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                     if (!!errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
-                        var patientsList = $.parseJSON(patientSearchSuccessResponse.data.response);
+                        var patientsList = angular.fromJson(patientSearchSuccessResponse.data.response);
                         if (patientsList.length > 0) {
                             $log.log("patientsList is----", patientsList);
                             billElement.prescriptionOfPatient = true;
@@ -267,7 +267,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                             billElement.patient = patientsList[0];
                             var patientPrescriptionsPromise = dboticaServices.getPrescriptionsOfThePatient(patientsList[0].id);
                             patientPrescriptionsPromise.then(function(getPrescriptionSuccess) {
-                                var patientPrescriptions = $.parseJSON(getPrescriptionSuccess.data.response);
+                                var patientPrescriptions = angular.fromJson(getPrescriptionSuccess.data.response);
                                 if (patientPrescriptions.length > 0) {
                                     billElement.prescriptionsArray = patientPrescriptions;
                                 } else {
@@ -299,7 +299,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                var prescriptionSuccess = $.parseJSON(selectedRadioPatientSuccess.data.response);
+                var prescriptionSuccess = angular.fromJson(selectedRadioPatientSuccess.data.response);
                 $log.log("prescs are---", prescriptionSuccess);
                 if (prescriptionSuccess.length > 0) {
                     billElement.prescriptionsArray = prescriptionSuccess;
@@ -443,13 +443,13 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                         var success = invoiceUpdateSuccessResponse.data.success;
                         var invoiceSuccessResponse = invoiceUpdateSuccessResponse.data.response;
                         if (errorCode == null && success == true && invoiceSuccessResponse == null) {
-                            var billActiveForPrint = $.parseJSON(invoiceUpdateSuccessResponse.config.data);
+                            var billActiveForPrint = angular.fromJson(invoiceUpdateSuccessResponse.config.data);
                             localStorage.setItem('billActiveToPrint', JSON.stringify(billActiveForPrint));
                             localStorage.setItem('patientNameInBillActive', billElement.patient.firstName);
                             localStorage.setItem('patientNumberInBillActive', billElement.patient.phoneNumber);
                             newBill();
                         }
-                        $log.log("success response is---", $.parseJSON(invoiceUpdateSuccessResponse.config.data));
+                        $log.log("success response is---", angular.fromJson(invoiceUpdateSuccessResponse.config.data));
                     }
                     billElement.loading = false;
                 }, function(invoiceUpdateErrorResponse) {

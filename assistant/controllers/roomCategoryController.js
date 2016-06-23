@@ -30,7 +30,7 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var totalRoomCategories = [];
-            totalRoomCategories = $.parseJSON(getRoomCategoriesSuccess.data.response);
+            totalRoomCategories = angular.fromJson(getRoomCategoriesSuccess.data.response);
             for (var roomCategoryIndexOnLoad in totalRoomCategories) {
                 if (totalRoomCategories[roomCategoryIndexOnLoad].state == 'ACTIVE') {
                     roomCategoryElement.activeRoomCategories.push(totalRoomCategories[roomCategoryIndexOnLoad]);
@@ -55,7 +55,7 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                var addOrUpdateSuccessResponse = $.parseJSON(addOrUpdateSuccess.data.response);
+                var addOrUpdateSuccessResponse = angular.fromJson(addOrUpdateSuccess.data.response);
                 $log.log("room category response is---", addOrUpdateSuccessResponse);
                 if (addOrUpdateSuccess.data.errorCode == null && addOrUpdateSuccess.data.success == true) {
                     dboticaServices.roomCategorySuccessSwal();
@@ -82,7 +82,7 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                var deleteRoomSuccess = $.parseJSON(deleteRoomCategorySuccess.data.response);
+                var deleteRoomSuccess = angular.fromJson(deleteRoomCategorySuccess.data.response);
                 $log.log("delete is----", deleteRoomSuccess);
                 if (deleteRoomCategorySuccess.data.errorCode == null && deleteRoomCategorySuccess.data.success == true) {
                     dboticaServices.deleteRoomCategorySuccessSwal();

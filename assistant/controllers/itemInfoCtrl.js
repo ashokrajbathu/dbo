@@ -62,7 +62,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
         if (!!errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
-            var batchesInfo = $.parseJSON(response.data.response);
+            var batchesInfo = angular.fromJson(response.data.response);
             /* $log.log("batches info is-----", batchesInfo);*/
             itemInfoElement.inventoryItem = batchesInfo.inventoryItem;
             batchesInfo = batchesInfo.batchInfos;
@@ -137,7 +137,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                 var errorCode = getItemSuccess.data.errorCode;
                 var success = getItemSuccess.data.success;
                 if (errorCode == null && success === true) {
-                    var item = $.parseJSON(getItemSuccess.data.response);
+                    var item = angular.fromJson(getItemSuccess.data.response);
                     var itemRequestObject = item.inventoryItem;
                     itemInfoElement.inventoryItem = item.inventoryItem;
                     $log.log("itm ftched is----", item);
@@ -209,7 +209,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
-                    var updatedBatchInfo = $.parseJSON(response.data.response);
+                    var updatedBatchInfo = angular.fromJson(response.data.response);
                     angular.forEach(itemInfoElement.informationOfBatches, function(batchEntity) {
                         if (batchEntity.id == updatedBatchInfo.id) {
                             batchEntity.availableStock = updatedBatchInfo.units;
@@ -281,7 +281,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                     if (success) {
                         dboticaServices.addBatchFromItemInfo();
                     }
-                    var itemObject = $.parseJSON(response.data.response);
+                    var itemObject = angular.fromJson(response.data.response);
                     $log.log("item after adding batch is-----", itemObject);
                     var newObject = {};
                     newObject.id = itemObject.id;

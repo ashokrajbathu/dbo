@@ -55,7 +55,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
         if (!!errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
-            invoiceElement.doctorsList = $.parseJSON(doctorsSuccessResponse.data.response);
+            invoiceElement.doctorsList = angular.fromJson(doctorsSuccessResponse.data.response);
             doctorActiveId = invoiceElement.doctorsList[0].id;
         }
         invoiceElement.loading = false;
@@ -74,7 +74,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
         if (!!errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
-            invoiceHistoryArray = $.parseJSON(invoiceSuccessResponse.data.response);
+            invoiceHistoryArray = angular.fromJson(invoiceSuccessResponse.data.response);
             angular.copy(invoiceHistoryArray, invoiceElement.invoiceGlobal.invoiceHistoryList);
             $log.log("invoice success response is----", invoiceHistoryArray);
         }
@@ -178,7 +178,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                var invoicesListOnSuccess = $.parseJSON(searchInvoiceSuccess.data.response);
+                var invoicesListOnSuccess = angular.fromJson(searchInvoiceSuccess.data.response);
                 displayInvoicesInTheTable(invoicesListOnSuccess);
                 $log.log("invoices list is-----", invoicesListOnSuccess);
             }
@@ -205,7 +205,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
-                    var viewAllInvoicesList = $.parseJSON(viewAllInvoicesSuccess.data.response);
+                    var viewAllInvoicesList = angular.fromJson(viewAllInvoicesSuccess.data.response);
                     displayInvoicesInTheTable(viewAllInvoicesList);
                 }
                 invoiceElement.loading = false;
@@ -232,7 +232,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
-                    var viewPendingInvoicesList = $.parseJSON(pendingInvoicesSuccess.data.response);
+                    var viewPendingInvoicesList = angular.fromJson(pendingInvoicesSuccess.data.response);
                     $log.log("pending list is-----", viewPendingInvoicesList);
                     displayInvoicesInTheTable(viewPendingInvoicesList);
                 }

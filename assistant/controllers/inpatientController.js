@@ -29,7 +29,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
         if (!!errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
-            inpatientElement.doctorsListInInpatient = $.parseJSON(doctorsListSuccess.data.response);
+            inpatientElement.doctorsListInInpatient = angular.fromJson(doctorsListSuccess.data.response);
             inpatientElement.doctorsListInInpatient.unshift(doctorObject);
             if (inpatientElement.doctorsListInInpatient.length == 0) {
                 dboticaServices.noConnectivityError();
@@ -73,8 +73,8 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                $log.log("inpatient search success is-----", $.parseJSON(inpatientSearchSuccess.data.response));
-                inpatientElement.patientsListOfThatNumber = $.parseJSON(inpatientSearchSuccess.data.response);
+                $log.log("inpatient search success is-----", angular.fromJson(inpatientSearchSuccess.data.response));
+                inpatientElement.patientsListOfThatNumber = angular.fromJson(inpatientSearchSuccess.data.response);
                 if (inpatientElement.patientsListOfThatNumber.length > 0) {
                     inpatientElement.patientIdActive = inpatientElement.patientsListOfThatNumber[0].id;
                     inpatientElement.patientName = inpatientElement.patientsListOfThatNumber[0].firstName;
@@ -121,7 +121,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
-                    var inpatientAddResponse = $.parseJSON(inpatientSuccessResponse.data.response);
+                    var inpatientAddResponse = angular.fromJson(inpatientSuccessResponse.data.response);
                     $log.log("add response is---", inpatientSuccessResponse);
                     var success = inpatientSuccessResponse.data.success;
                     if (errorCode == null && success == true) {
