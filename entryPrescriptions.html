@@ -1232,60 +1232,7 @@
         callback(totalDrugObjects);
     }
 
-    function prescriptionFormDrugCallback(brandName, callback) {
-        var drugObject = {};
-        //var brandName = $('#prescription-form-drug').val();
-        if (brandName === "") {
-            $('.drugs-dropdown-menu').hide('dropdown');
-            return;
-        }
 
-        /*$('.drugs-dropdown-menu').hide('dropdown');
-        $('.drugs-dropdown-menu').empty();*/
-
-        autocompleteDrugIndexedDB(brandName, '#prescription-form-drug', OnGetDrugsResponse, callback);
-
-
-        /*autocompleteDrugIndexedDB(brandName, '#prescription-form-drug');*/
-        /*$.ajax({
-            type: "GET",
-            url: "http://localhost:8081/dbotica-spring/drug/getDrugs",
-            data: {
-                'brandName': brandName
-            },
-            xhrFields: {
-                withCredentials: true
-            },
-            success: function(response) {
-              var errorCode = response.errorCode;
-                if (!!errorCode) {
-                    switch (errorCode) {
-                        case "NO_USER_LOGGED_IN":
-                            localStorage.setItem("isLoggedIn", false);
-                            swal({
-                                    title: "Error",
-                                    text: "You are not logged into your account. Kindly login again to view this page",
-                                    type: "error",
-                                    confirmButtonText: "OK"
-                                },
-                                function() {
-                                    localStorage.setItem("isLoggedIn", false);
-                                    window.location.href = "login.html";
-                                }
-                            );
-                            break;
-                    }
-                }
-
-                if (brandName === $('#prescription-form-drug').val()) {
-                    var data = $.parseJSON(response.response);
-                    console.log(data);
-                    OnGetDrugsResponse(data);
-
-                }
-            }
-        });*/
-    }
     var delay = (function() {
         var timer = 0;
         return function(callback, ms) {
@@ -2558,6 +2505,62 @@
     <script src="js/jquery.form-validator.min.js"></script>
     <script>
     $.validate();
+    </script>
+    <script type="text/javascript">
+    function prescriptionFormDrugCallback(brandName, callback) {
+        var drugObject = {};
+        //var brandName = $('#prescription-form-drug').val();
+        if (brandName === "") {
+            $('.drugs-dropdown-menu').hide('dropdown');
+            return;
+        }
+
+        /*$('.drugs-dropdown-menu').hide('dropdown');
+        $('.drugs-dropdown-menu').empty();*/
+
+        autocompleteDrugIndexedDB(brandName, '#prescription-form-drug', OnGetDrugsResponse, callback);
+
+
+        /*autocompleteDrugIndexedDB(brandName, '#prescription-form-drug');*/
+        /*$.ajax({
+            type: "GET",
+            url: "http://localhost:8081/dbotica-spring/drug/getDrugs",
+            data: {
+                'brandName': brandName
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(response) {
+              var errorCode = response.errorCode;
+                if (!!errorCode) {
+                    switch (errorCode) {
+                        case "NO_USER_LOGGED_IN":
+                            localStorage.setItem("isLoggedIn", false);
+                            swal({
+                                    title: "Error",
+                                    text: "You are not logged into your account. Kindly login again to view this page",
+                                    type: "error",
+                                    confirmButtonText: "OK"
+                                },
+                                function() {
+                                    localStorage.setItem("isLoggedIn", false);
+                                    window.location.href = "login.html";
+                                }
+                            );
+                            break;
+                    }
+                }
+
+                if (brandName === $('#prescription-form-drug').val()) {
+                    var data = $.parseJSON(response.response);
+                    console.log(data);
+                    OnGetDrugsResponse(data);
+
+                }
+            }
+        });*/
+    }
     </script>
 </body>
 

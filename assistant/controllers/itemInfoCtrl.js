@@ -77,34 +77,34 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             } else {
                 itemInfoElement.itemInactive = false;
             }
-            for (var itemIndex = 0; itemIndex < batchesInfo.length; itemIndex++) {
+            angular.forEach(batchesInfo, function(batchesInfoEntity) {
                 var newObject = {};
-                newObject.id = batchesInfo[itemIndex].id;
-                newObject.organizationId = batchesInfo[itemIndex].organizationId;
-                newObject.batchNo = batchesInfo[itemIndex].batchNo;
-                newObject.expiryTime = batchesInfo[itemIndex].expiryTime;
-                newObject.availableStock = batchesInfo[itemIndex].units;
-                newObject.totalStock = batchesInfo[itemIndex].units;
-                if (batchesInfo[itemIndex].hasOwnProperty('consumedUnits')) {
-                    newObject.consumedUnits = batchesInfo[itemIndex].consumedUnits;
-                    newObject.totalStock += batchesInfo[itemIndex].consumedUnits;
+                newObject.id = batchesInfoEntity.id;
+                newObject.organizationId = batchesInfoEntity.organizationId;
+                newObject.batchNo = batchesInfoEntity.batchNo;
+                newObject.expiryTime = batchesInfoEntity.expiryTime;
+                newObject.availableStock = batchesInfoEntity.units;
+                newObject.totalStock = batchesInfoEntity.units;
+                if (batchesInfoEntity.hasOwnProperty('consumedUnits')) {
+                    newObject.consumedUnits = batchesInfoEntity.consumedUnits;
+                    newObject.totalStock += batchesInfoEntity.consumedUnits;
                 } else {
                     newObject.consumedUnits = 0;
                 }
-                if (batchesInfo[itemIndex].hasOwnProperty('expiredUnits')) {
-                    newObject.expiredUnits = batchesInfo[itemIndex].expiredUnits;
-                    newObject.totalStock += batchesInfo[itemIndex].expiredUnits;
+                if (batchesInfoEntity.hasOwnProperty('expiredUnits')) {
+                    newObject.expiredUnits = batchesInfoEntity.expiredUnits;
+                    newObject.totalStock += batchesInfoEntity.expiredUnits;
                 } else {
                     newObject.expiredUnits = 0;
                 }
-                if (batchesInfo[itemIndex].hasOwnProperty('returnedUnits')) {
-                    newObject.returnedUnits = batchesInfo[itemIndex].returnedUnits;
-                    newObject.totalStock += batchesInfo[itemIndex].returnedUnits;
+                if (batchesInfoEntity.hasOwnProperty('returnedUnits')) {
+                    newObject.returnedUnits = batchesInfoEntity.returnedUnits;
+                    newObject.totalStock += batchesInfoEntity.returnedUnits;
                 } else {
                     newObject.returnedUnits = 0;
                 }
                 itemInfoElement.informationOfBatches.push(newObject);
-            }
+            });
             $log.log("batches in scope are----", itemInfoElement.informationOfBatches);
             $log.log("inventory item is----", itemInfoElement.inventoryItem);
             $log.log("batches information is----", batchesInfo);
@@ -210,24 +210,24 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var updatedBatchInfo = $.parseJSON(response.data.response);
-                    for (var itemBatchIndex = 0; itemBatchIndex < itemInfoElement.informationOfBatches.length; itemBatchIndex++) {
-                        if (itemInfoElement.informationOfBatches[itemBatchIndex].id == updatedBatchInfo.id) {
-                            itemInfoElement.informationOfBatches[itemBatchIndex].availableStock = updatedBatchInfo.units;
-                            itemInfoElement.informationOfBatches[itemBatchIndex].totalStock = updatedBatchInfo.units;
+                    angular.forEach(itemInfoElement.informationOfBatches, function(batchEntity) {
+                        if (batchEntity.id == updatedBatchInfo.id) {
+                            batchEntity.availableStock = updatedBatchInfo.units;
+                            batchEntity.totalStock = updatedBatchInfo.units;
                             if (updatedBatchInfo.hasOwnProperty('consumedUnits')) {
-                                itemInfoElement.informationOfBatches[itemBatchIndex].consumedUnits = updatedBatchInfo.consumedUnits;
-                                itemInfoElement.informationOfBatches[itemBatchIndex].totalStock += updatedBatchInfo.consumedUnits;
+                                batchEntity.consumedUnits = updatedBatchInfo.consumedUnits;
+                                batchEntity.totalStock += updatedBatchInfo.consumedUnits;
                             }
                             if (updatedBatchInfo.hasOwnProperty('expiredUnits')) {
-                                itemInfoElement.informationOfBatches[itemBatchIndex].expiredUnits = updatedBatchInfo.expiredUnits;
-                                itemInfoElement.informationOfBatches[itemBatchIndex].totalStock += updatedBatchInfo.expiredUnits;
+                                batchEntity.expiredUnits = updatedBatchInfo.expiredUnits;
+                                batchEntity.totalStock += updatedBatchInfo.expiredUnits;
                             }
                             if (updatedBatchInfo.hasOwnProperty('returnedUnits')) {
-                                itemInfoElement.informationOfBatches[itemBatchIndex].returnedUnits = updatedBatchInfo.returnedUnits;
-                                itemInfoElement.informationOfBatches[itemBatchIndex].totalStock += updatedBatchInfo.returnedUnits;
+                                batchEntity.returnedUnits = updatedBatchInfo.returnedUnits;
+                                batchEntity.totalStock += updatedBatchInfo.returnedUnits;
                             }
                         }
-                    }
+                    });
                     $log.log("updated batch is-----", updatedBatchInfo);
                 }
                 itemInfoElement.loading = false;

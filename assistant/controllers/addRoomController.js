@@ -24,11 +24,11 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var roomCategoriesList = $.parseJSON(roomCategoriesSuccess.data.response);
-            for (var roomCategoryIndex in roomCategoriesList) {
-                if (roomCategoriesList[roomCategoryIndex].state == 'ACTIVE') {
-                    roomElement.roomCategories.push(roomCategoriesList[roomCategoryIndex]);
+            angular.forEach(roomCategoriesList, function(roomCategoryEntity) {
+                if (roomCategoryEntity.state == 'ACTIVE') {
+                    roomElement.roomCategories.push(roomCategoryEntity);
                 }
-            }
+            });
             roomElement.roomType = roomElement.roomCategories[0].roomType;
             roomElement.addNewRoom.organizationRoomCategoryId = roomElement.roomCategories[0].id;
             dboticaServices.setRoomCategories(roomElement.roomCategories);
@@ -45,11 +45,11 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
         } else {
             var roomsListFromAPI = $.parseJSON(getRoomsSuccessResponse.data.response);
             $log.log("room list----", roomsListFromAPI);
-            for (roomIndex in roomsListFromAPI) {
-                if (roomsListFromAPI[roomIndex].state == 'ACTIVE') {
-                    roomElement.roomsList.push(roomsListFromAPI[roomIndex]);
+            angular.forEach(roomsListFromAPI, function(roomEntity) {
+                if (roomEntity.state == 'ACTIVE') {
+                    roomElement.roomsList.push(roomEntity);
                 }
-            }
+            });
         }
     }, function(getRoomsErrorResponse) {
         dboticaServices.noConnectivityError();
@@ -120,25 +120,25 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
         var newRoomObject = {};
         angular.copy(room, newRoomObject);
         newRoomObject.roomRate = parseInt(newRoomObject.roomRate) / 100;
-        for (var categoryIndex in roomElement.roomCategories) {
-            if (roomElement.roomCategories[categoryIndex].id == newRoomObject.organizationRoomCategoryId) {
-                roomElement.roomType = roomElement.roomCategories[categoryIndex].roomType;
+        angular.forEach(roomElement.roomCategories, function(roomCategoryEntityItem) {
+            if (roomCategoryEntityItem.id == newRoomObject.organizationRoomCategoryId) {
+                roomElement.roomType = roomCategoryEntityItem.roomType;
             }
-        }
+        });
         angular.copy(newRoomObject, roomElement.addNewRoom);
     }
 
     function roomSearch() {
         if (roomElement.inputItemSearch !== '' && roomElement.inputItemSearch !== undefined) {
             var sortedItemsArray = [];
-            for (var roomIndexInSearch in roomElement.roomsList) {
-                if (roomElement.roomsList[roomIndexInSearch].state == 'ACTIVE') {
-                    var check = roomElement.roomsList[roomIndexInSearch].roomNo.toLowerCase().indexOf(roomElement.inputItemSearch.toLowerCase()) > -1;
+            angular.forEach(roomElement.roomsList, function(roomInList) {
+                if (roomInList.state == 'ACTIVE') {
+                    var check = roomInList.roomNo.toLowerCase().indexOf(roomElement.inputItemSearch.toLowerCase()) > -1;
                     if (check) {
-                        sortedItemsArray.push(roomElement.roomsList[roomIndexInSearch]);
+                        sortedItemsArray.push(roomInList);
                     }
                 }
-            }
+            });
             angular.copy(sortedItemsArray, roomElement.roomsList);
         }
     }
@@ -148,11 +148,11 @@ angular.module('personalAssistant').filter("roomCategoryNameFromItsId", function
     return function(input) {
         var result;
         var roomCategoriesList = dboticaServices.getRoomCategoriesList();
-        for (var categoryIndex in roomCategoriesList) {
-            if (roomCategoriesList[categoryIndex].id == input) {
-                result = roomCategoriesList[categoryIndex].roomType;
+        angular.forEach(roomCategoriesList, function(categoryInFilter) {
+            if (categoryInFilter.id == input) {
+                result = categoryInFilter.roomType;
             }
-        }
+        });
         return result;
     };
 });

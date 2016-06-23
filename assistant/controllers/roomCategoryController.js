@@ -98,14 +98,15 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
         if (roomCategoryElement.inputItemSearch !== '' && roomCategoryElement.inputItemSearch !== undefined) {
             $log.log("in search -------", roomCategoryElement.inputItemSearch);
             var sortedItemsArray = [];
-            for (var roomCategoryIndexInSearch in roomCategoryElement.activeRoomCategories) {
-                if (roomCategoryElement.activeRoomCategories[roomCategoryIndexInSearch].state == 'ACTIVE') {
-                    var check = roomCategoryElement.activeRoomCategories[roomCategoryIndexInSearch].roomType.toLowerCase().indexOf(roomCategoryElement.inputItemSearch.toLowerCase()) > -1;
+            /*  for (var roomCategoryIndexInSearch in roomCategoryElement.activeRoomCategories) {*/
+            angular.forEach(roomCategoryElement.activeRoomCategories, function(activeRoom) {
+                if (activeRoom.state == 'ACTIVE') {
+                    var check = activeRoom.roomType.toLowerCase().indexOf(roomCategoryElement.inputItemSearch.toLowerCase()) > -1;
                     if (check) {
-                        sortedItemsArray.push(roomCategoryElement.activeRoomCategories[roomCategoryIndexInSearch]);
+                        sortedItemsArray.push(activeRoom);
                     }
                 }
-            }
+            });
             angular.copy(sortedItemsArray, roomCategoryElement.activeRoomCategories);
         }
     }

@@ -109,20 +109,20 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             billElement.invoice.nextPaymentDate = dboticaServices.longDateToReadableDate(currentActiveInvoice.nextPaymentDate);
             billElement.invoice.nextPaymentAmount = currentActiveInvoice.nextPaymentAmount / 100;
             angular.copy(currentActiveInvoice.paymentEntries, billElement.addToBill);
-            for (var paymentIndex in billElement.addToBill) {
-                billElement.addToBill[paymentIndex].amountPaid = billElement.addToBill[paymentIndex].amountPaid / 100;
-            }
+            angular.forEach(billElement.addToBill, function(billEntity) {
+                billEntity.amountPaid = billEntity.amountPaid / 100;
+            });
             var paymentEntriesAndTotalAmount = dboticaServices.getPaymentEntriesToDisplay(currentActiveInvoice.paymentEntries);
             billElement.addPay = paymentEntriesAndTotalAmount[0];
             var itemsToBeDisplayed = [];
             var totalAmountCharged = 0;
             angular.copy(currentActiveInvoice.items, itemsToBeDisplayed);
-            for (itemIndex in itemsToBeDisplayed) {
-                itemsToBeDisplayed[itemIndex].cost = itemsToBeDisplayed[itemIndex].cost / 100;
-                itemsToBeDisplayed[itemIndex].amountCharged = itemsToBeDisplayed[itemIndex].amountCharged / 100;
-                itemsToBeDisplayed[itemIndex].quantity = itemsToBeDisplayed[itemIndex].count;
-                totalAmountCharged += itemsToBeDisplayed[itemIndex].amountCharged;
-            }
+            angular.forEach(itemsToBeDisplayed, function(itemsToBeDisplayedEntity) {
+                itemsToBeDisplayedEntity.cost = itemsToBeDisplayedEntity.cost / 100;
+                itemsToBeDisplayedEntity.amountCharged = itemsToBeDisplayedEntity.amountCharged / 100;
+                itemsToBeDisplayedEntity.quantity = itemsToBeDisplayedEntity.count;
+                totalAmountCharged += itemsToBeDisplayedEntity.amountCharged;
+            });
             billElement.invoice.amount = totalAmountCharged - paymentEntriesAndTotalAmount[1];
             angular.copy(itemsToBeDisplayed, billElement.bill.billsListing);
         }
@@ -139,9 +139,9 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                 var medicinesSuccessResponse = $.parseJSON(successResponse.data.response);
                 billElement.addMedicine = medicinesSuccessResponse.inventoryItems;
                 dboticaServices.setMedicine(billElement.addMedicine);
-                for (var medicineIndex in billElement.addMedicine) {
-                    billElement.addMedicineNames.push(billElement.addMedicine[medicineIndex].itemName);
-                }
+                angular.forEach(billElement.addMedicine, function(medicineName) {
+                    billElement.addMedicineNames.push(medicineName.itemName);
+                });
                 dboticaServices.setMedicineNames(billElement.addMedicineNames);
             }
             billElement.loading = false;
@@ -166,14 +166,14 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var testsList = $.parseJSON(testsPromiseSuccessResponse.data.response);
-                for (var testIndex in testsList) {
-                    if (testsList[testIndex].organizationId == organizationId) {
-                        if (testsList[testIndex].state == "ACTIVE") {
-                            activeTestsList.push(testsList[testIndex]);
-                            activeTestsNamesList.push(testsList[testIndex].testName);
+                angular.forEach(testsList, function(testsListEntity) {
+                    if (testsListEntity.organizationId == organizationId) {
+                        if (testsListEntity.state == "ACTIVE") {
+                            activeTestsList.push(testsListEntity);
+                            activeTestsNamesList.push(testsListEntity.testName);
                         }
                     }
-                }
+                });
                 $log.log("active tests list is---", activeTestsList);
                 dboticaServices.setTestsFromBillManagement(activeTestsList);
                 dboticaServices.setTestsNamesFromBillManagement(activeTestsNamesList);
@@ -413,23 +413,23 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             }
             billElement.finalBill.nextPaymentAmount = parseInt(billElement.invoice.nextPaymentAmount) * 100;
             angular.copy(billElement.bill.billsListing, billElement.finalBill.items);
-            for (var itemsIndex in billElement.finalBill.items) {
-                billElement.finalBill.totalAmount += parseInt(billElement.finalBill.items[itemsIndex].amountCharged);
-                if (billElement.finalBill.items[itemsIndex].hasOwnProperty('cost')) {
-                    billElement.finalBill.items[itemsIndex].cost = parseInt(billElement.finalBill.items[itemsIndex].cost) * 100;
+            angular.forEach(billElement.finalBill.items, function(billItemEntity) {
+                billElement.finalBill.totalAmount += parseInt(billItemEntity.amountCharged);
+                if (billItemEntity.hasOwnProperty('cost')) {
+                    billItemEntity.cost = parseInt(billItemEntity.cost) * 100;
                 }
-                if (billElement.finalBill.items[itemsIndex].hasOwnProperty('amountCharged')) {
-                    billElement.finalBill.items[itemsIndex].amountCharged = parseInt(billElement.finalBill.items[itemsIndex].amountCharged) * 100;
+                if (billItemEntity.hasOwnProperty('amountCharged')) {
+                    billItemEntity.amountCharged = parseInt(billItemEntity.amountCharged) * 100;
                 }
-            }
+            });
             billElement.finalBill.totalAmount = parseInt(billElement.finalBill.totalAmount) * 100;
             angular.copy(billElement.addToBill, billElement.finalBill.paymentEntries);
-            for (var billIndex in billElement.finalBill.paymentEntries) {
-                if (billElement.finalBill.paymentEntries[billIndex].hasOwnProperty('amountPaid')) {
-                    billElement.finalBill.amountPaid += parseInt(billElement.finalBill.paymentEntries[billIndex].amountPaid);
-                    billElement.finalBill.paymentEntries[billIndex].amountPaid = parseInt(billElement.finalBill.paymentEntries[billIndex].amountPaid) * 100;
+            angular.forEach(billElement.finalBill.paymentEntries, function(paymentEntryEntity) {
+                if (paymentEntryEntity.hasOwnProperty('amountPaid')) {
+                    billElement.finalBill.amountPaid += parseInt(paymentEntryEntity.amountPaid);
+                    paymentEntryEntity.amountPaid = parseInt(paymentEntryEntity.amountPaid) * 100;
                 }
-            }
+            });
             billElement.finalBill.amountPaid = billElement.finalBill.amountPaid * 100;
             $log.log("final bill is----", billElement.finalBill);
             if (!billElement.nextDueErrorMsg) {
@@ -511,12 +511,12 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         billElement.finalBill.doctorId = doctor.id;
         if (doctor.hasOwnProperty('doctorPriceInfos')) {
             billElement.bill.billTypes = doctor.doctorPriceInfos;
-            for (var billTypeIndex in billElement.bill.billTypes) {
-                if (billElement.bill.billTypes[billTypeIndex].billingName.toLowerCase() == consultation) {
-                    billElement.bill.doctorActiveService = billElement.bill.billTypes[billTypeIndex].billingName;
-                    billElement.bill.billCost = billElement.bill.billTypes[billTypeIndex].price / 100;
+            angular.forEach(billElement.bill.billTypes, function(billTypeEntity) {
+                if (billTypeEntity.billingName.toLowerCase() == consultation) {
+                    billElement.bill.doctorActiveService = billTypeEntity.billingName;
+                    billElement.bill.billCost = billTypeEntity.price / 100;
                 }
-            }
+            });
         }
         billElement.bill.doctorActiveName = doctor.firstName + ' ' + doctor.lastName;
     }
@@ -524,8 +524,8 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     function selectDrugInModal(drugInModal, index) {
         var drugNameSelected = drugInModal.brandName;
         var medicineToBeDisplayed = {};
-        for (var medicine in billElement.addMedicine) {
-            if (drugNameSelected.toLowerCase() == billElement.addMedicine[medicine].itemName.toLowerCase()) {
+        angular.forEach(billElement.addMedicine, function(medicineEntity) {
+            if (drugNameSelected.toLowerCase() == medicineEntity.itemName.toLowerCase()) {
                 medicineToBeDisplayed.itemName = drugNameSelected;
                 if (drugInModal.quantity !== null && drugInModal.quantity !== undefined && drugInModal !== '') {
                     medicineToBeDisplayed.quantity = parseInt(drugInModal.quantity);
@@ -533,14 +533,14 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                     medicineToBeDisplayed.quantity = parseInt(1);
                 }
                 medicineToBeDisplayed.itemType = "MEDICINE";
-                medicineToBeDisplayed.cost = billElement.addMedicine[medicine].retailPrice;
+                medicineToBeDisplayed.cost = medicineEntity.retailPrice;
                 medicineToBeDisplayed.discount = parseInt(0);
                 medicineToBeDisplayed.tax = parseInt(0);
                 medicineToBeDisplayed.amountCharged = parseInt(medicineToBeDisplayed.cost) * medicineToBeDisplayed.quantity;
                 billElement.invoice.amount += parseInt(medicineToBeDisplayed.amountCharged);
                 billElement.bill.billsListing.push(medicineToBeDisplayed);
             }
-        }
+        });
     }
 
     function addMedicineToBill() {

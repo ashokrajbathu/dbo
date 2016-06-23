@@ -57,3 +57,17 @@
 #templateThree {
     cursor: pointer;
 }
+
+.drugTemplateBody {
+    margin-left: 12px;
+}
+
+.addDrugButtonInTemplate {
+    color: white;
+    background-color: #3c8dbc;
+}
+
+.addDrugButtonInTemplate:hover {
+    color: white;
+    background-color: #3c8dbc;
+}

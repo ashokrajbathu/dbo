@@ -55,9 +55,9 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             if (adminElement.doctorsListInAdmin.length > 0) {
                 if (adminElement.admin.doctorActive.hasOwnProperty('doctorPriceInfos')) {
                     adminElement.admin.servicesListOfTheDoctor = adminElement.admin.doctorActive.doctorPriceInfos;
-                    for (service in adminElement.admin.servicesListOfTheDoctor) {
-                        adminElement.servicesList.unshift(adminElement.admin.servicesListOfTheDoctor[service].billingName);
-                    }
+                    angular.forEach(adminElement.admin.servicesListOfTheDoctor, function(serviceEntity) {
+                        adminElement.servicesList.unshift(serviceEntity.billingName);
+                    });
                 }
             } else {
                 dboticaServices.noConnectivityError();
@@ -103,15 +103,15 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 } else {
                     $log.log("get tests success is-----", getTestsSuccessResponse);
                     getTestsSuccess = $.parseJSON(getTestsSuccessResponse.data.response);
-                    for (test in getTestsSuccess) {
-                        if (getTestsSuccess[test].hasOwnProperty('organizationId')) {
-                            if (getTestsSuccess[test].organizationId == organizationId) {
-                                adminElement.servicesList.unshift(getTestsSuccess[test].testName);
-                                getTestsSuccess[test].billingName = getTestsSuccess[test].testName;
-                                delete getTestsSuccess[test].testName;
+                    angular.forEach(getTestsSuccess, function(testEntity) {
+                        if (testEntity.hasOwnProperty('organizationId')) {
+                            if (testEntity.organizationId == organizationId) {
+                                adminElement.servicesList.unshift(testEntity.testName);
+                                testEntity.billingName = testEntity.testName;
+                                delete testEntity.testName;
                             }
                         }
-                    }
+                    });
                     $log.log("table array is----", getTestsSuccess);
                     angular.copy(getTestsSuccess, adminElement.admin.servicesListOfTheDoctor);
                 }
@@ -129,9 +129,9 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             $log.log("doctor selected is---", doctor);
             if (doctor.hasOwnProperty('doctorPriceInfos')) {
                 adminElement.admin.servicesListOfTheDoctor = doctor.doctorPriceInfos;
-                for (service in doctor.doctorPriceInfos) {
-                    adminElement.servicesList.unshift(doctor.doctorPriceInfos[service].billingName);
-                }
+                angular.forEach(doctor.doctorPriceInfos, function(docPriceEntity) {
+                    adminElement.servicesList.unshift(docPriceEntity.billingName);
+                });
             } else {
                 adminElement.admin.servicesListOfTheDoctor = [];
             }
@@ -169,18 +169,18 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             if (adminElement.admin.doctorActive.hasOwnProperty('doctorPriceInfos')) {
                 $log.log("in first if--");
                 if (adminElement.admin.doctorActive.doctorPriceInfos.length > 0) {
-                    for (var doctorPriceInfoIndex = 0; doctorPriceInfoIndex < adminElement.admin.doctorActive.doctorPriceInfos.length; doctorPriceInfoIndex++) {
+                    angular.forEach(adminElement.admin.doctorActive.doctorPriceInfos, function(doctorPriceInfoEntity) {
                         var existingInfoObject = {};
-                        if (adminElement.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].billingName == adminElement.admin.serviceInDropDown) {} else {
-                            existingInfoObject.billingName = adminElement.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].billingName;
-                            existingInfoObject.price = adminElement.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].price;
-                            existingInfoObject.updatedDate = adminElement.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].updatedDate;
-                            existingInfoObject.remark = adminElement.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].remark;
-                            existingInfoObject.updatedBy = adminElement.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].updatedBy;
-                            existingInfoObject.state = adminElement.admin.doctorActive.doctorPriceInfos[doctorPriceInfoIndex].state;
+                        if (doctorPriceInfoEntity.billingName == adminElement.admin.serviceInDropDown) {} else {
+                            existingInfoObject.billingName = doctorPriceInfoEntity.billingName;
+                            existingInfoObject.price = doctorPriceInfoEntity.price;
+                            existingInfoObject.updatedDate = doctorPriceInfoEntity.updatedDate;
+                            existingInfoObject.remark = doctorPriceInfoEntity.remark;
+                            existingInfoObject.updatedBy = doctorPriceInfoEntity.updatedBy;
+                            existingInfoObject.state = doctorPriceInfoEntity.state;
                             serviceRequestEntity.doctorPriceInfos.push(existingInfoObject);
                         }
-                    }
+                    });
                     var serviceObject = getServiceRequestObject(service);
                     serviceRequestEntity.doctorPriceInfos.push(serviceObject);
                 } else {
@@ -194,11 +194,11 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                         testObject = getServiceRequestObject(test);
                     } else {
                         testObject = getServiceRequestObject(test);
-                        for (var testIndex in getTestsSuccess) {
-                            if (getTestsSuccess[testIndex].billingName == adminElement.admin.serviceInDropDown) {
-                                testObject.id = getTestsSuccess[testIndex].id;
+                        angular.forEach(getTestsSuccess, function(testsSuccessEntity) {
+                            if (testsSuccessEntity.billingName == adminElement.admin.serviceInDropDown) {
+                                testObject.id = testsSuccessEntity.id;
                             }
-                        }
+                        });
                         $log.log("test obj is----", testObject);
                     }
                 } else {
@@ -221,12 +221,12 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                         if (errorCode == null && success == true) {
                             var testSuccess = $.parseJSON(testRequestSuccessResponse.data.response);
                             if (testObject.hasOwnProperty('id')) {
-                                for (var testInTableIndex in adminElement.admin.servicesListOfTheDoctor) {
-                                    if (testSuccess.id == adminElement.admin.servicesListOfTheDoctor[testInTableIndex].id) {
-                                        adminElement.admin.servicesListOfTheDoctor[testInTableIndex].price = testSuccess.price;
-                                        adminElement.admin.servicesListOfTheDoctor[testInTableIndex].remark = testSuccess.remark;
+                                angular.forEach(adminElement.admin.servicesListOfTheDoctor, function(serviceOfDoctor) {
+                                    if (testSuccess.id == serviceOfDoctor.id) {
+                                        serviceOfDoctor.price = testSuccess.price;
+                                        serviceOfDoctor.remark = testSuccess.remark;
                                     }
-                                }
+                                });
                                 adminElement.admin.procedureCostTextBox = "";
                                 adminElement.admin.procedureRemarksTextBox = "";
                                 adminElement.admin.procedureNameTxtBox = "";
@@ -340,13 +340,13 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
 
         } else {
             changeStateRequestEntity.doctorId = adminElement.admin.doctorActive.id;
-            for (doctorServiceIndex in adminElement.admin.servicesListOfTheDoctor) {
+            angular.forEach(adminElement.admin.servicesListOfTheDoctor, function(doctorServicesEntity) {
                 var object = {};
-                object.billingName = adminElement.admin.servicesListOfTheDoctor[doctorServiceIndex].billingName;
-                object.price = adminElement.admin.servicesListOfTheDoctor[doctorServiceIndex].price;
-                object.remark = adminElement.admin.servicesListOfTheDoctor[doctorServiceIndex].remark;
-                object.updatedBy = adminElement.admin.servicesListOfTheDoctor[doctorServiceIndex].updatedBy;
-                check = (doctorService.billingName == adminElement.admin.servicesListOfTheDoctor[doctorServiceIndex].billingName) && (doctorService.price == adminElement.admin.servicesListOfTheDoctor[doctorServiceIndex].price);
+                object.billingName = doctorServicesEntity.billingName;
+                object.price = doctorServicesEntity.price;
+                object.remark = doctorServicesEntity.remark;
+                object.updatedBy = doctorServicesEntity.updatedBy;
+                check = (doctorService.billingName == doctorServicesEntity.billingName) && (doctorService.price == doctorServicesEntity.price);
                 if (check) {
                     var date = new Date();
                     object.updatedDate = date.getTime();
@@ -357,11 +357,11 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                     }
                     changeStateRequestEntity.doctorPriceInfos.push(object);
                 } else {
-                    object.updatedDate = adminElement.admin.servicesListOfTheDoctor[doctorServiceIndex].updatedDate;
-                    object.state = adminElement.admin.servicesListOfTheDoctor[doctorServiceIndex].state;
+                    object.updatedDate = doctorServicesEntity.updatedDate;
+                    object.state = doctorServicesEntity.state;
                     changeStateRequestEntity.doctorPriceInfos.push(object);
                 }
-            }
+            });
             $log.log("req entity is---", changeStateRequestEntity);
             adminElement.loading = true;
             var changeServiceStateRequestPromise = dboticaServices.submitServiceRequest(changeStateRequestEntity);
@@ -397,18 +397,18 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     var updateTheServices = function(doctorServiceResponse) {
         adminElement.doctorsListInAdmin = [];
         adminElement.admin.servicesListOfTheDoctor = [];
-        for (doctorIndex in doctorServiceResponse) {
-            adminElement.doctorsListInAdmin.push(doctorServiceResponse[doctorIndex]);
-            if (doctorServiceResponse[doctorIndex].id == adminElement.admin.doctorActive.id) {
-                adminElement.admin.doctorActive = doctorServiceResponse[doctorIndex];
+        angular.forEach(doctorServiceResponse, function(doctorServiceResponseEntity) {
+            adminElement.doctorsListInAdmin.push(doctorServiceResponseEntity);
+            if (doctorServiceResponseEntity.id == adminElement.admin.doctorActive.id) {
+                adminElement.admin.doctorActive = doctorServiceResponseEntity;
                 $log.log("updated docs are---", adminElement.admin.doctorActive);
-                adminElement.admin.servicesListOfTheDoctor = doctorServiceResponse[doctorIndex].doctorPriceInfos;
+                adminElement.admin.servicesListOfTheDoctor = doctorServiceResponseEntity.doctorPriceInfos;
                 adminElement.servicesList = ["Others"];
-                for (eachService in adminElement.admin.servicesListOfTheDoctor) {
-                    adminElement.servicesList.unshift(adminElement.admin.servicesListOfTheDoctor[eachService].billingName);
-                }
+                angular.forEach(adminElement.admin.servicesListOfTheDoctor, function(eachService) {
+                    adminElement.servicesList.unshift(eachService.billingName);
+                });
             }
-        }
+        });
         adminElement.doctorsListInAdmin.push(generalObject);
     }
 

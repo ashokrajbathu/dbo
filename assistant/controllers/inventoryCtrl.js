@@ -272,11 +272,11 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                         dboticaServices.batchAdditionForItemSuccessSwal();
                         var itemObject = $.parseJSON(response.data.response);
                         $log.log("item after adding batch is-----", itemObject);
-                        for (itemIndex = 0; itemIndex < inventoryElement.itemsDisplayArray.length; itemIndex++) {
-                            if (inventoryElement.itemsDisplayArray[itemIndex].id === itemObject.itemId) {
-                                inventoryElement.itemsDisplayArray[itemIndex].availableStock += itemObject.units;
+                        angular.forEach(inventoryElement.itemsDisplayArray, function(itemsDisplayArrayElement) {
+                            if (itemsDisplayArrayElement.id === itemObject.itemId) {
+                                itemsDisplayArrayElement.availableStock += itemObject.units;
                             }
-                        }
+                        });
                         $log.log("array after adding batch is-----", inventoryElement.itemsDisplayArray);
                     } else {
                         dboticaServices.batchAdditionForItemUnsuccessSwal();
@@ -663,10 +663,10 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             var getDrugsPromise = dboticaServices.getDrugsFromDb(0, 20, inventoryElement.addItemObject.itemName);
             getDrugsPromise.then(function(getDrugSuccess) {
                 drugs = $.parseJSON(getDrugSuccess.data.response);
-                for (var index in drugs) {
-                    var drugEntity = drugs[index].brandName;
+                angular.forEach(drugs, function(drugElement) {
+                    var drugEntity = drugElement.brandName;
                     drugsList.push(drugEntity);
-                }
+                });
                 angular.copy(drugsList, inventoryElement.drugsToBeDisplayedInDropdown);
                 $log.log("list to dis---", inventoryElement.drugsToBeDisplayedInDropdown);
                 $log.log("get drug success response is----", $.parseJSON(getDrugSuccess.data.response));

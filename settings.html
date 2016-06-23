@@ -21,6 +21,11 @@
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="entryPrescription.css">
     <link rel="stylesheet" type="text/css" href="settings.css">
+    <style type="text/css">
+    .ui-autocomplete {
+        z-index: 5000;
+    }
+    </style>
     <!--Datepicker srcs 
     <link rel="stylesheet" href="css/datepicker.css" type="text/css" />-->
     <script src="plugins/jQuery/jquery-1.9.1.js"></script>
@@ -236,8 +241,64 @@
                 </div>
                 <!--  <input type="file" name="img"> -->
             </div>
-            <div id="templateTwoBody">
-                <h1>Teja</h1>
+            <div class="drugTemplateBody" id="templateTwoBody">
+                <h4>Drug Template</h4>
+                <button class="btn addDrugButtonInTemplate" data-toggle="modal" data-target="#drugTemplateModal">Add Drug</button>
+                <div id="drugTemplateModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Add Drug Into Template</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputDrugName">Drug Name</label>
+                                        <input type="text" class="form-control" id="exampleInputDrugName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputRemarks">Remarks</label>
+                                        <input type="text" class="form-control" id="exampleInputRemarks">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputDrugTimings">Timings</label>
+                                        <div class="col-md-12">
+                                            <input type="button" id="drug-template-BBF" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="BBF"></input>
+                                            <input type="button" id="drug-template-ABF" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="ABF"></input>
+                                            <input type="button" id="drug-template-BL" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="BL"></input>
+                                            <input type="button" id="drug-template-AL" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="AL"></input>
+                                            <input type="button" id="drug-template-BD" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="BD"></input>
+                                            <input type="button" id="drug-template-AD" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="AD"></input>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn addDrugButtonInTemplate">Add Drug</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                        <th>S.No.</th>
+                        <th>Drug Name</th>
+                        <th>Remarks</th>
+                        <th>Drug Timings</th>
+                        <th>Actions</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Combiflam</td>
+                            <td>daily</td>
+                            <td>Before Dinner</td>
+                            <td>Edit | Delete</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div id="templateThreeBody">
                 <h1>Bhisetti</h1>
@@ -289,6 +350,13 @@
     </script>
     <script type="text/javascript">
     $(document).ready(function() {
+        var totalDrugObjectsOnReady = [];
+        try {
+            openDb();
+        } catch (e) {
+            console.log("Error in openDb");
+        }
+
         $('#deleteImageInSettings').hide();
         $('#templateOne').addClass('activeTemplate');
         $('#templateOneBody').show();
@@ -340,6 +408,61 @@
         console.log("sjdkhsjkdf----", imageAfterEdit);
         $('#imageAfterEditInCanvas').append(imageAfterEdit);
     });
+
+    $('.prescription-form-toggle-buttons').click(function(e) {
+        var button = $(this);
+        if (button.hasClass('btn-default')) {
+            button.removeClass('btn-default').addClass('btn-success');
+        } else if (button.hasClass('btn-success')) {
+            button.removeClass('btn-success').addClass('btn-default');
+        }
+    });
+    </script>
+    <script type="text/javascript">
+    $('#exampleInputDrugName').autocomplete({
+        source: function(request, callback) {
+            var searchParam = request.term;
+            prescriptionFormDrugCallback(searchParam, callback)
+        },
+        minLength: 2,
+        focus: function(event, ui) {
+            event.preventDefault();
+        },
+        select: function(event, ui) {
+            ui.item.value = ui.item.value.split(" -")[0];
+        }
+    });
+
+    function prescriptionFormDrugCallback(brandName, callback) {
+        var drugObject = {};
+        if (brandName === "") {
+            $('.drugs-dropdown-menu').hide('dropdown');
+            return;
+        }
+        autocompleteDrugIndexedDB(brandName, '#exampleInputDrugName', OnGetDrugsResponse, callback);
+    }
+
+    function OnGetDrugsResponse(data, callback) {
+        var totalDrugObjects = [];
+        if (data.length != 0) {
+            for (var i = 0, l = data.length; i < l; i++) {
+                var drug = data[i];
+                var brandNameString = drug['brandName'];
+                if (drug['constituents']) {
+                    brandNameString += " - "
+                    var constituents = drug['constituents'];
+                    for (var j in constituents) {
+
+                        brandNameString += constituents[j]['molecule'] + " : " + constituents[j]['weight'] + ",";
+                    }
+                    brandNameString = brandNameString.slice(0, -1);
+                }
+                totalDrugObjects.push(brandNameString);
+            }
+
+        }
+        callback(totalDrugObjects);
+    }
     </script>
 </body>
 

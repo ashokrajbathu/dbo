@@ -21,11 +21,11 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var doctorCategories = $.parseJSON(doctorsCategoriesPromise.data.response);
-            for (var doctorCategoryIndex in doctorCategories) {
-                if (doctorCategories[doctorCategoryIndex].state == 'ACTIVE') {
-                    doctorCategoryElement.doctorCategoriesList.push(doctorCategories[doctorCategoryIndex]);
+            angular.forEach(doctorCategories, function(doctorCategoryEntity) {
+                if (doctorCategoryEntity.state == 'ACTIVE') {
+                    doctorCategoryElement.doctorCategoriesList.push(doctorCategoryEntity);
                 }
-            }
+            });
         }
     }, function(docotorCategoriesError) {
         dboticaServices.noConnectivityError();
@@ -90,14 +90,14 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
     function doctorCategorySearch() {
         if (doctorCategoryElement.inputItemSearch !== '' && doctorCategoryElement.inputItemSearch !== undefined) {
             var sortedItemsArray = [];
-            for (var doctorIndexInSearch in doctorCategoryElement.doctorCategoriesList) {
-                if (doctorCategoryElement.doctorCategoriesList[doctorIndexInSearch].state == 'ACTIVE') {
-                    var check = doctorCategoryElement.doctorCategoriesList[doctorIndexInSearch].doctorType.toLowerCase().indexOf(doctorCategoryElement.inputItemSearch.toLowerCase()) > -1;
+            angular.forEach(doctorCategoryElement.doctorCategoriesList, function(doctorCategoryEntityEle) {
+                if (doctorCategoryEntityEle.state == 'ACTIVE') {
+                    var check = doctorCategoryEntityEle.doctorType.toLowerCase().indexOf(doctorCategoryElement.inputItemSearch.toLowerCase()) > -1;
                     if (check) {
-                        sortedItemsArray.push(doctorCategoryElement.doctorCategoriesList[doctorIndexInSearch]);
+                        sortedItemsArray.push(doctorCategoryEntityEle);
                     }
                 }
-            }
+            });
             angular.copy(sortedItemsArray, doctorCategoryElement.doctorCategoriesList);
         }
     }

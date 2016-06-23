@@ -34,8 +34,9 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
     $scope.isMainAdminBlack = false;
     $scope.isMainAdminBlue = true;
 
-    for (var assistantPermission in currentActiveAssistantPermissions) {
-        var assistantSection = currentActiveAssistantPermissions[assistantPermission];
+    /* for (var assistantPermission in currentActiveAssistantPermissions) {*/
+    angular.forEach(currentActiveAssistantPermissions, function(assistantPermission) {
+        var assistantSection = assistantPermission;
         switch (assistantSection) {
             case 'PATIENT_MANAGEMENT':
                 $scope.isVisibleNavs.patientManagement = true;
@@ -54,7 +55,7 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
                 break;
         }
 
-    }
+    });
 
     switch (currentStateActive) {
         case 'patientManagement':
