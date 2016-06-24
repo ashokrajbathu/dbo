@@ -144,6 +144,11 @@
     height: 35px !important;
 }
 
+.errorMessagesInModal {
+    color: red;
+    margin-top: -3px;
+}
+
 #drpBtnRoom,
 #drpBtnRoomDoctor,
 #drpBtnRoomDoc,

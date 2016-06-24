@@ -12,6 +12,11 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
 
     var doctorCategoryItemId = '';
     var doctorCategoryItemIndex = '';
+    var entitiesArray = [];
+    var entitiesArrayFlag = parseInt(0);
+
+    doctorCategoryElement.sortTypeOne = 'doctorType';
+    doctorCategoryElement.sortTypeTwo = 'description';
 
     var getDoctorsCategoriesPromise = dboticaServices.getDoctorCategories(organizationId);
     $log.log("get docs promise is----", getDoctorsCategoriesPromise);
@@ -26,6 +31,7 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
                     doctorCategoryElement.doctorCategoriesList.push(doctorCategoryEntity);
                 }
             });
+            angular.copy(doctorCategoryElement.doctorCategoriesList, entitiesArray);
         }
     }, function(docotorCategoriesError) {
         dboticaServices.noConnectivityError();
@@ -48,8 +54,19 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
                     dboticaServices.addNewDoctorCategorySuccessSwal();
                     if (doctorCategoryItemId == '' && doctorCategoryItemIndex == '') {
                         doctorCategoryElement.doctorCategoriesList.unshift(addNewDoctorCategorySuccess);
+                        entitiesArray.unshift(addNewDoctorCategorySuccess);
                     } else {
                         doctorCategoryElement.doctorCategoriesList.splice(doctorCategoryItemIndex, 1, addNewDoctorCategorySuccess);
+                        var localDoctorCategoryIndex;
+                        for (var entityIndex in entitiesArray) {
+                            if (entitiesArray[entityIndex].id == addNewDoctorCategorySuccess.id) {
+                                localDoctorCategoryIndex = entityIndex;
+                                break;
+                            } else {
+                                continue;
+                            }
+                        }
+                        entitiesArray.splice(localDoctorCategoryIndex, 1, addNewDoctorCategorySuccess);
                     }
                 }
             }
@@ -59,23 +76,43 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
     }
 
     function deleteDoctorCategory(doctorCategory, index) {
-        doctorCategory.state = 'INACTIVE';
-        var deleteDoctorCategoryPromise = dboticaServices.addNewDoctorCategory(doctorCategory);
-        deleteDoctorCategoryPromise.then(function(deleteDoctorSuccess) {
-            var errorCode = deleteDoctorSuccess.data.errorCode;
-            if (!!errorCode) {
-                dboticaServices.logoutFromThePage(errorCode);
-            } else {
-                var deleteDoctorEntitySuccess = angular.fromJson(deleteDoctorSuccess.data.response);
-                $log.log("delete doctor category is----", deleteDoctorEntitySuccess);
-                if (errorCode == null && deleteDoctorSuccess.data.success == true) {
-                    dboticaServices.deleteDoctorCategorySuccessSwal();
-                    doctorCategoryElement.doctorCategoriesList.splice(index, 1);
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover the doctor category details!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false
+        }, function() {
+            doctorCategory.state = 'INACTIVE';
+            var deleteDoctorCategoryPromise = dboticaServices.addNewDoctorCategory(doctorCategory);
+            deleteDoctorCategoryPromise.then(function(deleteDoctorSuccess) {
+                var errorCode = deleteDoctorSuccess.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var deleteDoctorEntitySuccess = angular.fromJson(deleteDoctorSuccess.data.response);
+                    $log.log("delete doctor category is----", deleteDoctorEntitySuccess);
+                    if (errorCode == null && deleteDoctorSuccess.data.success == true) {
+                        dboticaServices.deleteDoctorCategorySuccessSwal();
+                        doctorCategoryElement.doctorCategoriesList.splice(index, 1);
+                        var localDoctorCategoryIndex;
+                        for (var entityIndex in entitiesArray) {
+                            if (entitiesArray[entityIndex].id == doctorCategory.id) {
+                                localDoctorCategoryIndex = entityIndex;
+                                break;
+                            } else {
+                                continue;
+                            }
+                        }
+                        entitiesArray.splice(localDoctorCategoryIndex, 1);
+                    }
                 }
-            }
-
-        }, function(deleteDoctorError) {
-            dboticaServices.noConnectivityError();
+            }, function(deleteDoctorError) {
+                dboticaServices.noConnectivityError();
+            });
+            swal("Deleted!", "doctor category has been deleted.", "success");
         });
     }
 
@@ -88,17 +125,33 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
     }
 
     function doctorCategorySearch() {
-        if (doctorCategoryElement.inputItemSearch !== '' && doctorCategoryElement.inputItemSearch !== undefined) {
-            var sortedItemsArray = [];
-            angular.forEach(doctorCategoryElement.doctorCategoriesList, function(doctorCategoryEntityEle) {
-                if (doctorCategoryEntityEle.state == 'ACTIVE') {
-                    var check = doctorCategoryEntityEle.doctorType.toLowerCase().indexOf(doctorCategoryElement.inputItemSearch.toLowerCase()) > -1;
-                    if (check) {
-                        sortedItemsArray.push(doctorCategoryEntityEle);
-                    }
+        var searchStringLength = doctorCategoryElement.inputItemSearch.length;
+        if (searchStringLength >= parseInt(3)) {
+            var searchDisplayArrayInTable = [];
+            if (doctorCategoryElement.inputItemSearch !== '' && doctorCategoryElement.inputItemSearch !== undefined) {
+                if (searchStringLength > entitiesArrayFlag) {
+                    angular.copy(doctorCategoryElement.doctorCategoriesList, searchDisplayArrayInTable);
+                } else {
+                    angular.copy(entitiesArray, searchDisplayArrayInTable);
                 }
-            });
-            angular.copy(sortedItemsArray, doctorCategoryElement.doctorCategoriesList);
+                var sortedItemsArray = [];
+                angular.forEach(searchDisplayArrayInTable, function(doctorCategoryEntityEle) {
+                    if (doctorCategoryEntityEle.state == 'ACTIVE') {
+                        var checkDoctorType = doctorCategoryEntityEle.doctorType.toLowerCase().indexOf(doctorCategoryElement.inputItemSearch.toLowerCase()) > -1;
+                        var checkDoctorDescription = doctorCategoryEntityEle.description.toLowerCase().indexOf(doctorCategoryElement.inputItemSearch.toLowerCase()) > -1;
+                        var check = checkDoctorType || checkDoctorDescription;
+                        if (check) {
+                            sortedItemsArray.push(doctorCategoryEntityEle);
+                        }
+                    }
+                });
+                angular.copy(sortedItemsArray, doctorCategoryElement.doctorCategoriesList);
+                entitiesArrayFlag = doctorCategoryElement.inputItemSearch.length;
+            }
+        }
+        if (searchStringLength <= parseInt(2)) {
+            entitiesArrayFlag = parseInt(0);
+            angular.copy(entitiesArray, doctorCategoryElement.doctorCategoriesList);
         }
     }
 }]);

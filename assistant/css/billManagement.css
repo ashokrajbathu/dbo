@@ -237,13 +237,14 @@
 } */
 
 .dropdown-menu>li>a {
+    margin-left: -5px !important;
     white-space: normal !important;
     word-wrap: break-word !important;
 }
 
-.dropdown-menu>li>a:hover {
+/* .dropdown-menu>li>a:hover {
     margin-left: -5px;
-}
+} */
 
 #dueDateBtn,
 #consultationBtn {

@@ -1,6 +1,6 @@
 <div ng-controller="bedController as bed">
     <h4>Add Bed</h4>
-    <button class="btn mainAdminBtn" data-toggle="modal" data-target="#addBedModal">Add New</button>
+    <button ng-click="bed.clearAllVars()" class="btn mainAdminBtn" data-toggle="modal" data-target="#addBedModal">Add New</button>
     <div id="addBedModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -14,7 +14,8 @@
                             <form>
                                 <div class="form-group">
                                     <label for="exampleInputBedNumber">Bed Number</label>
-                                    <input ng-model="bed.addNew.bedNo" type="text" class="form-control" id="exampleInputBedNumber" placeholder="Bed Number">
+                                    <input ng-change="bed.validateBedNumber()" ng-model="bed.addNew.bedNo" type="text" class="form-control" id="exampleInputBedNumber" placeholder="Bed Number">
+                                    <span ng-if="bed.enterBedErrorMessage" class="errorMessagesInModal">Please Enter Bed Number</span>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputBedStatus">Bed Status</label>
@@ -27,15 +28,18 @@
                                 <div class="form-group">
                                     <label for="exampleInputRoomNumber">Room Number</label>
                                     <div id='drpBtnDivAdminBed' class="dropdown">
-                                        <button style="border-color:#d2d6de;" id="drpBtnBedDoctor" class="btn dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+                                        <button style="border-color:#d2d6de;" id="drpBtnBedDoctor" class="btn dropdown-toggle" type="button" data-toggle="dropdown">{{bed.roomNumber}}
                                             <span id="caretInBed" class="caret"></span></button>
                                         <ul class="dropdown-menu">
-                                           
+                                            <li ng-click="bed.selectRoomNumber(bedEntity)" ng-repeat="bedEntity in bed.roomsInBedToDisplay">
+                                                <a ng-bind='bedEntity.roomNo' style='cursor:pointer;'></a>
+                                            </li>
                                         </ul>
                                     </div>
+                                    <span ng-if="bed.selectRoomNumberErrorMessage" class="errorMessagesInModal">Please Select Room Number</span>
                                 </div>
                                 <div class="form-inline">
-                                    <button ng-click="bed.addNewBed()" class="btn mainAdminBtn" data-dismiss="modal">Save</button>
+                                    <button ng-click="bed.addNewBed()" class="btn mainAdminBtn">Save</button>
                                     <button class="btn btn-default" data-dismiss="modal">Cancel</button>
                                 </div>
                             </form>
@@ -45,4 +49,35 @@
             </div>
         </div>
     </div>
+    <div class="input-group">
+        <input type="search" class="form-control searchInMainAdmin pull-right" placeholder="Search">
+        <span class="input-group-btn">
+            <button type="submit" class="btn mainAdminBtn searchBtnInMainAdmin"><span class="glyphicon glyphiconSearch glyphicon-search"></span></button>
+        </span>
+    </div>
+    <table class="table mainAdminTable table-hover table-striped">
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Bed Number</th>
+                <th>Room Number</th>
+                <th>Room Type</th>
+                <th>Bed Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat='unitBed in bed.bedsToBeDisplayedInTable'>
+                <td ng-bind="$index+1"></td>
+                <td ng-bind="unitBed.bedNo"></td>
+                <td ng-bind="unitBed.organizationRoom.roomNo"></td>
+                <td ng-bind="unitBed.organizationRoomCategory.roomType"></td>
+                <td ng-bind="unitBed.bedStatus | lowercase"></td>
+                <td>
+                    <a data-toggle="modal" data-target="#addBedModal" class="linksInTable mainAdminLinks">Edit</a> |
+                    <a ng-click="bed.deleteBed(unitBed)" class="linksInTable mainAdminLinks">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

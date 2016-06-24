@@ -636,6 +636,18 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
                 localStorage.setItem("isLoggedInAssistant", "false");
                 $state.go('login');
                 break;
+            case 'USER_ALREADY_LOGGED_IN':
+                swal({
+                    title: "Error",
+                    text: "You are not logged into your account. Kindly login again to view this page",
+                    type: "error",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: true
+                });
+                localStorage.clear();
+                localStorage.setItem("isLoggedInAssistant", "false");
+                $state.go('login');
+                break;
         }
 
     }
@@ -1428,6 +1440,41 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
+    }
+
+    this.addNewBed = function(addNewBedRequest) {
+        var deferred = $q.defer();
+        var addNewBedRequestEntity = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/updateBed',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(addNewBedRequest)
+        }
+        $http(addNewBedRequestEntity).then(function(addNewSuccess) {
+            deferred.resolve(addNewSuccess);
+        }, function(addNewError) {
+            deferred.reject(addNewError);
+        });
+        return deferred.promise;
+    }
+
+    this.getBeds = function(organizationId) {
+        var deferred = $q.defer();
+        var getBedsRequestEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/getBeds?organizationId=' + organizationId,
+            withCredentials: true
+        }
+        $http(getBedsRequestEntity).then(function(getBedsSuccess) {
+            deferred.resolve(getBedsSuccess);
+        }, function(getBedsError) {
+            deferred.reject(getBedsError);
+        });
+        return deferred.promise;
     }
 
 }]);

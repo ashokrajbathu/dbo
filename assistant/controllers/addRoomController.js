@@ -16,6 +16,13 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
     var roomItemIndex = '';
     roomElement.inputItemSearch = '';
 
+    roomElement.sortTypeOne = 'roomNo';
+    roomElement.sortTypeTwo = 'bedCount';
+    roomElement.sortTypeThree = 'floorNo';
+
+    var entitiesArray = [];
+    entitiesArrayFlag = parseInt(0);
+
     var organizationId = localStorage.getItem('orgId');
     var roomCategoriesPromise = dboticaServices.getRoomCategories(organizationId);
     roomCategoriesPromise.then(function(roomCategoriesSuccess) {
@@ -46,19 +53,16 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
             $log.log("room list----", roomsListFromAPI);
             angular.forEach(roomsListFromAPI, function(roomEntity) {
                 if (roomEntity.state == 'ACTIVE') {
-                    roomEntity.roomTypeName = getRoomTypeFromItsId(roomEntity.organizationRoomCategoryId);
                     roomElement.roomsList.push(roomEntity);
                 }
             });
+            angular.copy(roomElement.roomsList, entitiesArray);
         }
     }, function(getRoomsErrorResponse) {
         dboticaServices.noConnectivityError();
     });
 
     function addNewRoomFunction() {
-        if (roomElement.addNewRoom.hasOwnProperty('roomTypeName')) {
-            delete roomElement.addNewRoom.roomTypeName;
-        }
         if (roomItemId == '' && roomItemIndex == '') {
             roomElement.addNewRoom.organizationId = organizationId;
         }
@@ -73,11 +77,21 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
                 var addroomSuccess = angular.fromJson(addNewRoomSuccess.data.response);
                 if (errorCode == null && addNewRoomSuccess.data.success == true) {
                     dboticaServices.addNewRoomSuccessSwal();
-                    addroomSuccess.roomTypeName = getRoomTypeFromItsId(addroomSuccess.organizationRoomCategoryId);
                     if (roomItemId == '' && roomItemIndex == '') {
                         roomElement.roomsList.unshift(addroomSuccess);
+                        entitiesArray.unshift(addroomSuccess);
                     } else {
                         roomElement.roomsList.splice(roomItemIndex, 1, addroomSuccess);
+                        var localEntityIndex;
+                        for (entityIndex in entitiesArray) {
+                            if (entitiesArray[entityIndex].id == addroomSuccess.id) {
+                                localEntityIndex = entityIndex;
+                                break;
+                            } else {
+                                continue;
+                            }
+                        }
+                        entitiesArray.splice(localEntityIndex, 1, addroomSuccess);
                         roomItemId = '';
                         roomItemIndex = '';
                     }
@@ -96,25 +110,44 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
     }
 
     function deleteRoom(room, index) {
-        room.state = 'INACTIVE';
-        delete room.roomTypeName;
-        var deleteRoomPromise = dboticaServices.addOrUpdateRoom(room);
-        deleteRoomPromise.then(function(deleteRoomSuccess) {
-            var errorCode = deleteRoomSuccess.data.errorCode;
-            if (!!errorCode) {
-                dboticaServices.logoutFromThePage(errorCode);
-            } else {
-                var deleteRoomSuccessEntity = angular.fromJson(deleteRoomSuccess.data.response);
-                $log.log("delete is----", deleteRoomSuccessEntity);
-                if (deleteRoomSuccess.data.errorCode == null && deleteRoomSuccess.data.success == true) {
-                    dboticaServices.deleteRoomSuccessSwal();
-                    roomElement.roomsList.splice(index, 1);
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover the Room Details!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false
+        }, function() {
+            room.state = 'INACTIVE';
+            var deleteRoomPromise = dboticaServices.addOrUpdateRoom(room);
+            deleteRoomPromise.then(function(deleteRoomSuccess) {
+                var errorCode = deleteRoomSuccess.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var deleteRoomSuccessEntity = angular.fromJson(deleteRoomSuccess.data.response);
+                    $log.log("delete is----", deleteRoomSuccessEntity);
+                    if (deleteRoomSuccess.data.errorCode == null && deleteRoomSuccess.data.success == true) {
+                        dboticaServices.deleteRoomSuccessSwal();
+                        roomElement.roomsList.splice(index, 1);
+                        var localEntityIndex;
+                        for (entityIndex in entitiesArray) {
+                            if (entitiesArray[entityIndex].id == room.id) {
+                                localEntityIndex = entityIndex;
+                                break;
+                            } else {
+                                continue;
+                            }
+                        }
+                        entitiesArray.splice(localEntityIndex, 1);
+                    }
                 }
-            }
-        }, function(deleteRoomCategoryError) {
-            dboticaServices.noConnectivityError();
+            }, function(deleteRoomCategoryError) {
+                dboticaServices.noConnectivityError();
+            });
+            swal("Deleted!", "Room Details has been deleted.", "success");
         });
-
     }
 
     function editRoom(room, index) {
@@ -134,28 +167,35 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
     }
 
     function roomSearch() {
-        if (roomElement.inputItemSearch !== '' && roomElement.inputItemSearch !== undefined) {
-            var sortedItemsArray = [];
-            angular.forEach(roomElement.roomsList, function(roomInList) {
-                if (roomInList.state == 'ACTIVE') {
-                    var check = roomInList.roomNo.toLowerCase().indexOf(roomElement.inputItemSearch.toLowerCase()) > -1;
-                    if (check) {
-                        sortedItemsArray.push(roomInList);
-                    }
+        var searchStringLength = roomElement.inputItemSearch.length;
+        if (searchStringLength >= parseInt(3)) {
+            var searchDisplayArrayInTable = [];
+            if (roomElement.inputItemSearch !== '' && roomElement.inputItemSearch !== undefined) {
+                if (searchStringLength > entitiesArrayFlag) {
+                    angular.copy(roomElement.roomsList, searchDisplayArrayInTable);
+                } else {
+                    angular.copy(entitiesArray, searchDisplayArrayInTable);
                 }
-            });
-            angular.copy(sortedItemsArray, roomElement.roomsList);
+                var sortedItemsArray = [];
+                angular.forEach(roomElement.roomsList, function(roomInList) {
+                    if (roomInList.state == 'ACTIVE') {
+                        var checkRoomNo = roomInList.roomNo.toLowerCase().indexOf(roomElement.inputItemSearch.toLowerCase()) > -1;
+                        var checkTotalBeds = roomInList.bedCount.toLowerCase().indexOf(roomElement.inputItemSearch.toLowerCase()) > -1;
+                        var checkFloor = roomInList.floorNo.toLowerCase().indexOf(roomElement.inputItemSearch.toLowerCase()) > -1;
+                        var checkroomTypeName = roomInList.organizationRoomCategory.roomType.toLowerCase().indexOf(roomElement.inputItemSearch.toLowerCase()) > -1;
+                        var check = checkRoomNo || checkTotalBeds || checkFloor || checkroomTypeName;
+                        if (check) {
+                            sortedItemsArray.push(roomInList);
+                        }
+                    }
+                });
+                angular.copy(sortedItemsArray, roomElement.roomsList);
+                entitiesArrayFlag = roomElement.inputItemSearch.length;
+            }
+        }
+        if (searchStringLength <= parseInt(2)) {
+            entitiesArrayFlag = parseInt(0);
+            angular.copy(entitiesArray, roomElement.roomsList);
         }
     }
-
-    var getRoomTypeFromItsId = function(roomTypeId) {
-        var roomTypeInFunction = '';
-        angular.forEach(roomElement.roomCategories, function(roomTypeEntity) {
-            if (roomTypeEntity.id == roomTypeId) {
-                roomTypeInFunction = roomTypeEntity.roomType;
-            }
-        });
-        return roomTypeInFunction;
-    }
 }]);
-

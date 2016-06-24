@@ -6,12 +6,18 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
     roomCategoryElement.roomCategorySearch = roomCategorySearch;
     roomCategoryElement.editRoomCategory = editRoomCategory;
 
+
     roomCategoryElement.newRoomCategory = {};
     roomCategoryElement.activeRoomCategories = [];
     roomCategoryElement.inputItemSearch = '';
     var roomCategoryItemId = '';
     var roomCategoryItemIndex = '';
 
+    roomCategoryElement.sortTypeOne = 'roomType';
+    roomCategoryElement.sortTypeTwo = 'description';
+
+    var entitiesArray = [];
+    var entitiesArrayFlag = parseInt(0);
     /*roomCategoryElement.tableParams = new NgTableParams({
         page: 1,
         count: 2,
@@ -38,6 +44,7 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
                     continue;
                 }
             }
+            angular.copy(roomCategoryElement.activeRoomCategories, entitiesArray);
             $log.log("categories are-----", roomCategoryElement.activeRoomCategories);
         }
     }, function(getRoomCategoriesError) {
@@ -61,8 +68,19 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
                     dboticaServices.roomCategorySuccessSwal();
                     if (roomCategoryItemId == '' && roomCategoryItemIndex == '') {
                         roomCategoryElement.activeRoomCategories.unshift(addOrUpdateSuccessResponse);
+                        entitiesArray.unshift(addOrUpdateSuccessResponse);
                     } else {
                         roomCategoryElement.activeRoomCategories.splice(roomCategoryItemIndex, 1, addOrUpdateSuccessResponse);
+                        var indexLocal;
+                        for (var entityArrayIndex in entitiesArray) {
+                            if (entitiesArray[entityArrayIndex].id == addOrUpdateSuccessResponse.id) {
+                                indexLocal = entityArrayIndex;
+                                break;
+                            } else {
+                                continue;
+                            }
+                        }
+                        entitiesArray.splice(indexLocal, 1, addOrUpdateSuccessResponse);
                         roomCategoryItemId = '';
                         roomCategoryItemIndex = '';
                     }
@@ -75,39 +93,74 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
     }
 
     function deleteRoomCategory(roomCategory, index) {
-        roomCategory.state = "INACTIVE";
-        var deleteRoomCategoryPromise = dboticaServices.addOrUpdateRoomCategory(roomCategory);
-        deleteRoomCategoryPromise.then(function(deleteRoomCategorySuccess) {
-            var errorCode = deleteRoomCategorySuccess.data.errorCode;
-            if (!!errorCode) {
-                dboticaServices.logoutFromThePage(errorCode);
-            } else {
-                var deleteRoomSuccess = angular.fromJson(deleteRoomCategorySuccess.data.response);
-                $log.log("delete is----", deleteRoomSuccess);
-                if (deleteRoomCategorySuccess.data.errorCode == null && deleteRoomCategorySuccess.data.success == true) {
-                    dboticaServices.deleteRoomCategorySuccessSwal();
-                    roomCategoryElement.activeRoomCategories.splice(index, 1);
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover the room category details!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false
+        }, function() {
+            roomCategory.state = "INACTIVE";
+            var deleteRoomCategoryPromise = dboticaServices.addOrUpdateRoomCategory(roomCategory);
+            deleteRoomCategoryPromise.then(function(deleteRoomCategorySuccess) {
+                var errorCode = deleteRoomCategorySuccess.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var deleteRoomSuccess = angular.fromJson(deleteRoomCategorySuccess.data.response);
+                    $log.log("delete is----", deleteRoomSuccess);
+                    if (deleteRoomCategorySuccess.data.errorCode == null && deleteRoomCategorySuccess.data.success == true) {
+                        dboticaServices.deleteRoomCategorySuccessSwal();
+                        roomCategoryElement.activeRoomCategories.splice(index, 1);
+                        var deleteIndex;
+                        for (var deleteEntityIndex in entitiesArray) {
+                            if (entitiesArray[deleteEntityIndex].id == roomCategory.id) {
+                                deleteIndex = deleteEntityIndex;
+                                break;
+                            } else {
+                                continue;
+                            }
+                        }
+                        entitiesArray.splice(deleteIndex, 1);
+                    }
                 }
-            }
-        }, function(deleteRoomCategoryError) {
-            dboticaServices.noConnectivityError();
+            }, function(deleteRoomCategoryError) {
+                dboticaServices.noConnectivityError();
+            });
+            swal("Deleted!", "Room Category Details has been deleted.", "success");
         });
     }
 
     function roomCategorySearch() {
-        if (roomCategoryElement.inputItemSearch !== '' && roomCategoryElement.inputItemSearch !== undefined) {
-            $log.log("in search -------", roomCategoryElement.inputItemSearch);
-            var sortedItemsArray = [];
-            /*  for (var roomCategoryIndexInSearch in roomCategoryElement.activeRoomCategories) {*/
-            angular.forEach(roomCategoryElement.activeRoomCategories, function(activeRoom) {
-                if (activeRoom.state == 'ACTIVE') {
-                    var check = activeRoom.roomType.toLowerCase().indexOf(roomCategoryElement.inputItemSearch.toLowerCase()) > -1;
-                    if (check) {
-                        sortedItemsArray.push(activeRoom);
-                    }
+        var searchStringLength = roomCategoryElement.inputItemSearch.length;
+        if (searchStringLength >= parseInt(3)) {
+            var searchDisplayArrayInTable = [];
+            if (roomCategoryElement.inputItemSearch !== '' && roomCategoryElement.inputItemSearch !== undefined) {
+                if (searchStringLength > entitiesArrayFlag) {
+                    angular.copy(roomCategoryElement.activeRoomCategories, searchDisplayArrayInTable);
+                } else {
+                    angular.copy(entitiesArray, searchDisplayArrayInTable);
                 }
-            });
-            angular.copy(sortedItemsArray, roomCategoryElement.activeRoomCategories);
+                var sortedItemsArray = [];
+                angular.forEach(searchDisplayArrayInTable, function(activeRoom) {
+                    if (activeRoom.state == 'ACTIVE') {
+                        var checkRoomType = activeRoom.roomType.toLowerCase().indexOf(roomCategoryElement.inputItemSearch.toLowerCase()) > -1;
+                        var descriptionCheck = activeRoom.description.toLowerCase().indexOf(roomCategoryElement.inputItemSearch.toLowerCase()) > -1;
+                        var check = checkRoomType || descriptionCheck;
+                        if (check) {
+                            sortedItemsArray.push(activeRoom);
+                        }
+                    }
+                });
+                angular.copy(sortedItemsArray, roomCategoryElement.activeRoomCategories);
+                entitiesArrayFlag = roomCategoryElement.inputItemSearch.length;
+            }
+        }
+        if (searchStringLength <= parseInt(2)) {
+            entitiesArrayFlag = parseInt(0);
+            angular.copy(entitiesArray, roomCategoryElement.activeRoomCategories);
         }
     }
 
@@ -119,4 +172,5 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
         roomCategoryItem.price = parseInt(roomCategoryItem.price) / 100;
         angular.copy(roomCategoryItem, roomCategoryElement.newRoomCategory);
     }
+
 }]);

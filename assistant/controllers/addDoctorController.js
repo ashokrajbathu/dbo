@@ -20,7 +20,14 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     doctorElement.doctorActiveId = '';
     var doctorItemIndex = '';
     var doctorItemId = '';
-   
+
+    doctorElement.sortTypeOne = 'doctorType';
+    doctorElement.sortTypeTwo = 'firstName';
+
+    var entitiesArray = [];
+    var entitiesArrayFlag = parseInt(0);
+
+
 
     var getDoctorTypesPromise = dboticaServices.getDoctorCategories(organizationId);
     $log.log("doc types are----", getDoctorTypesPromise);
@@ -31,6 +38,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
         } else {
             var doctorTypes = [];
             doctorTypes = angular.fromJson(getDoctorsSuccess.data.response);
+            $log.log('doctor types are----', doctorTypes);
             angular.forEach(doctorTypes, function(doctorType) {
                 if (doctorType.state == 'ACTIVE') {
                     doctorElement.allDoctorTypes.push(doctorType);
@@ -38,6 +46,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
             });
             doctorElement.doctorType = doctorElement.allDoctorTypes[0].doctorType;
             doctorElement.addNewDoctor.organizationDoctorCategoryId = doctorElement.allDoctorTypes[0].id;
+            $log.log('org doc cat id---', doctorElement.addNewDoctor.organizationDoctorCategoryId);
         }
     }, function(getDoctorsError) {
         dboticaServices.noConnectivityError();
@@ -59,8 +68,8 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
                 doctorElement.doctorsListToBeDisplayed[0].lastName = '';
             }
             doctorElement.doctorName = doctorElement.doctorsListToBeDisplayed[0].firstName + ' ' + doctorElement.doctorsListToBeDisplayed[0].lastName;
-            doctorElement.doctorActiveId = doctorElement.doctorsListToBeDisplayed[0].id;
-            $log.log("doctors list response is---", doctorsListIs);
+            doctorElement.addNewDoctor.doctorId = doctorElement.doctorsListToBeDisplayed[0].id;
+            $log.log("doctors list response is---", doctorElement.addNewDoctor.doctorId);
         }
     }, function(getDoctorsListError) {
         dboticaServices.noConnectivityError();
@@ -78,12 +87,11 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
             $log.log("docs list in admin-----", docsListInAdmin);
             angular.forEach(docsListInAdmin, function(docsListInAdminElement) {
                 if (docsListInAdminElement.state == 'ACTIVE') {
-                    docsListInAdminElement.doctorCatName = getDoctorCategoryNameFromItsId(docsListInAdminElement.organizationDoctorCategoryId);
-                    docsListInAdminElement.doctorNameToDisplay = getDoctorNameFromId(docsListInAdminElement.doctorId);
                     docsListLocal.push(docsListInAdminElement);
                 }
             });
             angular.copy(docsListLocal, doctorElement.doctorsListInTheTable);
+            angular.copy(docsListLocal, entitiesArray);
             $log.log('in list in table----', doctorElement.doctorsListInTheTable);
         }
     }, function(doctorsListInMainError) {
@@ -96,10 +104,6 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     }
 
     function addNewDoctorInModal() {
-        if (doctorElement.addNewDoctor.hasOwnProperty('doctorCatName') && doctorElement.addNewDoctor.hasOwnProperty('doctorNameToDisplay')) {
-            delete doctorElement.addNewDoctor.doctorCatName;
-            delete doctorElement.addNewDoctor.doctorNameToDisplay;
-        }
         if (doctorItemIndex == '' && doctorItemId == '') {
             doctorElement.addNewDoctor.organizationId = organizationId;
         }
@@ -115,12 +119,21 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
                 $log.log("new doctor response is----", newDoctorResponse);
                 if (errorCode == null && addNewDocSuccess.data.success == true) {
                     dboticaServices.addNewDoctorSuccessSwal();
-                    newDoctorResponse.doctorCatName = getDoctorCategoryNameFromItsId(newDoctorResponse.organizationDoctorCategoryId);
-                    newDoctorResponse.doctorNameToDisplay = getDoctorNameFromId(newDoctorResponse.doctorId);
                     if (doctorItemIndex == '' && doctorItemId == '') {
                         doctorElement.doctorsListInTheTable.unshift(newDoctorResponse);
+                        entitiesArray.unshift(newDoctorResponse);
                     } else {
                         doctorElement.doctorsListInTheTable.splice(doctorItemIndex, 1, newDoctorResponse);
+                        var indexLocal;
+                        for (var doctorEntity in entitiesArray) {
+                            if (entitiesArray[doctorEntity].id == newDoctorResponse.id) {
+                                indexLocal = doctorEntity;
+                                break;
+                            } else {
+                                continue;
+                            }
+                        }
+                        entitiesArray.splice(indexLocal, 1, newDoctorResponse);
                     }
                 }
             }
@@ -141,24 +154,44 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     }
 
     function deleteDoctorInTable(doctorEntryInTable, index) {
-        doctorEntryInTable.state = 'INACTIVE';
-        delete doctorEntryInTable.doctorCatName;
-        delete doctorEntryInTable.doctorNameToDisplay;
-        var deleteDoctorPromise = dboticaServices.addNewDoctorToACategory(doctorEntryInTable);
-        deleteDoctorPromise.then(function(deleteDoctorSuccess) {
-            var errorCode = deleteDoctorSuccess.data.errorCode;
-            if (!!errorCode) {
-                dboticaServices.logoutFromThePage(errorCode);
-            } else {
-                var deleteDoctorSuccessEntity = angular.fromJson(deleteDoctorSuccess.data.response);
-                $log.log("delete is----", deleteDoctorSuccessEntity);
-                if (deleteDoctorSuccess.data.errorCode == null && deleteDoctorSuccess.data.success == true) {
-                    dboticaServices.deleteDoctorSuccessSwal();
-                    doctorElement.doctorsListInTheTable.splice(index, 1);
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover the Doctor Details!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false
+        }, function() {
+            doctorEntryInTable.state = 'INACTIVE';
+
+            var deleteDoctorPromise = dboticaServices.addNewDoctorToACategory(doctorEntryInTable);
+            deleteDoctorPromise.then(function(deleteDoctorSuccess) {
+                var errorCode = deleteDoctorSuccess.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var deleteDoctorSuccessEntity = angular.fromJson(deleteDoctorSuccess.data.response);
+                    $log.log("delete is----", deleteDoctorSuccessEntity);
+                    if (deleteDoctorSuccess.data.errorCode == null && deleteDoctorSuccess.data.success == true) {
+                        dboticaServices.deleteDoctorSuccessSwal();
+                        doctorElement.doctorsListInTheTable.splice(index, 1);
+                        var delIndex;
+                        for (var deleteIndex in entitiesArray) {
+                            if (entitiesArray[deleteIndex].id == doctorEntryInTable.id) {
+                                delIndex = deleteIndex;
+                                break;
+                            } else {
+                                continue;
+                            }
+                        }
+                        entitiesArray.splice(delIndex, 1);
+                    }
                 }
-            }
-        }, function(deleteDoctorCategoryError) {
-            dboticaServices.noConnectivityError();
+            }, function(deleteDoctorCategoryError) {
+                dboticaServices.noConnectivityError();
+            });
+            swal("Deleted!", "Doctor Details has been deleted.", "success");
         });
     }
 
@@ -186,81 +219,63 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     }
 
     function doctorSearchInTheTotalList() {
-        if (doctorElement.doctorNameForSearch !== '' && doctorElement.doctorNameForSearch !== undefined) {
-            var sortedItemsArray = [];
-            var sortedDoctorCategoriesArray = [];
-            var sortedDoctorNamesArray = [];
-            var doctorCategoriesListForSorting = dboticaServices.getDoctorCategoriesList();
-            var doctorNamesListForSorting = dboticaServices.getDoctorNames();
-            $log.log("doc categories list is----", doctorCategoriesListForSorting);
-            $log.log("doc names list is----", doctorNamesListForSorting);
-            angular.forEach(doctorCategoriesListForSorting, function(doctorCategoryForSorting) {
-                if (doctorCategoryForSorting.state == 'ACTIVE') {
-                    var categoryCheck = doctorCategoryForSorting.doctorType.toLowerCase().indexOf(doctorElement.doctorNameForSearch.toLowerCase()) > -1;
-                    if (categoryCheck) {
-                        angular.forEach(doctorElement.doctorsListInTheTable, function(doctorInTable) {
-                            if (doctorInTable.organizationDoctorCategoryId == doctorCategoryForSorting.id) {
-                                sortedItemsArray.push(doctorInTable);
-                            }
-                        });
-                    }
+        if (doctorElement.doctorNameForSearch.length >= parseInt(3)) {
+            var searchDisplayArrayInTable = [];
+            if (doctorElement.doctorNameForSearch !== '' && doctorElement.doctorNameForSearch !== undefined) {
+                if (doctorElement.doctorNameForSearch.length > entitiesArrayFlag) {
+                    angular.copy(doctorElement.doctorsListInTheTable, searchDisplayArrayInTable);
+                } else {
+                    angular.copy(entitiesArray, searchDisplayArrayInTable);
                 }
-            });
-            angular.forEach(doctorNamesListForSorting, function(doctorNameToSort) {
-                if (doctorNameToSort.state == 'ACTIVE') {
-                    var doctorFirstNameCheck = doctorNameToSort.firstName.toLowerCase().indexOf(doctorElement.doctorNameForSearch.toLowerCase()) > -1;
-                    var doctorLastNameCheck = doctorNameToSort.lastName.toLowerCase().indexOf(doctorElement.doctorNameForSearch.toLowerCase()) > -1;
-                    var doctorNameCheck = doctorFirstNameCheck || doctorLastNameCheck;
-                    if (doctorNameCheck) {
-                        angular.forEach(doctorElement.doctorsListInTheTable, function(doctorInTheTable) {
-                            if (doctorInTheTable.doctorId == doctorNameToSort.id) {
-                                var stringPresenceCheck = false;
-                                for (var sortedItemIndex in sortedItemsArray) {
-                                    if (sortedItemsArray[sortedItemIndex].doctorId == doctorNameToSort.id) {
-                                        stringPresenceCheck = true;
-                                        break;
-                                    } else {
-                                        continue;
+                var sortedItemsArray = [];
+                var sortedDoctorCategoriesArray = [];
+                var sortedDoctorNamesArray = [];
+                var doctorCategoriesListForSorting = doctorElement.allDoctorTypes;
+                var doctorNamesListForSorting = doctorElement.doctorsListToBeDisplayed;
+                angular.forEach(doctorCategoriesListForSorting, function(doctorCategoryForSorting) {
+                    if (doctorCategoryForSorting.state == 'ACTIVE') {
+                        var categoryCheck = doctorCategoryForSorting.doctorType.toLowerCase().indexOf(doctorElement.doctorNameForSearch.toLowerCase()) > -1;
+                        if (categoryCheck) {
+                            angular.forEach(searchDisplayArrayInTable, function(doctorInTable) {
+                                if (doctorInTable.organizationDoctorCategoryId == doctorCategoryForSorting.id) {
+                                    sortedItemsArray.push(doctorInTable);
+                                }
+                            });
+                        }
+                    }
+                });
+                angular.forEach(doctorNamesListForSorting, function(doctorNameToSort) {
+                    if (doctorNameToSort.state == 'ACTIVE') {
+                        var doctorFirstNameCheck = doctorNameToSort.firstName.toLowerCase().indexOf(doctorElement.doctorNameForSearch.toLowerCase()) > -1;
+                        var doctorLastNameCheck = doctorNameToSort.lastName.toLowerCase().indexOf(doctorElement.doctorNameForSearch.toLowerCase()) > -1;
+                        var doctorNameCheck = doctorFirstNameCheck || doctorLastNameCheck;
+                        if (doctorNameCheck) {
+                            angular.forEach(searchDisplayArrayInTable, function(doctorInTheTable) {
+                                if (doctorInTheTable.doctorId == doctorNameToSort.id) {
+                                    var stringPresenceCheck = false;
+                                    for (var sortedItemIndex in sortedItemsArray) {
+                                        if (sortedItemsArray[sortedItemIndex].doctorId == doctorNameToSort.id) {
+                                            stringPresenceCheck = true;
+                                            break;
+                                        } else {
+                                            continue;
+                                        }
+                                    }
+                                    if (!stringPresenceCheck) {
+                                        sortedItemsArray.push(doctorInTheTable);
                                     }
                                 }
-                                if (!stringPresenceCheck) {
-                                    sortedItemsArray.push(doctorInTheTable);
-                                }
-                            }
-                        });
+                            });
+                        }
                     }
-                }
-            });
-            angular.copy(sortedItemsArray, doctorElement.doctorsListInTheTable);
+                });
+                angular.copy(sortedItemsArray, doctorElement.doctorsListInTheTable);
+                entitiesArrayFlag = doctorElement.doctorNameForSearch.length;
+            }
         }
-    }
-
-    var getDoctorCategoryNameFromItsId = function(doctorCategoryId) {
-        var doctorCategoryName = '';
-        angular.forEach(doctorElement.allDoctorTypes, function(docTypeEntity) {
-            if (docTypeEntity.id == doctorCategoryId) {
-                doctorCategoryName = docTypeEntity.doctorType;
-            }
-        });
-        return doctorCategoryName;
-    }
-
-    var getDoctorNameFromId = function(docId) {
-        var result = '';
-        var firstName = '';
-        var lastName = '';
-        angular.forEach(doctorElement.doctorsListToBeDisplayed, function(docNam) {
-            if (docNam.id == docId) {
-                $log.log("in name check---");
-                firstName = docNam.firstName;
-                result = firstName;
-                if (docNam.hasOwnProperty('lastName')) {
-                    if (docNam.lastName !== '') {
-                        result = result + ' ' + docNam.lastName;
-                    }
-                }
-            }
-        });
-        return result;
+        if (doctorElement.doctorNameForSearch.length <= parseInt(2)) {
+            entitiesArrayFlag = parseInt(0);
+            angular.copy(entitiesArray, doctorElement.doctorsListInTheTable);
+        }
     }
 }]);
