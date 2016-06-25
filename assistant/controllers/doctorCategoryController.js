@@ -5,15 +5,21 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
 
     doctorCategoryElement.addNewDoctorCategory = {};
     doctorCategoryElement.doctorCategoriesList = [];
+    doctorCategoryElement.addNewDoctorCategory.doctorType = '';
+    doctorCategoryElement.addNewDoctorCategory.description = '';
     doctorCategoryElement.addNewDoctorCategoryInModal = addNewDoctorCategoryInModal;
     doctorCategoryElement.deleteDoctorCategory = deleteDoctorCategory;
     doctorCategoryElement.editDoctorCategory = editDoctorCategory;
     doctorCategoryElement.doctorCategorySearch = doctorCategorySearch;
+    doctorCategoryElement.validateDoctorCategoryName = validateDoctorCategoryName;
+    doctorCategoryElement.clearModal = clearModal;
 
     var doctorCategoryItemId = '';
     var doctorCategoryItemIndex = '';
     var entitiesArray = [];
     var entitiesArrayFlag = parseInt(0);
+
+    doctorCategoryElement.doctorCategoryErrorMessage = false;
 
     doctorCategoryElement.sortTypeOne = 'doctorType';
     doctorCategoryElement.sortTypeTwo = 'description';
@@ -38,41 +44,46 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
     });
 
     function addNewDoctorCategoryInModal() {
-        if (doctorCategoryItemId == '' && doctorCategoryItemIndex == '') {
-            doctorCategoryElement.addNewDoctorCategory.organizationId = organizationId;
-        }
-        $log.log("new doctor category is----", doctorCategoryElement.addNewDoctorCategory);
-        var addNewDoctorCategoryPromise = dboticaServices.addNewDoctorCategory(doctorCategoryElement.addNewDoctorCategory);
-        $log.log("doc promise is----", addNewDoctorCategoryPromise);
-        addNewDoctorCategoryPromise.then(function(addNewDoctorSuccess) {
-            var errorCode = addNewDoctorSuccess.data.errorCode;
-            if (!!errorCode) {
-                dboticaServices.logoutFromThePage(errorCode);
-            } else {
-                var addNewDoctorCategorySuccess = angular.fromJson(addNewDoctorSuccess.data.response);
-                if (errorCode == null && addNewDoctorSuccess.data.success == true) {
-                    dboticaServices.addNewDoctorCategorySuccessSwal();
-                    if (doctorCategoryItemId == '' && doctorCategoryItemIndex == '') {
-                        doctorCategoryElement.doctorCategoriesList.unshift(addNewDoctorCategorySuccess);
-                        entitiesArray.unshift(addNewDoctorCategorySuccess);
-                    } else {
-                        doctorCategoryElement.doctorCategoriesList.splice(doctorCategoryItemIndex, 1, addNewDoctorCategorySuccess);
-                        var localDoctorCategoryIndex;
-                        for (var entityIndex in entitiesArray) {
-                            if (entitiesArray[entityIndex].id == addNewDoctorCategorySuccess.id) {
-                                localDoctorCategoryIndex = entityIndex;
-                                break;
-                            } else {
-                                continue;
+        if (doctorCategoryElement.addNewDoctorCategory.doctorType == '') {
+            doctorCategoryElement.doctorCategoryErrorMessage = true;
+        } else {
+            if (doctorCategoryItemId == '' && doctorCategoryItemIndex == '') {
+                doctorCategoryElement.addNewDoctorCategory.organizationId = organizationId;
+            }
+            $log.log("new doctor category is----", doctorCategoryElement.addNewDoctorCategory);
+            var addNewDoctorCategoryPromise = dboticaServices.addNewDoctorCategory(doctorCategoryElement.addNewDoctorCategory);
+            $log.log("doc promise is----", addNewDoctorCategoryPromise);
+            addNewDoctorCategoryPromise.then(function(addNewDoctorSuccess) {
+                var errorCode = addNewDoctorSuccess.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var addNewDoctorCategorySuccess = angular.fromJson(addNewDoctorSuccess.data.response);
+                    if (errorCode == null && addNewDoctorSuccess.data.success == true) {
+                        angular.element('#adddoctorCategoryModal').modal('hide');
+                        dboticaServices.addNewDoctorCategorySuccessSwal();
+                        if (doctorCategoryItemId == '' && doctorCategoryItemIndex == '') {
+                            doctorCategoryElement.doctorCategoriesList.unshift(addNewDoctorCategorySuccess);
+                            entitiesArray.unshift(addNewDoctorCategorySuccess);
+                        } else {
+                            doctorCategoryElement.doctorCategoriesList.splice(doctorCategoryItemIndex, 1, addNewDoctorCategorySuccess);
+                            var localDoctorCategoryIndex;
+                            for (var entityIndex in entitiesArray) {
+                                if (entitiesArray[entityIndex].id == addNewDoctorCategorySuccess.id) {
+                                    localDoctorCategoryIndex = entityIndex;
+                                    break;
+                                } else {
+                                    continue;
+                                }
                             }
+                            entitiesArray.splice(localDoctorCategoryIndex, 1, addNewDoctorCategorySuccess);
                         }
-                        entitiesArray.splice(localDoctorCategoryIndex, 1, addNewDoctorCategorySuccess);
                     }
                 }
-            }
-        }, function(addNewDoctorError) {
-            dboticaServices.noConnectivityError();
-        });
+            }, function(addNewDoctorError) {
+                dboticaServices.noConnectivityError();
+            });
+        }
     }
 
     function deleteDoctorCategory(doctorCategory, index) {
@@ -121,6 +132,7 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
         doctorCategoryItemId = '';
         doctorCategoryItemId = doctor.id;
         doctorCategoryItemIndex = index;
+        doctorCategoryElement.doctorCategoryErrorMessage = false;
         angular.copy(doctor, doctorCategoryElement.addNewDoctorCategory);
     }
 
@@ -153,5 +165,19 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
             entitiesArrayFlag = parseInt(0);
             angular.copy(entitiesArray, doctorCategoryElement.doctorCategoriesList);
         }
+    }
+
+    function validateDoctorCategoryName() {
+        if (doctorCategoryElement.addNewDoctorCategory.doctorType == '') {
+            doctorCategoryElement.doctorCategoryErrorMessage = true;
+        } else {
+            doctorCategoryElement.doctorCategoryErrorMessage = false;
+        }
+    }
+
+    function clearModal() {
+        doctorCategoryElement.doctorCategoryErrorMessage = false;
+        doctorCategoryElement.addNewDoctorCategory.doctorType = '';
+        doctorCategoryElement.addNewDoctorCategory.description = '';
     }
 }]);

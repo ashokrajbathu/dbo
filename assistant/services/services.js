@@ -1442,6 +1442,26 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.deleteBedSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Selected bed Deleted SuccessFully!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.addOrUpdateBedSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Bed Details Successfully added or updated!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
     this.addNewBed = function(addNewBedRequest) {
         var deferred = $q.defer();
         var addNewBedRequestEntity = {

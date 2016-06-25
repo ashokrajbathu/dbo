@@ -6,6 +6,8 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
     bedElement.validateBedNumber = validateBedNumber;
     bedElement.clearAllVars = clearAllVars;
     bedElement.deleteBed = deleteBed;
+    bedElement.searchTheBed = searchTheBed;
+    bedElement.editBedDetails = editBedDetails;
 
     bedElement.addNew = {};
     bedElement.roomsInBedToDisplay = [];
@@ -17,6 +19,12 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
     bedElement.addNew.bedStatus = 'VACANT';
     var roomNumberString = '---Room Number----';
     bedElement.roomNumber = '---Room Number----';
+    bedElement.bedSearchInTxtBox = '';
+    bedElement.addBedItemId = '';
+    bedElement.addBedItemIndex = '';
+
+    var entitiesArray = [];
+    var entitiesArrayFlag = parseInt(0);
 
     var organizationId = localStorage.getItem('orgId');
 
@@ -52,9 +60,10 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                     bedElement.bedsToBeDisplayedInTable.push(bedEntity);
                 }
             });
+            angular.copy(bedElement.bedsToBeDisplayedInTable, entitiesArray);
         }
     }, function(bedsInRoomError) {
-
+        dboticaServices.noConnectivityError();
     });
 
     function addNewBed() {
@@ -72,11 +81,32 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                 } else {
                     var addNewBedSuccessResponse = angular.fromJson(addNewBedSuccess.data.response);
                     $log.log('success response---', addNewBedSuccessResponse);
+                    if (addNewBedSuccess.data.errorCode == null && addNewBedSuccess.data.success == true) {
+                        dboticaServices.addOrUpdateBedSuccessSwal();
+                        angular.element('#addBedModal').modal('hide');
+                        if (addBedItemId == '' && addBedItemIndex == '') {
+                            bedElement.bedsToBeDisplayedInTable.unshift(addNewBedSuccessResponse);
+                            entitiesArray.unshift(addNewBedSuccessResponse);
+                        } else {
+                            bedElement.bedsToBeDisplayedInTable.splice(addBedItemIndex, 1, addNewBedSuccessResponse);
+                            var indexLocal;
+                            for (var entityArrayIndex in entitiesArray) {
+                                if (entitiesArray[entityArrayIndex].id == addNewBedSuccessResponse.id) {
+                                    indexLocal = entityArrayIndex;
+                                    break;
+                                } else {
+                                    continue;
+                                }
+                            }
+                            entitiesArray.splice(indexLocal, 1, addNewBedSuccessResponse);
+                            addBedItemId = '';
+                            addBedItemIndex = '';
+                        }
+                    }
                 }
             }, function(addNewBedError) {
-
+                dboticaServices.noConnectivityError();
             });
-            angular.element('#addBedModal').modal('hide');
         }
         $log.log('bed status is----', bedElement.addNew.bedStatus);
     }
@@ -105,12 +135,13 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
     }
 
     function clearAllVars() {
+        bedElement.addNew.bedNo = '';
         bedElement.enterBedErrorMessage = false;
         bedElement.selectRoomNumberErrorMessage = false;
         bedElement.roomNumber = roomNumberString;
     }
 
-    function deleteBed(bedUnit) {
+    function deleteBed(bedUnit, index) {
         swal({
                 title: "Are you sure?",
                 text: "You will not be able to recover Bed Details!",
@@ -130,11 +161,74 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                     } else {
                         var deleteBedSuccessResponse = angular.fromJson(deleteBedSuccess.data.response);
                         $log.log('delete bed is---', deleteBedSuccessResponse);
+                        if (deleteBedSuccess.data.errorCode == null && deleteBedSuccess.data.success == true) {
+                            dboticaServices.deleteBedSuccessSwal();
+                            bedElement.bedsToBeDisplayedInTable.splice(index, 1);
+                            var deleteIndex;
+                            for (var deleteEntityIndex in entitiesArray) {
+                                if (entitiesArray[deleteEntityIndex].id == bedUnit.id) {
+                                    deleteIndex = deleteEntityIndex;
+                                    break;
+                                } else {
+                                    continue;
+                                }
+                            }
+                            entitiesArray.splice(deleteIndex, 1);
+                        }
                     }
                 }, function(deleteBedError) {
                     dboticaServices.noConnectivityError();
                 });
                 swal("Deleted!", "Bed details has been deleted.", "success");
             });
+    }
+
+    function searchTheBed() {
+        var searchStringLength = bedElement.bedSearchInTxtBox.length;
+        if (searchStringLength >= parseInt(3)) {
+            var searchDisplayArrayInTable = [];
+            if (bedElement.bedSearchInTxtBox !== '' && bedElement.bedSearchInTxtBox !== undefined) {
+                if (searchStringLength > entitiesArrayFlag) {
+                    $log.log('in fist one---');
+                    angular.copy(bedElement.bedsToBeDisplayedInTable, searchDisplayArrayInTable);
+                } else {
+                    $log.log('in second one---');
+                    angular.copy(entitiesArray, searchDisplayArrayInTable);
+                }
+                var sortedItemsArray = [];
+                angular.forEach(searchDisplayArrayInTable, function(activeBed) {
+                    if (activeBed.bedState == 'ACTIVE') {
+                        var checkBedNo = activeBed.bedNo.toLowerCase().indexOf(bedElement.bedSearchInTxtBox.toLowerCase()) > -1;
+                        var checkRoomNo = activeBed.organizationRoom.roomNo.toLowerCase().indexOf(bedElement.bedSearchInTxtBox.toLowerCase()) > -1;
+                        var checkRoomType = activeBed.organizationRoomCategory.roomType.toLowerCase().indexOf(bedElement.bedSearchInTxtBox.toLowerCase()) > -1;
+                        var bedStatusCheck = activeBed.bedStatus.toLowerCase().indexOf(bedElement.bedSearchInTxtBox.toLowerCase()) > -1;
+                        $log.log('roomtype is---', checkRoomType);
+                        var check = checkBedNo || checkRoomNo || checkRoomType || bedStatusCheck;
+                        if (check) {
+                            sortedItemsArray.push(activeBed);
+                        }
+                    }
+                });
+                angular.copy(sortedItemsArray, bedElement.bedsToBeDisplayedInTable);
+                entitiesArrayFlag = bedElement.bedSearchInTxtBox.length;
+            }
+        }
+        if (searchStringLength <= parseInt(2)) {
+            $log.log('in check 2--');
+            entitiesArrayFlag = parseInt(0);
+            angular.copy(entitiesArray, bedElement.bedsToBeDisplayedInTable);
+        }
+    }
+
+    function editBedDetails(editBedEntity, index) {
+        addBedItemId = '';
+        addBedItemIndex = '';
+        addBedItemId = editBedEntity.id;
+        addBedItemIndex = index;
+        bedElement.addNew.bedNo = editBedEntity.bedNo;
+        bedElement.addNew.bedStatus = editBedEntity.bedStatus.toUpperCase();
+        bedElement.roomNumber = editBedEntity.organizationRoom.roomNo;
+        bedElement.addNew.organizationRoomId = editBedEntity.organizationRoom.id;
+
     }
 }]);
