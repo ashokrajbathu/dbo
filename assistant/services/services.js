@@ -1497,4 +1497,44 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
+    this.registerPatient = function(registerPatientEntityFromController) {
+        var deferred = $q.defer();
+        var registPatientEntity = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/updatePatient',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(registerPatientEntityFromController)
+        }
+        $http(registPatientEntity).then(function(registerPatientSuccess) {
+            deferred.resolve(registerPatientSuccess);
+        }, function(registerPatientError) {
+            deferred.reject(registerPatientError);
+        });
+        return deferred.promise;
+    }
+
+    this.newDoctorByAssistant = function(newDoctor) {
+        var deferred = $q.defer();
+        var newDoctorEntity = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/doctor/signup',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(newDoctor)
+        }
+        $http(newDoctorEntity).then(function(newDoctorSuccess) {
+            deferred.resolve(newDoctorSuccess);
+        }, function(newDoctorError) {
+            deferred.reject(newDoctorError);
+        });
+        return deferred.promise;
+    }
+
 }]);

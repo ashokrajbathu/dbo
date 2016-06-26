@@ -9,8 +9,124 @@
                     <h4 class="modal-title">Add New Doctor</h4>
                 </div>
                 <div class="modal-body">
+                    <div class="row" style="margin-left:8px;">
+                        <input ng-change="doctor.phoneNumberValidation()" type="search" numbers-only ng-model="doctor.doctorSearchInTxtBox" class="form-control searchInMainAdmin pull-left" placeholder="Doctor Phone Number">
+                        <span>
+                                <button ng-click="doctor.doctorSearchWithPhoneNumber()" ng-disabled="doctor.phoneNumberBtn" type="submit" class="btn mainAdminBtn searchBtnInMainAdmin pull-left"><span class="glyphicon glyphiconSearch glyphicon-search"></span></button>
+                        </span>
+                    </div>
+                    <br>
+                    <p class="phoneNumberErrorMessageInRegister" ng-if="doctor.phoneNumberErrorMessage">Please Enter a Phone Number of length 10 digits</p>
+                    <div ng-if="doctor.newDoctorDetails">
+                        <span ng-if="doctor.doctorDetailsErrorMessage" style="color:red;">Doctor Details not found!!! Please add Doctor Details</span>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputDoctorName">*Doctor Name</label>
+                                        <input type="text" class="form-control" id="exampleInputDoctorName" ng-model="doctor.doctorData.firstName" placeholder="Doctor Name">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputDoctorEmailId">*Email Id</label>
+                                        <input type="email" class="form-control" id="exampleInputDoctorEmailId" ng-model="doctor.doctorData.emailId" placeholder="Email Id">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputDoctorPhoneNumber">*Phone Number</label>
+                                        <input type="text" class="form-control" id="exampleInputDoctorPhoneNumber" ng-model="doctor.doctorData.phoneNumber" placeholder="Phone Number">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputDoctorUserName">User Name</label>
+                                        <input type="text" class="form-control" id="exampleInputDoctorUserName" ng-model="doctor.doctorData.userName" placeholder="User Name">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputDoctorPassword">*Password</label>
+                                        <input type="password" class="form-control" id="exampleInputDoctorPassword" ng-model="doctor.doctorData.password" placeholder="Password">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputDoctorCity">City</label>
+                                        <input type="text" class="form-control" id="exampleInputDoctorCity" ng-model="doctor.doctorData.city" placeholder="City">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputDoctorSpeciality">Speciality</label>
+                                        <!-- <select ng-model="doctor.doctorData.speciality" ng-options="speciality.name for speciality in doctor.optionsForSpeciality">
+                                            <option value="{{speciality.name}}" ng-bind="speciality"></option>
+                                        </select> -->
+                                        <div id="drpBtnDivdoctor" class="dropdown">
+                                            <button style="border-color:#d2d6de;width:100%;" id="drpBtndoctor" class="btn roomCategoryBtn dropdown-toggle" type="button" data-toggle="dropdown">{{doctor.specialityName}}
+                                                <span id="caretIndoctor" class="caret"></span></button>
+                                            <ul class="dropdown-menu">
+                                                <li ng-click="doctor.specialitySelect(speciality)" ng-repeat="speciality in doctor.optionsForSpeciality">
+                                                    <a style="cursor:pointer;" ng-bind="speciality.name"></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputDoctorQualification">Qualification</label>
+                                        <input type="text" class="form-control" id="exampleInputDoctorQualification" ng-model="doctor.doctorData.qualification" placeholder="Qualification">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputDoctorRegistrationNumber">Registration Number</label>
+                                        <input type="text" class="form-control" id="exampleInputDoctorRegistrationNumber" ng-model="doctor.doctorData.doctorRegistrationNo" placeholder="Registration Number">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputDoctorOrganization">Organization</label>
+                                        <input type="text" class="form-control" id="exampleInputDoctorOrganization" ng-model="doctor.doctorData.organization" placeholder="Organization">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <span ng-if="doctor.asteriskErrorMessage" style="color:red;">Please Enter the fields with asterisk(*) mark</span>
+                        <hr>
+                        <div class="row text-center">
+                            <button ng-click="doctor.addNewDoctorByAssistant()" class="buttonsInInpatientModal btn addPatientBtn" type="button">Add Doctor</button>
+                            <button class="btn buttonsInInpatientModal addPatientBtn" data-dismiss="modal" type="button">Close</button>
+                        </div>
+                    </div>
                     <div class="row">
-                        <div class="col-md-8 col-sm-8 col-xs-8">
+                        <div ng-if="doctor.addNewDoctorForm" class="col-md-8 col-sm-8 col-xs-8">
                             <form>
                                 <div class="form-group">
                                     <label for="exampleInputRoomCategory">Doctor Category</label>
@@ -27,15 +143,16 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputDoctorName">Doctor Name</label>
-                                    <div id="drpBtnDivAdminDoc" class="dropdown">
-                                        <button style="border-color:#d2d6de;" id="drpBtnRoomDoc" class="btn roomCategoryBtn dropdown-toggle" type="button" data-toggle="dropdown">{{doctor.doctorName}}
-                                            <span id="caretInDoc" class="caret"></span></button>
-                                        <ul class="dropdown-menu">
-                                            <li ng-click="doctor.doctorSelectFromDropDown(docEntity)" ng-repeat="docEntity in doctor.doctorsListToBeDisplayed">
-                                                <a style="cursor:pointer;" ng-bind="docEntity.firstName +' '+docEntity.lastName"></a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <input readonly type="text" ng-model="doctor.doctorName" class="form-control" id="exampleInputDoctorPhoneNumber" placeholder="Doctor Name">
+                                    <!-- <div id="drpBtnDivAdminDoc" class="dropdown">
+                                    <button style="border-color:#d2d6de;" id="drpBtnRoomDoc" class="btn roomCategoryBtn dropdown-toggle" type="button" data-toggle="dropdown">{{doctor.doctorName}}
+                                        <span id="caretInDoc" class="caret"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li ng-click="doctor.doctorSelectFromDropDown(docEntity)" ng-repeat="docEntity in doctor.doctorsListToBeDisplayed">
+                                            <a style="cursor:pointer;" ng-bind="docEntity.firstName +' '+docEntity.lastName"></a>
+                                        </li>
+                                    </ul>
+                                </div> -->
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputDoctorPhoneNumber">Phone Number</label>

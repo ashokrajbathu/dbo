@@ -5,21 +5,87 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
 
     doctorElement.doctorTypeSelect = doctorTypeSelect;
     doctorElement.addNewDoctorInModal = addNewDoctorInModal;
-    doctorElement.doctorSelectFromDropDown = doctorSelectFromDropDown;
+    /*doctorElement.doctorSelectFromDropDown = doctorSelectFromDropDown;*/
     doctorElement.editDoctorInTable = editDoctorInTable;
     doctorElement.deleteDoctorInTable = deleteDoctorInTable;
     doctorElement.doctorSearchInTheTotalList = doctorSearchInTheTotalList;
+    doctorElement.phoneNumberValidation = phoneNumberValidation;
+    doctorElement.doctorSearchWithPhoneNumber = doctorSearchWithPhoneNumber;
+    doctorElement.addNewDoctorByAssistant = addNewDoctorByAssistant;
+    doctorElement.specialitySelect = specialitySelect;
 
     doctorElement.allDoctorTypes = [];
     var doctorsListIs = [];
     doctorElement.doctorsListToBeDisplayed = [];
     doctorElement.doctorsListInTheTable = [];
     doctorElement.addNewDoctor = {};
+    doctorElement.doctorData = {};
+    doctorElement.doctorName = '';
+    doctorElement.doctorData.firstName = '';
+    doctorElement.doctorData.lastName = '';
+    doctorElement.doctorData.phoneNumber = '';
+    doctorElement.doctorData.userName = '';
+    doctorElement.doctorData.emailid = '';
+    doctorElement.doctorData.doctorRegistrationNo = '';
+    doctorElement.doctorData.organization = '';
+    doctorElement.doctorData.password = '';
+    doctorElement.doctorData.qualification = '';
+    doctorElement.doctorData.city = '';
     doctorElement.doctorType = '';
     doctorElement.doctorName = '';
     doctorElement.doctorActiveId = '';
+    doctorElement.doctorSearch = true;
+    doctorElement.addNewDoctorForm = false;
     var doctorItemIndex = '';
     var doctorItemId = '';
+    doctorElement.doctorSearchInTxtBox = '';
+    doctorElement.phoneNumberBtn = true;
+    doctorElement.phoneNumberErrorMessage = false;
+    doctorElement.newDoctorDetails = false;
+    doctorElement.asteriskErrorMessage = false;
+    doctorElement.doctorDetailsErrorMessage = false;
+    doctorElement.specialityName = 'Cardiologist';
+    doctorElement.optionsForSpeciality = [{ 'name': 'Dentist' },
+        { 'name': 'ENT Specialist' },
+        { 'name': 'Pediatrician' },
+        { 'name': 'Neurosurgeon' },
+        { 'name': 'Psychiatrist' },
+        { 'name': 'Vascular Surgeon' },
+        { 'name': 'Cardiologist' },
+        { 'name': 'Endocrinologist' },
+        { 'name': 'Neurologist' },
+        { 'name': 'Pulmonologist' },
+        { 'name': 'General Medicine' },
+        { 'name': 'General Surgeon' },
+        { 'name': 'Gastroenterologist' },
+        { 'name': 'Nephrologist' },
+        { 'name': 'Diabetologist' },
+        { 'name': 'Urologist' },
+        { 'name': 'Gynecologist / Obstetrician' },
+        { 'name': 'Dermatologist' },
+        { 'name': 'Oncologist' },
+        { 'name': 'Orthopedic Surgeon' },
+        { 'name': 'Immunologist' },
+        { 'name': 'Ophthalmologist' },
+        { 'name': 'Audiologist' },
+        { 'name': 'General Physician' },
+        { 'name': 'Cosmetic Surgeon' },
+        { 'name': 'Physiotherapist' },
+        { 'name': 'Bariactric Specialist' },
+        { 'name': 'Homoeopathy' },
+        { 'name': 'Colorectal Specialist' },
+        { 'name': 'Ayurveda' },
+        { 'name': 'Andrologist' },
+        { 'name': 'Ayurveda Specialist' },
+        { 'name': 'Yoga Specialist' },
+        { 'name': 'IVF Specialist' },
+        { 'name': 'Acupuncturist' },
+        { 'name': 'Bariatric Specialist' },
+        { 'name': 'Psychotherapist' },
+        { 'name': 'Pediatrician' },
+        { 'name': 'Immunologist' }
+    ]
+
 
     doctorElement.sortTypeOne = 'doctorType';
     doctorElement.sortTypeTwo = 'firstName';
@@ -98,6 +164,59 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
         dboticaServices.noConnectivityError();
     });
 
+    function doctorSearchWithPhoneNumber() {
+        var doctorsOfAssistantPromise = dboticaServices.doctorsOfAssistant();
+        var doctorIdActive = '';
+        var doctorActive = null;
+        doctorsOfAssistantPromise.then(function(doctorsSuccess) {
+            var errorCode = doctorsSuccess.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                var doctorsListResponse = angular.fromJson(doctorsSuccess.data.response);
+                $log.log('doctors list is----', doctorsListResponse);
+                for (var doctorIndex in doctorsListResponse) {
+                    if (doctorsListResponse[doctorIndex].phoneNumber == doctorElement.doctorSearchInTxtBox) {
+                        doctorActive = doctorsListResponse[doctorIndex];
+                        break;
+                    }
+                }
+                if (angular.isObject(doctorActive)) {
+                    $log.log('active doctor object is----', doctorActive);
+                    doctorElement.newDoctorDetails = false;
+                    doctorElement.addNewDoctorForm = true;
+                    doctorElement.addNewDoctor.doctorId = doctorsListResponse[0].id;
+                    doctorElement.doctorName = doctorsListResponse[0].firstName;
+                    if (doctorsListResponse[0].hasOwnProperty('lastName')) {
+                        doctorElement.doctorName = doctorElement.doctorName + ' ' + doctorsListResponse[0].lastName;
+                    }
+                } else {
+                    doctorElement.newDoctorDetails = true;
+                    doctorElement.doctorDetailsErrorMessage = true;
+                    doctorElement.doctorData.phoneNumber = doctorElement.doctorSearchInTxtBox;
+                }
+            }
+        }, function(doctorsError) {
+            dboticaServices.noConnectivityError();
+        });
+    }
+
+    function phoneNumberValidation() {
+        if (doctorElement.doctorSearchInTxtBox !== '' && doctorElement.doctorSearchInTxtBox !== undefined) {
+            var phoneNumberLength = doctorElement.doctorSearchInTxtBox.length;
+            if (phoneNumberLength < parseInt(10) || phoneNumberLength > parseInt(10)) {
+                doctorElement.phoneNumberErrorMessage = true;
+                doctorElement.phoneNumberBtn = true;
+            } else {
+                doctorElement.phoneNumberErrorMessage = false;
+                doctorElement.phoneNumberBtn = false;
+            }
+        } else {
+            doctorElement.phoneNumberErrorMessage = false;
+            doctorElement.phoneNumberBtn = true;
+        }
+    }
+
     function doctorTypeSelect(doctorTypeEntity) {
         doctorElement.doctorType = doctorTypeEntity.doctorType;
         doctorElement.addNewDoctor.organizationDoctorCategoryId = doctorTypeEntity.id;
@@ -145,13 +264,13 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
         doctorElement.addNewDoctor = {};
     }
 
-    function doctorSelectFromDropDown(doctorEntityFromDropdown) {
+    /*function doctorSelectFromDropDown(doctorEntityFromDropdown) {
         if (doctorEntityFromDropdown.lastName == undefined) {
             doctorEntityFromDropdown.lastName = '';
         }
         doctorElement.doctorName = doctorEntityFromDropdown.firstName + ' ' + doctorEntityFromDropdown.lastName;
         doctorElement.addNewDoctor.doctorId = doctorEntityFromDropdown.id;
-    }
+    }*/
 
     function deleteDoctorInTable(doctorEntryInTable, index) {
         swal({
@@ -277,5 +396,58 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
             entitiesArrayFlag = parseInt(0);
             angular.copy(entitiesArray, doctorElement.doctorsListInTheTable);
         }
+    }
+
+    function addNewDoctorByAssistant() {
+        doctorElement.doctorDetailsErrorMessage = false;
+        var check = textCheck(doctorElement.doctorData.firstName) && textCheck(doctorElement.doctorData.emailId) && textCheck(doctorElement.doctorData.phoneNumber) && textCheck(doctorElement.doctorData.password);
+        if (check === true) {
+            doctorElement.asteriskErrorMessage = false;
+            var newDoctorEntity = {};
+            newDoctorEntity.firstName = doctorElement.doctorData.firstName;
+            newDoctorEntity.lastName = '';
+            newDoctorEntity.emailId = doctorElement.doctorData.emailId;
+            newDoctorEntity.userName = doctorElement.doctorData.userName;
+            newDoctorEntity.password = doctorElement.doctorData.password;
+            newDoctorEntity.city = doctorElement.doctorData.city;
+            newDoctorEntity.speciality = doctorElement.specialityName;
+            newDoctorEntity.qualification = doctorElement.doctorData.qualification;
+            newDoctorEntity.doctorRegistrationNo = doctorElement.doctorData.doctorRegistrationNo;
+            newDoctorEntity.organization = doctorElement.doctorData.organization;
+            $log.log('new doctor request is----', newDoctorEntity);
+            var newDoctorPromise = dboticaServices.newDoctorByAssistant(newDoctorEntity);
+            $log.log('new doctor promise is -----', newDoctorPromise);
+            newDoctorPromise.then(function(newDoctorSuccess) {
+                var errorCode = newDoctorSuccess.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var newDoctorDetails = angular.fromJson(newDoctorSuccess.data.response);
+                    $log.log('new doctor details are----', newDoctorDetails);
+                    if (errorCode == null && newDoctorSuccess.data.success == true) {
+                        doctorElement.addNewDoctorForm = true;
+                        doctorElement.newDoctorDetails = false;
+                    }
+                }
+            }, function(newDoctorError) {
+                dboticaServices.noConnectivityError();
+            });
+        } else {
+            doctorElement.asteriskErrorMessage = true;
+        }
+    }
+
+    var textCheck = function(textValueIs) {
+        var result;
+        if (textValueIs !== undefined && textValueIs !== null && textValueIs !== '') {
+            result = true;
+        } else {
+            result = false;
+        }
+        return result;
+    }
+
+    function specialitySelect(specialitySelected) {
+        doctorElement.specialityName = specialitySelected.name;
     }
 }]);

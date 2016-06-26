@@ -85,7 +85,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
                 }
             }
         }, function(inpatientSearchError) {
-
+            dboticaServices.noConnectivityError();
         });
     }
 
@@ -103,18 +103,18 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
         if (inpatientElement.patientIdActive !== "") {
             patientDataRequestEntity.id = inpatientElement.patientIdActive;
         }
-        patientDataRequestEntity.gender = inpatientElement.patientData.gender;
-        patientDataRequestEntity.bloodGroup = inpatientElement.patientData.bloodGroup;
-        patientDataRequestEntity.drugAllergy = inpatientElement.patientData.drugAllergy;
-        patientDataRequestEntity.firstName = inpatientElement.patientData.firstName;
-        patientDataRequestEntity.emailId = inpatientElement.patientData.emailId;
-        patientDataRequestEntity.phoneNumber = inpatientElement.patientData.phoneNumber;
-        patientDataRequestEntity.age = inpatientElement.patientData.age;
-        patientDataRequestEntity = JSON.stringify(inpatientElement.patientData);
-        $log.log("patient in modal is----", patientDataRequestEntity);
         var firstName = inpatientElement.patientData.firstName;
         var phoneNumber = inpatientElement.patientData.phoneNumber;
         if (firstName !== undefined && phoneNumber !== undefined && firstName !== "" && phoneNumber !== "") {
+            patientDataRequestEntity.gender = inpatientElement.patientData.gender;
+            patientDataRequestEntity.bloodGroup = inpatientElement.patientData.bloodGroup;
+            patientDataRequestEntity.drugAllergy = inpatientElement.patientData.drugAllergy;
+            patientDataRequestEntity.firstName = firstName;
+            patientDataRequestEntity.emailId = inpatientElement.patientData.emailId;
+            patientDataRequestEntity.phoneNumber = phoneNumber;
+            patientDataRequestEntity.age = inpatientElement.patientData.age;
+            patientDataRequestEntity = JSON.stringify(patientDataRequestEntity);
+            $log.log("patient in modal is----", patientDataRequestEntity);
             var inpatientPromise = dboticaServices.addNewPatient(patientDataRequestEntity);
             inpatientPromise.then(function(inpatientSuccessResponse) {
                 var errorCode = inpatientSuccessResponse.data.errorCode;
@@ -131,8 +131,6 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             }, function(inpatientErrorResponse) {
                 dboticaServices.noConnectivityError();
             });
-        } else {
-
         }
     }
 

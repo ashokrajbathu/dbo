@@ -166,6 +166,14 @@
     width: 75% !important;
 }
 
+#drpBtnRegisterPatient,
+#drpBtndoctor {
+    margin-left: -1px !important;
+    border-color: none !important;
+    color: black !important;
+    width: 100% !important;
+}
+
 #caretInCategory,
 #caretInDoctor,
 #caretInDoc,
@@ -175,7 +183,24 @@
     top: 43%;
 }
 
+#drpBtnDivRegisterPatient>ul,
+#drpBtnDivdoctor>ul {
+    width: 100% !important;
+}
+
+#caretInRegister,
+#caretIndoctor {
+    position: absolute;
+    left: 90%;
+    top: 43%;
+}
+
 .highlightActiveAdminEntity {
     color: white !important;
     background-color: #3c8dbc !important;
+}
+
+.phoneNumberErrorMessageInRegister {
+    color: red;
+    margin-top: -18px;
 }

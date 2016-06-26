@@ -56,7 +56,6 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
             $log.log('beds in list response---', bedsListInResponse);
             angular.forEach(bedsListInResponse, function(bedEntity) {
                 if (bedEntity.bedState == 'ACTIVE') {
-                    $log.log('in bed state active check----');
                     bedElement.bedsToBeDisplayedInTable.push(bedEntity);
                 }
             });
@@ -80,7 +79,6 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var addNewBedSuccessResponse = angular.fromJson(addNewBedSuccess.data.response);
-                    $log.log('success response---', addNewBedSuccessResponse);
                     if (addNewBedSuccess.data.errorCode == null && addNewBedSuccess.data.success == true) {
                         dboticaServices.addOrUpdateBedSuccessSwal();
                         angular.element('#addBedModal').modal('hide');
@@ -189,10 +187,8 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
             var searchDisplayArrayInTable = [];
             if (bedElement.bedSearchInTxtBox !== '' && bedElement.bedSearchInTxtBox !== undefined) {
                 if (searchStringLength > entitiesArrayFlag) {
-                    $log.log('in fist one---');
                     angular.copy(bedElement.bedsToBeDisplayedInTable, searchDisplayArrayInTable);
                 } else {
-                    $log.log('in second one---');
                     angular.copy(entitiesArray, searchDisplayArrayInTable);
                 }
                 var sortedItemsArray = [];
@@ -202,7 +198,6 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                         var checkRoomNo = activeBed.organizationRoom.roomNo.toLowerCase().indexOf(bedElement.bedSearchInTxtBox.toLowerCase()) > -1;
                         var checkRoomType = activeBed.organizationRoomCategory.roomType.toLowerCase().indexOf(bedElement.bedSearchInTxtBox.toLowerCase()) > -1;
                         var bedStatusCheck = activeBed.bedStatus.toLowerCase().indexOf(bedElement.bedSearchInTxtBox.toLowerCase()) > -1;
-                        $log.log('roomtype is---', checkRoomType);
                         var check = checkBedNo || checkRoomNo || checkRoomType || bedStatusCheck;
                         if (check) {
                             sortedItemsArray.push(activeBed);
@@ -214,7 +209,6 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
             }
         }
         if (searchStringLength <= parseInt(2)) {
-            $log.log('in check 2--');
             entitiesArrayFlag = parseInt(0);
             angular.copy(entitiesArray, bedElement.bedsToBeDisplayedInTable);
         }
@@ -229,6 +223,5 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
         bedElement.addNew.bedStatus = editBedEntity.bedStatus.toUpperCase();
         bedElement.roomNumber = editBedEntity.organizationRoom.roomNo;
         bedElement.addNew.organizationRoomId = editBedEntity.organizationRoom.id;
-
     }
 }]);

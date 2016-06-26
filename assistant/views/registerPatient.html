@@ -1,3 +1,193 @@
 <div ng-controller="registerPatientController as registerPatient">
-	<h3>register patients</h3>
+    <h4>Register Patient</h4>
+    <div id="registerPatientModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 ng-if="registerPatient.registerPatientAddPatientHeader" class="modal-title">Add Patient</h4>
+                    <h4 ng-if="registerPatient.registerPatientHeader" class="modal-title">Register Patient</h4>
+                </div>
+                <div class="modal-body">
+                    <div ng-if="registerPatient.newPatientForm">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputName">*Name</label>
+                                        <input type="text" class="form-control" id="exampleInputFirstName" ng-model="registerPatient.patientData.firstName" placeholder="Name">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail">Email</label>
+                                        <input type="email" class="form-control" id="exampleInputEmail" ng-model="registerPatient.patientData.emailId" placeholder="Email">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputPhoneNumber">Phone Number</label>
+                                        <input type="text" class="form-control" id="exampleInputPhoneNumber" ng-model="registerPatient.patientData.phoneNumber" placeholder="Phone Number">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputAge">Age</label>
+                                        <input type="text" class="form-control" id="exampleInputAge" ng-model="registerPatient.patientData.age" placeholder="Age">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputGender">Gender</label>
+                                        <select ng-model="registerPatient.patientData.gender" class="form-control" id="exampleInputGender">
+                                            <option>MALE</option>
+                                            <option>FEMALE</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputBloodGroup">Blood Group</label>
+                                        <select ng-model="registerPatient.patientData.bloodGroup" class="form-control" id="exampleInputBloodGroup">
+                                            <option value="O_POSITIVE">O_POSITIVE</option>
+                                            <option value="O_NEGATIVE">O_NEGATIVE</option>
+                                            <option value="A_POSITIVE">A_POSITIVE</option>
+                                            <option value="A_NEGATIVE">A_NEGATIVE</option>
+                                            <option value="B_POSITIVE">B_POSITIVE</option>
+                                            <option value="B_NEGATIVE">B_NEGATIVE</option>
+                                            <option value="AB_POSITIVE">AB_POSITIVE</option>
+                                            <option value="AB_NEGATIVE">AB_NEGATIVE</option>
+                                            <option value="OTHER">OTHER</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputAddress">Address</label>
+                                        <input ng-model="registerPatient.patientData.city" type="text" class="form-control" id="exampleInputAddress" placeholder="Address">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputDrugAllergy">Drug Allergy</label>
+                                        <input type="text" ng-model="registerPatient.patientData.drugAllergy" class="form-control" id="exampleInputDrugAllergy" placeholder="Drug Allergy">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputWeight">Weight</label>
+                                        <input type="text" class="form-control" id="exampleInputWeight" ng-model="registerPatient.patientData.weight" placeholder="Weight">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputHeight">Height</label>
+                                        <input type="text" class="form-control" id="exampleInputHeight" ng-model="registerPatient.patientData.height" placeholder="Height">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputPulse">Pulse</label>
+                                        <input type="text" class="form-control" id="exampleInputPulse" ng-model="registerPatient.patientData.pulse" placeholder="Pulse">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputBloodPressure">Blood Pressure</label>
+                                        <input type="text" class="form-control" id="exampleInputBloodPressure" ng-model="registerPatient.patientData.bloodPressure" placeholder="Blood Pressure">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row text-center">
+                            <button ng-click="registerPatient.addPatient()" class="buttonsInInpatientModal btn addPatientBtn" type="button">Add Patient</button>
+                            <button class="btn buttonsInInpatientModal addPatientBtn" data-dismiss="modal" type="button">Close</button>
+                        </div>
+                    </div>
+                    <div ng-if="registerPatient.registerPatientForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <form>
+                                    <div>
+                                        <div class="form-group">
+                                            <label for="exampleInputRoomCategory">Select Patient</label>
+                                            <br>
+                                            <div id="drpBtnDivRegisterPatient" class="dropdown">
+                                                <button style="border-color:#d2d6de;width:100%;" id="drpBtnRegisterPatient" class="btn roomCategoryBtn dropdown-toggle" type="button" data-toggle="dropdown">{{registerPatient.patientName}}
+                                                    <span id="caretInRegister" class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li ng-click="registerPatient.patientSelect(patientEntity)" ng-repeat="patientEntity in registerPatient.totalPatientsList">
+                                                        <a style="cursor:pointer;" ng-bind="patientEntity.firstName"></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="examplePatientNumber">Patient Number</label>
+                                        <input ng-model="registerPatient.registerPatientToHospital.organizationPatientNo" type="text" class="form-control" id="exampleInputPatientNumber" placeholder="Patient Number">
+                                        <span style="margin-top:-18px;color:red;" ng-if="registerPatient.patientNumberErrorMessage">Please Enter Patient Number</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPhoneNumber">Phone Number</label>
+                                        <input type="text" ng-model="registerPatient.registerPatientToHospital.phoneNumber" class="form-control" id="exampleInputPhoneNumber" placeholder="Phone Number">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPatientState">State</label>
+                                        <br>
+                                        <select class="form-control" ng-model="registerPatient.registerPatientToHospital.patientState">
+                                            <option>ADMITTED</option>
+                                            <option>DISCHARGED</option>
+                                            <option>CHECK_IN</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-inline">
+                                        <button ng-click="registerPatient.registerAPatient()" class="btn mainAdminBtn">Save</button>
+                                        <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:8px;">
+        <input ng-change="registerPatient.phoneNumberValidation()" type="search" numbers-only ng-model="registerPatient.patientSearchInTxtBox" class="form-control searchInMainAdmin pull-left" placeholder="Patient Phone Number">
+        <span>
+            <button ng-click="registerPatient.patientSearchWithPhoneNumber()" data-toggle="modal" data-target="#registerPatientModal" ng-disabled="registerPatient.phoneNumberBtn" type="submit" class="btn mainAdminBtn searchBtnInMainAdmin pull-left"><span class="glyphicon glyphiconSearch glyphicon-search"></span></button>
+        </span>
+    </div>
+    <br>
+    <p class="phoneNumberErrorMessageInRegister" ng-if="registerPatient.phoneNumberErrorMessage">Please Enter a Phone Number of length 10 digits</p>
 </div>
