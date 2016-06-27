@@ -31,7 +31,7 @@
                                 <form>
                                     <div class="form-group">
                                         <label for="exampleInputPhoneNumber">Phone Number</label>
-                                        <input type="text" class="form-control" id="exampleInputPhoneNumber" ng-model="registerPatient.patientData.phoneNumber" placeholder="Phone Number">
+                                        <input ng-readonly="registerPatient.phoneNumberInNewPatientForm" type="text" class="form-control" id="exampleInputPhoneNumber" ng-model="registerPatient.patientData.phoneNumber" placeholder="Phone Number">
                                     </div>
                                 </form>
                             </div>
@@ -154,12 +154,12 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="examplePatientNumber">Patient Number</label>
-                                        <input ng-model="registerPatient.registerPatientToHospital.organizationPatientNo" type="text" class="form-control" id="exampleInputPatientNumber" placeholder="Patient Number">
+                                        <input ng-readonly="registerPatient.registerPatientNumber" ng-model="registerPatient.registerPatientToHospital.organizationPatientNo" type="text" class="form-control" id="exampleInputPatientNumber" placeholder="Patient Number">
                                         <span style="margin-top:-18px;color:red;" ng-if="registerPatient.patientNumberErrorMessage">Please Enter Patient Number</span>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPhoneNumber">Phone Number</label>
-                                        <input type="text" ng-model="registerPatient.registerPatientToHospital.phoneNumber" class="form-control" id="exampleInputPhoneNumber" placeholder="Phone Number">
+                                        <input ng-readonly="registerPatient.registerPhoneNumber" type="text" ng-model="registerPatient.registerPatientToHospital.phoneNumber" class="form-control" id="exampleInputPhoneNumber" placeholder="Phone Number">
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPatientState">State</label>
@@ -190,4 +190,33 @@
     </div>
     <br>
     <p class="phoneNumberErrorMessageInRegister" ng-if="registerPatient.phoneNumberErrorMessage">Please Enter a Phone Number of length 10 digits</p>
+    <div class="input-group pull-right">
+        <input type="search" ng-change="registerPatient.registerPatientSearch()" class="form-control searchInMainAdmin" ng-model="registerPatient.registerPatientSearchTxt" placeholder="Search">
+    </div>
+    <table class="table mainAdminTable table-hover table-striped">
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Patient Number</th>
+                <th>Patient Name</th>
+                <th>Phone Number</th>
+                <th>State</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="patientEntity in registerPatient.registeredPatientsList">
+                <td ng-bind="$index+1"></td>
+                <td ng-bind="patientEntity.organizationPatientNo"></td>
+                <td ng-bind="patientEntity.patientDetail.firstName"></td>
+                <td ng-bind="patientEntity.patientDetail.phoneNumber"></td>
+                <td ng-bind="patientEntity.patientState | checkInSort"></td>
+                <td>
+                    <a data-toggle="modal" ng-click="registerPatient.editPatientDetails(patientEntity,$index)" data-target="#registerPatientModal" class="linksInTable mainAdminLinks">Edit Details</a> |
+                    <a data-toggle="modal" ng-click="registerPatient.editPatientState(patientEntity,$index)" data-target="#registerPatientModal" class="linksInTable mainAdminLinks">Edit State</a>|
+                    <a ng-click="registerPatient.deleteRegisteredPatient(patientEntity,$index)" class="linksInTable mainAdminLinks">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

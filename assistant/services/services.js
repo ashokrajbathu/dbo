@@ -1347,6 +1347,26 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.patientDetailsSuccessFullyUpdatedSwal = function() {
+        swal({
+            title: "Success",
+            text: "Patient Details Successfully Updated.",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.registerPatientSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Registered Patient Details Successfully Added or Updated.",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
     this.getRooms = function(organizationId) {
         var deferred = $q.defer();
         var getRoomsEntity = {
@@ -1446,6 +1466,16 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         swal({
             title: "Success",
             text: "Selected bed Deleted SuccessFully!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.deleteRegisteredPatientSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Selected Registered Patient Deleted SuccessFully!!!!",
             type: "success",
             confirmButtonText: "OK",
             allowOutsideClick: true
@@ -1552,4 +1582,31 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
+    this.getRegisteredPatients = function(organizationId) {
+        var deferred = $q.defer();
+        var registeredPatientsRequestEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/getPatients?organizationId=' + organizationId,
+            withCredentials: true
+        }
+        $http(registeredPatientsRequestEntity).then(function(registeredPatientSuccess) {
+            deferred.resolve(registeredPatientSuccess);
+        }, function(registeredPatientError) {
+            deferred.reject(registeredPatientError);
+        });
+        return deferred.promise;
+    }
+
+    this.requiredIndexFromArray = function(searchArray, requiredId) {
+        var result = '';
+        for (var index in searchArray) {
+            if (searchArray[index].id == requiredId) {
+                result = index;
+                break;
+            } else {
+                continue;
+            }
+        }
+        return result;
+    }
 }]);
