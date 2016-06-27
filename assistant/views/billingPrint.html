@@ -10,7 +10,10 @@
 
 <body onload="window.print();">
     <div ng-app="printBill" ng-controller="printBillController" class="container">
-        <h2 id="patientBillHeader">Patient Bill</h2>
+        <h1 id="patientBillHeader" ng-bind="organizationName|uppercase"></h1>
+        <p class="addressInTheBill" align="center" ng-bind="address"></p>
+        <p style="margin-top:-12px;font-size:20px;" align="center">Cell No:<span ng-bind="cellNumber"></span> Phone No:<span ng-bind="phoneNumber"></span>
+        </p>
         <div id="billingDate">
             <label>Bill Date :</label>
             <span class="amountDet" ng-bind="todayDate|longDateIntoReadableDate"></span>

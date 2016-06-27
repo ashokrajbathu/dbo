@@ -65,4 +65,8 @@
     .billingTable>tbody>tr>td {
         border: 1px solid black;
     } */
+    .addressInTheBill {
+        margin-top: -10px;
+        font-size: 20px;
+    }
 }

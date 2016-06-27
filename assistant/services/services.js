@@ -1537,4 +1537,19 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
+    this.getOrganizationAddress = function() {
+        var deferred = $q.defer();
+        var addressEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/assistant/getAddress',
+            withCredentials: true,
+        }
+        $http(addressEntity).then(function(addressSuccess) {
+            deferred.resolve(addressSuccess);
+        }, function(addressError) {
+            deferred.reject(addressError);
+        });
+        return deferred.promise;
+    }
+
 }]);

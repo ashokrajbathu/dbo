@@ -672,6 +672,21 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         'minDate': 0
     });
 
+    var getAddressPromise = dboticaServices.getOrganizationAddress();
+    $log.log('get address promise is----', getAddressPromise);
+    getAddressPromise.then(function(getAddressSuccess) {
+        var errorCode = getAddressSuccess.data.errorCode;
+        if (!!errorCode) {
+            dboticaServices.logoutFromThePage(errorCode);
+        } else {
+            getAddressSuccessResponse = angular.fromJson(getAddressSuccess.data.response);
+            $log.log('address response is----', getAddressSuccessResponse);
+            localStorage.setItem('addressInTheBill', JSON.stringify(getAddressSuccessResponse));
+        }
+    }, function(getAddressError) {
+        dboticaServices.noConnectivityError();
+    })
+
 }]);
 
 angular.module('personalAssistant').directive('autoComplete', function(dboticaServices, $timeout, $log) {
