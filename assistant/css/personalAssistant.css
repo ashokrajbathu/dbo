@@ -246,7 +246,6 @@
         width: 180px;
         border-color: #d2d6de;
     }
-    
     /* .dropdown-menu {
         margin-left: 16px;
     } */
@@ -587,9 +586,15 @@
        }
    } */
     
-    .activeSectionBlack {
+    .activeSectionBlack,
+    .activeAdminLi {
         color: #3c8dbc !important;
         background-color: white !important;
+    }
+    
+    .activeSectionBlack>a {
+        color: #3c8dbc !important;
+        cursor: pointer !important;
     }
     
     .activeSectionBlue {
@@ -971,5 +976,3 @@ to prevent collapsing during animation*/
        transform: translate3d(100px, 0, 0);
    }
     */
-
-    

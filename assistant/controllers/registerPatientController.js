@@ -359,7 +359,5 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
             entitiesArrayFlag = parseInt(0);
             angular.copy(entitiesArray, register.registeredPatientsList);
         }
-
     }
-
 }]);

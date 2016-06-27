@@ -3,6 +3,8 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
 
     var organizationId = localStorage.getItem('orgId');
 
+    $log.log('in doctor category controller---');
+
     doctorCategoryElement.addNewDoctorCategory = {};
     doctorCategoryElement.doctorCategoriesList = [];
     doctorCategoryElement.addNewDoctorCategory.doctorType = '';

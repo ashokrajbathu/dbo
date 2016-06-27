@@ -85,6 +85,7 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
             url: '/administration',
             controller: 'mainAdminController',
             controllerAs: 'mainAdmin',
+            redirectTo: 'home.mainAdmin.addDocCategory',
             templateUrl: 'views/mainAdmin.html'
         })
         .state('home.mainAdmin.addDocCategory', {

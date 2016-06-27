@@ -11,6 +11,8 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
     } else {
         currentActiveAssistantPermissions = currentActiveAssistant.assistantPermissions;
     }
+
+    $log.log('in home controller---');
     $scope.isVisibleNavs = {};
     $scope.isVisibleNavs.patientManagement = false;
     $scope.isVisibleNavs.billManagement = false;

@@ -1,7 +1,15 @@
 'use strict';
 
-angular.module('personalAssistant', ['ui.router', 'ngAnimate', 'ui.bootstrap', 'ngMessages', 'appServices', 'doctorServices','ngTable', 'oitozero.ngSweetAlert']);
+angular.module('personalAssistant', ['ui.router', 'ngAnimate', 'ui.bootstrap', 'ngMessages', 'appServices', 'doctorServices', 'ngTable', 'oitozero.ngSweetAlert']);
 
+angular.module('personalAssistant').run(function($rootScope, $state) {
+    $rootScope.$on('$stateChangeStart', function(evt, to, params) {
+        if (to.redirectTo) {
+            evt.preventDefault();
+            $state.go(to.redirectTo, params)
+        }
+    });
+});
 angular.module('personalAssistant').directive('validNumber', function() {
     return {
         require: '?ngModel',
