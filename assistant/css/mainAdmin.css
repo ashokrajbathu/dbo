@@ -200,6 +200,11 @@
     background-color: #3c8dbc !important;
 }
 
+.highlightActiveAdminEntity>a {
+    color: white !important;
+    cursor: pointer !important;
+}
+
 .phoneNumberErrorMessageInRegister {
     color: red;
     margin-top: -18px;
