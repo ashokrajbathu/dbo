@@ -21,6 +21,7 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
     $scope.isVisibleNavs.admin = false;
     $scope.isVisibleNavs.ipd = false;
     $scope.isVisibleNavs.mainAdmin = false;
+    $scope.isVisibleNavs.nurse = false;
 
     /* for (var assistantPermission in currentActiveAssistantPermissions) {*/
     angular.forEach(currentActiveAssistantPermissions, function(assistantPermission) {
@@ -39,10 +40,14 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
                 $scope.isVisibleNavs.analyticReports = true;
                 $scope.isVisibleNavs.admin = true;
                 $scope.isVisibleNavs.ipd = true;
+                break;
+            case 'HOSPITAL_ADMIN':
                 $scope.isVisibleNavs.mainAdmin = true;
                 break;
+            case 'NURSE':
+                $scope.isVisibleNavs.nurse = true;
+                break;
         }
-
     });
 
     switch (currentStateActive) {
@@ -80,6 +85,10 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
 
         case 'mainAdmin':
             $state.go('home.mainAdmin');
+            break;
+
+        case 'nurseHome':
+            $state.go('home.nurse');
             break;
     }
 

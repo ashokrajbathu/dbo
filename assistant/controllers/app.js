@@ -122,6 +122,11 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
             controller: 'patientEventsController',
             controllerAs: 'patientEvents',
             templateUrl: 'views/patientEvents.html'
+        })
+        .state('home.nurse', {
+            controller: 'nurseController',
+            controllerAs: 'nurse',
+            templateUrl: 'views/nurseHome.html'
         });
 });
 
@@ -233,6 +238,12 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
                 break;
             case 'ORGANIZATION_MANAGEMENT':
                 localStorage.setItem("currentState", "admin");
+                break;
+            case 'HOSPITAL_ADMIN':
+                localStorage.setItem("currentState", "mainAdmin");
+                break;
+            case 'NURSE':
+                localStorage.setItem("currentState", "nurseHome");
                 break;
         }
     }

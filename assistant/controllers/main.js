@@ -81,7 +81,6 @@ angular.module('personalAssistant').directive('uiSrefActiveIf', ['$state', funct
                 if ($state.includes(state) || $state.is(state)) {
                     $element.addClass("activeAdminLi");
                 } else {
-                    console.log('in remove class---');
                     $element.removeClass("activeAdminLi");
                 }
             }
