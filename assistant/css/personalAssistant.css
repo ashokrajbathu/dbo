@@ -592,7 +592,7 @@
         background-color: white !important;
     }
     
-    .activeSectionBlack>a {
+    .activeAdminLi>a {
         color: #3c8dbc !important;
         cursor: pointer !important;
     }

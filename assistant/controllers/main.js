@@ -70,3 +70,24 @@ angular.module('personalAssistant').directive('numbersOnly', function() {
         }
     };
 });
+
+angular.module('personalAssistant').directive('uiSrefActiveIf', ['$state', function($state) {
+    return {
+        restrict: "A",
+        controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+            var state = $attrs.uiSrefActiveIf;
+
+            function update() {
+                if ($state.includes(state) || $state.is(state)) {
+                    $element.addClass("activeAdminLi");
+                } else {
+                    console.log('in remove class---');
+                    $element.removeClass("activeAdminLi");
+                }
+            }
+
+            $scope.$on('$stateChangeSuccess', update);
+            update();
+        }]
+    };
+}])
