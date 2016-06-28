@@ -1,10 +1,34 @@
 <div ng-controller="medicationController as medication">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#contentOfTab">Patient Medication</a></li>
+        <li class="active"><a href="#contentOfMedicationTab">Patient Medication</a></li>
     </ul>
     <div class="tab">
-        <div id="contentOfTab" class="tab-content">
-            <h4>Patient Medication</h4>
+        <div id="contentOfMedicationTab" class="tab-content activeTabContent">
+            <button class="btn mainAdminBtn">Add Medication</button>
+            <table class="table mainAdminTable table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Medicine Name</th>
+                        <th>Instruction</th>
+                        <th>Advice</th>
+                        <th>Days</th>
+                        <th>Qty</th>
+                        <th>Prepared By</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

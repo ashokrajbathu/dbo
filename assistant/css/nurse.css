@@ -27,3 +27,12 @@
     border-top-width: 3px !important;
     border-top-color: #3c8dbc !important;
 }
+
+.activeTabContent {
+    margin-top: 10px;
+    margin-left: 15px;
+}
+
+#addOutputBtn {
+    margin-top: 10px;
+}

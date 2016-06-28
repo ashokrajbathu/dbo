@@ -5,10 +5,12 @@ angular.module('personalAssistant').controller('nurseController', ['$scope', '$l
 
     nurseHome.phoneNumberLengthValidation = phoneNumberLengthValidation;
     nurseHome.patientSearchWithPhoneNumber = patientSearchWithPhoneNumber;
+    nurseHome.patientEventSelect = patientEventSelect;
 
     nurseHome.patientSearchBtnDisabled = true;
     nurseHome.PhoneNumberErrorMessage = false;
     nurseHome.patientsListToBeDisplayed = [];
+    nurseHome.patientEventName = 'Patient Medication';
 
     function phoneNumberLengthValidation() {
         var phoneNumber = nurseHome.number;
@@ -48,5 +50,36 @@ angular.module('personalAssistant').controller('nurseController', ['$scope', '$l
         }, function(patientsListError) {
             dboticaServices.noConnectivityError();
         });
+    }
+
+    function patientEventSelect(patientEvent) {
+        $log.log('in patient event select---');
+        switch (patientEvent) {
+            case 'patientMedication':
+                nurseHome.patientEventName = 'Patient Medication';
+                break;
+            case 'intakeOutput':
+                nurseHome.patientEventName = 'Intake/Output Record';
+                break;
+            case 'progressNote':
+                nurseHome.patientEventName = 'Nurse Progress Note';
+                break;
+            case 'vitalSign':
+                nurseHome.patientEventName = 'Vital Sign';
+                break;
+            case 'bedSideProcedure':
+                nurseHome.patientEventName = 'Bed Side Procedure';
+                break;
+            case 'ipRoomTransfer':
+                nurseHome.patientEventName = 'IP Room Transfer';
+                break;
+            case 'patientHistory':
+                nurseHome.patientEventName = 'Patient History';
+                break;
+            case 'dischargeSummary':
+                nurseHome.patientEventName = 'Discharge Summary';
+                break;
+        }
+
     }
 }]);

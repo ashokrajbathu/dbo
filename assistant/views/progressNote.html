@@ -1,10 +1,30 @@
 <div ng-controller="progressNoteController as progressNote">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#contentOfTab">Progress Note</a></li>
+        <li class="active"><a href="#contentOfProgressTab">Progress Note</a></li>
     </ul>
     <div class="tab">
-        <div id="contentOfTab" class="tab-content">
-            <h4>Progress Note</h4>
+        <div id="contentOfProgressTab" class="tab-content activeTabContent">
+            <button class="btn mainAdminBtn">Add Notes</button>
+            <table class="table mainAdminTable table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Date Time</th>
+                        <th>Focus</th>
+                        <th>Notes</th>
+                        <th>Prepared By</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

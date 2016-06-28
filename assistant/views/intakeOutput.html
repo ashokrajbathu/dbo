@@ -1,10 +1,61 @@
 <div ng-controller="intakeOutputController as intakeOutput">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#contentOfTab">Intake/Output Record</a></li>
+        <li class="active"><a href="#contentOfIntakeTab">Intake/Output Record</a></li>
     </ul>
     <div class="tab">
-        <div id="contentOfTab" class="tab-content">
-            <h4>Intake/Output Record</h4>
+        <div id="contentOfIntakeTab" class="tab-content activeTabContent">
+            <button class="btn mainAdminBtn">Add Intake Record</button>
+            <table class="table mainAdminTable table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Particulars</th>
+                        <th>I/V Fluids(ml)</th>
+                        <th>Oral(ml)</th>
+                        <th>No.of Stool</th>
+                        <th>No.of Urine</th>
+                        <th>Prepared By</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button id="addOutputBtn" class="btn mainAdminBtn">Add Output Record</button>
+            <table class="table table-hover table-striped mainAdminTable">
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Urine(ml)</th>
+                        <th>Feaces(ml)</th>
+                        <th>Respitation(ml)</th>
+                        <th>skin(ml)</th>
+                        <th>Prepared By</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

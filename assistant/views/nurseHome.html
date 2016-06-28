@@ -12,17 +12,17 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
             <div class="form-group">
                 <div id="patientEventsDropdown" class="dropdown">
-                    <button style="width:100%;border-color:#c5c5c5;" class="btn dropdownInModalInpatient dropdown-toggle" type="button" data-toggle="dropdown">Patient Medication
+                    <button style="width:100%;border-color:#c5c5c5;" class="btn dropdownInModalInpatient dropdown-toggle" type="button" data-toggle="dropdown">{{nurse.patientEventName}}
                         <span id="caretInNurse" class="caret"></span></button>
                     <ul style="margin-left:5px;text-align:center;" class="dropdown-menu">
-                        <li ui-sref=".patientMedication"><a class="navbarLinks">Patient Medication</a></li>
-                        <li ui-sref=".intakeOutputRecord"><a class="navbarLinks">Intake/Output Record</a></li>
-                        <li ui-sref=".nurseProgressNote"><a class="navbarLinks">Nurse Progress Note</a></li>
-                        <li ui-sref=".vitalSign"><a class="navbarLinks">Vital Sign</a></li>
-                        <li ui-sref=".bedSideProcedure"><a class="navbarLinks">Bed Side Procedure</a></li>
-                        <li ui-sref=".ipRoomTransfer"><a class="navbarLinks">IP Room Transfer</a></li>
-                        <li ui-sref=".patientHistory"><a class="navbarLinks">Patient History</a></li>
-                        <li ui-sref=".dischargeSummary"><a class="navbarLinks">Discharge Summary</a></li>
+                        <li ng-click="nurse.patientEventSelect('patientMedication')" ui-sref=".patientMedication"><a class="navbarLinks">Patient Medication</a></li>
+                        <li ng-click="nurse.patientEventSelect('intakeOutput')" ui-sref=".intakeOutputRecord"><a class="navbarLinks">Intake/Output Record</a></li>
+                        <li ng-click="nurse.patientEventSelect('progressNote')" ui-sref=".nurseProgressNote"><a class="navbarLinks">Nurse Progress Note</a></li>
+                        <li ng-click="nurse.patientEventSelect('vitalSign')" ui-sref=".vitalSign"><a class="navbarLinks">Vital Sign</a></li>
+                        <li ng-click="nurse.patientEventSelect('bedSideProcedure')" ui-sref=".bedSideProcedure"><a class="navbarLinks">Bed Side Procedure</a></li>
+                        <li ng-click="nurse.patientEventSelect('ipRoomTransfer')" ui-sref=".ipRoomTransfer"><a class="navbarLinks">IP Room Transfer</a></li>
+                        <li ng-click="nurse.patientEventSelect('patientHistory')" ui-sref=".patientHistory"><a class="navbarLinks">Patient History</a></li>
+                        <li ng-click="nurse.patientEventSelect('dischargeSummary')" ui-sref=".dischargeSummary"><a class="navbarLinks">Discharge Summary</a></li>
                     </ul>
                 </div>
             </div>
