@@ -1,3 +1,112 @@
-<div ng-controller="nurseController as nurse">
-    <h4>Nurse Module</h4>
+<div class="nurseModuleMain" ng-controller="nurseController as nurse">
+    <h3>Nurse Module</h3>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="input-group">
+                <input numbers-only ng-model="nurse.number" ng-change="nurse.phoneNumberLengthValidation()" type="text" class="form-control" id="exampleNursePatientPhoneNumber" placeholder="Patient Phone Number">
+                <span class="input-group-btn pull-left">
+        		<button ng-click="nurse.patientSearchWithPhoneNumber()" ng-disabled="nurse.patientSearchBtnDisabled" data-toggle="modal" data-target="#patientsListModal" id="phoneBtnInNurse" type="button" class="btn addPatientBtn">Search</button>
+        	</span>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="form-group">
+                <div id="patientEventsDropdown" class="dropdown">
+                    <button style="width:100%;border-color:#c5c5c5;" class="btn dropdownInModalInpatient dropdown-toggle" type="button" data-toggle="dropdown">Patient Medication
+                        <span id="caretInNurse" class="caret"></span></button>
+                    <ul style="margin-left:5px;text-align:center;" class="dropdown-menu">
+                        <li ui-sref=".patientMedication"><a class="navbarLinks">Patient Medication</a></li>
+                        <li ui-sref=".intakeOutputRecord"><a class="navbarLinks">Intake/Output Record</a></li>
+                        <li ui-sref=".nurseProgressNote"><a class="navbarLinks">Nurse Progress Note</a></li>
+                        <li ui-sref=".vitalSign"><a class="navbarLinks">Vital Sign</a></li>
+                        <li ui-sref=".bedSideProcedure"><a class="navbarLinks">Bed Side Procedure</a></li>
+                        <li ui-sref=".ipRoomTransfer"><a class="navbarLinks">IP Room Transfer</a></li>
+                        <li ui-sref=".patientHistory"><a class="navbarLinks">Patient History</a></li>
+                        <li ui-sref=".dischargeSummary"><a class="navbarLinks">Discharge Summary</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <span style="color:red;" ng-if="nurse.PhoneNumberErrorMessage">(* Please enter phone number of length 10 digits)</span>
+    <div id="patientsListModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Select Patient</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table mainAdminTable table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>IOP No.</th>
+                                <th>Patient No.</th>
+                                <th>Name</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="patientEntity in nurse.patientsListToBeDisplayed track by $index">
+                                <td></td>
+                                <td></td>
+                                <td ng-bind="patientEntity.firstName"></td>
+                                <td>
+                                    <a style="cursor:pointer;">SELECT</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="patientDetailsBoxRowNurse row">
+        <div class="col-md-3">
+            <div class="patientDetailsBox box">
+                <div class="box-body no-padding">
+                    <div class="box-footer clearfix">
+                        <div class="form-group">
+                            <label for="exampleNursePatientNumber">Patient Number</label>
+                            <input readonly type="text" class="form-control" id="exampleNursePatientNumber" placeholder="Patient Number">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleNursePatientName">Patient Name</label>
+                            <input readonly type="text" class="form-control" id="exampleNursePatientName" placeholder="Patient Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleNurseIOPNumber">IOP No.</label>
+                            <input readonly type="text" class="form-control" id="exampleNurseIOPNumber" placeholder="IOP No.">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleNurseDateTime">Date Time Admit</label>
+                            <input readonly type="text" class="form-control" id="exampleNurseDateTime" placeholder="Date Time Admit">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleNurseInchargeDoctor">Incharge Doctor</label>
+                            <input readonly type="text" class="form-control" id="exampleNurseInchargeDoctor" placeholder="Incharge Doctor">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleNurseDepartment">Department</label>
+                            <input readonly type="text" class="form-control" id="exampleNurseDepartment" placeholder="Department">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleNurseRoom">Room</label>
+                            <input readonly type="text" class="form-control" id="exampleNurseRoom" placeholder="Room">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleNurseBedNumber">Bed No.</label>
+                            <input readonly type="text" class="form-control" id="exampleNurseBedNumber" placeholder="Bed No.">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div ui-view autoscroll="false"></div>
+        </div>
+    </div>
 </div>

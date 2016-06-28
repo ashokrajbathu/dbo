@@ -12,7 +12,6 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
         currentActiveAssistantPermissions = currentActiveAssistant.assistantPermissions;
     }
 
-    $log.log('in home controller---');
     $scope.isVisibleNavs = {};
     $scope.isVisibleNavs.patientManagement = false;
     $scope.isVisibleNavs.billManagement = false;
@@ -23,7 +22,6 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
     $scope.isVisibleNavs.mainAdmin = false;
     $scope.isVisibleNavs.nurse = false;
 
-    /* for (var assistantPermission in currentActiveAssistantPermissions) {*/
     angular.forEach(currentActiveAssistantPermissions, function(assistantPermission) {
         var assistantSection = assistantPermission;
         switch (assistantSection) {

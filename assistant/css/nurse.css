@@ -1,0 +1,29 @@
+.nurseModuleMain {
+    margin-left: 10px;
+}
+
+#exampleNursePatientPhoneNumber {
+    width: 180px;
+}
+
+#phoneBtnInNurse {
+    height: 35px;
+    margin-top: -1px;
+}
+
+.patientDetailsBoxRowNurse {
+    margin-top: 20px;
+}
+
+@media only screen and (max-width:991px) {
+    #patientEventsDropdown {
+        margin-left: -5px;
+        margin-top: 8px;
+        width: 242px !important;
+    }
+}
+
+.nav-tabs>li.active>a {
+    border-top-width: 3px !important;
+    border-top-color: #3c8dbc !important;
+}

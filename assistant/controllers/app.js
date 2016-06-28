@@ -19,7 +19,6 @@ angular.module('oitozero.ngSweetAlert', [])
                 swal(title, message, 'info');
             }
         };
-
         return self;
     }]);
 
@@ -125,8 +124,49 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
         })
         .state('home.nurse', {
             controller: 'nurseController',
+            redirectTo: 'home.nurse.patientMedication',
             controllerAs: 'nurse',
             templateUrl: 'views/nurseHome.html'
+        })
+        .state('home.nurse.patientMedication', {
+            controller: 'medicationController',
+            controllerAs: 'medication',
+            templateUrl: 'views/medication.html'
+        })
+        .state('home.nurse.intakeOutputRecord', {
+            controller: 'intakeOutputController',
+            controllerAs: 'intakeOutput',
+            templateUrl: 'views/intakeOutput.html'
+        })
+        .state('home.nurse.nurseProgressNote', {
+            controller: 'progressNoteController',
+            controllerAs: 'progressNote',
+            templateUrl: 'views/progressNote.html'
+        })
+        .state('home.nurse.vitalSign', {
+            controller: 'vitalSignController',
+            controllerAs: 'vitalSign',
+            templateUrl: 'views/vitalSign.html'
+        })
+        .state('home.nurse.bedSideProcedure', {
+            controller: 'bedSideProcedureController',
+            controllerAs: 'bedSide',
+            templateUrl: 'views/bedSide.html'
+        })
+        .state('home.nurse.ipRoomTransfer', {
+            controller: 'ipRoomTransferController',
+            controllerAs: 'ipRoomTransfer',
+            templateUrl: 'views/ipRoomTransfer.html'
+        })
+        .state('home.nurse.patientHistory', {
+            controller: 'patientHistoryController',
+            controllerAs: 'patientHistory',
+            templateUrl: 'views/patientHistory.html'
+        })
+        .state('home.nurse.dischargeSummary', {
+            controller: 'dischargeSummaryController',
+            controllerAs: 'dischargeSummary',
+            templateUrl: 'views/dischargeSummary.html'
         });
 });
 

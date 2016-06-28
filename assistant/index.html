@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../dist/css/AdminLTE.min.css">
     <link rel="stylesheet" type="text/css" href="../dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" type="text/css" href="css/ng-table.css">
+    <link rel="stylesheet" type="text/css" href="css/nurse.css">
     <link rel="stylesheet" type="text/css" href="css/mainAdmin.css">
     <link rel="stylesheet" type="text/css" href="css/billingPrint.css">
     <link rel="stylesheet" type="text/css" href="css/invoiceHistory.css">
@@ -37,9 +38,6 @@
 
 <body id="body" class="hold-transition skin-blue sidebar-mini" ng-app="personalAssistant" ng-cloak>
     <div ui-view autoscroll="false"></div>
-    <script>
-    $.widget.bridge('uibutton', $.ui.button);
-    </script>
     <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../js/raphael-min.js"></script>
     <script type="text/javascript" src="../plugins/morris/morris.min.js"></script>
@@ -63,6 +61,14 @@
     <script type="text/javascript" src="controllers/main.js"></script>
     <script type="text/javascript" src="filters/dboticaFilters.js"></script>
     <script type="text/javascript" src="controllers/nurseController.js"></script>
+    <script type="text/javascript" src="controllers/medicationController.js"></script>
+    <script type="text/javascript" src="controllers/intakeOutputController.js"></script>
+    <script type="text/javascript" src="controllers/progressNoteController.js"></script>
+    <script type="text/javascript" src="controllers/vitalSignController.js"></script>
+    <script type="text/javascript" src="controllers/bedSideProcedureController.js"></script>
+    <script type="text/javascript" src="controllers/ipRoomTransferController.js"></script>
+    <script type="text/javascript" src="controllers/patientHistoryController.js"></script>
+    <script type="text/javascript" src="controllers/dischargeSummaryController.js"></script>
     <script type="text/javascript" src="controllers/mainAdminController.js"></script>
     <script type="text/javascript" src="controllers/doctorCategoryController.js"></script>
     <script type="text/javascript" src="controllers/addDoctorController.js"></script>

@@ -1,8 +1,7 @@
 <div class="inpatientContents" ng-controller="inpatientController as inpatient" ng-cloak>
     <h3>Inpatient Registration</h3>
-    <form id="inpatientSearchForm" class="form-inline" ng-cloak>
+    <form id="inpatientSearchForm" class="form-inline">
         <div class="form-group">
-            <label for="exampleInpatientPhoneNumber">phone Number</label>
             <input ng-change="inpatient.phoneNumberLengthValidation(inpatient.number)" numbers-only ng-model="inpatient.number" type="text" class="form-control exampleInpatientPhone" id="exampleInpatientPhone" placeholder="Phone Number">
         </div>
         <button ng-click="inpatient.patientSearch()" ng-disabled="inpatient.patientSearchBtnDisabled" type="button" data-toggle="modal" data-target="#inpatientSearchModal" class="btn addPatientBtn">Search</button>

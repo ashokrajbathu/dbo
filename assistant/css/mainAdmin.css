@@ -195,6 +195,12 @@
     top: 43%;
 }
 
+#caretInNurse {
+    position: absolute;
+    left: 94%;
+    top: 43%;
+}
+
 .highlightActiveAdminEntity {
     color: white !important;
     background-color: #3c8dbc !important;
