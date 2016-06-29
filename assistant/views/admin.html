@@ -1,8 +1,9 @@
 <div ng-controller="adminCtrl as adminView" ng-cloak>
     <div class="admin">
         <div class="container">
+            <h5 ng-click="adminView.toggleBetweenViews()" style="cursor:pointer;" class="pull-right"><a ng-if="adminView.changeAddressLink">(Change Address)</a><a ng-if="adminView.backLink">(Back to Doctor Section)</a></h5>
             <h3 class="adminHeader">Admin</h3>
-            <div class="selectDoctorSection">
+            <div ng-if="adminView.doctorSectionDiv" class="selectDoctorSection">
                 <form>
                     <div class="form-group adminEntity">
                         <div class="form-inline adminEntity">
@@ -61,6 +62,44 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div ng-if="adminView.changeAddressView">
+                <h4>Organization Address:</h4>
+                <div class="row">
+                    <div class="col-md-6 col-sm-10 col-xs-12">
+                        <form>
+                            <div class="form-group">
+                                <label for="organizationName">Organization Name</label>
+                                <input ng-model="adminView.orgAddress.label" type="text" class="form-control orgAddressInput" id="exampleInputOrganizationName">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputAddress">Address</label>
+                                <input type="text" ng-model="adminView.orgAddress.address" class="form-control orgAddressInput" id="exampleInputAddress">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputCity">Place</label>
+                                <input ng-model="adminView.orgAddress.city" type="text" class="form-control orgAddressInput" id="exampleInputCity">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPincode">Pin Code</label>
+                                <input type="text" ng-model="adminView.orgAddress.pinCode" class="form-control orgAddressInput" id="exampleInputPincode">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPhoneNumber">Phone Number</label>
+                                <input type="text" ng-model="adminView.orgAddress.phoneNumber" class="form-control orgAddressInput" id="exampleInputPhoneNumber">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputCellNumber">Cell Number</label>
+                                <input type="text" ng-model="adminView.orgAddress.cellNumber" class="form-control orgAddressInput" id="exampleInputCellNumber">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputTinNumber">Tin Number</label>
+                                <input type="text" ng-model="adminView.orgAddress.tinNo" class="form-control orgAddressInput" id="exampleInputTinNumber">
+                            </div>
+                            <button ng-click="adminView.updateAddress()" style="margin-top:12px;" type="submit" class="btn addProcedureBtn adminEntity">Save</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -1609,4 +1609,49 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         }
         return result;
     }
+
+    this.getOrganizationAddress = function() {
+        var deferred = $q.defer();
+        var addressRequestEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/assistant/getAddress',
+            withCredentials: true
+        }
+        $http(addressRequestEntity).then(function(orgSuccess) {
+            deferred.resolve(orgSuccess);
+        }, function(orgError) {
+            deferred.reject(orgError);
+        });
+        return deferred.promise;
+    }
+
+    this.updateOrgAddress = function(updateAddress) {
+        var deferred = $q.defer();
+        var updateEntity = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/assistant/updateAddress',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(updateAddress)
+        }
+        $http(updateEntity).then(function(updateSuccess) {
+            deferred.resolve(updateSuccess);
+        }, function(updateError) {
+            deferred.reject(updateError);
+        });
+        return deferred.promise;
+    }
+
+    this.updateAddressSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Organization Address Successfully added or updated!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
 }]);

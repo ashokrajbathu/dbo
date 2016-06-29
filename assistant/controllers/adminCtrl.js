@@ -7,6 +7,8 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     adminElement.serviceSelect = serviceSelect;
     adminElement.submitServiceRequest = submitServiceRequest;
     adminElement.btnActiveInServicesTable = btnActiveInServicesTable;
+    adminElement.toggleBetweenViews = toggleBetweenViews;
+    adminElement.updateAddress = updateAddress;
 
     adminElement.admin = {};
     adminElement.blurScreen = false;
@@ -25,11 +27,25 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     var service = "service";
     var test = "test";
     var general = "General";
+    adminElement.orgAddress = {};
+    adminElement.orgAddress.label = '';
+    adminElement.orgAddress.address = '';
+    adminElement.orgAddress.city = '';
+    adminElement.orgAddress.pinCode = '';
+    adminElement.orgAddress.phoneNumber = '';
+    adminElement.orgAddress.cellNumber = '';
+    adminElement.orgAddress.tinNo = '';
+    var organizationAddressId = '';
 
     var testActiveIndex = 0;
     var getTestsSuccess = [];
     var organizationId = localStorage.getItem('orgId');
     var generalObject = { 'firstName': "General", 'lastName': "" };
+
+    adminElement.doctorSectionDiv = true;
+    adminElement.addressSectionDiv = false;
+    adminElement.changeAddressLink = true;
+    adminElement.backLink = false;
 
     var billInvoice = {};
     dboticaServices.setInvoice(billInvoice);
@@ -71,6 +87,30 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
         adminElement.loading = false;
         dboticaServices.noConnectivityError();
         $log.log("in error response of getting doctors");
+    });
+
+    var organizationAddressPromise = dboticaServices.getOrganizationAddress();
+    organizationAddressPromise.then(function(organizationAddressSuccess) {
+        var errorCode = organizationAddressSuccess.data.errorCode;
+        if (!!errorCode) {
+            dboticaServices.logoutFromThePage(errorCode);
+        } else {
+            var organizationAddress = angular.fromJson(organizationAddressSuccess.data.response);
+            $log.log('org address is-----', organizationAddress);
+            if (organizationAddress.length > 0) {
+                organizationAddressId = organizationAddress[0].id;
+                adminElement.orgAddress.label = organizationAddress[0].label;
+                adminElement.orgAddress.address = organizationAddress[0].address;
+                adminElement.orgAddress.city = organizationAddress[0].city;
+                adminElement.orgAddress.pinCode = organizationAddress[0].pinCode;
+                adminElement.orgAddress.phoneNumber = organizationAddress[0].phoneNumber;
+                adminElement.orgAddress.cellNumber = organizationAddress[0].cellNumber;
+                adminElement.orgAddress.tinNo = organizationAddress[0].tinNo;
+            }
+        }
+    }, function(organizationAddressError) {
+        $log.log('organization eror is---', organizationAddressError);
+        dboticaServices.noConnectivityError();
     });
 
 
@@ -429,5 +469,50 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
         newObject.updatedBy = assistantCurrentlyLoggedIn.id;
         newObject.state = "ACTIVE";
         return newObject;
+    }
+
+    function toggleBetweenViews() {
+        if (adminElement.changeAddressLink == true) {
+            adminElement.changeAddressLink = false;
+            adminElement.backLink = true;
+            adminElement.doctorSectionDiv = false;
+            adminElement.changeAddressView = true;
+        } else {
+            adminElement.backLink = false;
+            adminElement.changeAddressLink = true;
+            adminElement.changeAddressView = false;
+            adminElement.doctorSectionDiv = true;
+        }
+    }
+
+    function updateAddress() {
+        var addressRequestEntity = {};
+        $log.log('in update address---');
+        if (organizationAddressId == '') {
+            addressRequestEntity = adminElement.orgAddress;
+        } else {
+            addressRequestEntity = adminElement.orgAddress;
+            addressRequestEntity.id = organizationAddressId;
+        }
+        $log.log('org address in----', adminElement.orgAddress);
+        var updateOrgAddressPromise = dboticaServices.updateOrgAddress(addressRequestEntity);
+        $log.log('promise is---', updateOrgAddressPromise);
+        updateOrgAddressPromise.then(function(updateOrgSuccess) {
+            var errorCode = updateOrgSuccess.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage();
+            } else {
+                updatedAddress = angular.fromJson(updateOrgSuccess.data.response);
+                $log.log('updated address is---', updatedAddress);
+                if (errorCode == null && updateOrgSuccess.data.success == true) {
+                    if (updatedAddress.length > 0) {
+                        adminElement.orgAddress = updatedAddress[0];
+                    }
+                    dboticaServices.updateAddressSuccessSwal();
+                }
+            }
+        }, function(updateOrgError) {
+            dboticaServices.noConnectivityError();
+        });
     }
 }]);
