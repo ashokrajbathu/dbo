@@ -8,7 +8,14 @@ angular.module('personalAssistant').controller('intakeOutputController', ['$scop
         autoclose: true
     });
 
-    /*angular.element("#inputIntakeTimepicker").wickedpicker();*/
+    var intakeOutput = this;
+    intakeOutput.mytime = new Date();
 
-
+    intakeOutput.hstep = 1;
+    intakeOutput.mstep = 1;
+    intakeOutput.options = {
+        hstep: [1, 2, 3],
+        mstep: [1, 5, 10, 15, 25, 30]
+    };
+    intakeOutput.ismeridian = true;
 }]);

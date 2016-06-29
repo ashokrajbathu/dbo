@@ -89,4 +89,27 @@ angular.module('personalAssistant').directive('uiSrefActiveIf', ['$state', funct
             update();
         }]
     };
-}])
+}]);
+
+angular.module('personalAssistant').directive('uiSrefIf', ['$state', function($state) {
+    return {
+        restrict: "A",
+        controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+            var state = $attrs.uiSrefIf;
+
+            function update() {
+                if ($state.includes(state) || $state.is(state)) {
+                    console.log('in uisrefif---');
+                    console.log("dollar element is---", angular.element('#mainAdminLiActive'));
+                    console.log('id value is-----', document.getElementById('mainAdminLiActive'));
+                    $('#mainAdminLiActive').addClass("activeAdminLi");
+                } else {
+                    $element.removeClass("activeAdminLi");
+                }
+            }
+
+            $scope.$on('$stateChangeSuccess', update);
+            update();
+        }]
+    };
+}]);

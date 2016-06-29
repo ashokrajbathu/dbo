@@ -5,6 +5,8 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
 
     $log.log('in doctor category controller---');
 
+
+
     doctorCategoryElement.addNewDoctorCategory = {};
     doctorCategoryElement.doctorCategoriesList = [];
     doctorCategoryElement.addNewDoctorCategory.doctorType = '';
@@ -29,6 +31,7 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
     var getDoctorsCategoriesPromise = dboticaServices.getDoctorCategories(organizationId);
     $log.log("get docs promise is----", getDoctorsCategoriesPromise);
     getDoctorsCategoriesPromise.then(function(doctorsCategoriesPromise) {
+        angular.element('#mainAdminLiActive').addClass('activeAdminLi');
         var errorCode = doctorsCategoriesPromise.data.errorCode;
         if (!!errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
@@ -182,4 +185,5 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
         doctorCategoryElement.addNewDoctorCategory.doctorType = '';
         doctorCategoryElement.addNewDoctorCategory.description = '';
     }
+
 }]);
