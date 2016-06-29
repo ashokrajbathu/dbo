@@ -123,6 +123,7 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
             templateUrl: 'views/patientEvents.html'
         })
         .state('home.nurse', {
+            url: '/nurse',
             controller: 'nurseController',
             redirectTo: 'home.nurse.patientMedication',
             controllerAs: 'nurse',

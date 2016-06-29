@@ -4,7 +4,56 @@
     </ul>
     <div class="tab">
         <div id="contentOfBedTab" class="tab-content activeTabContent">
-            <button class="btn mainAdminBtn">Add Services</button>
+            <button class="btn mainAdminBtn" data-toggle="modal" data-target="#addbedSideModal">Add Services</button>
+            <div id="addbedSideModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Complain</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="inputCategory" class="col-sm-2 col-md-2 col-xs-2 control-label">Particular Category</label>
+                                    <div class="col-sm-8 col-md-8 col-xs-8">
+                                        <select name="catSelect" id="catSelect" class="form-control input-sm" style="width:100%;">
+                                            <option value="categoryName">-Particular Category-</option>
+                                            <option value="CARDIAC">CARDIAC</option>
+                                            <option value="CONSULTANT">CONSULTANT</option>
+                                            <option value="DRESSING">DRESSING</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputItm" class="col-sm-2 col-md-2 col-xs-2 control-label">Particular Item</label>
+                                    <div class="col-sm-8 col-md-8 col-xs-8">
+                                        <select name="inputItm" id="inputItm" class="form-control input-sm" style="width:100%;">
+                                            <option value="categoryName">-Particular Item-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputQty" class="col-sm-2 col-md-2 col-xs-2 control-label">Qty</label>
+                                    <div class="col-sm-8 col-md-8 col-xs-8">
+                                        <input type="text" class="form-control" id="inputQty" placeholder="Qty">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputRemarks" class="col-sm-2 col-md-2 col-xs-2 control-label">Remarks</label>
+                                    <div class="col-sm-8 col-md-8 col-xs-8">
+                                        <textarea name="inputRmks" id="inputRmks" class="form-control input-sm" style="width:100%;" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn mainAdminBtn" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <table class="table mainAdminTable table-hover table-striped">
                 <thead>
                     <tr>

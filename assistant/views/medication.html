@@ -4,7 +4,75 @@
     </ul>
     <div class="tab">
         <div id="contentOfMedicationTab" class="tab-content activeTabContent">
-            <button class="btn mainAdminBtn">Add Medication</button>
+            <button class="btn mainAdminBtn" data-toggle="modal" data-target="#addMedicationModal">Add Medication</button>
+            <div id="addMedicationModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Medication</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="inputCategory" class="col-sm-2 col-md-2 col-xs-2 control-label">Category</label>
+                                    <div class="col-sm-7 col-md-7 col-xs-7">
+                                        <select name="categorySelect" id="categorySelect" class="form-control input-sm" style="width:100%;">
+                                            <option value="categoryName">-Category Name-</option>
+                                            <option value="ANTI-ALLERGIC">ANTI-ALLERGIC</option>
+                                            <option value="ANTI-ANXIETY">ANTI-ANXIETY</option>
+                                            <option value="ANTI-ARRHYTHMIA">ANTI-ARRHYTHMIA</option>
+                                            <option value="ANTI-ASTHMATIC">ANTI-ASTHMATIC</option>
+                                            <option value="ANTI-BACTERIAL">ANTI-BACTERIAL</option>
+                                            <option value="ANTI-CHOLINERGICS">ANTI-CHOLINERGICS</option>
+                                            <option value="ANTI-CHOLINESTERASES">ANTI-CHOLINESTERASES</option>
+                                            <option value="ANTI-HIV">ANTI-HIV</option>
+                                            <option value="ANTI-INFECTIVE">ANTI-INFECTIVE</option>
+                                            <option value="CATEGORY">CATEGORY</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputdrugName" class="col-sm-2 col-md-2 col-xs-2 control-label">Drug Name</label>
+                                    <div class="col-sm-7 col-md-7 col-xs-7">
+                                        <select name="drugName" id="drugName" class="form-control input-sm" style="width:100%;">
+                                            <option value="drugNameInModal">-Drug Name-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputDays" class="col-sm-2 col-md-2 col-xs-2 control-label">Days</label>
+                                    <div class="col-sm-7 col-md-7 col-xs-7">
+                                        <input type="text" class="form-control" id="inputDays" placeholder="Days">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputQty" class="col-sm-2 col-md-2 col-xs-2 control-label">Qty</label>
+                                    <div class="col-sm-7 col-md-7 col-xs-7">
+                                        <input type="text" class="form-control" id="inputQty" placeholder="Qty">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputInstruction" class="col-sm-2 col-md-2 col-xs-2 control-label">Instruction</label>
+                                    <div class="col-sm-7 col-md-7 col-xs-7">
+                                        <textarea placeholder="Instruction" name="instructions" id="instructions" class="form-control input-sm" style="width:100%;" rows="2"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputInstruction" class="col-sm-2 col-md-2 col-xs-2 control-label">Advice</label>
+                                    <div class="col-sm-7 col-md-7 col-xs-7">
+                                        <textarea placeholder="Advice" name="advice" id="advice" class="form-control input-sm" style="width:100%;" rows="2"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn mainAdminBtn" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <table class="table mainAdminTable table-hover table-striped">
                 <thead>
                     <tr>

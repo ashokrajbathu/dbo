@@ -4,7 +4,73 @@
     </ul>
     <div class="tab">
         <div id="contentOfVitalTab" class="tab-content activeTabContent">
-            <button class="btn mainAdminBtn">Add Vital Parameters</button>
+            <button class="btn mainAdminBtn" data-toggle="modal" data-target="#addVitalModal">Add Vital Parameters</button>
+            <div id="addVitalModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Vital Parameters</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="inputVitalDate" class="col-sm-2 col-md-2 col-xs-2 control-label">Date</label>
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <input class="form-control" id="inputVitalDate" placeholder="Date">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputVitalTimepicker" class="col-sm-2 col-md-2 col-xs-2 control-label">Time</label>
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <input class="form-control timepicker inputIntakeTimepicker" id="inputVitalTimepicker" placeholder="Time">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPulse" class="col-sm-2 col-md-2 col-xs-2 control-label">Pulse Rate</label>
+                                    <div class="col-sm-4 col-md-4 col-xs-4">
+                                        <input type="text" class="form-control" id="inputPulse" placeholder="Pulse Rate(/min)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputBP" class="col-sm-2 col-md-2 col-xs-2 control-label">Blood Pressure</label>
+                                    <div class="col-sm-4 col-md-4 col-xs-4">
+                                        <input type="text" class="form-control" id="inputPulse" placeholder="Blood Pressure(mm of Hg)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputTemperature" class="col-sm-2 col-md-2 col-xs-2 control-label">Temperature</label>
+                                    <div class="col-sm-4 col-md-4 col-xs-4">
+                                        <input type="text" class="form-control" id="inputTemperature" placeholder="Temperature(C)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputTemp" class="col-sm-2 col-md-2 col-xs-2 control-label">Respiration</label>
+                                    <div class="col-sm-4 col-md-4 col-xs-4">
+                                        <input type="text" class="form-control" id="inputTemp" placeholder="Respiration(/min)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputHeight" class="col-sm-2 col-md-2 col-xs-2 control-label">Height</label>
+                                    <div class="col-sm-4 col-md-4 col-xs-4">
+                                        <input type="text" class="form-control" id="inputHeight" placeholder="Height(Cm)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputWeight" class="col-sm-2 col-md-2 col-xs-2 control-label">Weight</label>
+                                    <div class="col-sm-4 col-md-4 col-xs-4">
+                                        <input type="text" class="form-control" id="inputWeight" placeholder="Weight(Kg)">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn mainAdminBtn" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <table class="table mainAdminTable table-hover table-striped">
                 <thead>
                     <tr>

@@ -4,7 +4,67 @@
     </ul>
     <div class="tab">
         <div id="contentOfIntakeTab" class="tab-content activeTabContent">
-            <button class="btn mainAdminBtn">Add Intake Record</button>
+            <button class="btn mainAdminBtn" data-toggle="modal" data-target="#addIntakeModal">Add Intake Record</button>
+            <div id="addIntakeModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Intake Record</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="inputModalDate" class="col-sm-2 col-md-2 col-xs-2 control-label">Date</label>
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <input class="form-control" id="inputModalDate" placeholder="Date">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputIntakeTimepicker" class="col-sm-2 col-md-2 col-xs-2 control-label">Time</label>
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <input class="form-control timepicker inputIntakeTimepicker" id="inputIntakeTimepicker" placeholder="Time">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputParticular" class="col-sm-2 col-md-2 col-xs-2 control-label">Particular</label>
+                                    <div class="col-sm-7 col-md-7 col-xs-7">
+                                        <input type="text" class="form-control" id="inputParticular" placeholder="Particular">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputFluids" class="col-sm-2 col-md-2 col-xs-2 control-label">I/V Fluids(ml)</label>
+                                    <div class="col-sm-7 col-md-7 col-xs-7">
+                                        <input type="text" class="form-control" id="inputFluids" placeholder="I/V Fluids(ml)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputOral" class="col-sm-2 col-md-2 col-xs-2 control-label">Oral(ml)</label>
+                                    <div class="col-sm-7 col-md-7 col-xs-7">
+                                        <input type="text" class="form-control" id="inputOral" placeholder="Oral(ml)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="NoOfStool" class="col-sm-2 col-md-2 col-xs-2 control-label">No. of Stool</label>
+                                    <div class="col-sm-7 col-md-7 col-xs-7">
+                                        <input type="text" class="form-control" id="NoOfStool" placeholder="No. of Stool">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="NoOfUrine" class="col-sm-2 col-md-2 col-xs-2 control-label">No. of Urine</label>
+                                    <div class="col-sm-7 col-md-7 col-xs-7">
+                                        <input type="text" class="form-control" id="NoOfUrine" placeholder="No. of Urine">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn mainAdminBtn" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <table class="table mainAdminTable table-striped table-hover">
                 <thead>
                     <tr>
@@ -31,7 +91,61 @@
                     </tr>
                 </tbody>
             </table>
-            <button id="addOutputBtn" class="btn mainAdminBtn">Add Output Record</button>
+            <button id="addOutputBtn" class="btn mainAdminBtn" data-toggle="modal" data-target="#outputModal">Add Output Record</button>
+            <div id="outputModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Output Record</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="inputModalOutputDate" class="col-sm-2 col-md-2 col-xs-2 control-label">Date</label>
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <input class="form-control" id="inputModalOutputDate" placeholder="Date">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputOutputTimepicker" class="col-sm-2 col-md-2 col-xs-2 control-label">Time</label>
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <input class="form-control timepicker outputTimepicker" id="outputTimepicker" placeholder="Time">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputUr" class="col-sm-2 col-md-2 col-xs-2 control-label">Urine(ml)</label>
+                                    <div class="col-sm-7 col-md-7 col-xs-7">
+                                        <input type="text" class="form-control" id="inputUr" placeholder="Urine(ml)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputFea" class="col-sm-2 col-md-2 col-xs-2 control-label">Feaces(ml)</label>
+                                    <div class="col-sm-7 col-md-7 col-xs-7">
+                                        <input type="text" class="form-control" id="inputFea" placeholder="Feaces(ml)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Resp" class="col-sm-2 col-md-2 col-xs-2 control-label">Respitation(ml)</label>
+                                    <div class="col-sm-7 col-md-7 col-xs-7">
+                                        <input type="text" class="form-control" id="Resp" placeholder="Respitation(ml)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="skin" class="col-sm-2 col-md-2 col-xs-2 control-label">Skin(ml)</label>
+                                    <div class="col-sm-7 col-md-7 col-xs-7">
+                                        <input type="text" class="form-control" id="skin" placeholder="Skin(ml)">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn mainAdminBtn" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <table class="table table-hover table-striped mainAdminTable">
                 <thead>
                     <tr>

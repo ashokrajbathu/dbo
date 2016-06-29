@@ -3,8 +3,54 @@
         <li class="active"><a href="#contentOfSummaryTab">Discharge Summary</a></li>
     </ul>
     <div class="tab">
-        <div id="contentOfSummaryTab" class="tab-content">
-            <h4>Discharge Summary</h4>
+        <div id="contentOfSummaryTab" class="tab-content activeTabContent">
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <td width="21%" valign="top">Reasons for Admission</td>
+                        <td width="79%">
+                            <textarea name="reasons" id="reasons" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Condition Upon Discharge</td>
+                        <td>
+                            <select name="condition" id="condition" class="form-control input-sm" style="width:60%;">
+                                <option value="condition">-Condition Upon Discharge-</option>
+                                <option value="improved">Improved</option>
+                                <option value="recovered">Recovered</option>
+                                <option value="expired">Expired</option>
+                                <option value="transferred">Transfered</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Admitting Impression</td>
+                        <td>
+                            <textarea name="admittingImpression" id="admittingImpression" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Final Diagnosis</td>
+                        <td>
+                            <textarea name="finalDiagnosis" id="finalDiagnosis" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Clinical Findings</td>
+                        <td>
+                            <textarea name="clinicalFindings" id="clinicalFindings" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Course in the Ward</td>
+                        <td>
+                            <textarea name="courseInTheWard" id="courseInTheWard" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn mainAdminBtn">Save</button>
         </div>
     </div>
 </div>
