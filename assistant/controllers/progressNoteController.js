@@ -3,4 +3,14 @@ angular.module('personalAssistant').controller('progressNoteController', ['$scop
         dateFormat: "dd/mm/yy",
         autoclose: true
     });
+
+    var note = this;
+    note.mytime = new Date();
+    note.hstep = 1;
+    note.mstep = 1;
+    note.options = {
+        hstep: [1, 2, 3],
+        mstep: [1, 5, 10, 15, 25, 30]
+    };
+    note.ismeridian = true;
 }]);

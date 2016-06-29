@@ -10,6 +10,7 @@ angular.module('personalAssistant').controller('intakeOutputController', ['$scop
 
     var intakeOutput = this;
     intakeOutput.mytime = new Date();
+    intakeOutput.myOutputTime = new Date();
 
     intakeOutput.hstep = 1;
     intakeOutput.mstep = 1;

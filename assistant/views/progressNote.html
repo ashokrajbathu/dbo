@@ -23,7 +23,8 @@
                                 <div class="form-group">
                                     <label for="inputNoteTimepicker" class="col-sm-2 col-md-2 col-xs-2 control-label">Time</label>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <input class="form-control timepicker inputIntakeTimepicker" id="inputNoteTimepicker" placeholder="Time">
+                                        <input type="text" class="form-control" id="inputIntakeTime" placeholder="Time">
+                                        <uib-timepicker ng-model="progressNote.mytime" hour-step="progressNote.hstep" minute-step="progressNote.mstep" show-meridian="progressNote.ismeridian"></uib-timepicker>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -38,11 +39,15 @@
                                         <textarea name="inputNotes" id="inputNotes" class="form-control input-sm" style="width:100%;" placeholder="Notes" rows="3"></textarea>
                                     </div>
                                 </div>
+                                <div class="form-inline">
+                                    <div class="col-md-offset-2">
+                                        <button class="btn mainAdminBtn">Save</button>
+                                        <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn mainAdminBtn" data-dismiss="modal">Save</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>

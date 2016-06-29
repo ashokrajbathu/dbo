@@ -17,13 +17,14 @@
                                 <div class="form-group">
                                     <label for="inputRoomDate" class="col-sm-2 col-md-2 col-xs-2 control-label">Date</label>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <input class="form-control" id="inputRoomDate" placeholder="Date">
+                                        <input class="form-control" id="inputRoomIpDate" placeholder="Date">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputRoomTimepicker" class="col-sm-2 col-md-2 col-xs-2 control-label">Time</label>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <input class="form-control timepicker inputIntakeTimepicker" id="inputRoomTimepicker" placeholder="Time">
+                                        <input type="text" class="form-control" id="inputIntakeTime" placeholder="Time">
+                                        <uib-timepicker ng-model="ipRoomTransfer.mytime" hour-step="ipRoomTransfer.hstep" minute-step="ipRoomTransfer.mstep" show-meridian="ipRoomTransfer.ismeridian"></uib-timepicker>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -65,11 +66,15 @@
                                         <textarea placeholder="Reason" name="reason" id="inputReason" class="form-control input-sm" style="width:100%;" rows="3"></textarea>
                                     </div>
                                 </div>
+                                <div class="form-inline">
+                                    <div class="col-md-offset-2">
+                                        <button class="btn mainAdminBtn">Save</button>
+                                        <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn mainAdminBtn" data-dismiss="modal">Save</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
