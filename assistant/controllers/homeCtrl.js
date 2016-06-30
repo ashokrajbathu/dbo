@@ -35,11 +35,11 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
                 $scope.isVisibleNavs.inventory = true;
                 break;
             case 'ORGANIZATION_MANAGEMENT':
-                $scope.isVisibleNavs.analyticReports = true;
                 $scope.isVisibleNavs.admin = true;
-                $scope.isVisibleNavs.ipd = true;
                 break;
             case 'HOSPITAL_ADMIN':
+                $scope.isVisibleNavs.analyticReports = true;
+                $scope.isVisibleNavs.ipd = true;
                 $scope.isVisibleNavs.mainAdmin = true;
                 break;
             case 'NURSE':

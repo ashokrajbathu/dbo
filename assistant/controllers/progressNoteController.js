@@ -13,4 +13,6 @@ angular.module('personalAssistant').controller('progressNoteController', ['$scop
         mstep: [1, 5, 10, 15, 25, 30]
     };
     note.ismeridian = true;
+
+    note.newNote = {};
 }]);

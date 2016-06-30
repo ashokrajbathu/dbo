@@ -17,26 +17,26 @@
                                 <div class="form-group">
                                     <label for="inputNoteDate" class="col-sm-2 col-md-2 col-xs-2 control-label">Date</label>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <input class="form-control" id="inputNoteDate" placeholder="Date">
+                                        <input ng-model="progressNote.newNote.date" class="form-control" id="inputNoteDate" placeholder="Date">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputNoteTimepicker" class="col-sm-2 col-md-2 col-xs-2 control-label">Time</label>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <input type="text" class="form-control" id="inputIntakeTime" placeholder="Time">
+                                        <input ng-model="progressNote.newNote.time" type="text" class="form-control" id="inputIntakeTime" placeholder="Time">
                                         <uib-timepicker ng-model="progressNote.mytime" hour-step="progressNote.hstep" minute-step="progressNote.mstep" show-meridian="progressNote.ismeridian"></uib-timepicker>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputFocus" class="col-sm-2 col-md-2 col-xs-2 control-label">Focus</label>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <input class="form-control" id="inputFocus" placeholder="Focus">
+                                        <input ng-model="progressNote.newNote.focus" class="form-control" id="inputFocus" placeholder="Focus">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputNotes" class="col-sm-2 col-md-2 col-xs-2 control-label">Notes</label>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <textarea name="inputNotes" id="inputNotes" class="form-control input-sm" style="width:100%;" placeholder="Notes" rows="3"></textarea>
+                                        <textarea ng-model="progressNote.newNote.notes" name="inputNotes" id="inputNotes" class="form-control input-sm" style="width:100%;" placeholder="Notes" rows="3"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-inline">
