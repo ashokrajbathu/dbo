@@ -15,6 +15,7 @@ app.controller('printBillController', ['$scope', function($scope) {
     $scope.address = $scope.addressInTheBill[0].address;
     $scope.cellNumber = $scope.addressInTheBill[0].cellNumber;
     $scope.phoneNumber = $scope.addressInTheBill[0].phoneNumber;
+    $scope.tinNo = $scope.addressInTheBill[0].tinNo;
     $scope.billNowActiveDetails = JSON.parse(billNowActive);
     console.log("bill now active is----", JSON.parse(billNowActive));
     console.log('address active is----', $scope.addressInTheBill);
