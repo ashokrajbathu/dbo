@@ -167,11 +167,17 @@
 }
 
 #drpBtnRegisterPatient,
-#drpBtndoctor {
+#drpBtndoctor,
+#drpBtnMedication {
     margin-left: -1px !important;
     border-color: none !important;
     color: black !important;
     width: 100% !important;
+}
+
+#drpBtnMedication {
+    border-radius: 0px !important;
+    border-color: #d2d6de !important;
 }
 
 #caretInCategory,
@@ -192,6 +198,12 @@
 #caretIndoctor {
     position: absolute;
     left: 90%;
+    top: 43%;
+}
+
+#caretInMedication {
+    position: absolute;
+    left: 94%;
     top: 43%;
 }
 

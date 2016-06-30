@@ -17,25 +17,21 @@
                                 <div class="form-group">
                                     <label for="inputCategory" class="col-sm-2 col-md-2 col-xs-2 control-label">Category</label>
                                     <div class="col-sm-7 col-md-7 col-xs-7">
-                                        <select name="categorySelect" id="categorySelect" class="form-control input-sm" style="width:100%;">
-                                            <option value="categoryName">-Category Name-</option>
-                                            <option value="ANTI-ALLERGIC">ANTI-ALLERGIC</option>
-                                            <option value="ANTI-ANXIETY">ANTI-ANXIETY</option>
-                                            <option value="ANTI-ARRHYTHMIA">ANTI-ARRHYTHMIA</option>
-                                            <option value="ANTI-ASTHMATIC">ANTI-ASTHMATIC</option>
-                                            <option value="ANTI-BACTERIAL">ANTI-BACTERIAL</option>
-                                            <option value="ANTI-CHOLINERGICS">ANTI-CHOLINERGICS</option>
-                                            <option value="ANTI-CHOLINESTERASES">ANTI-CHOLINESTERASES</option>
-                                            <option value="ANTI-HIV">ANTI-HIV</option>
-                                            <option value="ANTI-INFECTIVE">ANTI-INFECTIVE</option>
-                                            <option value="CATEGORY">CATEGORY</option>
-                                        </select>
+                                        <div id="drpBtnDivMedication" class="dropdown">
+                                            <button tooltip-popup-close-delay='1000' tooltip-placement="bottom" tooltip-is-open="medication.categoryNameToolTip" tooltip-trigger="medication.categoryNameToolTip" uib-tooltip="Please select an item from the list." id="drpBtnMedication" class="btn dropdown-toggle" type="button" data-toggle="dropdown">{{medication.newMedicine.drugType}}
+                                                <span id="caretInMedication" class="caret"></span></button>
+                                            <ul class="dropdown-menu">
+                                                <li ng-click="medication.drugTypeNameSelection(category)" ng-repeat="category in medication.categoryNamesArray">
+                                                    <a style="cursor:pointer;" ng-bind="category.name"></a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputdrugName" class="col-sm-2 col-md-2 col-xs-2 control-label">Drug Name</label>
                                     <div class="col-sm-7 col-md-7 col-xs-7">
-                                        <select name="drugName" id="drugName" class="form-control input-sm" style="width:100%;">
+                                        <select ng-model="medication.newMedicine.drugName" name="drugName" id="drugName" class="form-control input-sm" style="width:100%;">
                                             <option value="drugNameInModal">-Drug Name-</option>
                                         </select>
                                     </div>
@@ -43,30 +39,30 @@
                                 <div class="form-group">
                                     <label for="inputDays" class="col-sm-2 col-md-2 col-xs-2 control-label">Days</label>
                                     <div class="col-sm-7 col-md-7 col-xs-7">
-                                        <input type="text" class="form-control" id="inputDays" placeholder="Days">
+                                        <input ng-model="medication.newMedicine.days" type="text" class="form-control" id="inputDays" placeholder="Days">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputQty" class="col-sm-2 col-md-2 col-xs-2 control-label">Qty</label>
                                     <div class="col-sm-7 col-md-7 col-xs-7">
-                                        <input type="text" class="form-control" id="inputQty" placeholder="Qty">
+                                        <input ng-model="medication.newMedicine.quantity" type="text" class="form-control" id="inputQty" placeholder="Qty">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputInstruction" class="col-sm-2 col-md-2 col-xs-2 control-label">Instruction</label>
                                     <div class="col-sm-7 col-md-7 col-xs-7">
-                                        <textarea placeholder="Instruction" name="instructions" id="instructions" class="form-control input-sm" style="width:100%;" rows="2"></textarea>
+                                        <textarea ng-model="medication.newMedicine.instructions" placeholder="Instruction" name="instructions" id="instructions" class="form-control input-sm" style="width:100%;" rows="2"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputInstruction" class="col-sm-2 col-md-2 col-xs-2 control-label">Advice</label>
                                     <div class="col-sm-7 col-md-7 col-xs-7">
-                                        <textarea placeholder="Advice" name="advice" id="advice" class="form-control input-sm" style="width:100%;" rows="2"></textarea>
+                                        <textarea ng-model="medication.newMedicine.advice" placeholder="Advice" name="advice" id="advice" class="form-control input-sm" style="width:100%;" rows="2"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-inline">
                                     <div class="col-md-offset-2">
-                                        <button class="btn mainAdminBtn">Save</button>
+                                        <button ng-click="medication.saveMedicationDetails()" class="btn mainAdminBtn">Save</button>
                                         <button class="btn btn-default" data-dismiss="modal">Cancel</button>
                                     </div>
                                 </div>
@@ -89,15 +85,17 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
+                <tbody ng-if="patientMedication && medication.getData();">
+                    <tr ng-repeat="eventEntity in medication.patientEventsList">
+                        <td ng-bind="eventEntity.referenceDetails.drugType"></td>
+                        <td ng-bind="eventEntity.referenceDetails.instructions"></td>
+                        <td ng-bind="eventEntity.referenceDetails.advice"></td>
+                        <td ng-bind="eventEntity.referenceDetails.days"></td>
+                        <td ng-bind="eventEntity.referenceDetails.quantity"></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>
+                            <a ng-click="medication.removeParticularEvent(eventEntity,$index)" style="cursor:pointer;">Remove</a>
+                        </td>
                     </tr>
                 </tbody>
             </table>

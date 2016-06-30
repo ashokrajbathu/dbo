@@ -14,6 +14,8 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     var doctorsNamesList = [];
     var medicine = [];
     var roomCategoriesList = [];
+    var patientsArray = [];
+    var selectedPatient = {};
     var itemSelected, longDate;
 
     this.login = function(userEmailId, password) {
@@ -1654,4 +1656,76 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             allowOutsideClick: true
         });
     }
+
+    this.setPatientDetailsInService = function(value) {
+        selectedPatient = value;
+    }
+
+    this.getPatientDetailsFromService = function() {
+        return selectedPatient;
+    }
+
+    this.patientEvent = function(patientEventToBeUpdated) {
+        var deferred = $q.defer();
+        var patientEventRequestEntity = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/updatePatientEvent',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(patientEventToBeUpdated)
+        }
+        $http(patientEventRequestEntity).then(function(eventSuccess) {
+            deferred.resolve(eventSuccess);
+        }, function(eventError) {
+            deferred.reject(eventError);
+        });
+        return deferred.promise;
+    }
+
+    this.getPatientEvents = function(organizationId) {
+        var deferred = $q.defer();
+        var getEventsRequestEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/getPatientEvents?organizationId=' + organizationId,
+            withCredentials: true
+        }
+        $http(getEventsRequestEntity).then(function(getEventsSuccess) {
+            deferred.resolve(getEventsSuccess);
+        }, function(getEventsError) {
+            deferred.reject(getEventsError);
+        });
+        return deferred.promise;
+    }
+
+    this.setPatientEvents = function(value) {
+        patientsArray = value;
+    }
+
+    this.getPatientsEvents = function() {
+        return patientsArray;
+    }
+
+    this.saveMedicineSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Medicine Details Successfully saved!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.medicationDeleteSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Medicine Details Successfully Deleted!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
 }]);

@@ -1,4 +1,4 @@
-angular.module('personalAssistant').controller('nurseController', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('nurseController', ['$rootScope', '$scope', '$log', '$stateParams', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($rootScope, $scope, $log, $stateParams, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     localStorage.setItem('currentState', 'nurseHome');
 
     var nurseHome = this;
@@ -6,11 +6,19 @@ angular.module('personalAssistant').controller('nurseController', ['$scope', '$l
     nurseHome.phoneNumberLengthValidation = phoneNumberLengthValidation;
     nurseHome.patientSearchWithPhoneNumber = patientSearchWithPhoneNumber;
     nurseHome.patientEventSelect = patientEventSelect;
+    nurseHome.patientSelectFromTheList = patientSelectFromTheList;
+
+    nurseHome.patientDetails = {};
+    nurseHome.patientDetails.name = '';
 
     nurseHome.patientSearchBtnDisabled = true;
     nurseHome.PhoneNumberErrorMessage = false;
     nurseHome.patientsListToBeDisplayed = [];
     nurseHome.patientEventName = 'Patient Medication';
+
+    var organizationId = localStorage.getItem('orgId');
+
+    $rootScope.patientMedication = false;
 
     function phoneNumberLengthValidation() {
         var phoneNumber = nurseHome.number;
@@ -48,12 +56,12 @@ angular.module('personalAssistant').controller('nurseController', ['$scope', '$l
                 $log.log('patients list is----', nurseHome.patientsListToBeDisplayed);
             }
         }, function(patientsListError) {
+            $log.log('in connectivity error--');
             dboticaServices.noConnectivityError();
         });
     }
 
     function patientEventSelect(patientEvent) {
-        $log.log('in patient event select---');
         switch (patientEvent) {
             case 'patientMedication':
                 nurseHome.patientEventName = 'Patient Medication';
@@ -80,6 +88,34 @@ angular.module('personalAssistant').controller('nurseController', ['$scope', '$l
                 nurseHome.patientEventName = 'Discharge Summary';
                 break;
         }
+    }
+
+    function patientSelectFromTheList(patient) {
+        $log.log('patient selected is----', patient);
+        nurseHome.patientDetails.name = patient.firstName;
+        dboticaServices.setPatientDetailsInService(patient);
+        $rootScope.patientMedication = true;
+        var eventsPromise = dboticaServices.getPatientEvents(organizationId);
+        $log.log('events promise is---', eventsPromise);
+        eventsPromise.then(function(eventsSuccess) {
+            var errorCode = eventsSuccess.data.errorCode;
+            if (!!errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                var eventsResponseIs = angular.fromJson(eventsSuccess.data.response);
+                $log.log('events response is----', eventsResponseIs);
+                var eventsList = [];
+                angular.forEach(eventsResponseIs, function(pateintEventEntity) {
+                    if (pateintEventEntity.state == 'ACTIVE' && pateintEventEntity.patientEventType == 'MEDICINE_PROVIDED') {
+                        pateintEventEntity.referenceDetails = angular.fromJson(pateintEventEntity.referenceDetails);
+                        eventsList.push(pateintEventEntity);
+                    }
+                });
+                dboticaServices.setPatientEvents(eventsList);
+            }
+        }, function(eventsError) {
+            dboticaServices.noConnectivityError();
+        });
 
     }
 }]);

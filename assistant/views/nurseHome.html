@@ -15,7 +15,7 @@
                     <button style="width:100%;border-color:#c5c5c5;" class="btn dropdownInModalInpatient dropdown-toggle" type="button" data-toggle="dropdown">{{nurse.patientEventName}}
                         <span id="caretInNurse" class="caret"></span></button>
                     <ul style="margin-left:5px;text-align:center;" class="dropdown-menu">
-                        <li ng-click="nurse.patientEventSelect('patientMedication')" ui-sref=".patientMedication"><a class="navbarLinks">Patient Medication</a></li>
+                        <li ui-sref-opts="{reload:true}" ng-click="nurse.patientEventSelect('patientMedication')" ui-sref=".patientMedication"><a class="navbarLinks">Patient Medication</a></li>
                         <li ng-click="nurse.patientEventSelect('intakeOutput')" ui-sref=".intakeOutputRecord"><a class="navbarLinks">Intake/Output Record</a></li>
                         <li ng-click="nurse.patientEventSelect('progressNote')" ui-sref=".nurseProgressNote"><a class="navbarLinks">Nurse Progress Note</a></li>
                         <li ng-click="nurse.patientEventSelect('vitalSign')" ui-sref=".vitalSign"><a class="navbarLinks">Vital Sign</a></li>
@@ -52,7 +52,7 @@
                                 <td></td>
                                 <td ng-bind="patientEntity.firstName"></td>
                                 <td>
-                                    <a style="cursor:pointer;">SELECT</a>
+                                    <a data-dismiss="modal" ng-click="nurse.patientSelectFromTheList(patientEntity)" style="cursor:pointer;">SELECT</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -75,7 +75,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleNursePatientName">Patient Name</label>
-                            <input readonly type="text" class="form-control" id="exampleNursePatientName" placeholder="Patient Name">
+                            <input ng-model="nurse.patientDetails.name" readonly type="text" class="form-control" id="exampleNursePatientName" placeholder="Patient Name">
                         </div>
                         <div class="form-group">
                             <label for="exampleNurseIOPNumber">IOP No.</label>
