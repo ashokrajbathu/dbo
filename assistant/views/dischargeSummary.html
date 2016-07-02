@@ -9,13 +9,13 @@
                     <tr>
                         <td width="21%" valign="top">Reasons for Admission</td>
                         <td width="79%">
-                            <textarea name="reasons" id="reasons" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
+                            <textarea ng-model="dischargeSummary.request.reasons" name="reasons" id="reasons" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">Condition Upon Discharge</td>
                         <td>
-                            <select name="condition" id="condition" class="form-control input-sm" style="width:60%;">
+                            <select tooltip-popup-close-delay='1000' tooltip-placement="bottom" tooltip-is-open="dischargeSummary.categoryToolTip" tooltip-trigger="dischargeSummary.categoryToolTip" uib-tooltip="Please fill out this field." name="condition" id="condition" class="form-control input-sm" style="width:60%;">
                                 <option value="condition">-Condition Upon Discharge-</option>
                                 <option value="improved">Improved</option>
                                 <option value="recovered">Recovered</option>
@@ -27,30 +27,31 @@
                     <tr>
                         <td valign="top">Admitting Impression</td>
                         <td>
-                            <textarea name="admittingImpression" id="admittingImpression" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
+                            <textarea ng-model="dischargeSummary.request.admittingImpression" name="admittingImpression" id="admittingImpression" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">Final Diagnosis</td>
                         <td>
-                            <textarea name="finalDiagnosis" id="finalDiagnosis" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
+                            <textarea ng-model="dischargeSummary.request.finalDiagnosis" name="finalDiagnosis" id="finalDiagnosis" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">Clinical Findings</td>
                         <td>
-                            <textarea name="clinicalFindings" id="clinicalFindings" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
+                            <textarea ng-modal="dischargeSummary.request.clinicalFindings" name="clinicalFindings" id="clinicalFindings" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">Course in the Ward</td>
                         <td>
-                            <textarea name="courseInTheWard" id="courseInTheWard" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
+                            <textarea ng-modal="dischargeSummary.request.courseInTheWard" name="courseInTheWard" id="courseInTheWard" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <button class="btn mainAdminBtn">Save</button>
+            <a href="" ng-if="patientMedication && dischargeSummary.getData();"></a>
+            <button ng-click="dischargeSummary.saveDischargeSummary()" class="btn mainAdminBtn">Save</button>
         </div>
     </div>
 </div>

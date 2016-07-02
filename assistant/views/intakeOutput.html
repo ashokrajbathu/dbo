@@ -17,49 +17,49 @@
                                 <div class="form-group">
                                     <label for="inputModalDate" class="col-sm-2 col-md-2 col-xs-2 control-label">Date</label>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <input class="form-control" id="inputModalDate" placeholder="Date">
+                                        <input tooltip-popup-close-delay='1000' tooltip-placement="bottom" tooltip-is-open="intakeOutput.dateToolTip" tooltip-trigger="intakeOutput.dateToolTip" uib-tooltip="Please fill out this field." ng-model="intakeOutput.intake.date" class="form-control" id="inputModalDate" placeholder="Date">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputIntakeTimepicker" class="col-sm-2 col-md-2 col-xs-2 control-label">Time</label>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <input type="text" class="form-control" id="inputIntakeTime" placeholder="Time">
-                                        <uib-timepicker ng-model="intakeOutput.mytime" hour-step="intakeOutput.hstep" minute-step="intakeOutput.mstep" show-meridian="intakeOutput.ismeridian"></uib-timepicker>
+                                        <input ng-model="intakeOutput.intake.time" type="text" class="form-control" id="inputIntakeTime" placeholder="Time">
+                                        <uib-timepicker ng-change="intakeOutput.timeChangeInTxtBox()" ng-model="intakeOutput.mytime" hour-step="intakeOutput.hstep" minute-step="intakeOutput.mstep" show-meridian="intakeOutput.ismeridian"></uib-timepicker>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputParticular" class="col-sm-2 col-md-2 col-xs-2 control-label">Particular</label>
                                     <div class="col-sm-7 col-md-7 col-xs-7">
-                                        <input type="text" class="form-control" id="inputParticular" placeholder="Particular">
+                                        <input tooltip-popup-close-delay='1000' tooltip-placement="bottom" tooltip-is-open="intakeOutput.particularToolTip" tooltip-trigger="intakeOutput.particularToolTip" uib-tooltip="Please fill out this field." ng-model="intakeOutput.intake.particular" type="text" class="form-control" id="inputParticular" placeholder="Particular">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputFluids" class="col-sm-2 col-md-2 col-xs-2 control-label">I/V Fluids(ml)</label>
                                     <div class="col-sm-7 col-md-7 col-xs-7">
-                                        <input type="text" class="form-control" id="inputFluids" placeholder="I/V Fluids(ml)">
+                                        <input tooltip-popup-close-delay='1000' tooltip-placement="bottom" tooltip-is-open="intakeOutput.ivFluidsToolTip" tooltip-trigger="intakeOutput.ivFluidsToolTip" uib-tooltip="Please fill out this field." ng-model="intakeOutput.intake.ivfluids" type="text" class="form-control" id="inputFluids" placeholder="I/V Fluids(ml)">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputOral" class="col-sm-2 col-md-2 col-xs-2 control-label">Oral(ml)</label>
                                     <div class="col-sm-7 col-md-7 col-xs-7">
-                                        <input type="text" class="form-control" id="inputOral" placeholder="Oral(ml)">
+                                        <input tooltip-popup-close-delay='1000' tooltip-placement="bottom" tooltip-is-open="intakeOutput.oralToolTip" tooltip-trigger="intakeOutput.oralToolTip" uib-tooltip="Please fill out this field." type="text" ng-model="intakeOutput.intake.oral" class="form-control" id="inputOral" placeholder="Oral(ml)">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="NoOfStool" class="col-sm-2 col-md-2 col-xs-2 control-label">No. of Stool</label>
                                     <div class="col-sm-7 col-md-7 col-xs-7">
-                                        <input type="text" class="form-control" id="NoOfStool" placeholder="No. of Stool">
+                                        <input type="text" ng-model="intakeOutput.intake.noOf" class="form-control" id="NoOfStool" placeholder="No. of Stool">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="NoOfUrine" class="col-sm-2 col-md-2 col-xs-2 control-label">No. of Urine</label>
                                     <div class="col-sm-7 col-md-7 col-xs-7">
-                                        <input type="text" class="form-control" id="NoOfUrine" placeholder="No. of Urine">
+                                        <input type="text" ng-model="intakeOutput.intake.noOfUr" class="form-control" id="NoOfUrine" placeholder="No. of Urine">
                                     </div>
                                 </div>
                                 <div class="form-inline">
                                     <div class="col-md-offset-2">
-                                        <button class="btn mainAdminBtn">Save</button>
+                                        <button ng-click="intakeOutput.saveIntakeInModal()" class="btn mainAdminBtn">Save</button>
                                         <button class="btn btn-default" data-dismiss="modal">Cancel</button>
                                     </div>
                                 </div>
@@ -84,15 +84,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr ng-repeat="intakeEntity in intakeOutput.patientEventsList">
+                        <td ng-bind="intakeEntity.referenceDetails.date+' '+intakeEntity.referenceDetails.time"></td>
+                        <td ng-bind="intakeEntity.referenceDetails.particular"></td>
+                        <td ng-bind="intakeEntity.referenceDetails.ivfluids"></td>
+                        <td ng-bind="intakeEntity.referenceDetails.oral"></td>
+                        <td ng-bind="intakeEntity.referenceDetails.noOf"></td>
+                        <td ng-bind="intakeEntity.referenceDetails.noOfUr"></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><a ng-click="intakeOutput.removeIntake(intakeEntity,$index)" style="cursor:pointer;">Remove</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -109,43 +109,43 @@
                                 <div class="form-group">
                                     <label for="inputModalOutputDate" class="col-sm-2 col-md-2 col-xs-2 control-label">Date</label>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <input class="form-control" id="inputModalOutputDate" placeholder="Date">
+                                        <input tooltip-popup-close-delay='1000' tooltip-placement="bottom" tooltip-is-open="intakeOutput.dateToolTipOutput" tooltip-trigger="intakeOutput.dateToolTipOutput" uib-tooltip="Please fill out this field." ng-model="intakeOutput.output.date" class="form-control" id="inputModalOutputDate" placeholder="Date">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputOutputTimepicker" class="col-sm-2 col-md-2 col-xs-2 control-label">Time</label>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <input type="text" class="form-control" id="inputIntakeTime" placeholder="Time">
+                                        <input type="text" ng-model="intakeOutput.output.time" class="form-control" id="inputIntakeTime" placeholder="Time">
                                         <uib-timepicker ng-model="intakeOutput.myOutputTime" hour-step="intakeOutput.hstep" minute-step="intakeOutput.mstep" show-meridian="intakeOutput.ismeridian"></uib-timepicker>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputUr" class="col-sm-2 col-md-2 col-xs-2 control-label">Urine(ml)</label>
                                     <div class="col-sm-7 col-md-7 col-xs-7">
-                                        <input type="text" class="form-control" id="inputUr" placeholder="Urine(ml)">
+                                        <input tooltip-popup-close-delay='1000' tooltip-placement="bottom" tooltip-is-open="intakeOutput.urToolTip" tooltip-trigger="intakeOutput.urToolTip" uib-tooltip="Please fill out this field." type="text" ng-model="intakeOutput.output.noOfUr" class="form-control" id="inputUr" placeholder="Urine(ml)">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputFea" class="col-sm-2 col-md-2 col-xs-2 control-label">Feaces(ml)</label>
                                     <div class="col-sm-7 col-md-7 col-xs-7">
-                                        <input type="text" class="form-control" id="inputFea" placeholder="Feaces(ml)">
+                                        <input tooltip-popup-close-delay='1000' tooltip-placement="bottom" tooltip-is-open="intakeOutput.feacesToolTip" tooltip-trigger="intakeOutput.feacesToolTip" uib-tooltip="Please fill out this field." type="text" class="form-control" ng-model="intakeOutput.output.feaces" id="inputFea" placeholder="Feaces(ml)">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="Resp" class="col-sm-2 col-md-2 col-xs-2 control-label">Respitation(ml)</label>
                                     <div class="col-sm-7 col-md-7 col-xs-7">
-                                        <input type="text" class="form-control" id="Resp" placeholder="Respitation(ml)">
+                                        <input tooltip-popup-close-delay='1000' tooltip-placement="bottom" tooltip-is-open="intakeOutput.respToolTip" tooltip-trigger="intakeOutput.respToolTip" uib-tooltip="Please fill out this field." type="text" ng-model="intakeOutput.output.respitation" class="form-control" id="Resp" placeholder="Respitation(ml)">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="skin" class="col-sm-2 col-md-2 col-xs-2 control-label">Skin(ml)</label>
                                     <div class="col-sm-7 col-md-7 col-xs-7">
-                                        <input type="text" class="form-control" id="skin" placeholder="Skin(ml)">
+                                        <input tooltip-popup-close-delay='1000' tooltip-placement="bottom" tooltip-is-open="intakeOutput.skinToolTip" tooltip-trigger="intakeOutput.skinToolTip" uib-tooltip="Please fill out this field." type="text" ng-model="intakeOutput.output.skin" class="form-control" id="skin" placeholder="Skin(ml)">
                                     </div>
                                 </div>
                                 <div class="form-inline">
                                     <div class="col-md-offset-2">
-                                        <button class="btn mainAdminBtn">Save</button>
+                                        <button ng-click="intakeOutput.saveOutputInModal()" class="btn mainAdminBtn">Save</button>
                                         <button class="btn btn-default" data-dismiss="modal">Cancel</button>
                                     </div>
                                 </div>
@@ -169,17 +169,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr ng-repeat="outputEntity in intakeOutput.outputPatientEventsList">
+                        <td ng-bind="outputEntity.referenceDetails.date+' '+outputEntity.referenceDetails.time"></td>
+                        <td ng-bind="outputEntity.referenceDetails.noOfUr"></td>
+                        <td ng-bind="outputEntity.referenceDetails.feaces"></td>
+                        <td ng-bind="outputEntity.referenceDetails.respitation"></td>
+                        <td ng-bind="outputEntity.referenceDetails.skin"></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>
+                            <a ng-click="intakeOutput.removeOutputEntity(outputEntity,$index)" style="cursor:pointer;">Remove</a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
+            <a href="" ng-if="patientMedication && intakeOutput.getData();"></a>
         </div>
     </div>
 </div>

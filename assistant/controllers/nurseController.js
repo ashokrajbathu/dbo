@@ -105,17 +105,36 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
                 var eventsResponseIs = angular.fromJson(eventsSuccess.data.response);
                 $log.log('events response is----', eventsResponseIs);
                 var eventsList = [];
+                var progressNoteEventsList = [];
+                var vitalSignEventsList = [];
+                var intakeEventsList = [];
+                var outputEventsList = [];
                 angular.forEach(eventsResponseIs, function(pateintEventEntity) {
-                    if (pateintEventEntity.state == 'ACTIVE' && pateintEventEntity.patientEventType == 'MEDICINE_PROVIDED') {
-                        pateintEventEntity.referenceDetails = angular.fromJson(pateintEventEntity.referenceDetails);
+                    pateintEventEntity.referenceDetails = angular.fromJson(pateintEventEntity.referenceDetails);
+                    if (patient.id == pateintEventEntity.patientId && pateintEventEntity.state == 'ACTIVE' && pateintEventEntity.patientEventType == 'MEDICINE_PROVIDED') {
                         eventsList.push(pateintEventEntity);
+                    }
+                    if (patient.id == pateintEventEntity.patientId && pateintEventEntity.state == 'ACTIVE' && pateintEventEntity.patientEventType == 'PATIENT_DETAILS' && pateintEventEntity.referenceDetails.type == 'PROGRESS_NOTE') {
+                        progressNoteEventsList.push(pateintEventEntity);
+                    }
+                    if (patient.id == pateintEventEntity.patientId && pateintEventEntity.state == 'ACTIVE' && pateintEventEntity.patientEventType == 'PATIENT_DETAILS' && pateintEventEntity.referenceDetails.type == 'VITAL_SIGN') {
+                        vitalSignEventsList.push(pateintEventEntity);
+                    }
+                    if (patient.id == pateintEventEntity.patientId && pateintEventEntity.state == 'ACTIVE' && pateintEventEntity.patientEventType == 'PATIENT_DETAILS' && pateintEventEntity.referenceDetails.type == 'INTAKE_RECORD') {
+                        intakeEventsList.push(pateintEventEntity);
+                    }
+                    if (patient.id == pateintEventEntity.patientId && pateintEventEntity.state == 'ACTIVE' && pateintEventEntity.patientEventType == 'PATIENT_DETAILS' && pateintEventEntity.referenceDetails.type == 'OUTPUT_RECORD') {
+                        outputEventsList.push(pateintEventEntity);
                     }
                 });
                 dboticaServices.setPatientEvents(eventsList);
+                dboticaServices.setProgressNotePatientEvents(progressNoteEventsList);
+                dboticaServices.setVitalSignEvents(vitalSignEventsList);
+                dboticaServices.setIntakeEvents(intakeEventsList);
+                dboticaServices.setOutputEvents(outputEventsList);
             }
         }, function(eventsError) {
             dboticaServices.noConnectivityError();
         });
-
     }
 }]);

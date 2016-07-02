@@ -17,20 +17,20 @@
                                 <div class="form-group">
                                     <label for="inputNoteDate" class="col-sm-2 col-md-2 col-xs-2 control-label">Date</label>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <input ng-model="progressNote.newNote.date" class="form-control" id="inputNoteDate" placeholder="Date">
+                                        <input tooltip-popup-close-delay='1000' tooltip-placement="bottom" tooltip-is-open="progressNote.dateToolTip" tooltip-trigger="progressNote.dateToolTip" uib-tooltip="Please fill out this field." ng-model="progressNote.newNote.date" class="form-control" id="inputNoteDate" placeholder="Date">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputNoteTimepicker" class="col-sm-2 col-md-2 col-xs-2 control-label">Time</label>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
                                         <input ng-model="progressNote.newNote.time" type="text" class="form-control" id="inputIntakeTime" placeholder="Time">
-                                        <uib-timepicker ng-model="progressNote.mytime" hour-step="progressNote.hstep" minute-step="progressNote.mstep" show-meridian="progressNote.ismeridian"></uib-timepicker>
+                                        <uib-timepicker ng-change="progressNote.timeChangeInTxtBox()" ng-model="progressNote.mytime" hour-step="progressNote.hstep" minute-step="progressNote.mstep" show-meridian="progressNote.ismeridian"></uib-timepicker>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputFocus" class="col-sm-2 col-md-2 col-xs-2 control-label">Focus</label>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <input ng-model="progressNote.newNote.focus" class="form-control" id="inputFocus" placeholder="Focus">
+                                        <input tooltip-popup-close-delay='1000' tooltip-placement="bottom" tooltip-is-open="progressNote.focusToolTip" tooltip-trigger="progressNote.focusToolTip" uib-tooltip="Please fill out this field." ng-model="progressNote.newNote.focus" class="form-control" id="inputFocus" placeholder="Focus">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="form-inline">
                                     <div class="col-md-offset-2">
-                                        <button class="btn mainAdminBtn">Save</button>
+                                        <button ng-click="progressNote.addNoteInModal()" class="btn mainAdminBtn">Save</button>
                                         <button class="btn btn-default" data-dismiss="modal">Cancel</button>
                                     </div>
                                 </div>
@@ -62,13 +62,15 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                <tbody ng-if="patientMedication && progressNote.getData();">
+                    <tr ng-repeat="noteEntity in progressNote.patientEventsList">
+                        <td ng-bind="noteEntity.referenceDetails.date+' '+noteEntity.referenceDetails.time"></td>
+                        <td ng-bind="noteEntity.referenceDetails.focus"></td>
+                        <td ng-bind="noteEntity.referenceDetails.notesInModal"></td>
+                        <td ng-bind=""></td>
+                        <td>
+                            <a ng-click="progressNote.removeNotesEntity(noteEntity,index)" style="cursor:pointer;">Remove</a>
+                        </td>
                     </tr>
                 </tbody>
             </table>

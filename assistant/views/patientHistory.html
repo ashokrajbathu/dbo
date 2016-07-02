@@ -9,42 +9,43 @@
                     <tr>
                         <td width="21%" valign="top">Allergies</td>
                         <td width="79%">
-                            <textarea name="allergies" id="allergies" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
+                            <textarea ng-model="patientHistory.request.allergies" name="allergies" id="allergies" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">Warnings</td>
                         <td>
-                            <textarea name="warnings" id="warnings" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
+                            <textarea name="warnings" ng-model="patientHistory.request.warnings" id="warnings" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">Social History</td>
                         <td>
-                            <textarea name="socialHistory" id="socialHistory" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
+                            <textarea name="socialHistory" ng-model="patientHistory.request.socialHistory" id="socialHistory" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">Family History</td>
                         <td>
-                            <textarea name="familyHistory" id="familyHistory" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
+                            <textarea name="familyHistory" ng-model="patientHistory.request.familyHistory" id="familyHistory" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">Personal History</td>
                         <td>
-                            <textarea name="personalHistory" id="personalHistory" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
+                            <textarea name="personalHistory" ng-model="patientHistory.request.personalHistory" id="personalHistory" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">Past Medical History</td>
                         <td>
-                            <textarea name="pastMedicalHistory" id="pastMedicalHistory" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
+                            <textarea name="pastMedicalHistory" ng-model="patientHistory.request.patientMedicalHistory" id="pastMedicalHistory" class="form-control input-sm" style="width:60%;" rows="3"></textarea>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <button class="btn mainAdminBtn">Save</button>
+            <a href="" ng-if="patientMedication && patientHistory.getData();"></a>
+            <button ng-click="patientHistory.savePatientHistory()" class="btn mainAdminBtn">Save</button>
         </div>
     </div>
 </div>

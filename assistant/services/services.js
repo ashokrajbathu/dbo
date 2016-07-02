@@ -15,8 +15,12 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     var medicine = [];
     var roomCategoriesList = [];
     var patientsArray = [];
+    var progressNotePatientEvents = [];
+    var vitalSignPatientEvents = [];
     var selectedPatient = {};
     var itemSelected, longDate;
+    var intakeEvents = [];
+    var outputEventsList = [];
 
     this.login = function(userEmailId, password) {
         var inputData = {};
@@ -1722,6 +1726,148 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         swal({
             title: "Success",
             text: "Medicine Details Successfully Deleted!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.setProgressNotePatientEvents = function(value) {
+        progressNotePatientEvents = value;
+    }
+
+    this.getProgressNotePatientEvents = function() {
+        return progressNotePatientEvents;
+    }
+
+    this.saveNotesSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Notes Details Successfully saved!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.noteDeleteSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Notes Details Successfully Deleted!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.setVitalSignEvents = function(value) {
+        vitalSignPatientEvents = value;
+    }
+
+    this.getVitalSignEvents = function() {
+        return vitalSignPatientEvents;
+    }
+
+    this.addVitalSignSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Vital Sign Details Successfully Saved!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.vitalSignDeleteSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Vital Sign Details Successfully Deleted!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.patientHistoryUpdatedSwal = function() {
+        swal({
+            title: "Success",
+            text: "Patient History Successfully Saved!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.dischargeSummarySuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Discharge Summary Successfully Saved!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.pleaseSelectPatientSwal = function() {
+        swal({
+            title: "Info",
+            text: "Please Select the Patient",
+            type: "info",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.setIntakeEvents = function(value) {
+        intakeEvents = value;
+    }
+
+    this.getIntakeEvents = function() {
+        return intakeEvents;
+    }
+
+    this.intakeEventSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Intake Record Successfully Saved!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.intakeRecordDeleteSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Intake Record Successfully Deleted!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.setOutputEvents = function(value) {
+        outputEventsList = value;
+    }
+
+    this.getOutputEvents = function() {
+        return outputEventsList;
+    }
+
+    this.outputEventSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Output Record Successfully Saved!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.outputRecordDeleteSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Output Record Successfully Deleted!!!!",
             type: "success",
             confirmButtonText: "OK",
             allowOutsideClick: true
