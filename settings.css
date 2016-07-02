@@ -21,6 +21,11 @@
     width: 300px;
 }
 
+#daysOrQuantSelectBox {
+    height: 30px;
+    width: 100px;
+}
+
 #images {
     display: inline-block;
     float: left;

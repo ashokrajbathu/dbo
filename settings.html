@@ -262,6 +262,21 @@
                                         <input type="text" class="form-control" id="exampleInputRemarks">
                                     </div>
                                     <div class="form-group">
+                                        <label for="perServing">Per Serving</label>
+                                        <input type="text" class="form-control" id="exampleInputPerServing">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="daysOrQuantity">Days/Quantity</label>
+                                        <select id="daysOrQuantSelectBox">
+                                            <option value="Days">Days</option>
+                                            <option value="Quantity">Quantity</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="drugsOrQuantity">No.of Days/Quantity Count</label>
+                                        <input type="text" class="form-control" id="drugsOrQuantity">
+                                    </div>
+                                    <div class="form-group">
                                         <label for="exampleInputDrugTimings">Timings</label>
                                         <div class="col-md-12">
                                             <input type="button" id="drug-template-BBF" class="prescription-form-toggle-buttons col-md-1 btn btn-default btn-xs" value="BBF"></input>
@@ -275,7 +290,7 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn addDrugButtonInTemplate">Add Drug</button>
+                                <button id="addDrugBtnInModal" class="btn addDrugButtonInTemplate">Add Drug</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             </div>
                         </div>
@@ -283,25 +298,21 @@
                 </div>
                 <table class="table">
                     <thead>
-                        <th>S.No.</th>
-                        <th>Drug Name</th>
-                        <th>Remarks</th>
-                        <th>Drug Timings</th>
+                        <th width="5%;">S.No.</th>
+                        <th width="10%;">Drug Name</th>
+                        <th width="25%;">Drug Timings</th>
+                        <th width="5%;">Per Serving</th>
+                        <th width="5%;">No. of Days</th>
+                        <th width="5%;">Quantity</th>
+                        <th width="15%;">Remarks</th>
                         <th>Actions</th>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Combiflam</td>
-                            <td>daily</td>
-                            <td>Before Dinner</td>
-                            <td>Edit | Delete</td>
-                        </tr>
+                    <tbody id="drugArrayBody">
                     </tbody>
                 </table>
             </div>
             <div id="templateThreeBody">
-                <h1>Bhisetti</h1>
+                <h1>Coming Soon!!!!!!!!!!!</h1>
             </div>
         </div>
         <!-- /.content-wrapper -->
@@ -316,7 +327,6 @@
         <!-- /.control-sidebar -->
         <!-- Add the sidebar's background. This div must be placed
       immediately after the control sidebar -->
-        <div class="control-sidebar-bg"></div>
     </div>
     <!-- ./wrapper -->
     <!--added for register pop up --->
@@ -329,15 +339,6 @@
     <!-- DataTables -->
     <script src="plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
-    <!--script type="text/javascript" src="datepicker/js/datepicker.js"></script>
-  <!--<link rel="stylesheet" media="screen" type="text/css" href="datepicker/css/datepicker.css" />
-  <script type="text/javascript" src="datepicker/js/datepicker.js"></script>
-  <script type="text/javascript" src="datepicker/js/eye.js"></script>
-  <script type="text/javascript" src="datepicker/js/jquery.js"></script>
-  <script type="text/javascript" src="datepicker/js/utils.js"></script>
-  <script type="text/javascript" src="datepicker/js/layout.js?ver=1.0.2"></script>
-  <link rel="stylesheet" media="screen" type="text/css" href="datepicker/css/layout.css">-->
-    <!-- AdminLTE App -->
     <script src="dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="dist/js/demo.js"></script>
@@ -349,6 +350,7 @@
     $.validate();
     </script>
     <script type="text/javascript">
+    var drugsCountOnLoad = 0;
     $(document).ready(function() {
         var totalDrugObjectsOnReady = [];
         try {
@@ -356,6 +358,35 @@
         } catch (e) {
             console.log("Error in openDb");
         }
+
+        var drugsArray = [];
+
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8081/dbotica-spring/doctor/getDrugTemplates",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(response) {
+
+
+                drugArray = $.parseJSON(response.response);
+                console.log('get response is----', drugArray);
+                drugsCountOnLoad = drugArray.length;
+                var idIndex = 0;
+                for (var drugIndex = 0; drugIndex < drugArray.length; drugIndex++) {
+                    if (drugArray[drugIndex].state == 'ACTIVE') {
+                        var serialNumber = drugIndex + 1;
+
+                        $('#drugArrayBody').append('<tr id="rowNumber' + drugIndex + '"><td>' + serialNumber + '</td><td>' + drugArray[drugIndex].drugDosage.brandName + '</td><td>' + drugArray[drugIndex].drugDosage.usageDirection + '</td><td>' + drugArray[drugIndex].drugDosage.perServing + '</td><td>' + drugArray[drugIndex].drugDosage.noOfDays + '</td><td>' + drugArray[drugIndex].drugDosage.quantity + '</td><td>' + drugArray[drugIndex].drugDosage.remarks + '</td><td><a class="editDrugs" style="cursor:pointer;" id="editDrug' + drugIndex + '">Edit</a>|<a style="cursor:pointer;" class="deleteDrugs" id="deleteDrug' + drugIndex + '">Delete</td></tr>');
+                    }
+                }
+            }
+        });
 
         $('#deleteImageInSettings').hide();
         $('#templateOne').addClass('activeTemplate');
@@ -417,8 +448,138 @@
             button.removeClass('btn-success').addClass('btn-default');
         }
     });
-    </script>
-    <script type="text/javascript">
+
+    $(document).on('click', '.deleteDrugs', function(e) {
+        console.log('in delete drugs----');
+        var idIndex = this.id;
+        console.log('id Index is---', idIndex);
+
+    });
+
+
+    $('#addDrugBtnInModal').click(function(e) {
+        var drugReq = {};
+        drugReq.doctorId = localStorage.getItem('doctorId');
+        drugReq.drugDosage = {};
+        drugReq.drugDosage.drugId = selectedDrugId;
+        drugReq.drugDosage.drugType = selectedDrugType;
+        var per_serving = $('#exampleInputPerServing').val();
+        drugReq.drugDosage.brandName = $('#exampleInputDrugName').val();
+        drugReq.drugDosage.remarks = $('#exampleInputRemarks').val();
+        drugReq.drugDosage.perServing = $('#exampleInputPerServing').val();
+        var quantOrdays = 'Days';
+        quantOrdays = $('#daysOrQuantSelectBox option:selected').text();
+        console.log('quant or days is---', quantOrdays);
+        var usage = "";
+        var quantCount = 0;
+        if ($("#drug-template-BBF").hasClass('btn-success')) {
+            usage = "Before BreakFast";
+            quantCount++;
+        }
+        if ($("#drug-template-ABF").hasClass('btn-success')) {
+            if (usage == "") {
+                usage = "After BreakFast";
+            } else {
+                usage = usage + ", " + "After BreakFast";
+            }
+            quantCount++;
+        }
+        if ($("#drug-template-BL").hasClass('btn-success')) {
+            if (usage == "") {
+                usage = "Before Lunch";
+            } else {
+                usage = usage + ", " + "Before Lunch";
+            }
+            quantCount++;
+        }
+        if ($("#drug-template-AL").hasClass('btn-success')) {
+            if (usage == "") {
+                usage = "After Lunch";
+            } else {
+                usage = usage + ", " + "After Lunch";
+            }
+            quantCount++;
+        }
+        if ($("#drug-template-BD").hasClass('btn-success')) {
+            if (usage == "") {
+                usage = "Before Dinner";
+            } else {
+                usage = usage + ", " + "Before Dinner";
+            }
+            quantCount++;
+        }
+        if ($("#drug-template-AD").hasClass('btn-success')) {
+            if (usage == "") {
+                usage = "After Dinner";
+            } else {
+                usage = usage + ", " + "After Dinner";
+            }
+            quantCount++;
+        }
+        console.log('usage is---', usage);
+        console.log('count is---', quantCount);
+        drugReq.drugDosage['usageDirection'] = usage;
+        var capsuleTypes = ['TABLET', 'CAPSULE', 'INJECTION', 'SACHET', 'LOZENGES', 'SUPPOSITORY', 'RESPULES', 'PEN', 'APLICAPS', 'ENEMA', 'PATCH'];
+        var units = $('#drugsOrQuantity').val();
+        if ($.inArray(selectedDrugType, capsuleTypes) !== -1) {
+            if (quantOrdays === 'Days') {
+                if (per_serving == undefined || per_serving == '' || per_serving == null) {
+                    per_serving = parseInt(1);
+                }
+                if (quantCount == 0) {
+                    quantCount = 1;
+                }
+                if (units == undefined || units == '' || units == null) {
+                    units = parseInt(1);
+                    drugReq.drugDosage['noOfDays'] = units;
+                    drugReq.drugDosage['quantity'] = parseInt(units) * quantCount * parseInt(per_serving);
+                } else {
+                    drugReq.drugDosage['noOfDays'] = units;
+                    drugReq.drugDosage['quantity'] = parseInt(units) * quantCount * parseInt(per_serving);
+                }
+
+            } else {
+                drugReq.drugDosage['quantity'] = units;
+                drugReq.drugDosage['noOfDays'] = quantCount != 0 ? Math.ceil(parseInt(units) / (parseInt(per_serving) * quantCount)) : 1;
+            }
+        } else {
+            if (days === 'Days') {
+                drugReq.drugDosage['noOfDays'] = units;
+                drugReq.drugDosage['quantity'] = 1;
+            } else {
+                drugReq.drugDosage['quantity'] = units;
+                drugReq.drugDosage['noOfDays'] = 1;
+            }
+        }
+        console.log('drug req is---', drugReq);
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/dbotica-spring/doctor/drugTemplate",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            data: JSON.stringify(drugReq),
+            success: function(response) {
+                console.log('response after adding is---', response);
+                drugsCountOnLoad++;
+                var drugDetailsResponse = $.parseJSON(response.response);
+                drugArray.push(drugDetailsResponse);
+                $('#drugArrayBody').append('<tr><td>' + drugsCountOnLoad + '</td><td>' + drugDetailsResponse.drugDosage.brandName + '</td><td>' + drugDetailsResponse.drugDosage.usageDirection + '</td><td>' + drugDetailsResponse.drugDosage.perServing + '</td><td>' + drugDetailsResponse.drugDosage.noOfDays + '</td><td>' + drugDetailsResponse.drugDosage.quantity + '</td><td>' + drugDetailsResponse.drugDosage.remarks + '</td><td><a class="editDrugs" style="cursor:pointer;" id="editDrug' + drugsCountOnLoad + '">Edit</a>|<a style="cursor:pointer;" class="deleteDrugs" id="deleteDrug' + drugsCountOnLoad + '">Delete</td></tr>');
+                $('#drugTemplateModal').modal('hide');
+            },
+            error: function(request, status, error) {
+                console.log('error is---', error);
+                console.log('status is---', status);
+            }
+        });
+    });
+    var drugObjectsShown = [];
+    var selectedDrugId;
+    var selectedDrugType;
     $('#exampleInputDrugName').autocomplete({
         source: function(request, callback) {
             var searchParam = request.term;
@@ -429,7 +590,14 @@
             event.preventDefault();
         },
         select: function(event, ui) {
+            console.log('item to be selected is from array----', drugObjectsShown);
             ui.item.value = ui.item.value.split(" -")[0];
+            for (var index = 0; index < drugObjectsShown.length; index++) {
+                if (drugObjectsShown[index].brandName == ui.item.value) {
+                    selectedDrugId = drugObjectsShown[index].id;
+                    selectedDrugType = drugObjectsShown[index].drugType;
+                }
+            }
         }
     });
 
@@ -445,6 +613,8 @@
     function OnGetDrugsResponse(data, callback) {
         var totalDrugObjects = [];
         if (data.length != 0) {
+            drugObjectsShown = data;
+            console.log('data is---', data);
             for (var i = 0, l = data.length; i < l; i++) {
                 var drug = data[i];
                 var brandNameString = drug['brandName'];
