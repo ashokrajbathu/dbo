@@ -298,7 +298,6 @@
                 </div>
                 <table class="table">
                     <thead>
-                        <th width="5%;">S.No.</th>
                         <th width="10%;">Drug Name</th>
                         <th width="25%;">Drug Timings</th>
                         <th width="5%;">Per Serving</th>
@@ -351,6 +350,7 @@
     </script>
     <script type="text/javascript">
     var drugsCountOnLoad = 0;
+    var drugsArray = [];
     $(document).ready(function() {
         var totalDrugObjectsOnReady = [];
         try {
@@ -359,7 +359,7 @@
             console.log("Error in openDb");
         }
 
-        var drugsArray = [];
+
 
         $.ajax({
             type: "GET",
@@ -374,17 +374,22 @@
             success: function(response) {
 
 
-                drugArray = $.parseJSON(response.response);
-                console.log('get response is----', drugArray);
-                drugsCountOnLoad = drugArray.length;
-                var idIndex = 0;
-                for (var drugIndex = 0; drugIndex < drugArray.length; drugIndex++) {
-                    if (drugArray[drugIndex].state == 'ACTIVE') {
-                        var serialNumber = drugIndex + 1;
+                drugArrayAll = $.parseJSON(response.response);
+                console.log('get response is----', drugArrayAll);
 
-                        $('#drugArrayBody').append('<tr id="rowNumber' + drugIndex + '"><td>' + serialNumber + '</td><td>' + drugArray[drugIndex].drugDosage.brandName + '</td><td>' + drugArray[drugIndex].drugDosage.usageDirection + '</td><td>' + drugArray[drugIndex].drugDosage.perServing + '</td><td>' + drugArray[drugIndex].drugDosage.noOfDays + '</td><td>' + drugArray[drugIndex].drugDosage.quantity + '</td><td>' + drugArray[drugIndex].drugDosage.remarks + '</td><td><a class="editDrugs" style="cursor:pointer;" id="editDrug' + drugIndex + '">Edit</a>|<a style="cursor:pointer;" class="deleteDrugs" id="deleteDrug' + drugIndex + '">Delete</td></tr>');
+                var idIndex = 0;
+                var idCount = 0;
+                for (var drugIndex = 0; drugIndex < drugArrayAll.length; drugIndex++) {
+                    if (drugArrayAll[drugIndex].state == 'ACTIVE') {
+                        var serialNumber = idIndex + 1;
+
+                        drugsArray.push(drugArrayAll[drugIndex]);
+                        $('#drugArrayBody').append('<tr id="rowNumber' + drugIndex + '"><td>' + drugsArray[drugIndex].drugDosage.brandName + '</td><td>' + drugsArray[drugIndex].drugDosage.usageDirection + '</td><td>' + drugsArray[drugIndex].drugDosage.perServing + '</td><td>' + drugsArray[drugIndex].drugDosage.noOfDays + '</td><td>' + drugsArray[drugIndex].drugDosage.quantity + '</td><td>' + drugsArray[drugIndex].drugDosage.remarks + '</td><td><a data-toggle="modal" data-target="#drugTemplateModal" class="editDrugs" style="cursor:pointer;" id="editDrug' + idCount + '">Edit</a>|<a style="cursor:pointer;" class="deleteDrugs" id="deleteDrug' + idCount + '">Delete</td></tr>');
+                        idIndex++;
+                        idCount++;
                     }
                 }
+                drugsCountOnLoad = drugsArray.length;
             }
         });
 
@@ -450,10 +455,80 @@
     });
 
     $(document).on('click', '.deleteDrugs', function(e) {
-        console.log('in delete drugs----');
-        var idIndex = this.id;
-        console.log('id Index is---', idIndex);
 
+        var idIndex = this.id;
+        var drugIndex = idIndex.slice(-1);
+
+        console.log('in delete drugs----', drugIndex);
+        var drugReadyToDelete = drugsArray[drugIndex];
+        drugReadyToDelete.state = 'INACTIVE';
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/dbotica-spring/doctor/drugTemplate",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            data: JSON.stringify(drugReadyToDelete),
+            success: function(response) {
+                console.log('response after deleting is----', response.response);
+                $('#rowNumber' + [drugIndex]).hide();
+                drugArray.splice(drugIndex, 1);
+
+            }
+        });
+        console.log('id Index is---', idIndex);
+    });
+
+    $(document).on('click', '.editDrugs', function(e) {
+        var idIndex = this.id;
+        console.log('id index is---', idIndex);
+        idIndex = idIndex.slice(-1);
+        var drugToEdit = drugsArray[idIndex];
+        console.log('drug to edit is---', drugToEdit);
+        selectedDrugId = drugToEdit.drugDosage.drugId;
+        selectedDrugType = drugToEdit.drugDosage.drugType;
+        $('#exampleInputPerServing').val(drugToEdit.drugDosage.perServing);
+        $('#exampleInputDrugName').val(drugToEdit.drugDosage.brandName);
+        $('#exampleInputRemarks').val(drugToEdit.drugDosage.remarks);
+        $('#daysOrQuantSelectBox option:selected').text('');
+        $('#daysOrQuantSelectBox').val(drugToEdit.drugDosage.daysOrQuantity);
+        $('#drugsOrQuantity').val(drugToEdit.drugDosage.units);
+        var timingsArray = [];
+        console.log('timings elements are---', drugToEdit.drugDosage.usageDirection);
+        timingsArray = drugToEdit.drugDosage.usageDirection.split(', ');
+        console.log('timings array is---', timingsArray);
+        $("#drug-template-BBF").removeClass('btn-success');
+        $("#drug-template-ABF").removeClass('btn-success');
+        $("#drug-template-BL").removeClass('btn-success');
+        $("#drug-template-AL").removeClass('btn-success');
+        $("#drug-template-BD").removeClass('btn-success');
+        $("#drug-template-AD").removeClass('btn-success');
+        for (var timingIndex = 0; timingIndex < timingsArray.length; timingIndex++) {
+            switch (timingsArray[timingIndex]) {
+                case 'Before BreakFast':
+                    $("#drug-template-BBF").addClass('btn-success');
+                    break;
+                case 'After BreakFast':
+                    $("#drug-template-ABF").addClass('btn-success');
+                    break;
+                case 'Before Lunch':
+                    $("#drug-template-BL").addClass('btn-success');
+                    break;
+                case 'After Lunch':
+                    $("#drug-template-AL").addClass('btn-success');
+                    break;
+                case 'Before Dinner':
+                    $("#drug-template-BD").addClass('btn-success');
+                    break;
+                case 'After Dinner':
+                    $("#drug-template-AD").addClass('btn-success');
+                    break;
+            }
+        }
     });
 
 
@@ -469,6 +544,8 @@
         drugReq.drugDosage.perServing = $('#exampleInputPerServing').val();
         var quantOrdays = 'Days';
         quantOrdays = $('#daysOrQuantSelectBox option:selected').text();
+        drugReq.drugDosage.daysOrQuantity = quantOrdays;
+        drugReq.drugDosage.units = units;
         console.log('quant or days is---', quantOrdays);
         var usage = "";
         var quantCount = 0;
@@ -521,6 +598,7 @@
         drugReq.drugDosage['usageDirection'] = usage;
         var capsuleTypes = ['TABLET', 'CAPSULE', 'INJECTION', 'SACHET', 'LOZENGES', 'SUPPOSITORY', 'RESPULES', 'PEN', 'APLICAPS', 'ENEMA', 'PATCH'];
         var units = $('#drugsOrQuantity').val();
+        drugReq.drugDosage.units = units;
         if ($.inArray(selectedDrugType, capsuleTypes) !== -1) {
             if (quantOrdays === 'Days') {
                 if (per_serving == undefined || per_serving == '' || per_serving == null) {
@@ -543,7 +621,7 @@
                 drugReq.drugDosage['noOfDays'] = quantCount != 0 ? Math.ceil(parseInt(units) / (parseInt(per_serving) * quantCount)) : 1;
             }
         } else {
-            if (days === 'Days') {
+            if (quantOrdays === 'Days') {
                 drugReq.drugDosage['noOfDays'] = units;
                 drugReq.drugDosage['quantity'] = 1;
             } else {
@@ -566,9 +644,11 @@
             success: function(response) {
                 console.log('response after adding is---', response);
                 drugsCountOnLoad++;
+                var drugInd = drugsCountOnLoad - 1;
                 var drugDetailsResponse = $.parseJSON(response.response);
-                drugArray.push(drugDetailsResponse);
-                $('#drugArrayBody').append('<tr><td>' + drugsCountOnLoad + '</td><td>' + drugDetailsResponse.drugDosage.brandName + '</td><td>' + drugDetailsResponse.drugDosage.usageDirection + '</td><td>' + drugDetailsResponse.drugDosage.perServing + '</td><td>' + drugDetailsResponse.drugDosage.noOfDays + '</td><td>' + drugDetailsResponse.drugDosage.quantity + '</td><td>' + drugDetailsResponse.drugDosage.remarks + '</td><td><a class="editDrugs" style="cursor:pointer;" id="editDrug' + drugsCountOnLoad + '">Edit</a>|<a style="cursor:pointer;" class="deleteDrugs" id="deleteDrug' + drugsCountOnLoad + '">Delete</td></tr>');
+                drugsArray.push(drugDetailsResponse);
+                var indexNew = drugsArray.length - 1;
+                $('#drugArrayBody').append('<tr id="rowNumber' + indexNew + '"><td>' + drugDetailsResponse.drugDosage.brandName + '</td><td>' + drugDetailsResponse.drugDosage.usageDirection + '</td><td>' + drugDetailsResponse.drugDosage.perServing + '</td><td>' + drugDetailsResponse.drugDosage.noOfDays + '</td><td>' + drugDetailsResponse.drugDosage.quantity + '</td><td>' + drugDetailsResponse.drugDosage.remarks + '</td><td><a class="editDrugs" style="cursor:pointer;" data-toggle="modal" data-target="#drugTemplateModal" id="editDrug' + drugInd + '">Edit</a>|<a style="cursor:pointer;" class="deleteDrugs" id="deleteDrug' + drugInd + '">Delete</td></tr>');
                 $('#drugTemplateModal').modal('hide');
             },
             error: function(request, status, error) {

@@ -1,8 +1,963 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
-<head>Dbotica</head>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="handheldfriendly" content="true">
+    <meta name="mobileoptimized" content="320">
+    <style>
+    @font-face {
+        font-family: 'Poppins';
+        font-style: normal;
+        font-weight: 600;
+        src: url("fonts/poppins-v1-latin-600.woff2") format("woff2"), url("fonts/poppins-v1-latin-600.woff") format("woff")
+    }
+    
+    @font-face {
+        font-family: 'Roboto Mono';
+        font-style: normal;
+        font-weight: 400;
+        src: url("fonts/roboto-mono-v4-latin-regular.woff2") format("woff2"), url("fonts/roboto-mono-v4-latin-regular.woff") format("woff")
+    }
+    
+    html {
+        height: 100%;
+        font-size: 100%;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        box-sizing: border-box
+    }
+    
+    @media screen and (min-width:100em) {
+        html {
+            font-size: 125%
+        }
+    }
+    
+    *,
+    *:before,
+    *:after {
+        box-sizing: inherit;
+        padding: 0;
+        margin: 0
+    }
+    
+    svg {
+        max-height: 100%;
+        fill: currentColor
+    }
+    
+    svg:not(:root) {
+        overflow: hidden
+    }
+    
+    ::-moz-focus-inner {
+        border: 0;
+        padding: 0
+    }
+    
+    ::-moz-selection {
+        background: #2b2b2b;
+        color: #fff
+    }
+    
+    ::selection {
+        background: #2b2b2b;
+        color: #fff
+    }
+    
+    body {
+        height: 100%;
+        font-family: "Roboto Mono", "Courier New", Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
+        line-height: 1.65;
+        font-weight: 400;
+        background: #383838;
+        color: #d8d8d8
+    }
+    
+    h1,
+    h2,
+    h3,
+    .btn,
+    text {
+        font-family: "Poppins", "DejaVu Sans", "Bitstream Vera Sans", "DejaVu LGC Sans", Helvetica, Arial, Geneva, sans-serif;
+        font-weight: 600
+    }
+    
+    h1,
+    h2,
+    h3 {
+        line-height: 1.25;
+        max-width: 16em;
+        margin: 0 0 1.5rem 0
+    }
+    
+    h1 {
+        font-size: 2rem;
+        color: #fff;
+        letter-spacing: -1px
+    }
+    
+    @media screen and (min-width:48em) {
+        h1 {
+            font-size: 2.5rem;
+            max-width: 18em
+        }
+    }
+    
+    h2 {
+        font-size: 1.5rem
+    }
+    
+    h3 {
+        font-size: 1.25rem
+    }
+    
+    p,
+    ul {
+        list-style: none;
+        max-width: 31.250em;
+        margin: 0 0 1.65rem
+    }
+    
+    li {
+        margin-bottom: .5rem
+    }
+    
+    hr {
+        margin-top: 10vh;
+        margin-bottom: 10vh;
+        border: 0;
+        border-bottom: 4px solid #d8d8d8;
+        max-width: 5rem
+    }
+    
+    img {
+        max-width: 100%;
+        height: auto;
+        -ms-interpolation-mode: bicubic;
+        display: block
+    }
+    
+    a {
+        color: #f85557;
+        text-decoration: none;
+        -webkit-transition: all .2s;
+        transition: all .2s
+    }
+    
+    a:hover,
+    a:focus {
+        color: #d8d8d8;
+        box-shadow: inset 0 -2px 0 #f85557;
+        outline: 0
+    }
+    
+    .btn {
+        padding: .5rem;
+        margin-right: .25rem;
+        background: #f85557;
+        border-radius: 4px;
+        font-size: 1rem;
+        color: #fff;
+        text-align: center;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25)
+    }
+    
+    .btn:hover,
+    .btn:focus {
+        background: #1f1f1f;
+        color: #fff;
+        box-shadow: none
+    }
+    
+    .icon {
+        width: 2.75rem;
+        height: 2.75rem;
+        padding: 0
+    }
+    
+    .icon svg {
+        width: 2rem
+    }
+    
+    header {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        width: 100%;
+        z-index: 1
+    }
+    
+    text {
+        font-size: 78px;
+        fill: #404040;
+        -webkit-transition: fill .3s ease;
+        transition: fill .3s ease
+    }
+    
+    .swap text {
+        fill: #e5e5e5
+    }
+    
+    nav {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        z-index: 3
+    }
+    
+    .projects {
+        background: #f2f2f2
+    }
+    
+    .projects h1,
+    .projects h2,
+    .projects h3,
+    .projects p,
+    .projects ul {
+        color: #383838
+    }
+    
+    .projects hr {
+        border-color: #383838
+    }
+    
+    .projects a:hover,
+    .projects a:focus {
+        color: #383838
+    }
+    
+    .projects .btn:hover,
+    .projects .btn:focus {
+        color: #fff
+    }
+    
+    .wrap {
+        position: relative;
+        padding: 25vh 1rem 10rem;
+        margin: 0 auto;
+        max-width: 40rem;
+        z-index: 2
+    }
+    
+    @media screen and (min-width:60em) {
+        .wrap {
+            max-width: 64rem
+        }
+    }
+    
+    .flex {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+        justify-content: space-between
+    }
+    
+    @media screen and (min-width:60em) {
+        .md-flex {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: space-between;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            -webkit-box-align: baseline;
+            -webkit-align-items: baseline;
+            -ms-flex-align: baseline;
+            align-items: baseline
+        }
+    }
+    
+    .screenshots {
+        position: relative;
+        margin: 5rem auto;
+        overflow: hidden;
+        display: block
+    }
+    
+    .screenshots::after {
+        display: block;
+        padding-top: 45.5%;
+        content: ""
+    }
+    
+    .img-lg,
+    .img-md,
+    .img-sm {
+        position: absolute;
+        bottom: 0;
+        background-color: #d8d8d8;
+        background-position: 0 0;
+        background-size: 100%;
+        border-radius: 4px 4px 0 0;
+        box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+        display: block
+    }
+    
+    .img-lg::after,
+    .img-md::after,
+    .img-sm::after {
+        content: "";
+        display: block
+    }
+    
+    .img-lg::after {
+        padding-top: 65%
+    }
+    
+    .img-md::after {
+        padding-top: 110%
+    }
+    
+    .img-sm::after {
+        padding-top: 145%
+    }
+    
+    .img-lg {
+        width: 70%;
+        left: 1rem;
+        z-index: 100
+    }
+    
+    .img-md {
+        width: 32%;
+        right: 10%;
+        z-index: 110
+    }
+    
+    .img-sm {
+        width: 16%;
+        right: 1rem;
+        z-index: 120
+    }
+    
+    .b-lazy {
+        opacity: .5;
+        -webkit-transition: opacity .5s ease-in-out;
+        transition: opacity .5s ease-in-out
+    }
+    
+    .b-lazy::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 40%;
+        width: 1rem;
+        height: 1rem;
+        border-width: 5px;
+        border-style: solid;
+        -o-border-image: linear-gradient(#383838 100%, transparent);
+        border-image: -webkit-linear-gradient(#383838 100%, transparent);
+        border-image: linear-gradient(#383838 100%, transparent);
+        border-radius: 50%;
+        -webkit-animation: dot 1s linear infinite;
+        animation: dot 1s linear infinite
+    }
+    
+    @-webkit-keyframes dot {
+        100% {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg)
+        }
+    }
+    
+    @keyframes dot {
+        100% {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg)
+        }
+    }
+    
+    .b-loaded {
+        opacity: 1
+    }
+    
+    .b-loaded::before {
+        display: none
+    }
+    </style>
+    <title>Term and Condition | Dbotica Healthcare &amp; Android Application</title>
+    <link rel="apple-touch-icon" href="http://syndicatefx.com/img/apple-touch-icon.png">
+</head>
 
 <body>
+    <main role="main">
+        <div class="wrap">
+            <h1>Hello from Dbotica Healthcare!<br> This page will make you aware about our Terms and Conditions for using our Android and iOS applications</h1>
+            <hr>
+            <h3>Personal Information</h3>
+            <p>“Dbotica” is the trademark owned by Histobiotic Healthcare Private Limited, a Company incorporated under the Companies Act, 1956 with its corporate office at 213, Rifco Santosh Apartment ,Murgeshpalaya ,Bangalore ,560017 (Company). All the mobile applications related to “Dbotica” collectively referred to as “Site” is owned by the Company.</p>
+            <p>All visitors to Site are advised to read and understand the Terms of Use carefully</p>
+            <p>This Terms of Use is published in compliance of, and is governed by the provisions of Indian law, including but limited to:</p>
+            <ol>
+                <li>The Indian Contract Act, 1872 (“Contract Act”);</li>
+                <li>The provisions of Rule 3(1) of the Information Technology (Intermediaries Guidelines) Rules, 2011;</li>
+                <li>The Drugs and Cosmetic Act, 1940 (“Drugs Act”), read with the Drugs and Cosmetics Rules, 1945 (“Drugs Rules”);</li>
+                <li>The Drugs and Magic Remedies (Objectionable Advertisements) Act, 1954; and Consumer Protection Act, 1986;</li>
+                <li>The rules, regulations, guidelines and clarifications framed there under, including the (Indian) Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Information) Rules, 2011 (the “SPI Rules”), and the (Indian) Information Technology (Intermediaries Guidelines) Rules, 2011 (the “IG Rules”).
+                </li>
+                <p>The Terms of Use herein are subject to change from time to time by the Company without notice. It is strongly recommended that you periodically review the Terms of Use as available on the Site.</p>
+                <p>The terms ‘visitor’, ‘user’, and ‘you’ hereunder refer to the person visiting, accessing, browsing through and/or using the Site at any point in time.</p>
+                <br>
+                <h3>Services overview</h3>
+                <p>
+                    The site is a platform that facilitates the purchase of pharmaceutical products for sale by various relevant pharmacies (hereinafter referred to as “Medicine”, with the relevant pharmacies referred to as “partners”), facilitates discovery / appointment booking of “Medical practitioners” and “Medical labs” ,and create a personal health vault to securely manage,upload, view, store, and access their personal health information and to share it with others of their choosing, including their own health services providers. “Medicine” , “medical practitioners” , “medical labs “, “personal health vault” provided on the platform shall hereinafter be collectively referred to as “Services”. The arrangement between the partners, Medical practitioners, Medical labs and Dbotica shall be governed in accordance with this Terms of Use. The Services would be made available to such users who have agreed to become buyers on the Site after obtaining due registration, in accordance with the procedure as determined by Dbotica, from time to time. The Services are offered to the Users through various modes, which shall also include issue of discount coupons and vouchers that can be redeemed for various goods/ services offered for sale by the partners. The Company is not and cannot be a party to or save as except as may be provided in this document control in any manner, any transaction between the Users and partners.</p>
+                <p>The Company authorizes the User to view and access the content available on the Site solely for the purposes of availing the Services, such as visiting, ordering, receiving, delivering and communicating only as per the Terms of Use. The contents of the Site, information, text, graphics, images, logos, button icons, software code, design, and the collection, arrangement and assembly of content on the Site (collectively, “Dbotica Content”), are the property of the Company and are protected under copyright, trademark and other laws. User shall not modify the Dbotica Content or reproduce, display, publicly perform, distribute, or otherwise use the Dbotica Content in any way for any public or commercial purpose or for personal gain.</p>
+                <p>These Terms of Use constitute an electronic record in terms of the Information Technology Act, 2000 and rules framed there under, as applicable and amended from time to time. This electronic record is generated by a computer system and does not require any physical or digital signatures.</p>
+                <br>
+                <h3>Users</h3>
+                <p>As part of the registration process on the Site, the Company may collect the following personally identifiable information about you: Name, email address, mobile phone number and other contact details, demographic profile (like your age, gender, occupation, education, address etc.), other details as the User may volunteer including information about the pages on the Site you visit/access, the links you click on the Site, the number of times you access a particular page/feature and any such information. Information collected about you is subject to the Privacy Policy of the Company which is incorporated in these Terms of Use by reference.
+                    <br> The registration on or use/ access of the Site is only available to natural persons, other than those who are ‘incompetent to contract’ under the Contract Act. That is, persons including minors, un-discharged insolvents etc. are not eligible to register on, or use/ access the Site. A registered id can only be utilized by the person whose details have been provided and Company does not permit multiple persons to share a single log in/ registration id. However, a registered user, being also a parent or legal guardian of a person ‘incompetent to contract’ such as minors or persons with unsound mind, would be permitted to access and use the Site for the purposes of purchasing drugs or other pharmaceutical products and Services, on behalf of such persons.
+                    <br> You agree and acknowledge that You would:
+                    <br>
+                    <ol>
+                        <li> Create only one account;
+                            <li> Provide accurate, truthful, current and complete information when creating Your account and in all their dealings through the Site;
+                                <li> Maintain and promptly update Your account information;
+                                    <li> Maintain the security of Your account by not sharing Your password with others and restricting access to Your account and Your computer;
+                                        <li> Promptly notify the Company if You discover or otherwise suspect any security breaches relating to the Site; and f) Take responsibility for all activities that occur under Your account and accept all risk of unauthorized access.
+                    </ol>
+                </p>
+                <br>
+                <h3>Use of Site</h3> Facilitate Transactions
+                <br> You understand and agree that the Site and the Company merely provide hosting services to its Users and persons browsing / visiting the Site. All items offered for sale on the Site, the content made available by the partners/ manufacturers of drugs and other pharmaceutical products (“Manufacturers”) are third party user generated contents.
+                <br> The Users understand and agree that all commercial / contractual terms, with respect to the sale/ purchase/ delivery and consumption of the drugs and other pharmaceutical products or services are offered by and agreed to between Users and Partners and the contract for purchase of any of the drugs or other pharmaceutical products, or services, offered for sale on the Site by the Partners shall strictly be a bipartite contract between the Partner and the User.
+                <br> The commercial / contractual terms include without limitation - price, shipping costs, payment methods, payment terms, date, period and mode of delivery, warranties related to the goods and services offered for sale by the Partners, and after sales services related to such goods and services. The Company does not have any control over, and does not determine or advise or in any way involve itself in the offering or acceptance of, such commercial / contractual terms offered by and agreed to, between Users and Partners.
+                <br>
+                <br>
+                <h3>Representation as to legal title</h3> The Company does not make any representation or warranty as to legal title of the goods and services offered for sale by the individual Partners on the Site. At no time shall any right, title, claim or interest in the products sold through or displayed on the Site vest with the Company nor shall the Company have any obligations or liabilities in respect of any transactions on the Site. The Users agree and acknowledge that the ownership of the inventory of such goods and services shall always vest with the Partners, who are advertising or offering their services for sale on the Site and are the ultimate partners.
+                <br> The Users agree and acknowledge that the Partner shall be solely responsible for any claim/ liability/ damages that may arise in the event it is discovered that such Partner does not have the sole and exclusive legal ownership over the goods and services that have been offered for sale on the Site by such Partner, or did not have the absolute right, title and authority to deal in and offer for sale such goods and services on the Site.
+                <br>
+                <br>
+                <br>
+                <h3>Possession and stocking</h3> The Company does not, at any point of time, take possession of, or stock any of the goods or services offered for sale by the Partner on the Site.
+                <br>
+                <br>
+                <h3>Non-Performance of Contract</h3>
+                <ol>
+                    <li>The Company is not responsible for any unsatisfactory, delayed, non-performance or breach of the contract entered into between the User and Partner for purchase and sale of goods or services offered on the Site;
+                        <li> The Company cannot and does not guarantee that the concerned Partner will perform any transaction concluded on the Site;
+                            <li>Partner is solely responsible for ensuring that the goods or services offered for sale on the Site are kept in stock for successful fulfillment of orders received. Consequently, the Company is not responsible if the Partner does not satisfy the contract for sale of goods or services which are out of stock, back ordered or otherwise unavailable, but were shown as available on the Site at the time of placement of order by the User;
+                                <li> The Company shall not and is not required to mediate or resolve any dispute or disagreement between Users and Partners. In particular, the Company does not implicitly or explicitly support or endorse the sale or purchase of any items or services on the Site;
+                                    <li>The Company may, at its sole discretion, suspend User’s ability to use or access the Site at any time while the Company investigates any complaints or alleged violation of the Terms of Use or for any other reason. In the event, Users find any wrong information on the Site in relation to such User, they can correct it themselves or contact the Company immediately for such corrections. The Company shall have no liability or responsibility in this regard.
+                                        <p>Exhibition of drugs and publication of Content/ Information on the Site.</p>
+                                        <p>The Users agree and acknowledge that the respective Partners are exhibiting their content/ catalogue of drugs/ pharmaceutical products and services, and information in relation to such drugs/ pharmaceutical products and services, on the Site.
+                                            <br> The contents provided on the Site, including without limitation, text, copy, audio, video, photographs, illustrations, graphics and other visuals, is for information purposes only and does not constitute either an advertisement/ promotion of any drug being offered for sale by the Partners on the Site or any professional medical advice, diagnosis, treatment or recommendations of any kind.</p>
+                                        <p>The Users acknowledge and agree that such Partners shall be solely responsible for ensuring that such third party generated information made available regarding the goods offered for sale on the Site, are not misleading and describe the actual condition of the product. In this connection, it is solely the responsibility of the concerned Partner to ensure that all such information is accurate in all respects and there is no exaggeration or over emphasis on the specifics of such goods or services so as to mislead the Users in any manner. The Users acknowledge and understand that the Company provides no warranty or representation with respect to the authenticity/ veracity of the information provided in the Site and the Users must run their own independent check. The Users agree and acknowledge that the Company has not played any role in the ascertainment of the actual impact/ effect of any drug being offered for sale by the Partners on the Site. The Users agree and acknowledge that it shall not hold the Company responsible or liable for any damages arising out of such reliance on third party user generated content by the User.
+                                        </p>
+                                        <br>
+                                        <h3>Discovering a Registered Medical Practitioner or Medical Lab</h3>
+                                        <p>You must always consult a Registered Medical Practitioner with any questions or concerns you may have regarding the suitability of any drug offered for sale on the Site, in light of your individual needs and medical conditions. Reliance on any information appearing on the Site, whether provided by the Company, partners, its content providers, visitors to the Site or others, is solely at Your own risk, and the Company shall not bear any liability for any loss/ injury that may arise due to Your reliance on any information published on the Site. You further acknowledge and agree that, should any claim/ damage/ liability arise as a result of any reliance placed by You on any information published on the Site, the manufacturers/ Partners from whom said content is obtained and made available on the Site shall be solely responsible for any claim/ damage/ liability arising as a result of any reliance being placed by the User on said content, and the Company shall have no liability in relation to the same.
+                                            <br> Users must never avoid or cause any delay in obtaining medical advice from a Registered Medical Practitioner or disregard any such medical advice duly obtained, because of any information provided on the Site. If you have or suspect that you have a medical problem or condition, please contact a Registered Medical Practitioner immediately.
+                                            <br> The terms in this Clause 1 are applicable only to Users other than Medical Practitioners.</p>
+                                        <br>
+                                        <h3>1.1 - END-USER ACCOUNT AND DATA PRIVACY</h3>
+                                        <p>
+                                            1.1.1 The terms “personal information” and “sensitive personal data or information” are defined under the SPI Rules, and are reproduced in the Privacy Policy.
+                                            <br> 1.1.2 Dbotica may by its Services, collect information relating to the devices through which you access the site, and anonymous data of your usage. The collected information will be used only for improving the quality of Dbotica’s services and to build new services.
+                                            <br> 1.1.3 The site allows Dbotica to have access to registered Users’ personal email or phone number, for communication purpose so as to provide you a better way of providing services and for obtaining feedback.
+                                            <br> 1.1.4 The Privacy Policy sets out, inter-alia:</p>
+                                        <div>
+                                            <ul>
+                                                <li>The type of information collected from Users, including sensitive personal data or information;</li>
+                                                <li>The purpose, means and modes of usage of such information;</li>
+                                                <li> How and to whom Dbotica will disclose such information; and,</li>
+                                                <li> Other information mandated by the SPI Rules.
+                                                </li>
+                                            </ul>
+                                            1.1.5 The User is expected to read and understand the Privacy Policy, so as to ensure that he or she has the knowledge of, inter-alia:
+                                            <ul>
+                                                the fact that certain information is being collected;
+                                                <li> the purpose for which the information is being collected;
+                                                </li>
+                                                <li> the intended recipients of the information;
+                                                </li>
+                                                <li>the nature of collection and retention of the information; and
+                                                </li>
+                                                <li> the name and address of the agency that is collecting the information and the agency that will retain the information; and
+                                                </li>
+                                                <li> the various rights available to such Users in respect of such information.</li>
+                                            </ul>
+                                        </div>
+                                        <br>1.1.6 Dbotica shall not be responsible in any manner for the authenticity of the personal information or sensitive personal data or information supplied by the User to Dbotica or to any other person acting on behalf of Dbotica.
+                                        <br>1.1.7 The User is responsible for maintaining the confidentiality of the User’s account access information and password, if the User is registered on the site. The User shall be responsible for all usage of the User’s account and password, whether or not authorized by the User. The User shall immediately notify Dbotica of any actual or suspected unauthorized use of the User’s account or password. Although Dbotica will not be liable for your losses caused by any unauthorized use of your account, you may be liable for the losses of Dbotica or such other parties as the case may be, due to any unauthorized use of your account.
+                                        <br>1.1.8 If a User provides any information that is untrue, inaccurate, not current or incomplete (or becomes untrue, inaccurate, not current or incomplete), or Dbotica has reasonable grounds to suspect that such information is untrue, inaccurate, not current or incomplete, Dbotica has the right to discontinue the Services to the User at its sole discretion.
+                                        <br>1.1.9 Dbotica may use such information collected from the Users from time to time for the purposes of debugging customer support related issues.
+                                        <br>1.1.10 Against every medical Practitioner and medical labs listed in Dbotica.com, you may see a ‘show number’ option. When you choose this option, you choose to call the number through your mobile number for which the normal call charges will be applicable.
+                                        <br>1.1.11 The ‘Notification Rx Reminder’ provided by the Personal health vault is only a supplementary way of reminding you to take your medication as prescribed by your doctor. You should refer to your prescription before taking any medicines. Dbotica is not liable if for any reason Notification Rx Reminders are not delivered to you or are delivered late or delivered incorrectly, despite its best efforts.
+                                        </p>
+                                        <div>
+                                            <ol>
+                                                It is your responsibility to keep your correct mobile number and email ID updated in the Personal health vault. The records will be sent to the account associated with this mobile number and/or email ID. Every time you change any contact information (mobile or email), we will send a confirmation. Dbotica is not responsible for any loss or inconvenience caused due to your not updating your contact details for the Personal health vault.
+                                                <li> Dbotica uses industry–level security and encryption to your Personal health vault. However, Dbotica cannot guarantee prevent unauthorized access if you lose your login credentials or they are otherwise compromised. Please safeguard your login credentials and report any actual suspected breach of account to info@dbotica.in.
+                                                </li>
+                                                <li> If you access your dependents’ record through your Personal health vault by registering your dependents with your own Personal health vault, you are deemed to be responsible for the records of your dependents and all obligations that your dependants would have had had they maintained their own separate individual Personal health vaults.
+                                                </li>
+                                                <li> In case you want to delete your Personal health vault, you can do so by accessing 'Profile' from within your account. This will ensure that your account and any associated records will be deleted from the Personal health vault. This will however not delete your records stored by your doctor(s) and medical Practitioners.
+                                                </li>
+                                                <li>Dbotica collects, directly or indirectly, and displays on the site, relevant information regarding the profile and practice of the medical Practitioners and medical labs listed on the Site, such as their specialisation, qualification, fees, location, visiting hours, and similar details. Dbotica takes reasonable efforts to ensure that such information is updated at frequent intervals. Although Dbotica screens and vets the information and photos submitted by the medical Practitioners, it cannot be held liable for any inaccuracies or incompleteness represented from it, despite such reasonable efforts.
+                                                </li>
+                                                <li> The Services provided by Dbotica or any of its licensors or service providers are provided on an "as is" and “as available’ basis, and without any warranties or conditions (express or implied, including the implied warranties of merchantability, accuracy, fitness for a particular purpose, title and non-infringement, arising by statute or otherwise in law or from a course of dealing or usage or trade). Dbotica does not provide or make any representation, warranty or guarantee, express or implied about the Site or the Services. Dbotica does not guarantee the accuracy or completeness of any content or information provided by Users on the Site. To the fullest extent permitted by law, Dbotica disclaims all liability arising out of the User’s use or reliance upon the Site, the Services, representations and warranties made by other Users, the content or information provided by the Users on the Site, or any opinion or suggestion given or expressed by Dbotica or any User in relation to any User or services provided by such User.
+                                                </li>
+                                                <li> The Site may be linked to the site of third parties, affiliates and business partners. Dbotica has no control over, and not liable or responsible for content, accuracy, validity, reliability, quality of such sites or made available by/through our Site. Inclusion of any link on the Site does not imply that Dbotica endorses the linked site. User may use the links and these services at User’s own risk.
+                                                </li>
+                                                <li> Dbotica assumes no responsibility, and shall not be liable for, any damages to, or viruses that may infect User’s equipment on account of User’s access to, use of, or browsing the Site or the downloading of any material, data, text, images, video content, or audio content from the Site. If a User is dissatisfied with the Site, User’s sole remedy is to discontinue using the Site.
+                                                </li>
+                                                <li>If Dbotica determines that you have provided fraudulent, inaccurate, or incomplete information, including through feedback, Dbotica reserves the right to immediately suspend your access to the Site or any of your accounts with Dbotica and makes such declaration on the site alongside your name/your clinic’s name as determined by Dbotica for the protection of its business and in the interests of Users. You shall be liable to indemnify Dbotica for any losses incurred as a result of your misrepresentations or fraudulent feedback that has adversely affected Dbotica or its Users.
+                                                </li>
+                                            </ol>
+                                        </div>
+                                        <br>
+                                        <h4>1.2 APPOINTMENT BOOKING AND INTERACTION WITH PRACTITIONERS</h4>
+                                        <p>
+                                            1.2.1 While Dbotica will try to ensure a confirmed appointment for an End-User who requested an appointment on Site, Dbotica does not guarantee that a patient will get a confirmed appointment. Further, Dbotica has no liability if such appointment is confirmed but later cancelled by Practices or medical Practitioners, or the medical Practitioners are not available as per the given appointment time.
+                                            <br>1.2.2 Dbotica connects Users directly to the Medical Practitioners and the information exchanged between the User and the Medical Practitioners is stored and used in accordance with the Privacy Policy. However, it is at the discretion of the User, to avail the Service. If a User has used the telephony service, Dbotica reserves the right to share the contact details of the User with the Medical Practitioners contacted.
+                                            <br>1.2.3 You understand and agree that any interactions and associated issues with other Users including but not limited to your health issues and your experiences is strictly between you and the other Users. You shall not hold Dbotica responsible for any such interactions and associated issues. For avoidance of doubt, Dbotica is not involved in providing any healthcare or medical advice or diagnosis and hence is not responsible for any outcome between you and the Practitioner you interact with, pursuant to any interactions on the Site. If you decide to engage with a Practitioner to provide medical services to you, you do so at your own risk. The results of any search you perform on the Site for Medical Practitioners should not be construed as an endorsement by Dbotica of any such particular Practitioner. Dbotica shall not be responsible for any breach of service or service deficiency by any Practitioner. We cannot assure nor guarantee the ability or intent of the Practitioner(s) to fulfill their obligations towards you. We advise you to perform your own investigation prior to selecting a Practitioner.
+                                            <br>1.2.4 Without prejudice to the generality of the above, Dbotica will not be liable for:</p>
+                                        <div>
+                                            <ul>
+                                                <li> any wrong medication or treatment quality being given by the Practitioner(s), or any medical negligence on part of the Practitioner(s);
+                                                </li>
+                                                <li> any type of inconvenience suffered by the User due to a failure on the part of the Practitioner to provide agreed services or to make himself/herself available at the appointed time, no show by the Practitioner, inappropriate treatment, or similar difficulties;
+                                                </li>
+                                                <li> any misconduct or inappropriate behaviour by the Practitioner or the Practitioner’s staff;
+                                                </li>
+                                                <li> cancellation or rescheduling of booked appointment or any variance in the fees charged;
+                                                </li>
+                                                <li> any medical eventualities that might occur subsequent to using the services of a Practitioner, whom the User has selected on the basis of the information available on the Site or with whom the User has booked an appointment through the Site.
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        1.2.5 Further, Dbotica shall not be liable, under any event, for any comments or feedback given by any of the Users in relation to the services provided by another User. All such feedback should be made in accordance with applicable law. The option of Users to give feedback remains at Dbotica’s sole discretion and may be modified or withdrawn at its sole discretion. Dbotica may moderate such feedback at any time. Dbotica shall not be obliged to act in any manner to give effect to the content of Users’ feedback, such as suggestions for delisting of a particular Practitioner from the Site.
+                                        <br>1.3.1 Please note that some of the content, text, data, graphics, images, information, suggestions, guidance, and other material (collectively, “Information”) that may be available on the Site (including information provided in direct response to your questions or postings) may be provided by individuals in the medical profession. The provision of such Information does not create a licensed medical professional/patient relationship, between Dbotica and you and does not constitute an opinion, medical advice, or diagnosis or treatment of any particular condition, but is only provided to assist you with locating appropriate medical care from a qualified practitioner.
+                                        <br>1.3.2 It is hereby expressly clarified that, the Information that you obtain or receive from Dbotica, and its employees, contractors, partners, sponsors, advertisers, licensors or otherwise on the Site is for informational purposes only. We make no guarantees, representations or warranties, whether expressed or implied, with respect to professional qualifications, quality of work, expertise or other information provided on the Site. In no event shall we be liable to you or anyone else for any decision made or action taken by you in reliance on such information.
+                                        <br>1.3.3 The Services are not intended to be a substitute for getting in touch with emergency healthcare. If you are an End-User facing a medical emergency (either on your or a another person’s behalf), please contact an ambulance service or hospital directly.
+                                        <br>
+                                        <br>
+                                        <h4>1.4 REVIEWS AND FEEDBACK</h4>
+                                        <p>By using this Site, you agree that any information shared by you with Dbotica or with any Practitioner will be subject to our Privacy Policy.
+                                            <br> You are solely responsible for the content that you choose to submit for publication on the Site, including any feedback, ratings, or reviews (“Critical Content”) relating to Medical Practitioners or other healthcare professionals. The role of Dbotica in publishing Critical Content is restricted to that of an ‘intermediary’ under the Information Technology Act, 2000. Dbotica disclaims all responsibility with respect to the content of Critical Content, and its role with respect to such content is restricted to its obligations as an ‘intermediary’ under the said Act. Dbotica shall not be liable to pay any consideration to any User for re- publishing any content across any of its platforms.
+                                            <br> Your publication of reviews and feedback on the Site is governed by Clause 5 of these Terms. Without prejudice to the detailed terms stated in Clause 5, you hereby agree not to post or publish any content on the Site that (a) infringes any third-party intellectual property or publicity or privacy rights, or (b) violates any applicable law or regulation, including but not limited to the IG Rules and SPI Rules. Dbotica, at its sole discretion, may choose not to publish your reviews and feedback, if so required by applicable law, and in accordance with Clause 5 of these Terms. You agree that Dbotica may contact you through telephone, email, SMS, or any other electronic means of communication for the purpose of:</p>
+                                        <div>
+                                            <ul>
+                                                <li>Obtaining feedback in relation to Site or Dbotica’s services; and/or
+                                                </li>
+                                                <li> Obtaining feedback in relation to any Medical Practitioners or medical lab listed on the Site; and/or
+                                                </li>
+                                                <li> Resolving any complaints, information, or queries by Medical Practitioners regarding your Critical Content; and you agree to provide your fullest co-operation further to such communication by Dbotica. The terms in this Clause 2 are applicable only to Medical Practitioners and medical labs
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <br>
+                                        <h3>2.1 LISTING POLICY</h3> 2.1.1 Dbotica, directly and indirectly, collects information regarding the Medical Practitioners’ profiles and medical labs, contact details, and practice. Dbotica reserves the right to take down any Practitioner’s and medical labs profile as well as the right to display the profile of the Medical Practitioners and medical labs, with or without notice to the concerned Practitioner and medical labs. This information is collected for the purpose of facilitating interaction with the End-Users and other Users. If any information displayed on the Site in connection with you and your profile is found to be incorrect, you are required to inform Dbotica immediately to enable Dbotica to make the necessary amendments.
+                                        <br>2.1.2 Dbotica shall not be liable and responsible for the ranking of the Medical Practitioners and medical labs on external sites and search engines
+                                        <br>2.1.3 Dbotica shall not be responsible or liable in any manner to the Users for any losses, damage, injuries or expenses incurred by the Users as a result of any disclosures or publications made by Dbotica, where the User has expressly or implicitly consented to the making of disclosures or publications by Dbotica. If the User had revoked such consent under the terms of the Privacy Policy, then Dbotica shall not be responsible or liable in any manner to the User for any losses, damage, injuries or expenses incurred by the User as a result of any disclosures made by Dbotica prior to its actual receipt of such revocation.
+                                        <br>2.1.4 Dbotica reserves the right to moderate the suggestions made by the Medical Practitioners and medical labs through feedback and the right to remove any abusive or inappropriate or promotional content added on the Site. However, Dbotica shall not be liable if any inactive, inaccurate, fraudulent, or non- existent profiles of Medical Practitioners are added to the Site.
+                                        <br>2.1.5 Medical Practitioners and medical labs explicitly agree that Dbotica reserves the right to publish the Content provided by Medical Practitioners and medical labs to a third party including content platforms.
+                                        <br>2.1.6 When you are listed on site, End-Users may see a ‘show number’ option. Such call facility provided to End-Users and to you by Dbotica should be used only for appointment and booking purposes, and not for consultation on health-related issues. Dbotica accepts no liability if the call facility is not used in accordance with the foregoing.
+                                        <br>2.1.7 You as a Practitioner and medical lab hereby represent and warrant that you will use the Services in accordance with applicable law. Any contravention of applicable law as a result of your use of these Services is your sole responsibility, and Dbotica accepts no liability for the same.
+                                        <br>
+                                        <br>
+                                        <h3>2.2 PROFILE OWNERSHIP AND EDITING RIGHTS</h3> Dbotica ensures easy access to the Medical Practitioners and medical labs by providing a tool to update your profile information. Dbotica reserves the right of ownership of all the Practitioner’s and medical labs profile and photographs and to moderate the changes or updates requested by Medical Practitioners and medical labs . However, Dbotica takes the independent decision whether to publish or reject the requests submitted for the respective changes or updates. You hereby represent and warrant that you are fully entitled under law to upload all content uploaded by you as part of your profile or otherwise while using Dbotica’s services, and that no such content breaches any third party rights, including intellectual property rights. Upon becoming aware of a breach of the foregoing representation, Dbotica may modify or delete parts of your profile information at its sole discretion with or without notice to you.
+                                        <br>
+                                        <br>
+                                        <h3>2.3 REVIEWS AND FEEDBACK DISPLAY RIGHTS OF DBOTICA</h3> 2.3.1 All Critical Content is content created by the Users of (“Site”) and the clients of Dbotica customers, Medical Practitioners and medical labs, including the End-Users. As a platform, Dbotica does not take responsibility for Critical Content and its role with respect to Critical Content is restricted to that of an ‘intermediary’ under the Information Technology Act, 2000.
+                                        <br>2.3.2 Dbotica reserves the right to collect feedback and Critical Content for all the Medical Practitioners, Clinics and Healthcare Providers listed on the Site.
+                                        <br>2.3.3 Dbotica shall have no obligation to pre-screen, review, flag, filter, modify, refuse or remove any or all Critical Content from any Service, except as required by applicable law.
+                                        <br>2.3.4 You understand that by using the Services you may be exposed to Critical Content or other content that you may find offensive or objectionable. Dbotica shall not be liable for any effect on Practitioner’s and medical labs business due to Critical Content of a negative nature. In these respects, you may use the Service at your own risk. Dbotica however, as an ‘intermediary, takes steps as required to comply with applicable law as regards the publication of Critical Content.
+                                        <br>2.3.5 Dbotica will take down information under standards consistent with applicable law, and shall in no circumstances be liable or responsible for Critical Content, which has been created by the Users. The principles set out in relation to third party content in the terms of Service for the Site shall be applicable mutatis mutandis in relation to Critical Content posted on the Site.
+                                        <br>2.3.6 If Dbotica determines that you have provided inaccurate information or enabled fraudulent feedback, Dbotica reserves the right to immediately suspend any of your accounts with Dbotica and makes such declaration on the site alongside your name/your clinics name as determined by Dbotica for the protection of its business and in the interests of Users.
+                                        <br>
+                                        <br>
+                                        <h2>Personal health vault</h2> Dbotica may provide End-Users with a free facility known as ‘Personal health vault’ on the Site and its mobile application ‘Dbotica’. The specific terms relating to such account are as below, without prejudice to the rest of these Terms and the Privacy Policy:
+                                        <br> Your Personal health vault is only created after you have signed up and explicitly accepted these Terms.
+                                        <br> Information available in your Personal health vault is of two types:
+                                        <ul>
+                                            <li> Patient-created: Information generated and uploaded by you.</li>
+                                            <li> Practice-created: Information generated by your interaction with a Practitioner who uses ‘Dbotica’ or other Services of software.</li>
+                                        </ul>
+                                        Any Practice created information is provided on an as-is basis and Dbotica does not validate the said information and makes no representation in connection therewith. You should contact the relevant Practitioner in case you wish to point out any discrepancies or add, delete, or modify the information in any manner.
+                                        <br>The Personal health vault is provided on a best-efforts as-is basis. While we strive to maintain the highest levels of service availability, Dbotica is not liable for any interruption that may be caused to your access of the Services
+                                        <br>By accessing or using Personal health vault Online in any format, either via web browser, mobile device application, or other interface, you acknowledge and agree to comply with the guidelines stated below and all the terms and conditions of this Agreement.
+                                        <br>
+                                        <ol>
+                                            <li>You agree NOT TO SHARE your password with anyone. Sharing your password will enable others to have access to your personal confidential medical information. You are solely responsible for protecting your password.
+                                            </li>
+                                            <li> You agree that Personal health vault Online is a communication service offered as a convenience to patients. You understand that it provides you with online access to portions of your electronic medical record and that you are solely responsible for any sharing of Personal health vault Online content that you intentionally or unintentionally communicate to others.
+                                            </li>
+                                            <li> You understand that you may receive messages, test results and other communications delivered via Personal health vault Online. If you receive this information through Personal health vault Online, in general you will not receive separate written communication regarding this information from your health care team.
+                                            </li>
+                                            <li> You understand that messages you send via Personal health vault Online may be made part of your permanent medical record at the discretion of the clinician. Once it is made part of your record, it will be accessible to current and future staff members who are appropriately involved with your care.
+                                            </li>
+                                            <li> You understand that not all of your electronic medical record will appear on your Personal health vault Online. Posting of information is strictly at the discretion of your individual clinician.
+                                            </li>
+                                            <li> Security
+                                            </li>
+                                            <li> All communications between you and your health care team and access to your personal health information using Personal health vault Online are carried over a secure, encrypted connection directly into a segregated section of the electronic medical record. While we use state-of-the-art security, no system can perfectly guard against risks of intentional intrusion or inadvertent disclosure of information. When using Personal health vault Online, information will be transmitted over a medium that is beyond the control of its contractors.</li>
+                                        </ol>
+                                        <br>
+                                        <hr/> YOU HEREBY EXPRESSLY ASSUME THE SOLE RISK OF ANY UNAUTHORIZED DISCLOSURE OR INTENTIONAL INTRUSION, OR OF ANY DELAY, FAILURE, INTERRUPTION OR CORRUPTION OF DATA OR OTHER INFORMATION TRANSMITTED IN CONNECTION WITH THE USE OF THIS SERVICE.
+                                        <br> Once the information is received by us, your medical information will be treated as confidential and given the same protection that all other electronic medical records are given. While you may receive Internet e-mail messages notifying you of new messages in your Personal health vault Online Inbox, these e-mails may contain confidential medical information.
+                                        <hr/>
+                                        <br>
+                                        <H3>Prescription Drugs</H3> The Site is a platform that can be used by the Users to purchase various drugs and pharmaceutical products [including drugs which cannot be sold without a valid prescription duly issued by a Registered Medical Practitioner (“Prescription Drugs”)], offered for sale on the Site by Partners. In order to purchase Prescription Drugs from Partners through the Site, the Users are required to upload a scanned copy of the prescription on the Site or send the softcopy of the same to the Company. The order would not be internally processed and forwarded to the concerned Partners by the Company until it receives a copy of a valid prescription. The Users are also required to make the prescription available at the time of receipt of delivery of Prescription Drugs for verification by our Partners.
+                                        <br> The Company shall maintain a record of all the prescriptions sent by the User, which can be accessed by such User at any time in his account section and, subject to applicable laws, may also be used to re-order the prescribed medicines.
+                                        <br>
+                                        <br>
+                                        <h3>Substitution of Prescribed Drugs</h3> The Users acknowledge and accept that the order for a substitute of a Prescription Drug would only be processed if the Registered Medical Practitioner has himself/ herself permitted for any other equivalent generic drug to be dispensed in place of the prescribed drug or if the prescription solely lists the salt names instead of a specific brand name. The User further acknowledges and accepts that, in the absence of the above, the concerned pharmacist would only dispense a substitute drug in place of the prescribed drugs after obtaining suitable permission from the prescribing Registered Medical Practitioner.
+                                        <br>
+                                        <br>
+                                        <h3>Invitation to offer for sale</h3> Notwithstanding anything else contained in any other part of Terms of Use, the listing of drugs, other pharmaceutical products and services on the Site by the Partners is merely an ‘invitation to an offer for sale’ and not an ‘offer for sale’.
+                                        <br> The placement of an order by User shall constitute an offer by such User to enter into an agreement with the Partner (“Offer”). The acceptance of the Offer would only be undertaken by the Partner after the validation/ verification of the prescription by such Partner - in case of Prescription Drugs and the ascertainment of the available stock in the relevant pharmacy (in the case of Prescription as well as other drugs/ pharmaceutical products) by way of a confirmatory message/email/other mode of communication to be sent to the User.
+                                        <br>
+                                        <br>
+                                        <h3>Transfer of Property and Completion of Sale</h3> Upon acceptance of the Offer by the concerned Partner (being the pharmacist), the drugs/ pharmaceutical products or services would be dispensed at the pharmacy, in accordance with the terms of the order placed by the User. Such dispensation shall also take place under the direct/ personal supervision of the Pharmacist, wherever required under the applicable law.
+                                        <br> The User acknowledges and agrees that the property in the drugs/ pharmaceutical products or services ordered by the User shall stand immediately transferred to the User upon the dispensation of drugs and the raising of the invoice at the concerned pharmacy. Accordingly, the sale of drugs/ pharmaceutical products is concluded at the concerned pharmacy itself.
+                                        <br> The invoice in relation to the drugs/ pharmaceutical products and services that are required to be delivered to the User, shall be issued by the concerned Partner (being the pharmacy). The Partner (being the pharmacy) is to process and satisfy the order for such drugs/ pharmaceutical products, and services.
+                                        <br> The User acknowledges and agrees that the property in the services ordered by the User shall stand immediately transferred to the User upon the dispensation of service. The raising of the invoice in form of email/SMS will be by Dbotica. Accordingly, the sale of service is concluded for the concerned Partner.
+                                        <br>
+                                        <br>
+                                        <h3>Delivery of Drugs and Services</h3> The Partner or independent contractors shall deliver the goods in case of Medicines and the Partner will be sole responsible for delivery of service. The User accepts and acknowledges that the Partner or such other transporter/ courier/ delivery personnel, engaged by the Partner or the Company, shall be independent contractors in-charge of the delivery of goods from the concerned pharmacy to the address notified by the User (in case of Medicines), with no control over the goods and no additional obligation apart from standard delivery obligations and duty of care. The User further accepts and acknowledges that the Company does not engage in the distribution of the concerned drugs or other pharmaceutical products, and may provide the services of a third party transporter/ courier delivery personnel for the purposes of delivery of drugs or pharmaceutical products from the concerned pharmacy to the address notified by the User.
+                                        <br>
+                                        <br>
+                                        <h3>Compliance of Applicable Law</h3> While communicating/ transacting with Partners through the Site, the Users shall at all times ensure full compliance with the applicable provisions of the Drugs Act read with the Drugs Rules, as well as all other laws for the time being in force, and insure due payment of applicable taxes. They must specifically ensure that they are in no way purchasing Prescribed drugs or pharmaceutical products or intricate health related services without a valid prescription (for medicines) and without doctor’s advice (for health related services), which are prohibited under the Drugs Act (read with the Drugs Rules) as well as the other applicable laws for the time being in force.
+                                        <br> The Users must also ensure that the prescription uploaded on the Site or sent to the Company for processing the order for Prescription Drugs is a valid prescription duly obtained from a registered medical practitioner. The Users acknowledge and accept that they shall bear all costs/ liability/ damages, caused to the Partners or to the Company, as a result of any dispensation of Prescription Drugs by the Partner owing to the non-compliance by the User in this regard.
+                                        <br>
+                                        <br>
+                                        <h3>Payment, Fees and Taxes</h3> Registration on the Site and the access to the information provided on the Site is free. The Company does not charge any fee for accessing, browsing and buying through the Site. For medicines, the Partners may choose to either personally collect payment from the Users or may use the services of collection agents duly appointed in this regard. For other services, the payments need to be more on our Site or to the Partner directly based on Company policies. The Users agree and acknowledge that it shall not hold the Company responsible for any loss or damage caused to the User during the process, due to any acts or omission on the part of third parties viz. the Partner or the collection agents or for any actions/ omissions, which are beyond the control of the Company.
+                                        <br>
+                                        <br>
+                                        <h3>Covenants</h3> You undertake that You shall not do any act or post, display, upload, modify, publish, transmit, update or share any information that -
+                                        <br>
+                                        <ol>
+                                            <li> Belongs to another person and to which the User does not have any right;
+                                            </li>
+                                            <li> Is grossly harmful, harassing, blasphemous, defamatory, obscene, pornographic, pedophilic, libelous, invasive of another's privacy, hateful, or racially, ethnically objectionable, disparaging, relating or encouraging money laundering or gambling, or otherwise unlawful in any manner whatever;
+                                            </li>
+                                            <li> Infringes any patent, trademark, copyright or other intellectual proprietary rights of any third party;
+                                            </li>
+                                            <li> Violates any law for the time being in force;
+                                            </li>
+                                            <li> Impersonates another person;
+                                            </li>
+                                            <li> Contains software viruses or any other computer code, files or programs designed to interrupt, destroy or limit the functionality of any computer resource;
+                                            </li>
+                                            <li> Is prohibited under applicable law for the time being in force including Drugs Act (read with the Drugs Rules), the Drugs and Magic Remedies (Objectionable Advertisements) Act, 1954, the Indian Penal Code, 1860, as amended from time to time and rules made there under;
+                                            </li>
+                                            <li> Threatens the unity, integrity, defense, security or sovereignty of India, friendly relations with foreign states, or public order or causes incitement to the commission of any cognizable offence or prevents investigation of any offence or is insulting any other nation.</li>
+                                        </ol>
+                                        <br>
+                                        <br>
+                                        <h4>The User is also prohibited from:</h4>
+                                        <ol>
+                                            <li> Violating or attempting to violate the integrity or security of the Site or any Dbotica Content;
+                                            </li>
+                                            <li> Transmitting any information (including job posts, messages and hyperlinks) on or through the Site that is disruptive or competitive to the provision of Services by the Company;
+                                            </li>
+                                            <li> Intentionally submitting on the Site any incomplete, false or inaccurate information;
+                                            </li>
+                                            <li> Making any unsolicited communications to other Users;
+                                            </li>
+                                            <li> Using any engine, software, tool, agent or other device or mechanism (such as spiders, robots, avatars or intelligent agents) to navigate or search the Site;
+                                            </li>
+                                            <li>Attempting to decipher, decompile, disassemble or reverse engineer any part of the Site;
+                                            </li>
+                                            <li> Copying or duplicating in any manner any of the Dbotica Content or other information available from the Site; 8. Framing or hot linking or deep-linking any Dbotica Content.</li>
+                                        </ol>
+                                        <br>In case of non-compliance with any applicable laws, rules or regulations, or the Agreement (including the Privacy Policy) by a User, the Company has the right to immediately terminate the access or usage rights of the User to the Services and to remove noncompliant information.
+                                        <br>
+                                        <br>
+                                        <h3>Liability</h3> The User accepts and acknowledges that Company does not provide any representation or give any guarantee or warranty (whether express or implied, or whether arising by virtue of a statue or otherwise in law or from a course of dealing or usage or trade) in relation to the goods made available on their Site, including any guarantee or warrantee that such goods (i) are merchantable; (ii) fit for the purpose of which they are to be (or have been) purchased;(iii) have accurate description; (iv) do not cause any infringement; and (v) that the Partners have legal title over the goods being offered for sale by them on the Site. The Company also does not provide any representation or give any guarantee or warranty (whether express or implied) about the Site or any of the Services offered.
+                                        <br> The User further accepts and acknowledges that the Company does not verify any content or information provided by the Partners/ or obtained from the Manufacturers, and to fullest extent permitted by law, disclaims all liability arising out of the User's use or reliance upon the Site, the Services, the Dbotica Content, representations and warranties made by the Partners or the content or information (provided by such Partner or obtained from the Manufacturers) on the Site or any opinion or suggestion given or expressed by the Company or any Partner in relation to any User or Services provided by the Company.
+                                        <br> The Site may be linked to web pages and content of third parties, affiliates and business partners (collectively, “Third Party Content”). The Company does not control, endorse or adopt any Third Party Content and can make no guarantee as to its accuracy or completeness. The User acknowledges and agrees that the Company shall not be responsible or liable in any manner for the content, accuracy, validity, reliability, and quality of such Third Party Content. Inclusion of any link on the Site does not imply that the Company endorses the linked site. User may use the links and these services at User's own risk.
+                                        <br> The Company assumes no responsibility, and shall not be liable for, any damages to, or viruses that may infect User's equipment on account of User's access to, use of, or browsing the Site or the downloading of any material, data, text, images, video content, or audio content from the Site. If a User is dissatisfied with the Site, User's sole remedy is to discontinue using the Site.
+                                        <br> To the maximum extent permitted by applicable law, the Company, its affiliates, independent contractors, service providers, consultants, licensors, agents, and representatives, and each of their respective directors, officers or employees (“Protected Entities”), shall not be liable for any direct, indirect, special, incidental, punitive, exemplary or consequential damages, or any other damages of any kind, arising from, or directly or indirectly related to, (i) the use of, or the inability to use, the Site or the content, materials and functions related thereto; (ii) User's provision of information via the Site; even if such protected entity has been advised of the possibility of such damages.
+                                        <br> In no event shall the Protected Entities be liable for, or in connection with, (i) the provision of, or failure to provide, all or any products or service by a Partner to any User; or (ii) any comments or feedback given by any of the Users in relation to the goods or services provided by any Partner; or (ii) any content posted, transmitted, exchanged or received by or on behalf of any User or other person on or through the Site.In no event shall the total aggregate liability of the protected entities to a User for all damages, losses, and causes of action (whether in contract or tort, including, but not limited to negligence, strict liability, product liability or otherwise) arising from the Terms of Use or a User's use of the Site exceed an aggregate amount of Rs. 1000. The Company accepts no liability for any errors or omissions, whether on behalf of the Users or third parties.
+                                        <br>
+                                        <br>
+                                        <h3>Indemnity</h3> You agree to defend, indemnify and hold harmless the Company, its affiliates, independent contractors, service providers, consultants, licensors, agents, and representatives, and each of their respective directors, officers and employees, from and against any and all claims, losses, liability, damages, and/or costs (including, but not limited to, reasonable attorney fees and costs) arising from or related to (a) Your access to or use of Site; (b) Your violation of the Terms of Use; (c) Your violation of any rights of another person/ entity, including infringement of their intellectual property rights; or (d) Your conduct in connection with the Site.
+                                        <br>
+                                        <br>
+                                        <h3>Modification of Site</h3> The Company reserves the right to modify or discontinue, temporarily or permanently, the Site or any features or portions thereof without prior notice. You agree that the Company will not be liable for any modification, suspension or discontinuance of the Site or any other part thereof.
+                                        <br>
+                                        <br>
+                                        <h3>Termination</h3> The provisions of this Agreement shall continue to apply until terminated by either You or the Company as set for below:
+                                        <br>
+                                        <ol>
+                                            <li> If You want to terminate this Agreement with the Company, You may do so by:
+                                            </li>
+                                            <li> The Company reserves the right to, at any time, and with or without notice, terminate this Agreement with You if: i. not accessing the Site; or ii. closing Your accounts for all of the Services that You use. i. You breach any of applicable law, including but not limited to the Drugs Act and the rules issued there under or the provisions of this Agreements or the terms of the Privacy Policy or any other terms, conditions, or policies that may be applicable to You from time to time (or have acted in a manner that clearly shows that You do not intend to, or are unable to, comply with the same); or ii. The Company is unable to verify or authenticate any information provided to The Company by You; or iii. The Company believes, in its sole discretion, that Your actions may cause legal liability for The Company (or any of its affiliates, independent contractors, service providers, consultants, licensors, agents, and representatives) or are contrary to the interests of the Site; or iv. The Company is required to do so by law; or v. If You fail to provide (or after providing such consent, later revoke) the consents necessary or desirable for the Company to provide the Services to You; or vi. The provision of the Services to you, or to the general public, is in the Company’s opinion, no longer commercially viable; or vii. The Company has elected to discontinue, with or without reason, access to the Site or the Services (or any part thereof).
+                                            </li>
+                                            <li> The Company may also terminate or suspend (temporarily or permanently) all or a portion of Your account or access to the Services, with or without reason. Except as may be set forth in any of the terms applicable to a particular Service, termination of Your account may include: (i) removal of access to all offerings within the Site or with respect to the Services; and (ii) barring You from further use or access of the Site or of any of the Services.
+                                            </li>
+                                            <li> Once terminated or suspended (temporarily or permanently), You may not continue to use the Site under the same account, a different account or re-register under a new account.
+                                            </li>
+                                            <li> Upon termination of this Agreement, the Company shall have no obligation to maintain or provide any of Your data and may thereafter, unless legally prohibited, delete all Your data in its systems or otherwise in its possession or under its control, including but not limited to Your personal information, log-in ID and password, order details (including any prescriptions uploaded) and all related information, files and materials associated with or inside Your account (or any part thereof).
+                                            </li>
+                                            <li> The right to terminate/ suspend the account is in addition to, and without prejudice to, the Company’s right to initiate action against the User.
+                                            </li>
+                                        </ol>
+                                        <br>
+                                        <br>
+                                        <h3>Force Majeure</h3> The User accepts and acknowledges that the Company or the Partners shall not be liable for any loss or damage caused to the User as a result of delay or default or deficiency or failure in the Services as a result of any natural disasters, fire, riots, civil disturbances, actions or decrees of governmental bodies, communication line failures (which are not caused due to the fault of the User), or any other delay or default or deficiency or failure which arises from causes beyond the Company or the Partner’s reasonable control (“Force Majeure Event”). In the event of any Force Majeure Event arising, the Company or the Partner, depending on whose performance has been impacted under the Terms of Use, shall immediately give notice to the User of the facts, which constitute the Force Majeure Event.
+                                        <br>
+                                        <br>
+                                        <h3>Governing Law and Dispute Resolution</h3> The laws of India will govern this Agreement and any contractual obligation between the Company and User, without reference to the conflict of laws principles. Any legal action or proceeding related to Your access to, or use of, the Site or these Terms of Use shall be subject to the exclusive jurisdiction of the courts at Delhi.
+                                        <br>
+                                        <br>
+                                        <h3>Survival</h3> Even after termination, certain obligations mentioned under Covenants, Liability, Indemnity, Intellectual Property, Dispute Resolution will continue and survive termination.
+                                        <br>
+                                        <br>
+                                        <h3>Severability</h3> If any provision of this Terms of Use is deemed invalid, unlawful, void or for any other reason unenforceable, then that provision shall be deemed severable from these Terms of Use and shall not affect the validity and enforceability of any of the remaining provisions.
+                                        <br>
+                                        <br>
+                                        <h3>Communication with Company</h3> If any User has any grievance, comment, question or suggestion regarding any of our Services, please contact our customer service at: info@dbotica.in
+                                        <br>In the event you wish to contact the designated Grievance Officer of the Company, you can reach the Officer at:
+                                        <hr>
+                                        <br>Histobiotic Healthcare Private Limited 213,
+                                        <br>Rifco Santosh Apartment
+                                        <br>Murgeshpalaya , Bangalaore 560017
+                                        <br>Email address: info@dbotica.in
+                                        <hr>
+                                        <p>In order to use the Dbotica Account and personal health vault, you must agree to our terms and conditions by clicking “I Accept” and successfully complete the online registration and/or verification processes. By registering and/or being verified and clicking “I Accept” at the end of this agreement, you acknowledge you have read, understand, and agree to our terms of use and to be legally bound by them. By doing so, you also agree to be bound to the terms of use, privacy policy, and copyright and disclaimer notices.</p>
+        </div>
+    </main>
+    <nav class="flex">
+        <a class="btn" href="http://www.dbotica.com/" title="Dbotica">Visit Us</a>
+    </nav>
+    <script>
+    (function(p, m) {
+        "function" === typeof define && define.amd ? define(m) : "object" === typeof exports ? module.exports = m() : p.Blazy = m()
+    })(this, function() {
+        function p(b) {
+            var c = b._util;
+            c.elements = B(b.options.selector);
+            c.count = c.elements.length;
+            c.destroyed && (c.destroyed = !1, b.options.container && k(b.options.container, function(a) {
+                n(a, "scroll", c.validateT)
+            }), n(window, "resize", c.save_viewportOffsetT), n(window, "resize", c.validateT), n(window, "scroll", c.validateT));
+            m(b)
+        }
+
+        function m(b) {
+            for (var c = b._util, a = 0; a < c.count; a++) {
+                var d = c.elements[a],
+                    f = d.getBoundingClientRect();
+                if (f.right >= e.left && f.bottom >= e.top && f.left <= e.right && f.top <= e.bottom || q(d, b.options.successClass)) b.load(d), c.elements.splice(a, 1), c.count--, a--
+            }
+            0 === c.count && b.destroy()
+        }
+
+        function x(b, c, a) {
+            if (!q(b, a.successClass) && (c || a.loadInvisible || 0 < b.offsetWidth && 0 < b.offsetHeight))
+                if (c = b.getAttribute(r) || b.getAttribute(a.src)) {
+                    c = c.split(a.separator);
+                    var d = c[y && 1 < c.length ? 1 : 0],
+                        f = "img" === b.nodeName.toLowerCase();
+                    if (f || void 0 === b.src) {
+                        var l = new Image,
+                            u = function() {
+                                a.error && a.error(b, "invalid");
+                                t(b, a.errorClass);
+                                g(l, "error", u);
+                                g(l, "load", h)
+                            },
+                            h = function() {
+                                if (f) {
+                                    b.src = d;
+                                    v(b, "srcset", a.srcset);
+                                    var c = b.parentNode;
+                                    c && "picture" === c.nodeName.toLowerCase() && k(c.getElementsByTagName("source"), function(b) {
+                                        v(b, "srcset", a.srcset)
+                                    })
+                                } else b.style.backgroundImage = 'url("' + d + '")';
+                                w(b, a);
+                                g(l, "load", h);
+                                g(l, "error", u)
+                            };
+                        n(l, "error", u);
+                        n(l, "load", h);
+                        l.src = d
+                    } else b.src = d, w(b, a)
+                } else "video" === b.nodeName.toLowerCase() ? (k(b.getElementsByTagName("source"), function(b) {
+                    v(b, "src", a.src)
+                }), b.load(), w(b, a)) : (a.error && a.error(b, "missing"), t(b, a.errorClass))
+        }
+
+        function w(b, c) {
+            t(b, c.successClass);
+            c.success && c.success(b);
+            b.removeAttribute(c.src);
+            k(c.breakpoints, function(a) {
+                b.removeAttribute(a.src)
+            })
+        }
+
+        function v(b, c, a) {
+            var d = b.getAttribute(a);
+            d && (b[c] = d, b.removeAttribute(a))
+        }
+
+        function q(b, c) {
+            return -1 !== (" " + b.className + " ").indexOf(" " + c + " ")
+        }
+
+        function t(b, c) {
+            q(b, c) || (b.className += " " + c)
+        }
+
+        function B(b) {
+            var c = [];
+            b = document.querySelectorAll(b);
+            for (var a = b.length; a--; c.unshift(b[a]));
+            return c
+        }
+
+        function z(b) {
+            e.bottom = (window.innerHeight || document.documentElement.clientHeight) + b;
+            e.right = (window.innerWidth || document.documentElement.clientWidth) + b
+        }
+
+        function n(b, c, a) {
+            b.attachEvent ? b.attachEvent && b.attachEvent("on" + c, a) : b.addEventListener(c, a, !1)
+        }
+
+        function g(b, c, a) {
+            b.detachEvent ? b.detachEvent && b.detachEvent("on" + c, a) : b.removeEventListener(c, a, !1)
+        }
+
+        function k(b, c) {
+            if (b && c)
+                for (var a = b.length, d = 0; d < a && !1 !== c(b[d], d); d++);
+        }
+
+        function A(b, c, a) {
+            var d = 0;
+            return function() {
+                var f = +new Date;
+                f - d < c || (d = f, b.apply(a, arguments))
+            }
+        }
+        var r, e, y;
+        return function(b) {
+            if (!document.querySelectorAll) {
+                var c = document.createStyleSheet();
+                document.querySelectorAll = function(a, b, d, h, e) {
+                    e = document.all;
+                    b = [];
+                    a = a.replace(/\[for\b/gi, "[htmlFor").split(",");
+                    for (d = a.length; d--;) {
+                        c.addRule(a[d], "k:v");
+                        for (h = e.length; h--;) e[h].currentStyle.k && b.push(e[h]);
+                        c.removeRule(0)
+                    }
+                    return b
+                }
+            }
+            var a = this,
+                d = a._util = {};
+            d.elements = [];
+            d.destroyed = !0;
+            a.options = b || {};
+            a.options.error = a.options.error || !1;
+            a.options.offset = a.options.offset || 100;
+            a.options.success = a.options.success || !1;
+            a.options.selector = a.options.selector || ".b-lazy";
+            a.options.separator = a.options.separator || "|";
+            a.options.container = a.options.container ? document.querySelectorAll(a.options.container) : !1;
+            a.options.errorClass = a.options.errorClass || "b-error";
+            a.options.breakpoints = a.options.breakpoints || !1;
+            a.options.loadInvisible = a.options.loadInvisible || !1;
+            a.options.successClass = a.options.successClass || "b-loaded";
+            a.options.validateDelay = a.options.validateDelay || 25;
+            a.options.save_viewportOffsetDelay = a.options.save_viewportOffsetDelay || 50;
+            a.options.srcset = a.options.srcset || "data-srcset";
+            a.options.src = r = a.options.src || "data-src";
+            y = 1 < window.devicePixelRatio;
+            e = {};
+            e.top = 0 - a.options.offset;
+            e.left = 0 - a.options.offset;
+            a.revalidate = function() {
+                p(this)
+            };
+            a.load = function(a, b) {
+                var c = this.options;
+                void 0 === a.length ? x(a, b, c) : k(a, function(a) {
+                    x(a, b, c)
+                })
+            };
+            a.destroy = function() {
+                var a = this._util;
+                this.options.container && k(this.options.container, function(b) {
+                    g(b, "scroll", a.validateT)
+                });
+                g(window, "scroll", a.validateT);
+                g(window, "resize", a.validateT);
+                g(window, "resize", a.save_viewportOffsetT);
+                a.count = 0;
+                a.elements.length = 0;
+                a.destroyed = !0
+            };
+            d.validateT = A(function() {
+                m(a)
+            }, a.options.validateDelay, a);
+            d.save_viewportOffsetT = A(function() {
+                z(a.options.offset)
+            }, a.options.save_viewportOffsetDelay, a);
+            z(a.options.offset);
+            k(a.options.breakpoints, function(a) {
+                if (a.width >= window.screen.width) return r = a.src, !1
+            });
+            setTimeout(function() {
+                p(a)
+            })
+        }
+    });
+    var bLazy = new Blazy();
+    var title = document.querySelector("header");
+    var proj = document.querySelector(".projects");
+
+    function getOffset(el) {
+        el = el.getBoundingClientRect();
+        return {
+            top: el.top + window.scrollY
+        }
+    };
+    window.onscroll = function() {
+        var titleTop = getOffset(title).top;
+        var projTop = getOffset(proj).top;
+        if (titleTop > projTop) {
+            title.classList.add("swap");
+        } else {
+            title.classList.remove("swap");
+        }
+    };
+    </script>
+    <script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-39540726-1', 'auto');
+    ga('send', 'pageview');
+    </script>
 </body>
 
 </html>
