@@ -384,7 +384,7 @@
                         var serialNumber = idIndex + 1;
 
                         drugsArray.push(drugArrayAll[drugIndex]);
-                        $('#drugArrayBody').append('<tr id="rowNumber' + drugIndex + '"><td>' + drugsArray[drugIndex].drugDosage.brandName + '</td><td>' + drugsArray[drugIndex].drugDosage.usageDirection + '</td><td>' + drugsArray[drugIndex].drugDosage.perServing + '</td><td>' + drugsArray[drugIndex].drugDosage.noOfDays + '</td><td>' + drugsArray[drugIndex].drugDosage.quantity + '</td><td>' + drugsArray[drugIndex].drugDosage.remarks + '</td><td><a data-toggle="modal" data-target="#drugTemplateModal" class="editDrugs" style="cursor:pointer;" id="editDrug' + idCount + '">Edit</a>|<a style="cursor:pointer;" class="deleteDrugs" id="deleteDrug' + idCount + '">Delete</td></tr>');
+                        $('#drugArrayBody').append('<tr  id="rowNumber' + drugArrayAll[drugIndex].id + '"><td>' + drugArrayAll[drugIndex].drugDosage.brandName + '</td><td>' + drugArrayAll[drugIndex].drugDosage.usageDirection + '</td><td>' + drugArrayAll[drugIndex].drugDosage.perServing + '</td><td>' + drugArrayAll[drugIndex].drugDosage.noOfDays + '</td><td>' + drugArrayAll[drugIndex].drugDosage.quantity + '</td><td>' + drugArrayAll[drugIndex].drugDosage.remarks + '</td><td><a id="' + drugArrayAll[drugIndex].id + '" data-toggle="modal" data-target="#drugTemplateModal" class="editDrugs" style="cursor:pointer;">Edit</a>|<a id="' + drugArrayAll[drugIndex].id + '" style="cursor:pointer;" class="deleteDrugs">Delete</td></tr>');
                         idIndex++;
                         idCount++;
                     }
@@ -457,10 +457,19 @@
     $(document).on('click', '.deleteDrugs', function(e) {
 
         var idIndex = this.id;
-        var drugIndex = idIndex.slice(-1);
+        var drugReadyToDelete = {};
+        var drugtoDeleteId;
 
-        console.log('in delete drugs----', drugIndex);
-        var drugReadyToDelete = drugsArray[drugIndex];
+        for (var drugIn = 0; drugIn < drugsArray.length; drugIn++) {
+            if (drugsArray[drugIn].id == idIndex) {
+                drugReadyToDelete = drugsArray[drugIn];
+                drugtoDeleteId = drugIn;
+                break;
+            } else {
+                continue;
+            }
+        }
+
         drugReadyToDelete.state = 'INACTIVE';
         $.ajax({
             type: "POST",
@@ -475,19 +484,28 @@
             data: JSON.stringify(drugReadyToDelete),
             success: function(response) {
                 console.log('response after deleting is----', response.response);
-                $('#rowNumber' + [drugIndex]).hide();
-                drugArray.splice(drugIndex, 1);
+                $('#rowNumber' + [idIndex]).hide();
+                drugsArray.splice(drugtoDeleteId, 1);
 
             }
         });
         console.log('id Index is---', idIndex);
     });
 
+    var drugToEdit = {};
     $(document).on('click', '.editDrugs', function(e) {
         var idIndex = this.id;
         console.log('id index is---', idIndex);
-        idIndex = idIndex.slice(-1);
-        var drugToEdit = drugsArray[idIndex];
+
+
+
+        for (var drugIn = 0; drugIn < drugsArray.length; drugIn++) {
+            console.log('drug in ----', drugsArray[drugIn]);
+            if (drugsArray[drugIn].id == idIndex) {
+                drugToEdit = drugsArray[drugIn];
+            };
+        }
+
         console.log('drug to edit is---', drugToEdit);
         selectedDrugId = drugToEdit.drugDosage.drugId;
         selectedDrugType = drugToEdit.drugDosage.drugType;
@@ -629,6 +647,12 @@
                 drugReq.drugDosage['noOfDays'] = 1;
             }
         }
+        if (jQuery.isEmptyObject(drugToEdit)) {
+            console.log('inif loop edit==');
+        } else {
+            console.log('in edit else loop');
+            drugReq.id = drugToEdit.id;
+        }
         console.log('drug req is---', drugReq);
         $.ajax({
             type: "POST",
@@ -648,14 +672,22 @@
                 var drugDetailsResponse = $.parseJSON(response.response);
                 drugsArray.push(drugDetailsResponse);
                 var indexNew = drugsArray.length - 1;
-                $('#drugArrayBody').append('<tr id="rowNumber' + indexNew + '"><td>' + drugDetailsResponse.drugDosage.brandName + '</td><td>' + drugDetailsResponse.drugDosage.usageDirection + '</td><td>' + drugDetailsResponse.drugDosage.perServing + '</td><td>' + drugDetailsResponse.drugDosage.noOfDays + '</td><td>' + drugDetailsResponse.drugDosage.quantity + '</td><td>' + drugDetailsResponse.drugDosage.remarks + '</td><td><a class="editDrugs" style="cursor:pointer;" data-toggle="modal" data-target="#drugTemplateModal" id="editDrug' + drugInd + '">Edit</a>|<a style="cursor:pointer;" class="deleteDrugs" id="deleteDrug' + drugInd + '">Delete</td></tr>');
+                if (jQuery.isEmptyObject(drugToEdit)) {
+                    console.log('inif loop edit==');
+                } else {
+                    console.log('in edit else loop');
+                    $('#rowNumber' + [drugDetailsResponse.id]).hide();
+                }
+                $('#drugArrayBody').append('<tr  id="rowNumber' + drugDetailsResponse.id + '"><td>' + drugDetailsResponse.drugDosage.brandName + '</td><td>' + drugDetailsResponse.drugDosage.usageDirection + '</td><td>' + drugDetailsResponse.drugDosage.perServing + '</td><td>' + drugDetailsResponse.drugDosage.noOfDays + '</td><td>' + drugDetailsResponse.drugDosage.quantity + '</td><td>' + drugDetailsResponse.drugDosage.remarks + '</td><td><a drugId="' + drugDetailsResponse.id + '" class="editDrugs" style="cursor:pointer;" data-toggle="modal" data-target="#drugTemplateModal" id="editDrug' + drugInd + '">Edit</a>|<a drugId="' + drugDetailsResponse.id + '" style="cursor:pointer;" class="deleteDrugs" id="deleteDrug' + drugInd + '">Delete</td></tr>');
                 $('#drugTemplateModal').modal('hide');
+                drugToEdit = {};
             },
             error: function(request, status, error) {
                 console.log('error is---', error);
                 console.log('status is---', status);
             }
         });
+
     });
     var drugObjectsShown = [];
     var selectedDrugId;

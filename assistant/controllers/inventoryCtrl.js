@@ -664,7 +664,8 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             getDrugsPromise.then(function(getDrugSuccess) {
                 drugs = angular.fromJson(getDrugSuccess.data.response);
                 angular.forEach(drugs, function(drugElement) {
-                    var drugEntity = drugElement.brandName;
+                    var drugEntity = {};
+                    drugEntity.name = drugElement.brandName;
                     drugsList.push(drugEntity);
                 });
                 angular.copy(drugsList, inventoryElement.drugsToBeDisplayedInDropdown);
