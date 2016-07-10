@@ -22,6 +22,19 @@ input[type='number'] {
     background: white;
 }
 
+@media only screen and (max-width: 991px) {
+    .modalElements {
+        margin-top: 5px;
+    }
+}
+
+@media only screen and (min-width: 991px) {
+    .usageDirInModal {
+        margin-left: 50px !important;
+        margin-top: -2px;
+    }
+}
+
 .login-box-msg {
     margin-top: -20px;
 }
@@ -36,11 +49,11 @@ input[type='number'] {
     margin-top: -30px;
 }
 
-.patientLabel{
+.patientLabel {
     font-weight: 500;
 }
 
-.patientsLi{
+.patientsLi {
     margin-bottom: -9px;
 }
 
@@ -187,23 +200,23 @@ input::-webkit-inner-spin-button {
 .radioBtnGrp,
 .ageGenderRow,
 .allergyTxtBtn,
-
 .ageGenderRow {
     margin-top: -12px;
 }
 
 #patient-reg-email,
-#patient-reg-phone{
+#patient-reg-phone {
     margin-top: -10px;
 }
 
-.allergyTxtBox{
+.allergyTxtBox {
     margin-top: -16px;
 }
 
-.radioBtnGrp{
-    margin-bottom:-4px;
+.radioBtnGrp {
+    margin-bottom: -4px;
 }
+
 
 /*.jspVerticalBar {
     width: 8px;

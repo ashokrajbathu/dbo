@@ -310,10 +310,29 @@
                                     <ul class="dropdown-menu drugs-dropdown-menu">
                                     </ul>
                                 </div>
-                                <div class="col-md-3 form-group">
+                                <div class="col-md-2 form-group">
                                     <!-- <label>Text</label> -->
                                     <span class="form-control" placeholder="drug type" value="Type" id="prescription-form-drug-type" style="background-color: #eee;">
           </span>
+                                </div>
+                                <div class="col-md-1 form-group">
+                                    <button id="medicinesModalBtn" class="btn btn-primary" data-toggle="modal" data-target="#medicinesModal">+</button>
+                                </div>
+                                <div id="medicinesModal" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Medicines List</h4>
+                                            </div>
+                                            <div id="medicinesListModalBody" class="modal-body">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-2 form-group">
                                     <!-- <label>Text</label> -->
@@ -1716,6 +1735,126 @@
             autoclose: true,
             'minDate': 0
         });
+
+        var drugArrayAll = [];
+
+        $('#medicinesModalBtn').click(function() {
+            $.ajax({
+                type: 'GET',
+                url: "http://localhost:8081/dbotica-spring/doctor/getDrugTemplates",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.setRequestHeader("Accept", "application/json");
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(response) {
+                    drugArrayAll = $.parseJSON(response.response);
+                    console.log('get response is----', drugArrayAll);
+                    $('#medicinesListModalBody').empty();
+                    for (var drugIndex = 0; drugIndex < drugArrayAll.length; drugIndex++) {
+                        if (drugArrayAll[drugIndex].state == 'ACTIVE') {
+                            $('#medicinesListModalBody').append('<div class="row"><div class="col-md-1 col-sm-1 col-xs-1"><div class="checkbox"><label><input id="medicineCheckBox' + drugIndex + '" class="medicineCheckBox" type="checkbox" value=""></label></div></div><div class="col-md-3 col-sm-3 col-xs-3">' + drugArrayAll[drugIndex].drugDosage.brandName + '</div><div class="modalElements col-md-3 col-sm-12 col-xs-12"><label>Per Serving:</label><input id="perServingTxt' + drugIndex + '" placeholder="Per Serving"></div><div class=" modalElements col-md-offset-1 col-md-1 col-sm-12 col-xs-12"><label>Days/Quantity:</label><input id="unitsTxt' + drugIndex + '" placeholder="Days/Quantity"></div></div><div style="margin-top:5px;" class="row"><div usageDirInModal modalElements class="col-md-8 col-sm-12 col-xs-12"><label>Usage Directions:</label>' + drugArrayAll[drugIndex].drugDosage.usageDirection + '</div></div>');
+                            $('#perServingTxt' + [drugIndex]).val(drugArrayAll[drugIndex].drugDosage.perServing);
+                            $('#unitsTxt' + [drugIndex]).val(drugArrayAll[drugIndex].drugDosage.units);
+                        }
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '.medicineCheckBox', function(e) {
+            var fullId = this.id;
+            var idIndex = fullId.slice(-1);
+            if ($('#medicineCheckBox' + [idIndex]).is(":checked")) {
+                var drugObject = drugArrayAll[idIndex];
+                console.log('drug object is---', drugObject);
+                var drugPojo = {};
+                drugPojo['drugId'] = drugObject.drugDosage.drugId;
+                drugPojo['brandName'] = drugObject.drugDosage.brandName;
+                drugPojo['usageDirection'] = drugObject.drugDosage.usageDirection;
+                drugPojo['remarks'] = drugObject.drugDosage.remarks;
+                drugPojo['drugType'] = drugObject.drugDosage.drugType;
+                var per_serving = $('#perServingTxt' + [idIndex]).val();
+                var units = $('#unitsTxt' + [idIndex]).val();
+                console.log('per serving in is---', units);
+                drugPojo['perServing'] = per_serving;
+                var daysOrQuantity = drugObject.drugDosage.daysOrQuantity;
+                var quantCount = 0;
+                usageArray = drugObject.drugDosage.usageDirection.split(',');
+                quantCount = usageArray.length;
+                var capsuleTypes = ['TABLET', 'CAPSULE', 'INJECTION', 'SACHET', 'LOZENGES', 'SUPPOSITORY', 'RESPULES', 'PEN', 'APLICAPS', 'ENEMA', 'PATCH'];
+                if ($.inArray(drugObject.drugDosage.drugType, capsuleTypes) !== -1) {
+                    if (daysOrQuantity === 'Days') {
+                        if (per_serving == undefined || per_serving == '' || per_serving == null) {
+                            per_serving = parseInt(1);
+                        }
+                        if (quantCount == 0) {
+                            quantCount = 1;
+                        }
+                        if (units == undefined || units == '' || units == null) {
+                            units = parseInt(1);
+                            drugPojo['noOfDays'] = units;
+                            drugPojo['quantity'] = parseInt(units) * quantCount * parseInt(per_serving);
+                        } else {
+                            drugPojo['noOfDays'] = units;
+                            drugPojo['quantity'] = parseInt(units) * quantCount * parseInt(per_serving);
+                        }
+
+                    } else {
+                        drugPojo['quantity'] = units;
+                        drugPojo['noOfDays'] = quantCount != 0 ? Math.ceil(parseInt(units) / (parseInt(per_serving) * quantCount)) : 1;
+                    }
+                } else {
+                    if (daysOrQuantity === 'Days') {
+                        drugPojo['noOfDays'] = units;
+                        drugPojo['quantity'] = 1;
+                    } else {
+                        drugPojo['quantity'] = units;
+                        drugPojo['noOfDays'] = 1;
+                    }
+                }
+                var msrmnt;
+
+                var count = $.cookie('drugEntryCount');
+                if (!count) {
+                    count = 1;
+                }
+
+                var drugPojoList = [];
+                if ($.cookie('drugPojoList') && $.cookie('drugPojoList') !== "") {
+                    drugPojoList = $.parseJSON($.cookie('drugPojoList'));
+                }
+
+                switch (drugObject.drugDosage.drugType.toUpperCase()) {
+                    case 'SYRUP':
+                        msrmnt = 'ml';
+                        break;
+                    default:
+                        msrmnt = 'units';
+                        break;
+                }
+
+                $('#current-prescriptions > tbody').append('<tr ><td>' + count + '</td><td>' + drugObject.drugDosage.brandName + '</td><td>' + per_serving + " " + msrmnt + '</td><td>' + units + " " + daysOrQuantity + '</td><td>' +
+                    drugObject.drugDosage.usageDirection + '</td><td>' + drugObject.drugDosage.remarks + '</td><td id="deliD' + count + '"><button type="submit" name="delbtn" class="deletebutton" id="del' + count + '" value="delID' + count + '">Delete</button></td>');
+                //$('#current-prescriptions').DataTable();
+                //console.log($('#current-prescriptions').DataTable());
+                $.cookie('drugHtml', $('#current-prescriptions > tbody').html());
+                var countNum = Number(count);
+                drugPojoList.push(drugPojo);
+                console.log("drug pojo list required is------", drugPojoList);
+                $.cookie('drugPojoList', JSON.stringify(drugPojoList));
+                //console.log(JSON.stringify(drugPojoList));
+                countNum++;
+                $.cookie('drugEntryCount', countNum);
+
+            } else {
+                console.log('in not checked----');
+            }
+        });
+
+
 
 
         /*var totalDrugObjectsOnReady;*/
