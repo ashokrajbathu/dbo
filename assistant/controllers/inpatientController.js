@@ -120,7 +120,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
                 var errorCode = inpatientSuccessResponse.data.errorCode;
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
-                } else {
+                    } else {
                     var inpatientAddResponse = angular.fromJson(inpatientSuccessResponse.data.response);
                     $log.log("add response is---", inpatientSuccessResponse);
                     var success = inpatientSuccessResponse.data.success;

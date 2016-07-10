@@ -22,7 +22,7 @@
                                     <label for="examplePatientSelect">Patient Select</label>
                                     <div class="dropdown">
                                         <button style="width:100%;" class="btn dropdownInModalInpatient dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.patientName}}
-                                            <span class="caret"></span></button>
+                                            <span id="caretInInpatient" class="caret"></span></button>
                                         <ul class="dropdown-menu">
                                             <li ng-click="inpatient.patientSelectFromDropdown(patient)" ng-repeat="patient in inpatient.patientsListOfThatNumber">
                                                 <a style="cursor:pointer;" ng-bind="patient.firstName"></a>
@@ -152,6 +152,16 @@
                             </form>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputBloodPressure">Inpatient Number</label>
+                                    <input type="text" class="form-control exampleInpatientPhone" id="exampleInputInpatientNumber" ng-model="inpatient.inpatientNumber" placeholder="inpatient Number">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     <hr>
                     <div class="row text-center">
                         <button data-dismiss="modal" ng-click="inpatient.addPatient()" class="buttonsInInpatientModal btn addPatientBtn" type="button">Add Patient</button>
@@ -204,9 +214,9 @@
                             <label for="exampleInputdiagnosis">Complaint</label>
                             <textarea class="form-control" name="complaint" id="complaint" rows="3" placeholder="Complaint"></textarea>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <button class="btn form-control addPatientBtn" name="btnSubmit" id="btnSubmit">Save</button>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

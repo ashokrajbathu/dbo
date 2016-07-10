@@ -201,7 +201,8 @@
     top: 43%;
 }
 
-#caretInMedication {
+#caretInMedication,
+#caretInInpatient {
     position: absolute;
     left: 94%;
     top: 43%;
