@@ -67,8 +67,11 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
             roomElement.addNewRoom.organizationId = organizationId;
         }
         roomElement.addNewRoom.roomRate = parseInt(roomElement.addNewRoom.roomRate) * 100;
+        roomElement.addNewRoom.bedCount = 0;
+        roomElement.addNewRoom.maxBedCount = 0;
         $log.log("add new room is------", roomElement.addNewRoom);
         var addNewRoomPromise = dboticaServices.addOrUpdateRoom(roomElement.addNewRoom);
+        $log.log('add new room promise is----', addNewRoomPromise);
         addNewRoomPromise.then(function(addNewRoomSuccess) {
             var errorCode = addNewRoomSuccess.data.errorCode;
             if (!!errorCode) {
@@ -163,6 +166,8 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
                 roomElement.roomType = roomCategoryEntityItem.roomType;
             }
         });
+        newRoomObject.organizationId = organizationId;
+        $log.log("new room object is---", newRoomObject);
         angular.copy(newRoomObject, roomElement.addNewRoom);
     }
 
@@ -180,10 +185,11 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
                 angular.forEach(roomElement.roomsList, function(roomInList) {
                     if (roomInList.state == 'ACTIVE') {
                         var checkRoomNo = roomInList.roomNo.toLowerCase().indexOf(roomElement.inputItemSearch.toLowerCase()) > -1;
-                        var checkTotalBeds = roomInList.bedCount.toLowerCase().indexOf(roomElement.inputItemSearch.toLowerCase()) > -1;
+                        /*var checkTotalBeds = roomInList.bedCount.toLowerCase().indexOf(roomElement.inputItemSearch.toLowerCase()) > -1;*/
                         var checkFloor = roomInList.floorNo.toLowerCase().indexOf(roomElement.inputItemSearch.toLowerCase()) > -1;
                         var checkroomTypeName = roomInList.organizationRoomCategory.roomType.toLowerCase().indexOf(roomElement.inputItemSearch.toLowerCase()) > -1;
-                        var check = checkRoomNo || checkTotalBeds || checkFloor || checkroomTypeName;
+                        /*var check = checkRoomNo || checkTotalBeds || checkFloor || checkroomTypeName;*/
+                        var check = checkRoomNo || checkFloor || checkroomTypeName;
                         if (check) {
                             sortedItemsArray.push(roomInList);
                         }

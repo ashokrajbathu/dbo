@@ -37,14 +37,14 @@
                                     <label for="exampleInputRoomRate">Room Rate</label>
                                     <input type="text" ng-model="room.addNewRoom.roomRate" class="form-control" id="exampleInputRoomRate" placeholder="Room Rate">
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label for="exampleInputBedCount">Bed Count</label>
                                     <input type="text" ng-model="room.addNewRoom.bedCount" class="form-control" id="exampleInputBedCount" placeholder="Bed Count">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputMaxBedCount">Maximum Bed Count</label>
                                     <input type="text" ng-model="room.addNewRoom.maxBedCount" class="form-control" id="exampleInputMaxBedCount" placeholder="Max Bed Count">
-                                </div>
+                                </div> -->
                                 <div class="form-inline">
                                     <button ng-click="room.addNewRoomFunction()" class="btn mainAdminBtn" data-dismiss="modal">Save</button>
                                     <button class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -67,7 +67,7 @@
             <tr>
                 <th>S.No.</th>
                 <th>Room No/Name</th>
-                <th>Total Beds</th>
+                <!-- <th>Total Beds</th> -->
                 <th>Floor</th>
                 <th>Room Type Name</th>
                 <th>Room Cost</th>
@@ -78,7 +78,7 @@
             <tr ng-repeat="roomEntity in room.roomsList">
                 <td ng-bind="$index+1"></td>
                 <td ng-bind="roomEntity.roomNo"></td>
-                <td ng-bind="roomEntity.bedCount"></td>
+                <!-- <td ng-bind="roomEntity.bedCount"></td> -->
                 <td ng-bind="roomEntity.floorNo"></td>
                 <td ng-bind="roomEntity.organizationRoomCategory.roomType"></td>
                 <td ng-bind="roomEntity.roomRate/100"></td>

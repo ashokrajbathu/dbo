@@ -20,8 +20,8 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
     var roomNumberString = '---Room Number----';
     bedElement.roomNumber = '---Room Number----';
     bedElement.bedSearchInTxtBox = '';
-    bedElement.addBedItemId = '';
-    bedElement.addBedItemIndex = '';
+    var addBedItemId = '';
+    var addBedItemIndex = '';
 
     var entitiesArray = [];
     var entitiesArrayFlag = parseInt(0);

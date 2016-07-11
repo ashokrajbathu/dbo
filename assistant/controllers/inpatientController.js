@@ -9,6 +9,9 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     inpatientElement.selectedDoctor = selectedDoctor;
     inpatientElement.selectedDoctorCategory = selectedDoctorCategory;
     inpatientElement.selectedDoctorname = selectedDoctorname;
+    inpatientElement.selectedRoomCategory = selectedRoomCategory;
+    inpatientElement.statusOfBed = statusOfBed;
+    /*inpatientElement.selectedRoom = selectedRoom;*/
 
     inpatientElement.PhoneNumberErrorMessage = false;
     inpatientElement.patientSearchBtnDisabled = true;
@@ -21,15 +24,24 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     inpatientElement.activeDoctorCategoriesList = [];
     inpatientElement.patientIdActive = "";
     inpatientElement.dataDismiss = 'true';
+    inpatientElement.roomName = 'All';
+    inpatientElement.roomTypes = ['All', 'Occupied Bed', 'Unoccupied Bed'];
+    inpatientElement.roomCategoryName = '-Room Category-';
     inpatientElement.doctorNameInPatient = '-Doctor Name-';
     inpatientElement.doctorCategoryName = '-Doctor Category-';
     var doctorCategoryObject = { 'doctorType': '-Doctor Category-' };
     var patientName = 'New Patient';
+    var allRoomTypeObject = { 'organizationRoomCategory': { 'roomType': 'All Room Type' } };
     var newPatient = { 'firstName': 'New Patient' };
     var doctorObject = { 'doctor': { 'firstName': '-Doctor Name-' } };
     var activeDoctorCategory = {};
     var activeDoctorsList = [];
+    var bedsList = [];
+    inpatientElement.bedsListToBeDisplayed = [];
+    inpatientElement.activeRoomsListToBeDisplayed = [];
     inpatientElement.activeDoctorsListToBeDisplayed = [];
+    inpatientElement.activeRoomsList = [];
+    inpatientElement.doctorDepartment = '';
     inpatientElement.activeDoctorsListToBeDisplayed.push(doctorObject);
 
     var organizationId = localStorage.getItem('orgId');
@@ -86,6 +98,46 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     }, function(doctorsListError) {
         dboticaServices.noConnectivityError();
     });
+
+    var roomsPromise = dboticaServices.getRooms(organizationId);
+    roomsPromise.then(function(roomsSuccess) {
+        var errorCode = roomsSuccess.data.errorCode;
+        if (!!errorCode) {
+            dboticaServices.logoutFromThePage(errorCode);
+        } else {
+            var roomsList = angular.fromJson(roomsSuccess.data.response);
+            $log.log('rooms list is---', roomsList);
+            inpatientElement.activeRoomsList.push(allRoomTypeObject);
+            angular.forEach(roomsList, function(roomEntity) {
+                if (roomEntity.state == 'ACTIVE') {
+                    inpatientElement.activeRoomsList.push(roomEntity);
+                }
+            });
+            $log.log('active rooms list is---', inpatientElement.activeRoomsList);
+        }
+    }, function(roomError) {
+        dboticaServices.noConnectivityError();
+    });
+
+    var bedsPromise = dboticaServices.getBeds(organizationId);
+    bedsPromise.then(function(bedsSuccess) {
+        var errorCode = bedsSuccess.data.errorCode;
+        if (!!errorCode) {
+            dboticaServices.logoutFromThePage(errorCode);
+        } else {
+            var bedsListLocal = angular.fromJson(bedsSuccess.data.response);
+            $log.log('beds list local is---', bedsListLocal);
+            angular.forEach(bedsListLocal, function(bedsListLocalEntity) {
+                if (bedsListLocalEntity.bedState == 'ACTIVE') {
+                    bedsList.push(bedsListLocalEntity);
+                }
+            });
+            $log.log('beds list is----', bedsList);
+        }
+    }, function(bedsError) {
+        dboticaServices.noConnectivityError();
+    });
+
 
     function phoneNumberLengthValidation(phoneNumber) {
         if (phoneNumber !== undefined && phoneNumber !== null && phoneNumber !== "") {
@@ -215,9 +267,10 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     }
 
     function selectedDoctorCategory(doctorCategoryEntity) {
-        inpatientElement.doctorCategoryName = doctorCategoryEntity.doctorType;
+        inpatientElement.doctorCategoryName = doctorCategoryEntity.doctorType;;
         activeDoctorCategory = doctorCategoryEntity;
         if (doctorCategoryEntity.doctorType !== '-Doctor Category-') {
+            inpatientElement.doctorDepartment = doctorCategoryEntity.doctorType;
             inpatientElement.activeDoctorsListToBeDisplayed = [];
             inpatientElement.activeDoctorsListToBeDisplayed.push(doctorObject);
             angular.forEach(activeDoctorsList, function(activeDoctorEntity) {
@@ -226,6 +279,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
                 }
             });
         } else {
+            inpatientElement.doctorDepartment = '';
             inpatientElement.activeDoctorsListToBeDisplayed = [];
             inpatientElement.doctorCategoryName = doctorCategoryObject.doctorType;
             inpatientElement.doctorNameInPatient = doctorObject.doctor.firstName;
@@ -243,4 +297,38 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             inpatientElement.doctorNameInTheBox = '';
         }
     }
+
+    function selectedRoomCategory(roomCategoryEntity) {
+        inpatientElement.roomCategoryName = roomCategoryEntity.organizationRoomCategory.roomType;
+        if (inpatientElement.roomCategoryName == 'All Room Type' && inpatientElement.roomName == 'All') {
+            angular.copy(inpatientElement.activeRoomsList, inpatientElement.activeRoomsListToBeDisplayed);
+            inpatientElement.activeRoomsListToBeDisplayed.shift();
+        } else {
+            inpatientElement.activeRoomsListToBeDisplayed = [];
+            angular.forEach(inpatientElement.activeRoomsList, function(activeRoomEntity) {
+                if (activeRoomEntity.organizationRoomCategory.roomType == inpatientElement.roomCategoryName) {
+                    inpatientElement.activeRoomsListToBeDisplayed.push(activeRoomEntity);
+                }
+            });
+        }
+    }
+
+    function statusOfBed(bedEntity) {
+        $log.log('beds list is----', bedsList);
+        $log.log('bed entity is---', bedEntity);
+        inpatientElement.bedsListToBeDisplayed = [];
+        angular.forEach(bedsList, function(bedListItem) {
+            var floorNumber = bedListItem.organizationRoom.floorNo;
+            var roomNumber = bedListItem.organizationRoom.roomNo;
+            var bedStatus = bedListItem.bedStatus;
+            if (floorNumber == bedEntity.floorNo && roomNumber == bedEntity.roomNo && bedStatus == 'VACANT') {
+                inpatientElement.bedsListToBeDisplayed.push(bedListItem);
+            }
+        });
+        $log.log('beds to be displayed---', inpatientElement.bedsListToBeDisplayed);
+    }
+
+    /*function selectedRoom(roomEntity) {
+        inpatientElement.roomName = roomEntity;
+    }*/
 }]);

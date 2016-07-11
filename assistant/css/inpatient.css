@@ -21,7 +21,20 @@
 }
 
 #myTable {
+    margin-bottom: 10px;
     height: 300px;
+    overflow-y: scroll;
+}
+
+#myBedsTable {
+    margin-top: 15px !important;
+}
+
+#myTable>table>thead>tr>th,
+#myTable>table>tbody>tr>td,
+#myBedsTable>table>thead>tr>th,
+#myBedsTable>table>tbody>tr>td {
+    text-align: center;
 }
 
 .patientDetailsBox {
@@ -59,7 +72,9 @@
 }
 
 #doctorCategoryDropdown>ul>li,
-#doctorNameDropdown>ul>li {
+#doctorNameDropdown>ul>li,
+#roomCategoryDropdown>ul>li,
+#roomNameDropdown>ul>li {
     text-align: center !important;
 }
 
@@ -87,8 +102,19 @@
     top: 43%;
 }
 
+#caretRoomCategoryType,
+#caretRoomName {
+    position: absolute;
+    left: 95%;
+    top: 32%;
+}
+
 .dropdownInRoomsSection {
     margin-bottom: 4px;
+}
+
+.roomDropdowns {
+    margin-bottom: 8px !important;
 }
 
 #caret {

@@ -195,6 +195,10 @@
                             <input type="text" class="form-control" id="exampleInputBedName" placeholder="Bed Name">
                         </div>
                         <div class="form-group">
+                            <label for="exampleInputDoctorDepartment">Department</label>
+                            <input type="text" ng-model="inpatient.doctorDepartment" class="form-control" id="exampleInputDepartment" placeholder="Department">
+                        </div>
+                        <div class="form-group">
                             <label for="sel1">Doctor Incharge</label>
                             <!-- <div class="dropdown">
                                 <button style="width:100%;" class="docDropdownInInpatient dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorNameInPatient}}
@@ -257,44 +261,82 @@
                     <h4>Select Room Number and Bed Number</h4>
                 </div>
                 <div class="panel-body doctorInInpatientPanelBody">
-                    <table id="myTable" class="table table-hover table-striped" width="100%">
-                        <thead>
-                            <tr>
-                                <th>Status</th>
-                                <th>Floor</th>
-                                <th>Room No./Ward No.</th>
-                                <th>Room Type</th>
-                                <th>Total Beds</th>
-                                <th>Occupied Beds</th>
-                                <th>UnOccupied Beds</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table" width="100%">
-                        <thead>
-                            <tr>
-                                <th>Admit Here</th>
-                                <th>Bed No.</th>
-                                <th>Patient No.</th>
-                                <th>IOP No.</th>
-                                <th>Patient Name</th>
-                                <th>Date Admit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="roomCategoryDropdown" class="dropdown">
+                                <button style="width:100%;" class="docDropdownInInpatient roomDropdowns roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.roomCategoryName}}<span id="caretRoomCategoryType" class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li ng-click="inpatient.selectedRoomCategory(roomCategory)" ng-repeat="roomCategory in inpatient.activeRoomsList">
+                                        <a style="cursor:pointer;" ng-bind="roomCategory.organizationRoomCategory.roomType"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!--  <div id="roomNameDropdown" class="dropdown">
+                               <button style="width:100%;" class="docDropdownInInpatient roomDropdowns roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.roomName}}<span id="caretRoomName" class="caret"></span></button>
+                               <ul class="dropdown-menu">
+                                   <li ng-click="inpatient.selectedRoom(roomEntity)" ng-repeat="roomEntity in inpatient.roomTypes">
+                                       <a style="cursor:pointer;" ng-bind="roomEntity"></a>
+                                   </li>
+                               </ul>
+                           </div> -->
+                        </div>
+                    </div>
+                    <div id="myTable">
+                        <table class="table table-hover table-striped" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Floor</th>
+                                    <th>Room No./Ward No.</th>
+                                    <th>Room Type</th>
+                                    <th>Total Beds</th>
+                                    <th>Occupied Beds</th>
+                                    <th>UnOccupied Beds</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="roomElement in inpatient.activeRoomsListToBeDisplayed">
+                                    <td>
+                                        <a ng-click="inpatient.statusOfBed(roomElement)" style="cursor:pointer;">Status</a>
+                                    </td>
+                                    <td ng-bind="roomElement.floorNo"></td>
+                                    <td ng-bind="roomElement.roomNo"></td>
+                                    <td ng-bind="roomElement.organizationRoomCategory.roomType"></td>
+                                    <td ng-bind="roomElement.maxBedCount"></td>
+                                    <td ng-bind="roomElement.maxBedCount-roomElement.bedCount"></td>
+                                    <td ng-bind="roomElement.bedCount"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="myBedsTable">
+                        <table class="table" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Admit Here</th>
+                                    <th>Bed No.</th>
+                                    <th>Patient No.</th>
+                                    <th>IOP No.</th>
+                                    <th>Patient Name</th>
+                                    <th>Date Admit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="bedEntity in inpatient.bedsListToBeDisplayed">
+                                    <td>
+                                        <a style="cursor:pointer;">Admit</a>
+                                    </td>
+                                    <td ng-bind="bedEntity.bedNo"></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
