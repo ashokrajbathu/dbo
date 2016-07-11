@@ -7,6 +7,8 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     inpatientElement.patientSelectFromDropdown = patientSelectFromDropdown;
     inpatientElement.addPatient = addPatient;
     inpatientElement.selectedDoctor = selectedDoctor;
+    inpatientElement.selectedDoctorCategory = selectedDoctorCategory;
+    inpatientElement.selectedDoctorname = selectedDoctorname;
 
     inpatientElement.PhoneNumberErrorMessage = false;
     inpatientElement.patientSearchBtnDisabled = true;
@@ -16,12 +18,21 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     inpatientElement.patientData.firstName = "";
     inpatientElement.patientData.phoneNumber = "";
     inpatientElement.patientsListOfThatNumber = [];
+    inpatientElement.activeDoctorCategoriesList = [];
     inpatientElement.patientIdActive = "";
     inpatientElement.dataDismiss = 'true';
-    inpatientElement.doctorNameInPatient = '-Doctor Incharge-';
-    var doctorObject = { 'firstName': '-Doctor Incharge-' };
+    inpatientElement.doctorNameInPatient = '-Doctor Name-';
+    inpatientElement.doctorCategoryName = '-Doctor Category-';
+    var doctorCategoryObject = { 'doctorType': '-Doctor Category-' };
     var patientName = 'New Patient';
     var newPatient = { 'firstName': 'New Patient' };
+    var doctorObject = { 'doctor': { 'firstName': '-Doctor Name-' } };
+    var activeDoctorCategory = {};
+    var activeDoctorsList = [];
+    inpatientElement.activeDoctorsListToBeDisplayed = [];
+    inpatientElement.activeDoctorsListToBeDisplayed.push(doctorObject);
+
+    var organizationId = localStorage.getItem('orgId');
 
     var doctorsListPromise = dboticaServices.doctorsOfAssistant();
     doctorsListPromise.then(function(doctorsListSuccess) {
@@ -36,7 +47,44 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             }
         }
     }, function(doctorsListError) {
+        dboticaServices.noConnectivityError();
+    });
 
+    var doctorCategoriesPromise = dboticaServices.getDoctorCategories(organizationId);
+    doctorCategoriesPromise.then(function(doctorCategorySuccess) {
+        var errorCode = doctorCategorySuccess.data.errorCode;
+        if (!!errorCode) {
+            dboticaServices.logoutFromThePage(errorCode);
+        } else {
+            var doctorCategoriesList = angular.fromJson(doctorCategorySuccess.data.response);
+            $log.log('doctor categories list is----', doctorCategoriesList);
+            inpatientElement.activeDoctorCategoriesList.push(doctorCategoryObject);
+            angular.forEach(doctorCategoriesList, function(doctorCategoryEntity) {
+                if (doctorCategoryEntity.state == 'ACTIVE') {
+                    inpatientElement.activeDoctorCategoriesList.push(doctorCategoryEntity);
+                }
+            });
+        }
+    }, function(doctorCategoryError) {
+        dboticaServices.noConnectivityError();
+    });
+
+    var doctorsListPromise = dboticaServices.doctorsListInMainAdmin(organizationId);
+    doctorsListPromise.then(function(doctorsListSuccess) {
+        var errorCode = doctorsListSuccess.data.errorCode;
+        if (!!errorCode) {
+            dboticaServices.logoutFromThePage(errorCode);
+        } else {
+            var doctorsListArray = angular.fromJson(doctorsListSuccess.data.response);
+            $log.log('doctors list array is----', doctorsListArray);
+            angular.forEach(doctorsListArray, function(doctorEntity) {
+                if (doctorEntity.state == 'ACTIVE') {
+                    activeDoctorsList.push(doctorEntity);
+                }
+            });
+        }
+    }, function(doctorsListError) {
+        dboticaServices.noConnectivityError();
     });
 
     function phoneNumberLengthValidation(phoneNumber) {
@@ -106,6 +154,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
         var firstName = inpatientElement.patientData.firstName;
         var phoneNumber = inpatientElement.patientData.phoneNumber;
         if (firstName !== undefined && phoneNumber !== undefined && firstName !== "" && phoneNumber !== "") {
+            inpatientElement.nameOrNumberErrorMessage = false;
             patientDataRequestEntity.gender = inpatientElement.patientData.gender;
             patientDataRequestEntity.bloodGroup = inpatientElement.patientData.bloodGroup;
             patientDataRequestEntity.drugAllergy = inpatientElement.patientData.drugAllergy;
@@ -120,22 +169,78 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
                 var errorCode = inpatientSuccessResponse.data.errorCode;
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
-                    } else {
+                } else {
                     var inpatientAddResponse = angular.fromJson(inpatientSuccessResponse.data.response);
-                    $log.log("add response is---", inpatientSuccessResponse);
+                    $log.log("add response is---", inpatientAddResponse);
                     var success = inpatientSuccessResponse.data.success;
                     if (errorCode == null && success == true) {
                         inpatientElement.patientNameInBox = firstName;
+                        var inpatientRegisterRequestEntity = {};
+                        inpatientRegisterRequestEntity.organizationId = organizationId;
+                        if (inpatientElement.inpatientNumber == undefined || inpatientElement.inpatientNumber == '') {
+                            inpatientElement.inpatientNumber = '';
+                        }
+                        inpatientRegisterRequestEntity.organizationPatientNo = inpatientElement.inpatientNumber;
+                        inpatientRegisterRequestEntity.patientId = inpatientAddResponse[0].id;
+                        inpatientRegisterRequestEntity.phoneNumber = inpatientAddResponse[0].phoneNumber;
+                        inpatientRegisterRequestEntity.patientState = 'CHECK_IN';
+                        $log.log('inpatientRegisterRequestEntity is----', inpatientRegisterRequestEntity);
+                        var inpatientRegisterPromise = dboticaServices.registerPatient(inpatientRegisterRequestEntity);
+                        inpatientRegisterPromise.then(function(inpatientRegisterSuccess) {
+                            var errorCode = inpatientRegisterSuccess.data.errorCode;
+                            if (!!errorCode) {
+                                dboticaServices.logoutFromThePage(errorCode);
+                            } else {
+                                var registerSuccessResponse = angular.fromJson(inpatientRegisterSuccess.data.response);
+                                $log.log('reg success response is---', registerSuccessResponse);
+                                inpatientElement.patientNumberInBox = registerSuccessResponse.organizationPatientNo;
+                                angular.element('#inpatientSearchModal').modal('hide');
+                            }
+                        }, function(inpatientRegisterError) {
+                            dboticaServices.noConnectivityError();
+                        });
                     }
                 }
             }, function(inpatientErrorResponse) {
                 dboticaServices.noConnectivityError();
             });
+        } else {
+            inpatientElement.nameOrNumberErrorMessage = true;
         }
     }
 
     function selectedDoctor(selectedDoctor) {
         inpatientElement.doctorNameInPatient = selectedDoctor.firstName;
         $log.log("selected doctor is---", selectedDoctor);
+    }
+
+    function selectedDoctorCategory(doctorCategoryEntity) {
+        inpatientElement.doctorCategoryName = doctorCategoryEntity.doctorType;
+        activeDoctorCategory = doctorCategoryEntity;
+        if (doctorCategoryEntity.doctorType !== '-Doctor Category-') {
+            inpatientElement.activeDoctorsListToBeDisplayed = [];
+            inpatientElement.activeDoctorsListToBeDisplayed.push(doctorObject);
+            angular.forEach(activeDoctorsList, function(activeDoctorEntity) {
+                if (activeDoctorEntity.organizationDoctorCategory.doctorType == doctorCategoryEntity.doctorType) {
+                    inpatientElement.activeDoctorsListToBeDisplayed.push(activeDoctorEntity);
+                }
+            });
+        } else {
+            inpatientElement.activeDoctorsListToBeDisplayed = [];
+            inpatientElement.doctorCategoryName = doctorCategoryObject.doctorType;
+            inpatientElement.doctorNameInPatient = doctorObject.doctor.firstName;
+            inpatientElement.doctorNameInTheBox = '';
+            inpatientElement.activeDoctorsListToBeDisplayed.push(doctorObject);
+        }
+    }
+
+    function selectedDoctorname(doctornameEntity) {
+        $log.log('doctor name selected is---', doctornameEntity);
+        inpatientElement.doctorNameInPatient = doctornameEntity.doctor.firstName;
+        if (doctornameEntity.doctor.firstName !== '-Doctor Name-') {
+            inpatientElement.doctorNameInTheBox = doctornameEntity.doctor.firstName;
+        } else {
+            inpatientElement.doctorNameInTheBox = '';
+        }
     }
 }]);

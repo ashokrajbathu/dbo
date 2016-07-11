@@ -6,7 +6,6 @@
     margin-top: 20px;
 }
 
-
 @media only screen and (max-width:768px) {
     #exampleInpatientPhone {
         width: 180px;
@@ -40,6 +39,7 @@
     width: 100% !important;
 }
 
+
 /* .dropdown-menu>li>a:hover,
 .dropdown-menu>li:hover {
     background-color: #3c8dbc !important;
@@ -50,6 +50,23 @@
     height: 220px !important;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
+}
+
+@media only screen and (max-width: 991px) {
+    .docDropdownInInpatient {
+        margin-bottom: 8px;
+    }
+}
+
+#doctorCategoryDropdown>ul>li,
+#doctorNameDropdown>ul>li {
+    text-align: center !important;
+}
+
+@media only screen and (max-width: 991px) {
+    .doctorInInpatientPanel>.panel-heading {
+        height: 50px !important;
+    }
 }
 
 .docDropdownInInpatient {
@@ -89,4 +106,22 @@
 
 .buttonsInInpatientModal {
     margin-right: 8px;
+}
+
+.inpatientRowInModal {
+    margin-bottom: -5px;
+}
+
+.doctorInInpatientPanel>.panel-heading {
+    color: white;
+    height: 35px;
+    background-color: #3c8dbc;
+}
+
+.doctorInInpatientPanel>.panel-heading>h4 {
+    margin-top: -2px !important;
+}
+
+.doctorInInpatientPanel>.doctorInInpatientPanelBody {
+    border: 1px solid #c5c5c5;
 }

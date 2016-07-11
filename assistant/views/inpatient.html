@@ -15,7 +15,7 @@
                     <h4 class="modal-title">Patient Details</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
+                    <div class="row inpatientRowInModal">
                         <div class="col-md-4 col-sm-4 col-xs-4">
                             <form>
                                 <div class="form-group">
@@ -35,7 +35,7 @@
                     </div>
                     <hr>
                     <span ng-if="inpatient.nameOrNumberErrorMessage" style="color:red;">(* Patient Name and Phone Number are mandatory fields)</span>
-                    <div class="row">
+                    <div class="row inpatientRowInModal">
                         <div class="col-md-4 col-sm-8 col-xs-8">
                             <form>
                                 <div class="form-group">
@@ -55,13 +55,13 @@
                         <div class="col-md-4 col-sm-8 col-xs-8">
                             <form>
                                 <div class="form-group">
-                                    <label for="exampleInputPhoneNumber">Phone Number</label>
+                                    <label for="exampleInputPhoneNumber">*Phone Number</label>
                                     <input type="text" class="form-control exampleInpatientPhone" id="exampleInputPhoneNumber" ng-model="inpatient.patientData.phoneNumber" placeholder="Phone Number">
                                 </div>
                             </form>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row inpatientRowInModal">
                         <div class="col-md-4 col-sm-8 col-xs-8">
                             <form>
                                 <div class="form-group">
@@ -100,7 +100,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row inpatientRowInModal">
                         <div class="col-md-4 col-sm-8 col-xs-8">
                             <form>
                                 <div class="form-group">
@@ -126,7 +126,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row inpatientRowInModal">
                         <div class="col-md-4 col-sm-8 col-xs-8">
                             <form>
                                 <div class="form-group">
@@ -152,7 +152,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row inpatientRowInModal">
                         <div class="col-md-4 col-sm-8 col-xs-8">
                             <form>
                                 <div class="form-group">
@@ -164,7 +164,7 @@
                     </div>
                     <hr>
                     <div class="row text-center">
-                        <button data-dismiss="modal" ng-click="inpatient.addPatient()" class="buttonsInInpatientModal btn addPatientBtn" type="button">Add Patient</button>
+                        <button id="addInpatientBtnInModal" ng-click="inpatient.addPatient()" class="buttonsInInpatientModal btn addPatientBtn" type="button">Add Patient</button>
                         <button class="btn buttonsInInpatientModal addPatientBtn" data-dismiss="modal" type="button">Close</button>
                     </div>
                 </div>
@@ -184,7 +184,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInpatientNo">Inpatient No.</label>
-                            <input type="text" class="form-control" id="exampleInpatientNumber" placeholder="Inpatient Number">
+                            <input type="text" ng-model="inpatient.patientNumberInBox" class="form-control" id="exampleInpatientNumber" placeholder="Inpatient Number">
                         </div>
                         <div class="form-group">
                             <label for="exampleRoomName">Room Name</label>
@@ -196,7 +196,7 @@
                         </div>
                         <div class="form-group">
                             <label for="sel1">Doctor Incharge</label>
-                            <div class="dropdown">
+                            <!-- <div class="dropdown">
                                 <button style="width:100%;" class="docDropdownInInpatient dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorNameInPatient}}
                                     <span id="caret" class="caret"></span></button>
                                 <ul class="dropdown-menu">
@@ -204,7 +204,8 @@
                                         <a style="cursor:pointer;" ng-bind="doctor.firstName"></a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> -->
+                            <input type="text" ng-model="inpatient.doctorNameInTheBox" class="form-control" id="exampleInputDoctorName" placeholder="Doctor Incharge">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputdiagnosis">Provisional Diagnosis</label>
@@ -222,56 +223,80 @@
             </div>
         </div>
         <div class="col-md-9">
-            <div class="dropdownInRoomsSection row">
-                <div class="col-md-6">
-                    <div class="dropdown">
-                        <button style="width:100%;" class="docDropdownInInpatient roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorNameInPatient}}<span id="caretRoomType" class="caret"></span></button>
-                    </div>
+            <div class="panel doctorInInpatientPanel">
+                <div class="panel-heading">
+                    <h4>Select Doctor Category and Doctor Name</h4>
                 </div>
-                <div class="col-md-6">
-                    <div class="dropdown">
-                        <button style="width:100%;" class="docDropdownInInpatient roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorNameInPatient}}<span id="caretRoomTypeStatus" class="caret"></span></button>
+                <div class="panel-body doctorInInpatientPanelBody">
+                    <div class="dropdownInRoomsSection row">
+                        <div class="col-md-6">
+                            <div id="doctorCategoryDropdown" class="dropdown">
+                                <button style="width:100%;" class="docDropdownInInpatient roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorCategoryName}}<span id="caretRoomType" class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li ng-click="inpatient.selectedDoctorCategory(doctorCategory)" ng-repeat="doctorCategory in inpatient.activeDoctorCategoriesList">
+                                        <a style="cursor:pointer;" ng-bind="doctorCategory.doctorType"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="doctorNameDropdown" class="dropdown">
+                                <button style="width:100%;" class="docDropdownInInpatient roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorNameInPatient}}<span id="caretRoomTypeStatus" class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li ng-click="inpatient.selectedDoctorname(doctorEntity)" ng-repeat="doctorEntity in inpatient.activeDoctorsListToBeDisplayed">
+                                        <a style="cursor:pointer;" ng-bind="doctorEntity.doctor.firstName"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <table id="myTable" class="table table-hover table-striped" width="100%">
-                <thead>
-                    <tr>
-                        <th>Status</th>
-                        <th>Floor</th>
-                        <th>Room No./Ward No.</th>
-                        <th>Room Type</th>
-                        <th>Total Beds</th>
-                        <th>Occupied Beds</th>
-                        <th>UnOccupied Beds</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table" width="100%">
-                <thead>
-                    <tr>
-                        <th>Admit Here</th>
-                        <th>Bed No.</th>
-                        <th>Patient No.</th>
-                        <th>IOP No.</th>
-                        <th>Patient Name</th>
-                        <th>Date Admit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+            <div class="panel doctorInInpatientPanel">
+                <div class="panel-heading">
+                    <h4>Select Room Number and Bed Number</h4>
+                </div>
+                <div class="panel-body doctorInInpatientPanelBody">
+                    <table id="myTable" class="table table-hover table-striped" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Floor</th>
+                                <th>Room No./Ward No.</th>
+                                <th>Room Type</th>
+                                <th>Total Beds</th>
+                                <th>Occupied Beds</th>
+                                <th>UnOccupied Beds</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Admit Here</th>
+                                <th>Bed No.</th>
+                                <th>Patient No.</th>
+                                <th>IOP No.</th>
+                                <th>Patient Name</th>
+                                <th>Date Admit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
