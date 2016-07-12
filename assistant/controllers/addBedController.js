@@ -8,11 +8,11 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
     bedElement.deleteBed = deleteBed;
     bedElement.searchTheBed = searchTheBed;
     bedElement.editBedDetails = editBedDetails;
+    bedElement.pageChanged = pageChanged;
 
     bedElement.addNew = {};
     bedElement.roomsInBedToDisplay = [];
     bedElement.bedsToBeDisplayedInTable = [];
-    bedElement.roomsInBedToDisplay.push({ 'roomNo': '---Room Number----' });
     bedElement.addNew.bedNo = '';
     bedElement.enterBedErrorMessage = false;
     bedElement.selectRoomNumberErrorMessage = false;
@@ -22,7 +22,9 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
     bedElement.bedSearchInTxtBox = '';
     var addBedItemId = '';
     var addBedItemIndex = '';
-
+    bedElement.currentPage = 1;
+    bedElement.itemsPerPage = 5;
+    var displayArray = [];
     var entitiesArray = [];
     var entitiesArrayFlag = parseInt(0);
 
@@ -36,11 +38,10 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
         } else {
             var roomsInBedListSuccess = angular.fromJson(roomsInBedSuccess.data.response);
             $log.log('rooms in bed list success----', roomsInBedListSuccess);
-            angular.forEach(roomsInBedListSuccess, function(roomNumberEntity) {
-                if (roomNumberEntity.state == 'ACTIVE') {
-                    bedElement.roomsInBedToDisplay.push(roomNumberEntity);
-                }
+            bedElement.roomsInBedToDisplay = _.filter(roomsInBedListSuccess, function(entity) {
+                return entity.state = 'ACTIVE';
             });
+            bedElement.roomsInBedToDisplay.unshift({ 'roomNo': '---Room Number----' });
         }
     }, function(roomsInBedError) {
         dboticaServices.noConnectivityError();
@@ -54,16 +55,20 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
         } else {
             var bedsListInResponse = angular.fromJson(bedsInRoomSuccess.data.response);
             $log.log('beds in list response---', bedsListInResponse);
-            angular.forEach(bedsListInResponse, function(bedEntity) {
-                if (bedEntity.bedState == 'ACTIVE') {
-                    bedElement.bedsToBeDisplayedInTable.push(bedEntity);
-                }
+            bedElement.bedsToBeDisplayedInTable = _.filter(bedsListInResponse, function(entity) {
+                return entity.bedState == 'ACTIVE';
             });
+            bedElement.totalItems = bedElement.bedsToBeDisplayedInTable.length;
             angular.copy(bedElement.bedsToBeDisplayedInTable, entitiesArray);
+            $log.log('total items is---', bedElement.totalItems);
+            displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
+            angular.copy(displayArray[0], bedElement.bedsToBeDisplayedInTable);
         }
     }, function(bedsInRoomError) {
         dboticaServices.noConnectivityError();
     });
+
+
 
     function addNewBed() {
         bedElement.validateBedNumber();
@@ -82,21 +87,31 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                     if (addNewBedSuccess.data.errorCode == null && addNewBedSuccess.data.success == true) {
                         dboticaServices.addOrUpdateBedSuccessSwal();
                         angular.element('#addBedModal').modal('hide');
+                        entitiesArray.unshift(addNewBedSuccessResponse);
+                        bedElement.totalItems = entitiesArray.length;
                         if (addBedItemId == '' && addBedItemIndex == '') {
-                            bedElement.bedsToBeDisplayedInTable.unshift(addNewBedSuccessResponse);
-                            entitiesArray.unshift(addNewBedSuccessResponse);
-                        } else {
-                            bedElement.bedsToBeDisplayedInTable.splice(addBedItemIndex, 1, addNewBedSuccessResponse);
-                            var indexLocal;
-                            for (var entityArrayIndex in entitiesArray) {
-                                if (entitiesArray[entityArrayIndex].id == addNewBedSuccessResponse.id) {
-                                    indexLocal = entityArrayIndex;
-                                    break;
-                                } else {
-                                    continue;
+                            if (bedElement.bedsToBeDisplayedInTable.length < bedElement.itemsPerPage) {
+                                bedElement.bedsToBeDisplayedInTable.unshift(addNewBedSuccessResponse);
+                            } else {
+                                if (displayArray.length == bedElement.currentPage) {
+                                    bedElement.bedsToBeDisplayedInTable = [];
+                                    bedElement.currentPage = bedElement.currentPage + 1;
+                                    bedElement.bedsToBeDisplayedInTable.unshift(addNewBedSuccessResponse);
+                                }
+                                if (bedElement.bedsToBeDisplayedInTable.length == bedElement.itemsPerPage) {
+                                    bedElement.currentPage = 1;
+                                    displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
+                                    angular.copy(displayArray[0], bedElement.bedsToBeDisplayedInTable);
                                 }
                             }
+                        } else {
+                            bedElement.bedsToBeDisplayedInTable.splice(addBedItemIndex, 1, addNewBedSuccessResponse);
+                            var indexLocal = _.findLastIndex(entitiesArray, function(entity) {
+                                return entity.id == addNewBedSuccessResponse.id;
+                            });
                             entitiesArray.splice(indexLocal, 1, addNewBedSuccessResponse);
+                            displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
+                            bedElement.totalItems = entitiesArray.length;
                             addBedItemId = '';
                             addBedItemIndex = '';
                         }
@@ -150,7 +165,7 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                 closeOnConfirm: false
             },
             function() {
-                bedUnit.bedState = 'INACTIVE';
+                bedUnit.state = 'INACTIVE';
                 var deleteBedPromise = dboticaServices.addNewBed(bedUnit);
                 deleteBedPromise.then(function(deleteBedSuccess) {
                     var errorCode = deleteBedSuccess.data.errorCode;
@@ -162,16 +177,12 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                         if (deleteBedSuccess.data.errorCode == null && deleteBedSuccess.data.success == true) {
                             dboticaServices.deleteBedSuccessSwal();
                             bedElement.bedsToBeDisplayedInTable.splice(index, 1);
-                            var deleteIndex;
-                            for (var deleteEntityIndex in entitiesArray) {
-                                if (entitiesArray[deleteEntityIndex].id == bedUnit.id) {
-                                    deleteIndex = deleteEntityIndex;
-                                    break;
-                                } else {
-                                    continue;
-                                }
-                            }
+                            var deleteIndex = _.findLastIndex(entitiesArray, function(entity) {
+                                return entity.id == bedUnit.id;
+                            });
                             entitiesArray.splice(deleteIndex, 1);
+                            bedElement.totalItems = entitiesArray.length;
+                            displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
                         }
                     }
                 }, function(deleteBedError) {
@@ -204,13 +215,15 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                         }
                     }
                 });
+                bedElement.totalItems = sortedItemsArray.length;
                 angular.copy(sortedItemsArray, bedElement.bedsToBeDisplayedInTable);
                 entitiesArrayFlag = bedElement.bedSearchInTxtBox.length;
             }
         }
         if (searchStringLength <= parseInt(2)) {
             entitiesArrayFlag = parseInt(0);
-            angular.copy(entitiesArray, bedElement.bedsToBeDisplayedInTable);
+            bedElement.totalItems = entitiesArray.length;
+            angular.copy(displayArray[0], bedElement.bedsToBeDisplayedInTable);
         }
     }
 
@@ -223,5 +236,16 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
         bedElement.addNew.bedStatus = editBedEntity.bedStatus.toUpperCase();
         bedElement.roomNumber = editBedEntity.organizationRoom.roomNo;
         bedElement.addNew.organizationRoomId = editBedEntity.organizationRoom.id;
+    }
+
+    function pageChanged() {
+        $log.log('entities array is---', entitiesArray);
+        $log.log('page selected is----', bedElement.currentPage);
+        var requiredIndex = bedElement.currentPage - 1;
+        var localArray = [];
+        displayArray = [];
+        displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
+        localArray = displayArray[requiredIndex];
+        angular.copy(localArray, bedElement.bedsToBeDisplayedInTable);
     }
 }]);
