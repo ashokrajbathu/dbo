@@ -11,11 +11,13 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     inpatientElement.selectedDoctorname = selectedDoctorname;
     inpatientElement.selectedRoomCategory = selectedRoomCategory;
     inpatientElement.statusOfBed = statusOfBed;
+    inpatientElement.admitPatient = admitPatient;
     /*inpatientElement.selectedRoom = selectedRoom;*/
 
     inpatientElement.PhoneNumberErrorMessage = false;
     inpatientElement.patientSearchBtnDisabled = true;
     inpatientElement.nameOrNumberErrorMessage = false;
+    inpatientElement.mandatoryFieldsErrorMessage = false;
     inpatientElement.number = "";
     inpatientElement.patientData = {};
     inpatientElement.patientData.firstName = "";
@@ -42,6 +44,9 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     inpatientElement.activeDoctorsListToBeDisplayed = [];
     inpatientElement.activeRoomsList = [];
     inpatientElement.doctorDepartment = '';
+    var activePatientId;
+    var activeDoctorId = '';
+    var activeDoctorName = '';
     inpatientElement.activeDoctorsListToBeDisplayed.push(doctorObject);
 
     var organizationId = localStorage.getItem('orgId');
@@ -69,13 +74,10 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var doctorCategoriesList = angular.fromJson(doctorCategorySuccess.data.response);
-            $log.log('doctor categories list is----', doctorCategoriesList);
-            inpatientElement.activeDoctorCategoriesList.push(doctorCategoryObject);
-            angular.forEach(doctorCategoriesList, function(doctorCategoryEntity) {
-                if (doctorCategoryEntity.state == 'ACTIVE') {
-                    inpatientElement.activeDoctorCategoriesList.push(doctorCategoryEntity);
-                }
+            inpatientElement.activeDoctorCategoriesList = _.filter(doctorCategoriesList, function(entity) {
+                return entity.state == 'ACTIVE';
             });
+            inpatientElement.activeDoctorCategoriesList.unshift(doctorCategoryObject);
         }
     }, function(doctorCategoryError) {
         dboticaServices.noConnectivityError();
@@ -88,11 +90,8 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var doctorsListArray = angular.fromJson(doctorsListSuccess.data.response);
-            $log.log('doctors list array is----', doctorsListArray);
-            angular.forEach(doctorsListArray, function(doctorEntity) {
-                if (doctorEntity.state == 'ACTIVE') {
-                    activeDoctorsList.push(doctorEntity);
-                }
+            activeDoctorsList = _.filter(doctorsListArray, function(entity) {
+                return entity.state == 'ACTIVE';
             });
         }
     }, function(doctorsListError) {
@@ -106,14 +105,12 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var roomsList = angular.fromJson(roomsSuccess.data.response);
-            $log.log('rooms list is---', roomsList);
             inpatientElement.activeRoomsList.push(allRoomTypeObject);
             angular.forEach(roomsList, function(roomEntity) {
                 if (roomEntity.state == 'ACTIVE') {
                     inpatientElement.activeRoomsList.push(roomEntity);
                 }
             });
-            $log.log('active rooms list is---', inpatientElement.activeRoomsList);
         }
     }, function(roomError) {
         dboticaServices.noConnectivityError();
@@ -126,13 +123,11 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var bedsListLocal = angular.fromJson(bedsSuccess.data.response);
-            $log.log('beds list local is---', bedsListLocal);
             angular.forEach(bedsListLocal, function(bedsListLocalEntity) {
                 if (bedsListLocalEntity.bedState == 'ACTIVE') {
                     bedsList.push(bedsListLocalEntity);
                 }
             });
-            $log.log('beds list is----', bedsList);
         }
     }, function(bedsError) {
         dboticaServices.noConnectivityError();
@@ -164,6 +159,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
 
     function patientSearch() {
         inpatientElement.patientData = {};
+        inpatientElement.inpatientNumber = '';
         inpatientElement.patientData.gender = 'MALE';
         inpatientElement.patientData.bloodGroup = 'O_POSITIVE';
         inpatientElement.patientData.phoneNumber = inpatientElement.number;
@@ -173,7 +169,6 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                $log.log("inpatient search success is-----", angular.fromJson(inpatientSearchSuccess.data.response));
                 inpatientElement.patientsListOfThatNumber = angular.fromJson(inpatientSearchSuccess.data.response);
                 if (inpatientElement.patientsListOfThatNumber.length > 0) {
                     inpatientElement.patientIdActive = inpatientElement.patientsListOfThatNumber[0].id;
@@ -191,7 +186,6 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
 
     function patientSelectFromDropdown(selectedPatient) {
         if (selectedPatient.firstName !== patientName) {
-            $log.log("selected patient is---", selectedPatient);
             inpatientElement.patientName = selectedPatient.firstName;
             inpatientElement.patientData = selectedPatient;
             inpatientElement.patientIdActive = selectedPatient.id;
@@ -205,7 +199,8 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
         }
         var firstName = inpatientElement.patientData.firstName;
         var phoneNumber = inpatientElement.patientData.phoneNumber;
-        if (firstName !== undefined && phoneNumber !== undefined && firstName !== "" && phoneNumber !== "") {
+        var inpatientNumber = inpatientElement.inpatientNumber;
+        if (firstName !== undefined && phoneNumber !== undefined && firstName !== "" && phoneNumber !== "" && inpatientNumber !== undefined && inpatientNumber !== '') {
             inpatientElement.nameOrNumberErrorMessage = false;
             patientDataRequestEntity.gender = inpatientElement.patientData.gender;
             patientDataRequestEntity.bloodGroup = inpatientElement.patientData.bloodGroup;
@@ -215,7 +210,6 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             patientDataRequestEntity.phoneNumber = phoneNumber;
             patientDataRequestEntity.age = inpatientElement.patientData.age;
             patientDataRequestEntity = JSON.stringify(patientDataRequestEntity);
-            $log.log("patient in modal is----", patientDataRequestEntity);
             var inpatientPromise = dboticaServices.addNewPatient(patientDataRequestEntity);
             inpatientPromise.then(function(inpatientSuccessResponse) {
                 var errorCode = inpatientSuccessResponse.data.errorCode;
@@ -223,7 +217,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var inpatientAddResponse = angular.fromJson(inpatientSuccessResponse.data.response);
-                    $log.log("add response is---", inpatientAddResponse);
+                    activePatientId = inpatientAddResponse[0].id;
                     var success = inpatientSuccessResponse.data.success;
                     if (errorCode == null && success == true) {
                         inpatientElement.patientNameInBox = firstName;
@@ -236,7 +230,6 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
                         inpatientRegisterRequestEntity.patientId = inpatientAddResponse[0].id;
                         inpatientRegisterRequestEntity.phoneNumber = inpatientAddResponse[0].phoneNumber;
                         inpatientRegisterRequestEntity.patientState = 'CHECK_IN';
-                        $log.log('inpatientRegisterRequestEntity is----', inpatientRegisterRequestEntity);
                         var inpatientRegisterPromise = dboticaServices.registerPatient(inpatientRegisterRequestEntity);
                         inpatientRegisterPromise.then(function(inpatientRegisterSuccess) {
                             var errorCode = inpatientRegisterSuccess.data.errorCode;
@@ -244,7 +237,6 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
                                 dboticaServices.logoutFromThePage(errorCode);
                             } else {
                                 var registerSuccessResponse = angular.fromJson(inpatientRegisterSuccess.data.response);
-                                $log.log('reg success response is---', registerSuccessResponse);
                                 inpatientElement.patientNumberInBox = registerSuccessResponse.organizationPatientNo;
                                 angular.element('#inpatientSearchModal').modal('hide');
                             }
@@ -263,7 +255,6 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
 
     function selectedDoctor(selectedDoctor) {
         inpatientElement.doctorNameInPatient = selectedDoctor.firstName;
-        $log.log("selected doctor is---", selectedDoctor);
     }
 
     function selectedDoctorCategory(doctorCategoryEntity) {
@@ -289,10 +280,12 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     }
 
     function selectedDoctorname(doctornameEntity) {
-        $log.log('doctor name selected is---', doctornameEntity);
         inpatientElement.doctorNameInPatient = doctornameEntity.doctor.firstName;
         if (doctornameEntity.doctor.firstName !== '-Doctor Name-') {
+            activeDoctorId = '';
+            activeDoctorName = doctornameEntity.doctor.firstName;
             inpatientElement.doctorNameInTheBox = doctornameEntity.doctor.firstName;
+            activeDoctorId = doctornameEntity.doctorId;
         } else {
             inpatientElement.doctorNameInTheBox = '';
         }
@@ -300,7 +293,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
 
     function selectedRoomCategory(roomCategoryEntity) {
         inpatientElement.roomCategoryName = roomCategoryEntity.organizationRoomCategory.roomType;
-        if (inpatientElement.roomCategoryName == 'All Room Type' && inpatientElement.roomName == 'All') {
+        if (inpatientElement.roomCategoryName == 'All Room Type') {
             angular.copy(inpatientElement.activeRoomsList, inpatientElement.activeRoomsListToBeDisplayed);
             inpatientElement.activeRoomsListToBeDisplayed.shift();
         } else {
@@ -314,8 +307,6 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     }
 
     function statusOfBed(bedEntity) {
-        $log.log('beds list is----', bedsList);
-        $log.log('bed entity is---', bedEntity);
         inpatientElement.bedsListToBeDisplayed = [];
         angular.forEach(bedsList, function(bedListItem) {
             var floorNumber = bedListItem.organizationRoom.floorNo;
@@ -325,10 +316,48 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
                 inpatientElement.bedsListToBeDisplayed.push(bedListItem);
             }
         });
-        $log.log('beds to be displayed---', inpatientElement.bedsListToBeDisplayed);
     }
 
-    /*function selectedRoom(roomEntity) {
-        inpatientElement.roomName = roomEntity;
-    }*/
+    function admitPatient(bedEntity) {
+        $log.log('bed entity is ----', bedEntity);
+        var patientName = inpatientElement.patientNameInBox;
+        var doctorDepartment = inpatientElement.doctorDepartment;
+        var doctorName = inpatientElement.doctorNameInTheBox;
+        if (patientName !== undefined && patientName !== '' && doctorDepartment !== undefined && doctorDepartment !== '' && doctorName !== undefined && doctorName !== '') {
+            inpatientElement.mandatoryFieldsErrorMessage = false;
+            var bedRequestEntity = {};
+            bedRequestEntity.patientId = activePatientId;
+            bedRequestEntity.inPatientNumber = inpatientElement.inpatientNumber;
+            bedRequestEntity.organizationBedId = bedEntity.id;
+            var date = new Date();
+            var longValueOfDate = date.getTime();
+            var detailsObject = {};
+            bedRequestEntity.nextChange = longValueOfDate;
+            detailsObject.admitTime = longValueOfDate;
+            bedRequestEntity.details = JSON.stringify(detailsObject);
+            bedRequestEntity.doctorDetail = {};
+            bedRequestEntity.organizationId = organizationId;
+            bedRequestEntity.doctorDetail.doctorId = activeDoctorId;
+            bedRequestEntity.doctorDetail.doctorDepartment = doctorDepartment;
+            bedRequestEntity.doctorDetail.doctorName = activeDoctorName;
+            $log.log('add patient to bed request entity is---', bedRequestEntity);
+            var addPatientToBedPromise = dboticaServices.addPatientToBed(bedRequestEntity);
+            $log.log('addPatient to bed promise is----', addPatientToBedPromise);
+            addPatientToBedPromise.then(function(addPatientSuccess) {
+                var errorCode = addPatientSuccess.data.errorCode;
+                if (!!errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var addPatientToBedResponse = angular.fromJson(addPatientSuccess.data.response);
+                    $log.log('add patient to bed response----', addPatientToBedResponse);
+                }
+            }, function(addpatientError) {
+                dboticaServices.noConnectivityError();
+            });
+
+        } else {
+            inpatientElement.mandatoryFieldsErrorMessage = true;
+        }
+    }
+
 }]);

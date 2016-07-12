@@ -40,7 +40,6 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         $http(req).then(function(response) {
             deferred.resolve(response);
         }, function(errorResponse) {
-            console.log("in error response---");
             deferred.reject(errorResponse);
         });
         return deferred.promise;
@@ -70,11 +69,9 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             withCredentials: true
         }
         $http(req).then(function(response) {
-            $log.log("selected doctor response is----", response);
             deferred.resolve(response);
 
         }, function(errorResponse) {
-            $log.log("In doctor selected error response.");
             deferred.reject(errorResponse);
 
         });
@@ -223,7 +220,6 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     }
 
     this.addItemIntoStock = function(object) {
-        $log.log("object is----", object);
         var deferred = $q.defer();
         var requestEntity = {
             method: 'POST',
@@ -440,7 +436,6 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
                 withCredentials: true
             }
         } else {
-            $log.log("in expired");
             var localUrl;
             switch (itemType) {
                 case 'All':
@@ -507,12 +502,9 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
                 }
                 break;
             case 'EquipmentItems':
-                $log.log("in equipment items");
                 switch (stockType) {
                     case 'All':
-                        $log.log("in stock type of equipment----");
                         localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "EQUIPMENT", "start": start, "limit": limit, "organizationId": organizationId });
-                        $log.log("local url is----", localUrl);
                         break;
                     case 'Low':
                         localUrl = 'http://localhost:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "EQUIPMENT", "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
@@ -554,7 +546,6 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             url: localUrl,
             withCredentials: true
         }
-        $log.log("req entity is----", requestEntity);
         $http(requestEntity).then(function(response) {
             deferred.resolve(response);
         }, function(errorResponse) {
@@ -668,7 +659,6 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
 
     this.updateInvoice = function(invoice) {
         var deferred = $q.defer();
-        $log.log("amount paid in service is----" + invoice.amountPaid);
         var invoiceRequest = {
             method: 'POST',
             url: ' http://localhost:8081/dbotica-spring/billing/updateInvoice',
@@ -731,11 +721,9 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
                 break;
             case 'Next Due Date':
                 var longValueOfDate = this.getLongValueOfDate(firstSearchEntity);
-                $log.log("due date is----" + longValueOfDate);
                 localUrl = 'http://localhost:8081/dbotica-spring/billing/getInvoices?queryString=' + JSON.stringify({ 'nextPaymentDueDate': longValueOfDate, "organizationId": organizationId });
                 break;
             case 'Doctor':
-                $log.log("doctor id is----" + firstSearchEntity);
                 localUrl = 'http://localhost:8081/dbotica-spring/billing/getInvoices?queryString=' + JSON.stringify({ 'doctorId': firstSearchEntity, "organizationId": organizationId });
                 break;
         }
@@ -745,7 +733,6 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             withCredentials: true
         }
         $http(invoiceSearchRequestEntity).then(function(successResponseOfSearchRequest) {
-            $log.log("in service success----");
             deferred.resolve(successResponseOfSearchRequest);
         }, function(errorResponseOfSearchRequest) {
             deferred.reject(errorResponseOfSearchRequest);
@@ -754,7 +741,6 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     }
 
     this.getPendingInvoices = function(organizationId) {
-        $log.log("org id is----" + organizationId);
         var deferred = $q.defer();
         var getPendingRequestEntity = {
             method: 'GET',
@@ -762,7 +748,6 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             withCredentials: true
         }
         $http(getPendingRequestEntity).then(function(pendingInvoiceSuccess) {
-            $log.log("in service success");
             deferred.resolve(pendingInvoiceSuccess);
         }, function(pendingInvoiceError) {
             deferred.reject(pendingInvoiceError);
@@ -805,7 +790,6 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
                 continue;
             } else {
                 if (!!appointmentPatientsList[appointmentPatientsListIndex].patientId && appointmentPatientsList[appointmentPatientsListIndex].patientId.length > 0) {
-                    $log.log("in final appointment list---");
                     loginResponsePatientsList.push(appointmentPatientsList[appointmentPatientsListIndex]);
                 }
             }
@@ -815,16 +799,11 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
                 continue;
             } else {
                 if (!!walkInPatientsList[walkInPatientsListIndex].patientId && walkInPatientsList[walkInPatientsListIndex].patientId.length > 0) {
-                    $log.log("in final walkinList---");
                     loginResponsePatientsList.push(walkInPatientsList[walkInPatientsListIndex]);
                 }
             }
         }
 
-        $log.log("walk in patients list is----", walkInPatientsList);
-        $log.log("appointment patients list is----", appointmentPatientsList);
-        $log.log("patients list to be displayed is----", loginResponsePatientsList);
-        $log.log("patients List is----", patientsList);
         return loginResponsePatientsList;
 
     }
@@ -1027,12 +1006,10 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     }
 
     this.getItemsToBeDisplayed = function(itemsFromInvoice) {
-        $log.log("items before----", itemsFromInvoice);
         for (var itemIndex in itemsFromInvoice) {
             itemsFromInvoice[itemIndex].cost = itemsFromInvoice[itemIndex].cost / 100;
             itemsFromInvoice[itemIndex].amountCharged = itemsFromInvoice[itemIndex].amountCharged / 100;
         }
-        $log.log("items after----", itemsFromInvoice);
         return itemsFromInvoice;
     }
 
@@ -1700,6 +1677,26 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             deferred.resolve(getEventsSuccess);
         }, function(getEventsError) {
             deferred.reject(getEventsError);
+        });
+        return deferred.promise;
+    }
+
+    this.addPatientToBed = function(addPatientBedObject) {
+        var deferred = $q.defer();
+        var addPatientRequestEntity = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/addPatientToBed',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(addPatientBedObject)
+        }
+        $http(addPatientRequestEntity).then(function(addPatientSuccess) {
+            deferred.resolve(addPatientSuccess);
+        }, function(addPatientError) {
+            deferred.reject(addPatientError);
         });
         return deferred.promise;
     }

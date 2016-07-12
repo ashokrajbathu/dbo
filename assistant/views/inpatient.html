@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <hr>
-                    <span ng-if="inpatient.nameOrNumberErrorMessage" style="color:red;">(* Patient Name and Phone Number are mandatory fields)</span>
+                    <span ng-if="inpatient.nameOrNumberErrorMessage" style="color:red;">(* Please enter asterisk marked mandatory fields)</span>
                     <div class="row inpatientRowInModal">
                         <div class="col-md-4 col-sm-8 col-xs-8">
                             <form>
@@ -156,7 +156,7 @@
                         <div class="col-md-4 col-sm-8 col-xs-8">
                             <form>
                                 <div class="form-group">
-                                    <label for="exampleInputBloodPressure">Inpatient Number</label>
+                                    <label for="exampleInputBloodPressure">*Inpatient Number</label>
                                     <input type="text" class="form-control exampleInpatientPhone" id="exampleInputInpatientNumber" ng-model="inpatient.inpatientNumber" placeholder="inpatient Number">
                                 </div>
                             </form>
@@ -178,13 +178,14 @@
                 </div>
                 <div class="box-body no-padding">
                     <div class="box-footer clearfix">
+                        <span style="color:red;" ng-if="inpatient.mandatoryFieldsErrorMessage">(*Please Enter asterisk marked fields)</span>
                         <div class="form-group">
-                            <label for="exampleInpatientName">Patient Name</label>
-                            <input type="text" ng-model="inpatient.patientNameInBox" class="form-control" id="exampleInpatientName" placeholder="Patient Name">
+                            <label for="exampleInpatientName">*Patient Name</label>
+                            <input readonly type="text" ng-model="inpatient.patientNameInBox" class="form-control" id="exampleInpatientName" placeholder="Patient Name">
                         </div>
                         <div class="form-group">
                             <label for="exampleInpatientNo">Inpatient No.</label>
-                            <input type="text" ng-model="inpatient.patientNumberInBox" class="form-control" id="exampleInpatientNumber" placeholder="Inpatient Number">
+                            <input readonly type="text" ng-model="inpatient.patientNumberInBox" class="form-control" id="exampleInpatientNumber" placeholder="Inpatient Number">
                         </div>
                         <div class="form-group">
                             <label for="exampleRoomName">Room Name</label>
@@ -195,11 +196,11 @@
                             <input type="text" class="form-control" id="exampleInputBedName" placeholder="Bed Name">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputDoctorDepartment">Department</label>
-                            <input type="text" ng-model="inpatient.doctorDepartment" class="form-control" id="exampleInputDepartment" placeholder="Department">
+                            <label for="exampleInputDoctorDepartment">*Department</label>
+                            <input readonly type="text" ng-model="inpatient.doctorDepartment" class="form-control" id="exampleInputDepartment" placeholder="Department">
                         </div>
                         <div class="form-group">
-                            <label for="sel1">Doctor Incharge</label>
+                            <label for="sel1">*Doctor Incharge</label>
                             <!-- <div class="dropdown">
                                 <button style="width:100%;" class="docDropdownInInpatient dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorNameInPatient}}
                                     <span id="caret" class="caret"></span></button>
@@ -209,7 +210,7 @@
                                     </li>
                                 </ul>
                             </div> -->
-                            <input type="text" ng-model="inpatient.doctorNameInTheBox" class="form-control" id="exampleInputDoctorName" placeholder="Doctor Incharge">
+                            <input readonly type="text" ng-model="inpatient.doctorNameInTheBox" class="form-control" id="exampleInputDoctorName" placeholder="Doctor Incharge">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputdiagnosis">Provisional Diagnosis</label>
@@ -326,7 +327,7 @@
                             <tbody>
                                 <tr ng-repeat="bedEntity in inpatient.bedsListToBeDisplayed">
                                     <td>
-                                        <a style="cursor:pointer;">Admit</a>
+                                        <a ng-click="inpatient.admitPatient(bedEntity)" style="cursor:pointer;">Admit</a>
                                     </td>
                                     <td ng-bind="bedEntity.bedNo"></td>
                                     <td>-</td>

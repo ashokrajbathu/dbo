@@ -37,7 +37,6 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var roomsInBedListSuccess = angular.fromJson(roomsInBedSuccess.data.response);
-            $log.log('rooms in bed list success----', roomsInBedListSuccess);
             bedElement.roomsInBedToDisplay = _.filter(roomsInBedListSuccess, function(entity) {
                 return entity.state = 'ACTIVE';
             });
@@ -54,13 +53,12 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var bedsListInResponse = angular.fromJson(bedsInRoomSuccess.data.response);
-            $log.log('beds in list response---', bedsListInResponse);
+
             bedElement.bedsToBeDisplayedInTable = _.filter(bedsListInResponse, function(entity) {
                 return entity.bedState == 'ACTIVE';
             });
             bedElement.totalItems = bedElement.bedsToBeDisplayedInTable.length;
             angular.copy(bedElement.bedsToBeDisplayedInTable, entitiesArray);
-            $log.log('total items is---', bedElement.totalItems);
             displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
             angular.copy(displayArray[0], bedElement.bedsToBeDisplayedInTable);
         }
@@ -75,9 +73,7 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
         dropdownErrorCheck();
         if (!bedElement.enterBedErrorMessage && !bedElement.selectRoomNumberErrorMessage) {
             bedElement.addNew.organizationId = organizationId;
-            $log.log('req element is--', bedElement.addNew);
             var addNewBedPromise = dboticaServices.addNewBed(bedElement.addNew);
-            $log.log('add new bed promise----', addNewBedPromise);
             addNewBedPromise.then(function(addNewBedSuccess) {
                 var errorCode = addNewBedSuccess.data.errorCode;
                 if (!!errorCode) {
@@ -87,8 +83,6 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                     if (addNewBedSuccess.data.errorCode == null && addNewBedSuccess.data.success == true) {
                         dboticaServices.addOrUpdateBedSuccessSwal();
                         angular.element('#addBedModal').modal('hide');
-                        entitiesArray.unshift(addNewBedSuccessResponse);
-                        bedElement.totalItems = entitiesArray.length;
                         if (addBedItemId == '' && addBedItemIndex == '') {
                             if (bedElement.bedsToBeDisplayedInTable.length < bedElement.itemsPerPage) {
                                 bedElement.bedsToBeDisplayedInTable.unshift(addNewBedSuccessResponse);
@@ -103,6 +97,9 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                                     displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
                                     angular.copy(displayArray[0], bedElement.bedsToBeDisplayedInTable);
                                 }
+                                entitiesArray.unshift(addNewBedSuccessResponse);
+                                displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
+                                bedElement.totalItems = entitiesArray.length;
                             }
                         } else {
                             bedElement.bedsToBeDisplayedInTable.splice(addBedItemIndex, 1, addNewBedSuccessResponse);
@@ -121,11 +118,10 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                 dboticaServices.noConnectivityError();
             });
         }
-        $log.log('bed status is----', bedElement.addNew.bedStatus);
+
     }
 
     function selectRoomNumber(roomEntity) {
-        $log.log('room entity id is----', roomEntity);
         bedElement.roomNumber = roomEntity.roomNo;
         dropdownErrorCheck();
         bedElement.addNew.organizationRoomId = roomEntity.id;
@@ -173,7 +169,6 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         var deleteBedSuccessResponse = angular.fromJson(deleteBedSuccess.data.response);
-                        $log.log('delete bed is---', deleteBedSuccessResponse);
                         if (deleteBedSuccess.data.errorCode == null && deleteBedSuccess.data.success == true) {
                             dboticaServices.deleteBedSuccessSwal();
                             bedElement.bedsToBeDisplayedInTable.splice(index, 1);
@@ -228,6 +223,7 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
     }
 
     function editBedDetails(editBedEntity, index) {
+        $log.log('edit bed entity is---', editBedEntity);
         addBedItemId = '';
         addBedItemIndex = '';
         addBedItemId = editBedEntity.id;
@@ -236,11 +232,10 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
         bedElement.addNew.bedStatus = editBedEntity.bedStatus.toUpperCase();
         bedElement.roomNumber = editBedEntity.organizationRoom.roomNo;
         bedElement.addNew.organizationRoomId = editBedEntity.organizationRoom.id;
+        bedElement.addNew.id = addBedItemId;
     }
 
     function pageChanged() {
-        $log.log('entities array is---', entitiesArray);
-        $log.log('page selected is----', bedElement.currentPage);
         var requiredIndex = bedElement.currentPage - 1;
         var localArray = [];
         displayArray = [];
