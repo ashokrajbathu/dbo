@@ -30,7 +30,6 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
     doctorCategoryElement.sortTypeTwo = 'description';
 
     var getDoctorsCategoriesPromise = dboticaServices.getDoctorCategories(organizationId);
-    $log.log("get docs promise is----", getDoctorsCategoriesPromise);
     getDoctorsCategoriesPromise.then(function(doctorsCategoriesPromise) {
         angular.element('#mainAdminLiActive').addClass('activeAdminLi');
         var errorCode = doctorsCategoriesPromise.data.errorCode;
@@ -57,9 +56,7 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
             if (doctorCategoryItemId == '' && doctorCategoryItemIndex == '') {
                 doctorCategoryElement.addNewDoctorCategory.organizationId = organizationId;
             }
-            $log.log("new doctor category is----", doctorCategoryElement.addNewDoctorCategory);
             var addNewDoctorCategoryPromise = dboticaServices.addNewDoctorCategory(doctorCategoryElement.addNewDoctorCategory);
-            $log.log("doc promise is----", addNewDoctorCategoryPromise);
             addNewDoctorCategoryPromise.then(function(addNewDoctorSuccess) {
                 var errorCode = addNewDoctorSuccess.data.errorCode;
                 if (!!errorCode) {
@@ -125,7 +122,6 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var deleteDoctorEntitySuccess = angular.fromJson(deleteDoctorSuccess.data.response);
-                    $log.log("delete doctor category is----", deleteDoctorEntitySuccess);
                     if (errorCode == null && deleteDoctorSuccess.data.success == true) {
                         dboticaServices.deleteDoctorCategorySuccessSwal();
                         doctorCategoryElement.doctorCategoriesList.splice(index, 1);

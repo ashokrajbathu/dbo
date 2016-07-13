@@ -227,7 +227,6 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
     }
 
     function editBedDetails(editBedEntity, index) {
-        $log.log('edit bed entity is---', editBedEntity);
         addBedItemId = '';
         addBedItemIndex = '';
         addBedItemId = editBedEntity.id;

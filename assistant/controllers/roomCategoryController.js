@@ -40,7 +40,6 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
             angular.copy(roomCategoryElement.activeRoomCategories, entitiesArray);
             displayArray = _.chunk(entitiesArray, roomCategoryElement.itemsPerPage);
             angular.copy(displayArray[0], roomCategoryElement.activeRoomCategories);
-            $log.log("categories are-----", roomCategoryElement.activeRoomCategories);
         }
     }, function(getRoomCategoriesError) {
         dboticaServices.noConnectivityError();
@@ -58,7 +57,6 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var addOrUpdateSuccessResponse = angular.fromJson(addOrUpdateSuccess.data.response);
-                $log.log("room category response is---", addOrUpdateSuccessResponse);
                 if (addOrUpdateSuccess.data.errorCode == null && addOrUpdateSuccess.data.success == true) {
                     dboticaServices.roomCategorySuccessSwal();
                     if (roomCategoryItemId == '' && roomCategoryItemIndex == '') {
@@ -117,7 +115,6 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var deleteRoomSuccess = angular.fromJson(deleteRoomCategorySuccess.data.response);
-                    $log.log("delete is----", deleteRoomSuccess);
                     if (deleteRoomCategorySuccess.data.errorCode == null && deleteRoomCategorySuccess.data.success == true) {
                         dboticaServices.deleteRoomCategorySuccessSwal();
                         roomCategoryElement.activeRoomCategories.splice(index, 1);

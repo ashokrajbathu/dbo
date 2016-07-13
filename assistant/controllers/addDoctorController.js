@@ -101,7 +101,6 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
 
 
     var getDoctorTypesPromise = dboticaServices.getDoctorCategories(organizationId);
-    $log.log("doc types are----", getDoctorTypesPromise);
     getDoctorTypesPromise.then(function(getDoctorsSuccess) {
         var errorCode = getDoctorsSuccess.data.errorCode;
         if (!!errorCode) {
@@ -109,7 +108,6 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
         } else {
             var doctorTypes = [];
             doctorTypes = angular.fromJson(getDoctorsSuccess.data.response);
-            $log.log('doctor types are----', doctorTypes);
             angular.forEach(doctorTypes, function(doctorType) {
                 if (doctorType.state == 'ACTIVE') {
                     doctorElement.allDoctorTypes.push(doctorType);
@@ -117,7 +115,6 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
             });
             doctorElement.doctorType = doctorElement.allDoctorTypes[0].doctorType;
             doctorElement.addNewDoctor.organizationDoctorCategoryId = doctorElement.allDoctorTypes[0].id;
-            $log.log('org doc cat id---', doctorElement.addNewDoctor.organizationDoctorCategoryId);
         }
     }, function(getDoctorsError) {
         dboticaServices.noConnectivityError();
@@ -140,14 +137,12 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
             }
             doctorElement.doctorName = doctorElement.doctorsListToBeDisplayed[0].firstName + ' ' + doctorElement.doctorsListToBeDisplayed[0].lastName;
             doctorElement.addNewDoctor.doctorId = doctorElement.doctorsListToBeDisplayed[0].id;
-            $log.log("doctors list response is---", doctorElement.addNewDoctor.doctorId);
         }
     }, function(getDoctorsListError) {
         dboticaServices.noConnectivityError();
     });
 
     var doctorsListInAdminPromise = dboticaServices.doctorsListInMainAdmin(organizationId);
-    $log.log("docs list in admin promise-----", doctorsListInAdminPromise);
     doctorsListInAdminPromise.then(function(doctorsListInMainSuccess) {
         var errorCode = doctorsListInMainSuccess.data.errorCode;
         if (!!errorCode) {
@@ -155,16 +150,15 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
         } else {
             var docsListInAdmin = angular.fromJson(doctorsListInMainSuccess.data.response);
             var docsListLocal = [];
-            $log.log("docs list in admin-----", docsListInAdmin);
             docsListLocal = _.filter(docsListInAdmin, function(entity) {
                 return entity.state == 'ACTIVE';
             });
+            $log.log('doctors fro display are---', docsListLocal);
             doctorElement.totalItems = docsListLocal.length;
             angular.copy(docsListLocal, doctorElement.doctorsListInTheTable);
             angular.copy(docsListLocal, entitiesArray);
             displayArray = _.chunk(entitiesArray, doctorElement.itemsPerPage);
             angular.copy(displayArray[0], doctorElement.doctorsListInTheTable);
-            $log.log('in list in table----', doctorElement.doctorsListInTheTable);
         }
     }, function(doctorsListInMainError) {
         dboticaServices.noConnectivityError();
@@ -181,7 +175,6 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var doctorsListResponse = angular.fromJson(doctorsSuccess.data.response);
-                $log.log('doctors list is----', doctorsListResponse);
                 for (var doctorIndex in doctorsListResponse) {
                     if (doctorsListResponse[doctorIndex].phoneNumber == doctorElement.doctorSearchInTxtBox) {
                         doctorActive = doctorsListResponse[doctorIndex];
@@ -189,7 +182,6 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
                     }
                 }
                 if (angular.isObject(doctorActive)) {
-                    $log.log('active doctor object is----', doctorActive);
                     doctorElement.newDoctorDetails = false;
                     doctorElement.addNewDoctorForm = true;
                     doctorElement.addNewDoctor.doctorId = doctorsListResponse[0].id;
@@ -234,16 +226,13 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
         if (doctorItemIndex == '' && doctorItemId == '') {
             doctorElement.addNewDoctor.organizationId = organizationId;
         }
-        $log.log("add new doc entity is----", doctorElement.addNewDoctor);
         var addNewDoctorPromise = dboticaServices.addNewDoctorToACategory(doctorElement.addNewDoctor);
-        $log.log("docs promise is----", addNewDoctorPromise);
         addNewDoctorPromise.then(function(addNewDocSuccess) {
             var errorCode = addNewDocSuccess.data.errorCode;
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var newDoctorResponse = angular.fromJson(addNewDocSuccess.data.response);
-                $log.log("new doctor response is----", newDoctorResponse);
                 if (errorCode == null && addNewDocSuccess.data.success == true) {
                     dboticaServices.addNewDoctorSuccessSwal();
                     if (doctorItemIndex == '' && doctorItemId == '') {
@@ -281,7 +270,6 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     }*/
 
     function deleteDoctorInTable(doctorEntryInTable, index) {
-        $log.log('before delete is---', doctorEntryInTable);
         swal({
             title: "Are you sure?",
             text: "You will not be able to recover the Doctor Details!",
@@ -293,14 +281,12 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
         }, function() {
             doctorEntryInTable.state = 'INACTIVE';
             var deleteDoctorPromise = dboticaServices.addNewDoctorToACategory(doctorEntryInTable);
-            $log.log('after delete doctor is---', deleteDoctorPromise);
             deleteDoctorPromise.then(function(deleteDoctorSuccess) {
                 var errorCode = deleteDoctorSuccess.data.errorCode;
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var deleteDoctorSuccessEntity = angular.fromJson(deleteDoctorSuccess.data.response);
-                    $log.log("delete is----", deleteDoctorSuccessEntity);
                     if (deleteDoctorSuccess.data.errorCode == null && deleteDoctorSuccess.data.success == true) {
                         dboticaServices.deleteDoctorSuccessSwal();
                         doctorElement.doctorsListInTheTable.splice(index, 1);
@@ -331,7 +317,6 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
         doctorItemId = '';
         doctorItemIndex = index;
         doctorItemId = doctorEntity.id;
-        $log.log('doc id is---', doctorEntity.id);
         var localDoctorEntity = {};
         angular.copy(doctorEntity, localDoctorEntity);
         angular.forEach(doctorElement.allDoctorTypes, function(docCategory) {
@@ -427,16 +412,13 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
             newDoctorEntity.qualification = doctorElement.doctorData.qualification;
             newDoctorEntity.doctorRegistrationNo = doctorElement.doctorData.doctorRegistrationNo;
             newDoctorEntity.organization = doctorElement.doctorData.organization;
-            $log.log('new doctor request is----', newDoctorEntity);
             var newDoctorPromise = dboticaServices.newDoctorByAssistant(newDoctorEntity);
-            $log.log('new doctor promise is -----', newDoctorPromise);
             newDoctorPromise.then(function(newDoctorSuccess) {
                 var errorCode = newDoctorSuccess.data.errorCode;
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var newDoctorDetails = angular.fromJson(newDoctorSuccess.data.response);
-                    $log.log('new doctor details are----', newDoctorDetails);
                     if (errorCode == null && newDoctorSuccess.data.success == true) {
                         doctorElement.addNewDoctorForm = true;
                         doctorElement.newDoctorDetails = false;

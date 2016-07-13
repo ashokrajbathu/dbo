@@ -56,7 +56,6 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var roomsListFromAPI = angular.fromJson(getRoomsSuccessResponse.data.response);
-            $log.log("room list----", roomsListFromAPI);
             roomElement.roomsList = _.filter(roomsListFromAPI, function(entity) {
                 return entity.state == 'ACTIVE';
             });
@@ -76,9 +75,7 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
         roomElement.addNewRoom.roomRate = parseInt(roomElement.addNewRoom.roomRate) * 100;
         roomElement.addNewRoom.bedCount = 0;
         roomElement.addNewRoom.maxBedCount = 0;
-        $log.log("add new room is------", roomElement.addNewRoom);
         var addNewRoomPromise = dboticaServices.addOrUpdateRoom(roomElement.addNewRoom);
-        $log.log('add new room promise is----', addNewRoomPromise);
         addNewRoomPromise.then(function(addNewRoomSuccess) {
             var errorCode = addNewRoomSuccess.data.errorCode;
             if (!!errorCode) {
@@ -93,7 +90,6 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
                             entitiesArray.push(addroomSuccess);
                         } else {
                             if (displayArray.length == roomElement.currentPage || displayArray.length == parseInt(1)) {
-                                $log.log('in check one---');
                                 roomElement.roomsList = [];
                                 roomElement.currentPage = roomElement.currentPage + 1;
                                 roomElement.roomsList.unshift(addroomSuccess);
@@ -119,7 +115,6 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
                         roomItemIndex = '';
                     }
                 }
-                $log.log("add room success is---", addroomSuccess);
             }
         }, function(addNewRoomError) {
             dboticaServices.noConnectivityError();
@@ -150,7 +145,6 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var deleteRoomSuccessEntity = angular.fromJson(deleteRoomSuccess.data.response);
-                    $log.log("delete is----", deleteRoomSuccessEntity);
                     if (deleteRoomSuccess.data.errorCode == null && deleteRoomSuccess.data.success == true) {
                         dboticaServices.deleteRoomSuccessSwal();
                         roomElement.roomsList.splice(index, 1);
@@ -183,7 +177,6 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
             }
         });
         newRoomObject.organizationId = organizationId;
-        $log.log("new room object is---", newRoomObject);
         angular.copy(newRoomObject, roomElement.addNewRoom);
     }
 
@@ -232,7 +225,6 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
         var requiredIndex = roomElement.currentPage - 1;
         var localArray = [];
         displayArray = [];
-        $log.log('entitiesArray for check is----', entitiesArray);
         if (roomElement.inputItemSearch.length >= parseInt(3)) {
             displayArray = _.chunk(sortedItemsArrayOnPageChange, roomElement.itemsPerPage);
         } else {
