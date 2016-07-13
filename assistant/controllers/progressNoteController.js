@@ -62,7 +62,6 @@ angular.module('personalAssistant').controller('progressNoteController', ['$scop
         note.patient = dboticaServices.getPatientDetailsFromService();
         note.patientEventsList = [];
         note.patientEventsList = dboticaServices.getProgressNotePatientEvents();
-        $log.log('patient events in progress note view----', note.patientEventsList);
         if (note.patientEventsList !== notesListForSetter) {
             angular.copy(note.patientEventsList, notesListForSetter);
         }
@@ -99,10 +98,8 @@ angular.module('personalAssistant').controller('progressNoteController', ['$scop
                 newNoteDetails.notesInModal = note.newNote.notes;
                 newNoteDetails = JSON.stringify(newNoteDetails);
                 addNoteRequestEntity.referenceDetails = newNoteDetails;
-                $log.log('add notes request entity is---', addNoteRequestEntity);
                 var addNewNotePromise = dboticaServices.patientEvent(addNoteRequestEntity);
                 addNewNotePromise.then(function(addNoteSuccess) {
-                    $log.log('add note success is----', addNoteSuccess);
                     var errorCode = addNoteSuccess.data.errorCode;
                     if (!!errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);

@@ -54,7 +54,6 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
                 }
             });
             angular.copy(register.registeredPatientsList, entitiesArray);
-            $log.log('registered patients list final is----', register.registeredPatientsList);
         }
     }, function(registeredPatientsError) {
         dboticaServices.noConnectivityError();
@@ -84,7 +83,6 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var patientsListResponse = angular.fromJson(patientDetailsSuccess.data.response);
-                $log.log('patients list is----', patientsListResponse);
                 if (patientsListResponse.length > 0) {
                     register.registerPatientToHospital.organizationPatientNo = '';
                     register.registerPatientToHospital.patientState = 'ADMITTED';
@@ -154,9 +152,7 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
                         }
                     } else {
                         dboticaServices.patientDetailsSuccessFullyUpdatedSwal();
-                        $log.log('new pat success is -----', newPatSuccess);
                         register.registeredPatientsList[newPatientActiveIndex].patientDetail.firstName = newPatSuccess[0].firstName;
-                        $log.log('patient details are----', register.registeredPatientsList[newPatientActiveIndex].patientDetail);
                         angular.element('#registerPatientModal').modal('hide');
                     }
                     newPatientActiveIndex = '';
@@ -171,7 +167,6 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
     function patientSelect(selectedPatient) {
         register.patientActiveId = selectedPatient.id;
         register.patientName = selectedPatient.firstName;
-        $log.log('patient Id is----', register.patientActiveId);
     }
 
     function registerAPatient() {
@@ -180,7 +175,6 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
             register.patientNumberErrorMessage = true;
         } else {
             if (registeredPatientActiveId !== undefined && registeredPatientActiveId !== null && registeredPatientActiveId !== '') {
-                $log.log('in id check----');
                 registerPatientRequestEntity.id = registeredPatientActiveId;
             }
             registerPatientRequestEntity.organizationPatientNo = register.registerPatientToHospital.organizationPatientNo;
@@ -188,16 +182,13 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
             registerPatientRequestEntity.phoneNumber = register.registerPatientToHospital.phoneNumber;
             registerPatientRequestEntity.patientState = register.registerPatientToHospital.patientState;
             registerPatientRequestEntity.organizationId = organizationId;
-            $log.log('req entity is----', registerPatientRequestEntity);
             var registerPatientPromise = dboticaServices.registerPatient(registerPatientRequestEntity);
-            $log.log('register promise is----', registerPatientPromise);
             registerPatientPromise.then(function(registerPatientSuccess) {
                 var errorCode = registerPatientSuccess.data.errorCode;
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     registerPatientList = angular.fromJson(registerPatientSuccess.data.response);
-                    $log.log('register patient is------', registerPatientList);
                     if (errorCode == null && registerPatientSuccess.data.success) {
                         dboticaServices.registerPatientSuccessSwal();
                         if (registeredPatientActiveId == '' && registeredPatientActiveIndex == '') {
@@ -220,7 +211,6 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
     }
 
     function deleteRegisteredPatient(patientRegistered, index) {
-        $log.log('patient selected for delete is----', patientRegistered);
         swal({
                 title: "Are you sure?",
                 text: "You will not be able to recover Patient Details!!!",
@@ -240,7 +230,6 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
                 deletePatientRequestEntity.id = patientRegistered.id;
                 deletePatientRequestEntity.state = 'INACTIVE';
                 var deleteRegisteredPatientPromise = dboticaServices.registerPatient(deletePatientRequestEntity);
-                $log.log('delete register promise is----', deleteRegisteredPatientPromise);
                 deleteRegisteredPatientPromise.then(function(deletePatientSuccess) {
                     var errorCode = deletePatientSuccess.data.errorCode;
                     if (!!errorCode) {
@@ -261,7 +250,6 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
     }
 
     function editPatientDetails(patientSelected, index) {
-        $log.log('patient selected is-----', patientSelected);
         register.patientData.phoneNumber = patientSelected.patientDetail.phoneNumber;
         register.phoneNumberInNewPatientForm = true;
         register.registerPatientForm = false;
@@ -278,7 +266,6 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
     }
 
     function editPatientState(patient, index) {
-        $log.log('state edit is----', patient);
         registeredPatientActiveIndex = '';
         registeredPatientActiveId = '';
         register.registerPatientForm = true;
@@ -294,8 +281,6 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
         registeredPatientActiveIndex = index;
         register.registerPhoneNumber = true;
         register.registerPatientNumber = true;
-        $log.log('active id for rdit is----', registeredPatientActiveId);
-        $log.log('registeredPatientActiveIndex==', registeredPatientActiveIndex);
     }
 
     var getValueOfProperty = function(propertyName) {

@@ -85,7 +85,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
     }, function(errorResponse) {
         inventoryElement.loading = false;
         dboticaServices.noConnectivityError();
-        $log.log("in inventory error response");
     });
 
     function nextBtnEnabledFunction() {
@@ -97,13 +96,11 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.prevBtnDisabled = false;
             inventoryElement.startDisplay = inventoryElement.startDisplay + inventoryElement.limit - 1;
             if ((inventoryElement.totalDrugsCount - inventoryElement.endDisplay) <= displayListLength) {
-                $log.log("check-----");
                 inventoryElement.endCorrection = inventoryElement.totalDrugsCount - inventoryElement.endDisplay;
                 inventoryElement.endDisplay = inventoryElement.totalDrugsCount;
                 inventoryElement.nextBtnEnabled = false;
                 inventoryElement.nextBtnDisabled = true;
                 limit = inventoryElement.endCorrection + 1;
-                $log.log("limit value is----" + limit);
             } else {
                 inventoryElement.endDisplay = inventoryElement.endDisplay + inventoryElement.limit - 1;
                 limit = inventoryElement.limit;
@@ -114,8 +111,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         }
         itemType = returnItemTypeActive();
         stockType = returnStockType();
-        $log.log("item type is---", itemType);
-        $log.log("stock type is----", stockType);
         inventoryElement.loading = true;
         var promise = dboticaServices.getItemsOfTheTable(inventoryElement.startDisplay - 1, limit, stockType, itemType, organizationId);
         promise.then(function(response) {
@@ -123,7 +118,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                $log.log("in next btn response----", response.data.response);
                 var nextBtnFetchedItemsObject = angular.fromJson(response.data.response);
                 var nextBtnFetchedItems = nextBtnFetchedItemsObject.inventoryItems;
                 if (nextBtnFetchedItems.length > displayListLength) {
@@ -138,7 +132,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
 
             inventoryElement.loading = false;
             dboticaServices.noConnectivityError();
-            $log.log("in error response of nex tbutton enabled");
         });
     }
 
@@ -162,7 +155,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         inventoryElement.loading = true;
         var promise = dboticaServices.getItemsOfTheTable(inventoryElement.startDisplay - 1, inventoryElement.limit, stockType, itemType, organizationId);
         promise.then(function(response) {
-            $log.log("in prev btn response----", response.data.response);
             var errorCode = response.data.errorCode;
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
@@ -175,7 +167,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         }, function(errorResponse) {
             inventoryElement.loading = false;
             dboticaServices.noConnectivityError();
-            $log.log("in previous button error response");
         });
     }
 
@@ -190,7 +181,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         inventoryElement.loading = true;
         var promise = dboticaServices.addItemIntoStock(inventoryElement.addItemObject);
         promise.then(function(response) {
-            $log.log("response after adding item is----", response);
             var errorCode = response.data.errorCode;
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
@@ -199,7 +189,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                 if (success) {
                     dboticaServices.itemAdditionIntoStockSuccessSwal();
                     var drugObject = angular.fromJson(response.data.response);
-                    $log.log("drug object is----", drugObject);
                     if (inventoryElement.itemsDisplayArray.length + 1 <= displayListLength) {
                         inventoryElement.itemsDisplayArray.push(drugObject);
                         if (inventoryElement.prevBtnDisabled === true && inventoryElement.nextBtnDisabled === true) {
@@ -213,7 +202,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                         inventoryElement.nextBtnEnabled = true;
                     }
                     inventoryElement.totalDrugsCount = inventoryElement.totalDrugsCount + 1;
-                    $log.log("items array-----", inventoryElement.itemsDisplayArray);
                 } else {
                     dboticaServices.itemAdditionIntoStockUnsuccessfullSwal();
                 }
@@ -222,7 +210,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         }, function(errorResponse) {
             inventoryElement.loading = false;
             dboticaServices.noConnectivityError();
-            $log.log("Error in add item into stock");
         });
     }
 
@@ -259,7 +246,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             requestEntity.batchState = "ACTIVE";
             requestEntity.state = "ACTIVE";
             requestEntity = JSON.stringify(requestEntity);
-            $log.log("added batch is----", requestEntity);
             inventoryElement.loading = true;
             var promise = dboticaServices.addBatchToTheDrug(requestEntity);
             promise.then(function(response) {
@@ -271,13 +257,11 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                     if (success) {
                         dboticaServices.batchAdditionForItemSuccessSwal();
                         var itemObject = angular.fromJson(response.data.response);
-                        $log.log("item after adding batch is-----", itemObject);
                         angular.forEach(inventoryElement.itemsDisplayArray, function(itemsDisplayArrayElement) {
                             if (itemsDisplayArrayElement.id === itemObject.itemId) {
                                 itemsDisplayArrayElement.availableStock += itemObject.units;
                             }
                         });
-                        $log.log("array after adding batch is-----", inventoryElement.itemsDisplayArray);
                     } else {
                         dboticaServices.batchAdditionForItemUnsuccessSwal();
                     }
@@ -315,7 +299,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             }, function(errorResponse) {
                 inventoryElement.loading = false;
                 dboticaServices.noConnectivityError();
-                $log.log("in error response of low items view----");
             });
         }
     }
@@ -347,7 +330,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             }, function(errorResponse) {
                 inventoryElement.loading = false;
                 dboticaServices.noConnectivityError();
-                $log.log("in error response of view all items---");
             });
         }
     }
@@ -377,7 +359,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             }, function(errorResponse) {
                 inventoryElement.loading = false;
                 dboticaServices.noConnectivityError();
-                $log.log("in error response of view expired items---");
             });
         }
     }
@@ -386,11 +367,9 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         if (inventoryElement.itemSearch.itemName !== "") {
             inventoryElement.prevNextBtnsRow = false;
             inventoryElement.viewAllItemsBtn = true;
-            $log.log("item to be searched is------", inventoryElement.itemSearch.itemName);
             inventoryElement.loading = true;
             var promise = dboticaServices.getItemFromDB(inventoryElement.itemSearch.itemName, organizationId);
             promise.then(function(response) {
-                $log.log("response after search is---------", response);
                 var errorCode = response.data.errorCode;
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
@@ -402,14 +381,12 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                     } else {
                         inventoryElement.warning = false;
                     }
-                    $log.log("response for search is----", itemSearchResponse);
                 }
                 inventoryElement.loading = false;
             }, function(errorResponse) {
 
                 inventoryElement.loading = false;
                 dboticaServices.noConnectivityError();
-                $log.log("in error Response of item search from db");
             });
         }
     }
@@ -435,7 +412,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
 
             inventoryElement.loading = false;
             dboticaServices.noConnectivityError();
-            $log.log("in error response of view all items");
         });
     }
 
@@ -469,7 +445,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
 
                 inventoryElement.loading = false;
                 dboticaServices.noConnectivityError();
-                $log.log("in error response of view all inventory items---");
             });
         }
     }
@@ -503,7 +478,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             }, function(errorResponse) {
                 inventoryElement.loading = false;
                 dboticaServices.noConnectivityError();
-                $log.log("in error response of view drug inventory items---");
             });
         }
 
@@ -538,7 +512,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             }, function(errorResponse) {
                 inventoryElement.loading = false;
                 dboticaServices.noConnectivityError();
-                $log.log("in error response of view supplies inventory  items---");
             });
         }
     }
@@ -546,7 +519,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
     function viewEquipmentsInventoryItems() {
         if (inventoryElement.isEquipmentsTypeBlueActive) {
             var stockType = "";
-            $log.log("in equipment---");
             inventoryElement.isAllTypeBlueActive = true;
             inventoryElement.isAllTypeActive = false;
             inventoryElement.isDrugTypeBlueActive = true;
@@ -574,7 +546,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
 
                 inventoryElement.loading = false;
                 dboticaServices.noConnectivityError();
-                $log.log("in error response of view equipments inventory items---");
             });
         }
     }
@@ -593,7 +564,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             inventoryElement.isOthersTypeBlueActive = false;
             inventoryElement.isOthersTypeActive = true;
             stockType = returnStockType();
-            $log.log("stock type is----", stockType);
             inventoryElement.loading = true;
             var promise = dboticaServices.getStockItemsForTheTable("OtherItems", inventoryElement.start, inventoryElement.limit, stockType, organizationId);
             promise.then(function(response) {
@@ -607,7 +577,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             }, function(errorResponse) {
                 inventoryElement.loading = false;
                 dboticaServices.noConnectivityError();
-                $log.log("in error response of view others inventory  items---");
             });
         }
     }
@@ -617,13 +586,10 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         if (!!errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
-            $log.log(response.data.response);
             var itemsFetchedFromApi = angular.fromJson(response.data.response);
-            $log.log("items fetched from Api----", itemsFetchedFromApi.inventoryItems);
             inventoryElement.totalDrugsCount = itemsFetchedFromApi.totalCount;
             var itemsFetchedFromApiFromStart = itemsFetchedFromApi.inventoryItems;
             if (itemsFetchedFromApiFromStart.length >= displayListLength) {
-                $log.log("in greater than length-----");
                 if (itemsFetchedFromApiFromStart.length == displayListLength) {
                     inventoryElement.prevBtnDisabled = true;
                     inventoryElement.nextBtnDisabled = true;
@@ -638,7 +604,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                     inventoryElement.itemsDisplayArray = itemsFetchedFromApiFromStart.slice(0, itemsFetchedFromApiFromStart.length - 1);
                 }
             } else {
-                $log.log("in not display");
                 inventoryElement.prevBtnEnabled = false;
                 inventoryElement.nextBtnEnabled = false;
                 inventoryElement.prevBtnDisabled = true;
@@ -656,10 +621,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         inventoryElement.drugsToBeDisplayedInDropdown.length = 0;
         drugs.length = 0;
         drugsList.length = 0;
-        $log.log("before array is---", inventoryElement.drugsToBeDisplayedInDropdown);
-        $log.log("item in search is----", inventoryElement.addItemObject.itemName);
         if (inventoryElement.addItemObject.itemName.length > 1) {
-            $log.log("chars in text box are---", inventoryElement.addItemObject.itemName);
             var getDrugsPromise = dboticaServices.getDrugsFromDb(0, 20, inventoryElement.addItemObject.itemName);
             getDrugsPromise.then(function(getDrugSuccess) {
                 drugs = angular.fromJson(getDrugSuccess.data.response);
@@ -669,8 +631,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                     drugsList.push(drugEntity);
                 });
                 angular.copy(drugsList, inventoryElement.drugsToBeDisplayedInDropdown);
-                $log.log("list to dis---", inventoryElement.drugsToBeDisplayedInDropdown);
-                $log.log("get drug success response is----", angular.fromJson(getDrugSuccess.data.response));
             }, function(getDrugErrorResponse) {});
         } else {
             inventoryElement.drugsToBeDisplayedInDropdown = [];
@@ -711,7 +671,6 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             itemType = "Supplies";
         }
         if (inventoryElement.isAllTypeActive) {
-            $log.log("in alll---");
             itemType = "All";
         }
         if (inventoryElement.isOthersTypeActive) {
@@ -751,8 +710,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
                             source: inventoryElement.drugsToBeDisplayedInDropdown,
                             minLength: 2,
                             select: function(event, ui) {
-                                $log.log("in select---");
-                            }
+                                                            }
                         }, 5);
                     });
                 });
@@ -761,12 +719,9 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
     });*/
 
     angular.module('personalAssistant').filter("billingAndBatchConsumed", function() {
-        $log.log("in filter---");
         return function(input) {
-            $log.log("in filter---", input);
             var result;
             if (input == "") {
-                $log.log("in filter");
                 result = 0;
             } else {
                 result = input;

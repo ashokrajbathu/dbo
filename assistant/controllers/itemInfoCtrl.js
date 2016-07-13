@@ -36,8 +36,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
     itemInfoElement.addBatchInItemInfo = {};
     itemInfoElement.informationOfBatches = [];
     itemSelected = dboticaServices.getSelectedItem();
-    $log.log("selected item is----", itemSelected);
-    if (itemSelected !== undefined) {
+        if (itemSelected !== undefined) {
         localStorage.setItem('currentItemId', itemSelected.id);
         localStorage.setItem('organizationId', itemSelected.organizationId);
         localStorage.setItem('itemName', itemSelected.itemName);
@@ -63,8 +62,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var batchesInfo = angular.fromJson(response.data.response);
-            /* $log.log("batches info is-----", batchesInfo);*/
-            itemInfoElement.inventoryItem = batchesInfo.inventoryItem;
+                        itemInfoElement.inventoryItem = batchesInfo.inventoryItem;
             batchesInfo = batchesInfo.batchInfos;
             if (itemInfoElement.inventoryItem.state == "INACTIVE") {
                 itemInfoElement.itemInactive = true;
@@ -105,19 +103,14 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                 }
                 itemInfoElement.informationOfBatches.push(newObject);
             });
-            $log.log("batches in scope are----", itemInfoElement.informationOfBatches);
-            $log.log("inventory item is----", itemInfoElement.inventoryItem);
-            $log.log("batches information is----", batchesInfo);
-        }
+                    }
         itemInfoElement.loading = false;
         itemInfoElement.blurScreen = false;
     }, function(errorResponse) {
         itemInfoElement.blurScreen = false;
         itemInfoElement.loading = false;
         dboticaServices.noConnectivityError();
-        $log.log("in items info error response");
-
-    });
+           });
 
     function backToItems() {
         $state.go('home.inventory');
@@ -133,15 +126,13 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                $log.log("item after fetching is----", getItemSuccess);
-                var errorCode = getItemSuccess.data.errorCode;
+                               var errorCode = getItemSuccess.data.errorCode;
                 var success = getItemSuccess.data.success;
                 if (errorCode == null && success === true) {
                     var item = angular.fromJson(getItemSuccess.data.response);
                     var itemRequestObject = item.inventoryItem;
                     itemInfoElement.inventoryItem = item.inventoryItem;
-                    $log.log("itm ftched is----", item);
-                    if (itemInfoElement.itemInactive === true) {
+                                       if (itemInfoElement.itemInactive === true) {
                         itemInfoElement.textBoxFreeze = true;
                         itemInfoElement.updateItemDetails = true;
                         itemInfoElement.updateItemDetailsInTheTable = true;
@@ -160,8 +151,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                     }
                     var itemInactivePromise = dboticaServices.addItemIntoStock(itemRequestObject);
                     itemInactivePromise.then(function(itemInactiveSuccess) {
-                        $log.log("item change state----", itemInactiveSuccess);
-                    }, function(itemInactiveError) {});
+                                           }, function(itemInactiveError) {});
                 }
             }
         }, function(getItemError) {
@@ -170,8 +160,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
     }
 
     function updateItem() {
-        $log.log("inventory element to be updated is-----", itemInfoElement.inventoryItem);
-        var itemUpdatePromise = dboticaServices.addItemIntoStock(itemInfoElement.inventoryItem);
+               var itemUpdatePromise = dboticaServices.addItemIntoStock(itemInfoElement.inventoryItem);
         itemUpdatePromise.then(function(itemUpdateSuccessResponse) {
             var errorCode = itemUpdateSuccessResponse.data.errorCode;
             var success = itemUpdateSuccessResponse.data.success;
@@ -188,8 +177,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
     }
 
     function updateBatch(item, index) {
-        $log.log("item selected for update is----", item);
-        var idOfTheTextBox = "#batchTextBoxes" + index;
+               var idOfTheTextBox = "#batchTextBoxes" + index;
         var idOfTheSelectBox = "#batchSelectBoxes" + index;
         var valueInTextBox = angular.element(idOfTheTextBox).val();
         var valueInSelectBox = angular.element(idOfTheSelectBox).val();
@@ -200,12 +188,10 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
         requestEntity.units = valueInTextBox;
         if (parseInt(valueInTextBox) <= item.availableStock) {
             requestEntity = JSON.stringify(requestEntity);
-            $log.log("request entity is---", requestEntity);
-            itemInfoElement.loading = true;
+                       itemInfoElement.loading = true;
             var promise = dboticaServices.updateTheBatch(requestEntity);
             promise.then(function(response) {
-                $log.log("response after updating is----", response);
-                var errorCode = response.data.errorCode;
+                               var errorCode = response.data.errorCode;
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
@@ -228,14 +214,12 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                             }
                         }
                     });
-                    $log.log("updated batch is-----", updatedBatchInfo);
-                }
+                                    }
                 itemInfoElement.loading = false;
             }, function(errorResponse) {
                 itemInfoElement.loading = false;
                 dboticaServices.noConnectivityError();
-                $log.log("in error response of update batch");
-            });
+                           });
         } else {
             swal({
                 title: "Error",
@@ -269,8 +253,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             requestEntity.batchState = "ACTIVE";
             requestEntity.state = "ACTIVE";
             requestEntity = JSON.stringify(requestEntity);
-            $log.log("added batch is----", requestEntity);
-            itemInfoElement.loading = true;
+                       itemInfoElement.loading = true;
             var promise = dboticaServices.addBatchToTheDrug(requestEntity);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
@@ -282,8 +265,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                         dboticaServices.addBatchFromItemInfo();
                     }
                     var itemObject = angular.fromJson(response.data.response);
-                    $log.log("item after adding batch is-----", itemObject);
-                    var newObject = {};
+                                       var newObject = {};
                     newObject.id = itemObject.id;
                     newObject.organizationId = itemObject.organizationId;
                     newObject.batchNo = itemObject.batchNo;
@@ -294,8 +276,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
                     newObject.returnedUnits = 0;
                     newObject.expiredUnits = 0;
                     itemInfoElement.informationOfBatches.push(newObject);
-                    $log.log("array after adding batch is-----", itemInfoElement.informationOfBatches);
-                }
+                                   }
                 itemInfoElement.loading = false;
             }, function(errorResponse) {
                 itemInfoElement.loading = false;

@@ -42,7 +42,6 @@ angular.module('personalAssistant').controller('medicationController', ['$rootSc
         medication.patient = dboticaServices.getPatientDetailsFromService();
         medication.patientEventsList = [];
         medication.patientEventsList = dboticaServices.getPatientsEvents();
-        $log.log('patient events in medication view----', medication.patientEventsList);
         if (medication.patientEventsList !== medicinesListForSetter) {
             angular.copy(medication.patientEventsList, medicinesListForSetter);
         }
@@ -90,11 +89,8 @@ angular.module('personalAssistant').controller('medicationController', ['$rootSc
                 medicineDetails.advice = medication.newMedicine.advice;
                 medicineDetails = JSON.stringify(medicineDetails);
                 medicationRequestEntity.referenceDetails = medicineDetails;
-                $log.log('request object is---', medicationRequestEntity);
                 var saveMedicinesPromise = dboticaServices.patientEvent(medicationRequestEntity);
-                $log.log('save medicine promise is---', saveMedicinesPromise);
                 saveMedicinesPromise.then(function(saveMedicineSuccess) {
-                    $log.log('medicineSuccess response----', saveMedicineSuccess);
                     var errorCode = saveMedicineSuccess.data.errorCode;
                     if (!!errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
@@ -127,8 +123,6 @@ angular.module('personalAssistant').controller('medicationController', ['$rootSc
     }
 
     function removeParticularEvent(eventEntity, index) {
-        $log.log('index value is---', index);
-        $log.log("event selected is----", eventEntity);
         var removeRequestEntity = {};
         angular.copy(eventEntity, removeRequestEntity);
         removeRequestEntity.referenceDetails = JSON.stringify(removeRequestEntity.referenceDetails);
@@ -144,7 +138,6 @@ angular.module('personalAssistant').controller('medicationController', ['$rootSc
                     medicinesListForSetter.splice(searchedIndex, 1);
                     dboticaServices.setPatientEvents(medicinesListForSetter);
                     medication.patientEventsList.splice(index, 1);
-                    $log.log('after deleting---', medication.patientEventsList);
                     dboticaServices.medicationDeleteSuccessSwal();
                 }
             }

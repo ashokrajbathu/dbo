@@ -126,8 +126,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             billElement.invoice.amount = totalAmountCharged - paymentEntriesAndTotalAmount[1];
             angular.copy(itemsToBeDisplayed, billElement.bill.billsListing);
         }
-        $log.log("listing bills is----", billElement.bill.billsListing);
-        $log.log("current active invoice is----", currentActiveInvoice);
         billElement.loading = true;
         billElement.blurScreen = true;
         var medicinesPromise = dboticaServices.getItemsOfTheTable(0, 100, 'All', 'Drug', organizationId);
@@ -160,7 +158,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     billElement.blurScreen = true;
     var testsPromise = dboticaServices.getTests();
     testsPromise.then(function(testsPromiseSuccessResponse) {
-            $log.log("testsPromiseSuccessResponse is-----", testsPromiseSuccessResponse);
             var errorCode = testsPromiseSuccessResponse.data.errorCode;
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
@@ -174,7 +171,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                         }
                     }
                 });
-                $log.log("active tests list is---", activeTestsList);
                 dboticaServices.setTestsFromBillManagement(activeTestsList);
                 dboticaServices.setTestsNamesFromBillManagement(activeTestsNamesList);
             }
@@ -185,7 +181,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             billElement.blurScreen = false;
             billElement.loading = false;
             dboticaServices.noConnectivityError();
-            $log.log("in error response of getting tests list----");
         });
 
     if (fetchDoctorDetails) {
@@ -193,14 +188,12 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         billElement.blurScreen = true;
         var doctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
         doctorsOfThatAssistant.then(function(successResponse) {
-            $log.log("bill response is----", successResponse);
             var errorCode = successResponse.data.errorCode;
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 billElement.bill.doctorsListInBillManagement = angular.fromJson(successResponse.data.response);
                 dboticaServices.setDoctorsDetailsArray(billElement.bill.doctorsListInBillManagement);
-                $log.log("ele---", billElement.bill.doctorsListInBillManagement);
                 billElement.bill.doctorActive = billElement.bill.doctorsListInBillManagement[0];
                 setDoctorNameAndDoctorServices(billElement.bill.doctorActive);
             }
@@ -210,7 +203,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             billElement.blurScreen = false;
             billElement.loading = false;
             dboticaServices.noConnectivityError();
-            $log.log("in error response of getting doctors");
         });
     }
 
@@ -256,7 +248,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                     } else {
                         var patientsList = angular.fromJson(patientSearchSuccessResponse.data.response);
                         if (patientsList.length > 0) {
-                            $log.log("patientsList is----", patientsList);
                             billElement.prescriptionOfPatient = true;
                             billElement.finalBill.patientId = patientsList[0].id;
                             billElement.finalBill.patientPhoneNumber = phoneNumber;
@@ -273,7 +264,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                                 } else {
                                     billElement.prescriptionsArray = [];
                                 }
-                                $log.log("presc of patient are----", billElement.prescriptionsArray);
                             }, function(getPrescriptionError) {});
                         }
                     }
@@ -300,7 +290,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var prescriptionSuccess = angular.fromJson(selectedRadioPatientSuccess.data.response);
-                $log.log("prescs are---", prescriptionSuccess);
                 if (prescriptionSuccess.length > 0) {
                     billElement.prescriptionsArray = prescriptionSuccess;
                 } else {
@@ -431,7 +420,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                 }
             });
             billElement.finalBill.amountPaid = billElement.finalBill.amountPaid * 100;
-            $log.log("final bill is----", billElement.finalBill);
             if (!billElement.nextDueErrorMsg) {
                 billElement.loading = true;
                 var invoiceUpdatePromise = dboticaServices.updateInvoice(billElement.finalBill);
@@ -449,7 +437,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                             localStorage.setItem('patientNumberInBillActive', billElement.patient.phoneNumber);
                             newBill();
                         }
-                        $log.log("success response is---", angular.fromJson(invoiceUpdateSuccessResponse.config.data));
                     }
                     billElement.loading = false;
                 }, function(invoiceUpdateErrorResponse) {
@@ -492,7 +479,6 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                 if (billElement.dueDateBill.dueDate == undefined || billElement.dueDateBill.dueDate == "") {} else {
                     newDueDateToFinalBill.updatedAt = dboticaServices.getLongValueOfDate(billElement.dueDateBill.dueDate);
                 }
-                $log.log("new due bill is---", newDueDateToFinalBill);
                 billElement.addToBill.push(newDueDateToFinalBill);
                 if (billElement.invoice.nextPaymentAmount !== "") {
                     if (billElement.invoice.nextPaymentAmount > billElement.invoice.amount) {
@@ -673,19 +659,17 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     });
 
     var getAddressPromise = dboticaServices.getOrganizationAddress();
-    $log.log('get address promise is----', getAddressPromise);
     getAddressPromise.then(function(getAddressSuccess) {
         var errorCode = getAddressSuccess.data.errorCode;
         if (!!errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             getAddressSuccessResponse = angular.fromJson(getAddressSuccess.data.response);
-            $log.log('address response is----', getAddressSuccessResponse);
             localStorage.setItem('addressInTheBill', JSON.stringify(getAddressSuccessResponse));
         }
     }, function(getAddressError) {
         dboticaServices.noConnectivityError();
-    })
+    });
 
 }]);
 

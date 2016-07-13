@@ -141,7 +141,6 @@ angular.module('personalAssistant').controller('intakeOutputController', ['$scop
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         var intakeResponse = angular.fromJson(intakeSuccess.data.response);
-                        $log.log('intake response is----', intakeResponse);
                         if (errorCode == null && intakeSuccess.data.success == true) {
                             intakeResponse.referenceDetails = angular.fromJson(intakeResponse.referenceDetails);
                             intakeOutput.patientEventsList.unshift(intakeResponse);
@@ -238,7 +237,6 @@ angular.module('personalAssistant').controller('intakeOutputController', ['$scop
                 newOutputDetails.skin = intakeOutput.output.skin;
                 newOutputDetails = JSON.stringify(newOutputDetails);
                 outputrequestEntity.referenceDetails = newOutputDetails;
-                $log.log('output request entity is---', outputrequestEntity);
                 var outputRecordPromise = dboticaServices.patientEvent(outputrequestEntity);
                 outputRecordPromise.then(function(outputRecordSuccess) {
                     var errorCode = outputRecordSuccess.data.errorCode;
@@ -246,7 +244,6 @@ angular.module('personalAssistant').controller('intakeOutputController', ['$scop
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         outputSuccess = angular.fromJson(outputRecordSuccess.data.response);
-                        $log.log('output success is---', outputSuccess);
                         if (errorCode == null && outputRecordSuccess.data.success == true) {
                             outputSuccess.referenceDetails = angular.fromJson(outputSuccess.referenceDetails);
                             intakeOutput.outputPatientEventsList.unshift(outputSuccess);

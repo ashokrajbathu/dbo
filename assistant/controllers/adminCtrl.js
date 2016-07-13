@@ -59,7 +59,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             adminElement.doctorsListInAdmin = angular.fromJson(response.data.response);
-            $log.log("docs list in admin is-----", adminElement.doctorsListInAdmin);
             if (adminElement.doctorsListInAdmin.length > 0) {
                 adminElement.admin.doctorActive = adminElement.doctorsListInAdmin[0];
                 adminElement.admin.doctorInDropdown = adminElement.doctorsListInAdmin[0].firstName + ' ' + adminElement.doctorsListInAdmin[0].lastName;
@@ -78,7 +77,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             } else {
                 dboticaServices.noConnectivityError();
             }
-            $log.log("docs list is----", adminElement.doctorsListInAdmin);
         }
         adminElement.loading = false;
         adminElement.blurScreen = false;
@@ -86,7 +84,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
         adminElement.blurScreen = false;
         adminElement.loading = false;
         dboticaServices.noConnectivityError();
-        $log.log("in error response of getting doctors");
     });
 
     var organizationAddressPromise = dboticaServices.getOrganizationAddress();
@@ -96,7 +93,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var organizationAddress = angular.fromJson(organizationAddressSuccess.data.response);
-            $log.log('org address is-----', organizationAddress);
             if (organizationAddress.length > 0) {
                 organizationAddressId = organizationAddress[0].id;
                 adminElement.orgAddress.label = organizationAddress[0].label;
@@ -109,7 +105,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             }
         }
     }, function(organizationAddressError) {
-        $log.log('organization eror is---', organizationAddressError);
         dboticaServices.noConnectivityError();
     });
 
@@ -118,7 +113,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     function selectOthersService() {
         var serviceSelected = adminElement.admin.selectService;
         if (serviceSelected.name == "Others") {
-            $log.log("in others---");
             adminElement.admin.procedureName = true;
             adminElement.admin.procedureNameTxtBox = "";
         } else {
@@ -127,7 +121,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     };
 
     function doctorSelect(doctor) {
-        $log.log("doc selected is----", doctor);
         adminElement.admin.doctorActive = doctor;
         if (doctor.firstName == general) {
             adminElement.admin.serviceInDropDown = selectService;
@@ -141,7 +134,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
-                    $log.log("get tests success is-----", getTestsSuccessResponse);
                     getTestsSuccess = angular.fromJson(getTestsSuccessResponse.data.response);
                     angular.forEach(getTestsSuccess, function(testEntity) {
                         if (testEntity.hasOwnProperty('organizationId')) {
@@ -152,7 +144,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                             }
                         }
                     });
-                    $log.log("table array is----", getTestsSuccess);
                     angular.copy(getTestsSuccess, adminElement.admin.servicesListOfTheDoctor);
                 }
                 adminElement.loading = false;
@@ -166,7 +157,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             adminElement.admin.doctorInDropdown = doctor.firstName + ' ' + doctor.lastName;
             adminElement.admin.procedureName = false;
             adminElement.servicesList = ["Others"];
-            $log.log("doctor selected is---", doctor);
             if (doctor.hasOwnProperty('doctorPriceInfos')) {
                 adminElement.admin.servicesListOfTheDoctor = doctor.doctorPriceInfos;
                 angular.forEach(doctor.doctorPriceInfos, function(docPriceEntity) {
@@ -180,7 +170,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     }
 
     function serviceSelect(service) {
-        $log.log("service is---", service);
         adminElement.admin.serviceInDropDown = service;
         if (service == others || service == newTest) {
             if (service == newTest) {
@@ -202,12 +191,8 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             serviceRequestEntity.doctorId = adminElement.admin.doctorActive.id;
         }
         serviceRequestEntity.doctorPriceInfos = [];
-        $log.log("cost is---" + adminElement.admin.procedureCostTextBox);
-        $log.log("remark is----" + adminElement.admin.procedureRemarksTextBox);
         if (adminElement.admin.serviceInDropDown !== selectService && adminElement.admin.procedureCostTextBox !== "" && adminElement.admin.procedureRemarksTextBox !== "") {
-            $log.log("in required---");
             if (adminElement.admin.doctorActive.hasOwnProperty('doctorPriceInfos')) {
-                $log.log("in first if--");
                 if (adminElement.admin.doctorActive.doctorPriceInfos.length > 0) {
                     angular.forEach(adminElement.admin.doctorActive.doctorPriceInfos, function(doctorPriceInfoEntity) {
                         var existingInfoObject = {};
@@ -239,14 +224,12 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                                 testObject.id = testsSuccessEntity.id;
                             }
                         });
-                        $log.log("test obj is----", testObject);
                     }
                 } else {
                     var serviceObject = getServiceRequestObject(service);
                     serviceRequestEntity.doctorPriceInfos.push(serviceObject);
                 }
             }
-            $log.log("req entity is---", serviceRequestEntity);
             if (adminElement.admin.doctorInDropdown == general) {
                 adminElement.loading = true;
                 var submitTestRequestPromise = dboticaServices.submitTestRequest(testObject);
@@ -255,7 +238,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                     if (!!errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
-                        $log.log("test success is----", testRequestSuccessResponse);
                         var errorCode = testRequestSuccessResponse.data.errorCode;
                         var success = testRequestSuccessResponse.data.success;
                         if (errorCode == null && success == true) {
@@ -274,7 +256,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                                 testSuccess['billingName'] = testSuccess.testName;
                                 delete testSuccess.testName;
                                 adminElement.servicesList.unshift(testSuccess['billingName']);
-                                $log.log("services list after adding test is----", adminElement.servicesList);
                                 adminElement.admin.servicesListOfTheDoctor.push(testSuccess);
                                 adminElement.admin.procedureCostTextBox = "";
                                 adminElement.admin.procedureRemarksTextBox = "";
@@ -286,7 +267,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 }, function(testRequestErrorResponse) {
                     adminElement.loading = false;
                     dboticaServices.noConnectivityError();
-                    $log.log("in error response of submit test request promise----");
                 });
             } else {
                 adminElement.loading = true;
@@ -325,7 +305,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 }, function(errorResponseOfServiceRequest) {
                     adminElement.loading = false;
                     dboticaServices.noConnectivityError();
-                    $log.log("in error response of submit service request---");
                 });
             }
         } else {
@@ -340,7 +319,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     }
 
     function btnActiveInServicesTable(doctorService) {
-        $log.log("doctor service for state editing is-----", doctorService);
         var changeStateRequestEntity = {};
         var changeTestStateRequestEntity = {};
         changeStateRequestEntity.doctorPriceInfos = [];
@@ -366,9 +344,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var successtestStateChange = angular.fromJson(submitTestStateChangeSuccess.data.response);
-                    $log.log("success state change is----", successtestStateChange);
                     if (submitTestStateChangeSuccess.data.success === true && submitTestStateChangeSuccess.data.errorCode === null) {
-                        $log.log("in ste----");
                         doctorService.state = successtestStateChange.state;
                     }
                 }
@@ -402,7 +378,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                     changeStateRequestEntity.doctorPriceInfos.push(object);
                 }
             });
-            $log.log("req entity is---", changeStateRequestEntity);
             adminElement.loading = true;
             var changeServiceStateRequestPromise = dboticaServices.submitServiceRequest(changeStateRequestEntity);
             changeServiceStateRequestPromise.then(function(successResponseOfChangeStateRequest) {
@@ -421,7 +396,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                                 updateTheServices(updatedDoctorsResponse);
                             }
                         }, function(errorResponse) {
-                            $log.log("in error response of updated Doctors Response");
+                            dboticaServices.noConnectivityError();
                         });
                     }
                 }
@@ -429,7 +404,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             }, function(changeStateRequestErrorResponse) {
                 adminElement.loading = false;
                 dboticaServices.noConnectivityError();
-                $log.log("in error response of change state request");
             });
         }
     }
@@ -441,7 +415,6 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             adminElement.doctorsListInAdmin.push(doctorServiceResponseEntity);
             if (doctorServiceResponseEntity.id == adminElement.admin.doctorActive.id) {
                 adminElement.admin.doctorActive = doctorServiceResponseEntity;
-                $log.log("updated docs are---", adminElement.admin.doctorActive);
                 adminElement.admin.servicesListOfTheDoctor = doctorServiceResponseEntity.doctorPriceInfos;
                 adminElement.servicesList = ["Others"];
                 angular.forEach(adminElement.admin.servicesListOfTheDoctor, function(eachService) {
@@ -487,23 +460,19 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
 
     function updateAddress() {
         var addressRequestEntity = {};
-        $log.log('in update address---');
         if (organizationAddressId == '') {
             addressRequestEntity = adminElement.orgAddress;
         } else {
             addressRequestEntity = adminElement.orgAddress;
             addressRequestEntity.id = organizationAddressId;
         }
-        $log.log('org address in----', adminElement.orgAddress);
         var updateOrgAddressPromise = dboticaServices.updateOrgAddress(addressRequestEntity);
-        $log.log('promise is---', updateOrgAddressPromise);
         updateOrgAddressPromise.then(function(updateOrgSuccess) {
             var errorCode = updateOrgSuccess.data.errorCode;
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage();
             } else {
                 updatedAddress = angular.fromJson(updateOrgSuccess.data.response);
-                $log.log('updated address is---', updatedAddress);
                 if (errorCode == null && updateOrgSuccess.data.success == true) {
                     if (updatedAddress.length > 0) {
                         adminElement.orgAddress = updatedAddress[0];

@@ -153,8 +153,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
             docsListLocal = _.filter(docsListInAdmin, function(entity) {
                 return entity.state == 'ACTIVE';
             });
-            $log.log('doctors fro display are---', docsListLocal);
-            doctorElement.totalItems = docsListLocal.length;
+                        doctorElement.totalItems = docsListLocal.length;
             angular.copy(docsListLocal, doctorElement.doctorsListInTheTable);
             angular.copy(docsListLocal, entitiesArray);
             displayArray = _.chunk(entitiesArray, doctorElement.itemsPerPage);

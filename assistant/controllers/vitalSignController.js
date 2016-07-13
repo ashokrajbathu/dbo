@@ -55,7 +55,6 @@ angular.module('personalAssistant').controller('vitalSignController', ['$scope',
         vitalSign.patient = dboticaServices.getPatientDetailsFromService();
         vitalSign.patientEventsList = [];
         vitalSign.patientEventsList = dboticaServices.getVitalSignEvents();
-        $log.log('vital sign events are-----', vitalSign.patientEventsList);
         if (vitalSign.patientEventsList !== vitalSignListForSetter) {
             angular.copy(vitalSign.patientEventsList, vitalSignListForSetter);
         }
@@ -101,7 +100,6 @@ angular.module('personalAssistant').controller('vitalSignController', ['$scope',
                 newVitalSignDetails.weight = vitalSign.newSign.weight + 'Kg';
                 newVitalSignDetails = JSON.stringify(newVitalSignDetails);
                 addVitalSignRequestEntity.referenceDetails = newVitalSignDetails;
-                $log.log('vital sign request is---', addVitalSignRequestEntity);
                 var vitalSignPromise = dboticaServices.patientEvent(addVitalSignRequestEntity);
                 vitalSignPromise.then(function(vitalSignSuccess) {
                     var errorCode = vitalSignSuccess.data.errorCode;
@@ -110,7 +108,6 @@ angular.module('personalAssistant').controller('vitalSignController', ['$scope',
                     } else {
                         var vitalSignResponse = angular.fromJson(vitalSignSuccess.data.response);
                         vitalSignResponse.referenceDetails = angular.fromJson(vitalSignResponse.referenceDetails);
-                        $log.log('vital sign response---', vitalSignResponse);
                         if (errorCode == null && vitalSignSuccess.data.success == true) {
                             vitalSign.patientEventsList.unshift(vitalSignResponse);
                             dboticaServices.setVitalSignEvents(vitalSign.patientEventsList);
