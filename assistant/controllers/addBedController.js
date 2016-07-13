@@ -66,8 +66,6 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
         dboticaServices.noConnectivityError();
     });
 
-
-
     function addNewBed() {
         bedElement.validateBedNumber();
         dropdownErrorCheck();
@@ -92,12 +90,12 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                                     bedElement.currentPage = bedElement.currentPage + 1;
                                     bedElement.bedsToBeDisplayedInTable.unshift(addNewBedSuccessResponse);
                                 }
+                                entitiesArray.unshift(addNewBedSuccessResponse);
                                 if (bedElement.bedsToBeDisplayedInTable.length == bedElement.itemsPerPage) {
                                     bedElement.currentPage = 1;
                                     displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
                                     angular.copy(displayArray[0], bedElement.bedsToBeDisplayedInTable);
                                 }
-                                entitiesArray.unshift(addNewBedSuccessResponse);
                                 displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
                                 bedElement.totalItems = entitiesArray.length;
                             }
@@ -118,7 +116,6 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                 dboticaServices.noConnectivityError();
             });
         }
-
     }
 
     function selectRoomNumber(roomEntity) {

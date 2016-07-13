@@ -156,7 +156,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputDoctorPhoneNumber">Phone Number</label>
-                                    <input type="text" ng-model="doctor.addNewDoctor.phoneNumber" class="form-control" id="exampleInputDoctorPhoneNumber" placeholder="Phone Number">
+                                    <input readonly type="text" ng-model="doctor.addNewDoctor.phoneNumber" class="form-control" id="exampleInputDoctorPhoneNumber" placeholder="Phone Number">
                                 </div>
                                 <div class="form-inline">
                                     <button ng-click="doctor.addNewDoctorInModal()" class="btn mainAdminBtn" data-dismiss="modal">Save</button>
@@ -198,4 +198,5 @@
             </tr>
         </tbody>
     </table>
+    <uib-pagination class="pull-right" items-per-page="doctor.itemsPerPage" ng-change="doctor.pageChanged()" total-items="doctor.totalItems" ng-model="doctor.currentPage"></uib-pagination>
 </div>

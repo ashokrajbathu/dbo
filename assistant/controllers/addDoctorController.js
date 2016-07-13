@@ -13,6 +13,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     doctorElement.doctorSearchWithPhoneNumber = doctorSearchWithPhoneNumber;
     doctorElement.addNewDoctorByAssistant = addNewDoctorByAssistant;
     doctorElement.specialitySelect = specialitySelect;
+    doctorElement.pageChanged = pageChanged;
 
     doctorElement.allDoctorTypes = [];
     var doctorsListIs = [];
@@ -93,6 +94,9 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     var entitiesArray = [];
     var entitiesArrayFlag = parseInt(0);
 
+    doctorElement.currentPage = 1;
+    doctorElement.itemsPerPage = 3;
+    var displayArray = [];
 
 
     var getDoctorTypesPromise = dboticaServices.getDoctorCategories(organizationId);
@@ -151,13 +155,14 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
             var docsListInAdmin = angular.fromJson(doctorsListInMainSuccess.data.response);
             var docsListLocal = [];
             $log.log("docs list in admin-----", docsListInAdmin);
-            angular.forEach(docsListInAdmin, function(docsListInAdminElement) {
-                if (docsListInAdminElement.state == 'ACTIVE') {
-                    docsListLocal.push(docsListInAdminElement);
-                }
+            docsListLocal = _.filter(docsListInAdmin, function(entity) {
+                return entity.state == 'ACTIVE';
             });
+            doctorElement.totalItems = docsListLocal.length;
             angular.copy(docsListLocal, doctorElement.doctorsListInTheTable);
             angular.copy(docsListLocal, entitiesArray);
+            displayArray = _.chunk(entitiesArray, doctorElement.itemsPerPage);
+            angular.copy(displayArray[0], doctorElement.doctorsListInTheTable);
             $log.log('in list in table----', doctorElement.doctorsListInTheTable);
         }
     }, function(doctorsListInMainError) {
@@ -187,6 +192,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
                     doctorElement.addNewDoctorForm = true;
                     doctorElement.addNewDoctor.doctorId = doctorsListResponse[0].id;
                     doctorElement.doctorName = doctorsListResponse[0].firstName;
+                    doctorElement.addNewDoctor.phoneNumber = doctorElement.doctorSearchInTxtBox;
                     if (doctorsListResponse[0].hasOwnProperty('lastName')) {
                         doctorElement.doctorName = doctorElement.doctorName + ' ' + doctorsListResponse[0].lastName;
                     }
@@ -449,5 +455,14 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
 
     function specialitySelect(specialitySelected) {
         doctorElement.specialityName = specialitySelected.name;
+    }
+
+    function pageChanged() {
+        var requiredIndex = doctorElement.currentPage - 1;
+        var localArray = [];
+        displayArray = [];
+        displayArray = _.chunk(entitiesArray, doctorElement.itemsPerPage);
+        localArray = displayArray[requiredIndex];
+        angular.copy(localArray, doctorElement.doctorsListInTheTable);
     }
 }]);

@@ -3,10 +3,6 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
 
     var organizationId = localStorage.getItem('orgId');
 
-    $log.log('in doctor category controller---');
-
-
-
     doctorCategoryElement.addNewDoctorCategory = {};
     doctorCategoryElement.doctorCategoriesList = [];
     doctorCategoryElement.addNewDoctorCategory.doctorType = '';
@@ -17,10 +13,14 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
     doctorCategoryElement.doctorCategorySearch = doctorCategorySearch;
     doctorCategoryElement.validateDoctorCategoryName = validateDoctorCategoryName;
     doctorCategoryElement.clearModal = clearModal;
+    doctorCategoryElement.pageChanged = pageChanged;
 
     var doctorCategoryItemId = '';
     var doctorCategoryItemIndex = '';
     var entitiesArray = [];
+    doctorCategoryElement.currentPage = 1;
+    doctorCategoryElement.itemsPerPage = 3;
+    var displayArray = [];
     var entitiesArrayFlag = parseInt(0);
 
     doctorCategoryElement.doctorCategoryErrorMessage = false;
@@ -37,12 +37,13 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var doctorCategories = angular.fromJson(doctorsCategoriesPromise.data.response);
-            angular.forEach(doctorCategories, function(doctorCategoryEntity) {
-                if (doctorCategoryEntity.state == 'ACTIVE') {
-                    doctorCategoryElement.doctorCategoriesList.push(doctorCategoryEntity);
-                }
+            doctorCategoryElement.doctorCategoriesList = _.filter(doctorCategories, function(entity) {
+                return entity.state == 'ACTIVE';
             });
+            doctorCategoryElement.totalItems = doctorCategoryElement.doctorCategoriesList.length;
             angular.copy(doctorCategoryElement.doctorCategoriesList, entitiesArray);
+            displayArray = _.chunk(entitiesArray, doctorCategoryElement.itemsPerPage);
+            angular.copy(displayArray[0], doctorCategoryElement.doctorCategoriesList);
         }
     }, function(docotorCategoriesError) {
         dboticaServices.noConnectivityError();
@@ -68,20 +69,33 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
                         angular.element('#adddoctorCategoryModal').modal('hide');
                         dboticaServices.addNewDoctorCategorySuccessSwal();
                         if (doctorCategoryItemId == '' && doctorCategoryItemIndex == '') {
-                            doctorCategoryElement.doctorCategoriesList.unshift(addNewDoctorCategorySuccess);
-                            entitiesArray.unshift(addNewDoctorCategorySuccess);
+                            if (doctorCategoryElement.doctorCategoriesList.length < doctorCategoryElement.itemsPerPage) {
+                                doctorCategoryElement.doctorCategoriesList.unshift(addNewDoctorCategorySuccess);
+                            } else {
+                                if (displayArray.length == doctorCategoryElement.currentPage) {
+                                    doctorCategoryElement.doctorCategoriesList = [];
+                                    doctorCategoryElement.currentPage = doctorCategoryElement.currentPage + 1;
+                                    doctorCategoryElement.doctorCategoriesList.unshift(addNewDoctorCategorySuccess);
+                                }
+                                entitiesArray.unshift(addNewDoctorCategorySuccess);
+                                if (doctorCategoryElement.doctorCategoriesList.length == doctorCategoryElement.itemsPerPage) {
+                                    doctorCategoryElement.currentPage = 1;
+                                    displayArray = _.chunk(entitiesArray, doctorCategoryElement.itemsPerPage);
+                                    angular.copy(displayArray[0], doctorCategoryElement.doctorCategoriesList);
+                                }
+                                displayArray = _.chunk(entitiesArray, doctorCategoryElement.itemsPerPage);
+                                doctorCategoryElement.totalItems = entitiesArray.length;
+                            }
                         } else {
                             doctorCategoryElement.doctorCategoriesList.splice(doctorCategoryItemIndex, 1, addNewDoctorCategorySuccess);
-                            var localDoctorCategoryIndex;
-                            for (var entityIndex in entitiesArray) {
-                                if (entitiesArray[entityIndex].id == addNewDoctorCategorySuccess.id) {
-                                    localDoctorCategoryIndex = entityIndex;
-                                    break;
-                                } else {
-                                    continue;
-                                }
-                            }
+                            var localDoctorCategoryIndex = _.findLastIndex(entitiesArray, function(entity) {
+                                return entity.id == addNewDoctorCategorySuccess.id;
+                            });
                             entitiesArray.splice(localDoctorCategoryIndex, 1, addNewDoctorCategorySuccess);
+                            displayArray = _.chunk(entitiesArray, doctorCategoryElement.itemsPerPage);
+                            bedElement.totalItems = entitiesArray.length;
+                            doctorCategoryItemId = '';
+                            doctorCategoryItemIndex = '';
                         }
                     }
                 }
@@ -113,16 +127,12 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
                     if (errorCode == null && deleteDoctorSuccess.data.success == true) {
                         dboticaServices.deleteDoctorCategorySuccessSwal();
                         doctorCategoryElement.doctorCategoriesList.splice(index, 1);
-                        var localDoctorCategoryIndex;
-                        for (var entityIndex in entitiesArray) {
-                            if (entitiesArray[entityIndex].id == doctorCategory.id) {
-                                localDoctorCategoryIndex = entityIndex;
-                                break;
-                            } else {
-                                continue;
-                            }
-                        }
+                        var localDoctorCategoryIndex = _.findLastIndex(entitiesArray, function(entity) {
+                            return entity.id == doctorCategory.id;
+                        });
                         entitiesArray.splice(localDoctorCategoryIndex, 1);
+                        doctorCategoryElement.totalItems = entitiesArray.length;
+                        displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
                     }
                 }
             }, function(deleteDoctorError) {
@@ -162,13 +172,15 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
                         }
                     }
                 });
+                doctorCategoryElement.totalItems = sortedItemsArray.length;
                 angular.copy(sortedItemsArray, doctorCategoryElement.doctorCategoriesList);
                 entitiesArrayFlag = doctorCategoryElement.inputItemSearch.length;
             }
         }
         if (searchStringLength <= parseInt(2)) {
             entitiesArrayFlag = parseInt(0);
-            angular.copy(entitiesArray, doctorCategoryElement.doctorCategoriesList);
+            doctorCategoryElement.totalItems = entitiesArray.length;
+            angular.copy(displayArray[0], doctorCategoryElement.doctorCategoriesList);
         }
     }
 
@@ -184,6 +196,15 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
         doctorCategoryElement.doctorCategoryErrorMessage = false;
         doctorCategoryElement.addNewDoctorCategory.doctorType = '';
         doctorCategoryElement.addNewDoctorCategory.description = '';
+    }
+
+    function pageChanged() {
+        var requiredIndex = doctorCategoryElement.currentPage - 1;
+        var localArray = [];
+        displayArray = [];
+        displayArray = _.chunk(entitiesArray, doctorCategoryElement.itemsPerPage);
+        localArray = displayArray[requiredIndex];
+        angular.copy(localArray, doctorCategoryElement.doctorCategoriesList);
     }
 
 }]);
