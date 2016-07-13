@@ -9,7 +9,7 @@
                     <h4 class="modal-title">Add New Doctor</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="row" style="margin-left:8px;">
+                    <div ng-if="doctor.doctorPhoneNumberSearchTxtBox" class="row" style="margin-left:8px;">
                         <input ng-change="doctor.phoneNumberValidation()" type="search" numbers-only ng-model="doctor.doctorSearchInTxtBox" class="form-control searchInMainAdmin pull-left" placeholder="Doctor Phone Number">
                         <span>
                                 <button ng-click="doctor.doctorSearchWithPhoneNumber()" ng-disabled="doctor.phoneNumberBtn" type="submit" class="btn mainAdminBtn searchBtnInMainAdmin pull-left"><span class="glyphicon glyphiconSearch glyphicon-search"></span></button>

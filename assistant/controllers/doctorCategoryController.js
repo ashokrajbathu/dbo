@@ -18,6 +18,7 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
     var doctorCategoryItemId = '';
     var doctorCategoryItemIndex = '';
     var entitiesArray = [];
+    var sortedItemsArrayOnPageChange = [];
     doctorCategoryElement.currentPage = 1;
     doctorCategoryElement.itemsPerPage = 3;
     var displayArray = [];
@@ -71,21 +72,22 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
                         if (doctorCategoryItemId == '' && doctorCategoryItemIndex == '') {
                             if (doctorCategoryElement.doctorCategoriesList.length < doctorCategoryElement.itemsPerPage) {
                                 doctorCategoryElement.doctorCategoriesList.unshift(addNewDoctorCategorySuccess);
+                                entitiesArray.push(addNewDoctorCategorySuccess);
                             } else {
-                                if (displayArray.length == doctorCategoryElement.currentPage) {
+                                if (displayArray.length == doctorCategoryElement.currentPage || displayArray.length == parseInt(1)) {
                                     doctorCategoryElement.doctorCategoriesList = [];
                                     doctorCategoryElement.currentPage = doctorCategoryElement.currentPage + 1;
                                     doctorCategoryElement.doctorCategoriesList.unshift(addNewDoctorCategorySuccess);
                                 }
                                 entitiesArray.unshift(addNewDoctorCategorySuccess);
-                                if (doctorCategoryElement.doctorCategoriesList.length == doctorCategoryElement.itemsPerPage) {
+                                if (doctorCategoryElement.doctorCategoriesList.length == doctorCategoryElement.itemsPerPage && displayArray.length !== parseInt(1)) {
                                     doctorCategoryElement.currentPage = 1;
                                     displayArray = _.chunk(entitiesArray, doctorCategoryElement.itemsPerPage);
                                     angular.copy(displayArray[0], doctorCategoryElement.doctorCategoriesList);
                                 }
-                                displayArray = _.chunk(entitiesArray, doctorCategoryElement.itemsPerPage);
-                                doctorCategoryElement.totalItems = entitiesArray.length;
                             }
+                            displayArray = _.chunk(entitiesArray, doctorCategoryElement.itemsPerPage);
+                            doctorCategoryElement.totalItems = entitiesArray.length;
                         } else {
                             doctorCategoryElement.doctorCategoriesList.splice(doctorCategoryItemIndex, 1, addNewDoctorCategorySuccess);
                             var localDoctorCategoryIndex = _.findLastIndex(entitiesArray, function(entity) {
@@ -173,13 +175,18 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
                     }
                 });
                 doctorCategoryElement.totalItems = sortedItemsArray.length;
-                angular.copy(sortedItemsArray, doctorCategoryElement.doctorCategoriesList);
+                doctorCategoryElement.currentPage = 1;
+                angular.copy(sortedItemsArray, sortedItemsArrayOnPageChange);
+                displayArray = _.chunk(sortedItemsArray, doctorCategoryElement.itemsPerPage);
+                angular.copy(displayArray[0], doctorCategoryElement.doctorCategoriesList);
                 entitiesArrayFlag = doctorCategoryElement.inputItemSearch.length;
             }
         }
         if (searchStringLength <= parseInt(2)) {
             entitiesArrayFlag = parseInt(0);
             doctorCategoryElement.totalItems = entitiesArray.length;
+            doctorCategoryElement.currentPage = 1;
+            displayArray = _.chunk(entitiesArray, doctorCategoryElement.itemsPerPage);
             angular.copy(displayArray[0], doctorCategoryElement.doctorCategoriesList);
         }
     }
@@ -202,7 +209,12 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
         var requiredIndex = doctorCategoryElement.currentPage - 1;
         var localArray = [];
         displayArray = [];
-        displayArray = _.chunk(entitiesArray, doctorCategoryElement.itemsPerPage);
+        if (doctorCategoryElement.inputItemSearch.length >= parseInt(3)) {
+            displayArray = _.chunk(sortedItemsArrayOnPageChange, doctorCategoryElement.itemsPerPage);
+        } else {
+            sortedItemsArrayOnPageChange = [];
+            displayArray = _.chunk(entitiesArray, doctorCategoryElement.itemsPerPage);
+        }
         localArray = displayArray[requiredIndex];
         angular.copy(localArray, doctorCategoryElement.doctorCategoriesList);
     }

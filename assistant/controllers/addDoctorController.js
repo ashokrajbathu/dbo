@@ -17,6 +17,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
 
     doctorElement.allDoctorTypes = [];
     var doctorsListIs = [];
+    doctorElement.doctorPhoneNumberSearchTxtBox = true;
     doctorElement.doctorsListToBeDisplayed = [];
     doctorElement.doctorsListInTheTable = [];
     doctorElement.addNewDoctor = {};
@@ -170,6 +171,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     });
 
     function doctorSearchWithPhoneNumber() {
+        doctorElement.doctorPhoneNumberSearchTxtBox = true;
         var doctorsOfAssistantPromise = dboticaServices.doctorsOfAssistant();
         var doctorIdActive = '';
         var doctorActive = null;
@@ -192,7 +194,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
                     doctorElement.addNewDoctorForm = true;
                     doctorElement.addNewDoctor.doctorId = doctorsListResponse[0].id;
                     doctorElement.doctorName = doctorsListResponse[0].firstName;
-                    doctorElement.addNewDoctor.phoneNumber = doctorElement.doctorSearchInTxtBox;
+                    doctorElement.addNewDoctor.phoneNumber = doctorsListResponse[0].phoneNumber;
                     if (doctorsListResponse[0].hasOwnProperty('lastName')) {
                         doctorElement.doctorName = doctorElement.doctorName + ' ' + doctorsListResponse[0].lastName;
                     }
@@ -279,6 +281,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     }*/
 
     function deleteDoctorInTable(doctorEntryInTable, index) {
+        $log.log('before delete is---', doctorEntryInTable);
         swal({
             title: "Are you sure?",
             text: "You will not be able to recover the Doctor Details!",
@@ -289,8 +292,8 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
             closeOnConfirm: false
         }, function() {
             doctorEntryInTable.state = 'INACTIVE';
-
             var deleteDoctorPromise = dboticaServices.addNewDoctorToACategory(doctorEntryInTable);
+            $log.log('after delete doctor is---', deleteDoctorPromise);
             deleteDoctorPromise.then(function(deleteDoctorSuccess) {
                 var errorCode = deleteDoctorSuccess.data.errorCode;
                 if (!!errorCode) {
@@ -321,10 +324,14 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     }
 
     function editDoctorInTable(doctorEntity, index) {
+        doctorElement.newDoctorDetails = false;
+        doctorElement.addNewDoctorForm = true;
+        doctorElement.doctorPhoneNumberSearchTxtBox = false;
         doctorItemIndex = '';
         doctorItemId = '';
         doctorItemIndex = index;
         doctorItemId = doctorEntity.id;
+        $log.log('doc id is---', doctorEntity.id);
         var localDoctorEntity = {};
         angular.copy(doctorEntity, localDoctorEntity);
         angular.forEach(doctorElement.allDoctorTypes, function(docCategory) {

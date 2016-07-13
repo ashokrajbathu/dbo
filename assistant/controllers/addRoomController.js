@@ -11,6 +11,7 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
     roomElement.deleteRoom = deleteRoom;
     roomElement.editRoom = editRoom;
     roomElement.roomSearch = roomSearch;
+    roomElement.pageChanged = pageChanged;
 
     var roomItemId = '';
     var roomItemIndex = '';
@@ -22,6 +23,11 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
 
     var entitiesArray = [];
     entitiesArrayFlag = parseInt(0);
+
+    roomElement.currentPage = 1;
+    roomElement.itemsPerPage = 3;
+    var displayArray = [];
+    var sortedItemsArrayOnPageChange = [];
 
     var organizationId = localStorage.getItem('orgId');
     var roomCategoriesPromise = dboticaServices.getRoomCategories(organizationId);
@@ -51,12 +57,13 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
         } else {
             var roomsListFromAPI = angular.fromJson(getRoomsSuccessResponse.data.response);
             $log.log("room list----", roomsListFromAPI);
-            angular.forEach(roomsListFromAPI, function(roomEntity) {
-                if (roomEntity.state == 'ACTIVE') {
-                    roomElement.roomsList.push(roomEntity);
-                }
+            roomElement.roomsList = _.filter(roomsListFromAPI, function(entity) {
+                return entity.state == 'ACTIVE';
             });
+            roomElement.totalItems = roomElement.roomsList.length;
             angular.copy(roomElement.roomsList, entitiesArray);
+            displayArray = _.chunk(entitiesArray, roomElement.itemsPerPage);
+            angular.copy(displayArray[0], roomElement.roomsList);
         }
     }, function(getRoomsErrorResponse) {
         dboticaServices.noConnectivityError();
@@ -81,20 +88,33 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
                 if (errorCode == null && addNewRoomSuccess.data.success == true) {
                     dboticaServices.addNewRoomSuccessSwal();
                     if (roomItemId == '' && roomItemIndex == '') {
-                        roomElement.roomsList.unshift(addroomSuccess);
-                        entitiesArray.unshift(addroomSuccess);
-                    } else {
-                        roomElement.roomsList.splice(roomItemIndex, 1, addroomSuccess);
-                        var localEntityIndex;
-                        for (entityIndex in entitiesArray) {
-                            if (entitiesArray[entityIndex].id == addroomSuccess.id) {
-                                localEntityIndex = entityIndex;
-                                break;
-                            } else {
-                                continue;
+                        if (roomElement.roomsList.length < roomElement.itemsPerPage) {
+                            roomElement.roomsList.unshift(addroomSuccess);
+                            entitiesArray.push(addroomSuccess);
+                        } else {
+                            if (displayArray.length == roomElement.currentPage || displayArray.length == parseInt(1)) {
+                                $log.log('in check one---');
+                                roomElement.roomsList = [];
+                                roomElement.currentPage = roomElement.currentPage + 1;
+                                roomElement.roomsList.unshift(addroomSuccess);
+                            }
+                            entitiesArray.unshift(addroomSuccess);
+                            if (roomElement.roomsList.length == roomElement.itemsPerPage && displayArray.length !== parseInt(1)) {
+                                roomElement.currentPage = 1;
+                                displayArray = _.chunk(entitiesArray, roomElement.itemsPerPage);
+                                angular.copy(displayArray[0], roomElement.roomsList);
                             }
                         }
+                        displayArray = _.chunk(entitiesArray, roomElement.itemsPerPage);
+                        roomElement.totalItems = entitiesArray.length;
+                    } else {
+                        roomElement.roomsList.splice(roomItemIndex, 1, addroomSuccess);
+                        var localEntityIndex = _.findLastIndex(entitiesArray, function(entity) {
+                            return entity.id == addroomSuccess.id;
+                        });
                         entitiesArray.splice(localEntityIndex, 1, addroomSuccess);
+                        displayArray = _.chunk(entitiesArray, roomElement.itemsPerPage);
+                        roomElement.totalItems = entitiesArray.length;
                         roomItemId = '';
                         roomItemIndex = '';
                     }
@@ -134,16 +154,12 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
                     if (deleteRoomSuccess.data.errorCode == null && deleteRoomSuccess.data.success == true) {
                         dboticaServices.deleteRoomSuccessSwal();
                         roomElement.roomsList.splice(index, 1);
-                        var localEntityIndex;
-                        for (entityIndex in entitiesArray) {
-                            if (entitiesArray[entityIndex].id == room.id) {
-                                localEntityIndex = entityIndex;
-                                break;
-                            } else {
-                                continue;
-                            }
-                        }
+                        var localEntityIndex = _.findLastIndex(entitiesArray, function(entity) {
+                            return entity.id == room.id;
+                        });
                         entitiesArray.splice(localEntityIndex, 1);
+                        roomElement.totalItems = entitiesArray.length;
+                        displayArray = _.chunk(entitiesArray, roomElement.itemsPerPage);
                     }
                 }
             }, function(deleteRoomCategoryError) {
@@ -195,13 +211,35 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
                         }
                     }
                 });
-                angular.copy(sortedItemsArray, roomElement.roomsList);
+                roomElement.totalItems = sortedItemsArray.length;
+                roomElement.currentPage = 1;
+                angular.copy(sortedItemsArray, sortedItemsArrayOnPageChange);
+                displayArray = _.chunk(sortedItemsArray, roomElement.itemsPerPage);
+                angular.copy(displayArray[0], roomElement.roomsList);
                 entitiesArrayFlag = roomElement.inputItemSearch.length;
             }
         }
         if (searchStringLength <= parseInt(2)) {
             entitiesArrayFlag = parseInt(0);
-            angular.copy(entitiesArray, roomElement.roomsList);
+            roomElement.totalItems = entitiesArray.length;
+            roomElement.currentPage = 1;
+            displayArray = _.chunk(entitiesArray, roomElement.itemsPerPage);
+            angular.copy(displayArray[0], roomElement.roomsList);
         }
+    }
+
+    function pageChanged() {
+        var requiredIndex = roomElement.currentPage - 1;
+        var localArray = [];
+        displayArray = [];
+        $log.log('entitiesArray for check is----', entitiesArray);
+        if (roomElement.inputItemSearch.length >= parseInt(3)) {
+            displayArray = _.chunk(sortedItemsArrayOnPageChange, roomElement.itemsPerPage);
+        } else {
+            sortedItemsArrayOnPageChange = [];
+            displayArray = _.chunk(entitiesArray, roomElement.itemsPerPage);
+        }
+        localArray = displayArray[requiredIndex];
+        angular.copy(localArray, roomElement.roomsList);
     }
 }]);

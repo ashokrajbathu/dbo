@@ -26,6 +26,7 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
     bedElement.itemsPerPage = 5;
     var displayArray = [];
     var entitiesArray = [];
+    var sortedItemsArrayOnPageChange = [];
     var entitiesArrayFlag = parseInt(0);
 
     var organizationId = localStorage.getItem('orgId');
@@ -38,7 +39,7 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
         } else {
             var roomsInBedListSuccess = angular.fromJson(roomsInBedSuccess.data.response);
             bedElement.roomsInBedToDisplay = _.filter(roomsInBedListSuccess, function(entity) {
-                return entity.state = 'ACTIVE';
+                return entity.state == 'ACTIVE';
             });
             bedElement.roomsInBedToDisplay.unshift({ 'roomNo': '---Room Number----' });
         }
@@ -53,7 +54,6 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var bedsListInResponse = angular.fromJson(bedsInRoomSuccess.data.response);
-
             bedElement.bedsToBeDisplayedInTable = _.filter(bedsListInResponse, function(entity) {
                 return entity.bedState == 'ACTIVE';
             });
@@ -84,21 +84,22 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                         if (addBedItemId == '' && addBedItemIndex == '') {
                             if (bedElement.bedsToBeDisplayedInTable.length < bedElement.itemsPerPage) {
                                 bedElement.bedsToBeDisplayedInTable.unshift(addNewBedSuccessResponse);
+                                entitiesArray.push(addNewBedSuccessResponse);
                             } else {
-                                if (displayArray.length == bedElement.currentPage) {
+                                if (displayArray.length == bedElement.currentPage || displayArray.length == parseInt(1)) {
                                     bedElement.bedsToBeDisplayedInTable = [];
                                     bedElement.currentPage = bedElement.currentPage + 1;
                                     bedElement.bedsToBeDisplayedInTable.unshift(addNewBedSuccessResponse);
                                 }
                                 entitiesArray.unshift(addNewBedSuccessResponse);
-                                if (bedElement.bedsToBeDisplayedInTable.length == bedElement.itemsPerPage) {
+                                if (bedElement.bedsToBeDisplayedInTable.length == bedElement.itemsPerPage && displayArray.length !== parseInt(1)) {
                                     bedElement.currentPage = 1;
                                     displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
                                     angular.copy(displayArray[0], bedElement.bedsToBeDisplayedInTable);
                                 }
-                                displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
-                                bedElement.totalItems = entitiesArray.length;
                             }
+                            displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
+                            bedElement.totalItems = entitiesArray.length;
                         } else {
                             bedElement.bedsToBeDisplayedInTable.splice(addBedItemIndex, 1, addNewBedSuccessResponse);
                             var indexLocal = _.findLastIndex(entitiesArray, function(entity) {
@@ -190,7 +191,8 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
             var searchDisplayArrayInTable = [];
             if (bedElement.bedSearchInTxtBox !== '' && bedElement.bedSearchInTxtBox !== undefined) {
                 if (searchStringLength > entitiesArrayFlag) {
-                    angular.copy(bedElement.bedsToBeDisplayedInTable, searchDisplayArrayInTable);
+                    /*angular.copy(bedElement.bedsToBeDisplayedInTable, searchDisplayArrayInTable);*/
+                    angular.copy(entitiesArray, searchDisplayArrayInTable);
                 } else {
                     angular.copy(entitiesArray, searchDisplayArrayInTable);
                 }
@@ -208,13 +210,18 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                     }
                 });
                 bedElement.totalItems = sortedItemsArray.length;
-                angular.copy(sortedItemsArray, bedElement.bedsToBeDisplayedInTable);
+                bedElement.currentPage = 1;
+                angular.copy(sortedItemsArray, sortedItemsArrayOnPageChange);
+                displayArray = _.chunk(sortedItemsArray, bedElement.itemsPerPage);
+                angular.copy(displayArray[0], bedElement.bedsToBeDisplayedInTable);
                 entitiesArrayFlag = bedElement.bedSearchInTxtBox.length;
             }
         }
         if (searchStringLength <= parseInt(2)) {
             entitiesArrayFlag = parseInt(0);
             bedElement.totalItems = entitiesArray.length;
+            bedElement.currentPage = 1;
+            displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
             angular.copy(displayArray[0], bedElement.bedsToBeDisplayedInTable);
         }
     }
@@ -236,7 +243,12 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
         var requiredIndex = bedElement.currentPage - 1;
         var localArray = [];
         displayArray = [];
-        displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
+        if (bedElement.bedSearchInTxtBox.length >= parseInt(3)) {
+            displayArray = _.chunk(sortedItemsArrayOnPageChange, bedElement.itemsPerPage);
+        } else {
+            sortedItemsArrayOnPageChange = [];
+            displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
+        }
         localArray = displayArray[requiredIndex];
         angular.copy(localArray, bedElement.bedsToBeDisplayedInTable);
     }
