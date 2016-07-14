@@ -114,7 +114,6 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
                 return entity.state == 'ACTIVE';
             });
             angular.copy(inpatientElement.activeRoomsList, sortedRoomsArray);
-            $log.log('active rooms list is---', inpatientElement.activeRoomsList);
             inpatientElement.activeRoomsList.unshift(allRoomTypeObject);
         }
     }, function(roomError) {
@@ -302,7 +301,6 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
         inpatientElement.roomCategoryName = roomCategoryEntity.organizationRoomCategory.roomType;
         if (inpatientElement.roomCategoryName == 'All Room Type') {
             angular.copy(sortedRoomsArray, inpatientElement.activeRoomsListToBeDisplayed);
-            $log.log('rooms displayed in table---', inpatientElement.activeRoomsListToBeDisplayed);
             /*inpatientElement.activeRoomsListToBeDisplayed.shift();*/
         } else {
             inpatientElement.activeRoomsListToBeDisplayed = [];
@@ -312,14 +310,11 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
                 }
             });
         }
-        $log.log('rooms in the table is----', inpatientElement.activeRoomsListToBeDisplayed);
     }
 
     function statusOfBed(roomEntity, roomIndex) {
         activeRoomIndex = roomIndex;
         angular.copy(roomEntity, activeRoom);
-        $log.log('active room index value is---', activeRoomIndex);
-        $log.log('bed entity is---', roomEntity);
         inpatientElement.bedsListToBeDisplayed = [];
         angular.forEach(bedsList, function(bedListItem) {
             var floorNumber = bedListItem.organizationRoom.floorNo;
@@ -335,7 +330,6 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
         activeBedIndex = _.findLastIndex(bedsList, function(entity) {
             return entity.id == bedEntity.id;
         });
-        $log.log('bed entity is ----', bedEntity);
         var patientName = inpatientElement.patientNameInBox;
         var doctorDepartment = inpatientElement.doctorDepartment;
         var doctorName = inpatientElement.doctorNameInTheBox;
@@ -360,16 +354,13 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             bedRequestEntity.doctorDetail.doctorId = activeDoctorId;
             bedRequestEntity.doctorDetail.doctorDepartment = doctorDepartment;
             bedRequestEntity.doctorDetail.doctorName = activeDoctorName;
-            $log.log('add patient to bed request entity is---', bedRequestEntity);
             var addPatientToBedPromise = dboticaServices.addPatientToBed(bedRequestEntity);
-            $log.log('addPatient to bed promise is----', addPatientToBedPromise);
             addPatientToBedPromise.then(function(addPatientSuccess) {
                 var errorCode = addPatientSuccess.data.errorCode;
                 if (!!errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var addPatientToBedResponse = angular.fromJson(addPatientSuccess.data.response);
-                    $log.log('add patient to bed response----', addPatientToBedResponse);
                     if (errorCode == null && addPatientSuccess.data.success == true) {
                         inpatientElement.patientNameInBox = '';
                         inpatientElement.patientNumberInBox = '';
@@ -378,7 +369,6 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
                         inpatientElement.doctorCategoryName = '-Doctor Category-';
                         inpatientElement.roomCategoryName = '-Room Category-';
                         inpatientElement.doctorNameInPatient = '-Doctor Name-';
-                        $log.log('array element is----', inpatientElement.activeRoomsListToBeDisplayed[activeRoomIndex]);
                         sortedRoomsArray[activeRoomIndex].bedCount = inpatientElement.activeRoomsListToBeDisplayed[activeRoomIndex].bedCount - 1;
                         bedsList.splice(activeBedIndex, 1);
                         inpatientElement.bedsListToBeDisplayed = [];
