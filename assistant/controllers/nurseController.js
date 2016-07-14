@@ -55,7 +55,6 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
                     inpatientEntity.details = angular.fromJson(inpatientEntity.details);
                 });
                 angular.copy(inpatientsListFromApi, nurseHome.patientsListToBeDisplayed);
-                $log.log('patients list is----', nurseHome.patientsListToBeDisplayed);
             }
         }, function(patientsListError) {
             dboticaServices.noConnectivityError();
@@ -92,7 +91,6 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
     }
 
     function patientSelectFromTheList(patient) {
-        $log.log('patient selected is----', patient);
         nurseHome.patientDetails.name = patient.details.inPatientName;
         nurseHome.patientDetails.inpatientNumberInBox = patient.organizationPatientNo;
         nurseHome.patientDetails.inpatientAdmitTime = moment(patient.details.admitTime).format("DD/MM/YYYY,hh:mm:ss A");
@@ -103,14 +101,12 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
         dboticaServices.setPatientDetailsInService(patient);
         $rootScope.patientMedication = true;
         var eventsPromise = dboticaServices.getPatientEvents(organizationId);
-        $log.log('events promise is---', eventsPromise);
         eventsPromise.then(function(eventsSuccess) {
             var errorCode = eventsSuccess.data.errorCode;
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var eventsResponseIs = angular.fromJson(eventsSuccess.data.response);
-                $log.log('events response is----', eventsResponseIs);
                 var eventsList = [];
                 var progressNoteEventsList = [];
                 var vitalSignEventsList = [];
