@@ -2,22 +2,17 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
     localStorage.setItem('currentState', 'nurseHome');
 
     var nurseHome = this;
-
     nurseHome.phoneNumberLengthValidation = phoneNumberLengthValidation;
     nurseHome.patientSearchWithPhoneNumber = patientSearchWithPhoneNumber;
     nurseHome.patientEventSelect = patientEventSelect;
     nurseHome.patientSelectFromTheList = patientSelectFromTheList;
-
     nurseHome.patientDetails = {};
     nurseHome.patientDetails.name = '';
-
     nurseHome.patientSearchBtnDisabled = true;
     nurseHome.PhoneNumberErrorMessage = false;
     nurseHome.patientsListToBeDisplayed = [];
     nurseHome.patientEventName = 'Patient Medication';
-
     var organizationId = localStorage.getItem('orgId');
-
     $rootScope.patientMedication = false;
 
     function phoneNumberLengthValidation() {
@@ -46,17 +41,23 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
     }
 
     function patientSearchWithPhoneNumber() {
-        var patientsListPromise = dboticaServices.getPatientDetailsOfThatNumber(nurseHome.number);
+        var patientsListPromise = dboticaServices.getInPatientsWithPhoneNumber(nurseHome.number);
         patientsListPromise.then(function(patientsListSuccess) {
             var errorCode = patientsListSuccess.data.errorCode;
             if (!!errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                nurseHome.patientsListToBeDisplayed = angular.fromJson(patientsListSuccess.data.response);
+                var inpatientsListFromApi = [];
+                nurseHome.patientsListToBeDisplayed = [];
+                inpatientsListFromApi = angular.fromJson(patientsListSuccess.data.response);
+
+                angular.forEach(inpatientsListFromApi, function(inpatientEntity) {
+                    inpatientEntity.details = angular.fromJson(inpatientEntity.details);
+                });
+                angular.copy(inpatientsListFromApi, nurseHome.patientsListToBeDisplayed);
                 $log.log('patients list is----', nurseHome.patientsListToBeDisplayed);
             }
         }, function(patientsListError) {
-            $log.log('in connectivity error--');
             dboticaServices.noConnectivityError();
         });
     }
@@ -92,7 +93,13 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
 
     function patientSelectFromTheList(patient) {
         $log.log('patient selected is----', patient);
-        nurseHome.patientDetails.name = patient.firstName;
+        nurseHome.patientDetails.name = patient.details.inPatientName;
+        nurseHome.patientDetails.inpatientNumberInBox = patient.organizationPatientNo;
+        nurseHome.patientDetails.inpatientAdmitTime = moment(patient.details.admitTime).format("DD/MM/YYYY,hh:mm:ss A");
+        nurseHome.patientDetails.inchargeDoctorInBox = patient.doctorDetail.doctorName;
+        nurseHome.patientDetails.inchargeDepartmentInBox = patient.doctorDetail.doctorDepartment;
+        nurseHome.patientDetails.inPatientRoomInBox = patient.details.roomNumber;
+        nurseHome.patientDetails.bedNumberInBox = patient.details.bedNumber;
         dboticaServices.setPatientDetailsInService(patient);
         $rootScope.patientMedication = true;
         var eventsPromise = dboticaServices.getPatientEvents(organizationId);

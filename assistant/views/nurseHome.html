@@ -5,8 +5,8 @@
             <div class="input-group">
                 <input numbers-only ng-model="nurse.number" ng-change="nurse.phoneNumberLengthValidation()" type="text" class="form-control" id="exampleNursePatientPhoneNumber" placeholder="Patient Phone Number">
                 <span class="input-group-btn pull-left">
-        		<button ng-click="nurse.patientSearchWithPhoneNumber()" ng-disabled="nurse.patientSearchBtnDisabled" data-toggle="modal" data-target="#patientsListModal" id="phoneBtnInNurse" type="button" class="btn addPatientBtn">Search</button>
-        	</span>
+                <button ng-click="nurse.patientSearchWithPhoneNumber()" ng-disabled="nurse.patientSearchBtnDisabled" data-toggle="modal" data-target="#patientsListModal" id="phoneBtnInNurse" type="button" class="btn addPatientBtn">Search</button>
+            </span>
             </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
@@ -41,16 +41,14 @@
                         <thead>
                             <tr>
                                 <th>IOP No.</th>
-                                <th>Patient No.</th>
                                 <th>Name</th>
-                                <th></th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="patientEntity in nurse.patientsListToBeDisplayed track by $index">
-                                <td></td>
-                                <td></td>
-                                <td ng-bind="patientEntity.firstName"></td>
+                                <td ng-bind="patientEntity.organizationPatientNo"></td>
+                                <td ng-bind="patientEntity.details.inPatientName"></td>
                                 <td>
                                     <a data-dismiss="modal" ng-click="nurse.patientSelectFromTheList(patientEntity)" style="cursor:pointer;">SELECT</a>
                                 </td>
@@ -69,37 +67,37 @@
             <div class="patientDetailsBox box">
                 <div class="box-body no-padding">
                     <div class="box-footer clearfix">
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="exampleNursePatientNumber">Patient Number</label>
                             <input readonly type="text" class="form-control" id="exampleNursePatientNumber" placeholder="Patient Number">
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <label for="exampleNursePatientName">Patient Name</label>
                             <input ng-model="nurse.patientDetails.name" readonly type="text" class="form-control" id="exampleNursePatientName" placeholder="Patient Name">
                         </div>
                         <div class="form-group">
                             <label for="exampleNurseIOPNumber">IOP No.</label>
-                            <input readonly type="text" class="form-control" id="exampleNurseIOPNumber" placeholder="IOP No.">
+                            <input ng-model="nurse.patientDetails.inpatientNumberInBox" readonly type="text" class="form-control" id="exampleNurseIOPNumber" placeholder="IOP No.">
                         </div>
                         <div class="form-group">
                             <label for="exampleNurseDateTime">Date Time Admit</label>
-                            <input readonly type="text" class="form-control" id="exampleNurseDateTime" placeholder="Date Time Admit">
+                            <input ng-model="nurse.patientDetails.inpatientAdmitTime" readonly type="text" class="form-control" id="exampleNurseDateTime" placeholder="Date Time Admit">
                         </div>
                         <div class="form-group">
                             <label for="exampleNurseInchargeDoctor">Incharge Doctor</label>
-                            <input readonly type="text" class="form-control" id="exampleNurseInchargeDoctor" placeholder="Incharge Doctor">
+                            <input ng-model="nurse.patientDetails.inchargeDoctorInBox" readonly type="text" class="form-control" id="exampleNurseInchargeDoctor" placeholder="Incharge Doctor">
                         </div>
                         <div class="form-group">
                             <label for="exampleNurseDepartment">Department</label>
-                            <input readonly type="text" class="form-control" id="exampleNurseDepartment" placeholder="Department">
+                            <input ng-model="nurse.patientDetails.inchargeDepartmentInBox" readonly type="text" class="form-control" id="exampleNurseDepartment" placeholder="Department">
                         </div>
                         <div class="form-group">
                             <label for="exampleNurseRoom">Room</label>
-                            <input readonly type="text" class="form-control" id="exampleNurseRoom" placeholder="Room">
+                            <input ng-model="nurse.patientDetails.inPatientRoomInBox" readonly type="text" class="form-control" id="exampleNurseRoom" placeholder="Room">
                         </div>
                         <div class="form-group">
                             <label for="exampleNurseBedNumber">Bed No.</label>
-                            <input readonly type="text" class="form-control" id="exampleNurseBedNumber" placeholder="Bed No.">
+                            <input ng-model="nurse.patientDetails.bedNumberInBox" readonly type="text" class="form-control" id="exampleNurseBedNumber" placeholder="Bed No.">
                         </div>
                     </div>
                 </div>

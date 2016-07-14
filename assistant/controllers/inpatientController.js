@@ -227,28 +227,6 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
                         inpatientElement.patientNameInBox = firstName;
                         inpatientElement.patientNumberInBox = inpatientElement.inpatientNumber;
                         angular.element('#inpatientSearchModal').modal('hide');
-                        /*var inpatientRegisterRequestEntity = {};
-                        inpatientRegisterRequestEntity.organizationId = organizationId;
-                        if (inpatientElement.inpatientNumber == undefined || inpatientElement.inpatientNumber == '') {
-                            inpatientElement.inpatientNumber = '';
-                        }
-                        inpatientRegisterRequestEntity.organizationPatientNo = inpatientElement.inpatientNumber;
-                        inpatientRegisterRequestEntity.patientId = inpatientAddResponse[0].id;
-                        inpatientRegisterRequestEntity.phoneNumber = inpatientAddResponse[0].phoneNumber;
-                        inpatientRegisterRequestEntity.patientState = 'CHECK_IN';
-                        var inpatientRegisterPromise = dboticaServices.registerPatient(inpatientRegisterRequestEntity);
-                        inpatientRegisterPromise.then(function(inpatientRegisterSuccess) {
-                            var errorCode = inpatientRegisterSuccess.data.errorCode;
-                            if (!!errorCode) {
-                                dboticaServices.logoutFromThePage(errorCode);
-                            } else {
-                                var registerSuccessResponse = angular.fromJson(inpatientRegisterSuccess.data.response);
-                                inpatientElement.patientNumberInBox = registerSuccessResponse.organizationPatientNo;
-
-                            }
-                        }, function(inpatientRegisterError) {
-                            dboticaServices.noConnectivityError();
-                        });*/
                     }
                 }
             }, function(inpatientErrorResponse) {
@@ -342,6 +320,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             var date = new Date();
             var longValueOfDate = date.getTime();
             var detailsObject = {};
+            detailsObject.inPatientName = patientName;
             bedRequestEntity.nextChange = longValueOfDate;
             detailsObject.admitTime = longValueOfDate;
             detailsObject.patientName = inpatientElement.patientNameInBox;
