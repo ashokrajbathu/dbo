@@ -14,7 +14,7 @@
                 <ul class="nav navbar-nav">
                     <li ng-if="isVisibleNavs.patientManagement" ui-sref-active="activeAdminLi activeSectionBlack>a" ui-sref=".patientManagement"><a class="navbarLinks">Patient management</a></li>
                     <li ng-if="isVisibleNavs.billManagement" ui-sref-active="activeAdminLi activeSectionBlack>a" ui-sref-active="activeAdminLi activeSectionBlack>a" ui-sref=".billManagement"><a class="navbarLinks">Bill Management</a></li>
-                    <li ng-if="isVisibleNavs.inventory" ui-sref-active="activeAdminLi activeSectionBlack>a" ui-sref=".inventory"><a class="navbarLinks">Inventory</a></li>
+                    <li id="mainInventoryLiActive" ng-if="isVisibleNavs.inventory" ui-sref-active="activeAdminLi activeSectionBlack>a" ui-sref=".inventory"><a class="navbarLinks">Inventory</a></li>
                     <li ng-if="isVisibleNavs.admin" ui-sref-active="activeAdminLi activeSectionBlack>a" ui-sref=".admin"><a class="navbarLinks">Assistant</a></li>
                     <li ng-if="isVisibleNavs.ipd" ui-sref-active="activeAdminLi activeSectionBlack>a" ui-sref=".ipd"><a class="navbarLinks">IPD</a></li>
                     <li ng-if="isVisibleNavs.analyticReports" ui-sref-active="activeAdminLi activeSectionBlack>a" ui-sref=".analyticReports"><a class="navbarLinks">Analytic reports</a></li>

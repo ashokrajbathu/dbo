@@ -300,7 +300,7 @@
                             <tbody>
                                 <tr ng-repeat="roomElement in inpatient.activeRoomsListToBeDisplayed">
                                     <td>
-                                        <a ng-click="inpatient.statusOfBed(roomElement)" style="cursor:pointer;">Status</a>
+                                        <a ng-click="inpatient.statusOfBed(roomElement,$index)" style="cursor:pointer;">Status</a>
                                     </td>
                                     <td ng-bind="roomElement.floorNo"></td>
                                     <td ng-bind="roomElement.roomNo"></td>
@@ -327,7 +327,7 @@
                             <tbody>
                                 <tr ng-repeat="bedEntity in inpatient.bedsListToBeDisplayed">
                                     <td>
-                                        <a ng-click="inpatient.admitPatient(bedEntity)" style="cursor:pointer;">Admit</a>
+                                        <a ng-click="inpatient.admitPatient(bedEntity,$index)" style="cursor:pointer;">Admit</a>
                                     </td>
                                     <td ng-bind="bedEntity.bedNo"></td>
                                     <td>-</td>

@@ -39,6 +39,11 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     var activeDoctorCategory = {};
     var activeDoctorsList = [];
     var bedsList = [];
+    var sortedRoomsArray = [];
+    var activeRoomIndex;
+    var activeBedIndex;
+    var activeRoom = {};
+    var activeBed = {};
     inpatientElement.bedsListToBeDisplayed = [];
     inpatientElement.activeRoomsListToBeDisplayed = [];
     inpatientElement.activeDoctorsListToBeDisplayed = [];
@@ -105,12 +110,12 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var roomsList = angular.fromJson(roomsSuccess.data.response);
-            inpatientElement.activeRoomsList.push(allRoomTypeObject);
-            angular.forEach(roomsList, function(roomEntity) {
-                if (roomEntity.state == 'ACTIVE') {
-                    inpatientElement.activeRoomsList.push(roomEntity);
-                }
+            inpatientElement.activeRoomsList = _.filter(roomsList, function(entity) {
+                return entity.state == 'ACTIVE';
             });
+            angular.copy(inpatientElement.activeRoomsList, sortedRoomsArray);
+            $log.log('active rooms list is---', inpatientElement.activeRoomsList);
+            inpatientElement.activeRoomsList.unshift(allRoomTypeObject);
         }
     }, function(roomError) {
         dboticaServices.noConnectivityError();
@@ -221,7 +226,9 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
                     var success = inpatientSuccessResponse.data.success;
                     if (errorCode == null && success == true) {
                         inpatientElement.patientNameInBox = firstName;
-                        var inpatientRegisterRequestEntity = {};
+                        inpatientElement.patientNumberInBox = inpatientElement.inpatientNumber;
+                        angular.element('#inpatientSearchModal').modal('hide');
+                        /*var inpatientRegisterRequestEntity = {};
                         inpatientRegisterRequestEntity.organizationId = organizationId;
                         if (inpatientElement.inpatientNumber == undefined || inpatientElement.inpatientNumber == '') {
                             inpatientElement.inpatientNumber = '';
@@ -238,11 +245,11 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
                             } else {
                                 var registerSuccessResponse = angular.fromJson(inpatientRegisterSuccess.data.response);
                                 inpatientElement.patientNumberInBox = registerSuccessResponse.organizationPatientNo;
-                                angular.element('#inpatientSearchModal').modal('hide');
+
                             }
                         }, function(inpatientRegisterError) {
                             dboticaServices.noConnectivityError();
-                        });
+                        });*/
                     }
                 }
             }, function(inpatientErrorResponse) {
@@ -294,31 +301,40 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     function selectedRoomCategory(roomCategoryEntity) {
         inpatientElement.roomCategoryName = roomCategoryEntity.organizationRoomCategory.roomType;
         if (inpatientElement.roomCategoryName == 'All Room Type') {
-            angular.copy(inpatientElement.activeRoomsList, inpatientElement.activeRoomsListToBeDisplayed);
-            inpatientElement.activeRoomsListToBeDisplayed.shift();
+            angular.copy(sortedRoomsArray, inpatientElement.activeRoomsListToBeDisplayed);
+            $log.log('rooms displayed in table---', inpatientElement.activeRoomsListToBeDisplayed);
+            /*inpatientElement.activeRoomsListToBeDisplayed.shift();*/
         } else {
             inpatientElement.activeRoomsListToBeDisplayed = [];
-            angular.forEach(inpatientElement.activeRoomsList, function(activeRoomEntity) {
+            angular.forEach(sortedRoomsArray, function(activeRoomEntity) {
                 if (activeRoomEntity.organizationRoomCategory.roomType == inpatientElement.roomCategoryName) {
                     inpatientElement.activeRoomsListToBeDisplayed.push(activeRoomEntity);
                 }
             });
         }
+        $log.log('rooms in the table is----', inpatientElement.activeRoomsListToBeDisplayed);
     }
 
-    function statusOfBed(bedEntity) {
+    function statusOfBed(roomEntity, roomIndex) {
+        activeRoomIndex = roomIndex;
+        angular.copy(roomEntity, activeRoom);
+        $log.log('active room index value is---', activeRoomIndex);
+        $log.log('bed entity is---', roomEntity);
         inpatientElement.bedsListToBeDisplayed = [];
         angular.forEach(bedsList, function(bedListItem) {
             var floorNumber = bedListItem.organizationRoom.floorNo;
             var roomNumber = bedListItem.organizationRoom.roomNo;
             var bedStatus = bedListItem.bedStatus;
-            if (floorNumber == bedEntity.floorNo && roomNumber == bedEntity.roomNo && bedStatus == 'VACANT') {
+            if (floorNumber == roomEntity.floorNo && roomNumber == roomEntity.roomNo && bedStatus == 'VACANT') {
                 inpatientElement.bedsListToBeDisplayed.push(bedListItem);
             }
         });
     }
 
-    function admitPatient(bedEntity) {
+    function admitPatient(bedEntity, bedIndex) {
+        activeBedIndex = _.findLastIndex(bedsList, function(entity) {
+            return entity.id == bedEntity.id;
+        });
         $log.log('bed entity is ----', bedEntity);
         var patientName = inpatientElement.patientNameInBox;
         var doctorDepartment = inpatientElement.doctorDepartment;
@@ -334,6 +350,10 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             var detailsObject = {};
             bedRequestEntity.nextChange = longValueOfDate;
             detailsObject.admitTime = longValueOfDate;
+            detailsObject.patientName = inpatientElement.patientNameInBox;
+            detailsObject.floorNumber = activeRoom.floorNo;
+            detailsObject.roomNumber = activeRoom.roomNo;
+            detailsObject.bedNumber = bedEntity.bedNo;
             bedRequestEntity.details = JSON.stringify(detailsObject);
             bedRequestEntity.doctorDetail = {};
             bedRequestEntity.organizationId = organizationId;
@@ -350,6 +370,23 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
                 } else {
                     var addPatientToBedResponse = angular.fromJson(addPatientSuccess.data.response);
                     $log.log('add patient to bed response----', addPatientToBedResponse);
+                    if (errorCode == null && addPatientSuccess.data.success == true) {
+                        inpatientElement.patientNameInBox = '';
+                        inpatientElement.patientNumberInBox = '';
+                        inpatientElement.doctorDepartment = '';
+                        inpatientElement.doctorNameInTheBox = '';
+                        inpatientElement.doctorCategoryName = '-Doctor Category-';
+                        inpatientElement.roomCategoryName = '-Room Category-';
+                        inpatientElement.doctorNameInPatient = '-Doctor Name-';
+                        $log.log('array element is----', inpatientElement.activeRoomsListToBeDisplayed[activeRoomIndex]);
+                        sortedRoomsArray[activeRoomIndex].bedCount = inpatientElement.activeRoomsListToBeDisplayed[activeRoomIndex].bedCount - 1;
+                        bedsList.splice(activeBedIndex, 1);
+                        inpatientElement.bedsListToBeDisplayed = [];
+                        inpatientElement.activeRoomsListToBeDisplayed = [];
+                        inpatientElement.activeDoctorsListToBeDisplayed = [];
+                        inpatientElement.activeDoctorsListToBeDisplayed.push(doctorObject);
+                        dboticaServices.admitPatientSuccessSwal();
+                    }
                 }
             }, function(addpatientError) {
                 dboticaServices.noConnectivityError();

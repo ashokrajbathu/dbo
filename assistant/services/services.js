@@ -1871,4 +1871,14 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.admitPatientSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Patient Successfully Admitted!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
 }]);
