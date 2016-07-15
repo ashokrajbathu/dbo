@@ -353,7 +353,6 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             case 'AM':
                 seconds = (hours * 60 * 60) + (mins * 60);
                 break;
-
             case 'PM':
                 if (hours === parseInt(12)) {
                     seconds = (12 * 60 * 60) + (mins * 60);
