@@ -91,6 +91,7 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
     }
 
     function patientSelectFromTheList(patient) {
+        dboticaServices.setInpatient(patient);
         nurseHome.patientDetails.name = patient.details.inPatientName;
         nurseHome.patientDetails.inpatientNumberInBox = patient.organizationPatientNo;
         nurseHome.patientDetails.inpatientAdmitTime = moment(patient.details.admitTime).format("DD/MM/YYYY,hh:mm:ss A");

@@ -7,10 +7,17 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
     ipRoom.selectedRoomNameInModal = selectedRoomNameInModal;
     ipRoom.selectedBedNameInModal = selectedBedNameInModal;
     ipRoom.roomTransferOfPatient = roomTransferOfPatient;
+    ipRoom.getData = getData;
 
     angular.element("#inputRoomIpDate").datepicker({
         dateFormat: "dd/mm/yy",
         autoclose: true
+    });
+
+    angular.element("#nextChangeDate").datepicker({
+        dateFormat: "dd/mm/yy",
+        autoclose: true,
+        'minDate': 0
     });
 
     ipRoom.mytime = new Date();
@@ -44,6 +51,13 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
     var timeArray = dateSorted.split(',');
     ipRoom.transferPatient.transferDate = timeArray[0];
     ipRoom.transferPatient.transferTime = timeArray[1];
+
+    var activeInpatient = {};
+
+    function getData() {
+        activeInpatient = dboticaServices.getInpatient();
+        return true;
+    }
 
     var organizationId = localStorage.getItem('orgId');
 
@@ -152,29 +166,42 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
     }
 
     function roomTransferOfPatient() {
-        if (ipRoom.transferPatient.transferDate == undefined || ipRoom.transferPatient.transferDate == '') {
-            ipRoom.dateToolTip = true;
-            $timeout(function() {
-                ipRoom.dateToolTip = false;
-            }, 400);
-        }
-        if (ipRoom.roomCategoryNameInModal == '-Room Type-') {
-            ipRoom.roomCategoryToolTip = true;
-            $timeout(function() {
-                ipRoom.roomCategoryToolTip = false;
-            }, 400);
-        }
-        if (ipRoom.roomNumNameInModal == '-Room Name-') {
-            ipRoom.roomNumberToolTip = true;
-            $timeout(function() {
-                ipRoom.roomNumberToolTip = false;
-            }, 400);
-        }
-        if (ipRoom.bedNumNameInModal == '-Bed Number-') {
-            ipRoom.bedNumberToolTip = true;
-            $timeout(function() {
-                ipRoom.bedNumberToolTip = false;
-            }, 400);
+        if (!_.isEmpty(activeInpatient)) {
+            var roomTransferDate = ipRoom.transferPatient.transferDate;
+            var roomCategoryInModal = ipRoom.roomCategoryNameInModal;
+            var roomNameInModal = ipRoom.roomNumNameInModal;
+            var bedNameInModal = ipRoom.bedNumNameInModal;
+            if (roomTransferDate !== undefined && roomTransferDate !== '' && roomCategoryInModal !== undefined && roomCategoryInModal !== '' && roomNameInModal !== undefined && roomNameInModal !== '' && bedNameInModal !== undefined && bedNameInModal !== '') {
+                var roomTransferRequestEntity = {};
+            } else {
+                if (roomTransferDate == undefined || roomTransferDate == '') {
+                    ipRoom.dateToolTip = true;
+                    $timeout(function() {
+                        ipRoom.dateToolTip = false;
+                    }, 400);
+                }
+                if (roomCategoryInModal == '-Room Type-') {
+                    ipRoom.roomCategoryToolTip = true;
+                    $timeout(function() {
+                        ipRoom.roomCategoryToolTip = false;
+                    }, 400);
+                }
+                if (roomNameInModal == '-Room Name-') {
+                    ipRoom.roomNumberToolTip = true;
+                    $timeout(function() {
+                        ipRoom.roomNumberToolTip = false;
+                    }, 400);
+                }
+                if (bedNameInModal == '-Bed Number-') {
+                    ipRoom.bedNumberToolTip = true;
+                    $timeout(function() {
+                        ipRoom.bedNumberToolTip = false;
+                    }, 400);
+                }
+            }
+        } else {
+            angular.element('#ipRoomTransferModal').modal('hide');
+            dboticaServices.inpatientErrorSwal();
         }
     }
 }]);

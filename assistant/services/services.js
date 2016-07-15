@@ -5,6 +5,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     var loginResponseSuccessValue, loginResponseErrorCode, loginResponseDoctorsList, loginResponseDoctorName, loginResponseDoctorSpecialization, loginResponseDoctorId, loginResponseDayStartTime, loginResponseDayEndTime, loginResponseTimePerPatient;
     var loginResponsePatientsList = [];
     var invoiceObject, doctorActive, patientData = {};
+    var inpatient = {};
     var patientName = "";
     var doctorName = "";
     var medicineNames, doctorsListArray = [];
@@ -1709,11 +1710,29 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return patientsArray;
     }
 
+    this.setInpatient = function(value) {
+        inpatient = value;
+    }
+
+    this.getInpatient = function() {
+        return inpatient;
+    }
+
     this.saveMedicineSuccessSwal = function() {
         swal({
             title: "Success",
             text: "Medicine Details Successfully saved!!!!",
             type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.inpatientErrorSwal = function() {
+        swal({
+            title: "Info",
+            text: "Please Select the Inpatient for Room Transfer",
+            type: "info",
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
@@ -1892,6 +1911,26 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             deferred.resolve(inpatientsSuccess);
         }, function(inpatientsError) {
             deferred.reject(inpatientsError);
+        });
+        return deferred.promise;
+    }
+
+    this.transferPatientToAnotherRoom = function(transferPatientObject) {
+        var deferred = $q.defer();
+        var transferEntity = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/transferPatient',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(transferPatientObject)
+        }
+        $http(transferEntity).then(function(transferPatientSuccess) {
+            deferred.resolve(transferPatientSuccess);
+        }, function(transferPatientError) {
+            deferred.reject(transferPatientError);
         });
         return deferred.promise;
     }

@@ -104,6 +104,7 @@ angular.module('personalAssistant').controller('intakeOutputController', ['$scop
         if (intakeOutput.outputPatientEventsList !== outputEventsForSetter) {
             angular.copy(intakeOutput.outputPatientEventsList, outputEventsForSetter);
         }
+        return true;
     }
 
     function saveIntakeInModal() {
