@@ -92,7 +92,7 @@
                         <td ng-bind="eventEntity.referenceDetails.advice"></td>
                         <td ng-bind="eventEntity.referenceDetails.days"></td>
                         <td ng-bind="eventEntity.referenceDetails.quantity"></td>
-                        <td></td>
+                        <td ng-bind="eventEntity.assistantName||medication.assistantName"></td>
                         <td>
                             <a ng-click="medication.removeParticularEvent(eventEntity,$index)" style="cursor:pointer;">Remove</a>
                         </td>

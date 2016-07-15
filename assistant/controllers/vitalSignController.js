@@ -18,6 +18,10 @@ angular.module('personalAssistant').controller('vitalSignController', ['$scope',
 
     vitalSign.dateToolTip = false;
 
+    var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
+    loggedInAss = angular.fromJson(loggedInAss);
+    vitalSign.assistantName = loggedInAss.firstName;
+
     vitalSign.hstep = 1;
     vitalSign.mstep = 1;
     vitalSign.options = {

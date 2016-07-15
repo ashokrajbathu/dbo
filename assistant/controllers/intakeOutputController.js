@@ -20,6 +20,10 @@ angular.module('personalAssistant').controller('intakeOutputController', ['$scop
     intakeOutput.mytime = new Date();
     intakeOutput.myOutputTime = new Date();
 
+    var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
+    loggedInAss = angular.fromJson(loggedInAss);
+    intakeOutput.assistantName = loggedInAss.firstName;
+
     intakeOutput.hstep = 1;
     intakeOutput.mstep = 1;
     intakeOutput.options = {

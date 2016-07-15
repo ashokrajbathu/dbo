@@ -67,7 +67,7 @@
                         <td ng-bind="noteEntity.referenceDetails.date+' '+noteEntity.referenceDetails.time"></td>
                         <td ng-bind="noteEntity.referenceDetails.focus"></td>
                         <td ng-bind="noteEntity.referenceDetails.notesInModal"></td>
-                        <td ng-bind=""></td>
+                        <td ng-bind="noteEntity.assistantName||progressNote.assistantName"></td>
                         <td>
                             <a ng-click="progressNote.removeNotesEntity(noteEntity,index)" style="cursor:pointer;">Remove</a>
                         </td>

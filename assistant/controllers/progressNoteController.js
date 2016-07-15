@@ -13,6 +13,10 @@ angular.module('personalAssistant').controller('progressNoteController', ['$scop
     note.timeChangeInTxtBox = timeChangeInTxtBox;
     note.removeNotesEntity = removeNotesEntity;
 
+    var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
+    loggedInAss = angular.fromJson(loggedInAss);
+    note.assistantName = loggedInAss.firstName;
+
     note.newNote = {};
     note.newNote.notes = '';
 

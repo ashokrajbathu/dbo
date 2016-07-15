@@ -99,7 +99,7 @@
                         <td ng-bind="vitalSignEntity.referenceDetails.weight"></td>
                         <td ng-bind="vitalSignEntity.referenceDetails.bp"></td>
                         <td ng-bind="vitalSignEntity.referenceDetails.respiration"></td>
-                        <td></td>
+                        <td ng-bind="vitalSignEntity.assistantName||vitalSign.assistantName"></td>
                         <td>
                             <a ng-click="vitalSign.removeEvent(vitalSignEntity,$index)" style="cursor:pointer;">Remove</a>
                         </td>

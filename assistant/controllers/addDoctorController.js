@@ -5,7 +5,6 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
 
     doctorElement.doctorTypeSelect = doctorTypeSelect;
     doctorElement.addNewDoctorInModal = addNewDoctorInModal;
-    /*doctorElement.doctorSelectFromDropDown = doctorSelectFromDropDown;*/
     doctorElement.editDoctorInTable = editDoctorInTable;
     doctorElement.deleteDoctorInTable = deleteDoctorInTable;
     doctorElement.doctorSearchInTheTotalList = doctorSearchInTheTotalList;

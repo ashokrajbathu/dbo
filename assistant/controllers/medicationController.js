@@ -22,6 +22,8 @@ angular.module('personalAssistant').controller('medicationController', ['$rootSc
 
     var organizationId = localStorage.getItem('orgId');
     var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
+    loggedInAss = angular.fromJson(loggedInAss);
+    medication.assistantName = loggedInAss.firstName;
     medication.categoryNamesArray = [
         { 'name': 'ANTI-ALLERGIC' },
         { 'name': 'ANTI-ANXIETY' },

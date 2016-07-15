@@ -91,7 +91,7 @@
                         <td ng-bind="intakeEntity.referenceDetails.oral"></td>
                         <td ng-bind="intakeEntity.referenceDetails.noOf"></td>
                         <td ng-bind="intakeEntity.referenceDetails.noOfUr"></td>
-                        <td></td>
+                        <td ng-bind="intakeEntity.assistantName||intakeOutput.assistantName"></td>
                         <td><a ng-click="intakeOutput.removeIntake(intakeEntity,$index)" style="cursor:pointer;">Remove</a></td>
                     </tr>
                 </tbody>
@@ -175,7 +175,7 @@
                         <td ng-bind="outputEntity.referenceDetails.feaces"></td>
                         <td ng-bind="outputEntity.referenceDetails.respitation"></td>
                         <td ng-bind="outputEntity.referenceDetails.skin"></td>
-                        <td></td>
+                        <td ng-bind="outputEntity.assistantName||intakeOutput.assistantName"></td>
                         <td>
                             <a ng-click="intakeOutput.removeOutputEntity(outputEntity,$index)" style="cursor:pointer;">Remove</a>
                         </td>
