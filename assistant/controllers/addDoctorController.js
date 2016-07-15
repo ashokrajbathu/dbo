@@ -14,6 +14,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     doctorElement.addNewDoctorByAssistant = addNewDoctorByAssistant;
     doctorElement.specialitySelect = specialitySelect;
     doctorElement.pageChanged = pageChanged;
+    doctorElement.addNewDoctorBtn = addNewDoctorBtn;
 
     doctorElement.allDoctorTypes = [];
     var doctorsListIs = [];
@@ -162,6 +163,12 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     }, function(doctorsListInMainError) {
         dboticaServices.noConnectivityError();
     });
+
+    function addNewDoctorBtn() {
+        doctorElement.doctorPhoneNumberSearchTxtBox = true;
+        doctorElement.newDoctorDetails = false;
+        doctorElement.addNewDoctorForm = false;
+    }
 
     function doctorSearchWithPhoneNumber() {
         doctorElement.doctorPhoneNumberSearchTxtBox = true;
@@ -412,6 +419,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
             newDoctorEntity.doctorRegistrationNo = doctorElement.doctorData.doctorRegistrationNo;
             newDoctorEntity.organization = doctorElement.doctorData.organization;
             var newDoctorPromise = dboticaServices.newDoctorByAssistant(newDoctorEntity);
+            $log.log('add new doctor promise is----', newDoctorPromise);
             newDoctorPromise.then(function(newDoctorSuccess) {
                 var errorCode = newDoctorSuccess.data.errorCode;
                 if (!!errorCode) {

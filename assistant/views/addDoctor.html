@@ -1,6 +1,6 @@
 <div ng-controller="doctorController as doctor" ng-cloak>
     <h4>Add Doctor</h4>
-    <button class="btn mainAdminBtn" data-toggle="modal" data-target="#addDoctorModal">Add New</button>
+    <button ng-click="doctor.addNewDoctorBtn()" class="btn mainAdminBtn" data-toggle="modal" data-target="#addDoctorModal">Add New</button>
     <div id="addDoctorModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
