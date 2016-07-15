@@ -189,25 +189,32 @@
     top: 43%;
 }
 
+#drpBtnRoomTransferRoomNum>ul>li,
+#drpBtnRoomTransfer>ul>li,
+#drpBtnRoomTransferBedNum>ul>li {
+    text-align: center;
+}
+
 #drpBtnDivRegisterPatient>ul,
-#drpBtnDivdoctor>ul {
+#drpBtnDivdoctor>ul,
+#drpBtnRoomTransfer>ul,
+#drpBtnRoomTransferRoomNum>ul,
+#drpBtnRoomTransferBedNum>ul {
     width: 100% !important;
 }
 
 #caretInRegister,
-#caretIndoctor {
+#caretIndoctor,
+#roomTransferCaretInModal,
+#roomNameCaretInModal,
+#bedNameCaretInModal {
     position: absolute;
     left: 90%;
     top: 43%;
 }
 
 #caretInMedication,
-#caretInInpatient {
-    position: absolute;
-    left: 94%;
-    top: 43%;
-}
-
+#caretInInpatient,
 #caretInNurse {
     position: absolute;
     left: 94%;
