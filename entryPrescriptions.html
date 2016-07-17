@@ -1124,18 +1124,13 @@
 
 
             }
-
-
             $.cookie('drugPojoList', JSON.stringify(drugPojoList));
             console.log('pushed');
             $.cookie('drugEntryCount', newCount);
             //$('#current-prescriptions').DataTable();
             //console.log($('#current-prescriptions').DataTable());
             $.cookie('drugHtml', $('#current-prescriptions > tbody').html());
-
         }
-
-
     });
 
     function OnGetDrugsResponse(data, callback) {
