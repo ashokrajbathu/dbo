@@ -56,6 +56,10 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
 
     var organizationId = localStorage.getItem('orgId');
 
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
+
+
     var doctorsListPromise = dboticaServices.doctorsOfAssistant();
     doctorsListPromise.then(function(doctorsListSuccess) {
         var errorCode = doctorsListSuccess.data.errorCode;

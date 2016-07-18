@@ -15,6 +15,10 @@ angular.module('personalAssistant').controller('patientHistoryController', ['$sc
 
     var organizationId = localStorage.getItem('orgId');
 
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
+
+
     function getData() {
         patientHistoryElement.patient = dboticaServices.getPatientDetailsFromService();
     }

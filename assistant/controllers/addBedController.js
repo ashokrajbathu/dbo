@@ -31,6 +31,10 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
 
     var organizationId = localStorage.getItem('orgId');
 
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
+
+
     var roomsInBedPromise = dboticaServices.getRooms(organizationId);
     roomsInBedPromise.then(function(roomsInBedSuccess) {
         var errorCode = roomsInBedSuccess.data.errorCode;

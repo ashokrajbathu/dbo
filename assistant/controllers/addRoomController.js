@@ -29,6 +29,10 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
     var displayArray = [];
     var sortedItemsArrayOnPageChange = [];
 
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
+
+
     var organizationId = localStorage.getItem('orgId');
     var roomCategoriesPromise = dboticaServices.getRoomCategories(organizationId);
     roomCategoriesPromise.then(function(roomCategoriesSuccess) {

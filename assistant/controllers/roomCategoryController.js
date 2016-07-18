@@ -25,6 +25,10 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
     var displayArray = [];
     var sortedItemsArrayOnPageChange = [];
 
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
+
+
     var getRoomCategoryPromise = dboticaServices.getRoomCategories(organizationId);
     getRoomCategoryPromise.then(function(getRoomCategoriesSuccess) {
         var errorCode = getRoomCategoriesSuccess.data.errorCode;

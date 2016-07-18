@@ -15,6 +15,10 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
     var organizationId = localStorage.getItem('orgId');
     $rootScope.patientMedication = false;
 
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
+
+
     function phoneNumberLengthValidation() {
         var phoneNumber = nurseHome.number;
         if (phoneNumber !== undefined && phoneNumber !== null && phoneNumber !== "") {

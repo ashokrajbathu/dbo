@@ -102,6 +102,19 @@
     top: 43%;
 }
 
+@media only screen and (max-width:350px) {
+    #caretRoomType,
+    #caretRoomTypeStatus {
+        left: 92%;
+    }
+}
+
+@media only screen and (max-width:350px) {
+    #caretRoomCategoryType {
+        left: 90% !important;
+    }
+}
+
 #caretRoomCategoryType,
 #caretRoomName {
     position: absolute;

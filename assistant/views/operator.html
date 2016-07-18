@@ -1,0 +1,49 @@
+<div ng-controller="operatorController as operator" ng-cloak>
+    <div id="blurBackScreen" ng-show="operator.blurScreen"></div>
+    <img class="spinner" src="css/images/default (2).gif" ng-show="operator.loading"></img>
+    <div class="container">
+        <h3 class="prescriptionHeader">Patient Prescriptions:</h3>
+        <div class="row">
+            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-6 col-xs-6">
+                <div id="doctorInOperator" class="dropdown">
+                    <button id="doctorInOperatorBtn" style="width:100%;font-weight:700;" class="docDropdownInInpatient roomDropdowns roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{operator.doctorName}}<span id="caretdoctorInOperator" class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li ng-click="operator.doctorSelect(prescriptionDoctor)" ng-repeat="prescriptionDoctor in operator.doctorsListToBeDisplayed">
+                            <a style="cursor:pointer;" ng-bind="prescriptionDoctor.firstName"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-9 col-sm-11 col-xs-11">
+                <div class="panel patientInOperator">
+                    <div class="panel-heading">
+                        <h4>Patient Search</h4>
+                    </div>
+                    <div class="panel-body patientInOperatorPanelBody">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <input ng-change="operator.phoneNumberLengthValidation()" class="form-control" numbers-only ng-model="operator.phoneNumber" placeholder="Phone Number" type="text">
+                            </div>
+                            <button ng-click="operator.patientSearchByOperator()" ng-disabled="operator.patientSearchBtnDisabled" type="button" class="btn addPatientBtn">Search</button>
+                            <a ng-if="operator.updatePatient" style="cursor:pointer;margin-right:15px;">update patient details</a>
+                            <a ng-if="operator.addMember" style="cursor:pointer;">add member</a>
+                        </form>
+                        <span style="color:red;" ng-if="operator.PhoneNumberErrorMessage">(* Please enter phone number of length 10 digits)</span>
+                        <div class="row">
+                            <label id="patientsListLabel">Patients are:</label>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2" ng-repeat="patientEntity in operator.patientsToBeDisplayedInRadios">
+                            <div class="radio patientRadios">
+                                <label class="textOfRadios">
+                                    <input type="radio" ng-checked="operator.{{'radio'+$index}}" name="patientRadio">{{patientEntity.firstName}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

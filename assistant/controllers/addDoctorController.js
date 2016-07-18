@@ -99,6 +99,10 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     doctorElement.itemsPerPage = 3;
     var displayArray = [];
 
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
+
+
 
     var getDoctorTypesPromise = dboticaServices.getDoctorCategories(organizationId);
     getDoctorTypesPromise.then(function(getDoctorsSuccess) {

@@ -22,6 +22,10 @@ angular.module('personalAssistant').controller('vitalSignController', ['$scope',
     loggedInAss = angular.fromJson(loggedInAss);
     vitalSign.assistantName = loggedInAss.firstName;
 
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
+
+
     vitalSign.hstep = 1;
     vitalSign.mstep = 1;
     vitalSign.options = {

@@ -191,7 +191,8 @@
 
 #drpBtnRoomTransferRoomNum>ul>li,
 #drpBtnRoomTransfer>ul>li,
-#drpBtnRoomTransferBedNum>ul>li {
+#drpBtnRoomTransferBedNum>ul>li,
+#doctorInOperator>ul>li {
     text-align: center;
 }
 
@@ -199,7 +200,8 @@
 #drpBtnDivdoctor>ul,
 #drpBtnRoomTransfer>ul,
 #drpBtnRoomTransferRoomNum>ul,
-#drpBtnRoomTransferBedNum>ul {
+#drpBtnRoomTransferBedNum>ul,
+#doctorInOperator>ul {
     width: 100% !important;
 }
 
@@ -219,6 +221,12 @@
     position: absolute;
     left: 94%;
     top: 43%;
+}
+
+#caretdoctorInOperator {
+    position: absolute;
+    left: 93%;
+    top: 36%;
 }
 
 .highlightActiveAdminEntity {

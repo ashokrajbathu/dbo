@@ -203,6 +203,30 @@ img {
     opacity: 0;
 }
 
+@media only screen and (max-width:768px) {
+    #caretDoctorInAdmin,
+    #caretInAdmin {
+        top: 16px !important;
+        left: 280px !important;
+    }
+    #doctorInAssistantDrop>ul,
+    #docTypeInAssistantDrop>ul,
+    #exampleInputCostAdmin,
+    #exampleInputRemarks {
+        width: 300px !important;
+    }
+    .serviceDoctorBtn {
+        width: 300px;
+    }
+}
+
+@media only screen and (max-width:505px) {
+    #caretDoctorInAdmin {
+        left: 280px !important;
+        top: 25px !important;
+    }
+}
+
 
 /* à la fin de l'entrée */
 

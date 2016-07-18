@@ -29,6 +29,10 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
     doctorCategoryElement.sortTypeOne = 'doctorType';
     doctorCategoryElement.sortTypeTwo = 'description';
 
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
+
+
     var getDoctorsCategoriesPromise = dboticaServices.getDoctorCategories(organizationId);
     getDoctorsCategoriesPromise.then(function(doctorsCategoriesPromise) {
         angular.element('#mainAdminLiActive').addClass('activeAdminLi');

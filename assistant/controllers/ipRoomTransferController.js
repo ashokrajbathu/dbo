@@ -20,6 +20,10 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
         'minDate': 0
     });
 
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
+
+
     ipRoom.mytime = new Date();
     ipRoom.hstep = 1;
     ipRoom.mstep = 1;

@@ -38,7 +38,8 @@ angular.module('personalAssistant').controller('medicationController', ['$rootSc
         { 'name': '-Category Name-' }
     ];
 
-
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
 
     function getData() {
         medication.patient = dboticaServices.getPatientDetailsFromService();

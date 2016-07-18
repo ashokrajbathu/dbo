@@ -16,6 +16,10 @@ angular.module('personalAssistant').controller('dischargeSummaryController', ['$
     $scope.popupCloseDelay = 2000;
     discharge.categoryToolTip = false;
 
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
+
+
     $scope.placement = {
         options: [
             'top',

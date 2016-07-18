@@ -24,6 +24,10 @@ angular.module('personalAssistant').controller('intakeOutputController', ['$scop
     loggedInAss = angular.fromJson(loggedInAss);
     intakeOutput.assistantName = loggedInAss.firstName;
 
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
+
+
     intakeOutput.hstep = 1;
     intakeOutput.mstep = 1;
     intakeOutput.options = {

@@ -62,11 +62,11 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
             controllerAs: 'adminView',
             templateUrl: 'views/admin.html'
         })
-        .state('home.analyticReports', {
-            url: '/analyticReports',
-            controller: 'analyticReportsCtrl',
-            controllerAs: 'analyticReport',
-            templateUrl: 'views/analyticReports.html'
+        .state('home.operator', {
+            url: '/operator',
+            controller: 'operatorController',
+            controllerAs: 'operator',
+            templateUrl: 'views/operator.html'
         })
         .state('home.invoiceHistory', {
             url: '/invoiceHistory',

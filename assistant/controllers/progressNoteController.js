@@ -17,6 +17,10 @@ angular.module('personalAssistant').controller('progressNoteController', ['$scop
     loggedInAss = angular.fromJson(loggedInAss);
     note.assistantName = loggedInAss.firstName;
 
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
+
+
     note.newNote = {};
     note.newNote.notes = '';
 

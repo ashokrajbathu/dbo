@@ -1,13 +1,15 @@
 <div ng-controller="adminCtrl as adminView" ng-cloak>
     <div class="admin">
         <div class="container">
-            <h5 ng-click="adminView.toggleBetweenViews()" style="cursor:pointer;" class="pull-right"><a ng-if="adminView.changeAddressLink">(Change Address)</a><a ng-if="adminView.backLink">(Back to Doctor Section)</a></h5>
-            <h3 class="adminHeader">Admin</h3>
+            <div class="row">
+                <h5 ng-click="adminView.toggleBetweenViews()" style="cursor:pointer;" class="pull-right"><a ng-if="adminView.changeAddressLink">(Change Address)</a><a ng-if="adminView.backLink">(Back to Doctor Section)</a></h5>
+                <h3 class="adminHeader">Admin</h3>
+            </div>
             <div ng-if="adminView.doctorSectionDiv" class="selectDoctorSection">
                 <form>
                     <div class="form-group adminEntity">
                         <div class="form-inline adminEntity">
-                            <div class="form-group adminDropDown dropdown">
+                            <div id="doctorInAssistantDrop" class="form-group adminDropDown dropdown">
                                 <button class="serviceDoctorBtn" type="button" data-toggle="dropdown">{{adminView.admin.doctorInDropdown}}
                                     <span id="caretDoctorInAdmin" class="caret"></span></button>
                                 <ul class="dropdown-menu">
@@ -16,7 +18,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="form-group adminDropDown dropdown">
+                            <div id="docTypeInAssistantDrop" class="form-group adminDropDown dropdown">
                                 <button class="serviceDoctorBtn" type="button" data-toggle="dropdown">{{adminView.admin.serviceInDropDown}}
                                     <span id="caretInAdmin" class="caret"></span></button>
                                 <ul class="dropdown-menu">

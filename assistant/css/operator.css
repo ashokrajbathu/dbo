@@ -1,0 +1,35 @@
+.patientInOperator>.panel-heading {
+    color: white;
+    height: 35px;
+    background-color: #3c8dbc;
+}
+
+.patientInOperator>.patientInOperatorPanelBody {
+    border: 1px solid #c5c5c5;
+}
+
+.patientInOperator>.panel-heading>h4 {
+    margin-top: -2px !important;
+}
+
+@media only screen and (max-width:768px) {
+    #doctorInOperatorBtn {
+        width: 300px !important;
+    }
+    #caretdoctorInOperator {
+        left: 280px !important;
+    }
+}
+
+#patientsListLabel {
+    margin-left: 14px;
+    margin-top: 6px;
+}
+
+.textOfRadios {
+    font-weight: 400 !important;
+}
+
+.patientRadios {
+    margin-top: -6px;
+}

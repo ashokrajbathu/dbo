@@ -16,7 +16,7 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
     $scope.isVisibleNavs.patientManagement = false;
     $scope.isVisibleNavs.billManagement = false;
     $scope.isVisibleNavs.inventory = false;
-    $scope.isVisibleNavs.analyticReports = false;
+    $scope.isVisibleNavs.operator = false;
     $scope.isVisibleNavs.admin = false;
     $scope.isVisibleNavs.ipd = false;
     $scope.isVisibleNavs.mainAdmin = false;
@@ -38,7 +38,7 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
                 $scope.isVisibleNavs.admin = true;
                 break;
             case 'HOSPITAL_ADMIN':
-                $scope.isVisibleNavs.analyticReports = true;
+                $scope.isVisibleNavs.operator = true;
                 $scope.isVisibleNavs.ipd = true;
                 $scope.isVisibleNavs.mainAdmin = true;
                 break;
@@ -69,8 +69,8 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
             $state.go('home.admin');
             break;
 
-        case 'analyticReport':
-            $state.go('home.analyticReports');
+        case 'operator':
+            $state.go('home.operator');
             break;
 
         case 'invoiceHistory':

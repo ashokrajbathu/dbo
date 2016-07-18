@@ -29,6 +29,10 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
     var entitiesArray = [];
     var entitiesArrayFlag = parseInt(0);
 
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
+
+
     register.phoneNumberValidation = phoneNumberValidation;
     register.patientSearchWithPhoneNumber = patientSearchWithPhoneNumber;
     register.addPatient = addPatient;
