@@ -1,4 +1,7 @@
-angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('adminCtrl', adminCtrl);
+adminCtrl.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
+
+function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     localStorage.setItem("currentState", "admin");
     var adminElement = this;
 
@@ -484,4 +487,4 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             dboticaServices.noConnectivityError();
         });
     }
-}]);
+};

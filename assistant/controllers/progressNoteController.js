@@ -1,4 +1,7 @@
-angular.module('personalAssistant').controller('progressNoteController', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', '$timeout', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, $timeout, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('progressNoteController', progressNoteController);
+progressNoteController.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', '$timeout', 'SweetAlert', 'doctorServices'];
+
+function progressNoteController($scope, $log, dboticaServices, $state, $http, $parse, $timeout, doctorServices, SweetAlert) {
     angular.element("#inputNoteDate").datepicker({
         dateFormat: "dd/mm/yy",
         autoclose: true
@@ -168,4 +171,4 @@ angular.module('personalAssistant').controller('progressNoteController', ['$scop
         });
     }
 
-}]);
+};

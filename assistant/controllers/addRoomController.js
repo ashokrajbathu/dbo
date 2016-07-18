@@ -1,4 +1,7 @@
-angular.module('personalAssistant').controller('roomController', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('roomController', roomController);
+roomController.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
+
+function roomController($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var roomElement = this;
 
     roomElement.roomCategories = [];
@@ -238,4 +241,4 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
         localArray = displayArray[requiredIndex];
         angular.copy(localArray, roomElement.roomsList);
     }
-}]);
+};

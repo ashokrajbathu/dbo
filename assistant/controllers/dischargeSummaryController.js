@@ -1,4 +1,7 @@
-angular.module('personalAssistant').controller('dischargeSummaryController', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', '$timeout', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, $timeout, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('dischargeSummaryController', dischargeSummaryController);
+dischargeSummaryController.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', '$timeout', 'SweetAlert', 'doctorServices'];
+
+function dischargeSummaryController($scope, $log, dboticaServices, $state, $http, $parse, $timeout, doctorServices, SweetAlert) {
     var discharge = this;
 
     var organizationId = localStorage.getItem('orgId');
@@ -89,4 +92,4 @@ angular.module('personalAssistant').controller('dischargeSummaryController', ['$
             dboticaServices.pleaseSelectPatientSwal();
         }
     }
-}]);
+};

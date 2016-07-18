@@ -1,4 +1,7 @@
-angular.module('personalAssistant').controller('intakeOutputController', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', '$timeout', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, $timeout, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('intakeOutputController', intakeOutputController);
+intakeOutputController.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', '$timeout', 'SweetAlert', 'doctorServices'];
+
+function intakeOutputController($scope, $log, dboticaServices, $state, $http, $parse, $timeout, doctorServices, SweetAlert) {
     angular.element("#inputModalDate").datepicker({
         dateFormat: "dd/mm/yy",
         autoclose: true
@@ -321,5 +324,4 @@ angular.module('personalAssistant').controller('intakeOutputController', ['$scop
             dboticaServices.noConnectivityError();
         });
     }
-
-}]);
+};

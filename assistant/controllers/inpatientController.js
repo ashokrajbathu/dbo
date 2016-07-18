@@ -1,7 +1,9 @@
-angular.module('personalAssistant').controller('inpatientController', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('inpatientController', inpatientController);
+inpatientController.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
+
+function inpatientController($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     localStorage.setItem("currentState", "ipd");
     var inpatientElement = this;
-
     inpatientElement.phoneNumberLengthValidation = phoneNumberLengthValidation;
     inpatientElement.patientSearch = patientSearch;
     inpatientElement.patientSelectFromDropdown = patientSelectFromDropdown;
@@ -371,4 +373,4 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
         }
     }
 
-}]);
+};

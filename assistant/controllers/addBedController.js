@@ -1,4 +1,7 @@
-angular.module('personalAssistant').controller('bedController', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('bedController', bedController);
+bedController.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
+
+function bedController($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var bedElement = this;
 
     bedElement.addNewBed = addNewBed;
@@ -255,4 +258,4 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
         localArray = displayArray[requiredIndex];
         angular.copy(localArray, bedElement.bedsToBeDisplayedInTable);
     }
-}]);
+};

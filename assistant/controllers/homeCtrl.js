@@ -1,5 +1,7 @@
-angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$location', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, $location, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('homeCtrl', homeCtrl);
+homeCtrl.$inject = ['$scope', '$log', '$location', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
 
+function homeCtrl($scope, $log, $location, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var currentStateActive = localStorage.getItem("currentState");
     var currentActiveAssistant = {};
     var currentActiveAssistantPermissions = [];
@@ -107,4 +109,4 @@ angular.module('personalAssistant').controller('homeCtrl', ['$scope', '$log', '$
             $log.log("in logout error response");
         });
     };
-}]);
+};

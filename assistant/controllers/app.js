@@ -171,7 +171,10 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
         });
 });
 
-angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope', '$log', '$location', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, $location, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('personalAssistantCtrl', personalAssistantCtrl);
+personalAssistantCtrl.$inject = ['$scope', '$log', '$location', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
+
+function personalAssistantCtrl($scope, $log, $location, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     $scope.singleModel = 1;
     $scope.loading = false;
     $scope.blurScreen = false;
@@ -288,4 +291,4 @@ angular.module('personalAssistant').controller('personalAssistantCtrl', ['$scope
                 break;
         }
     }
-}]);
+};

@@ -1,4 +1,7 @@
-angular.module('personalAssistant').controller('doctorController', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('doctorController', doctorController);
+doctorController.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
+
+function doctorController($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var doctorElement = this;
 
     var organizationId = localStorage.getItem('orgId');
@@ -464,4 +467,4 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
         localArray = displayArray[requiredIndex];
         angular.copy(localArray, doctorElement.doctorsListInTheTable);
     }
-}]);
+};

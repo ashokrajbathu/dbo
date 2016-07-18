@@ -1,4 +1,7 @@
-angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', '$log', '$timeout', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, $timeout, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('billManagementCtrl', billManagementCtrl);
+billManagementCtrl.$inject = ['$scope', '$log', '$timeout', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
+
+function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     localStorage.setItem("currentState", "billManagement");
 
     var billElement = this;
@@ -671,7 +674,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         dboticaServices.noConnectivityError();
     });
 
-}]);
+};
 
 angular.module('personalAssistant').directive('autoComplete', function(dboticaServices, $timeout, $log) {
     return {

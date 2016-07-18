@@ -1,4 +1,7 @@
-angular.module('personalAssistant').controller('medicationController', ['$rootScope', '$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', '$timeout', 'SweetAlert', 'doctorServices', function($rootScope, $scope, $log, dboticaServices, $state, $http, $parse, $timeout, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('medicationController', medicationController);
+medicationController.$inject = ['$rootScope', '$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', '$timeout', 'SweetAlert', 'doctorServices'];
+
+function medicationController($rootScope, $scope, $log, dboticaServices, $state, $http, $parse, $timeout, doctorServices, SweetAlert) {
     var medication = this;
 
     medication.getData = getData;
@@ -150,4 +153,4 @@ angular.module('personalAssistant').controller('medicationController', ['$rootSc
     }
 
 
-}]);
+};

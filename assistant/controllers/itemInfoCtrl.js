@@ -1,4 +1,7 @@
-angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('itemInfoCtrl', itemInfoCtrl);
+itemInfoCtrl.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
+
+function itemInfoCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     localStorage.setItem("currentState", "itemInfo");
 
     var itemInfoElement = this;
@@ -284,4 +287,4 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             });
         }
     }
-}]);
+};

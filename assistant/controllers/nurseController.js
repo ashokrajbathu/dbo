@@ -1,4 +1,7 @@
-angular.module('personalAssistant').controller('nurseController', ['$rootScope', '$scope', '$log', '$stateParams', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($rootScope, $scope, $log, $stateParams, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('nurseController', nurseController);
+nurseController.$inject = ['$rootScope', '$scope', '$log', '$stateParams', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
+
+function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     localStorage.setItem('currentState', 'nurseHome');
 
     var nurseHome = this;
@@ -145,26 +148,28 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
                 var outputEventsList = [];
                 var transferEventsList = [];
                 $log.log('events response is----', eventsResponseIs);
-                angular.forEach(eventsResponseIs, function(pateintEventEntity) {
-                    pateintEventEntity.referenceDetails = angular.fromJson(pateintEventEntity.referenceDetails);
-                    if (patient.id == pateintEventEntity.patientId && pateintEventEntity.state == 'ACTIVE' && pateintEventEntity.patientEventType == 'MEDICINE_PROVIDED') {
-                        eventsList.push(pateintEventEntity);
+                angular.forEach(eventsResponseIs, function(patientEventEntity) {
+                    patientEventEntity.referenceDetails = angular.fromJson(patientEventEntity.referenceDetails);
+                    if (patient.id == patientEventEntity.patientId && patientEventEntity.state == 'ACTIVE' && patientEventEntity.patientEventType == 'MEDICINE_PROVIDED') {
+                        eventsList.push(patientEventEntity);
                     }
-                    if (patient.id == pateintEventEntity.patientId && pateintEventEntity.state == 'ACTIVE' && pateintEventEntity.patientEventType == 'PATIENT_DETAILS' && pateintEventEntity.referenceDetails.type == 'PROGRESS_NOTE') {
-                        progressNoteEventsList.push(pateintEventEntity);
+                    if (patient.id == patientEventEntity.patientId && patientEventEntity.state == 'ACTIVE' && patientEventEntity.patientEventType == 'PATIENT_DETAILS' && patientEventEntity.referenceDetails.type == 'PROGRESS_NOTE') {
+                        progressNoteEventsList.push(patientEventEntity);
                     }
-                    if (patient.id == pateintEventEntity.patientId && pateintEventEntity.state == 'ACTIVE' && pateintEventEntity.patientEventType == 'PATIENT_DETAILS' && pateintEventEntity.referenceDetails.type == 'VITAL_SIGN') {
-                        vitalSignEventsList.push(pateintEventEntity);
+                    if (patient.id == patientEventEntity.patientId && patientEventEntity.state == 'ACTIVE' && patientEventEntity.patientEventType == 'PATIENT_DETAILS' && patientEventEntity.referenceDetails.type == 'VITAL_SIGN') {
+                        vitalSignEventsList.push(patientEventEntity);
                     }
-                    if (patient.id == pateintEventEntity.patientId && pateintEventEntity.state == 'ACTIVE' && pateintEventEntity.patientEventType == 'PATIENT_DETAILS' && pateintEventEntity.referenceDetails.type == 'INTAKE_RECORD') {
-                        intakeEventsList.push(pateintEventEntity);
+                    if (patient.id == patientEventEntity.patientId && patientEventEntity.state == 'ACTIVE' && patientEventEntity.patientEventType == 'PATIENT_DETAILS' && patientEventEntity.referenceDetails.type == 'INTAKE_RECORD') {
+                        intakeEventsList.push(patientEventEntity);
                     }
-                    if (patient.id == pateintEventEntity.patientId && pateintEventEntity.state == 'ACTIVE' && pateintEventEntity.patientEventType == 'PATIENT_DETAILS' && pateintEventEntity.referenceDetails.type == 'OUTPUT_RECORD') {
-                        outputEventsList.push(pateintEventEntity);
+                    if (patient.id == patientEventEntity.patientId && patientEventEntity.state == 'ACTIVE' && patientEventEntity.patientEventType == 'PATIENT_DETAILS' && patientEventEntity.referenceDetails.type == 'OUTPUT_RECORD') {
+                        outputEventsList.push(patientEventEntity);
                     }
-                    if (patient.id == pateintEventEntity.patientId && pateintEventEntity.state == 'ACTIVE' && pateintEventEntity.patientEventType == 'ROOM_TRANSFERRED') {
-                        pateintEventEntity.roomTransferDate = pateintEventEntity.creationTime;
-                        transferEventsList.push(pateintEventEntity);
+                    if (patient.id == patientEventEntity.patientId && patientEventEntity.state == 'ACTIVE' && patientEventEntity.patientEventType == 'ROOM_TRANSFERRED') {
+                        if (_.has(patientEventEntity, 'referenceDetails.type')) {
+                            patientEventEntity.roomTransferDate = patientEventEntity.creationTime;
+                            transferEventsList.push(patientEventEntity);
+                        }
                     }
                 });
                 dboticaServices.setPatientEvents(eventsList);
@@ -179,4 +184,4 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
             dboticaServices.noConnectivityError();
         });
     }
-}]);
+};

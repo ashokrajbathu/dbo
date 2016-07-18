@@ -1,6 +1,7 @@
-angular.module('personalAssistant').controller('ipRoomTransferController', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', '$timeout', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, $timeout, doctorServices, SweetAlert) {
-    
+angular.module('personalAssistant').controller('ipRoomTransferController', ipRoomTransferController);
+ipRoomTransferController.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', '$timeout', 'SweetAlert', 'doctorServices'];
 
+function ipRoomTransferController($scope, $log, dboticaServices, $state, $http, $parse, $timeout, doctorServices, SweetAlert) {
     var ipRoom = this;
     ipRoom.transferPatientNew = transferPatientNew;
     ipRoom.timeChangeInTxtBox = timeChangeInTxtBox;
@@ -223,6 +224,8 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
                     } else {
                         transferPatientSuccess = angular.fromJson(transferPatientResponse.data.response);
                         $log.log('transfer patient success is---', transferPatientSuccess);
+                        transferPatientSuccess.referenceDetails = angular.fromJson(transferPatientSuccess.details);
+                        ipRoom.transfersListToBeDisplayed.push(transferPatientSuccess);
                     }
                 }, function(transferPatientError) {
                     dboticaServices.noConnectivityError();
@@ -258,4 +261,4 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
             dboticaServices.inpatientErrorSwal();
         }
     }
-}]);
+};

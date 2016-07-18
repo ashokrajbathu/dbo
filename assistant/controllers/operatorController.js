@@ -1,4 +1,7 @@
-angular.module('personalAssistant').controller('operatorController', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('operatorController', operatorController);
+operatorController.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
+
+function operatorController($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var operator = this;
     localStorage.setItem('currentState', 'operator');
     operator.blurScreen = false;
@@ -189,4 +192,4 @@ angular.module('personalAssistant').controller('operatorController', ['$scope', 
         activePatientIndex = index;
     }
 
-}]);
+};

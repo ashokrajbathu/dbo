@@ -1,4 +1,7 @@
-angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log', '$timeout', '$filter', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, $timeout, $filter, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('inventoryCtrl', inventoryCtrl);
+inventoryCtrl.$inject = ['$scope', '$log', '$timeout', '$filter', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
+
+function inventoryCtrl($scope, $log, $timeout, $filter, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     localStorage.setItem("currentState", "inventory");
 
     var inventoryElement = this;
@@ -729,4 +732,4 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             return result;
         };
     });
-}]);
+};

@@ -1,4 +1,7 @@
-angular.module('personalAssistant').controller('invoiceHistoryController', ['$scope', '$log', '$timeout', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, $timeout, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('invoiceHistoryController', invoiceHistoryController);
+invoiceHistoryController.$inject = ['$scope', '$log', '$timeout', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
+
+function invoiceHistoryController($scope, $log, $timeout, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var invoiceElement = this;
 
     localStorage.setItem("currentState", "invoiceHistory");
@@ -265,4 +268,4 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
         invoiceElement.invoiceGlobal.invoiceHistoryList = [];
         invoiceElement.invoiceGlobal.invoiceHistoryList = invoicesArray;
     }
-}]);
+};

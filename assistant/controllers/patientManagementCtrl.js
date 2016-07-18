@@ -1,5 +1,7 @@
-angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope', 'dboticaServices', '$state', '$filter', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, dboticaServices, $state, $http, $filter, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('patientManagementCtrl', patientManagementCtrl);
+patientManagementCtrl.$inject = ['$scope', 'dboticaServices', '$state', '$filter', '$parse', '$http', 'SweetAlert', 'doctorServices'];
 
+function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, $parse, doctorServices, SweetAlert) {
     localStorage.setItem("currentState", "patientManagement");
     angular.element("#sessionDatepicker").datepicker({
         dateFormat: "dd/mm/yy",
@@ -861,4 +863,4 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             dboticaServices.noConnectivityError();
         });
     }
-}]);
+};

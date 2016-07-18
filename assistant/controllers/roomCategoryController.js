@@ -1,4 +1,7 @@
-angular.module('personalAssistant').controller('roomCategoryController', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', 'NgTableParams', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert, NgTableParams) {
+angular.module('personalAssistant').controller('roomCategoryController', roomCategoryController);
+roomCategoryController.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', 'NgTableParams'];
+
+function roomCategoryController($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert, NgTableParams) {
     var roomCategoryElement = this;
 
     roomCategoryElement.addNewRoomCategory = addNewRoomCategory;
@@ -198,4 +201,4 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
         angular.copy(localArray, roomCategoryElement.activeRoomCategories);
     }
 
-}]);
+};

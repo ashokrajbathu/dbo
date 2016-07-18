@@ -1,4 +1,7 @@
-angular.module('personalAssistant').controller('patientHistoryController', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
+angular.module('personalAssistant').controller('patientHistoryController', patientHistoryController);
+patientHistoryController.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
+
+function patientHistoryController($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var patientHistoryElement = this;
 
     patientHistoryElement.request = {};
@@ -61,4 +64,4 @@ angular.module('personalAssistant').controller('patientHistoryController', ['$sc
             dboticaServices.pleaseSelectPatientSwal();
         }
     }
-}]);
+};
