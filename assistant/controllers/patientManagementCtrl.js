@@ -128,7 +128,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
     $scope.doctorsData = dboticaServices.doctorsOfAssistant();
     $scope.doctorsData.then(function(doctorresponse) {
         var errorCode = doctorresponse.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             $scope.doctorsList = JSON.parse(doctorresponse.data.response);
@@ -214,7 +214,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             var promise = dboticaServices.getPatientDetailsOfThatNumber(phoneNumberForSearch);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     $scope.patientAvailable = true;
@@ -255,7 +255,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         var promise = dboticaServices.futureAppointmentListOfNumber(patientPhoneNumberForCancelling, doctorId);
         promise.then(function(response) {
             var errorCode = response.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var objectsList = JSON.parse(response.data.response);
@@ -288,7 +288,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         var promise = dboticaServices.cancelAppointmentOfADateOrUpdateDoctorEvent(cancelBook);
         promise.then(function(response) {
             var errorCode = response.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 $scope.bookingsForCancelling.splice(index, 1);
@@ -321,7 +321,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         var promise = dboticaServices.updateDoctorTimings(addTimeObj);
         promise.then(function(response) {
             var errorCode = response.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = milliSecondsOfStartTime;
@@ -378,7 +378,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         var promise = dboticaServices.getPatientDetailsOfThatNumber(patientId);
         promise.then(function(response) {
             var errorCode = response.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 if (response.data.success) {
@@ -428,7 +428,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             var promise = dboticaServices.cancelAppointmentOfADateOrUpdateDoctorEvent(cancelBook);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     $scope.patientsList.splice(index, 1);
@@ -509,7 +509,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor(doctorId);
         patientsListOfDoctor.then(function(response) {
             var errorCode = response.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var patientsList = JSON.parse(response.data.response);
@@ -595,7 +595,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         var promise = dboticaServices.getDoctorEventsOfDocOnADate($scope.book.doctorId, milliSecsOfDate);
         promise.then(function(response) {
                 var errorCode = response.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var doctorResponseAfterDateSelect = JSON.parse(response.data.response);
@@ -729,7 +729,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
             var promise = dboticaServices.addNewPatient(newPatientDetails);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var addPatientResponse = JSON.parse(response.data.response);
@@ -826,7 +826,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', ['$scope
         var promise = dboticaServices.cancelAppointmentOfADateOrUpdateDoctorEvent($scope.book);
         promise.then(function(response) {
             var errorCode = response.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 if (response.data.success === true) {

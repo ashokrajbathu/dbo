@@ -68,7 +68,7 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
     var roomsPromise = dboticaServices.getRooms(organizationId);
     roomsPromise.then(function(roomsSuccess) {
         var errorCode = roomsSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var roomsSuccessResponse = angular.fromJson(roomsSuccess.data.response);
@@ -85,7 +85,7 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
     var getRoomCategoryPromise = dboticaServices.getRoomCategories(organizationId);
     getRoomCategoryPromise.then(function(roomCategoriesSuccess) {
         var errorCode = roomCategoriesSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             roomCategoriesSuccessResponse = angular.fromJson(roomCategoriesSuccess.data.response);
@@ -102,7 +102,7 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
     var bedsInRoomPromise = dboticaServices.getBeds(organizationId);
     bedsInRoomPromise.then(function(bedInRoomSuccess) {
         var errorCode = bedInRoomSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             bedInRoomSuccessResponse = angular.fromJson(bedInRoomSuccess.data.response);

@@ -48,7 +48,7 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
     var getRegisteredPatientsPromise = dboticaServices.getRegisteredPatients(organizationId);
     getRegisteredPatientsPromise.then(function(registeredPatientsSuccess) {
         var errorCode = registeredPatientsSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorcode);
         } else {
             var registeredpatientsList = angular.fromJson(registeredPatientsSuccess.data.response);
@@ -83,7 +83,7 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
         var patientDetailsPromise = dboticaServices.getPatientDetailsOfThatNumber(register.patientSearchInTxtBox);
         patientDetailsPromise.then(function(patientDetailsSuccess) {
             var errorCode = patientDetailsSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var patientsListResponse = angular.fromJson(patientDetailsSuccess.data.response);
@@ -135,7 +135,7 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
             var newPatientInRegisterPatientPromise = dboticaServices.addNewPatient(patientDataRequestEntity);
             newPatientInRegisterPatientPromise.then(function(newPatientPromise) {
                 var errorCode = newPatientPromise.data.errorcode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var newPatSuccess = angular.fromJson(newPatientPromise.data.response);
@@ -189,7 +189,7 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
             var registerPatientPromise = dboticaServices.registerPatient(registerPatientRequestEntity);
             registerPatientPromise.then(function(registerPatientSuccess) {
                 var errorCode = registerPatientSuccess.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     registerPatientList = angular.fromJson(registerPatientSuccess.data.response);
@@ -236,7 +236,7 @@ angular.module('personalAssistant').controller('registerPatientController', ['$s
                 var deleteRegisteredPatientPromise = dboticaServices.registerPatient(deletePatientRequestEntity);
                 deleteRegisteredPatientPromise.then(function(deletePatientSuccess) {
                     var errorCode = deletePatientSuccess.data.errorCode;
-                    if (!!errorCode) {
+                    if (errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         if (errorCode == null && deletePatientSuccess.data.success == true) {

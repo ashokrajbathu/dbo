@@ -76,7 +76,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
     var promise = dboticaServices.getItemsOfTheTable(inventoryElement.start, inventoryElement.limit, "All", "All", organizationId);
     promise.then(function(response) {
         var errorCode = response.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             itemsDisplayFunction(response);
@@ -115,7 +115,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         var promise = dboticaServices.getItemsOfTheTable(inventoryElement.startDisplay - 1, limit, stockType, itemType, organizationId);
         promise.then(function(response) {
             var errorCode = response.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var nextBtnFetchedItemsObject = angular.fromJson(response.data.response);
@@ -156,7 +156,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         var promise = dboticaServices.getItemsOfTheTable(inventoryElement.startDisplay - 1, inventoryElement.limit, stockType, itemType, organizationId);
         promise.then(function(response) {
             var errorCode = response.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var previousBtnFetchedItemsObject = angular.fromJson(response.data.response);
@@ -182,7 +182,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         var promise = dboticaServices.addItemIntoStock(inventoryElement.addItemObject);
         promise.then(function(response) {
             var errorCode = response.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var success = response.data.success;
@@ -250,7 +250,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             var promise = dboticaServices.addBatchToTheDrug(requestEntity);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var success = response.data.success;
@@ -290,7 +290,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             var promise = dboticaServices.lowStockExpiredStockItems("lowItems", inventoryElement.start, inventoryElement.limit, itemType, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     itemsDisplayFunction(response);
@@ -321,7 +321,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             var promise = dboticaServices.getItemsOfTheTable(inventoryElement.start, inventoryElement.limit, stockType, itemType, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     itemsDisplayFunction(response);
@@ -350,7 +350,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             var promise = dboticaServices.lowStockExpiredStockItems("expiredStockItems", inventoryElement.start, inventoryElement.limit, itemType, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     itemsDisplayFunction(response);
@@ -371,7 +371,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             var promise = dboticaServices.getItemFromDB(inventoryElement.itemSearch.itemName, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var itemSearchResponse = angular.fromJson(response.data.response);
@@ -399,7 +399,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
         var promise = dboticaServices.getItemsOfTheTable(inventoryElement.start, inventoryElement.limit, 'All', 'All', organizationId);
         promise.then(function(response) {
             var errorCode = response.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 itemsDisplayFunction(response);
@@ -435,7 +435,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             var promise = dboticaServices.getStockItemsForTheTable("All", inventoryElement.start, inventoryElement.limit, stockType, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     itemsDisplayFunction(response);
@@ -469,7 +469,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             var promise = dboticaServices.getStockItemsForTheTable("DrugItems", inventoryElement.start, inventoryElement.limit, stockType, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     itemsDisplayFunction(response);
@@ -503,7 +503,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             var promise = dboticaServices.getStockItemsForTheTable("SuppliesItems", inventoryElement.start, inventoryElement.limit, stockType, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     itemsDisplayFunction(response);
@@ -536,7 +536,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             var promise = dboticaServices.getStockItemsForTheTable("EquipmentItems", inventoryElement.start, inventoryElement.limit, stockType, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     itemsDisplayFunction(response);
@@ -568,7 +568,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
             var promise = dboticaServices.getStockItemsForTheTable("OtherItems", inventoryElement.start, inventoryElement.limit, stockType, organizationId);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     itemsDisplayFunction(response);
@@ -583,7 +583,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', ['$scope', '$log
 
     var itemsDisplayFunction = function(response) {
         var errorCode = response.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var itemsFetchedFromApi = angular.fromJson(response.data.response);

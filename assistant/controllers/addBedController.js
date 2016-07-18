@@ -38,7 +38,7 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
     var roomsInBedPromise = dboticaServices.getRooms(organizationId);
     roomsInBedPromise.then(function(roomsInBedSuccess) {
         var errorCode = roomsInBedSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var roomsInBedListSuccess = angular.fromJson(roomsInBedSuccess.data.response);
@@ -54,7 +54,7 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
     var bedsInRoomPromise = dboticaServices.getBeds(organizationId);
     bedsInRoomPromise.then(function(bedsInRoomSuccess) {
         var errorCode = bedsInRoomSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var bedsListInResponse = angular.fromJson(bedsInRoomSuccess.data.response);
@@ -78,7 +78,7 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
             var addNewBedPromise = dboticaServices.addNewBed(bedElement.addNew);
             addNewBedPromise.then(function(addNewBedSuccess) {
                 var errorCode = addNewBedSuccess.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var addNewBedSuccessResponse = angular.fromJson(addNewBedSuccess.data.response);
@@ -167,7 +167,7 @@ angular.module('personalAssistant').controller('bedController', ['$scope', '$log
                 var deleteBedPromise = dboticaServices.addNewBed(bedUnit);
                 deleteBedPromise.then(function(deleteBedSuccess) {
                     var errorCode = deleteBedSuccess.data.errorCode;
-                    if (!!errorCode) {
+                    if (errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         var deleteBedSuccessResponse = angular.fromJson(deleteBedSuccess.data.response);

@@ -37,7 +37,7 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
     getDoctorsCategoriesPromise.then(function(doctorsCategoriesPromise) {
         angular.element('#mainAdminLiActive').addClass('activeAdminLi');
         var errorCode = doctorsCategoriesPromise.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var doctorCategories = angular.fromJson(doctorsCategoriesPromise.data.response);
@@ -63,7 +63,7 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
             var addNewDoctorCategoryPromise = dboticaServices.addNewDoctorCategory(doctorCategoryElement.addNewDoctorCategory);
             addNewDoctorCategoryPromise.then(function(addNewDoctorSuccess) {
                 var errorCode = addNewDoctorSuccess.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var addNewDoctorCategorySuccess = angular.fromJson(addNewDoctorSuccess.data.response);
@@ -122,7 +122,7 @@ angular.module('personalAssistant').controller('doctorCategoryController', ['$sc
             var deleteDoctorCategoryPromise = dboticaServices.addNewDoctorCategory(doctorCategory);
             deleteDoctorCategoryPromise.then(function(deleteDoctorSuccess) {
                 var errorCode = deleteDoctorSuccess.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var deleteDoctorEntitySuccess = angular.fromJson(deleteDoctorSuccess.data.response);

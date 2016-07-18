@@ -46,7 +46,7 @@ angular.module('personalAssistant').controller('patientHistoryController', ['$sc
             var saveHistoryPromise = dboticaServices.patientEvent(savePatientRequestEntity);
             saveHistoryPromise.then(function(saveHistorySuccess) {
                 var errorCode = saveHistorySuccess.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage();
                 } else {
                     var saveHistoryResponse = angular.fromJson(saveHistorySuccess.data.response);

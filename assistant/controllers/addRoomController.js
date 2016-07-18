@@ -37,7 +37,7 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
     var roomCategoriesPromise = dboticaServices.getRoomCategories(organizationId);
     roomCategoriesPromise.then(function(roomCategoriesSuccess) {
         var errorCode = roomCategoriesSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var roomCategoriesList = angular.fromJson(roomCategoriesSuccess.data.response);
@@ -56,7 +56,7 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
     var getRoomsPromise = dboticaServices.getRooms(organizationId);
     getRoomsPromise.then(function(getRoomsSuccessResponse) {
         var errorCode = getRoomsSuccessResponse.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var roomsListFromAPI = angular.fromJson(getRoomsSuccessResponse.data.response);
@@ -82,7 +82,7 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
         var addNewRoomPromise = dboticaServices.addOrUpdateRoom(roomElement.addNewRoom);
         addNewRoomPromise.then(function(addNewRoomSuccess) {
             var errorCode = addNewRoomSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var addroomSuccess = angular.fromJson(addNewRoomSuccess.data.response);
@@ -145,7 +145,7 @@ angular.module('personalAssistant').controller('roomController', ['$scope', '$lo
             var deleteRoomPromise = dboticaServices.addOrUpdateRoom(room);
             deleteRoomPromise.then(function(deleteRoomSuccess) {
                 var errorCode = deleteRoomSuccess.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var deleteRoomSuccessEntity = angular.fromJson(deleteRoomSuccess.data.response);

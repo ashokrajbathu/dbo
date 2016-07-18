@@ -91,7 +91,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
             var getDetailsOfThePatient = dboticaServices.getPatientDetailsOfThatNumber(currentActiveInvoice.patientId);
             getDetailsOfThePatient.then(function(getDetailsSuccess) {
                 var errorCode = getDetailsSuccess.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var patientDetails = angular.fromJson(getDetailsSuccess.data.response);
@@ -131,7 +131,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         var medicinesPromise = dboticaServices.getItemsOfTheTable(0, 100, 'All', 'Drug', organizationId);
         medicinesPromise.then(function(successResponse) {
             var errorCode = successResponse.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var medicinesSuccessResponse = angular.fromJson(successResponse.data.response);
@@ -159,7 +159,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     var testsPromise = dboticaServices.getTests();
     testsPromise.then(function(testsPromiseSuccessResponse) {
             var errorCode = testsPromiseSuccessResponse.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var testsList = angular.fromJson(testsPromiseSuccessResponse.data.response);
@@ -189,7 +189,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         var doctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
         doctorsOfThatAssistant.then(function(successResponse) {
             var errorCode = successResponse.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 billElement.bill.doctorsListInBillManagement = angular.fromJson(successResponse.data.response);
@@ -243,7 +243,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                 var patientSearchPromise = dboticaServices.getPatientDetailsOfThatNumber(phoneNumber);
                 patientSearchPromise.then(function(patientSearchSuccessResponse) {
                     var errorCode = patientSearchSuccessResponse.data.errorCode;
-                    if (!!errorCode) {
+                    if (errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         var patientsList = angular.fromJson(patientSearchSuccessResponse.data.response);
@@ -286,7 +286,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
         var patientPrescriptionPromise = dboticaServices.getPrescriptionsOfThePatient(patient.id);
         patientPrescriptionPromise.then(function(selectedRadioPatientSuccess) {
             var errorCode = selectedRadioPatientSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var prescriptionSuccess = angular.fromJson(selectedRadioPatientSuccess.data.response);
@@ -425,7 +425,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
                 var invoiceUpdatePromise = dboticaServices.updateInvoice(billElement.finalBill);
                 invoiceUpdatePromise.then(function(invoiceUpdateSuccessResponse) {
                     var errorCode = invoiceUpdateSuccessResponse.data.errorCode;
-                    if (!!errorCode) {
+                    if (errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         var success = invoiceUpdateSuccessResponse.data.success;
@@ -661,7 +661,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', ['$scope', 
     var getAddressPromise = dboticaServices.getOrganizationAddress();
     getAddressPromise.then(function(getAddressSuccess) {
         var errorCode = getAddressSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             getAddressSuccessResponse = angular.fromJson(getAddressSuccess.data.response);

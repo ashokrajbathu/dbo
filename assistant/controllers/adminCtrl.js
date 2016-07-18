@@ -55,7 +55,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     var doctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
     doctorsOfThatAssistant.then(function(response) {
         var errorCode = response.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             adminElement.doctorsListInAdmin = angular.fromJson(response.data.response);
@@ -89,7 +89,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
     var organizationAddressPromise = dboticaServices.getOrganizationAddress();
     organizationAddressPromise.then(function(organizationAddressSuccess) {
         var errorCode = organizationAddressSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var organizationAddress = angular.fromJson(organizationAddressSuccess.data.response);
@@ -131,7 +131,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             var getTestsPromise = dboticaServices.getTests();
             getTestsPromise.then(function(getTestsSuccessResponse) {
                 var errorCode = getTestsSuccessResponse.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     getTestsSuccess = angular.fromJson(getTestsSuccessResponse.data.response);
@@ -235,7 +235,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 var submitTestRequestPromise = dboticaServices.submitTestRequest(testObject);
                 submitTestRequestPromise.then(function(testRequestSuccessResponse) {
                     var errorCode = testRequestSuccessResponse.data.errorCode;
-                    if (!!errorCode) {
+                    if (errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         var errorCode = testRequestSuccessResponse.data.errorCode;
@@ -273,14 +273,14 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
                 var submitServiceRequestPromise = dboticaServices.submitServiceRequest(serviceRequestEntity);
                 submitServiceRequestPromise.then(function(successResponseOfServiceRequest) {
                     var errorCode = successResponseOfServiceRequest.data.errorCode;
-                    if (!!errorCode) {
+                    if (errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         if (successResponseOfServiceRequest.data.success === true && successResponseOfServiceRequest.data.errorCode === null) {
                             var updatedDoctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
                             updatedDoctorsOfThatAssistant.then(function(successResponse) {
                                 var errorCode = successResponse.data.errorCode;
-                                if (!!errorCode) {
+                                if (errorCode) {
                                     dboticaServices.logoutFromThePage(errorCode);
                                 } else {
                                     var updatedDoctorsOfThatAssistantResponse = angular.fromJson(successResponse.data.response);
@@ -340,7 +340,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             var submitTestStatePromise = dboticaServices.submitTestRequest(changeTestStateRequestEntity);
             submitTestStatePromise.then(function(submitTestStateChangeSuccess) {
                 var errorCode = submitTestStateChangeSuccess.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var successtestStateChange = angular.fromJson(submitTestStateChangeSuccess.data.response);
@@ -382,14 +382,14 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
             var changeServiceStateRequestPromise = dboticaServices.submitServiceRequest(changeStateRequestEntity);
             changeServiceStateRequestPromise.then(function(successResponseOfChangeStateRequest) {
                 var errorCode = successResponseOfChangeStateRequest.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     if (successResponseOfChangeStateRequest.data.success === true && successResponseOfChangeStateRequest.data.errorCode === null) {
                         var updatedDoctors = dboticaServices.doctorsOfAssistant();
                         updatedDoctors.then(function(successResponse) {
                             var errorCode = successResponse.data.errorCode;
-                            if (!!errorCode) {
+                            if (errorCode) {
                                 dboticaServices.logoutFromThePage(errorCode);
                             } else {
                                 var updatedDoctorsResponse = angular.fromJson(successResponse.data.response);
@@ -469,7 +469,7 @@ angular.module('personalAssistant').controller('adminCtrl', ['$scope', '$log', '
         var updateOrgAddressPromise = dboticaServices.updateOrgAddress(addressRequestEntity);
         updateOrgAddressPromise.then(function(updateOrgSuccess) {
             var errorCode = updateOrgSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage();
             } else {
                 updatedAddress = angular.fromJson(updateOrgSuccess.data.response);

@@ -48,7 +48,7 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
         var patientsListPromise = dboticaServices.getInPatientsWithPhoneNumber(nurseHome.number);
         patientsListPromise.then(function(patientsListSuccess) {
             var errorCode = patientsListSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var inpatientsListFromApi = [];
@@ -108,7 +108,7 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
         var eventsPromise = dboticaServices.getPatientEvents(organizationId);
         eventsPromise.then(function(eventsSuccess) {
             var errorCode = eventsSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var eventsResponseIs = angular.fromJson(eventsSuccess.data.response);

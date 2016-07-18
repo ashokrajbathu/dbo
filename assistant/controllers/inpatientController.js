@@ -63,7 +63,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     var doctorsListPromise = dboticaServices.doctorsOfAssistant();
     doctorsListPromise.then(function(doctorsListSuccess) {
         var errorCode = doctorsListSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             inpatientElement.doctorsListInInpatient = angular.fromJson(doctorsListSuccess.data.response);
@@ -79,7 +79,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     var doctorCategoriesPromise = dboticaServices.getDoctorCategories(organizationId);
     doctorCategoriesPromise.then(function(doctorCategorySuccess) {
         var errorCode = doctorCategorySuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var doctorCategoriesList = angular.fromJson(doctorCategorySuccess.data.response);
@@ -95,7 +95,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     var doctorsListPromise = dboticaServices.doctorsListInMainAdmin(organizationId);
     doctorsListPromise.then(function(doctorsListSuccess) {
         var errorCode = doctorsListSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var doctorsListArray = angular.fromJson(doctorsListSuccess.data.response);
@@ -110,7 +110,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     var roomsPromise = dboticaServices.getRooms(organizationId);
     roomsPromise.then(function(roomsSuccess) {
         var errorCode = roomsSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var roomsList = angular.fromJson(roomsSuccess.data.response);
@@ -127,7 +127,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
     var bedsPromise = dboticaServices.getBeds(organizationId);
     bedsPromise.then(function(bedsSuccess) {
         var errorCode = bedsSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var bedsListLocal = angular.fromJson(bedsSuccess.data.response);
@@ -174,7 +174,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
         var inpatientSearchPromise = dboticaServices.getPatientDetailsOfThatNumber(inpatientElement.number);
         inpatientSearchPromise.then(function(inpatientSearchSuccess) {
             var errorCode = inpatientSearchSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 inpatientElement.patientsListOfThatNumber = angular.fromJson(inpatientSearchSuccess.data.response);
@@ -221,7 +221,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             var inpatientPromise = dboticaServices.addNewPatient(patientDataRequestEntity);
             inpatientPromise.then(function(inpatientSuccessResponse) {
                 var errorCode = inpatientSuccessResponse.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var inpatientAddResponse = angular.fromJson(inpatientSuccessResponse.data.response);
@@ -340,7 +340,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             var addPatientToBedPromise = dboticaServices.addPatientToBed(bedRequestEntity);
             addPatientToBedPromise.then(function(addPatientSuccess) {
                 var errorCode = addPatientSuccess.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var addPatientToBedResponse = angular.fromJson(addPatientSuccess.data.response);

@@ -95,7 +95,7 @@ angular.module('personalAssistant').controller('medicationController', ['$rootSc
                 var saveMedicinesPromise = dboticaServices.patientEvent(medicationRequestEntity);
                 saveMedicinesPromise.then(function(saveMedicineSuccess) {
                     var errorCode = saveMedicineSuccess.data.errorCode;
-                    if (!!errorCode) {
+                    if (errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         var medicineResponse = angular.fromJson(saveMedicineSuccess.data.response);
@@ -133,7 +133,7 @@ angular.module('personalAssistant').controller('medicationController', ['$rootSc
         var removeEventPromise = dboticaServices.patientEvent(removeRequestEntity);
         removeEventPromise.then(function(removeEventSuccess) {
             var errorCode = removeEventSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 if (errorCode == null && removeEventSuccess.data.success == true) {

@@ -111,7 +111,7 @@ angular.module('personalAssistant').controller('vitalSignController', ['$scope',
                 var vitalSignPromise = dboticaServices.patientEvent(addVitalSignRequestEntity);
                 vitalSignPromise.then(function(vitalSignSuccess) {
                     var errorCode = vitalSignSuccess.data.errorCode;
-                    if (!!errorCode) {
+                    if (errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         var vitalSignResponse = angular.fromJson(vitalSignSuccess.data.response);
@@ -146,7 +146,7 @@ angular.module('personalAssistant').controller('vitalSignController', ['$scope',
         var removeEventPromise = dboticaServices.patientEvent(removeRequestEntity);
         removeEventPromise.then(function(removeEventSuccess) {
             var errorCode = removeEventSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 if (errorCode == null && removeEventSuccess.data.success == true) {

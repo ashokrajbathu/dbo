@@ -15,6 +15,100 @@
                 </div>
             </div>
         </div>
+        <div id="newOrUpdatePatientModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add / Update Patient Details:</h4>
+                    </div>
+                    <div class="modal-body">
+                        <span style="color:red;" ng-if="operator.noPatientDetailsErrorMessage">No Patient Details Found.Please add Patient</span>
+                        <span style="color:red;" ng-if="operator.mandatoryFieldsErrorMessage">Please enter *asterisk marked mandatory fields</span>
+                        <div class="row inpatientRowInModal">
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputName">*Name</label>
+                                        <input type="text" class="form-control exampleInpatientPhone" id="exampleInputFirstName" ng-model="operator.patientData.firstName" placeholder="Name">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail">Email</label>
+                                        <input type="email" class="form-control exampleInpatientPhone" id="exampleInputEmail" ng-model="operator.patientData.emailId" placeholder="Email">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputPhoneNumber">*Phone Number</label>
+                                        <input numbers-only type="text" class="form-control exampleInpatientPhone" id="exampleInputPhoneNumber" ng-model="operator.patientData.phoneNumber" placeholder="Phone Number">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row inpatientRowInModal">
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputAge">Age</label>
+                                        <input type="text" class="form-control exampleInpatientPhone" id="exampleInputAge" ng-model="operator.patientData.age" placeholder="Age">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputGender">Gender</label>
+                                        <select ng-model="operator.patientData.gender" class="form-control exampleInpatientPhone" id="exampleInputGender">
+                                            <option>MALE</option>
+                                            <option>FEMALE</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputBloodGroup">Blood Group</label>
+                                        <select ng-model="operator.patientData.bloodGroup" class="form-control exampleInpatientPhone" id="exampleInputBloodGroup">
+                                            <option value="O_POSITIVE">O_POSITIVE</option>
+                                            <option value="O_NEGATIVE">O_NEGATIVE</option>
+                                            <option value="A_POSITIVE">A_POSITIVE</option>
+                                            <option value="A_NEGATIVE">A_NEGATIVE</option>
+                                            <option value="B_POSITIVE">B_POSITIVE</option>
+                                            <option value="B_NEGATIVE">B_NEGATIVE</option>
+                                            <option value="AB_POSITIVE">AB_POSITIVE</option>
+                                            <option value="AB_NEGATIVE">AB_NEGATIVE</option>
+                                            <option value="OTHER">OTHER</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row inpatientRowInModal">
+                            <div class="col-md-4 col-sm-8 col-xs-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleInputDrugAllergy">Drug Allergy</label>
+                                        <input type="text" ng-model="operator.patientData.drugAllergy" class="form-control exampleInpatientPhone" id="exampleInputDrugAllergy" placeholder="Drug Allergy">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row text-center">
+                            <button id="addPatientBtnInModal" ng-click="operator.addOrUpdatePatient()" class="buttonsInInpatientModal btn addPatientBtn" type="button">Save</button>
+                            <button class="btn buttonsInInpatientModal addPatientBtn" data-dismiss="modal" type="button">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-9 col-sm-11 col-xs-11">
                 <div class="panel patientInOperator">
@@ -27,18 +121,38 @@
                                 <input ng-change="operator.phoneNumberLengthValidation()" class="form-control" numbers-only ng-model="operator.phoneNumber" placeholder="Phone Number" type="text">
                             </div>
                             <button ng-click="operator.patientSearchByOperator()" ng-disabled="operator.patientSearchBtnDisabled" type="button" class="btn addPatientBtn">Search</button>
-                            <a ng-if="operator.updatePatient" style="cursor:pointer;margin-right:15px;">update patient details</a>
-                            <a ng-if="operator.addMember" style="cursor:pointer;">add member</a>
+                            <a ng-click="operator.updatePatientDetails()" data-toggle="modal" data-target="#newOrUpdatePatientModal" ng-if="operator.updatePatient" style="cursor:pointer;margin-right:15px;">update patient details</a>
+                            <a ng-click="operator.addFamilyMember()" data-toggle="modal" data-target="#newOrUpdatePatientModal" ng-if="operator.addMember" style="cursor:pointer;">add member</a>
                         </form>
                         <span style="color:red;" ng-if="operator.PhoneNumberErrorMessage">(* Please enter phone number of length 10 digits)</span>
                         <div class="row">
                             <label id="patientsListLabel">Patients are:</label>
                         </div>
-                        <div class="col-md-2 col-sm-2 col-xs-2" ng-repeat="patientEntity in operator.patientsToBeDisplayedInRadios">
+                        <div class="col-md-2 col-sm-2 col-xs-6" ng-repeat="patientEntity in operator.patientsToBeDisplayedInRadios">
                             <div class="radio patientRadios">
                                 <label class="textOfRadios">
-                                    <input type="radio" ng-checked="operator.{{'radio'+$index}}" name="patientRadio">{{patientEntity.firstName}}
+                                    <input ng-click="operator.selectActivePatient(patientEntity,$index)" type="radio" ng-checked="operator.{{'radio'+$index}}" name="patientRadio">{{patientEntity.firstName}}
                                 </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-9 col-sm-11 col-xs-11">
+                <div class="panel patientInOperator">
+                    <div class="panel-heading">
+                        <h4>Add Drugs</h4>
+                    </div>
+                    <div class="panel-body patientInOperatorPanelBody">
+                        <div class="row">
+                            <div class="col-md-9 form-group">
+                                <input type="text" placeholder="Drug" ng-model="operator.fillPrescription.drugSearch" id="drugSearchBox" class="form-control" data-validation="required">
+                                <span id="searchclear" class="glyphicon glyphicon-remove-circle"></span>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" id="drugType" ng-model="operator.fillPrescription.drugType" class="form-control fillPrescriptionSecondRow" readonly>
                             </div>
                         </div>
                     </div>

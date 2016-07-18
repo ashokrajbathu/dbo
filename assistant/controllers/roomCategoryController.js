@@ -32,7 +32,7 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
     var getRoomCategoryPromise = dboticaServices.getRoomCategories(organizationId);
     getRoomCategoryPromise.then(function(getRoomCategoriesSuccess) {
         var errorCode = getRoomCategoriesSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var totalRoomCategories = [];
@@ -57,7 +57,7 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
         var addOrUpdateRoomCategoryPromise = dboticaServices.addOrUpdateRoomCategory(roomCategoryElement.newRoomCategory);
         addOrUpdateRoomCategoryPromise.then(function(addOrUpdateSuccess) {
             var errorCode = addOrUpdateSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var addOrUpdateSuccessResponse = angular.fromJson(addOrUpdateSuccess.data.response);
@@ -115,7 +115,7 @@ angular.module('personalAssistant').controller('roomCategoryController', ['$scop
             var deleteRoomCategoryPromise = dboticaServices.addOrUpdateRoomCategory(roomCategory);
             deleteRoomCategoryPromise.then(function(deleteRoomCategorySuccess) {
                 var errorCode = deleteRoomCategorySuccess.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var deleteRoomSuccess = angular.fromJson(deleteRoomCategorySuccess.data.response);

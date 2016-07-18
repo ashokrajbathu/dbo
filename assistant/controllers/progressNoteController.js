@@ -109,7 +109,7 @@ angular.module('personalAssistant').controller('progressNoteController', ['$scop
                 var addNewNotePromise = dboticaServices.patientEvent(addNoteRequestEntity);
                 addNewNotePromise.then(function(addNoteSuccess) {
                     var errorCode = addNoteSuccess.data.errorCode;
-                    if (!!errorCode) {
+                    if (errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         if (errorCode == null && addNoteSuccess.data.success == true) {
@@ -152,7 +152,7 @@ angular.module('personalAssistant').controller('progressNoteController', ['$scop
         var removeEventPromise = dboticaServices.patientEvent(removeRequestEntity);
         removeEventPromise.then(function(removeEventSuccess) {
             var errorCode = removeEventSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 if (errorCode == null && removeEventSuccess.data.success == true) {

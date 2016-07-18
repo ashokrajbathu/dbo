@@ -52,7 +52,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
     dboticaServices.setInvoice(invoiceActive);
     doctorsOfThatAssistantForInvoices.then(function(doctorsSuccessResponse) {
         var errorCode = doctorsSuccessResponse.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             invoiceElement.doctorsList = angular.fromJson(doctorsSuccessResponse.data.response);
@@ -71,7 +71,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
     var invoiceHistoryPromise = dboticaServices.getInvoiceHistoryOnLoad(organizationId);
     invoiceHistoryPromise.then(function(invoiceSuccessResponse) {
         var errorCode = invoiceSuccessResponse.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             invoiceHistoryArray = angular.fromJson(invoiceSuccessResponse.data.response);
@@ -170,7 +170,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
         }
         searchResultPromise.then(function(searchInvoiceSuccess) {
             var errorCode = searchInvoiceSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var invoicesListOnSuccess = angular.fromJson(searchInvoiceSuccess.data.response);
@@ -195,7 +195,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
             var viewAllInvoicesPromise = dboticaServices.getInvoiceHistoryOnLoad(organizationId);
             viewAllInvoicesPromise.then(function(viewAllInvoicesSuccess) {
                 var errorCode = viewAllInvoicesSuccess.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var viewAllInvoicesList = angular.fromJson(viewAllInvoicesSuccess.data.response);
@@ -221,7 +221,7 @@ angular.module('personalAssistant').controller('invoiceHistoryController', ['$sc
             var viewPendingInvoicesPromise = dboticaServices.getPendingInvoices(organizationId);
             viewPendingInvoicesPromise.then(function(pendingInvoicesSuccess) {
                 var errorCode = pendingInvoicesSuccess.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var viewPendingInvoicesList = angular.fromJson(pendingInvoicesSuccess.data.response);

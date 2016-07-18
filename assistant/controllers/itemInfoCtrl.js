@@ -59,7 +59,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
     promise.then(function(response) {
         angular.element('#mainInventoryLiActive').addClass('activeAdminLi');
         var errorCode = response.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var batchesInfo = angular.fromJson(response.data.response);
@@ -124,7 +124,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
         var getItemPromise = dboticaServices.getAllBatches(currentItemId, organizationId);
         getItemPromise.then(function(getItemSuccess) {
             var errorCode = getItemSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var errorCode = getItemSuccess.data.errorCode;
@@ -164,7 +164,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
         itemUpdatePromise.then(function(itemUpdateSuccessResponse) {
             var errorCode = itemUpdateSuccessResponse.data.errorCode;
             var success = itemUpdateSuccessResponse.data.success;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 if (errorCode == null && success == true) {
@@ -192,7 +192,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             var promise = dboticaServices.updateTheBatch(requestEntity);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var updatedBatchInfo = angular.fromJson(response.data.response);
@@ -257,7 +257,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', ['$scope', '$log'
             var promise = dboticaServices.addBatchToTheDrug(requestEntity);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var success = response.data.success;

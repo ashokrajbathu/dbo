@@ -146,7 +146,7 @@ angular.module('personalAssistant').controller('intakeOutputController', ['$scop
                 var intakePromise = dboticaServices.patientEvent(outputrequestEntity);
                 intakePromise.then(function(intakeSuccess) {
                     var errorCode = intakeSuccess.data.errorCode;
-                    if (!!errorCode) {
+                    if (errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         var intakeResponse = angular.fromJson(intakeSuccess.data.response);
@@ -203,7 +203,7 @@ angular.module('personalAssistant').controller('intakeOutputController', ['$scop
         var removeEventPromise = dboticaServices.patientEvent(removeRequestEntity);
         removeEventPromise.then(function(removeEventSuccess) {
             var errorCode = removeEventSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 if (errorCode == null && removeEventSuccess.data.success == true) {
@@ -249,7 +249,7 @@ angular.module('personalAssistant').controller('intakeOutputController', ['$scop
                 var outputRecordPromise = dboticaServices.patientEvent(outputrequestEntity);
                 outputRecordPromise.then(function(outputRecordSuccess) {
                     var errorCode = outputRecordSuccess.data.errorCode;
-                    if (!!errorCode) {
+                    if (errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         outputSuccess = angular.fromJson(outputRecordSuccess.data.response);
@@ -306,7 +306,7 @@ angular.module('personalAssistant').controller('intakeOutputController', ['$scop
         var removeEventPromise = dboticaServices.patientEvent(removeRequestEntity);
         removeEventPromise.then(function(removeEventSuccess) {
             var errorCode = removeEventSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 if (errorCode == null && removeEventSuccess.data.success == true) {

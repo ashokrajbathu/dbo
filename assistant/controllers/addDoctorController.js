@@ -107,7 +107,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     var getDoctorTypesPromise = dboticaServices.getDoctorCategories(organizationId);
     getDoctorTypesPromise.then(function(getDoctorsSuccess) {
         var errorCode = getDoctorsSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var doctorTypes = [];
@@ -127,7 +127,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     var getDoctorsListOnLoadPromise = dboticaServices.doctorsOfAssistant();
     getDoctorsListOnLoadPromise.then(function(getDoctorsListSuccess) {
         var errorCode = getDoctorsListSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             doctorsListIs = angular.fromJson(getDoctorsListSuccess.data.response);
@@ -149,7 +149,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
     var doctorsListInAdminPromise = dboticaServices.doctorsListInMainAdmin(organizationId);
     doctorsListInAdminPromise.then(function(doctorsListInMainSuccess) {
         var errorCode = doctorsListInMainSuccess.data.errorCode;
-        if (!!errorCode) {
+        if (errorCode) {
             dboticaServices.logoutFromThePage();
         } else {
             var docsListInAdmin = angular.fromJson(doctorsListInMainSuccess.data.response);
@@ -180,7 +180,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
         var doctorActive = null;
         doctorsOfAssistantPromise.then(function(doctorsSuccess) {
             var errorCode = doctorsSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var doctorsListResponse = angular.fromJson(doctorsSuccess.data.response);
@@ -238,7 +238,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
         var addNewDoctorPromise = dboticaServices.addNewDoctorToACategory(doctorElement.addNewDoctor);
         addNewDoctorPromise.then(function(addNewDocSuccess) {
             var errorCode = addNewDocSuccess.data.errorCode;
-            if (!!errorCode) {
+            if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var newDoctorResponse = angular.fromJson(addNewDocSuccess.data.response);
@@ -292,7 +292,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
             var deleteDoctorPromise = dboticaServices.addNewDoctorToACategory(doctorEntryInTable);
             deleteDoctorPromise.then(function(deleteDoctorSuccess) {
                 var errorCode = deleteDoctorSuccess.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var deleteDoctorSuccessEntity = angular.fromJson(deleteDoctorSuccess.data.response);
@@ -425,7 +425,7 @@ angular.module('personalAssistant').controller('doctorController', ['$scope', '$
             $log.log('add new doctor promise is----', newDoctorPromise);
             newDoctorPromise.then(function(newDoctorSuccess) {
                 var errorCode = newDoctorSuccess.data.errorCode;
-                if (!!errorCode) {
+                if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var newDoctorDetails = angular.fromJson(newDoctorSuccess.data.response);
