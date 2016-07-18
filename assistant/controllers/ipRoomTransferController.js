@@ -1,7 +1,7 @@
 angular.module('personalAssistant').controller('ipRoomTransferController', ipRoomTransferController);
 ipRoomTransferController.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', '$timeout', 'SweetAlert', 'doctorServices'];
 /*< -- -- -- -- -- -- - issue with transfer patient-- -- -- -- -- -- - >
-*/
+ */
 function ipRoomTransferController($scope, $log, dboticaServices, $state, $http, $parse, $timeout, doctorServices, SweetAlert) {
     var ipRoom = this;
     ipRoom.transferPatientNew = transferPatientNew;
