@@ -22,6 +22,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     var itemSelected, longDate;
     var intakeEvents = [];
     var outputEventsList = [];
+    var transfersArray = [];
 
     this.login = function(userEmailId, password) {
         var inputData = {};
@@ -1784,6 +1785,14 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return vitalSignPatientEvents;
     }
 
+    this.setTransfersArray = function(value) {
+        transfersArray = value;
+    }
+
+    this.getTransfersArray = function() {
+        return transfersArray;
+    }
+
     this.addVitalSignSuccessSwal = function() {
         swal({
             title: "Success",
@@ -1931,6 +1940,21 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             deferred.resolve(transferPatientSuccess);
         }, function(transferPatientError) {
             deferred.reject(transferPatientError);
+        });
+        return deferred.promise;
+    }
+
+    this.getTransferPatients = function(organizationId) {
+        var deferred = $q.defer();
+        var getTransferEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/getTransferEvents?organizationId=' + organizationId,
+            withCredentials: true
+        }
+        $http(getTransferEntity).then(function(getTransferResponse) {
+            deferred.resolve(getTransferResponse);
+        }, function(getTransferError) {
+            deferred.reject(getTransferError);
         });
         return deferred.promise;
     }

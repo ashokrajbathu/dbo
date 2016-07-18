@@ -117,6 +117,7 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
                 var vitalSignEventsList = [];
                 var intakeEventsList = [];
                 var outputEventsList = [];
+                $log.log('events response is----', eventsResponseIs);
                 angular.forEach(eventsResponseIs, function(pateintEventEntity) {
                     pateintEventEntity.referenceDetails = angular.fromJson(pateintEventEntity.referenceDetails);
                     if (patient.id == pateintEventEntity.patientId && pateintEventEntity.state == 'ACTIVE' && pateintEventEntity.patientEventType == 'MEDICINE_PROVIDED') {
@@ -142,6 +143,25 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
                 dboticaServices.setOutputEvents(outputEventsList);
             }
         }, function(eventsError) {
+            dboticaServices.noConnectivityError();
+        });
+        var getTransfersListPromise = dboticaServices.getTransferPatients(organizationId);
+        getTransfersListPromise.then(function(getTransfersResponse) {
+            var errorCode = getTransfersResponse.data.errorCode;
+            if (errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                var getTransfersSuccess = angular.fromJson(getTransfersResponse.data.response);
+                $log.log('get transfers success is---', getTransfersSuccess);
+                var transfersArray = [];
+                angular.forEach(getTransfersSuccess, function(entity) {
+                    var localReason = angular.fromJson(entity.reason);
+                    localReason.roomTransferDate = entity.dateOfRoomTransfer;
+                    transfersArray.push(localReason);
+                });
+                dboticaServices.setTransfersArray(transfersArray);
+            }
+        }, function(getTransfersError) {
             dboticaServices.noConnectivityError();
         });
     }

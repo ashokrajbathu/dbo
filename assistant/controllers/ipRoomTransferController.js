@@ -32,15 +32,21 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
         mstep: [1, 5, 10, 15, 25, 30]
     };
     ipRoom.ismeridian = true;
-    ipRoom.dateToolTip = false;
+    /*ipRoom.dateToolTip = false;*/
     ipRoom.roomCategoryToolTip = false;
     ipRoom.roomNumberToolTip = false;
     ipRoom.bedNumberToolTip = false;
     var roomsFromApi = [];
     var bedsFromApi = [];
+    var nextBedId;
+    var nextBedNumber;
+    var activeRoomNumber;
+    var activeFloorNumber;
+    var activeRoomCategoryName;
     ipRoom.bedsToBeDisplayed = [];
     ipRoom.roomsToBeDisplayedList = [];
     ipRoom.roomCategoriesToBeDisplayed = [];
+    ipRoom.transfersListToBeDisplayed = [];
     ipRoom.transferPatient = {};
 
     var roomCategoryObject = { 'roomType': '-Room Type-' };
@@ -49,6 +55,9 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
     ipRoom.roomCategoryNameInModal = '-Room Type-';
     ipRoom.roomNumNameInModal = '-Room Name-';
     ipRoom.bedNumNameInModal = '-Bed Number-';
+    var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
+    loggedInAss = angular.fromJson(loggedInAss);
+    ipRoom.assistantName = loggedInAss.firstName;
 
     var date = new Date();
     var dateSorted = moment(date).format("DD/MM/YYYY,hh:mm A");
@@ -60,6 +69,7 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
 
     function getData() {
         activeInpatient = dboticaServices.getInpatient();
+        ipRoom.transfersListToBeDisplayed = dboticaServices.getTransfersArray();
         return true;
     }
 
@@ -121,6 +131,7 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
     }
 
     function selectedRoomCategoryInModal(roomCategoryEntity) {
+        $log.log('room category entity is---', roomCategoryEntity);
         ipRoom.roomCategoryNameInModal = roomCategoryEntity.roomType;
         if (roomCategoryEntity.roomType == '-Room Type-') {
             ipRoom.roomsToBeDisplayedList = [];
@@ -130,6 +141,7 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
             ipRoom.bedsToBeDisplayed.unshift(bedObject);
             ipRoom.roomsToBeDisplayedList.unshift(roomObject);
         } else {
+            activeRoomCategoryName = roomCategoryEntity.roomType;
             ipRoom.roomsToBeDisplayedList = [];
             var localRoomsOfACategory = [];
             localRoomsOfACategory = _.filter(roomsFromApi, function(entity) {
@@ -142,6 +154,7 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
     }
 
     function selectedRoomNameInModal(roomEntity) {
+        $log.log('room entity is----', roomEntity);
         ipRoom.roomNumNameInModal = roomEntity.roomNo;
         if (roomEntity.roomNo == '-Room Name-') {
             ipRoom.bedsToBeDisplayed = [];
@@ -151,8 +164,10 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
             ipRoom.bedsToBeDisplayed = [];
             var localBedsOfARoom = [];
             localBedsOfARoom = _.filter(bedsFromApi, function(entity) {
-                return entity.organizationRoomId == roomEntity.id;
+                return (entity.organizationRoomId == roomEntity.id) && (entity.bedStatus == 'VACANT');
             });
+            activeRoomNumber = roomEntity.roomNo;
+            activeFloorNumber = roomEntity.floorNo;
             angular.copy(localBedsOfARoom, ipRoom.bedsToBeDisplayed);
             ipRoom.bedsToBeDisplayed.unshift(bedObject);
             ipRoom.bedNumNameInModal = '-Bed Number-';
@@ -160,6 +175,8 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
     }
 
     function selectedBedNameInModal(bedEntity) {
+        nextBedId = bedEntity.id;
+        nextBedNumber = bedEntity.bedNo;
         ipRoom.bedNumNameInModal = bedEntity.bedNo;
     }
 
@@ -177,13 +194,42 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
             var bedNameInModal = ipRoom.bedNumNameInModal;
             if (roomTransferDate !== undefined && roomTransferDate !== '' && roomCategoryInModal !== undefined && roomCategoryInModal !== '' && roomNameInModal !== undefined && roomNameInModal !== '' && bedNameInModal !== undefined && bedNameInModal !== '') {
                 var roomTransferRequestEntity = {};
+                roomTransferRequestEntity.patientId = activeInpatient.id;
+                var localReason = {};
+                localReason.type = 'ROOM_TRANSFERRED';
+                localReason.roomCategoryName = activeRoomCategoryName;
+                localReason.bedNumber = nextBedNumber;
+                localReason.roomNumber = activeRoomNumber;
+                localReason.floorNumber = activeFloorNumber;
+                localReason.reason = ipRoom.transferPatient.reason;
+                roomTransferRequestEntity.reason = JSON.stringify(localReason);
+                if (ipRoom.transferPatient.nextChange !== undefined && ipRoom.transferPatient.nextChange !== '') {
+                    roomTransferRequestEntity.nextChange = dboticaServices.getLongValueOfDate(ipRoom.transferPatient.nextChange);
+                } else {
+                    roomTransferRequestEntity.nextChange = '';
+                }
+                roomTransferRequestEntity.newBedId = nextBedId;
+                $log.log('room transfer req entity is----', roomTransferRequestEntity);
+                var transferPatientPromise = dboticaServices.transferPatientToAnotherRoom(roomTransferRequestEntity);
+                $log.log('transfer patient promise is---', transferPatientPromise);
+                transferPatientPromise.then(function(transferPatientResponse) {
+                    var errorCode = transferPatientResponse.data.errorCode;
+                    if (errorCode) {
+                        dboticaServices.logoutFromThePage(errorCode);
+                    } else {
+                        transferPatientSuccess = angular.fromJson(transferPatientResponse.data.response);
+                        $log.log('transfer patient success is---', transferPatientSuccess);
+                    }
+                }, function(transferPatientError) {
+                    dboticaServices.noConnectivityError();
+                });
             } else {
-                if (roomTransferDate == undefined || roomTransferDate == '') {
+                /*if (roomTransferDate == undefined || roomTransferDate == '') {
                     ipRoom.dateToolTip = true;
                     $timeout(function() {
                         ipRoom.dateToolTip = false;
                     }, 400);
-                }
+                }*/
                 if (roomCategoryInModal == '-Room Type-') {
                     ipRoom.roomCategoryToolTip = true;
                     $timeout(function() {
