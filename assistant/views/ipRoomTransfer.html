@@ -107,20 +107,20 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody ng-if="patientMedication && ipRoomTransfer.getData();">
                     <tr ng-repeat="transferEntity in ipRoomTransfer.transfersListToBeDisplayed">
-                        <td ng-bind="transferEntity.roomTransferDate| date"></td>
-                        <td ng-bind="transferEntity.roomCategoryName"></td>
-                        <td ng-bind="transferEntity.floorNumber"></td>
-                        <td ng-bind="transferEntity.roomNumber"></td>
-                        <td ng-bind="transferEntity.bedNumber"></td>
-                        <td ng-bind="transferEntity.reason"></td>
+                        <td ng-bind="transferEntity.creationTime| date"></td>
+                        <td ng-bind="transferEntity.referenceDetails.roomCategoryName"></td>
+                        <td ng-bind="transferEntity.referenceDetails.floorNumber"></td>
+                        <td ng-bind="transferEntity.referenceDetails.roomNumber"></td>
+                        <td ng-bind="transferEntity.referenceDetails.bedNumber"></td>
+                        <td ng-bind="transferEntity.referenceDetails.reason"></td>
                         <td ng-bind="transferEntity.assistantName||ipRoomTransfer.assistantName"></td>
                         <td></td>
                     </tr>
                 </tbody>
             </table>
-            <a href="" ng-if="patientMedication && ipRoomTransfer.getData();"></a>
+            <a href=""></a>
         </div>
     </div>
 </div>

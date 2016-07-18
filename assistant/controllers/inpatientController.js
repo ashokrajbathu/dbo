@@ -338,6 +338,7 @@ angular.module('personalAssistant').controller('inpatientController', ['$scope',
             bedRequestEntity.doctorDetail.doctorDepartment = doctorDepartment;
             bedRequestEntity.doctorDetail.doctorName = activeDoctorName;
             var addPatientToBedPromise = dboticaServices.addPatientToBed(bedRequestEntity);
+            $log.log('add patient to bed promise---', addPatientToBedPromise);
             addPatientToBedPromise.then(function(addPatientSuccess) {
                 var errorCode = addPatientSuccess.data.errorCode;
                 if (errorCode) {

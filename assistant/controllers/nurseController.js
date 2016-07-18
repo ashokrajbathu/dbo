@@ -46,19 +46,45 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
 
     function patientSearchWithPhoneNumber() {
         var patientsListPromise = dboticaServices.getInPatientsWithPhoneNumber(nurseHome.number);
+        $log.log('patients list promise is---', patientsListPromise);
         patientsListPromise.then(function(patientsListSuccess) {
+            $log.log('promise for new number is---', patientsListPromise);
             var errorCode = patientsListSuccess.data.errorCode;
             if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
+                if (patientsListSuccess.data.response == "no patient found") {
+                    angular.element('#patientsListModal').modal('hide');
+                    dboticaServices.noAdmittedPatientSwal();
+                    var emptyPatientsArray = [];
+                    var emptyPatient = {};
+                    dboticaServices.setPatientEvents(emptyPatientsArray);
+                    dboticaServices.setProgressNotePatientEvents(emptyPatientsArray);
+                    dboticaServices.setVitalSignEvents(emptyPatientsArray);
+                    dboticaServices.setIntakeEvents(emptyPatientsArray);
+                    dboticaServices.setOutputEvents(emptyPatientsArray);
+                    dboticaServices.setTransfersArray(emptyPatientsArray);
+                    nurseHome.patientDetails.name = '';
+                    nurseHome.patientDetails.inpatientNumberInBox = '';
+                    nurseHome.patientDetails.inpatientAdmitTime = '';
+                    nurseHome.patientDetails.inchargeDoctorInBox = '';
+                    nurseHome.patientDetails.inchargeDepartmentInBox = '';
+                    nurseHome.patientDetails.inPatientRoomInBox = '';
+                    nurseHome.patientDetails.bedNumberInBox = '';
+                    dboticaServices.setInpatient(emptyPatient);
+                    nurseHome.patientsListToBeDisplayed = [];
+                    dboticaServices.setPatientDetailsInService(emptyPatient);
+                }
             } else {
                 var inpatientsListFromApi = [];
                 nurseHome.patientsListToBeDisplayed = [];
                 inpatientsListFromApi = angular.fromJson(patientsListSuccess.data.response);
-
-                angular.forEach(inpatientsListFromApi, function(inpatientEntity) {
-                    inpatientEntity.details = angular.fromJson(inpatientEntity.details);
-                });
-                angular.copy(inpatientsListFromApi, nurseHome.patientsListToBeDisplayed);
+                $log.log('inpatientsListFromApiis---', inpatientsListFromApi);
+                if (inpatientsListFromApi.length > 0) {
+                    angular.forEach(inpatientsListFromApi, function(inpatientEntity) {
+                        inpatientEntity.details = angular.fromJson(inpatientEntity.details);
+                    });
+                    angular.copy(inpatientsListFromApi, nurseHome.patientsListToBeDisplayed);
+                }
             }
         }, function(patientsListError) {
             dboticaServices.noConnectivityError();
@@ -117,6 +143,7 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
                 var vitalSignEventsList = [];
                 var intakeEventsList = [];
                 var outputEventsList = [];
+                var transferEventsList = [];
                 $log.log('events response is----', eventsResponseIs);
                 angular.forEach(eventsResponseIs, function(pateintEventEntity) {
                     pateintEventEntity.referenceDetails = angular.fromJson(pateintEventEntity.referenceDetails);
@@ -135,33 +162,20 @@ angular.module('personalAssistant').controller('nurseController', ['$rootScope',
                     if (patient.id == pateintEventEntity.patientId && pateintEventEntity.state == 'ACTIVE' && pateintEventEntity.patientEventType == 'PATIENT_DETAILS' && pateintEventEntity.referenceDetails.type == 'OUTPUT_RECORD') {
                         outputEventsList.push(pateintEventEntity);
                     }
+                    if (patient.id == pateintEventEntity.patientId && pateintEventEntity.state == 'ACTIVE' && pateintEventEntity.patientEventType == 'ROOM_TRANSFERRED') {
+                        pateintEventEntity.roomTransferDate = pateintEventEntity.creationTime;
+                        transferEventsList.push(pateintEventEntity);
+                    }
                 });
                 dboticaServices.setPatientEvents(eventsList);
                 dboticaServices.setProgressNotePatientEvents(progressNoteEventsList);
                 dboticaServices.setVitalSignEvents(vitalSignEventsList);
                 dboticaServices.setIntakeEvents(intakeEventsList);
                 dboticaServices.setOutputEvents(outputEventsList);
+                dboticaServices.setTransfersArray(transferEventsList);
+                $log.log('transfer events list is---', transferEventsList);
             }
         }, function(eventsError) {
-            dboticaServices.noConnectivityError();
-        });
-        var getTransfersListPromise = dboticaServices.getTransferPatients(organizationId);
-        getTransfersListPromise.then(function(getTransfersResponse) {
-            var errorCode = getTransfersResponse.data.errorCode;
-            if (errorCode) {
-                dboticaServices.logoutFromThePage(errorCode);
-            } else {
-                var getTransfersSuccess = angular.fromJson(getTransfersResponse.data.response);
-                $log.log('get transfers success is---', getTransfersSuccess);
-                var transfersArray = [];
-                angular.forEach(getTransfersSuccess, function(entity) {
-                    var localReason = angular.fromJson(entity.reason);
-                    localReason.roomTransferDate = entity.dateOfRoomTransfer;
-                    transfersArray.push(localReason);
-                });
-                dboticaServices.setTransfersArray(transfersArray);
-            }
-        }, function(getTransfersError) {
             dboticaServices.noConnectivityError();
         });
     }

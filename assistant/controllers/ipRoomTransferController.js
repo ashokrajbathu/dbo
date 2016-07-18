@@ -1,6 +1,7 @@
 angular.module('personalAssistant').controller('ipRoomTransferController', ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', '$timeout', 'SweetAlert', 'doctorServices', function($scope, $log, dboticaServices, $state, $http, $parse, $timeout, doctorServices, SweetAlert) {
-    var ipRoom = this;
+    
 
+    var ipRoom = this;
     ipRoom.transferPatientNew = transferPatientNew;
     ipRoom.timeChangeInTxtBox = timeChangeInTxtBox;
     ipRoom.selectedRoomCategoryInModal = selectedRoomCategoryInModal;
@@ -69,7 +70,10 @@ angular.module('personalAssistant').controller('ipRoomTransferController', ['$sc
 
     function getData() {
         activeInpatient = dboticaServices.getInpatient();
+        ipRoom.transfersListToBeDisplayed = [];
+        $log.log('active inpatient is---', activeInpatient);
         ipRoom.transfersListToBeDisplayed = dboticaServices.getTransfersArray();
+        $log.log('transfers list is---', ipRoom.transfersListToBeDisplayed);
         return true;
     }
 

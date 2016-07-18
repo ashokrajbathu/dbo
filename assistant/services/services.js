@@ -1909,6 +1909,16 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.noAdmittedPatientSwal = function() {
+        swal({
+            title: "Info",
+            text: "Please Admit the Patient",
+            type: "info",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
     this.getInPatientsWithPhoneNumber = function(phoneNumber) {
         var deferred = $q.defer();
         var getInPatientsRequestEntity = {
