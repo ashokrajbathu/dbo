@@ -302,15 +302,9 @@ function doctorController($scope, $log, dboticaServices, $state, $http, $parse, 
                     if (deleteDoctorSuccess.data.errorCode == null && deleteDoctorSuccess.data.success == true) {
                         dboticaServices.deleteDoctorSuccessSwal();
                         doctorElement.doctorsListInTheTable.splice(index, 1);
-                        var delIndex;
-                        for (var deleteIndex in entitiesArray) {
-                            if (entitiesArray[deleteIndex].id == doctorEntryInTable.id) {
-                                delIndex = deleteIndex;
-                                break;
-                            } else {
-                                continue;
-                            }
-                        }
+                        var delIndex = _.findLastIndex(entitiesArray, function(entity) {
+                            return entity.id = doctorEntryInTable.id;
+                        });
                         entitiesArray.splice(delIndex, 1);
                     }
                 }

@@ -227,6 +227,8 @@ function ipRoomTransferController($scope, $log, dboticaServices, $state, $http, 
                         $log.log('transfer patient success is---', transferPatientSuccess);
                         transferPatientSuccess.referenceDetails = angular.fromJson(transferPatientSuccess.details);
                         ipRoom.transfersListToBeDisplayed.push(transferPatientSuccess);
+                        /*----TODO----*/
+                        /*-----MAIN PROBLEM IS IN THE ABOVE FOUR LINES.PLEASE CHECK COMPLETE DELETE PART ALSO-----*/
                     }
                 }, function(transferPatientError) {
                     dboticaServices.noConnectivityError();

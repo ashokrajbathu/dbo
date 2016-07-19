@@ -1739,6 +1739,24 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.nonAllergicDrugSwal = function() {
+        swal({
+            title: "Error",
+            text: "Please select a drug to which patient is not allergic",
+            type: "error",
+            confirmButtonText: "OK"
+        });
+    }
+
+    this.noActivePatientSwal = function() {
+        swal({
+            title: "Error",
+            text: "Please select patient before adding drugs",
+            type: "error",
+            confirmButtonText: "OK"
+        });
+    }
+
     this.medicationDeleteSuccessSwal = function() {
         swal({
             title: "Success",
@@ -1965,6 +1983,21 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             deferred.resolve(getTransferResponse);
         }, function(getTransferError) {
             deferred.reject(getTransferError);
+        });
+        return deferred.promise;
+    }
+
+    this.getTests = function(test) {
+        var deferred = $q.defer();
+        var getTestRequestEntity = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/diagnosis/getDiagnosisTest?testName=' + test,
+            withCredentials: true
+        }
+        $http(getTestRequestEntity).then(function(getTestsResponse) {
+            deferred.resolve(getTestsResponse);
+        }, function(getTestsResponse) {
+            deferred.reject(getTestsResponse);
         });
         return deferred.promise;
     }

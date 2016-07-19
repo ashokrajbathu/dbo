@@ -21,6 +21,7 @@ function doctorCategoryController($scope, $log, dboticaServices, $state, $http, 
     var doctorCategoryItemId = '';
     var doctorCategoryItemIndex = '';
     var entitiesArray = [];
+    doctorCategoryElement.inputItemSearch = '';
     var sortedItemsArrayOnPageChange = [];
     doctorCategoryElement.currentPage = 1;
     doctorCategoryElement.itemsPerPage = 3;
@@ -137,7 +138,7 @@ function doctorCategoryController($scope, $log, dboticaServices, $state, $http, 
                         });
                         entitiesArray.splice(localDoctorCategoryIndex, 1);
                         doctorCategoryElement.totalItems = entitiesArray.length;
-                        displayArray = _.chunk(entitiesArray, bedElement.itemsPerPage);
+                        displayArray = _.chunk(entitiesArray, doctorCategoryElement.itemsPerPage);
                     }
                 }
             }, function(deleteDoctorError) {

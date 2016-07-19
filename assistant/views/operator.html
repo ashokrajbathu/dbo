@@ -147,14 +147,139 @@
                     </div>
                     <div class="panel-body patientInOperatorPanelBody">
                         <div class="row">
-                            <div class="col-md-9 form-group">
+                            <div class="col-md-9 col-xs-9 col-sm-9 form-group">
                                 <input type="text" placeholder="Drug" ng-model="operator.fillPrescription.drugSearch" id="drugSearchBox" class="form-control" data-validation="required">
                                 <span id="searchclear" class="glyphicon glyphicon-remove-circle"></span>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-3 col-xs-3">
                                 <input type="text" id="drugType" ng-model="operator.fillPrescription.drugType" class="form-control fillPrescriptionSecondRow" readonly>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-2 col-sm-3 col-xs-12">
+                                <input type="text" class="form-control drugScndRow" ng-model="operator.fillPrescription.perServing">
+                            </div>
+                            <div class="col-md-2 col-sm-3 col-xs-12">
+                                <input type="text" readonly placeholder="units" class="form-control drugScndRow" ng-model="operator.fillPrescription.perServingUnits">
+                            </div>
+                            <div class="col-md-2 col-sm-3 col-xs-12">
+                                <select class="form-control fillPrescriptionSecondRow drugScndRow" ng-model="operator.fillPrescription.daysOrQuantity" placeholder="Days" id="prescriptionFormDays">
+                                    <option name="Days">Days</option>
+                                    <option name="Quantity">Quantity</option>
+                                </select>
+                            </div>
+                            <div id="daysCountBox" class="col-md-2 form-group drugScndRow input-group spinner col-sm-2 col-xs-10">
+                                <input type="number" ng-model="operator.fillPrescription.days" class="form-control fillPrescriptionSecondRow" value="1" id="prescription-form-units"></input>
+                                <div class="input-group-btn-vertical">
+                                    <button class="btn btn-default" ng-click="operator.daysIncrement()" type="button"><i class="fa fa-caret-up"></i></button>
+                                    <button class="btn btn-default" ng-click="operator.daysDecrement()" type="button"><i class="fa fa-caret-down"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <textarea class="form-control" ng-model="operator.fillPrescription.specialInstructions" rows="3" placeholder="Special Instructions" id="prescription-form-si"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="timingsBtnGrp" class="col-md-12 col-xs-12 col-sm-12 form-group">
+                                <button type="button" ng-click="operator.addSuccess('Before_BreakFast')" class="btn timingsBtn col-md-1 btn-xs btn-{{operator.Before_BreakFast}}">BBF</button>
+                                <button type="button" ng-click="operator.addSuccess('After_BreakFast')" class="btn timingsBtn col-md-1 btn-xs btn-{{operator.After_BreakFast}}">ABF</button>
+                                <button type="button" ng-click="operator.addSuccess('Before_Lunch')" class="btn timingsBtn col-md-1 btn-xs btn-{{operator.Before_Lunch}}">BL</button>
+                                <button type="button" ng-click="operator.addSuccess('After_Lunch')" class="btn timingsBtn col-md-1 btn-xs btn-{{operator.After_Lunch}}">AL</button>
+                                <button type="button" ng-click="operator.addSuccess('Before_Dinner')" class="btn timingsBtn col-md-1 btn-xs btn-{{operator.Before_Dinner}}">BD</button>
+                                <button type="button" ng-click="operator.addSuccess('After_Dinner')" class="btn timingsBtn col-md-1 btn-xs btn-{{operator.After_Dinner}}">AD</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <button type="submit" ng-click="operator.addDrug()" id="addPrescriptionBtn" class="btn pull-right">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-9 col-sm-11 col-xs-11">
+                <div class="panel patientInOperator">
+                    <div class="panel-heading">
+                        <h4>List of Drugs</h4>
+                    </div>
+                    <div class="panel-body patientInOperatorPanelBody">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Brand Name</th>
+                                    <th>Per Serving</th>
+                                    <th>Days/Quantity</th>
+                                    <th>Usage</th>
+                                    <th>Remarks</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="drugEntity in operator.drugsList">
+                                    <td ng-bind="$index+1"></td>
+                                    <td ng-bind="drugEntity.drugSearch"></td>
+                                    <td ng-bind="drugEntity.perServing"></td>
+                                    <td ng-bind="drugEntity.amount"></td>
+                                    <td ng-bind="drugEntity.timings"></td>
+                                    <td ng-bind="drugEntity.remarks"></td>
+                                    <td>
+                                        <button type="button" ng-click="operator.deleteDrug($index)" class="btn btnDelete">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-9 col-sm-11 col-xs-11">
+                <div class="panel patientInOperator">
+                    <div class="panel-heading">
+                        <h4>Tests</h4>
+                    </div>
+                    <div class="panel-body patientInOperatorPanelBody">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                                <input type="text" ng-model-options="{debounce:500}" ng-change="operator.testSearch()" ng-model="operator.test.testName" class="form-control testsRow" placeholder="Test">
+                                <ul id="testsDropDown" ng-class="{'testDropDownActive':operator.dropdownActive}" class="dropdown-menu">
+                                    <li ng-click="operator.selectTestFromTheDropdown(testEntity)" ng-repeat="testEntity in operator.testsList">
+                                        <a style="cursor:pointer;" ng-bind="testEntity.testName"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input type="text" ng-model="operator.test.remarks" class="form-control testsRow" placeholder="Remarks">
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                <button id="addTestBtn" type="submit" ng-click="operator.addTest()" class="btn">Add</button>
+                            </div>
+                        </div>
+                        <table style="margin-top:8px;" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Test</th>
+                                    <th>Remarks</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="testItem in operator.testsListInTable">
+                                    <td ng-bind="$index+1"></td>
+                                    <td ng-bind="testItem.testName"></td>
+                                    <td ng-bind="testItem.remarks"></td>
+                                    <td>
+                                        <button type="button" ng-click="operator.deleteTest($index)" class="btn btnDelete">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
