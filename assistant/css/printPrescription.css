@@ -1,0 +1,70 @@
+@media print {
+    .prescriptionTables>thead>tr>th,
+    .prescriptionTables>tbody>tr>td {
+        text-align: center;
+    }
+    .prescriptionTables {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        border-left: 1px;
+        border-right: 1px;
+        border-bottom: 0.5px solid black;
+        border-style: solid;
+    }
+    .prescriptionTables>thead>tr>th {
+        padding-top: 0.3em;
+        padding-bottom: 0.3em;
+    }
+    .prescriptionTables>tbody>tr>td {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
+    .prescriptionTables>tbody>tr,
+    .prescriptionTables>thead>tr,
+    .prescriptionTables>tbody>tr>td,
+    .prescriptionTables>thead>tr>th {
+        border-collapse: collapse;
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
+    }
+    #referToRow {
+        margin-top: 40px;
+    }
+    #revisitRow {
+        margin-top: 20px;
+    }
+    #referToRow>label,
+    #revisitRow>label,
+    #patientNameRow>label,
+    #phoneNumberRow>label,
+    #doctorInfoRow>label {
+        font-size: 20px;
+        font-weight: 600;
+    }
+    #patientNameRow {
+        margin-bottom: 10px;
+    }
+    #doctorInfoRow {
+        margin-top: 5px;
+    }
+    #referToRow>span,
+    #revisitRow>span,
+    #patientNameRow>span,
+    #phoneNumberRow>span,
+    #doctorInfoRow>span {
+        font-size: 22px;
+    }
+    .authoritySign {
+        margin-top: 3em;
+        margin-left: 35em !important;
+    }
+    .prescriptionPrintHeader {
+        text-align: center;
+        margin-top: 25px;
+    }
+    .addressInTheBill {
+        margin-top: -10px;
+        font-size: 20px;
+    }
+}

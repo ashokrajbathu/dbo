@@ -1927,10 +1927,30 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.addPrescriptionSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Prescription Successfully Saved!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
     this.noAdmittedPatientSwal = function() {
         swal({
             title: "Info",
             text: "Please Admit the Patient",
+            type: "info",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.noPatientOrNoDoctorSwal = function() {
+        swal({
+            title: "Info",
+            text: "Please Select Doctor And Patient before saving prescription!!!",
             type: "info",
             confirmButtonText: "OK",
             allowOutsideClick: true
@@ -1972,6 +1992,26 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
+    this.addPrescription = function(prescription) {
+        var deferred = $q.defer();
+        var prescriptionEntity = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/prescription/updatePrescription',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(prescription)
+        }
+        $http(prescriptionEntity).then(function(prescriptionSuccess) {
+            deferred.resolve(prescriptionSuccess);
+        }, function(prescriptionError) {
+            deferred.reject(prescriptionError);
+        });
+        return deferred.promise;
+    }
+
     this.getTransferPatients = function(organizationId) {
         var deferred = $q.defer();
         var getTransferEntity = {
@@ -2000,6 +2040,19 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             deferred.reject(getTestsResponse);
         });
         return deferred.promise;
+    }
+
+    this.daysToDate = function(noOfDays) {
+        var revisitDate;
+        var date = new Date();
+        var newDate = new Date(date.getTime() + noOfDays * 24 * 60 * 60 * 1000);
+        var day = newDate.getDate();
+        var month = Number(newDate.getMonth()) + 1;
+        var year = newDate.getFullYear();
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+        var revisitDate = day + "/" + month + "/" + year;
+        return revisitDate;
     }
 
 }]);

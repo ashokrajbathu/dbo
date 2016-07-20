@@ -222,10 +222,10 @@
                             <tbody>
                                 <tr ng-repeat="drugEntity in operator.drugsList">
                                     <td ng-bind="$index+1"></td>
-                                    <td ng-bind="drugEntity.drugSearch"></td>
+                                    <td ng-bind="drugEntity.brandName"></td>
                                     <td ng-bind="drugEntity.perServing"></td>
-                                    <td ng-bind="drugEntity.amount"></td>
-                                    <td ng-bind="drugEntity.timings"></td>
+                                    <td ng-bind="drugEntity.noOfDays"></td>
+                                    <td ng-bind="drugEntity.usageDirection"></td>
                                     <td ng-bind="drugEntity.remarks"></td>
                                     <td>
                                         <button type="button" ng-click="operator.deleteDrug($index)" class="btn btnDelete">Delete</button>
@@ -273,13 +273,48 @@
                                 <tr ng-repeat="testItem in operator.testsListInTable">
                                     <td ng-bind="$index+1"></td>
                                     <td ng-bind="testItem.testName"></td>
-                                    <td ng-bind="testItem.remarks"></td>
+                                    <td ng-bind="testItem.remark"></td>
                                     <td>
                                         <button type="button" ng-click="operator.deleteTest($index)" class="btn btnDelete">Delete</button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-9 col-sm-11 col-xs-11">
+                <div class="panel patientInOperator">
+                    <div class="panel-heading">
+                        <h4>Remarks</h4>
+                    </div>
+                    <div class="panel-body patientInOperatorPanelBody">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <label for="exampleInputDays">Revisit After(Days)</label>
+                                <input ng-change="operator.daysChange()" ng-model="operator.revisitAfterDays" type="text" class="form-control" id="exampleInputDays" placeholder="Days">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputDate">Revisit Date</label>
+                                <input type="text" ng-model="operator.revisitAfterDate" class="form-control" id="exampleInputRevisitDate" placeholder="Revisit Date">
+                            </div>
+                        </form>
+                        <form class="form-inline referToForm">
+                            <div class="form-group">
+                                <label for="exampleInputReferTo">Refer To</label>
+                                <input type="text" ng-model="operator.referToDoctor" class="form-control" id="exampleInputReferTo" placeholder="Refer To">
+                            </div>
+                        </form>
+                        <textarea class="form-control" ng-model="operator.additionalComments" rows="3" placeholder="Additional Comments" id="prescriptionAdditionalComments"></textarea>
+                        <div class="row">
+                            <a id="printBtn" href="views/printPrescription.html" style="cursor:pointer" type="submit" target="_blank" class="btn finalBillSubmit pull-right"><i class="fa fa-print"></i>Print</a>
+                            <button id="saveAndContinueBtn" type="submit" ng-click="operator.savePrescription()" class="btn pull-right">Save and Continue</button>
+                        </div>
+                        <div class="row">
+                            <span style="margin-right:15px;" class="pull-right">(*Please Save Prescription before print)</span>
+                        </div>
                     </div>
                 </div>
             </div>

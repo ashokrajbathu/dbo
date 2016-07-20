@@ -9,28 +9,37 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
     operator.dropdownActive = false;
     var billInvoice = {};
     dboticaServices.setInvoice(billInvoice);
+    var selectDoctor = '---Select Doctor---';
     operator.doctorName = '---Select Doctor---';
     var doctorObject = { 'firstName': '---Select Doctor---' };
     var hyphen = '-';
     var classDefault = 'default';
     var classSuccess = 'success';
     var timingsArray = [];
+    var emptyArray = [];
     var underscore = '_';
     var space = ' ';
     var comma = ',';
+    var activeTestId;
+    var emptyString = '';
     var singleDay = 1 + ' Day';
     var singleUnit = 1 + ' unit';
     var totalDrugs = [];
+    var drugsListToSave = [];
     var daysDisplay = 'Days';
     var activeDrugId;
+    var printPrescription = {};
+    var capsuleTypes = ['TABLET', 'CAPSULE', 'INJECTION', 'SACHET', 'LOZENGES', 'SUPPOSITORY', 'RESPULES', 'PEN', 'APLICAPS', 'ENEMA', 'PATCH'];
     operator.testsListInTable = [];
     operator.testsList = [];
     operator.drugsList = [];
     operator.fillPrescription = {};
     operator.fillPrescription.daysOrQuantity = 'Days';
     operator.fillPrescription.days = 1;
+    operator.fillPrescription.perServing = '';
     operator.test = {};
     operator.test.testName = '';
+    operator.additionalComments = '';
     operator.doctorsListToBeDisplayed = [];
     operator.testsList = [];
     var drugObjectsShown = [];
@@ -42,6 +51,7 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
     var selectedDrugId;
     var selectedDrugIndex;
     var selectedDrugType;
+    var activeDrugType;
     var newPatientFlag = false;
     var updatePatientFlag = false;
     operator.PhoneNumberErrorMessage = false;
@@ -57,6 +67,14 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
     operator.Before_Dinner = classDefault;
     operator.After_Dinner = classDefault;
     operator.doctorSelect = doctorSelect;
+    operator.referToDoctor = '';
+
+    var date = new Date();
+    var dateSorted = moment(date).format("DD/MM/YYYY,hh:mm A");
+    var dateArray = dateSorted.split(comma);
+    operator.revisitAfterDate = dateArray[0];
+    var today = dateArray[0];
+
     operator.phoneNumberLengthValidation = phoneNumberLengthValidation;
     operator.patientSearchByOperator = patientSearchByOperator;
     operator.addOrUpdatePatient = addOrUpdatePatient;
@@ -72,6 +90,8 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
     operator.selectTestFromTheDropdown = selectTestFromTheDropdown;
     operator.addTest = addTest;
     operator.deleteTest = deleteTest;
+    operator.daysChange = daysChange;
+    operator.savePrescription = savePrescription;
 
     var doctorsListPromise = dboticaServices.doctorsOfAssistant();
     doctorsListPromise.then(function(doctorsListSuccess) {
@@ -83,6 +103,19 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
             operator.doctorsListToBeDisplayed.unshift(doctorObject);
         }
     }, function(doctorsListError) {
+        dboticaServices.noConnectivityError();
+    });
+
+    var getAddressPromise = dboticaServices.getOrganizationAddress();
+    getAddressPromise.then(function(getAddressSuccess) {
+        var errorCode = getAddressSuccess.data.errorCode;
+        if (errorCode) {
+            dboticaServices.logoutFromThePage(errorCode);
+        } else {
+            getAddressSuccessResponse = angular.fromJson(getAddressSuccess.data.response);
+            localStorage.setItem('addressInTheBill', JSON.stringify(getAddressSuccessResponse));
+        }
+    }, function(getAddressError) {
         dboticaServices.noConnectivityError();
     });
 
@@ -253,6 +286,7 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
                     selectedDrug = ui.item.value;
                     selectedDrugId = entity.id;
                     selectedDrugType = entity.drugType;
+                    activeDrugType = entity.drugType;
                     selectedDrugIndex = _.findIndex(drugObjectsShown, entity);
                     if (!_.isEmpty(activePatient)) {
                         operator.fillPrescription.drugSearch = ui.item.value;
@@ -377,32 +411,66 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
 
     function addDrug() {
         var drugEntity = {};
-        drugEntity.drugSearch = operator.fillPrescription.drugSearch;
+        var drugEntityToSave = {};
+        drugEntity.drugId = activeDrugId;
+        drugEntity.brandName = operator.fillPrescription.drugSearch;
         if (operator.fillPrescription.drugType !== 'SYRUP') {
             if (operator.fillPrescription.perServing == 1) {
                 drugEntity.perServing = singleUnit;
             } else {
-                drugEntity.perServing = operator.fillPrescription.perServing + ' ' + operator.fillPrescription.perServingUnits;
+                if (operator.fillPrescription.perServing !== undefined && operator.fillPrescription.perServing !== '' && operator.fillPrescription.perServing !== 1) {
+                    drugEntity.perServing = operator.fillPrescription.perServing + ' ' + operator.fillPrescription.perServingUnits;
+                } else {
+                    drugEntity.perServing = '1 unit';
+                }
             }
         }
-        if (operator.fillPrescription.days === 1 && operator.fillPrescription.daysOrQuantity === daysDisplay) {
-            drugEntity.amount = singleDay;
+        if (operator.fillPrescription.days === 1 && operator.fillPrescription.daysOrQuantity == daysDisplay) {
+            drugEntity.noOfDays = singleDay;
         } else {
-            drugEntity.amount = operator.fillPrescription.days + ' ' + operator.fillPrescription.daysOrQuantity;
+            drugEntity.noOfDays = operator.fillPrescription.days + ' ' + operator.fillPrescription.daysOrQuantity;
         }
-        drugEntity.timings = _.join(timingsArray, comma);
+        var quantCount = timingsArray.length;
+        if (quantCount == 0) {
+            quantCount = 1;
+        }
+        drugEntity.usageDirection = _.join(timingsArray, comma);
         drugEntity.remarks = operator.fillPrescription.specialInstructions;
         operator.drugsList.push(drugEntity);
+        angular.copy(drugEntity, drugEntityToSave);
+        drugEntityToSave.drugType = activeDrugType;
+        drugEntityToSave.perServing = operator.fillPrescription.perServing;
+        var drugTypeFlag = _.findLastIndex(capsuleTypes, function(entity) {
+            return entity == activeDrugType;
+        });
+        var perServing = operator.fillPrescription.perServing;
+        if (perServing == undefined || perServing == '') {
+            perServing = parseInt(1);
+        }
+        drugEntityToSave.noOfDays = operator.fillPrescription.days;
+        if (drugTypeFlag !== -1) {
+            if (operator.fillPrescription.daysOrQuantity == daysDisplay) {
+                drugEntityToSave.quantity = parseInt(operator.fillPrescription.days) * quantCount * parseInt(perServing);
+            } else {
+                drugEntityToSave.quantity = operator.fillPrescription.days;
+                drugEntityToSave.noOfDays = quantCount != 0 ? Math.ceil(parseInt(operator.fillPrescription.days) / (parseInt(perServing) * quantCount)) : 1;
+            }
+        } else {
+            if (operator.fillPrescription.daysOrQuantity == daysDisplay) {
+                drugEntityToSave.noOfDays = operator.fillPrescription.days;
+                drugEntityToSave.quantity = 1;
+            } else {
+                drugEntityToSave.quantity = operator.fillPrescription.days;
+                drugEntityToSave.noOfDays = 1;
+            }
+        }
+        drugsListToSave.push(drugEntityToSave);
         operator.fillPrescription = {};
         operator.fillPrescription.drugType = '';
         operator.fillPrescription.daysOrQuantity = daysDisplay;
         operator.fillPrescription.days = 1;
-        operator.Before_BreakFast = classDefault;
-        operator.After_BreakFast = classDefault;
-        operator.Before_Lunch = classDefault;
-        operator.After_Lunch = classDefault;
-        operator.Before_Dinner = classDefault;
-        operator.After_Dinner = classDefault;
+        timingBtnsDefault();
+        timingsArray = [];
     }
 
     function deleteDrug(drugIndex) {
@@ -434,15 +502,17 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
     }
 
     function selectTestFromTheDropdown(selectedTest) {
-        $log.log('selected test is--', selectedTest);
+        activeTestId = '';
         operator.dropdownActive = false;
+        activeTestId = selectedTest.id;
         operator.test.testName = selectedTest.testName;
     }
 
     function addTest() {
         var testEntity = {};
+        testEntity.testId = activeTestId;
         testEntity.testName = operator.test.testName;
-        testEntity.remarks = operator.test.remarks;
+        testEntity.remark = operator.test.remarks;
         operator.testsListInTable.push(testEntity);
         operator.test.testName = '';
         operator.test.remarks = '';
@@ -451,4 +521,94 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
     function deleteTest(testIndex) {
         operator.testsListInTable.splice(testIndex, 1);
     }
+
+    function daysChange() {
+        if (!isNaN(operator.revisitAfterDays)) {
+            operator.revisitAfterDate = dboticaServices.daysToDate(operator.revisitAfterDays);
+        }
+    }
+
+    function savePrescription() {
+        if (!_.isEmpty(activeDoctor) && !_.isEmpty(activePatient)) {
+            var prescriptionRequest = {};
+            prescriptionRequest.patientId = activePatient.id;
+            prescriptionRequest.doctorId = activeDoctor.id;
+            prescriptionRequest.height = emptyString;
+            prescriptionRequest.weight = emptyString;
+            prescriptionRequest.bloodPressure = emptyString;
+            prescriptionRequest.temperature = emptyString;
+            prescriptionRequest.bmi = emptyString;
+            prescriptionRequest.saturation = emptyString;
+            prescriptionRequest.pulse = emptyString;
+            prescriptionRequest.investigation = emptyString;
+            prescriptionRequest.references = operator.referToDoctor;
+            prescriptionRequest.revisitDate = operator.revisitAfterDate;
+            prescriptionRequest.symptoms = emptyString;
+            prescriptionRequest.remarks = operator.additionalComments;
+            prescriptionRequest.age = activePatient.age;
+            prescriptionRequest.gender = activePatient.gender;
+            prescriptionRequest.drugDosage = drugsListToSave;
+            prescriptionRequest.diagnosisTests = operator.testsListInTable;
+            $log.log('presc req is---', prescriptionRequest);
+            var prescriptionPromise = dboticaServices.addPrescription(prescriptionRequest);
+            prescriptionPromise.then(function(prescriptionSuccess) {
+                $log.log('prescription promise is----', prescriptionPromise);
+                var errorCode = prescriptionSuccess.data.errorCode;
+                if (errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var prescriptionResponse = angular.fromJson(prescriptionSuccess.data.response);
+                    if (errorCode == null && prescriptionSuccess.data.success == true) {
+                        dboticaServices.addPrescriptionSuccessSwal();
+                        printPrescription.patient = activePatient;
+                        printPrescription.doctor = activeDoctor;
+                        printPrescription.referDetails = prescriptionResponse;
+                        printPrescription.prescription = operator.drugsList;
+                        printPrescription.tests = operator.testsListInTable;
+                        localStorage.setItem('activePrescription', JSON.stringify(printPrescription));
+                        functionalitiesAfterAddingPresc();
+                        timingBtnsDefault();
+                    }
+                }
+            }, function(prescriptionError) {
+                dboticaServices.noConnectivityError();
+            });
+        } else {
+            dboticaServices.noPatientOrNoDoctorSwal();
+        }
+    }
+
+    var functionalitiesAfterAddingPresc = function() {
+        operator.testsListInTable = [];
+        drugsListToSave = [];
+        operator.drugsList = [];
+        activePatient = {};
+        activeDoctor = {};
+        operator.doctorName = selectDoctor;
+        operator.fillPrescription = {};
+        operator.fillPrescription.daysOrQuantity = daysDisplay;
+        operator.fillPrescription.days = 1;
+        operator.updatePatient = false;
+        operator.addMember = false;
+        operator.phoneNumber = emptyString;
+        operator.patientsToBeDisplayedInRadios = [];
+        operator.revisitAfterDays = emptyString;
+        operator.revisitAfterDate = today;
+        operator.referToDoctor = emptyString;
+    }
+
+    var timingBtnsDefault = function() {
+        operator.Before_BreakFast = classDefault;
+        operator.After_BreakFast = classDefault;
+        operator.Before_Lunch = classDefault;
+        operator.After_Lunch = classDefault;
+        operator.Before_Dinner = classDefault;
+        operator.After_Dinner = classDefault;
+    }
+
+    angular.element("#exampleInputRevisitDate").datepicker({
+        dateFormat: "dd/mm/yy",
+        autoclose: true,
+        'minDate': 0
+    });
 };

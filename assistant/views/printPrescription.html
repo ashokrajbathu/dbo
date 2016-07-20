@@ -1,0 +1,93 @@
+<html>
+<link rel="stylesheet" type="text/css" href="../css/printPrescription.css">
+<style>
+@page {
+    size: auto;
+    margin-top: 4mm;
+    margin-bottom: 4mm;
+}
+</style>
+
+<body onload="window.print();">
+    <div ng-app="printPrescription" ng-controller="printPrescriptionController as prescription" class="container">
+        <h3 style="margin-left:75%;">Tin No:<span ng-bind="prescription.tinNo"></span></h3>
+        <h2 class="prescriptionPrintHeader" ng-bind="prescription.organizationName|uppercase"></h2>
+        <p class="addressInTheBill" align="center" ng-bind="prescription.address"></p>
+        <p style="margin-top:-12px;font-size:20px;" align="center">Cell No:<span ng-bind="prescription.cellNumber"></span> Phone No:<span ng-bind="prescription.officephoneNumber"></span>
+            <div id="patientNameRow" class="row">
+                <label>Name:</label>
+                <span ng-bind="prescription.patientName"></span>
+            </div>
+            <div id="phoneNumberRow" class="row">
+                <label>Phone Number:</label>
+                <span ng-bind="prescription.phoneNumber"></span>
+            </div>
+            <div id="doctorInfoRow" class="row">
+                <label>Doctor:</label>
+                <span ng-bind="prescription.doctorNameAndSpeciality"></span>
+            </div>
+            <h3>List of Medicines</h3>
+            <table class="table prescriptionTables table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Brand Name</th>
+                        <th>Per Serving</th>
+                        <th>Days/Quantity</th>
+                        <th>Usage</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="drugEntity in prescription.drugsList">
+                        <td ng-bind="$index+1"></td>
+                        <td ng-bind="drugEntity.brandName"></td>
+                        <td ng-bind="drugEntity.perServing"></td>
+                        <td ng-bind="drugEntity.noOfDays"></td>
+                        <td ng-bind="drugEntity.usageDirection"></td>
+                        <td ng-bind="drugEntity.remarks"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>List of Tests</h3>
+            <table class="table prescriptionTables table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Test</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="testItem in prescription.testsList">
+                        <td ng-bind="$index+1"></td>
+                        <td ng-bind="testItem.testName"></td>
+                        <td ng-bind="testItem.remark"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="referToRow" class="row">
+                <label>Refer To:</label>
+                <span>Dr.{{prescription.doctorName}}</span>
+            </div>
+            <div id="revisitRow" class="row">
+                <label>Revisit Date:</label>
+                <span ng-bind="prescription.revisitDate"></span>
+            </div>
+            <div class="authoritySign">
+                <label>(Authority Signature)</label>
+            </div>
+            <div class="row">
+                <div class="pull-right authoritySign">
+                    <span id="prBarCode"></span>
+                </div>
+            </div>
+    </div>
+    <script type="text/javascript" src="../../js/angular.js"></script>
+    <script type="text/javascript" src="../../plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="../../plugins/jQuery/jquery-barcode.js"></script>
+    <script type="text/javascript" src="../../js/jquery.qrcode.min.js"></script>
+    <script type="text/javascript" src="../controllers/printPrescriptionController.js"></script>
+</body>
+
+</html>

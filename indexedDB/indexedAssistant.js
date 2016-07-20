@@ -24,13 +24,10 @@ var db;
 // Used to keep track of which view is displayed to avoid uselessly reloading it
 var current_view_pub_key;
 window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-if (!window.indexedDB) {
-    console.log("Your Browser doesnot support indexedDB");
-}
+if (!window.indexedDB) {}
 
 
 function openDb(callBack) {
-    console.log("openDb ...");
     var req = window.indexedDB.open(DB_NAME, DB_VERSION);
     req.onsuccess = function(event) {
         // Better use "this" than "req" to get the result to avoid problems with
@@ -41,11 +38,6 @@ function openDb(callBack) {
         if (!!callBack) {
             callBack();
         }
-
-        console.log("openDb DONE success");
-
-
-
     };
     req.onerror = function(event) {
         console.error("openDb:", event.target.errorCode);
@@ -54,20 +46,15 @@ function openDb(callBack) {
 
 
     req.onupgradeneeded = function(event) {
-        console.log("openDb.onupgradeneeded");
         db = event.target.result;
         event.target.transaction.oncomplete = function(e) {
-            console.log("Transaction success");
-
             limitDrugIndex = 1000;
             totalDrugCount = 0;
-           
+
         };
         event.target.transaction.onerror = indexedDB.onerror;
 
-        event.target.transaction.onabort = function(e) {
-            console.log("abort: " + e.target.error.message);
-        };
+        event.target.transaction.onabort = function(e) {};
         if (!db.objectStoreNames.contains(DB_DRUG_STORE)) {
             var drugStore = db.createObjectStore(DB_DRUG_STORE, { keyPath: "id" });
             drugStore.createIndex('brandName', 'brandName', { unique: false });
@@ -76,7 +63,7 @@ function openDb(callBack) {
             var patientStore = db.createObjectStore(DB_PATIENT_STORE, { keyPath: "id" });
             patientStore.createIndex('phoneNumber', 'phoneNumber', { unique: false });
         }
-        
+
         if (!db.objectStoreNames.contains(DB_SYNC_STORE)) {
             var syncStore = db.createObjectStore(DB_SYNC_STORE, { keyPath: "store" });
         }
@@ -91,7 +78,6 @@ function openDb(callBack) {
  *
  */
 function getObjectStore(store_name, mode) {
-    console.log("in get object store----");
     var tx = db.transaction(store_name, mode);
     return tx.objectStore(store_name);
 }
@@ -129,7 +115,6 @@ function syncAllDrugsToIndexedDB() {
     var request = syncStore.get(DB_DRUG_STORE);
     request.onsuccess = function(event) {
         var obj = request.result;
-        /*console.log("syncstore result ",obj);*/
         if (obj && obj != null) {
             if (obj.store == DB_DRUG_STORE) {
 
@@ -189,9 +174,7 @@ function syncAllDrugsToIndexedDB() {
                         obj["start"] = 0;
                         obj["lastUpdated"] = (new Date).getTime();
                         var req1 = syncStore.put(obj);
-                        req1.onsuccess = function(event) {
-                            console.log("Sync all drus to indexedDB Done");
-                        }
+                        req1.onsuccess = function(event) {}
                         req1.onerror = function() {
                             console.error("syncAllDrugstoIndexedDB third error ", this.error);
                         }
@@ -218,7 +201,7 @@ function syncAllDrugsToIndexedDB() {
 
 
 /*
- *	Get all prescriptions issued by this doctor
+ *  Get all prescriptions issued by this doctor
  */
 
 
@@ -249,16 +232,12 @@ function syncAllPatientsToIndexedDB() {
 
 
 function addPatientObjecttoIndexedDB(obj) {
-    console.log("addPatientObjecttoIndexedDB ", obj);
     var store = getObjectStore(DB_PATIENT_STORE, 'readwrite');
     var request = store.get(obj.id);
     request.onsuccess = function(event) {
         var patient = request.result;
-        console.log("addPatientObjecttoIndexedDB previous patient", patient);
         var requestUpdate = store.put(obj);
         requestUpdate.onsuccess = function(event) {
-            console.log("addPatientObjecttoIndexedDB Done");
-            console.log("Showing all patients");
             showAllPatients();
 
         }
@@ -270,7 +249,6 @@ function addPatientObjecttoIndexedDB(obj) {
 }
 
 function updatePatientObjectIndexedDB(obj) {
-    console.log("updatePatientObjectIndexedDB", obj);
     var store = getObjectStore(DB_PATIENT_STORE, 'readwrite');
     var index = store.index("phoneNumber");
     index.openCursor(obj.phoneNumber).onsuccess = function(event) {
@@ -280,13 +258,11 @@ function updatePatientObjectIndexedDB(obj) {
             data['gender'] = obj['gender'];
             data['firstName'] = obj['firstName'];
             data['emailId'] = obj['emailId'];
-            //data['phoneNumber']	=   obj['phoneNumber'];
+            //data['phoneNumber']   =   obj['phoneNumber'];
             data['age'] = obj['age'];
             data['bloodGroup'] = obj['bloodGroup'];
             var requestUpdate = store.put(data);
             requestUpdate.onsuccess = function(event) {
-                console.log("updatePatientObjectIndexedDB Done");
-                console.log("Showing all patients");
                 showAllPatients();
             }
             requestUpdate.onerror = function() {
@@ -310,7 +286,6 @@ function getPatientByPhoneNumberFromIndexedDB(phoneNumber) {
     var store = getObjectStore(DB_PATIENT_STORE, 'readonly');
     var index = store.index("phoneNumber");
     index.get(phoneNumber).onsuccess = function(event) {
-        console.log("getPatientByPhoneNumberFromIndexedDB ", event.target.result);
         return event.target.result;
 
     };
@@ -366,7 +341,6 @@ function autocompleteDrugIndexedDB(searchterm, id, handleData, callback) {
 
 function showAllPatients() {
     var store = getObjectStore(DB_PATIENT_STORE, 'readonly');
-    console.log("showAllPateints opened");
     store.openCursor().onsuccess = function(event) {
         var cursor = event.target.result;
         if (cursor) {
@@ -400,7 +374,6 @@ function showAllPatients() {
  * @param {string} biblioid
  */
 function deletefromIndexedDb(biblioid) {
-    console.log("deletePublication:", arguments);
     var store = getObjectStore(DB_STORE_NAME, 'readwrite');
     var req = store.index('biblioid');
     req.get(biblioid).onsuccess = function(evt) {

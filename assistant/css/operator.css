@@ -19,6 +19,11 @@
     display: block;
 }
 
+.referToForm {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
 .btnDelete:hover {
     color: white;
 }
@@ -46,10 +51,17 @@
 }
 
 #addPrescriptionBtn,
-#addTestBtn {
+#addTestBtn,
+#saveAndContinueBtn,
+#printBtn {
     margin-right: 20px;
     color: white;
     background-color: #3c8dbc;
+}
+
+#saveAndContinueBtn,
+#printBtn {
+    margin-top: 16px;
 }
 
 @media only screen and (max-width:991px) {
@@ -66,17 +78,17 @@
     margin-top: 18px;
 }
 
-#ui-id-1 {
-    background: white;
+.ui-menu {
+    background: white !important;
 }
 
-#ui-id-1>li {
+.ui-menu>li {
     border-bottom: 2px solid #f4f4f4;
 }
 
-#ui-id-1>li:hover,
-#ui-id-1>li:active,
-#ui-id-1>li:focus {
+.ui-menu>li:hover,
+.ui-menu>li:active,
+.ui-menu>li:focus {
     color: #3c8dbc;
     background: white;
     border: 1px solid #3c8dbc;
