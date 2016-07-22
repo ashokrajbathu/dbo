@@ -1,0 +1,114 @@
+#loginHeader {
+    color: white;
+    font-style: bold;
+    font-weight: 600;
+    font-size: 31.5px;
+    padding-top: 15px;
+    padding-left: 45px;
+}
+
+[ng\:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+    display: none !important;
+}
+
+.loginBody {
+    background-color: white;
+}
+
+#doctorImage {
+    margin-left: 74px;
+    margin-top: 6px;
+    width: 100px;
+    height: 100px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+#doctorName {
+    font-size: 20px;
+    list-style-type: none;
+    margin-top: 8px;
+    text-align: center;
+    color: white !important;
+}
+
+.loginHr {
+    height: 0.5px;
+    background: #888;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#signupHere,
+#assistantLogin,
+#signInSignUp {
+    cursor: pointer;
+    color: #3c8dbc;
+}
+
+.header {
+    margin-top: -20px;
+    background-color: #3c8dbc;
+    height: 65px;
+}
+
+.loginPanelHeading,
+.signupPanelHeading {
+    height: 50px;
+    background-color: #3c8dbc;
+}
+
+.signinPanel,
+.signupPanel {
+    margin-top: 30px;
+}
+
+.doctorBtn {
+    color: white;
+    background-color: #3c8dbc;
+}
+
+.doctorBtn:hover,
+.doctorBtn:focus,
+.doctorBtn:active {
+    color: white;
+}
+
+.signInPanelBody,
+.signupPanelBody {
+    border: 1px solid #3c8dbc;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+#loginPanelHeader,
+#signupPanelHeader {
+    margin-top: 5px;
+    color: white;
+}
+
+.doctorLink {
+    cursor: pointer;
+}
+
+.hiddenForm {
+    display: none;
+}
+
+@media only screen and (min-width:768px) {
+    #sideBarToggle {
+        display: none !important;
+    }
+}
+
+@media only screen and (max-width:767px) {
+    #sideBarToggle {
+        display: block !important;
+    }
+}

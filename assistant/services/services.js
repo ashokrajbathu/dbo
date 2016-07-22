@@ -621,34 +621,18 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     }
 
     this.logoutFromThePage = function(errorCode) {
-        switch (errorCode) {
-            case "NO_USER_LOGGED_IN":
-                localStorage.setItem("isLoggedInAssistant", "false");
-                swal({
-                    title: "Error",
-                    text: "You are not logged into your account. Kindly login again to view this page",
-                    type: "error",
-                    confirmButtonText: "OK",
-                    allowOutsideClick: true
-                });
-                localStorage.clear();
-                localStorage.setItem("isLoggedInAssistant", "false");
-                $state.go('login');
-                break;
-            case 'USER_ALREADY_LOGGED_IN':
-                swal({
-                    title: "Error",
-                    text: "You are not logged into your account. Kindly login again to view this page",
-                    type: "error",
-                    confirmButtonText: "OK",
-                    allowOutsideClick: true
-                });
-                localStorage.clear();
-                localStorage.setItem("isLoggedInAssistant", "false");
-                $state.go('login');
-                break;
+        if (errorCode == 'NO_USER_LOGGED_IN' || errorCode == 'USER_ALREADY_LOGGED_IN') {
+            swal({
+                title: "Error",
+                text: "You are not logged into your account. Kindly login again to view this page",
+                type: "error",
+                confirmButtonText: "OK",
+                allowOutsideClick: true
+            });
+            localStorage.clear();
+            localStorage.setItem("isLoggedInAssistant", "false");
+            $state.go('login');
         }
-
     }
 
     this.getLongValueOfDate = function(dateSelected) {

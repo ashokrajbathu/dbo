@@ -1,0 +1,82 @@
+<div class="loginBody" ng-controller="loginController as login" ng-cloak>
+    <div class="header">
+        <h2 id="loginHeader">dbotica</h2>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6 col-sm-offset-1 col-sm-10 col-xs-offset-1 col-xs-10">
+                <div ng-if="login.signInForm" class="signInForm">
+                    <div class="panel signinPanel">
+                        <div class="panel-heading loginPanelHeading">
+                            <h4 id="loginPanelHeader">Sign In</h4>
+                        </div>
+                        <div class="panel-body signInPanelBody">
+                            <form ng-submit="login.doctorLogin()" class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="inputLoginEmail" class="col-md-2 col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-10  col-md-6">
+                                        <input ng-model="login.loginCredentials.emailId" type="email" class="form-control" id="emailId" placeholder="UserName or Email">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputLoginPassword" class="col-sm-2 control-label">Password</label>
+                                    <div class="col-sm-10 col-md-6">
+                                        <input ng-model="login.loginCredentials.password" type="password" class="form-control" id="password" placeholder="Password">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10 col-sm-offset-2 col-sm-10">
+                                        <button class="btn doctorBtn">Sign in</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <hr class="loginHr">
+                            <form class="form-inline">
+                                <div>
+                                    <label>Don't have an account! <a id="signupHere" ng-click="login.newDoctorSignUpForm()">Sign Up Here</a></label>
+                                    <a href="../assistant/index.html" class="pull-right" id="assistantLogin">Assistant Login</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="login.signupForm" class="signUpForm">
+                    <div class="panel signupPanel">
+                        <div class="panel-heading signupPanelHeading">
+                            <h4 id="signupPanelHeader">Sign Up</h4>
+                        </div>
+                        <div class="panel-body signupPanelBody">
+                            <a class="pull-right" id="signInSignUp" ng-click="login.signin()" style="cursor:pointer;">Sign In</a>
+                            <br>
+                            <form ng-submit="login.signup()" class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="inputDoctorName" class="col-sm-2 control-label">Name</label>
+                                    <div class="col-sm-10 col-md-6">
+                                        <input type="text" ng-model="login.signupData.doctorName" class="form-control" id="exampleInputName" placeholder="Name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputDoctorPhone" class="col-sm-2 control-label">Phone</label>
+                                    <div class="col-sm-10 col-md-6">
+                                        <input type="text" ng-model="login.signupData.phoneNumber" class="form-control" id="exampleInputPhone" placeholder="Phone">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputDoctorEmail" class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-10 col-md-6">
+                                        <input type="email" ng-model="login.signupData.emailId" class="form-control" id="exampleInputEmail" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="signUpInsignUpform col-sm-offset-2 col-sm-10">
+                                        <button id="signUpSubmitBtn" class="btn doctorBtn">Sign Up</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="wrapper" ng-controller="doctorHomeController as doctorHome" ng-cloak>
+    <header class="main-header">
+        <a style="cursor:pointer" class="logo">
+            <span class="logo-lg"><b>Dbotica</b></span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <a ng-click="doctorHome.toggleSideBar()" id="sideBarToggle" class="sidebar-toggle" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown user user-menu">
+                        <a class="dropdown-toggle doctorLink" ng-click="doctorHome.logoutFromDoctor()" data-toggle="dropdown">Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <aside ng-if="doctorHome.sideBar" class="main-sidebar">
+        <section class="sidebar">
+            <img id="doctorImage" src="../dist/img/Indian_doctors.1193.636x395.jpg" class="user-image" alt="User Image">
+            <li id="doctorName" class="doctorLink">
+                <a ng-bind="doctorHome.doctorName"></a>
+            </li>
+            <ul class="sidebar-menu">
+                <li class="doctorLink"><a>Drug Prescription</a></li>
+                <li class="doctorLink"><a>My Prescriptions</a></li>
+                <li class="doctorLink"><a>My Patients</a></li>
+                <li class="doctorLink"><a>My Scheduler</a></li>
+                <li class="doctorLink"><a>Refer Dbotica</a></li>
+                <li class="doctorLink"><a>Settings</a></li>
+            </ul>
+        </section>
+    </aside>
+    <div style="background-color:white;" class="content-wrapper">
+        <h1>Ravi Teja</h1>
+        <p>uisdfbsjbdfczjxhbawulibsjbdcszj</p>
+    </div>
+    <div class="control-sidebar-bg"></div>
+</div>

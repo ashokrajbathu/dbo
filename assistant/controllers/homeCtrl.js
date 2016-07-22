@@ -49,6 +49,7 @@ function homeCtrl($scope, $log, $location, dboticaServices, $state, $http, $pars
                 break;
         }
     });
+    
 
     switch (currentStateActive) {
         case 'patientManagement':
