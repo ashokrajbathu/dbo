@@ -16,8 +16,48 @@
     display: none !important;
 }
 
+.activeDoctorLi {
+    background-color: white !important;
+}
+
+.sidebar-menu.doctorSections:hover,
+.sidebar-menu.doctorSections:focus,
+.sidebar-menu.doctorSections:active {
+    background-color: white !important;
+}
+
+.skin-blue.sidebar-menu>li:hover>a,
+.skin-blue.sidebar-menu>li:active>a {
+    background: white !important;
+}
+
+.skin-blue .sidebar a {
+    color: #3c8dbc !important;
+}
+
+.skin-blue .sidebar a:hover {
+    background: white !important;
+}
+
+.doctorSections>a:hover,
+.doctorSections>a:active,
+.doctorSections>a:focus {
+    cursor: pointer;
+    background-color: red;
+    color: #3c8dbc !important;
+}
+
+.activeDoctorLi>a {
+    color: #3c8dbc !important;
+}
+
 .loginBody {
     background-color: white;
+}
+
+#doctorMainBody {
+    margin-bottom: -10px;
+    margin-top: -20px;
 }
 
 #doctorImage {
@@ -110,5 +150,96 @@
 @media only screen and (max-width:767px) {
     #sideBarToggle {
         display: block !important;
+    }
+}
+
+.sectionsInNavBar:hover {
+    background: white !important;
+}
+
+@media only screen and (min-width: 991px) {
+    .sectionsInNavBar {
+        display: none !important;
+    }
+    #onMinimizeNav {
+        display: none !important;
+    }
+    #fullPageView {
+        display: block !important;
+    }
+}
+
+.skin-blue .main-header .navbar .nav>li>a:hover,
+.skin-blue .main-header .navbar .nav>li>a:active,
+.skin-blue .main-header .navbar .nav>li>a:focus,
+.skin-blue .main-header .navbar .nav .open>a,
+.skin-blue .main-header .navbar .nav .open>a:hover,
+.skin-blue .main-header .navbar .nav .open>a:focus,
+.skin-blue .main-header .navbar .nav>.active>a {
+    background: white !important;
+}
+
+@media (max-width: 825px) {
+    .navbar-header {
+        float: none;
+    }
+    .navbar-left,
+    .navbar-right {
+        float: none !important;
+    }
+    .navbar-toggle {
+        display: block;
+    }
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .navbar-static-top {
+        top: 0;
+        border-width: 0 0 1px;
+    }
+    .navbar-collapse.collapse {
+        display: none!important;
+    }
+    .navbar-nav {
+        float: none!important;
+        margin-top: 7.5px;
+    }
+    .navbar-nav>li {
+        float: none;
+    }
+    .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .collapse.in {
+        display: block !important;
+    }
+}
+
+#doctorNameLink:hover {
+    background-color: #222d32 !important;
+    color: #3c8dbc !important;
+}
+
+#logoutLinkInWebPage:hover {
+    background-color: white;
+    color: #3c8dbc;
+}
+
+.navbar-default {
+    background-image: none !important;
+    background-color: #367fa9 !important;
+}
+
+@media only screen and (max-width: 990px) {
+    .sectionsInNavBar {
+        display: block !important;
+    }
+    #onMinimizeNav {
+        display: block !important;
+    }
+    #fullPageView {
+        display: none !important;
     }
 }

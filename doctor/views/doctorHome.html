@@ -3,39 +3,65 @@
         <a style="cursor:pointer" class="logo">
             <span class="logo-lg"><b>Dbotica</b></span>
         </a>
-        <nav class="navbar navbar-static-top">
-            <a ng-click="doctorHome.toggleSideBar()" id="sideBarToggle" class="sidebar-toggle" role="button">
-                <span class="sr-only">Toggle navigation</span>
-            </a>
-            <div class="navbar-custom-menu">
+        <nav id="fullPageView" class="navbar navbar-fixed-top">
+            <div id="navsInHeader" class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <li class="dropdown user user-menu">
-                        <a class="dropdown-toggle doctorLink" ng-click="doctorHome.logoutFromDoctor()" data-toggle="dropdown">Logout
-                        </a>
+                        <a id="logoutLinkInWebPage" class="dropdown-toggle doctorLink" ng-click="doctorHome.logoutFromDoctor()" data-toggle="dropdown">Logout
+                       </a>
                     </li>
                 </ul>
             </div>
         </nav>
+        <nav id="onMinimizeNav" class="navbar doctorNav navbar-default navbar-static-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button style="background-color:white;" type="button" aria-expanded="false" aria-controls="navbar" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li ui-sref=".doctorProfile" class="doctorSections sectionsInNavBar" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>Profile</a></li>
+                        <li ui-sref=".drugPrescription" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>Drug Prescription</a></li>
+                        <li ui-sref=".myPrescriptions" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>My Prescriptions</a></li>
+                        <li ui-sref=".myPatients" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>My Patients</a></li>
+                        <li ui-sref=".myScheduler" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>My Scheduler</a></li>
+                        <li ui-sref=".referDbotica" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>Refer Dbotica</a></li>
+                        <li ui-sref=".settings" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>Settings</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a class="dropdown-toggle doctorLink" ng-click="doctorHome.logoutFromDoctor()" data-toggle="dropdown">Logout
+                       </a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </header>
-    <aside ng-if="doctorHome.sideBar" class="main-sidebar">
+    <aside style="position:fixed;" class="main-sidebar">
         <section class="sidebar">
-            <img id="doctorImage" src="../dist/img/Indian_doctors.1193.636x395.jpg" class="user-image" alt="User Image">
-            <li id="doctorName" class="doctorLink">
-                <a ng-bind="doctorHome.doctorName"></a>
-            </li>
+            <div ui-sref=".doctorProfile" style="cursor:pointer;">
+                <img id="doctorImage" src="../dist/img/Indian_doctors.1193.636x395.jpg" class="user-image" alt="User Image">
+                <li id="doctorName" class="doctorLink">
+                    <a id="doctorNameLink">{{doctorHome.doctorName}}</a>
+                </li>
+            </div>
             <ul class="sidebar-menu">
-                <li class="doctorLink"><a>Drug Prescription</a></li>
-                <li class="doctorLink"><a>My Prescriptions</a></li>
-                <li class="doctorLink"><a>My Patients</a></li>
-                <li class="doctorLink"><a>My Scheduler</a></li>
-                <li class="doctorLink"><a>Refer Dbotica</a></li>
-                <li class="doctorLink"><a>Settings</a></li>
+                <li  ui-sref=".drugPrescription" class="doctorSections" id="drugPrescriptionActive" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>Drug Prescription</a></li>
+                <li ui-sref=".myPrescriptions" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>My Prescriptions</a></li>
+                <li ui-sref=".myPatients" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>My Patients</a></li>
+                <li ui-sref=".myScheduler" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>My Scheduler</a></li>
+                <li ui-sref=".referDbotica" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>Refer Dbotica</a></li>
+                <li ui-sref=".settings" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>Settings</a></li>
             </ul>
         </section>
     </aside>
-    <div style="background-color:white;" class="content-wrapper">
-        <h1>Ravi Teja</h1>
-        <p>uisdfbsjbdfczjxhbawulibsjbdcszj</p>
+    <div id="doctorMainBody" style="background-color:white;" class="content-wrapper">
+        <div ui-view autoscroll="false"></div>
     </div>
+    <footer></footer>
     <div class="control-sidebar-bg"></div>
 </div>

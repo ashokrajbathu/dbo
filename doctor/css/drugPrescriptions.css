@@ -1,0 +1,170 @@
+#drugPrescriptionsBody {
+    padding-top: 25px;
+    margin-left: 20px;
+}
+
+.panelsInDoctor>.panel-heading {
+    color: white;
+    height: 35px;
+    background-color: #3c8dbc;
+}
+
+.testDropDownActive {
+    margin-left: 10px;
+    display: block;
+}
+
+.btnDelete {
+    padding-top: 1px;
+    height: 25px;
+    color: white;
+    background-color: #3c8dbc;
+}
+
+.btnDelete:hover {
+    color: white;
+}
+
+.panelsInDoctor>.patientInDoctorPanelBody {
+    border: 1px solid #c5c5c5;
+}
+
+.ui-menu {
+    background: white !important;
+}
+
+.ui-menu>li {
+    border-bottom: 2px solid #f4f4f4;
+}
+
+.ui-state-focus {
+    color: #3c8dbc !important;
+    background: white !important;
+    border: 1px solid #3c8dbc !important;
+}
+
+.ui-menu>li:hover,
+.ui-menu>li:active,
+.ui-menu>li:focus {
+    color: #3c8dbc;
+    background: white;
+    border: 1px solid #3c8dbc;
+}
+
+.panelsInDoctor>.panel-heading>h4 {
+    margin-top: -2px !important;
+}
+
+#patientsListLabel {
+    margin-left: 14px;
+    margin-top: 6px;
+}
+
+#patientDataSecondRow {
+    margin-top: 8px;
+}
+
+.patientTextAreas {
+    margin-top: 6px;
+}
+
+@media only screen and (min-width: 992px) {
+    .prescriptionHeader {
+        margin-top: 60px;
+    }
+}
+
+.referToForm,
+#prescriptionAdditionalComments {
+    margin-top: 6px;
+}
+
+#saveAndContinueBtn {
+    margin-top: 10px;
+    margin-right: 15px;
+}
+
+@media only screen and (max-width: 768px) {
+    .drugScndRow {
+        margin-top: 6px;
+    }
+    #daysCountBox {
+        margin-left: 15px;
+    }
+    #prescription-form-units,
+    #upArrows {
+        margin-top: 10px;
+    }
+    #downArrows {
+        margin-top: -1px;
+    }
+}
+
+#searchclear {
+    position: absolute;
+    right: 25px;
+    top: 0;
+    bottom: 0;
+    height: 14px;
+    margin: auto;
+    font-size: 14px;
+    cursor: pointer;
+    color: #ccc;
+}
+
+#addTestBtn {
+    margin-top: 9px;
+}
+
+@media only screen and (max-width:991px) {
+    .timingsBtn {
+        width: 55px;
+    }
+}
+
+#timingsBtnGrp {
+    margin-top: 18px;
+}
+
+.input-group-btn-vertical {
+    position: relative;
+    white-space: nowrap;
+    width: 1%;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.input-group-btn-vertical > .btn {
+    display: block;
+    float: none;
+    width: 100%;
+    max-width: 100%;
+    padding: 8px;
+    margin-left: -1px;
+    position: relative;
+    border-radius: 0;
+}
+
+.input-group-btn-vertical > .btn:first-child {
+    border-top-right-radius: 4px;
+}
+
+.input-group-btn-vertical > .btn:last-child {
+    margin-top: -2px;
+    border-bottom-right-radius: 4px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+.input-group-btn-vertical i {
+    position: absolute;
+    top: 0;
+    left: 4px;
+}

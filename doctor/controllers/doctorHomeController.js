@@ -4,30 +4,57 @@ doctorHomeController.$inject = ['$scope', '$log', 'doctorServices', '$state', '$
 function doctorHomeController($scope, $log, doctorServices, $state, $http, $parse, SweetAlert) {
     var doctorHome = this;
 
-    doctorHome.toggleSideBar = toggleSideBar;
     doctorHome.logoutFromDoctor = logoutFromDoctor;
-
-    doctorHome.sideBar = true;
-
 
     var doctorActive = localStorage.getItem('currentDoctor');
     doctorActive = angular.fromJson(doctorActive);
     doctorHome.doctorName = '';
-    if (_.isEmpty(doctorActive)) {
-        localStorage.clear();
-        localStorage.setItem('isLoggedInDoctor', 'false');
-    } else {
-        if (_.has(doctorActive, 'firstName')) {
-            doctorHome.doctorName = 'Dr.' + doctorActive.firstName;
-        }
-        if (_.has(doctorActive, 'speciality')) {
-            doctorHome.doctorName += ',' + doctorActive.speciality;
+
+    getDoctorName();
+    
+
+    function getDoctorName() {
+        if (_.isEmpty(doctorActive)) {
+            localStorage.clear();
+            localStorage.setItem('isLoggedInDoctor', 'false');
+        } else {
+            if (_.has(doctorActive, 'firstName')) {
+                $log.log('in first name---');
+                doctorHome.doctorName = 'Dr.' + doctorActive.firstName;
+            }
+            if (_.has(doctorActive, 'speciality')) {
+                $log.log('in speciLITY--');
+                doctorHome.doctorName += ',' + doctorActive.speciality;
+            }
         }
     }
 
-
-    function toggleSideBar() {
-        doctorHome.sideBar = !doctorHome.sideBar;
+    var currentActiveState = localStorage.getItem('currentDoctorState');
+    switch (currentActiveState) {
+        case 'drugPrescriptions':
+            $state.go('doctorHome.drugPrescription');
+            break;
+        case 'myPrescriptions':
+            $state.go('doctorHome.myPrescriptions');
+            break;
+        case 'myPatients':
+            $state.go('doctorHome.myPatients');
+            break;
+        case 'myScheduler':
+            $state.go('doctorHome.myScheduler');
+            break;
+        case 'referDbotica':
+            $state.go('doctorHome.referDbotica');
+            break;
+        case 'settings':
+            $state.go('doctorHome.settings');
+            break;
+        case 'doctorProfile':
+            $state.go('doctorHome.doctorProfile');
+            break;
+        case 'prescriptionReport':
+            $state.go('doctorHome.prescriptionReport');
+            break;
     }
 
     function logoutFromDoctor() {

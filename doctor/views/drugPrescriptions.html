@@ -1,0 +1,416 @@
+<div id="drugPrescriptionsBody" ng-controller="drugPrescriptionsController as prescription">
+    <h3 class="prescriptionHeader">Prescriptions Form</h3>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
+            <div class="panel panelsInDoctor">
+                <div class="panel-heading">
+                    <h4>Patient Search</h4>
+                </div>
+                <div class="panel-body patientInDoctorPanelBody">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <input ng-change="prescription.phoneNumberLengthValidation()" class="form-control" numbers-only ng-model="prescription.phoneNumber" placeholder="Phone Number" type="text">
+                        </div>
+                        <button ng-click="prescription.patientSearchByDoctor()" ng-disabled="prescription.patientSearchBtnDisabled" type="button" class="btn doctorBtn">Search</button>
+                        <a ng-click="prescription.updatePatientDetails()" data-toggle="modal" data-target="#newOrUpdatePatientModal" ng-if="prescription.updatePatient" style="cursor:pointer;margin-right:15px;">update patient details</a>
+                        <a ng-click="prescription.addFamilyMember()" data-toggle="modal" data-target="#newOrUpdatePatientModal" ng-if="prescription.addMember" style="cursor:pointer;">add member</a>
+                    </form>
+                    <span style="color:red;" ng-if="prescription.PhoneNumberErrorMessage">(* Please enter phone number of length 10 digits)</span>
+                    <div class="row">
+                        <label id="patientsListLabel">Patients are:</label>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-6" ng-repeat="patientEntity in prescription.patientsToBeDisplayedInRadios">
+                        <div class="radio patientRadios">
+                            <label class="textOfRadios">
+                                <input ng-click="prescription.selectActivePatient(patientEntity,$index)" type="radio" ng-checked="prescription.{{'radio'+$index}}" name="patientRadio">{{patientEntity.firstName}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
+            <div class="panel panelsInDoctor">
+                <div class="panel-heading">
+                    <h4>Patient Data</h4>
+                </div>
+                <div class="panel-body patientInDoctorPanelBody">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <form>
+                                <div class="from-group">
+                                    <label for="exampleInputPatientName">Patient Name</label>
+                                    <input ng-model="prescription.prescriptionData.firstName" type="text" class="form-control" id="exampleInputPatientName" placeholder="Patient Name">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                            <form>
+                                <div class="from-group">
+                                    <label for="exampleInputWeightInKgs">Weight</label>
+                                    <input ng-change="prescription.calculateBmi()" valid-number ng-model="prescription.prescriptionData.weight" type="text" class="form-control" id="exampleInputWeightInKgs" placeholder="(in kgs)">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                            <form>
+                                <div class="from-group">
+                                    <label for="exampleInputHeightInCms">Height</label>
+                                    <input ng-change="prescription.calculateBmi()" valid-number ng-model="prescription.prescriptionData.height" type="text" class="form-control" id="exampleInputHeightInCms" placeholder="(in cms)">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                            <form>
+                                <div class="from-group">
+                                    <label for="exampleInputTemperature">Temperature</label>
+                                    <input ng-model="prescription.prescriptionData.temperature" type="text" class="form-control" id="exampleInputTemperature" placeholder="Temperature">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <form>
+                                <div class="from-group">
+                                    <label for="exampleInputBloodPressure">Blood Pressure</label>
+                                    <input ng-model="prescription.prescriptionData.bloodPressure" type="text" class="form-control" id="exampleInputBloodPressure" placeholder="Blood Pressure">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="patientDataSecondRow" class="row">
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <form>
+                                <div class="from-group">
+                                    <label for="exampleInputBMI">BMI</label>
+                                    <input valid-number ng-model="prescription.prescriptionData.bmi" type="text" class="form-control" id="exampleInputBMI" placeholder="BMI">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                            <form>
+                                <div class="from-group">
+                                    <label for="exampleInputSaturation">Saturation</label>
+                                    <input ng-model="prescription.prescriptionData.saturation" type="text" class="form-control" id="exampleInputSaturation" placeholder="Saturation">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                            <form>
+                                <div class="from-group">
+                                    <label for="exampleInputPulse">Pulse</label>
+                                    <input ng-model="prescription.prescriptionData.pulse" type="text" class="form-control" id="exampleInputPulse" placeholder="Pulse">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <form>
+                                <div class="from-group">
+                                    <label for="exampleInputDrugAllergy">Drug Allergy</label>
+                                    <input readonly ng-model="prescription.prescriptionData.drugAllergyInForm" type="text" class="form-control" id="exampleInputDrugAllergy" placeholder="Drug Allergy">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
+            <div class="panel panelsInDoctor">
+                <div class="panel-heading">
+                    <h4>Investigation</h4>
+                </div>
+                <div class="panel-body patientInDoctorPanelBody">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <textarea ng-model="prescription.prescriptionData.symptoms" class="form-control" rows="3" placeholder="Symptoms" id="patientSymptoms"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <textarea ng-model="prescription.prescriptionData.investigation" class="form-control patientTextAreas" rows="3" placeholder="Investigation Report" id="investigationReport"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <textarea ng-model="prescription.prescriptionData.history" class="form-control patientTextAreas" rows="3" placeholder="History" id="history"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
+            <div class="panel panelsInDoctor">
+                <div class="panel-heading">
+                    <h4>Tests</h4>
+                </div>
+                <div class="panel-body patientInDoctorPanelBody">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                            <input type="text" ng-model-options="{debounce:500}" ng-change="prescription.testSearch()" ng-model="prescription.test.testName" class="form-control testsRow" placeholder="Test">
+                            <ul id="testsDropDown" ng-class="{'testDropDownActive':prescription.dropdownActive}" class="dropdown-menu">
+                                <li ng-click="prescription.selectTestFromTheDropdown(testEntity)" ng-repeat="testEntity in prescription.testsList">
+                                    <a style="cursor:pointer;" ng-bind="testEntity.testName"></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <input type="text" ng-model="prescription.test.remarks" class="form-control testsRow" placeholder="Remarks">
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                            <button id="addTestBtn" type="submit" ng-click="prescription.addTest()" class="btn doctorBtn">Add</button>
+                        </div>
+                    </div>
+                    <table style="margin-top:8px;" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>S.No.</th>
+                                <th>Test</th>
+                                <th>Remarks</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="testItem in prescription.testsListInTable">
+                                <td ng-bind="$index+1"></td>
+                                <td ng-bind="testItem.testName"></td>
+                                <td ng-bind="testItem.remark"></td>
+                                <td>
+                                    <button type="button" ng-click="prescription.deleteTest($index)" class="btn btnDelete">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
+            <div class="panel panelsInDoctor">
+                <div class="panel-heading">
+                    <h4>Fill Prescription</h4>
+                </div>
+                <div class="panel-body patientInDoctorPanelBody">
+                    <div class="row">
+                        <div class="col-md-9 col-xs-9 col-sm-9 form-group">
+                            <input type="text" placeholder="Drug" ng-model="prescription.fillPrescription.drugSearch" id="drugSearchBox" class="form-control" data-validation="required">
+                            <span id="searchclear" class="glyphicon glyphicon-remove-circle"></span>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <input type="text" id="drugType" ng-model="prescription.fillPrescription.drugType" class="form-control fillPrescriptionSecondRow" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2 col-sm-3 col-xs-12">
+                            <input type="text" placeholder="Per Serving" class="form-control" ng-model="prescription.fillPrescription.perServing">
+                        </div>
+                        <div class="col-md-2 col-sm-3 col-xs-12">
+                            <input type="text" readonly placeholder="units" class="form-control drugScndRow" ng-model="prescription.fillPrescription.perServingUnits">
+                        </div>
+                        <div class="col-md-2 col-sm-3 col-xs-12">
+                            <select class="form-control fillPrescriptionSecondRow drugScndRow" ng-model="prescription.fillPrescription.daysOrQuantity" placeholder="Days" id="prescriptionFormDays">
+                                <option name="Days">Days</option>
+                                <option name="Quantity">Quantity</option>
+                            </select>
+                        </div>
+                        <div id="daysCountBox" class="col-md-2 form-group drugScndRow input-group spinner col-sm-2 col-xs-10">
+                            <input type="number" ng-model="prescription.fillPrescription.days" class="form-control fillPrescriptionSecondRow" value="1" id="prescription-form-units"></input>
+                            <div class="input-group-btn-vertical">
+                                <button id="upArrows" class="btn btn-default" ng-click="prescription.daysIncrement()" type="button"><i class="fa fa-caret-up"></i></button>
+                                <button id="downArrows" class="btn btn-default" ng-click="prescription.daysDecrement()" type="button"><i class="fa fa-caret-down"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <textarea class="form-control" ng-model="prescription.fillPrescription.specialInstructions" rows="3" placeholder="Special Instructions" id="prescription-form-si"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="timingsBtnGrp" class="col-md-12 col-xs-12 col-sm-12 form-group">
+                            <button type="button" ng-click="prescription.addSuccess('Before_BreakFast')" class="btn timingsBtn col-md-1 btn-xs btn-{{prescription.Before_BreakFast}}">BBF</button>
+                            <button type="button" ng-click="prescription.addSuccess('After_BreakFast')" class="btn timingsBtn col-md-1 btn-xs btn-{{prescription.After_BreakFast}}">ABF</button>
+                            <button type="button" ng-click="prescription.addSuccess('Before_Lunch')" class="btn timingsBtn col-md-1 btn-xs btn-{{prescription.Before_Lunch}}">BL</button>
+                            <button type="button" ng-click="prescription.addSuccess('After_Lunch')" class="btn timingsBtn col-md-1 btn-xs btn-{{prescription.After_Lunch}}">AL</button>
+                            <button type="button" ng-click="prescription.addSuccess('Before_Dinner')" class="btn timingsBtn col-md-1 btn-xs btn-{{prescription.Before_Dinner}}">BD</button>
+                            <button type="button" ng-click="prescription.addSuccess('After_Dinner')" class="btn timingsBtn col-md-1 btn-xs btn-{{prescription.After_Dinner}}">AD</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <button type="submit" ng-click="prescription.addDrug()" id="addPrescriptionBtn" class="btn doctorBtn pull-right">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
+            <div class="panel panelsInDoctor">
+                <div class="panel-heading">
+                    <h4>List of Drugs</h4>
+                </div>
+                <div class="panel-body patientInDoctorPanelBody">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>S.No.</th>
+                                <th>Brand Name</th>
+                                <th>Per Serving</th>
+                                <th>Days/Quantity</th>
+                                <th>Usage</th>
+                                <th>Remarks</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="drugEntity in prescription.drugsList">
+                                <td ng-bind="$index+1"></td>
+                                <td ng-bind="drugEntity.brandName"></td>
+                                <td ng-bind="drugEntity.perServing"></td>
+                                <td ng-bind="drugEntity.noOfDays"></td>
+                                <td ng-bind="drugEntity.usageDirection"></td>
+                                <td ng-bind="drugEntity.remarks"></td>
+                                <td>
+                                    <button type="button" ng-click="prescription.deleteDrug($index)" class="btn btnDelete">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
+            <div class="panel panelsInDoctor">
+                <div class="panel-heading">
+                    <h4>Remarks</h4>
+                </div>
+                <div class="panel-body patientInDoctorPanelBody">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="exampleInputDays">Revisit After(Days)</label>
+                            <input ng-change="prescription.daysChange()" ng-model="prescription.revisitAfterDays" type="text" class="form-control" id="exampleInputDays" placeholder="Days">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputDate">Revisit Date</label>
+                            <input type="text" ng-model="prescription.revisitAfterDate" class="form-control" id="exampleInputRevisitDate" placeholder="Revisit Date">
+                        </div>
+                    </form>
+                    <form class="form-inline referToForm">
+                        <div class="form-group">
+                            <label for="exampleInputReferTo">Refer To</label>
+                            <input type="text" ng-model="prescription.referToDoctor" class="form-control" id="exampleInputReferTo" placeholder="Refer To">
+                        </div>
+                    </form>
+                    <textarea class="form-control" ng-model="prescription.additionalComments" rows="3" placeholder="Additional Comments" id="prescriptionAdditionalComments"></textarea>
+                    <div class="row">
+                        <button id="saveAndContinueBtn" type="submit" ng-click="prescription.savePrescription()" class="btn doctorBtn pull-right">Save and Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="newOrUpdatePatientModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add / Update Patient Details:</h4>
+                </div>
+                <div class="modal-body">
+                    <span style="color:red;" ng-if="prescription.noPatientDetailsErrorMessage">No Patient Details Found.Please add Patient</span>
+                    <span style="color:red;" ng-if="prescription.mandatoryFieldsErrorMessage">Please enter *asterisk marked mandatory fields</span>
+                    <div class="row inpatientRowInModal">
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputName">*Name</label>
+                                    <input type="text" class="form-control exampleInpatientPhone" id="exampleInputFirstName" ng-model="prescription.patientData.firstName" placeholder="Name">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail">Email</label>
+                                    <input type="email" class="form-control exampleInpatientPhone" id="exampleInputEmail" ng-model="prescription.patientData.emailId" placeholder="Email">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputPhoneNumber">*Phone Number</label>
+                                    <input numbers-only type="text" class="form-control exampleInpatientPhone" id="exampleInputPhoneNumber" ng-model="prescription.patientData.phoneNumber" placeholder="Phone Number">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row inpatientRowInModal">
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputAge">Age</label>
+                                    <input type="text" class="form-control exampleInpatientPhone" id="exampleInputAge" ng-model="prescription.patientData.age" placeholder="Age">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputGender">Gender</label>
+                                    <select ng-model="prescription.patientData.gender" class="form-control exampleInpatientPhone" id="exampleInputGender">
+                                        <option>MALE</option>
+                                        <option>FEMALE</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputBloodGroup">Blood Group</label>
+                                    <select ng-model="prescription.patientData.bloodGroup" class="form-control exampleInpatientPhone" id="exampleInputBloodGroup">
+                                        <option value="O_POSITIVE">O_POSITIVE</option>
+                                        <option value="O_NEGATIVE">O_NEGATIVE</option>
+                                        <option value="A_POSITIVE">A_POSITIVE</option>
+                                        <option value="A_NEGATIVE">A_NEGATIVE</option>
+                                        <option value="B_POSITIVE">B_POSITIVE</option>
+                                        <option value="B_NEGATIVE">B_NEGATIVE</option>
+                                        <option value="AB_POSITIVE">AB_POSITIVE</option>
+                                        <option value="AB_NEGATIVE">AB_NEGATIVE</option>
+                                        <option value="OTHER">OTHER</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row inpatientRowInModal">
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputDrugAllergy">Drug Allergy</label>
+                                    <input type="text" ng-model="prescription.patientData.drugAllergy" class="form-control exampleInpatientPhone" id="exampleInputDrugAllergy" placeholder="Drug Allergy">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row text-center">
+                        <button id="addPatientBtnInModal" ng-click="prescription.addOrUpdatePatient()" class="buttonsInInpatientModal btn doctorBtn" type="button">Save</button>
+                        <button class="btn buttonsInInpatientModal doctorBtn" data-dismiss="modal" type="button">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

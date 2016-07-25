@@ -44,6 +44,7 @@ function loginController($scope, $log, doctorServices, $state, $http, $parse, Sw
                 } else {
                     var doctorActive = doctorLoginSuccess.data.response;
                     localStorage.setItem('currentDoctor', doctorActive);
+                    localStorage.setItem('currentDoctorState', 'drugPrescriptions');
                     localStorage.setItem('isLoggedInDoctor', 'true');
                     $state.go('doctorHome');
                 }
