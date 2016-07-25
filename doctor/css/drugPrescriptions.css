@@ -72,6 +72,48 @@
     .prescriptionHeader {
         margin-top: 60px;
     }
+    .prescriptionReportHeader {
+        padding-top: 85px;
+        margin-left: 25px;
+    }
+    #doctorProfileHeader {
+        margin-left: 25px;
+        padding-top: 75px;
+    }
+}
+
+.activeInactiveBtn {
+    border-color: #3c8dbc !important;
+}
+
+.INACTIVE {
+    background-color: white !important;
+    color: #3c8dbc !important;
+}
+
+.ACTIVE {
+    background-color: #3c8dbc !important;
+    color: white !important;
+}
+
+#accordionsPanelGroup {
+    margin-right: 20px !important;
+    margin-left: 70px !important;
+    padding-bottom: 1px !important;
+}
+
+@media only screen and (max-width:991px) {
+    .prescriptionReportHeader {
+        padding-top: 30px;
+        margin-left: 25px;
+    }
+    .prescriptionReportpanels {
+        margin-left: 45px;
+    }
+}
+
+.prescriptionReportRow {
+    margin-top: 6px;
 }
 
 .referToForm,
@@ -98,6 +140,10 @@
     #downArrows {
         margin-top: -1px;
     }
+}
+
+.patientDetailsSpan {
+    margin-left: 8px;
 }
 
 #searchclear {

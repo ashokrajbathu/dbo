@@ -25,6 +25,14 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.addPrescription = addPrescription;
     doctorServices.addPrescriptionSuccessSwal = addPrescriptionSuccessSwal;
     doctorServices.noPatientOrNoDoctorSwal = noPatientOrNoDoctorSwal;
+    doctorServices.changePasswordFieldsSwal = changePasswordFieldsSwal;
+    doctorServices.changeDoctorPassword = changeDoctorPassword;
+    doctorServices.changePasswordSuccessSwal = changePasswordSuccessSwal;
+    doctorServices.newOldPasswordsSameSwal = newOldPasswordsSameSwal;
+    doctorServices.updateDetails = updateDetails;
+    doctorServices.updateDetailsSuccessSwal = updateDetailsSuccessSwal;
+    doctorServices.getMyAssistants = getMyAssistants;
+    doctorServices.markAssistantStatus = markAssistantStatus;
 
     function loginErrorSwal() {
         swal({
@@ -290,6 +298,119 @@ function doctorServices($http, $state, $log, $q) {
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
+    }
+
+    function changePasswordFieldsSwal() {
+        swal({
+            title: "Error",
+            text: "Please Enter all the fields",
+            type: "error",
+            confirmButtonText: "OK"
+        });
+    }
+
+    function changeDoctorPassword(changePasswordRequest) {
+        var deferred = $q.defer();
+        var changePasswordRequestEntity = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/doctor/changePassword',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(changePasswordRequest)
+        }
+        $http(changePasswordRequestEntity).then(function(changePasswordSuccess) {
+            deferred.resolve(changePasswordSuccess);
+        }, function(changePasswordError) {
+            deferred.reject(changePasswordError);
+        });
+        return deferred.promise;
+    }
+
+    function changePasswordSuccessSwal() {
+        swal({
+            title: "Success",
+            text: "Password successfully changed!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    function newOldPasswordsSameSwal() {
+        swal({
+            title: "Error",
+            text: "New password and Re-enter Password has to be same!!!!",
+            type: "error",
+            confirmButtonText: "OK"
+        });
+    }
+
+    function updateDetailsSuccessSwal() {
+        swal({
+            title: "Success",
+            text: "Doctor Details Successfully Updated!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    function updateDetails(changeDetails) {
+        var deferred = $q.defer();
+        var changeDetailsRequest = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/doctor/updateProfile',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(changeDetails)
+        }
+        $http(changeDetailsRequest).then(function(changeDetailsSuccess) {
+            deferred.resolve(changeDetailsSuccess);
+        }, function(changeDetailsError) {
+            deferred.reject(changeDetailsError);
+        });
+        return deferred.promise;
+    }
+
+    function getMyAssistants() {
+        var deferred = $q.defer();
+        var getAssistantsRequest = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/doctor/getMyAssistants',
+            withCredentials: true
+        }
+        $http(getAssistantsRequest).then(function(assistantsSuccess) {
+            deferred.resolve(assistantsSuccess);
+        }, function(assistantsError) {
+            deferred.reject(assistantsError);
+        });
+        return deferred.promise;
+    }
+
+    function markAssistantStatus(markAssistantObject) {
+        var deferred = $q.defer();
+        var markAssistantRequest = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/doctor/markAssistantStatus',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(markAssistantObject)
+        }
+        $http(markAssistantRequest).then(function(markAssistantSuccess) {
+            deferred.resolve(markAssistantSuccess);
+        }, function(markAssistantError) {
+            deferred.reject(markAssistantError);
+        });
+        return deferred.promise;
     }
 
 };

@@ -3,15 +3,12 @@ doctorHomeController.$inject = ['$scope', '$log', 'doctorServices', '$state', '$
 
 function doctorHomeController($scope, $log, doctorServices, $state, $http, $parse, SweetAlert) {
     var doctorHome = this;
-
     doctorHome.logoutFromDoctor = logoutFromDoctor;
-
     var doctorActive = localStorage.getItem('currentDoctor');
     doctorActive = angular.fromJson(doctorActive);
     doctorHome.doctorName = '';
 
     getDoctorName();
-    
 
     function getDoctorName() {
         if (_.isEmpty(doctorActive)) {
@@ -19,11 +16,9 @@ function doctorHomeController($scope, $log, doctorServices, $state, $http, $pars
             localStorage.setItem('isLoggedInDoctor', 'false');
         } else {
             if (_.has(doctorActive, 'firstName')) {
-                $log.log('in first name---');
                 doctorHome.doctorName = 'Dr.' + doctorActive.firstName;
             }
             if (_.has(doctorActive, 'speciality')) {
-                $log.log('in speciLITY--');
                 doctorHome.doctorName += ',' + doctorActive.speciality;
             }
         }

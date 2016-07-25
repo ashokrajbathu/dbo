@@ -1,3 +1,142 @@
 <div ng-controller="prescriptionReportController as prescriptionReport">
-    <h3 style="margin-top:70px;">Prescription Report</h3>
+    <h3 class="prescriptionReportHeader">Prescription Report</h3>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
+            <div class="panel panelsInDoctor prescriptionReportpanels">
+                <div class="panel-heading">
+                    <h4>Prescription Details</h4>
+                </div>
+                <div class="panel-body patientInDoctorPanelBody">
+                    <div class="row">
+                        <div ng-if="prescriptionReport.patientHeight" class="col-md-4 col-sm-4 col-xs-4">
+                            <label>Height:</label>
+                            <span class="patientDetailsSpan" ng-bind="prescriptionReport.height"></span>
+                        </div>
+                        <div ng-if="prescriptionReport.patientWeight" class="col-md-4 col-sm-4 col-xs-4">
+                            <label>Weight:</label>
+                            <span ng-bind="prescriptionReport.weight"></span>
+                        </div>
+                        <div ng-if="prescriptionReport.patientBMI" class="col-md-4 col-sm-4 col-xs-4">
+                            <label>BMI:</label>
+                            <span ng-bind="prescriptionReport.bmi"></span>
+                        </div>
+                    </div>
+                    <div class="row prescriptionReportRow">
+                        <div ng-if="prescriptionReport.patientBloodPressure" class="col-md-4 col-sm-4 col-xs-4">
+                            <label>Blood Pressure:</label>
+                            <span ng-bind="prescriptionReport.bloodPressure"></span>
+                        </div>
+                        <div ng-if="prescriptionReport.patientTemperature" class="col-md-4 col-sm-4 col-xs-4">
+                            <label>Temperature:</label>
+                            <span ng-bind="prescriptionReport.temperature"></span>
+                        </div>
+                        <div ng-if="prescriptionReport.patientPulse" class="col-md-4 col-sm-4 col-xs-4">
+                            <label>Pulse:</label>
+                            <span ng-bind="prescriptionReport.pulse"></span>
+                        </div>
+                    </div>
+                    <div class="row prescriptionReportRow">
+                        <div ng-if="prescriptionReport.patientSaturation" class="col-md-4 col-sm-4 col-xs-4">
+                            <label>Saturation:</label>
+                            <span ng-bind="prescriptionReport.saturation"></span>
+                        </div>
+                        <div ng-if="prescriptionReport.patientrevisitOn" class="col-md-4 col-sm-4 col-xs-4">
+                            <label>Re-visit On:</label>
+                            <span ng-bind="prescriptionReport.revisitOn"></span>
+                        </div>
+                        <div ng-if="prescriptionReport.patientReferTo" class="col-md-4 col-sm-4 col-xs-4">
+                            <label>Refer To:</label>
+                            <span ng-bind="prescriptionReport.referTo"></span>
+                        </div>
+                    </div>
+                    <div class="row prescriptionReportRow">
+                        <div ng-if="prescriptionReport.patientSymptoms" class="col-md-12 col-sm-12 col-xs-12">
+                            <label>Symptoms:</label>
+                            <span ng-bind="prescriptionReport.symptoms"></span>
+                        </div>
+                    </div>
+                    <div class="row prescriptionReportRow">
+                        <div ng-if="prescriptionReport.patientInvestigation" class="col-md-12 col-sm-12 col-xs-12">
+                            <label>Investigation:</label>
+                            <span ng-bind="prescriptionReport.investigation"></span>
+                        </div>
+                    </div>
+                    <div class="row prescriptionReportRow">
+                        <div ng-if="prescriptionReport.patientComments" class="col-md-12 col-sm-12 col-xs-12">
+                            <label>Comments:</label>
+                            <span ng-bind="prescriptionReport.comments"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
+            <div class="panel panelsInDoctor prescriptionReportpanels">
+                <div class="panel-heading">
+                    <h4>Drugs and Dosage</h4>
+                </div>
+                <div class="panel-body patientInDoctorPanelBody">
+                    <table style="margin-top:8px;" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>S.No.</th>
+                                <th>Brand Name</th>
+                                <th>Per Serving</th>
+                                <th>Days/Quantity</th>
+                                <th>Usage</th>
+                                <th>Remarks</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="drugEntity in prescriptionReport.drugsList">
+                                <td ng-bind="$index+1"></td>
+                                <td ng-bind="drugEntity.brandName"></td>
+                                <td ng-bind="drugEntity.perServing"></td>
+                                <td ng-bind="drugEntity.noOfDays"></td>
+                                <td ng-bind="drugEntity.usageDirection"></td>
+                                <td ng-bind="drugEntity.remarks"></td>
+                                <td>
+                                    <button type="button" ng-click="prescriptionReport.deleteDrugOrTest('drug',drugEntity,$index)" class="btn btnDelete">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
+            <div class="panel panelsInDoctor prescriptionReportpanels">
+                <div class="panel-heading">
+                    <h4>Lab Tests</h4>
+                </div>
+                <div class="panel-body patientInDoctorPanelBody">
+                    <table style="margin-top:8px;" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>S.No.</th>
+                                <th>Test</th>
+                                <th>Remarks</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="testItem in prescriptionReport.testsListInTable">
+                                <td ng-bind="$index+1"></td>
+                                <td ng-bind="testItem.testName"></td>
+                                <td ng-bind="testItem.remark"></td>
+                                <td>
+                                    <button type="button" ng-click="prescriptionReport.deleteDrugOrTest('test',testItem,$index)" class="btn btnDelete">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

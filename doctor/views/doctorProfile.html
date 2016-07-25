@@ -1,3 +1,142 @@
 <div ng-controller="doctorProfileController as doctorProfile">
-    <h1>doctor profile</h1>
+    <h3 id="doctorProfileHeader">Doctor Profile</h3>
+    <div id="accordionsPanelGroup">
+        <uib-accordion close-others="doctorProfile.oneAtATime">
+            <div uib-accordion-group class="panel-default" heading="Change Password">
+                <form ng-submit="doctorProfile.changeDoctorPassword()" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputOldPassword" class="col-md-2 col-sm-2 col-xs-2 control-label">Old Password</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <input ng-model="doctorProfile.password.old" type="password" class="form-control" id="inputOldPassword" placeholder="Old Password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputNewPassword" class="col-md-2 col-sm-2 col-xs-2 control-label">New Password</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <input ng-model="doctorProfile.password.new" type="password" class="form-control" id="inputNewPassword" placeholder="New Password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputReTypePassword" class="col-md-2 col-sm-2 col-xs-2 control-label">Re-type New Password</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <input ng-model="doctorProfile.password.reenter" type="password" class="form-control" id="inputNewPassword" placeholder="Re-type password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-sm-offset-2 col-xs-offset-2 col-md-10 col-sm-10 col-xs-10">
+                            <button type="submit" class="btn btn-danger" id="changePasswordBtn">Update Password</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div uib-accordion-group class="panel-default" heading="Update Personal Information">
+                <form ng-submit="doctorProfile.changeDoctorDetails()" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputFirstName" class="col-md-2 col-sm-2 col-xs-2 control-label">First Name</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <input readonly ng-model="doctorProfile.update.firstName" type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLastName" class="col-md-2 col-sm-2 col-xs-2 control-label">Last Name</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <input readonly ng-model="doctorProfile.update.lastName" type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputRegNo" class="col-md-2 col-sm-2 col-xs-2 control-label">Registration No.</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <input readonly ng-model="doctorProfile.update.doctorRegistrationNo" type="text" class="form-control" id="inputRegNo" placeholder="Registration No.">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSpeciality" class="col-md-2 col-sm-2 col-xs-2 control-label">Speciality</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <input ng-model="doctorProfile.update.speciality" type="text" class="form-control" id="inputSpeciality" placeholder="Speciality">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputOrganization" class="col-md-2 col-sm-2 col-xs-2 control-label">Organization</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <input ng-model="doctorProfile.update.organization" type="text" class="form-control" id="inputOrganization" placeholder="Organization">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputQualification" class="col-md-2 col-sm-2 col-xs-2 control-label">Qualification</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <input ng-model="doctorProfile.update.qualification" type="text" class="form-control" id="inputQualification" placeholder="Qualification">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputOfficeAddress" class="col-md-2 col-sm-2 col-xs-2 control-label">Office Address</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <textarea ng-model="doctorProfile.update.officeAddress" class="form-control" rows="2" placeholder="Office Address" id="inputOfficeAddress"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCity" class="col-md-2 col-sm-2 col-xs-2 control-label">City</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <input ng-model="doctorProfile.update.city" type="text" class="form-control" id="inputCity" placeholder="City">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPhoneNumber" class="col-md-2 col-sm-2 col-xs-2 control-label">Phone Number</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <input readonly ng-model="doctorProfile.update.phoneNumber" type="text" class="form-control" id="inputPhoneNumber" placeholder="Phone Number">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail" class="col-md-2 col-sm-2 col-xs-2 control-label">Email</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <input readonly ng-model="doctorProfile.update.emailId" type="text" class="form-control" id="inputEmail" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputWebsiteUrl" class="col-md-2 col-sm-2 col-xs-2 control-label">Website URL</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <input ng-model="doctorProfile.update.websiteUrl" type="text" class="form-control" id="inputWebsiteUrl" placeholder="Website Url">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-sm-offset-2 col-xs-offset-2 col-md-10 col-sm-10 col-xs-10">
+                            <button type="submit" class="btn btn-danger" id="updateDetailsBtn">Update Details</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div uib-accordion-group class="panel-default" heading="My Assistants">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>S.No.</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="assistantEntity in doctorProfile.assistantsOfDoctor">
+                            <td ng-bind="$index+1"></td>
+                            <td ng-bind="assistantEntity.assistant.firstName"></td>
+                            <td ng-bind="assistantEntity.assistant.emailId"></td>
+                            <td ng-bind="assistantEntity.assistant.phoneNumber"></td>
+                            <td>
+                                <div class="btn-group btn-toggle">
+                                    <button ng-click="doctorProfile.changeAssistantState(assistantEntity,'ACTIVE')" ng-class="{'ACTIVE':assistantEntity.assistantMapping.state=='ACTIVE','INACTIVE':assistantEntity.assistantMapping.state=='INACTIVE'}" class="btn btn-sm activeInactiveBtn">ACTIVE</button>
+                                    <button ng-click="doctorProfile.changeAssistantState(assistantEntity,'INACTIVE')" ng-class="{'INACTIVE':assistantEntity.assistantMapping.state=='ACTIVE','ACTIVE':assistantEntity.assistantMapping.state=='INACTIVE'}" class="btn btn-sm activeInactiveBtn">INACTIVE</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div uib-accordion-group class="panel-default" heading="My Credits">
+                This content is straight in the template.
+            </div>
+            <div uib-accordion-group class="panel-default" heading="My Addresses">
+                This content is straight in the template.
+            </div>
+        </uib-accordion>
+    </div>
 </div>
