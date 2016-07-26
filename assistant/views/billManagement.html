@@ -3,7 +3,7 @@
         <div id="blurBackScreen" ng-show="billView.blurScreen"></div>
         <img class="spinner" src="css/images/default (2).gif" ng-show="billView.loading"></img>
         <div class="row patientDetailsSearchRow">
-            <div ng-if="billView.patientSearchDiv" class="patientDetailsSearch col-md-3 col-xs-12 col-sm-6">
+            <div ng-if="billView.patientSearchDiv" class="patientDetailsSearch col-md-3 col-xs-12 col-sm-12">
                 <div class="panel panel-default">
                     <div class="heading panel-heading">
                         <h4 class="headerInfo">Patient Search : </h4>
@@ -12,14 +12,14 @@
                         <div class="patientSearchForm">
                             <form class=" patientSearchForm form-horizontal">
                                 <div class="form-group">
-                                    <div class="col-md-offset-1 col-md-10 col-sm-6 col-xs-12">
+                                    <div class="col-md-offset-1 col-md-10 col-sm-offset-3 col-sm-6 col-xs-12">
                                         <input numbers-only ng-change="billView.validPhoneNumber(billView.patientSearch.phoneNumber)" type="text" ng-model="billView.patientSearch.phoneNumber" placeholder="Mobile Number" class="patientSearchBtns billTxtBox input-sm form-control" id="exampleInputpatientSearchNumber">
                                     </div>
                                 </div>
                                 <p ng-if="billView.enterDigits" id="enterDigitsSpan" class="warningParagraphs">*Please Enter digits Only</p>
                                 <p ng-if="billView.enterPhoneNumber" id="enterPhoneNumberSpan" class="warningParagraphs">*Please Enter Phone Number of 10 digits</p>
                                 <div class="form-group">
-                                    <div class="col-md-offset-1 col-md-10 col-sm-6 col-xs-12">
+                                    <div class="col-md-offset-1 col-md-10 col-sm-offset-3 col-sm-6 col-xs-12">
                                         <button id="patientSearchBtn" ng-click="billView.patientSearchOftheNumber(billView.patientSearch.phoneNumber)" type="submit" class="patientSearchBtns billBtn form-control btn">Search</button>
                                     </div>
                                 </div>

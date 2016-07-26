@@ -8,6 +8,12 @@
                 </div>
                 <div class="panel-body patientInDoctorPanelBody">
                     <div class="row">
+                        <div class="col-xs-12">
+                            <a href="report-print.html" target="_blank" class="btn btn-primary pull-right"><i class="fa fa-print"></i>Generate Print</a>
+                            <button id="newPatientBtn" class="btn btn-primary" style="margin-right: 5px;"><a style="color:white;">New Patient</a></button>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div ng-if="prescriptionReport.patientHeight" class="col-md-4 col-sm-4 col-xs-4">
                             <label>Height:</label>
                             <span class="patientDetailsSpan" ng-bind="prescriptionReport.height"></span>

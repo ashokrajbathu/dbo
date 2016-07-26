@@ -90,6 +90,7 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
     });
 
     var organizationAddressPromise = dboticaServices.getOrganizationAddress();
+    $log.log('org address promise is---', organizationAddressPromise);
     organizationAddressPromise.then(function(organizationAddressSuccess) {
         var errorCode = organizationAddressSuccess.data.errorCode;
         if (errorCode) {
@@ -470,6 +471,7 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
             addressRequestEntity.id = organizationAddressId;
         }
         var updateOrgAddressPromise = dboticaServices.updateOrgAddress(addressRequestEntity);
+        $log.log('update address is---', updateOrgAddressPromise);
         updateOrgAddressPromise.then(function(updateOrgSuccess) {
             var errorCode = updateOrgSuccess.data.errorCode;
             if (errorCode) {

@@ -131,11 +131,68 @@
                     </tbody>
                 </table>
             </div>
-            <div uib-accordion-group class="panel-default" heading="My Credits">
-                This content is straight in the template.
+            <div uib-accordion-group class="panel-default" heading="My Credits : {{doctorProfile.doctor.credits}}">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Credit Type</th>
+                            <th>Transaction Type</th>
+                            <th>Creation Type</th>
+                            <th>Credits</th>
+                            <th>Reference Id</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="creditEntity in doctorProfile.CreditsListToBeDisplayed">
+                            <td ng-bind="creditEntity.creditType"></td>
+                            <td ng-bind="creditEntity.transactionType"></td>
+                            <td ng-bind="creditEntity.creationTime|longDateIntoReadableDate"></td>
+                            <td ng-bind="creditEntity.credits"></td>
+                            <td ng-bind="creditEntity.referenceId"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <uib-pagination class="pull-right" items-per-page="doctorProfile.itemsPerPage" ng-change="doctorProfile.pageChanged()" total-items="doctorProfile.totalItems" ng-model="doctorProfile.currentPage"></uib-pagination>
             </div>
             <div uib-accordion-group class="panel-default" heading="My Addresses">
-                This content is straight in the template.
+                <div class="row">
+                    <a style="margin-right:10px;" ng-if="doctorProfile.addNewAddress" ng-click="doctorProfile.updateAddress('newAddress')" id="addNewAddressLink" class="linksInDoctor doctorLink pull-right">Add New Address</a>
+                    <a style="margin-right:10px;" ng-if="doctorProfile.backToAddresses" ng-click="doctorProfile.updateAddress('backToAddresses')" id="backToAddressLink" class="linksInDoctor doctorLink pull-right">Back to Addresses</a>
+                </div>
+                <div class="row">
+                    <div ng-if="doctorProfile.showAddressesRadios" ng-repeat="addressEntity in doctorProfile.clinicAddresses" class="col-md-2 col-sm-2 col-xs-2">
+                        <div class="radio patientRadios">
+                            <label class="textOfRadios">
+                                <input ng-click="doctorProfile.selectActiveAddress(addressEntity,$index)" type="radio" ng-checked="doctorProfile.{{'radio'+$index}}" name="addressRadio">Address {{$index+1}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <form style="margin-top:10px;" ng-submit="doctorProfile.changeClinicAddress()" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputaddressLine" class="col-md-2 col-sm-2 col-xs-2 control-label">Address Line 1</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <input ng-model="doctorProfile.clinicAddress.address" type="text" class="form-control" id="inputaddressLine" placeholder="Address">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputaddressCity" class="col-md-2 col-sm-2 col-xs-2 control-label">City</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <input ng-model="doctorProfile.clinicAddress.city" type="text" class="form-control" id="inputaddressLine" placeholder="City">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputaddressPinCode" class="col-md-2 col-sm-2 col-xs-2 control-label">Address Line 1</label>
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <input ng-model="doctorProfile.clinicAddress.pincode" type="text" class="form-control" id="inputaddressPinCode" placeholder="Pin Code">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-sm-offset-2 col-xs-offset-2 col-md-10 col-sm-10 col-xs-10">
+                            <button type="submit" class="btn btn-danger" id="updateDetailsBtn">Update Address</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </uib-accordion>
     </div>

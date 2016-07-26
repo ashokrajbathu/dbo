@@ -157,79 +157,81 @@
                                        <hr>
                                    </div> -->
                             <div ng-show="patientAvailable">
-                                <form class="patient-form-inline form-inline">
-                                    <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
-                                        <span class="modalInfo">* Name </span>
-                                        <input type="text" class="modal-Form-control form-control" id="inputPatientFirstName" ng-model="patientData.firstName" placeholder="Name">
+                                <div class="row inpatientRowInModal">
+                                    <div class="col-md-4 col-sm-8 col-xs-8">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="exampleInputName">*Name</label>
+                                                <input type="text" class="form-control exampleInpatientPhone" id="exampleInputFirstName" ng-model="patientData.firstName" placeholder="Name">
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
-                                        <span class="modalInfo">Email Id</span>
-                                        <input type="text" class="modal-Form-control form-control" id="inputPatientEmailId" ng-model="patientData.emailId" placeholder="Email Id">
+                                    <div class="col-md-4 col-sm-8 col-xs-8">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail">Email</label>
+                                                <input type="email" class="form-control exampleInpatientPhone" id="exampleInputEmail" ng-model="patientData.emailId" placeholder="Email">
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="col-md-3 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
-                                        <span class="modalInfo">* Phone</span>
-                                        <input type="text" class="modal-Form-control form-control" id="inputPatientPhoneNumber" ng-model="patientData.phoneNumber" placeholder="Phone Number" readonly>
+                                    <div class="col-md-4 col-sm-8 col-xs-8">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="exampleInputPhoneNumber">*Phone Number</label>
+                                                <input numbers-only type="text" class="form-control exampleInpatientPhone" id="exampleInputPhoneNumber" ng-model="patientData.phoneNumber" placeholder="Phone Number">
+                                            </div>
+                                        </form>
                                     </div>
-                                </form>
-                                <hr>
-                                <form class="patient-form-inline form-inline">
-                                    <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
-                                        <span class="modalInfo">Age</span>
-                                        <input type="text" class="modal-Form-control form-control" id="inputPatientAge" ng-model="patientData.age" placeholder="Age">
+                                </div>
+                                <div class="row inpatientRowInModal">
+                                    <div class="col-md-4 col-sm-8 col-xs-8">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="exampleInputAge">Age</label>
+                                                <input type="text" class="form-control exampleInpatientPhone" id="exampleInputAge" ng-model="patientData.age" placeholder="Age">
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
-                                        <span class="modalInfo">Gender</span>
-                                        <select type="text" style="width:160px;" id="inputPatientGender" ng-model="patientData.gender" type="text" class="modal-Form-control form-control" id="patient-reg-bloodgrp">
-                                            <option value="MALE">MALE</option>
-                                            <option value="FEMALE">FEMALE</option>
-                                        </select>
+                                    <div class="col-md-4 col-sm-8 col-xs-8">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="exampleInputGender">Gender</label>
+                                                <select ng-model="patientData.gender" class="form-control exampleInpatientPhone" id="exampleInputGender">
+                                                    <option>MALE</option>
+                                                    <option>FEMALE</option>
+                                                </select>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="col-md-3 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
-                                        <span class="modalInfo">Blood Group</span>
-                                        <select style="width:160px;" ng-model="patientData.bloodGroup" type="text" class="form-control modal-Form-control" id="inputPatientBloodGroup" id="patient-reg-bloodgrp">
-                                            <option value="O_POSITIVE">O_POSITIVE</option>
-                                            <option value="O_NEGATIVE">O_NEGATIVE</option>
-                                            <option value="A_POSITIVE">A_POSITIVE</option>
-                                            <option value="A_NEGATIVE">A_NEGATIVE</option>
-                                            <option value="B_POSITIVE">B_POSITIVE</option>
-                                            <option value="B_NEGATIVE">B_NEGATIVE</option>
-                                            <option value="AB_POSITIVE">AB_POSITIVE</option>
-                                            <option value="AB_NEGATIVE">AB_NEGATIVE</option>
-                                            <option value="OTHER">OTHER</option>
-                                        </select>
+                                    <div class="col-md-4 col-sm-8 col-xs-8">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="exampleInputBloodGroup">Blood Group</label>
+                                                <select ng-model="patientData.bloodGroup" class="form-control exampleInpatientPhone" id="exampleInputBloodGroup">
+                                                    <option value="O_POSITIVE">O_POSITIVE</option>
+                                                    <option value="O_NEGATIVE">O_NEGATIVE</option>
+                                                    <option value="A_POSITIVE">A_POSITIVE</option>
+                                                    <option value="A_NEGATIVE">A_NEGATIVE</option>
+                                                    <option value="B_POSITIVE">B_POSITIVE</option>
+                                                    <option value="B_NEGATIVE">B_NEGATIVE</option>
+                                                    <option value="AB_POSITIVE">AB_POSITIVE</option>
+                                                    <option value="AB_NEGATIVE">AB_NEGATIVE</option>
+                                                    <option value="OTHER">OTHER</option>
+                                                </select>
+                                            </div>
+                                        </form>
                                     </div>
-                                </form>
-                                <form class="patient-form-inline form-inline">
-                                    <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
-                                        <span class="modalInfo">Address</span>
-                                        <input type="text" class="modal-Form-control form-control" id="inputPatientAddress" ng-model="patientData.city" placeholder="Address">
+                                </div>
+                                <div class="row inpatientRowInModal">
+                                    <div class="col-md-4 col-sm-8 col-xs-8">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="exampleInputDrugAllergy">Drug Allergy</label>
+                                                <input type="text" ng-model="patientData.drugAllergy" class="form-control exampleInpatientPhone" id="exampleInputDrugAllergy" placeholder="Drug Allergy">
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="col-md-4 col-sm-8 col-xs-8 patientDetails patient-form-group form-group">
-                                        <span class="modalInfo">Drug Allergy</span>
-                                        <input type="text" class="modal-Form-control form-control" id="inputPatientDrugAllergy" ng-model="patientData.drugAllergy" placeholder="Drug Allergy">
-                                    </div>
-                                </form>
-                                <hr>
-                                <form class="patient-form-inline form-inline">
-                                    <div class="col-md-3 col-sm-4 col-xs-4 patientDetails patient-form-group form-group">
-                                        <span class="modalInfo">Weight</span>
-                                        <input type="text" style="width:160px;" class="modal-Form-control form-control" id="inputPatientWeight" ng-model="patientData.weight" placeholder="Weight">
-                                    </div>
-                                    <div class="col-md-4 col-sm-4 col-xs-4 patientDetails patient-form-group form-group">
-                                        <span class="modalInfo">Height</span>
-                                        <input type="text" style="width:160px;" class="modal-Form-control form-control" id="inputPatientHeight" ng-model="patientData.height" placeholder="Height">
-                                    </div>
-                                </form>
-                                <form class="patient-form-inline form-inline">
-                                    <div class="col-md-4 col-sm-4 col-xs-4 patientDetails patient-form-group form-group">
-                                        <span class="modalInfo">Pulse</span>
-                                        <input type="text" style="width:160px;" class="modal-Form-control form-control" id="inputPatientPulse" ng-model="patientData.pulse" placeholder="Pulse">
-                                    </div>
-                                    <div class="col-md-3 col-sm-4 col-xs-4 patientDetails patient-form-group form-group">
-                                        <span class="modalInfo">Blood Pressure</span>
-                                        <input type="text" class="modal-Form-control form-control" id="inputPatientBloodPressure" style="width:160px;" ng-model="patientData.bloodPressure" placeholder="B.P.">
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                         <div class="nextForm" ng-show="nextForm">

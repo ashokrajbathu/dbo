@@ -33,6 +33,11 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.updateDetailsSuccessSwal = updateDetailsSuccessSwal;
     doctorServices.getMyAssistants = getMyAssistants;
     doctorServices.markAssistantStatus = markAssistantStatus;
+    doctorServices.getCreditsHistoryOfDoctor = getCreditsHistoryOfDoctor;
+    doctorServices.getClinicsAddress = getClinicsAddress;
+    doctorServices.enterAddressSwal = enterAddressSwal;
+    doctorServices.updateAddressSuccessSwal = updateAddressSuccessSwal;
+    doctorServices.updateClinicAddress = updateClinicAddress;
 
     function loginErrorSwal() {
         swal({
@@ -409,6 +414,79 @@ function doctorServices($http, $state, $log, $q) {
             deferred.resolve(markAssistantSuccess);
         }, function(markAssistantError) {
             deferred.reject(markAssistantError);
+        });
+        return deferred.promise;
+    }
+
+    function getCreditsHistoryOfDoctor(doctorId) {
+        var deferred = $q.defer();
+        var getCreditsRequestData = {};
+        var start = 0;
+        var limit = 20;
+        var getCreditsRequest = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/doctor/getCreditHistory?start=' + start + '&limit=' + limit + '&doctorId=' + doctorId,
+            withCredentials: true
+        }
+        $http(getCreditsRequest).then(function(getCreditsSuccess) {
+            deferred.resolve(getCreditsSuccess);
+        }, function(getCreditsError) {
+            deferred.reject(getCreditsError);
+        });
+        return deferred.promise;
+    }
+
+    function getClinicsAddress() {
+        var deferred = $q.defer();
+        var getAddressesRequest = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/doctor/getAddress',
+            withCredentials: true
+        }
+        $http(getAddressesRequest).then(function(getAddressesSuccess) {
+            deferred.resolve(getAddressesSuccess);
+        }, function(getAddressesError) {
+            deferred.reject(getAddressesError);
+        });
+        return deferred.promise;
+    }
+
+    function enterAddressSwal() {
+        swal({
+            title: "Error",
+            text: "Please Enter Address Details",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    function updateAddressSuccessSwal() {
+        swal({
+            title: "Success",
+            text: "Address Details has been updated successfully",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    function updateClinicAddress(updateAddress) {
+        var deferred = $q.defer();
+        var updateAddressRequest = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/doctor/updateAddress',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(updateAddress)
+        }
+        $http(updateAddressRequest).then(function(updateAddressSuccess) {
+            deferred.resolve(updateAddressSuccess);
+        }, function(updateAddressError) {
+            deferred.reject(updateAddressError);
         });
         return deferred.promise;
     }
