@@ -187,20 +187,18 @@ function doctorController($scope, $log, dboticaServices, $state, $http, $parse, 
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var doctorsListResponse = angular.fromJson(doctorsSuccess.data.response);
-                for (var doctorIndex in doctorsListResponse) {
-                    if (doctorsListResponse[doctorIndex].phoneNumber == doctorElement.doctorSearchInTxtBox) {
-                        doctorActive = doctorsListResponse[doctorIndex];
-                        break;
-                    }
-                }
+                var doctorActiveIndex = _.findLastIndex(doctorsListResponse, function(entity) {
+                    return entity.phoneNumber == doctorElement.doctorSearchInTxtBox;
+                });
+                doctorActive = doctorsListResponse[doctorActiveIndex];
                 if (angular.isObject(doctorActive)) {
                     doctorElement.newDoctorDetails = false;
                     doctorElement.addNewDoctorForm = true;
-                    doctorElement.addNewDoctor.doctorId = doctorsListResponse[0].id;
-                    doctorElement.doctorName = doctorsListResponse[0].firstName;
-                    doctorElement.addNewDoctor.phoneNumber = doctorsListResponse[0].phoneNumber;
+                    doctorElement.addNewDoctor.doctorId = doctorActive.id;
+                    doctorElement.doctorName = doctorActive.firstName;
+                    doctorElement.addNewDoctor.phoneNumber = doctorActive.phoneNumber;
                     if (doctorsListResponse[0].hasOwnProperty('lastName')) {
-                        doctorElement.doctorName = doctorElement.doctorName + ' ' + doctorsListResponse[0].lastName;
+                        doctorElement.doctorName = doctorElement.doctorName + ' ' + doctorActive.lastName;
                     }
                 } else {
                     doctorElement.newDoctorDetails = true;
