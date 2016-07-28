@@ -1,3 +1,32 @@
 <div ng-controller="myPrescriptionsController as myPrescription">
-    <h1 ng-if="myPrescription.view" style="margin-top:60px;">{{myPrescription.name}}</h1>
+    <h3 class="prescriptionReportHeader">My Prescriptions</h3>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
+            <table id="prescriptionsTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Patient Name</th>
+                        <th>Date of Prescription</th>
+                        <th>Age</th>
+                        <th>Follow Up</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="prescriptionEntity in prescriptionsToBeDisplayed |limitTo:itemsPerPage">
+                        <td ng-bind="prescriptionEntity.patientName"></td>
+                        <td ng-bind="prescriptionEntity.creationTime|istDateIntoReadableDate"></td>
+                        <td ng-bind="prescriptionEntity.prescription.age"></td>
+                        <td ng-bind="prescriptionEntity.prescription.revisitDate"></td>
+                        <td>
+                            <a style="cursor:pointer;">View Prescription</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="paginationDiv">
+            <uib-pagination style="margin-right:100px;" class="pull-right" items-per-page="itemsPerPage" ng-change="pageChanged()" total-items="totalItems" ng-model="currentPage"></uib-pagination>
+        </div>
+    </div>
 </div>

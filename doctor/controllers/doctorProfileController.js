@@ -255,6 +255,7 @@ function doctorProfileController($scope, $log, doctorServices, $state, $http, $p
     function pageChanged() {
         var requiredIndex = doctorProfile.currentPage - 1;
         displayArray = [];
+        doctorProfile.CreditsListToBeDisplayed = [];
         displayArray = _.chunk(entitiesArray, doctorProfile.itemsPerPage);
         angular.copy(displayArray[requiredIndex], doctorProfile.CreditsListToBeDisplayed);
     }

@@ -305,7 +305,7 @@
 
         var numItems = children.size();
         var numPages = Math.ceil(numItems / perPage);
-        console.log("number of pages ", numPages);
+        // console.log("number of pages ", numPages);
         var curr = 0;
         pager.data("curr", curr);
 
@@ -395,7 +395,7 @@
 
     function addRowToPrescriptionTable(prescriptionData) {
         var emptySpace = "  -";
-        console.log("prescription object is----", prescriptionData);
+        // console.log("prescription object is----", prescriptionData);
         var date = new Date(prescriptionData['creationTime']);
         var dateStr = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
         var patientName = "";
@@ -437,16 +437,16 @@
         var patientRemarks = "";
         var prescriptionObject = {};
         var drugDosageArray = [];
-        console.log("prescription Data is-----", prescriptionData);
+        //   console.log("prescription Data is-----", prescriptionData);
         if (prescriptionData.hasOwnProperty('prescription')) {
             prescriptionObject = prescriptionData['prescription'];
-            console.log("ob is----", prescriptionObject);
+            //      console.log("ob is----", prescriptionObject);
             if (!prescriptionObject.hasOwnProperty('bloodPressure')) {
-                console.log("in not bp");
+                //        console.log("in not bp");
                 patientBloodPressure = emptySpace;
             } else {
-                console.log("in bp");
-                console.log("in bp---" + prescriptionObject['bloodPressure']);
+                //        console.log("in bp");
+                //        console.log("in bp---" + prescriptionObject['bloodPressure']);
                 patientBloodPressure = prescriptionObject['bloodPressure'];
             }
             if (!prescriptionObject.hasOwnProperty('investigation')) {
@@ -511,7 +511,7 @@
             }
 
         } else {
-            console.log("in not ====");
+            //   console.log("in not ====");
             patientRemarks = emptySpace;
             patientInvestigation = emptySpace;
             patientRevisitDate = emptySpace;
@@ -574,7 +574,7 @@
         var testData = [];
 
         testData = prescriptionData['prescription']['diagnosisTests'];
-        console.log("test data object is-----", testData);
+        //  console.log("test data object is-----", testData);
         if (!!testData && testData.length > 0) {
             var newCount1 = 1;
             /*console.log("test new count1 is----"+newCount1);*/
@@ -583,16 +583,16 @@
             content1 += '<table class="table table-bordered table-striped testsTable"><thead class="testsHead"><tr><th>S.No.</th><th>Test Name</th><th>Remarks</th></tr></thead><tbody class="testsBody">';
             /* content1 += '<table id="test-details-myPrescription" class="table table-bordered table-striped"><thead><tr><th>S.No</th><th>Test Name</th><th>Remarks</th></tr></thead><tbody>';*/
             for (k in testData) {
-                console.log("in for loop test data----");
+                //    console.log("in for loop test data----");
                 /*console.log("new count 1----" + newCount1);*/
-                console.log("test name is------" + testData[k]['testName']);
-                console.log("test remarks is----------" + testData[k]['remark']);
+                //    console.log("test name is------" + testData[k]['testName']);
+                //    console.log("test remarks is----------" + testData[k]['remark']);
                 content1 += '<tr><td>' + newCount1 + '</td><td>' + testData[k]['testName'] + '</td><td>' + testData[k]['remark'] + '</td></tr>';
                 newCount1++;
             }
             content1 += '</tbody></table></div>';
         } else {
-            console.log("hide------");
+            //    console.log("hide------");
 
             /*$('#test-details-myPrescription').hide();*/
 
@@ -612,17 +612,17 @@
         var fromDate = $("#myprescritions-start-date").val();
         var toDate = $("#myprescritions-end-date").val();
         var phoneNumber = $("#myprescritions-pateint-phone").val();
-		var prescriptionId = $("#myprescritions-prescription-id").val();
-        console.log("from date ", fromDate);
-        console.log("to date ", toDate);
-        console.log("phone number ", phoneNumber);
+        var prescriptionId = $("#myprescritions-prescription-id").val();
+        //  console.log("from date ", fromDate);
+        //  console.log("to date ", toDate);
+        // console.log("phone number ", phoneNumber);
         getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, prescriptionId, addRowToPrescriptionTable, applyAccordion, "#prescription-list");
         //getAllPrescriptionsFromIndexedDB(addRowToPrescriptionTable);
     });
 
     function getAllPrescriptions() {
         if (phoneNumber) {
-            console.log("Coming here 1");
+            // console.log("Coming here 1");
             getPrescriptionsFromIndexedDB("", "", phoneNumber, addRowToPrescriptionTable, applyAccordion, "#prescription-list");
         } else {
             getAllPrescriptionsFromIndexedDB(addRowToPrescriptionTable, applyAccordion, "#prescription-list");
@@ -636,7 +636,7 @@
         }
 
         var doctorName = localStorage.getItem('firstName');
-        console.log("doctor name is----" + doctorName);
+        // console.log("doctor name is----" + doctorName);
         $("#doctorName").text(doctorName);
         doctorName = "Dr. " + doctorName;
         $("#doctorNameInTheHeader").text(doctorName);
@@ -655,13 +655,13 @@
         try {
             openDb(getAllPrescriptions);
         } catch (e) {
-            console.log("error opeining indexeddb", e);
+            //    console.log("error opeining indexeddb", e);
         }
 
 
         //alert(phoneNumber);
 
-        console.log("myPrescriptions opened");
+        //  console.log("myPrescriptions opened");
         $('#username').text(localStorage.getItem('firstName'));
         $('#username1').text(localStorage.getItem('firstName'));
         var doctorId = localStorage.getItem('doctorId');
@@ -724,7 +724,7 @@
                 withCredentials: true
             },
             success: function(response) {
-                console.log("in logout function");
+                //     console.log("in logout function");
                 localStorage.clear();
                 removeCookies();
                 localStorage.setItem("isLoggedIn", false);

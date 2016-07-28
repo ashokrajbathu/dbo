@@ -505,7 +505,7 @@ function getAllPrescriptionsFromIndexedDB(addDataToTable, callBackAfterAdding, i
 
     index.openCursor(null, "prev").onsuccess = function(event) {
         var cursor = event.target.result;
-        //console.log(cursor.value);
+        console.log("cursor value is----", cursor);
         if (cursor) {
             if (cursor.value.doctorId == doctorId) {
                 result.push(cursor.value);
@@ -516,6 +516,7 @@ function getAllPrescriptionsFromIndexedDB(addDataToTable, callBackAfterAdding, i
 
             cursor.continue();
         } else {
+            console.log('in else---');
             callBackAfterAdding(id);
 
 
@@ -646,6 +647,29 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, prescripti
             //if (!!callBackAfterAdding) {
             callBackAfterAdding(id);
             //}
+        }
+    };
+}
+
+function getAllPrescriptionsFromIndexedDBOnLoad(addDataToArray, transferArrayToDisplay) {
+    var result = [];
+
+    var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
+    var index = store.index("creationTime");
+
+    index.openCursor(null, "prev").onsuccess = function(event) {
+        var cursor = event.target.result;
+        // console.log("cursor value is----", cursor);
+        if (cursor) {
+            var doctorActive = localStorage.getItem('currentDoctor');
+            doctorActive = angular.fromJson(doctorActive);
+            if (cursor.value.doctorId == doctorActive.id) {
+                result.push(cursor.value);
+                addDataToArray(cursor.value);
+            }
+            cursor.continue();
+        } else {
+            transferArrayToDisplay();
         }
     };
 }

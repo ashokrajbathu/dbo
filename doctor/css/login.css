@@ -16,7 +16,20 @@
     display: none !important;
 }
 
+#prescriptionsTable>thead>tr>th,
+#prescriptionsTable>tbody>tr>td {
+    text-align: center;
+}
+
 .activeDoctorLi {
+    background-color: white !important;
+}
+
+.pagination {
+    z-index: 1000 !important;
+}
+
+.skin-blue.wrapper.content-wrapper.paginationDiv {
     background-color: white !important;
 }
 
