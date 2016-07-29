@@ -16,6 +16,7 @@ function myPrescriptionsController($scope, $log, doctorServices, $state, $http, 
     var entitiesArray = [];
     var displayArray = [];
     var allPrescriptions = true;
+    $scope.paginationOfPrescriptions = false;
     myPrescription.viewAllPrescriptions = false;
     var allPrescriptionsArray = [];
     myPrescription.prescriptionSearch = {};
@@ -46,10 +47,12 @@ function myPrescriptionsController($scope, $log, doctorServices, $state, $http, 
         }
     }
 
-    $scope.$watch('prescriptionsToBeDisplayed', function() {
-        $scope.totalItems = $scope.prescriptionsToBeDisplayed.length;
-        $log.log('length in watcher is----', $scope.totalItems);
-    });
+    function totalItemsWatcher() {
+        $scope.$watch('entitiesArray', function() {
+            $log.log('in watcher---');
+            $scope.totalItems = entitiesArray.length;
+        });
+    }
 
     function addPrescriptionToArray(prescriptionEntity) {
         $scope.$apply();
@@ -59,14 +62,14 @@ function myPrescriptionsController($scope, $log, doctorServices, $state, $http, 
     function transferArrayToTable() {
         $scope.$apply();
         if (allPrescriptions) {
-            $log.log('in transfer array--');
             angular.copy($scope.prescriptionsToBeDisplayed, allPrescriptionsArray);
         }
+        $log.log('prescriptions displayed is----', $scope.prescriptionsToBeDisplayed);
         angular.copy($scope.prescriptionsToBeDisplayed, entitiesArray);
-        $log.log('prescs are----', $scope.prescriptionsToBeDisplayed);
+        $log.log('entites array is---', entitiesArray);
         $scope.totalItems = entitiesArray.length;
-        $log.log('entities array is---', entitiesArray);
-        $log.log('length is---', $scope.totalItems);
+        totalItemsWatcher();
+        $log.log('items length is-----', $scope.totalItems);
         displayArray = _.chunk(entitiesArray, $scope.itemsPerPage);
         angular.copy(displayArray[0], $scope.prescriptionsToBeDisplayed);
     }
@@ -74,20 +77,17 @@ function myPrescriptionsController($scope, $log, doctorServices, $state, $http, 
     $scope.pageChanged = function() {
         var requiredIndex = $scope.currentPage - 1;
         displayArray = [];
-        $log.log('max size value is---', $scope.maxSize);
         $scope.prescriptionsToBeDisplayed = [];
         displayArray = _.chunk(entitiesArray, $scope.itemsPerPage);
         angular.copy(displayArray[requiredIndex], $scope.prescriptionsToBeDisplayed);
     }
 
     function selectPrescription(activePrescription) {
-        $log.log('active prescription is----', activePrescription);
         angular.element('#selectedPrescriptionModal').modal('show');
         angular.copy(activePrescription, myPrescription.prescriptionToBeDisplayed);
     }
 
     function searchPrescription() {
-        $log.log('in prescription search----');
         myPrescription.viewAllPrescriptions = true;
         var fromDate = myPrescription.prescriptionSearch.fromDate;
         var toDate = myPrescription.prescriptionSearch.toDate;
@@ -116,8 +116,6 @@ function myPrescriptionsController($scope, $log, doctorServices, $state, $http, 
     });
 
     function viewAllPrescs() {
-        $log.log('in view all prescs---');
-        $log.log('all prescriptions are---', allPrescriptionsArray);
         angular.copy(allPrescriptionsArray, $scope.prescriptionsToBeDisplayed);
         $scope.totalItems = $scope.prescriptionsToBeDisplayed.length;
         myPrescription.viewAllPrescriptions = false;

@@ -39,11 +39,26 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.updateAddressSuccessSwal = updateAddressSuccessSwal;
     doctorServices.updateClinicAddress = updateClinicAddress;
     doctorServices.getLongValueOfDate = getLongValueOfDate;
+    doctorServices.getAllMyPatients = getAllMyPatients;
+    doctorServices.referDetailsErrorSwal = referDetailsErrorSwal;
+    doctorServices.referDoctorToDbotica = referDoctorToDbotica;
+    doctorServices.referDoctorSuccessSwal = referDoctorSuccessSwal;
+    doctorServices.getDoctorEvents = getDoctorEvents;
 
     function loginErrorSwal() {
         swal({
             title: "Error",
             text: "Please enter login credentials!!!!",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    function referDetailsErrorSwal() {
+        swal({
+            title: "Error",
+            text: "Kindly enter the details",
             type: "error",
             confirmButtonText: "OK",
             allowOutsideClick: true
@@ -500,6 +515,66 @@ function doctorServices($http, $state, $log, $q) {
         longDate = longDate.getTime();
         $log.log('in second print service is---', longDate);
         return longDate;
+    }
+
+    function getAllMyPatients() {
+        var deferred = $q.defer();
+        var getAllPatientsRequest = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/doctor/getMyPatients',
+            withCredentials: true
+        }
+        $http(getAllPatientsRequest).then(function(getAllPatientsSuccess) {
+            deferred.resolve(getAllPatientsSuccess);
+        }, function(getAllPatientsError) {
+            deferred.reject(getAllPatientsError);
+        });
+        return deferred.promise;
+    }
+
+    function referDoctorToDbotica(doctor) {
+        var deferred = $q.defer();
+        var referRequest = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/doctor/referDoctor',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(doctor)
+        }
+        $http(referRequest).then(function(referSuccess) {
+            deferred.resolve(referSuccess);
+        }, function(referError) {
+            deferred.reject(referError);
+        });
+        return deferred.promise;
+    }
+
+    function referDoctorSuccessSwal() {
+        swal({
+            title: "success",
+            text: "Details are successfully saved. Thank you for referring to dBotica",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    function getDoctorEvents(doctorId) {
+        var deferred = $q.defer();
+        var doctorEventsRequest = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/assistant/getDoctorEvents?doctorId=' + doctorId,
+            withCredentials: true
+        }
+        $http(doctorEventsRequest).then(function(doctorEventsSuccess) {
+            deferred.resolve(doctorEventsSuccess);
+        }, function(doctorEventsError) {
+            deferred.reject(doctorEventsError);
+        });
+        return deferred.promise;
     }
 
 };

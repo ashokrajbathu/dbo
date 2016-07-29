@@ -668,7 +668,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             getAddressSuccessResponse = angular.fromJson(getAddressSuccess.data.response);
-            $log.log('address is---',getAddressSuccessResponse);
+            $log.log('address is---', getAddressSuccessResponse);
             localStorage.setItem('addressInTheBill', JSON.stringify(getAddressSuccessResponse));
         }
     }, function(getAddressError) {
@@ -738,11 +738,9 @@ angular.module('personalAssistant').filter("longDateIntoReadableDate", function(
             result = "";
         } else {
             result = new Date(input);
-            result = result.toLocaleString();
-            var resultArray = result.split(',');
-            var resultArrayDate = resultArray[0];
-            var resultArrayDateReadable = resultArrayDate.split('/');
-            result = resultArrayDateReadable[1] + '/' + resultArrayDateReadable[0] + '/' + resultArrayDateReadable[2];
+            result = moment(result).format('DD/MM/YYYY,hh:mm:ss A');
+            var timeArray = result.split(",");
+            result = timeArray[0];
         }
         return result;
     };

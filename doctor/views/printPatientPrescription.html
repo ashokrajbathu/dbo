@@ -1,0 +1,21 @@
+<html>
+<link rel="stylesheet" type="text/css" href="../css/printPatientPrescription.css">
+<style>
+@page {
+    size: auto;
+    margin-top: 4mm;
+    margin-bottom: 4mm;
+}
+</style>
+
+<body onload="window.print();">
+    <div ng-app="printPatientPrescription" ng-controller="printPatientPrescriptionController as prescription" class="container">
+    </div>
+    <script type="text/javascript" src="../../js/angular.js"></script>
+    <script type="text/javascript" src="../../plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="../../plugins/jQuery/jquery-barcode.js"></script>
+    <script type="text/javascript" src="../../js/jquery.qrcode.min.js"></script>
+    <script type="text/javascript" src="../controllers/printPatientPrescriptionController.js"></script>
+</body>
+
+</html>

@@ -16,22 +16,52 @@
     display: none !important;
 }
 
+.nav-tabs>li>a {
+    cursor: pointer !important;
+}
+
 @media only screen and (min-width:768px) {
     #prescriptionModalDialog {
         width: 800px !important;
     }
 }
 
+/* .panel-default {
+    background-color: white !important;
+    color: #3c8dbc !important;
+} */
+
+.referDoctorBtn {
+    color: white;
+    padding-top: 1px;
+    padding-bottom: 2px;
+    background-color: #3c8dbc;
+    height: 40px !important;
+}
+
+.referDoctorBtn:hover,
+.referDoctorBtn:active,
+.referDoctorBtn:focus {
+    color: white;
+}
+
 #testsTable>thead>tr,
 #medicinesTable>thead>tr,
-#prescriptionsTable>thead>tr {
+#prescriptionsTable>thead>tr,
+#myPatientsTable>thead>tr {
     color: white !important;
     background-color: #3c8dbc !important;
 }
 
 #medicinesTable>thead>tr>th,
 #testsTable>thead>tr>th,
-#testsTable>tbody>tr>td {
+#myPatientsTable>thead>tr>th,
+#testsTable>tbody>tr>td,
+#myPatientsTable>tbody>tr>td,
+#appointmentsTable>thead>tr>th,
+#appointmentsTable>tbody>tr>td,
+#walkinsTable>thead>tr>th,
+#walkinsTable>tbody>tr>td {
     text-align: center;
 }
 

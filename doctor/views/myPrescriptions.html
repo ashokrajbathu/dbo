@@ -37,7 +37,7 @@
                 <tbody>
                     <tr ng-repeat="prescriptionEntity in prescriptionsToBeDisplayed |limitTo:itemsPerPage">
                         <td ng-bind="prescriptionEntity.patientName"></td>
-                        <td ng-bind="prescriptionEntity.creationTime|istDateIntoReadableDate"></td>
+                        <td ng-bind="prescriptionEntity.creationTime|longDateIntoReadableDate"></td>
                         <td ng-bind="prescriptionEntity.prescription.age"></td>
                         <td ng-bind="prescriptionEntity.prescription.revisitDate"></td>
                         <td>

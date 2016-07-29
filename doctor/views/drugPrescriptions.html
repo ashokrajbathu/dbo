@@ -2,6 +2,78 @@
     <h3 class="prescriptionHeader">Prescriptions Form</h3>
     <div class="row">
         <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
+            <div class="pull-right">
+                <button ng-click="prescription.appointmentsList()" style="margin-bottom:6px;" type="button" class="btn doctorBtn">My Appointments</button>
+            </div>
+        </div>
+    </div>
+    <div id="appointmentsModals" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="myTab">
+                        <li class="active"><a class="doctorLinks" data-target="#appointmentsView" style="font-weight:600;" data-toggle="tab">APPOINTMENTS</a></li>
+                        <li><a data-target="#walkinsView" class="doctorLinks" style="font-weight:600;" data-toggle="tab">WALKIN</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="appointmentsView">
+                            <p style="margin:5px;">Total Appointments:<span style="font-weight:600;" ng-bind="prescription.totalAppointmentsCount"></span></p>
+                            <table id="appointmentsTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Time</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="appointmentEntity in prescription.appointmentsListToBeDisplayed">
+                                        <td ng-bind="appointmentEntity.label"></td>
+                                        <td ng-bind="appointmentEntity.startTime|ReadableAppointmentsTimings"></td>
+                                        <td>
+                                            <a ng-click="prescription.selectAppointmentOrWalkin()" class="doctorLinks">SELECT</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <uib-pagination style="margin-right:20px;" class="pull-right" items-per-page="prescription.itemsPerPage" ng-change="prescription.pageChanged()" total-items="prescription.totalItems" ng-model="prescription.currentPage"></uib-pagination>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="walkinsView">
+                            <p style="margin:5px;">Total Walk-Ins:<span style="font-weight:600;" ng-bind="prescription.totalWalkinsCount"></span></p>
+                            <table id="walkinsTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Time</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="walkinEntity in prescription.walkinsListToBeDisplayed">
+                                        <td ng-bind="walkinEntity.label"></td>
+                                        <td ng-bind="walkinEntity.startTime|ReadableAppointmentsTimings"></td>
+                                        <td>
+                                            <a ng-click="prescription.selectAppointmentOrWalkin()" class="doctorLinks">SELECT</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <uib-pagination style="margin-right:20px;" class="pull-right" items-per-page="prescription.walkinItemsPerPage" ng-change="prescription.walkinsPageChanged()" total-items="prescription.walkinsTotalItems" ng-model="prescription.walkinsCurrentPage"></uib-pagination>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
             <div class="panel panelsInDoctor">
                 <div class="panel-heading">
                     <h4>Patient Search</h4>
@@ -152,7 +224,7 @@
                 <div class="panel-body patientInDoctorPanelBody">
                     <div class="row">
                         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                            <input type="text" ng-model-options="{debounce:500}" ng-change="prescription.testSearch()" ng-blur="prescription.hideDropDown()" ng-model="prescription.test.testName" class="form-control testsRow" placeholder="Test">
+                            <input type="text" ng-model-options="{debounce:500}" ng-change="prescription.testSearch()" ng-model="prescription.test.testName" class="form-control testsRow" placeholder="Test">
                             <ul id="testsDropDown" ng-class="{'testDropDownActive':prescription.dropdownActive}" class="dropdown-menu">
                                 <li ng-click="prescription.selectTestFromTheDropdown(testEntity)" ng-repeat="testEntity in prescription.testsList">
                                     <a style="cursor:pointer;" ng-bind="testEntity.testName"></a>

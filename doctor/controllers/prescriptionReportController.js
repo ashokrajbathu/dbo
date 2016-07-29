@@ -106,6 +106,7 @@ function prescriptionReportController($scope, $log, doctorServices, $state, $htt
                     updatedPrescriptionActive.prescriptionToPrint = updatePrescResponse;
                     updatedPrescriptionActive.drugListToDisplay = prescriptionReport.drugsList;
                     updatedPrescriptionActive.testsListToDisplay = prescriptionReport.testsListInTable;
+                    $log.log('kasjdas---', updatedPrescriptionActive);
                     localStorage.setItem('prescriptionObjectToPrint', JSON.stringify(updatedPrescriptionActive));
                 }
             }

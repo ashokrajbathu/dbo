@@ -2039,4 +2039,14 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return revisitDate;
     }
 
+    this.roomTransferSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Room Transfer is successfully done!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
 }]);

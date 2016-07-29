@@ -55,6 +55,12 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.prescriptionData.pulse = '';
     prescriptionElement.prescriptionData.drugAllergyInForm = '';
     var activePatient = {};
+    prescriptionElement.totalAppointmentsCount = 0;
+    prescriptionElement.totalWalkinsCount = 0;
+    prescriptionElement.itemsPerPage = 8;
+    prescriptionElement.walkinItemsPerPage = 8;
+    prescriptionElement.walkinsCurrentPage = 1;
+    prescriptionElement.currentPage = 1;
     prescriptionElement.patientData = {};
     var activePatientIndex;
     var selectedDrug;
@@ -77,6 +83,13 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.Before_Dinner = classDefault;
     prescriptionElement.After_Dinner = classDefault;
     prescriptionElement.referToDoctor = '';
+    var appointmentsArray = [];
+    prescriptionElement.appointmentsListToBeDisplayed = [];
+    prescriptionElement.walkinsListToBeDisplayed = [];
+    var appointmentsListSorted = [];
+    var walkinsListSorted = [];
+    var appointmentsEntities = [];
+    var walkinEntities = [];
 
     activeDoctor = localStorage.getItem('currentDoctor');
     activeDoctor = angular.fromJson(activeDoctor);
@@ -112,6 +125,10 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.savePrescription = savePrescription;
     prescriptionElement.calculateBmi = calculateBmi;
     prescriptionElement.hideDropDown = hideDropDown;
+    prescriptionElement.appointmentsList = appointmentsList;
+    prescriptionElement.pageChanged = pageChanged;
+    prescriptionElement.walkinsPageChanged = walkinsPageChanged;
+    prescriptionElement.selectAppointmentOrWalkin = selectAppointmentOrWalkin;
 
     try {
         openDb();
@@ -623,4 +640,54 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         autoclose: true,
         'minDate': 0
     });
+
+    function appointmentsList() {
+        angular.element('#appointmentsModals').modal('show');
+        var doctorEventsPromise = doctorServices.getDoctorEvents(activeDoctor.id);
+        $log.log('promise is---', doctorEventsPromise);
+        doctorEventsPromise.then(function(doctorEventsSuccess) {
+            var errorCode = doctorEventsSuccess.data.errorCode;
+            if (errorCode) {
+                doctorServices.logoutFromThePage(errorCode);
+            } else {
+                var doctorEventsResponse = angular.fromJson(doctorEventsSuccess.data.response);
+                $log.log('events response is---', doctorEventsResponse);
+                appointmentsArray = _.filter(doctorEventsResponse, function(entity) {
+                    return entity.state == 'ACTIVE';
+                });
+                appointmentsListSorted = _.filter(appointmentsArray, function(entity) {
+                    return entity.calendarStatus == 'APPOINTMENT';
+                });
+                prescriptionElement.totalAppointmentsCount = appointmentsListSorted.length;
+                prescriptionElement.totalItems = appointmentsListSorted.length;
+                appointmentsEntities = _.chunk(appointmentsListSorted, prescriptionElement.itemsPerPage);
+                angular.copy(appointmentsEntities[0], prescriptionElement.appointmentsListToBeDisplayed);
+                walkinsListSorted = _.filter(appointmentsArray, function(entity) {
+                    return entity.calendarStatus == 'WALK_IN';
+                });
+                prescriptionElement.totalWalkinsCount = walkinsListSorted.length;
+                prescriptionElement.walkinsTotalItems = walkinsListSorted.length;
+                walkinEntities = _.chunk(walkinsListSorted, prescriptionElement.walkinItemsPerPage);
+                angular.copy(walkinEntities[0], prescriptionElement.walkinsListToBeDisplayed);
+            }
+        }, function(doctorEventsError) {
+            doctorServices.noConnectivityError();
+        });
+    }
+
+    function pageChanged() {
+        var requiredIndex = prescriptionElement.currentPage - 1;
+        prescriptionElement.appointmentsListToBeDisplayed = [];
+        angular.copy(appointmentsEntities[requiredIndex], prescriptionElement.appointmentsListToBeDisplayed);
+    }
+
+    function walkinsPageChanged() {
+        var requiredIndex = prescriptionElement.walkinsCurrentPage - 1;
+        prescriptionElement.walkinsListToBeDisplayed = [];
+        angular.copy(walkinEntities[requiredIndex], prescriptionElement.walkinsListToBeDisplayed);
+    }
+
+    function selectAppointmentOrWalkin() {
+        angular.element('#appointmentsModals').modal('hide');
+    }
 };
