@@ -567,24 +567,64 @@ function getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable, c
     var range;
     if (fromDate != "" && toDate != "") {
         range = IDBKeyRange.bound(fromDate, toDate);
+        console.log('range value is----', range);
     } else if (fromDate == "") {
         range = IDBKeyRange.upperBound(toDate);
     } else {
         range = IDBKeyRange.lowerBound(fromDate);
     }
     index.openCursor(range, "prev").onsuccess = function(event) {
+        console.log('event is----', event);
         var cursor = event.target.result;
+        console.log('cursor value is---', cursor);
         if (cursor) {
             if (cursor.value.doctorId == doctorId) {
                 result.push(cursor.value);
+                addDataToTable(cursor.value);
+            }
+            cursor.continue();
+        } else {
+            if (!!callBackAfterAdding) {
+                callBackAfterAdding(id);
+            }
+        }
+    };
+}
+
+function searchPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable, sortPrescriptions) {
+    var result = [];
+    var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
+    var index = store.index("creationTime");
+    var range;
+    if (fromDate !== undefined && fromDate != "" && toDate !== undefined && toDate != "") {
+        console.log('from dt is---', fromDate);
+        console.log('to date is----', toDate);
+        range = IDBKeyRange.bound(fromDate, toDate);
+        console.log('range value is----', range);
+    } else if (fromDate !== undefined && fromDate == "") {
+        range = IDBKeyRange.upperBound(toDate);
+    } else {
+        range = IDBKeyRange.lowerBound(fromDate);
+    }
+    index.openCursor(range, "prev").onsuccess = function(event) {
+        console.log('event is ----', event);
+        var cursor = event.target.result;
+        console.log('cursor value is---', cursor);
+        if (cursor) {
+            console.log('in cursor one check---');
+            var doctorActive = localStorage.getItem('currentDoctor');
+            doctorActive = angular.fromJson(doctorActive);
+            if (cursor.value.doctorId == doctorActive.id) {
+                result.push(cursor.value);
+                console.log('in cursor check----');
                 addDataToTable(cursor.value);
 
             }
 
             cursor.continue();
         } else {
-            if (!!callBackAfterAdding) {
-                callBackAfterAdding(id);
+            if (sortPrescriptions) {
+                sortPrescriptions();
             }
 
         }
@@ -599,23 +639,19 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, prescripti
     var range;
     var initDay = new Date("Fri Mar 25 2016 18:53:37 GMT+0530");
     var today = new Date();
-
     if (fromDate == "" && toDate == "" && phoneNumber == "" && prescriptionId == "") {
 
         getAllPrescriptionsFromIndexedDB(addDataToTable, callBackAfterAdding, id);
         return;
     }
-
     if (prescriptionId.trim() != "") {
         getPrescriptionsById(prescriptionId.trim(), addDataToTable, callBackAfterAdding, id)
         return;
     }
-
     if (fromDate != "")
         fromDate = new Date(fromDate);
     if (toDate != "")
         toDate = new Date(toDate);
-
     if (phoneNumber != "") {
         if (fromDate != "" && toDate != "") {
             range = IDBKeyRange.bound([phoneNumber, fromDate], [phoneNumber, toDate]);
@@ -631,8 +667,6 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, prescripti
 
         return;
     }
-
-
     index.openCursor(range, "prev").onsuccess = function(event) {
         var cursor = event.target.result;
         if (cursor) {
@@ -641,11 +675,65 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, prescripti
                 addDataToTable(cursor.value);
 
             }
-
             cursor.continue();
         } else {
             //if (!!callBackAfterAdding) {
             callBackAfterAdding(id);
+            //}
+        }
+    };
+}
+
+function prescriptionSearchFromIndexedDB(fromDate, toDate, phoneNumber, addDataToTable, transferDataAfterSort) {
+    var result = [];
+    var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
+    var index = store.index('patientPhoneNumber-creationTime');
+    var range;
+    var initDay = new Date("Fri Mar 25 2016 18:53:37 GMT+0530");
+    var today = new Date();
+    if (fromDate == "" && toDate == "" && phoneNumber == "") {
+        getAllPrescriptionsFromIndexedDBOnLoad(addDataToTable, transferDataAfterSort);
+        return;
+    }
+    if (fromDate == undefined || fromDate == '') {
+        fromDate = '';
+    }
+    if (toDate == undefined || toDate == '') {
+        toDate = '';
+    }
+    if (fromDate !== undefined && fromDate != "")
+        fromDate = new Date(fromDate);
+    if (toDate !== undefined && toDate != "")
+        toDate = new Date(toDate);
+    if (phoneNumber !== undefined && phoneNumber != "") {
+        if (fromDate !== undefined && fromDate != "" && toDate !== undefined && toDate != "") {
+            range = IDBKeyRange.bound([phoneNumber, fromDate], [phoneNumber, toDate]);
+        } else if (toDate != "") {
+            range = IDBKeyRange.bound([phoneNumber, initDay], [phoneNumber, toDate]);
+        } else if (fromDate != "") {
+            range = IDBKeyRange.bound([phoneNumber, fromDate], [phoneNumber, today]);
+        } else {
+            range = IDBKeyRange.bound([phoneNumber, initDay], [phoneNumber, today]);
+        }
+    } else {
+        searchPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable, transferDataAfterSort);
+
+        return;
+    }
+    index.openCursor(range, "prev").onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+            var doctorActive = localStorage.getItem('currentDoctor');
+            doctorActive = angular.fromJson(doctorActive);
+            if (cursor.value.doctorId == doctorActive.id) {
+                result.push(cursor.value);
+                addDataToTable(cursor.value);
+
+            }
+            cursor.continue();
+        } else {
+            //if (!!callBackAfterAdding) {
+            transferDataAfterSort();
             //}
         }
     };
@@ -760,23 +848,74 @@ function showAllPrescriptions() {
 
 }
 
+/*function prescriptionSearchFromIndexedDB(fromDate, toDate, phoneNumber, addDataToTable, transferDataAfterSort) {
+    var result = [];
+    var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readonly');
+    var index = store.index('patientPhoneNumber-creationTime');
+    var range;
+    var initDay = new Date("Fri Mar 25 2016 18:53:37 GMT+0530");
+    var today = new Date();
 
+    console.log('from date is----', fromDate);
+    console.log('to date is----', toDate);
 
+    if (fromDate == "" && toDate == "" && phoneNumber == "") {
 
+        getAllPrescriptionsFromIndexedDBOnLoad(addDataToTable, transferDataAfterSort);
+        return;
+    }
 
+    if (fromDate !== undefined && fromDate != "") {
 
+        fromDate = new Date(fromDate);
+        if (toDate == undefined || toDate == '') {
+            toDate = initDay;
+        }
+        console.log('from date for sort in if is----', fromDate);
+    } else {
+        fromDate = initDay;
+    }
+    if (toDate !== undefined && toDate != "") {
+        toDate = new Date(toDate);
+        console.log('from date in if is----', toDate);
+    } else {
+        toDate = new Date();
+        console.log('from date in else is----', toDate);
+    }
+    if (phoneNumber !== undefined && phoneNumber != "") {
+        if (fromDate !== undefined && fromDate != "" && toDate !== undefined && toDate != "") {
+            console.log('idb key value is---', IDBKeyRange);
+            range = IDBKeyRange.bound([phoneNumber, fromDate], [phoneNumber, toDate]);
+        } else if (toDate != "") {
+            range = IDBKeyRange.bound([phoneNumber, initDay], [phoneNumber, toDate]);
+        } else if (fromDate != "") {
+            range = IDBKeyRange.bound([phoneNumber, fromDate], [phoneNumber, today]);
+        } else {
+            range = IDBKeyRange.bound([phoneNumber, initDay], [phoneNumber, today]);
+        }
+    } else {
+        console.log('in search---');
+        searchPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable, transferDataAfterSort);
 
+        return;
+    }
+    index.openCursor(range, "prev").onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+            var doctorActive = localStorage.getItem('currentDoctor');
+            doctorActive = angular.fromJson(doctorActive);
+            if (cursor.value.doctorId == doctorActive.id) {
+                result.push(cursor.value);
+                addDataToTable(cursor.value);
 
-
-
-
-
-
-
-
-
-
-
+            }
+            cursor.continue();
+        } else {
+            transferDataAfterSort();
+        }
+    };
+}
+*/
 
 /**
  * @param {string} biblioid

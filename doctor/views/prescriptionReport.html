@@ -1,18 +1,18 @@
 <div ng-controller="prescriptionReportController as prescriptionReport">
     <h3 class="prescriptionReportHeader">Prescription Report</h3>
     <div class="row">
+        <div style="margin-bottom:8px;" class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
+            <a href="report-print.html" target="_blank" class="btn doctorBtn pull-right"><i class="fa fa-print"></i>Generate Print</a>
+            <button id="newPatientBtn" class="btn doctorBtn"><a style="color:white;">New Patient</a></button>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
             <div class="panel panelsInDoctor prescriptionReportpanels">
                 <div class="panel-heading">
                     <h4>Prescription Details</h4>
                 </div>
                 <div class="panel-body patientInDoctorPanelBody">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <a href="report-print.html" target="_blank" class="btn btn-primary pull-right"><i class="fa fa-print"></i>Generate Print</a>
-                            <button id="newPatientBtn" class="btn btn-primary" style="margin-right: 5px;"><a style="color:white;">New Patient</a></button>
-                        </div>
-                    </div>
                     <div class="row">
                         <div ng-if="prescriptionReport.patientHeight" class="col-md-4 col-sm-4 col-xs-4">
                             <label>Height:</label>

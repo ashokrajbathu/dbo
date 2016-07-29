@@ -16,6 +16,33 @@
     display: none !important;
 }
 
+@media only screen and (min-width:768px) {
+    #prescriptionModalDialog {
+        width: 800px !important;
+    }
+}
+
+#testsTable>thead>tr,
+#medicinesTable>thead>tr,
+#prescriptionsTable>thead>tr {
+    color: white !important;
+    background-color: #3c8dbc !important;
+}
+
+#medicinesTable>thead>tr>th,
+#testsTable>thead>tr>th,
+#testsTable>tbody>tr>td {
+    text-align: center;
+}
+
+.prescriptionEntities {
+    font-size: 14px;
+}
+
+.prescriptionModalRow {
+    margin-bottom: -10px !important;
+}
+
 #prescriptionsTable>thead>tr>th,
 #prescriptionsTable>tbody>tr>td {
     text-align: center;
@@ -157,6 +184,11 @@
 @media only screen and (min-width:768px) {
     #sideBarToggle {
         display: none !important;
+    }
+    #exampleFromDate,
+    #exampleToDate,
+    #examplePatientPhone {
+        width: 140px !important;
     }
 }
 

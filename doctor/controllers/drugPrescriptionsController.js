@@ -111,11 +111,16 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.daysChange = daysChange;
     prescriptionElement.savePrescription = savePrescription;
     prescriptionElement.calculateBmi = calculateBmi;
+    prescriptionElement.hideDropDown = hideDropDown;
 
     try {
         openDb();
     } catch (e) {
         console.log("Error in openDb");
+    }
+
+    function hideDropDown() {
+        prescriptionElement.dropdownActive = false;
     }
 
     function phoneNumberLengthValidation() {
@@ -570,6 +575,9 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                         printPrescription.prescription = prescriptionElement.drugsList;
                         printPrescription.tests = prescriptionElement.testsListInTable;
                         localStorage.setItem('activePrescription', JSON.stringify(printPrescription));
+                        try {
+                            addPrescriptionToIndexedDB(prescriptionResponse, activePatient, activeDoctor.id);
+                        } catch (e) {}
                         functionalitiesAfterAddingPresc();
                         timingBtnsDefault();
                     }

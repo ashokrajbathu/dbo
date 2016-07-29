@@ -38,6 +38,7 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.enterAddressSwal = enterAddressSwal;
     doctorServices.updateAddressSuccessSwal = updateAddressSuccessSwal;
     doctorServices.updateClinicAddress = updateClinicAddress;
+    doctorServices.getLongValueOfDate = getLongValueOfDate;
 
     function loginErrorSwal() {
         swal({
@@ -489,6 +490,16 @@ function doctorServices($http, $state, $log, $q) {
             deferred.reject(updateAddressError);
         });
         return deferred.promise;
+    }
+
+    function getLongValueOfDate(dateSelected) {
+        var dateArray = dateSelected.split('-');
+        longDate = dateArray[1] + '-' + dateArray[0] + '-' + dateArray[2];
+        longDate = new Date(longDate);
+        $log.log('long date in servicw is---', longDate);
+        longDate = longDate.getTime();
+        $log.log('in second print service is---', longDate);
+        return longDate;
     }
 
 };
