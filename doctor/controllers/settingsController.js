@@ -41,9 +41,7 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
 
     try {
         openDb();
-    } catch (e) {
-        console.log("Error in openDb");
-    }
+    } catch (e) {}
 
     activeDoctor = localStorage.getItem('currentDoctor');
     activeDoctor = angular.fromJson(activeDoctor);
@@ -61,7 +59,6 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
             doctorServices.logoutFromThePage(errorCode);
         } else {
             var getTemplateResponse = angular.fromJson(getTemplatesSuccess.data.response);
-            $log.log('response is---', getTemplateResponse);
             if (errorCode == null && getTemplatesSuccess.data.success) {
                 entitiesArray = _.filter(getTemplateResponse, function(entity) {
                     return entity.state == 'ACTIVE';
@@ -115,13 +112,10 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
             ui.item.value = ui.item.value.split('-')[0];
             angular.forEach(drugObjectsShown, function(entity) {
                 if (entity.brandName == ui.item.value) {
-                    $log.log('enitiy in autocomplete is-----', entity);
                     selectedDrug = ui.item.value;
                     settings.addDrugInModal.brandName = ui.item.value;
                     selectedDrugId = entity.id;
                     selectedDrugType = entity.drugType;
-                    $log.log('selected drugType is----', selectedDrugType);
-                    $log.log('selected drugId is----', selectedDrugId);
                 }
             });
 
@@ -153,7 +147,6 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
     }
 
     function saveTheDrugTemplate() {
-        $log.log('in saveTheDrugTemplate');
         var drugRequestEntity = {};
         if (!_.isEmpty(drugEdit)) {
             drugRequestEntity.id = drugEdit.id;
@@ -172,12 +165,10 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
         var perServing = settings.addDrugInModal.perServing;
         var units = settings.addDrugInModal.daysOrQuantityCount;
         if (units !== undefined && units !== '') {
-            $log.log('in check 10');
             drugRequestEntity.drugDosage.noOfDays = units;
             drugRequestEntity.drugDosage.units = units;
         } else {
             units = 1;
-            $log.log('in check 9');
             drugRequestEntity.drugDosage.units = units;
             drugRequestEntity.drugDosage.noOfDays = units;
         }
@@ -187,34 +178,26 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
         }
         if (perServing == undefined || perServing == '') {
             perServing = parseInt(1);
-            $log.log('in check 8');
             drugRequestEntity.drugDosage.perServing = settings.addDrugInModal.perServing;
         } else {
-            $log.log('in check 7');
             drugRequestEntity.drugDosage.perServing = settings.addDrugInModal.perServing;
         }
         if (drugTypeFlag !== -1) {
             if (settings.addDrugInModal.daysOrQuantity == 'Days') {
-                $log.log('in check 6');
                 drugRequestEntity.drugDosage.quantity = parseInt(units) * quantCount * parseInt(perServing);
             } else {
-                $log.log('in check 5');
                 drugRequestEntity.drugDosage.quantity = units;
                 drugRequestEntity.drugDosage.noOfDays = quantCount != 0 ? Math.ceil(parseInt(units) / (parseInt(perServing) * quantCount)) : 1;
             }
         } else {
-            $log.log('in check 1');
             if (settings.addDrugInModal.daysOrQuantity == 'Days') {
-                $log.log('in check 2');
                 drugRequestEntity.drugDosage.noOfDays = units;
                 drugRequestEntity.drugDosage.quantity = 1;
             } else {
-                $log.log('in check 3');
                 drugRequestEntity.drugDosage.quantity = units;
                 drugRequestEntity.drugDosage.noOfDays = 1;
             }
         }
-        $log.log('req entity is----', drugRequestEntity);
         var drugTemplatePromise = doctorServices.drugTemplate(drugRequestEntity);
         drugTemplatePromise.then(function(drugTemplateSuccess) {
             var errorCode = drugTemplateSuccess.data.errorCode;
@@ -222,7 +205,6 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
                 doctorServices.logoutFromThePage(errorCode);
             } else {
                 var drugTemplateResponse = angular.fromJson(drugTemplateSuccess.data.response);
-                $log.log('tem success is---', drugTemplateResponse);
                 if (errorCode == null && drugTemplateSuccess.data.success) {
                     if (_.isEmpty(drugEdit)) {
                         if (settings.templatesList.length == settings.itemsPerPage) {
@@ -269,7 +251,6 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
                 doctorServices.logoutFromThePage(errorCode);
             } else {
                 var deleteResponse = angular.fromJson(deleteSuccess.data.response);
-                $log.log('delete response is----', deleteResponse);
                 if (errorCode == null && deleteSuccess.data.success) {
                     settings.templatesList.splice(index, 1);
                 }
@@ -288,7 +269,6 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
     }
 
     function editDrugTemplate(editDrug, index) {
-        $log.log('edit drug is---', editDrug);
         angular.element('#addDrugModal').modal('show');
         angular.copy(editDrug, drugEdit);
         angular.copy(index, drugIndexInTemplatesList);
@@ -303,10 +283,8 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
         settings.addDrugInModal.daysOrQuantity = editDrug.drugDosage.daysOrQuantity;
         settings.addDrugInModal.daysOrQuantityCount = editDrug.drugDosage.units;
         timingsArray = [];
-        $log.log('drug usage is-----', editDrug.drugDosage.usageDirection);
         timingsArray = editDrug.drugDosage.usageDirection.split(',');
         resetAllButtons();
-        $log.log('timings array is----', timingsArray);
         angular.forEach(timingsArray, function(entity) {
             entity = _.replace(entity, space, underscore);
             settings[entity] = classSuccess;
