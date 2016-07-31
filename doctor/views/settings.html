@@ -1,3 +1,89 @@
 <div ng-controller="settingsController as settings">
-    <h1>Settings</h1>
+    <h3 class="prescriptionReportHeader">Drug Template</h3>
+    <form class="btnFormSettings">
+        <div class="form-group">
+            <button ng-click="settings.addDrugToTemplate()" class="btn doctorBtn" id="settingsAddDrugBBtn">Add Drug</button>
+        </div>
+    </form>
+    <div id="addDrugModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Drug</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputDrugName">Drug Name</label>
+                            <input type="text" ng-model="settings.addDrugInModal.brandName" class="form-control" id="exampleInputDrugName">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputRemarks">Remarks</label>
+                            <input type="text" ng-model="settings.addDrugInModal.remarks" class="form-control" id="exampleInputRemarks">
+                        </div>
+                        <div class="form-group">
+                            <label for="perServing">Per Serving</label>
+                            <input type="text" ng-model="settings.addDrugInModal.perServing" class="form-control" id="exampleInputPerServing">
+                        </div>
+                        <div class="form-group">
+                            <label for="daysOrQuantity">Days/Quantity</label>
+                            <select ng-model="settings.addDrugInModal.daysOrQuantity" id="daysOrQuantSelectBox">
+                                <option value="Days">Days</option>
+                                <option value="Quantity">Quantity</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="drugsOrQuantity">No.of Days/Quantity Count</label>
+                            <input type="text" ng-model="settings.addDrugInModal.daysOrQuantityCount" class="form-control" id="drugsOrQuantity">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputDrugTimings">Timings</label>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12 col-sm-12 form-group">
+                                    <button type="button" ng-click="settings.addSuccess('Before_BreakFast')" class="btn timingsBtn col-md-1 btn-xs btn-{{settings.Before_BreakFast}}">BBF</button>
+                                    <button type="button" ng-click="settings.addSuccess('After_BreakFast')" class="btn timingsBtn col-md-1 btn-xs btn-{{settings.After_BreakFast}}">ABF</button>
+                                    <button type="button" ng-click="settings.addSuccess('Before_Lunch')" class="btn timingsBtn col-md-1 btn-xs btn-{{settings.Before_Lunch}}">BL</button>
+                                    <button type="button" ng-click="settings.addSuccess('After_Lunch')" class="btn timingsBtn col-md-1 btn-xs btn-{{settings.After_Lunch}}">AL</button>
+                                    <button type="button" ng-click="settings.addSuccess('Before_Dinner')" class="btn timingsBtn col-md-1 btn-xs btn-{{settings.Before_Dinner}}">BD</button>
+                                    <button type="button" ng-click="settings.addSuccess('After_Dinner')" class="btn timingsBtn col-md-1 btn-xs btn-{{settings.After_Dinner}}">AD</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-click="settings.saveTheDrugTemplate()" class="btn doctorBtn">Save</button>
+                    <button type="button" style="margin-left:10px;" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Drug Name</th>
+                <th>Drug Timings</th>
+                <th>Per Serving</th>
+                <th>No. of Days</th>
+                <th>Quantity</th>
+                <th>Remarks</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="templateEntity in settings.templatesList">
+                <td ng-bind="templateEntity.drugDosage.brandName"></td>
+                <td ng-bind="templateEntity.drugDosage.usageDirection"></td>
+                <td ng-bind="templateEntity.drugDosage.perServing"></td>
+                <td ng-bind="templateEntity.drugDosage.noOfDays"></td>
+                <td ng-bind="templateEntity.drugDosage.quantity"></td>
+                <td ng-bind="templateEntity.drugDosage.remarks"></td>
+                <td>
+                    <a class="doctorLink">Edit</a>
+                    <a class="doctorLink">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

@@ -227,7 +227,7 @@
                             <input type="text" ng-model-options="{debounce:500}" ng-change="prescription.testSearch()" ng-model="prescription.test.testName" class="form-control testsRow" placeholder="Test">
                             <ul id="testsDropDown" ng-class="{'testDropDownActive':prescription.dropdownActive}" class="dropdown-menu">
                                 <li ng-click="prescription.selectTestFromTheDropdown(testEntity)" ng-repeat="testEntity in prescription.testsList">
-                                    <a style="cursor:pointer;" ng-bind="testEntity.testName"></a>
+                                    <a style="cursor:pointer;" ng-bind="testEntity.diagnosisName"></a>
                                 </li>
                             </ul>
                         </div>

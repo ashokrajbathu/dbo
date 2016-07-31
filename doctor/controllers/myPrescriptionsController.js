@@ -49,7 +49,6 @@ function myPrescriptionsController($scope, $log, doctorServices, $state, $http, 
 
     function totalItemsWatcher() {
         $scope.$watch('entitiesArray', function() {
-            $log.log('in watcher---');
             $scope.totalItems = entitiesArray.length;
         });
     }
@@ -64,12 +63,10 @@ function myPrescriptionsController($scope, $log, doctorServices, $state, $http, 
         if (allPrescriptions) {
             angular.copy($scope.prescriptionsToBeDisplayed, allPrescriptionsArray);
         }
-        $log.log('prescriptions displayed is----', $scope.prescriptionsToBeDisplayed);
         angular.copy($scope.prescriptionsToBeDisplayed, entitiesArray);
-        $log.log('entites array is---', entitiesArray);
+        $log.log('total prescs are---', $scope.prescriptionsToBeDisplayed);
         $scope.totalItems = entitiesArray.length;
         totalItemsWatcher();
-        $log.log('items length is-----', $scope.totalItems);
         displayArray = _.chunk(entitiesArray, $scope.itemsPerPage);
         angular.copy(displayArray[0], $scope.prescriptionsToBeDisplayed);
     }

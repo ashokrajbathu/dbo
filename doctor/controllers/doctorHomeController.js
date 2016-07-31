@@ -42,6 +42,7 @@ function doctorHomeController($scope, $log, doctorServices, $state, $http, $pars
             $state.go('doctorHome.referDbotica');
             break;
         case 'settings':
+            angular.element('#settingsDropdownContents').addClass('menu-open');
             $state.go('doctorHome.settings');
             break;
         case 'doctorProfile':

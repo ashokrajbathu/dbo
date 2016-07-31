@@ -23,12 +23,172 @@
                         <td ng-bind="patientEntity.emailId || myPatient.hyphen"></td>
                         <td ng-bind="patientEntity.gender || myPatient.hyphen"></td>
                         <td>
-                            <a style="cursor:pointer;">View Prescriptions</a>
+                            <a ng-click="myPatient.viewPatientPrescriptions(patientEntity,$index)" style="cursor:pointer;">View Prescriptions</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <uib-pagination class="pull-right" items-per-page="myPatient.itemsPerPage" ng-change="myPatient.pageChanged()" max-size="myPatient.maxSize" boundary-links="true" rotate="false" total-items="myPatient.totalItems" ng-model="myPatient.currentPage"></uib-pagination>
+        </div>
+    </div>
+    <div id="patientPrescriptionModal" class="modal fade" role="dialog">
+        <div id="prescriptionInMyPatients" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Patient Prescriptions</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 prescriptionModalRow">
+                            <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                Gender:
+                                <span>
+                                    <label ng-bind="patientPrescriptionToBeDisplayed.prescription.gender||myPatient.hyphen"></label>
+                                </span>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                Blood Pressure:
+                                <span>
+                                    <label ng-bind="patientPrescriptionToBeDisplayed.prescription.bloodPressure||myPatient.hyphen"></label>
+                                </span>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                Temperature:
+                                <span>
+                                    <label ng-bind="patientPrescriptionToBeDisplayed.prescription.temperature||myPatient.hyphen"></label>
+                                </span>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                BMI:
+                                <span>
+                                    <label ng-bind="patientPrescriptionToBeDisplayed.prescription.bmi||myPatient.hyphen"></label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 prescriptionModalRow">
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                Height:
+                                <span>
+                                    <label ng-bind="patientPrescriptionToBeDisplayed.prescription.height||myPatient.hyphen"></label>
+                                </span>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                Weight:
+                                <span>
+                                    <label ng-bind="patientPrescriptionToBeDisplayed.prescription.weight||myPatient.hyphen"></label>
+                                </span>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                Pulse:
+                                <span>
+                                    <label ng-bind="patientPrescriptionToBeDisplayed.prescription.pulse||myPatient.hyphen"></label>
+                                </span>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                Saturation:
+                                <span>
+                                    <label ng-bind="patientPrescriptionToBeDisplayed.prescription.saturation||myPatient.hyphen"></label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-xs-12 prescriptionModalRow">
+                            <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                Revist On:
+                                <span>
+                                    <label ng-bind="patientPrescriptionToBeDisplayed.prescription.revisitDate||myPatient.hyphen"></label>
+                                </span>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                Refer To:
+                                <span>
+                                    <label ng-bind="patientPrescriptionToBeDisplayed.prescription.references||myPatient.hyphen"></label>
+                                </span>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-6 form-group">
+                                Symptoms:
+                                <span>
+                                    <label ng-bind="patientPrescriptionToBeDisplayed.prescription.symptoms||myPatient.hyphen"></label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 prescriptionModalRow">
+                            <div class="col-md-6 col-sm-6 col-xs-6 form-group">
+                                Investigation Report:
+                                <span>
+                                    <label ng-bind="patientPrescriptionToBeDisplayed.prescription.investigation||myPatient.hyphen"></label>
+                                </span>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-6 form-group">
+                                Comments:
+                                <span>
+                                    <label ng-bind="patientPrescriptionToBeDisplayed.prescription.remarks||myPatient.hyphen"></label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <h4>Medicines and Usage Details</h4>
+                    <div class="row prescriptionModalRow">
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <table id="medicinesTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S.No.</th>
+                                        <th>Brand Name</th>
+                                        <th>Per Serving</th>
+                                        <th>Days</th>
+                                        <th>Quantity</th>
+                                        <th>Usage</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="drugEntity in patientPrescriptionToBeDisplayed.prescription.drugDosage">
+                                        <td ng-bind="$index+1"></td>
+                                        <td ng-bind="drugEntity.brandName"></td>
+                                        <td ng-bind="drugEntity.perServing"></td>
+                                        <td ng-bind="drugEntity.noOfDays"></td>
+                                        <td ng-bind="drugEntity.quantity"></td>
+                                        <td ng-bind="drugEntity.usageDirection"></td>
+                                        <td ng-bind="drugEntity.remarks"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <h4>Test Details</h4>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <table id="testsTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S.No.</th>
+                                        <th>Test Name</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="testEntity in patientPrescriptionToBeDisplayed.prescription.diagnosisTests">
+                                        <td ng-bind="$index+1"></td>
+                                        <td ng-bind="testEntity.testName"></td>
+                                        <td ng-bind="testEntity.remark"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <uib-pagination style="margin-right:100px;" class="pull-right pagination-sm" items-per-page="myPatient.itemsPerPageInModal" ng-change="myPatient.pageChangedInModal()" max-size="myPatient.maxSizeInModal" boundary-links="true" rotate="false" total-items="myPatient.totalItemsInModal" ng-model="myPatient.currentPageInModal"></uib-pagination>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

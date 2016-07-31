@@ -395,7 +395,7 @@
 
     function addRowToPrescriptionTable(prescriptionData) {
         var emptySpace = "  -";
-        // console.log("prescription object is----", prescriptionData);
+        console.log("prescription object is----", prescriptionData);
         var date = new Date(prescriptionData['creationTime']);
         var dateStr = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
         var patientName = "";

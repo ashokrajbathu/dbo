@@ -39,6 +39,7 @@ function openDb(callBack) {
         db = event.target.result;
         syncAllDrugsToIndexedDB();
         syncAllPrescriptionsToIndexedDB();
+        console.log("opendDb Success");
         if (!!callBack) {
             callBack();
         }
@@ -505,7 +506,7 @@ function getAllPrescriptionsFromIndexedDB(addDataToTable, callBackAfterAdding, i
 
     index.openCursor(null, "prev").onsuccess = function(event) {
         var cursor = event.target.result;
-        console.log("cursor value is----", cursor);
+        //console.log("cursor value is----", cursor);
         if (cursor) {
             if (cursor.value.doctorId == doctorId) {
                 result.push(cursor.value);
@@ -523,8 +524,6 @@ function getAllPrescriptionsFromIndexedDB(addDataToTable, callBackAfterAdding, i
         }
         //console.log("objects are----", result); //addDataToTable(result);
     };
-
-
 }
 
 /*function getPrescriptionsByPatientNameFromIndexedDB(patientName, addDataToTable) {
@@ -677,9 +676,7 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, prescripti
             }
             cursor.continue();
         } else {
-            //if (!!callBackAfterAdding) {
             callBackAfterAdding(id);
-            //}
         }
     };
 }

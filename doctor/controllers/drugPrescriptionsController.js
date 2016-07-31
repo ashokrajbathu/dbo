@@ -387,6 +387,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 totalDrugObjects.push(brandNameString);
             });
         }
+        $log.log('total drug objects are----', totalDrugObjects);
         callback(totalDrugObjects);
     }
 

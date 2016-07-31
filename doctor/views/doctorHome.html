@@ -31,7 +31,21 @@
                         <li ui-sref=".myPatients" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>My Patients</a></li>
                         <li ui-sref=".myScheduler" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>My Scheduler</a></li>
                         <li ui-sref=".referDbotica" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>Refer Dbotica</a></li>
-                        <li ui-sref=".settings" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>Settings</a></li>
+                        <!-- <li ui-sref=".settings" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>Settings</a></li> -->
+                        <li class="dropdown doctorSections doctorLink" ui-sref=".settings" ui-sref-active="activeDoctorLi activeDoctorLi>a">
+                            <a data-toggle="dropdown" class="dropdown-toggle">Settings<b class="caret"></b></a>
+                            <ul id="settingsDropdown" class="dropdown-menu">
+                                <li>
+                                    <a class="doctorLinks doctorLinksInDropdown">Template 1</a>
+                                </li>
+                                <li>
+                                    <a class="doctorLinks doctorLinksInDropdown">Template 2</a>
+                                </li>
+                                <li>
+                                    <a class="doctorLinks doctorLinksInDropdown">Template 3</a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a class="dropdown-toggle doctorLink" ng-click="doctorHome.logoutFromDoctor()" data-toggle="dropdown">Logout
@@ -55,7 +69,21 @@
                 <li ui-sref=".myPatients" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>My Patients</a></li>
                 <li ui-sref=".myScheduler" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>My Scheduler</a></li>
                 <li ui-sref=".referDbotica" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>Refer Dbotica</a></li>
-                <li ui-sref=".settings" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>Settings</a></li>
+                <!-- <li ui-sref=".settings" class="doctorSections" ui-sref-active="activeDoctorLi activeDoctorLi>a" class="doctorLink"><a>Settings</a></li> -->
+                <li class="treeview">
+                    <a class="doctorLink"><span>Settings</span><i class="fa fa-angle-left pull-right"></i></a>
+                    <ul id="settingsDropdownContents" class="treeview-menu">
+                        <li ui-sref=".settings" ui-sref-active="activeDoctorLi activeDoctorLi>a">
+                            <a class="doctorLink settingsLinkInDropdown">Drug Templates</a>
+                        </li>
+                        <li>
+                            <a class="doctorLink settingsLinkInDropdown">Template 2</a>
+                        </li>
+                        <li>
+                            <a class="doctorLink settingsLinkInDropdown">Template 3</a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </section>
     </aside>

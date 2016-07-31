@@ -44,6 +44,8 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.referDoctorToDbotica = referDoctorToDbotica;
     doctorServices.referDoctorSuccessSwal = referDoctorSuccessSwal;
     doctorServices.getDoctorEvents = getDoctorEvents;
+    doctorServices.drugTemplate = drugTemplate;
+    doctorServices.getDrugTemplates = getDrugTemplates;
 
     function loginErrorSwal() {
         swal({
@@ -573,6 +575,41 @@ function doctorServices($http, $state, $log, $q) {
             deferred.resolve(doctorEventsSuccess);
         }, function(doctorEventsError) {
             deferred.reject(doctorEventsError);
+        });
+        return deferred.promise;
+    }
+
+    function drugTemplate(drugEntity) {
+        var deferred = $q.defer();
+        var drugRequest = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/doctor/drugTemplate',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(drugEntity)
+        }
+        $http(drugRequest).then(function(drugTemplateSuccess) {
+            deferred.resolve(drugTemplateSuccess);
+        }, function(drugTemplateError) {
+            deferred.reject(drugTemplateError);
+        });
+        return deferred.promise;
+    }
+
+    function getDrugTemplates() {
+        var deferred = $q.defer();
+        var getTemplateRequest = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/doctor/getDrugTemplates',
+            withCredentials: true
+        }
+        $http(getTemplateRequest).then(function(getTemplateSuccess) {
+            deferred.resolve(getTemplateSuccess);
+        }, function(getTemplateError) {
+            deferred.reject(getTemplateError);
         });
         return deferred.promise;
     }

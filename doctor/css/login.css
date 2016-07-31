@@ -21,10 +21,12 @@
 }
 
 @media only screen and (min-width:768px) {
-    #prescriptionModalDialog {
+    #prescriptionModalDialog,
+    #prescriptionInMyPatients {
         width: 800px !important;
     }
 }
+
 
 /* .panel-default {
     background-color: white !important;
@@ -95,6 +97,18 @@
 .sidebar-menu.doctorSections:active {
     background-color: white !important;
 }
+
+#settingsDropdown {
+    z-index: 1000 !important;
+}
+
+#settingsDropdown>li>a:hover {
+    background-image: none !important;
+    color: white !important;
+    background-color: #3c8dbc !important;
+}
+
+.doctorLinksInDropdown:hover {}
 
 .skin-blue.sidebar-menu>li:hover>a,
 .skin-blue.sidebar-menu>li:active>a {
@@ -182,6 +196,15 @@
 .doctorBtn {
     color: white;
     background-color: #3c8dbc;
+}
+
+.ui-autocomplete {
+    z-index: 1200 !important;
+}
+
+.btnFormSettings {
+    margin-left: 40px;
+    padding-bottom: 1px;
 }
 
 .doctorBtn:hover,
@@ -273,6 +296,9 @@
         top: 0;
         border-width: 0 0 1px;
     }
+    #settingsDropdown>li>a {
+        color: #3c8dbc !important;
+    }
     .navbar-collapse.collapse {
         display: none!important;
     }
@@ -290,6 +316,14 @@
     .collapse.in {
         display: block !important;
     }
+}
+
+.menu-open {
+    display: block !important;
+}
+
+.settingsLinkInDropdown {
+    padding: 12px 5px 12px 70px !important;
 }
 
 #doctorNameLink:hover {
