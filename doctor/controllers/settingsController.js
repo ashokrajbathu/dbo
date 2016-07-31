@@ -5,12 +5,6 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
     localStorage.setItem('currentDoctorState', 'settings');
     var settings = this;
     var classDefault = 'default';
-    settings.Before_BreakFast = classDefault;
-    settings.After_BreakFast = classDefault;
-    settings.Before_Lunch = classDefault;
-    settings.After_Lunch = classDefault;
-    settings.Before_Dinner = classDefault;
-    settings.After_Dinner = classDefault;
     var classSuccess = 'success';
     var underscore = '_';
     var hyphen = '-';
@@ -22,15 +16,28 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
     settings.addDrugInModal = {};
     var activeDoctor = {};
     settings.templatesList = [];
+    var entitiesArray = [];
+    var displayArray = [];
     var selectedDrug;
     var selectedDrugId;
     var selectedDrugType;
+    var drugIndexInTemplatesList;
+    var drugIndexInEntitiesArray;
     settings.addDrugInModal.daysOrQuantity = 'Days';
+    settings.itemsPerPage = 1;
+    settings.maxSize = 8;
+    settings.currentPage = 1;
+    var drugEdit = {};
     var capsuleTypes = ['TABLET', 'CAPSULE', 'INJECTION', 'SACHET', 'LOZENGES', 'SUPPOSITORY', 'RESPULES', 'PEN', 'APLICAPS', 'ENEMA', 'PATCH'];
 
     settings.addSuccess = addSuccess;
     settings.addDrugToTemplate = addDrugToTemplate;
     settings.saveTheDrugTemplate = saveTheDrugTemplate;
+    settings.pageChanged = pageChanged;
+    settings.editDrugTemplate = editDrugTemplate;
+    settings.deleteDrugTemplate = deleteDrugTemplate;
+
+    resetAllButtons();
 
     try {
         openDb();
@@ -56,12 +63,13 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
             var getTemplateResponse = angular.fromJson(getTemplatesSuccess.data.response);
             $log.log('response is---', getTemplateResponse);
             if (errorCode == null && getTemplatesSuccess.data.success) {
-                settings.templatesList = _.filter(getTemplateResponse, function(entity) {
+                entitiesArray = _.filter(getTemplateResponse, function(entity) {
                     return entity.state == 'ACTIVE';
                 });
+                settings.totalItems = entitiesArray.length;
+                displayArray = _.chunk(entitiesArray, settings.itemsPerPage);
+                angular.copy(displayArray[0], settings.templatesList);
             }
-
-
         }
     }, function(getTemplatesError) {
         doctorServices.noConnectivityError();
@@ -83,6 +91,11 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
     }
 
     function addDrugToTemplate() {
+        drugEdit = {};
+        settings.addDrugInModal = {};
+        settings.addDrugInModal.daysOrQuantity = 'Days';
+        resetAllButtons();
+        timingsArray = [];
         angular.element('#addDrugModal').modal('show');
     }
 
@@ -102,7 +115,9 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
             ui.item.value = ui.item.value.split('-')[0];
             angular.forEach(drugObjectsShown, function(entity) {
                 if (entity.brandName == ui.item.value) {
+                    $log.log('enitiy in autocomplete is-----', entity);
                     selectedDrug = ui.item.value;
+                    settings.addDrugInModal.brandName = ui.item.value;
                     selectedDrugId = entity.id;
                     selectedDrugType = entity.drugType;
                     $log.log('selected drugType is----', selectedDrugType);
@@ -140,11 +155,14 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
     function saveTheDrugTemplate() {
         $log.log('in saveTheDrugTemplate');
         var drugRequestEntity = {};
+        if (!_.isEmpty(drugEdit)) {
+            drugRequestEntity.id = drugEdit.id;
+        }
         drugRequestEntity.doctorId = activeDoctor.id;
         drugRequestEntity.drugDosage = {};
         drugRequestEntity.drugDosage.drugId = selectedDrugId;
         drugRequestEntity.drugDosage.drugType = selectedDrugType;
-        drugRequestEntity.drugDosage.brandName = selectedDrug;
+        drugRequestEntity.drugDosage.brandName = settings.addDrugInModal.brandName;
         drugRequestEntity.drugDosage.remarks = settings.addDrugInModal.remarks;
         drugRequestEntity.drugDosage.daysOrQuantity = settings.addDrugInModal.daysOrQuantity;
         drugRequestEntity.drugDosage.usageDirection = _.join(timingsArray, comma);
@@ -154,10 +172,12 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
         var perServing = settings.addDrugInModal.perServing;
         var units = settings.addDrugInModal.daysOrQuantityCount;
         if (units !== undefined && units !== '') {
+            $log.log('in check 10');
             drugRequestEntity.drugDosage.noOfDays = units;
             drugRequestEntity.drugDosage.units = units;
         } else {
             units = 1;
+            $log.log('in check 9');
             drugRequestEntity.drugDosage.units = units;
             drugRequestEntity.drugDosage.noOfDays = units;
         }
@@ -167,22 +187,29 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
         }
         if (perServing == undefined || perServing == '') {
             perServing = parseInt(1);
+            $log.log('in check 8');
             drugRequestEntity.drugDosage.perServing = settings.addDrugInModal.perServing;
         } else {
+            $log.log('in check 7');
             drugRequestEntity.drugDosage.perServing = settings.addDrugInModal.perServing;
         }
         if (drugTypeFlag !== -1) {
             if (settings.addDrugInModal.daysOrQuantity == 'Days') {
+                $log.log('in check 6');
                 drugRequestEntity.drugDosage.quantity = parseInt(units) * quantCount * parseInt(perServing);
             } else {
+                $log.log('in check 5');
                 drugRequestEntity.drugDosage.quantity = units;
                 drugRequestEntity.drugDosage.noOfDays = quantCount != 0 ? Math.ceil(parseInt(units) / (parseInt(perServing) * quantCount)) : 1;
             }
         } else {
+            $log.log('in check 1');
             if (settings.addDrugInModal.daysOrQuantity == 'Days') {
+                $log.log('in check 2');
                 drugRequestEntity.drugDosage.noOfDays = units;
                 drugRequestEntity.drugDosage.quantity = 1;
             } else {
+                $log.log('in check 3');
                 drugRequestEntity.drugDosage.quantity = units;
                 drugRequestEntity.drugDosage.noOfDays = 1;
             }
@@ -196,9 +223,103 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
             } else {
                 var drugTemplateResponse = angular.fromJson(drugTemplateSuccess.data.response);
                 $log.log('tem success is---', drugTemplateResponse);
+                if (errorCode == null && drugTemplateSuccess.data.success) {
+                    if (_.isEmpty(drugEdit)) {
+                        if (settings.templatesList.length == settings.itemsPerPage) {
+                            settings.templatesList.pop();
+                        }
+                        settings.templatesList.unshift(drugTemplateResponse);
+                        entitiesArray.unshift(drugTemplateResponse);
+                        settings.totalItems = entitiesArray.length;
+                    } else {
+                        settings.templatesList.splice(drugIndexInTemplatesList, 1, drugTemplateResponse);
+                        entitiesArray.splice(drugIndexInEntitiesArray, 1, drugTemplateResponse);
+                    }
+                    angular.element('#addDrugModal').modal('hide');
+                    settings.addDrugInModal = {};
+                    resetAllButtons();
+                    drugEdit = {};
+                    selectedDrugId = '';
+                    selectedDrugType = '';
+                    settings.addDrugInModal.daysOrQuantity = 'Days';
+                }
             }
+
+
         }, function(drugTemplateError) {
             doctorServices.noConnectivityError();
         });
+    }
+
+    function pageChanged() {
+        var requiredIndex = settings.currentPage - 1;
+        var displayArray = [];
+        displayArray = _.chunk(entitiesArray, settings.itemsPerPage);
+        angular.copy(displayArray[requiredIndex], settings.templatesList);
+    }
+
+    function deleteDrugTemplate(deleteDrug, index) {
+        var deleteReq = {};
+        angular.copy(deleteDrug, deleteReq);
+        deleteReq.state = 'INACTIVE';
+        var deleteRequestPromise = doctorServices.drugTemplate(deleteReq);
+        deleteRequestPromise.then(function(deleteSuccess) {
+            var errorCode = deleteSuccess.data.errorCode;
+            if (errorCode) {
+                doctorServices.logoutFromThePage(errorCode);
+            } else {
+                var deleteResponse = angular.fromJson(deleteSuccess.data.response);
+                $log.log('delete response is----', deleteResponse);
+                if (errorCode == null && deleteSuccess.data.success) {
+                    settings.templatesList.splice(index, 1);
+                }
+                var deleteIndex = _.findLastIndex(entitiesArray, function(entity) {
+                    return entity.id == deleteDrug.id;
+                });
+                entitiesArray.splice(deleteIndex, 1);
+                settings.totalItems = entitiesArray.length;
+                displayArray = _.chunk(entitiesArray, settings.itemsPerPage);
+                var reqIndex = settings.currentPage - 1;
+                angular.copy(displayArray[reqIndex], settings.templatesList);
+            }
+        }, function(deleteError) {
+            doctorServices.noConnectivityError();
+        });
+    }
+
+    function editDrugTemplate(editDrug, index) {
+        $log.log('edit drug is---', editDrug);
+        angular.element('#addDrugModal').modal('show');
+        angular.copy(editDrug, drugEdit);
+        angular.copy(index, drugIndexInTemplatesList);
+        drugIndexInEntitiesArray = _.findLastIndex(entitiesArray, function(entity) {
+            return entity.id == editDrug.id;
+        });
+        selectedDrugId = editDrug.id;
+        selectedDrugType = editDrug.drugDosage.drugType;
+        settings.addDrugInModal.brandName = editDrug.drugDosage.brandName;
+        settings.addDrugInModal.perServing = editDrug.drugDosage.perServing;
+        settings.addDrugInModal.remarks = editDrug.drugDosage.remarks;
+        settings.addDrugInModal.daysOrQuantity = editDrug.drugDosage.daysOrQuantity;
+        settings.addDrugInModal.daysOrQuantityCount = editDrug.drugDosage.units;
+        timingsArray = [];
+        $log.log('drug usage is-----', editDrug.drugDosage.usageDirection);
+        timingsArray = editDrug.drugDosage.usageDirection.split(',');
+        resetAllButtons();
+        $log.log('timings array is----', timingsArray);
+        angular.forEach(timingsArray, function(entity) {
+            entity = _.replace(entity, space, underscore);
+            settings[entity] = classSuccess;
+        });
+
+    }
+
+    function resetAllButtons() {
+        settings.Before_BreakFast = classDefault;
+        settings.After_BreakFast = classDefault;
+        settings.Before_Lunch = classDefault;
+        settings.After_Lunch = classDefault;
+        settings.Before_Dinner = classDefault;
+        settings.After_Dinner = classDefault;
     }
 };
