@@ -8,6 +8,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.blurScreen = false;
     prescriptionElement.loading = false;
     prescriptionElement.dropdownActive = false;
+    prescriptionElement.drugTemplates = [];
     var selectDoctor = '---Select Doctor---';
     prescriptionElement.doctorName = '---Select Doctor---';
     var doctorObject = { 'firstName': '---Select Doctor---' };
@@ -129,12 +130,30 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.pageChanged = pageChanged;
     prescriptionElement.walkinsPageChanged = walkinsPageChanged;
     prescriptionElement.selectAppointmentOrWalkin = selectAppointmentOrWalkin;
+    prescriptionElement.addDrugTemplate = addDrugTemplate;
+    prescriptionElement.addDrugTemp = addDrugTemp;
+
+    var getDrugTemplatesPromise = doctorServices.getDrugTemplates();
+    getDrugTemplatesPromise.then(function(getDrugTemplatesSuccess) {
+        var errorCode = getDrugTemplatesSuccess.data.errorCode;
+        if (errorCode) {
+            doctorServices.logoutFromThePage(errorCode);
+        } else {
+            var getDrugTemplatesResponse = angular.fromJson(getDrugTemplatesSuccess.data.response);
+            prescriptionElement.drugTemplates = _.filter(getDrugTemplatesResponse, function(entity) {
+                return entity.state == 'ACTIVE';
+            });
+            angular.forEach(prescriptionElement.drugTemplates, function(value, key) {
+                prescriptionElement['checkbox' + key] = false;
+            });
+        }
+    }, function(getDrugTemplatesError) {
+        doctorServices.noConnectivityError();
+    });
 
     try {
         openDb();
-    } catch (e) {
-        console.log("Error in openDb");
-    }
+    } catch (e) {}
 
     function hideDropDown() {
         prescriptionElement.dropdownActive = false;
@@ -387,7 +406,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 totalDrugObjects.push(brandNameString);
             });
         }
-        $log.log('total drug objects are----', totalDrugObjects);
         callback(totalDrugObjects);
     }
 
@@ -571,10 +589,8 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             prescriptionRequest.gender = activePatient.gender;
             prescriptionRequest.drugDosage = drugsListToSave;
             prescriptionRequest.diagnosisTests = prescriptionElement.testsListInTable;
-            $log.log('presc req is---', prescriptionRequest);
             var prescriptionPromise = doctorServices.addPrescription(prescriptionRequest);
             prescriptionPromise.then(function(prescriptionSuccess) {
-                $log.log('prescription promise is----', prescriptionPromise);
                 var errorCode = prescriptionSuccess.data.errorCode;
                 if (errorCode) {
                     doctorServices.logoutFromThePage(errorCode);
@@ -645,14 +661,12 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     function appointmentsList() {
         angular.element('#appointmentsModals').modal('show');
         var doctorEventsPromise = doctorServices.getDoctorEvents(activeDoctor.id);
-        $log.log('promise is---', doctorEventsPromise);
         doctorEventsPromise.then(function(doctorEventsSuccess) {
             var errorCode = doctorEventsSuccess.data.errorCode;
             if (errorCode) {
                 doctorServices.logoutFromThePage(errorCode);
             } else {
                 var doctorEventsResponse = angular.fromJson(doctorEventsSuccess.data.response);
-                $log.log('events response is---', doctorEventsResponse);
                 appointmentsArray = _.filter(doctorEventsResponse, function(entity) {
                     return entity.state == 'ACTIVE';
                 });
@@ -690,5 +704,21 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
 
     function selectAppointmentOrWalkin() {
         angular.element('#appointmentsModals').modal('hide');
+    }
+
+    function addDrugTemplate(drugTemplateEntity, index) {
+        if (!prescriptionElement['checkbox' + index]) {
+            prescriptionElement['checkbox' + index] = false;
+        } else {
+            prescriptionElement['checkbox' + index] = true;
+        }
+    }
+
+    function addDrugTemp() {
+        if (!_.isEmpty(activePatient)) {
+            angular.element('#savedDrugsModal').modal('show');
+        } else {
+            doctorServices.noPatientBeforeDrugTemplateSwal();
+        }
     }
 };

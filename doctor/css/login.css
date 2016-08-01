@@ -22,7 +22,8 @@
 
 @media only screen and (min-width:768px) {
     #prescriptionModalDialog,
-    #prescriptionInMyPatients {
+    #prescriptionInMyPatients,
+    #saveDrugTemplatesModalDialogue {
         width: 800px !important;
     }
 }
@@ -63,7 +64,9 @@
 #appointmentsTable>thead>tr>th,
 #appointmentsTable>tbody>tr>td,
 #walkinsTable>thead>tr>th,
-#walkinsTable>tbody>tr>td {
+#walkinsTable>tbody>tr>td,
+#saveDrugTemplates>thead>tr>th,
+#saveDrugTemplates>tbody>tr>td {
     text-align: center;
 }
 

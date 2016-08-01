@@ -270,12 +270,15 @@
                 </div>
                 <div class="panel-body patientInDoctorPanelBody">
                     <div class="row">
-                        <div class="col-md-9 col-xs-9 col-sm-9 form-group">
+                        <div class="col-md-8 col-xs-8 col-sm-8 form-group">
                             <input type="text" placeholder="Drug" ng-model="prescription.fillPrescription.drugSearch" id="drugSearchBox" class="form-control" data-validation="required">
                             <span id="searchclear" class="glyphicon glyphicon-remove-circle"></span>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                             <input type="text" id="drugType" ng-model="prescription.fillPrescription.drugType" class="form-control fillPrescriptionSecondRow" readonly>
+                        </div>
+                        <div class="col-md-1 col-sm-1 col-xs-1 form-group">
+                            <button ng-click="prescription.addDrugTemp()" type="button" class="btn doctorBtn">+</button>
                         </div>
                     </div>
                     <div class="row">
@@ -319,6 +322,47 @@
                             <button type="submit" ng-click="prescription.addDrug()" id="addPrescriptionBtn" class="btn doctorBtn pull-right">Add</button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="savedDrugsModal" class="modal fade" role="dialog">
+        <div id="saveDrugTemplatesModalDialogue" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Saved Drugs</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="saveDrugTemplates" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Actions</th>
+                                <th>Medicine Name</th>
+                                <th>PerServing</th>
+                                <th>Days/Quantity</th>
+                                <th>Usage Direction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="drugTemplateEntity in prescription.drugTemplates">
+                                <td>
+                                    <input ng-click="prescription.addDrugTemplate(drugTemplateEntity,$index)" ng-checked="prescription.{{'checkbox'+$index}}" type="checkbox" value="">
+                                </td>
+                                <td ng-bind="drugTemplateEntity.drugDosage.brandName"></td>
+                                <td>
+                                    <input type="text" ng-model="drugTemplateEntity.drugDosage.perServing">
+                                </td>
+                                <td>
+                                    <input type="text" ng-model="drugTemplateEntity.drugDosage.units">
+                                </td>
+                                <td ng-bind="drugTemplateEntity.drugDosage.usageDirection"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

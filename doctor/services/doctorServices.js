@@ -46,6 +46,7 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.getDoctorEvents = getDoctorEvents;
     doctorServices.drugTemplate = drugTemplate;
     doctorServices.getDrugTemplates = getDrugTemplates;
+    doctorServices.noPatientBeforeDrugTemplateSwal = noPatientBeforeDrugTemplateSwal;
 
     function loginErrorSwal() {
         swal({
@@ -612,6 +613,16 @@ function doctorServices($http, $state, $log, $q) {
             deferred.reject(getTemplateError);
         });
         return deferred.promise;
+    }
+
+    function noPatientBeforeDrugTemplateSwal() {
+        swal({
+            title: "Info",
+            text: "Please Select Patient before adding Drugs!!!",
+            type: "info",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
     }
 
 };
