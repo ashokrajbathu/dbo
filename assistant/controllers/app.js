@@ -168,6 +168,11 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
             controller: 'dischargeSummaryController',
             controllerAs: 'dischargeSummary',
             templateUrl: 'views/dischargeSummary.html'
+        })
+        .state('home.nurse.patientDetails', {
+            controller: 'patientDetailsController',
+            controllerAs: 'detail',
+            templateUrl: 'views/patientDetails.html'
         });
 });
 

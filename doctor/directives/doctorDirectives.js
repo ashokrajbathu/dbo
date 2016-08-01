@@ -98,3 +98,25 @@ angular.module('doctor').directive('uiSrefActiveDrugIf', ['$state', function($st
         }]
     };
 }]);
+
+/*angular.module('doctor').directive('clickOutside', function($document) {
+    return {
+        restrict: 'A',
+        scope: {
+            clickOutside: '&'
+        },
+        link: function(scope, el, attr) {
+            $document.on('click', function(e) {
+                console.log('in click----');
+                if (el !== e.target && !el[0].contains(e.target)) {
+                    console.log('in click 2----');
+                    scope.$apply(function() {
+                        console.log('in click 3----');
+                        scope.$eval(scope.clickOutside);
+                        el.addClass('displayNone');
+                    });
+                }
+            });
+        }
+    }
+});*/

@@ -120,6 +120,9 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
             case 'dischargeSummary':
                 nurseHome.patientEventName = 'Discharge Summary';
                 break;
+            case 'patientDetails':
+                nurseHome.patientEventName = 'Patient Details';
+                break;
         }
     }
 

@@ -1,0 +1,26 @@
+<div ng-controller="patientDetailsController as detail">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#contentOfPatientDetailsTab">Patient Details</a></li>
+    </ul>
+    <div class="tab">
+        <div id="contentOfPatientDetailsTab" class="tab-content activeTabContent">
+            <div class="row">
+                <div class="col-md-8 col-sm-8 col-xs-8">
+                    <form name="userForm" novalidate>
+                        <div class="form-group" ng-repeat="user in detail.formData.users">
+                            <label ng-bind="user.name"></label>
+                            <input type="text" class="form-control" name="text" ng-model="user.modelName">
+                        </div>
+                        <div class="form-group" ng-repeat="selection in detail.selectBoxes">
+                            <select ng-model="selection.config" ng-options="template.value as template.name for template in selection.configs">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button ng-click="detail.saveData()" class="btn mainAdminBtn">{{detail.formData.button}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -16,6 +16,10 @@
     display: none !important;
 }
 
+.displayNone {
+    display: none !important;
+}
+
 .nav-tabs>li>a {
     cursor: pointer !important;
 }

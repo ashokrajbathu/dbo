@@ -155,6 +155,12 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         openDb();
     } catch (e) {}
 
+    $(document).on('click', function(e) {
+        if ($(e.target).closest("#testsearchbox").length === 0) {
+            $("#testDropdownDiv").hide();
+        }
+    });
+
     function hideDropDown() {
         prescriptionElement.dropdownActive = false;
     }
@@ -497,12 +503,8 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             }
         }
         drugsListToSave.push(drugEntityToSave);
-        prescriptionElement.fillPrescription = {};
-        prescriptionElement.fillPrescription.drugType = '';
-        prescriptionElement.fillPrescription.daysOrQuantity = daysDisplay;
-        prescriptionElement.fillPrescription.days = 1;
+        emptyDrugElements();
         timingBtnsDefault();
-        timingsArray = [];
     }
 
     function deleteDrug(drugIndex) {
@@ -534,10 +536,11 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     }
 
     function selectTestFromTheDropdown(selectedTest) {
+        $log.log('selected test is------', selectedTest);
         activeTestId = '';
         prescriptionElement.dropdownActive = false;
         activeTestId = selectedTest.id;
-        prescriptionElement.test.testName = selectedTest.testName;
+        prescriptionElement.test.testName = selectedTest.diagnosisName;
     }
 
     function addTest() {
@@ -707,8 +710,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     }
 
     function addDrugTemplate(drugTemplateEntity, index) {
-        $log.log('template entity is-----', drugTemplateEntity);
-        $log.log('checkbox value is-----', prescriptionElement['checkbox' + index]);
+        $log.log('drug is---', drugTemplateEntity);
         if (!prescriptionElement['checkbox' + index]) {
             prescriptionElement['checkbox' + index] = true;
             var templateEntity = {};
@@ -750,6 +752,36 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             prescriptionElement.drugsList.push(templateEntity);
             $log.log('drugs list is-----', prescriptionElement.drugsList);
             angular.copy(templateEntity, templateEntityToSave);
+            templateEntityToSave.drugType = drugTemplateEntity.drugDosage.drugType;
+            templateEntityToSave.perServing = drugTemplateEntity.drugDosage.perServing;
+            var drugTypeFlag = _.findLastIndex(capsuleTypes, function(entity) {
+                return entity == drugTemplateEntity.drugDosage.drugType;
+            });
+            var perServing = drugTemplateEntity.drugDosage.perServing;
+            if (perServing == undefined || perServing == '') {
+                perServing = parseInt(1);
+            }
+            templateEntityToSave.noOfDays = drugTemplateEntity.drugDosage.noOfDays;
+            if (drugTypeFlag !== -1) {
+                if (drugTemplateEntity.drugDosage.daysOrQuantity == 'Days') {
+                    templateEntityToSave.quantity = parseInt(drugTemplateEntity.drugDosage.noOfDays) * quantCount * parseInt(perServing);
+                } else {
+                    templateEntityToSave.quantity = drugTemplateEntity.drugDosage.noOfDays;
+                    templateEntityToSave.noOfDays = quantCount != 0 ? Math.ceil(parseInt(drugTemplateEntity.drugDosage.noOfDays) / (parseInt(perServing) * quantCount)) : 1;
+                }
+            } else {
+                if (rugTemplateEntity.drugDosage.daysOrQuantity == 'Days') {
+                    templateEntityToSave.noOfDays = drugTemplateEntity.drugDosage.noOfDays;
+                    templateEntityToSave.quantity = 1;
+                } else {
+                    templateEntityToSave.quantity = drugTemplateEntity.drugDosage.noOfDays;
+                    templateEntityToSave.noOfDays = 1;
+                }
+            }
+            drugsListToSave.push(templateEntityToSave);
+            emptyDrugElements();
+            timingBtnsDefault();
+
         } else {
             prescriptionElement['checkbox' + index] = false;
             var requiredIndex = _.findLastIndex(prescriptionElement.drugsList, function(entity) {
@@ -765,5 +797,13 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         } else {
             doctorServices.noPatientBeforeDrugTemplateSwal();
         }
+    }
+
+    function emptyDrugElements() {
+        timingsArray = [];
+        prescriptionElement.fillPrescription = {};
+        prescriptionElement.fillPrescription.drugType = '';
+        prescriptionElement.fillPrescription.daysOrQuantity = daysDisplay;
+        prescriptionElement.fillPrescription.days = 1;
     }
 };
