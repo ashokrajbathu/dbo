@@ -707,10 +707,55 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     }
 
     function addDrugTemplate(drugTemplateEntity, index) {
+        $log.log('template entity is-----', drugTemplateEntity);
+        $log.log('checkbox value is-----', prescriptionElement['checkbox' + index]);
         if (!prescriptionElement['checkbox' + index]) {
-            prescriptionElement['checkbox' + index] = false;
-        } else {
             prescriptionElement['checkbox' + index] = true;
+            var templateEntity = {};
+            var msrmnt = '';
+            var templateEntityToSave = {};
+            templateEntity.drugId = drugTemplateEntity.drugDosage.drugId;
+            templateEntity.brandName = drugTemplateEntity.drugDosage.brandName;
+            if (drugTemplateEntity.drugDosage.drugType !== 'SYRUP') {
+                if (drugTemplateEntity.drugDosage.perServing == 1) {
+                    templateEntity.perServing = singleUnit;
+                } else {
+                    switch (drugTemplateEntity.drugDosage.drugType.toUpperCase()) {
+                        case 'SYRUP':
+                            msrmnt = 'ml';
+                            break;
+                        default:
+                            msrmnt = 'units';
+                            break;
+                    }
+                    if (drugTemplateEntity.drugDosage.perServing !== undefined && drugTemplateEntity.drugDosage.perServing !== '' && drugTemplateEntity.drugDosage.perServing !== 1) {
+                        templateEntity.perServing = drugTemplateEntity.drugDosage.perServing + ' ' + msrmnt;
+                    } else {
+                        templateEntity.perServing = '1 unit';
+                    }
+                }
+            }
+            if (drugTemplateEntity.drugDosage.noOfDays == 1 && drugTemplateEntity.drugDosage.daysOrQuantity == 'Days') {
+                templateEntity.noOfDays = singleDay;
+            } else {
+                templateEntity.noOfDays = drugTemplateEntity.drugDosage.noOfDays + ' ' + drugTemplateEntity.drugDosage.daysOrQuantity;
+            }
+            var usageArray = drugTemplateEntity.drugDosage.usageDirection.split(',');
+            var quantCount = usageArray.length;
+            if (quantCount == 0) {
+                quantCount = 1;
+            }
+            templateEntity.usageDirection = drugTemplateEntity.drugDosage.usageDirection;
+            templateEntity.remarks = drugTemplateEntity.drugDosage.remarks;
+            prescriptionElement.drugsList.push(templateEntity);
+            $log.log('drugs list is-----', prescriptionElement.drugsList);
+            angular.copy(templateEntity, templateEntityToSave);
+        } else {
+            prescriptionElement['checkbox' + index] = false;
+            var requiredIndex = _.findLastIndex(prescriptionElement.drugsList, function(entity) {
+                return entity.brandName == drugTemplateEntity.drugDosage.brandName;
+            });
+            prescriptionElement.drugsList.splice(requiredIndex, 1);
         }
     }
 
