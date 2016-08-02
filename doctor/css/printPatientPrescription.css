@@ -1,0 +1,104 @@
+@media print {
+    .textInPrintPrescription {
+        font-weight: 600;
+        font-size: 20px;
+    }
+    .doctorFields {
+        margin-top: -0.9em;
+    }
+    #doctorSpeciality,
+    #doctorPhoneNumber,
+    #doctorRegNo {
+        font-size: 20px;
+    }
+    #phoneNumberSpan,
+    #regNoSpan {
+        font-weight: 600;
+    }
+    #doctorDetails {
+        float: left;
+    }
+    #organizationDetails {
+        font-size: 20px;
+    }
+    #organizationDetails {
+        font-weight: 600;
+        margin-bottom: -10px;
+    }
+    #orgDiv {
+        margin-left: 250px;
+        word-wrap: break-word;
+    }
+    #organizationAddress {
+        font-size: 20px;
+        display: inline;
+        word-wrap: break-word;
+    }
+    #organizationAddress {
+        margin-top: -20px !important;
+    }
+    .printPrescriptionLabels {
+        font-size: 18px;
+        font-weight: 600;
+    }
+    .patientDetailsFields {
+        font-size: 19px;
+    }
+    #patientNameDiv,
+    #patientAgeDiv {
+        float: left;
+    }
+    .detailsDiv {
+        width: 12em;
+        float: left;
+    }
+    /* #patientAgeDiv {
+        margin-left: -178px;
+    } */
+    #billNumberLabel,
+    #signatureSection,
+    #qrCodeSection {
+        float: right;
+    }
+    #prescriptionDate {
+        float: right;
+    }
+    #assessment {
+        border-bottom: 1px solid #000;
+        padding-bottom: 2px;
+        text-align: left;
+        margin-bottom: 4px;
+    }
+    .assessmentFirstRow {
+        text-align: center;
+    }
+    #symptomsRow {
+        margin-top: -0.4em;
+    }
+    #medicinesTable>tbody>tr,
+    #medicinesTable>thead>tr,
+    #medicinesTable>tbody>tr>td,
+    #medicinesTable>thead>tr>th {
+        border-collapse: collapse;
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
+    }
+    #medicinesTable {
+        margin-top: -20px;
+        width: 100%;
+        border-collapse: collapse;
+        border-left: 1px;
+        border-right: 1px;
+        border-bottom: 0.5px solid black;
+        border-style: solid;
+    }
+    #orderedList {
+        margin-top: -10px;
+    }
+    #orderedList>li>a,
+    #doctorReference,
+    #doctorRemarks,
+    #doctorRevisitOn {
+        font-size: 18px;
+    }
+}

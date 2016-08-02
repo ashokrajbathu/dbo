@@ -34,6 +34,12 @@ function loginController($scope, $log, doctorServices, $state, $http, $parse, Sw
     function doctorLogin() {
         var emailId = login.loginCredentials.emailId;
         var password = login.loginCredentials.password;
+        var activeClinicAddress = {};
+        var clinicAddress = {};
+        activeClinicAddress.address = '';
+        activeClinicAddress.city = '';
+        angular.copy(activeClinicAddress, clinicAddress);
+        localStorage.setItem('doctorHospitalLocation', JSON.stringify(activeClinicAddress));
         if (emailId !== undefined && emailId !== '' && password !== undefined && password !== '') {
             var doctorLoginPromise = doctorServices.login(login.loginCredentials);
             doctorLoginPromise.then(function(doctorLoginSuccess) {
@@ -46,6 +52,29 @@ function loginController($scope, $log, doctorServices, $state, $http, $parse, Sw
                     localStorage.setItem('currentDoctor', doctorActive);
                     localStorage.setItem('currentDoctorState', 'drugPrescriptions');
                     localStorage.setItem('isLoggedInDoctor', 'true');
+                    var getAddressesPromise = doctorServices.getClinicsAddress();
+                    getAddressesPromise.then(function(getAddressesSuccess) {
+                        var errorCode = getAddressesSuccess.data.errorCode;
+                        if (errorCode) {
+                            doctorServices.logoutFromThePage(errorCode);
+                        } else {
+                            var clinicAddressResponse = angular.fromJson(getAddressesSuccess.data.response);
+                            $log.log('clinic address response is---', clinicAddressResponse);
+                            if (errorCode == null && getAddressesSuccess.data.success) {
+                                if (clinicAddressResponse.length > 0) {
+                                    if (_.has(clinicAddressResponse[0], 'address')) {
+                                        clinicAddress.address = clinicAddressResponse[0].address;
+                                    }
+                                    if (_.has(clinicAddressResponse[0], 'city')) {
+                                        clinicAddress.city = clinicAddressResponse[0].city;
+                                    }
+                                    localStorage.setItem('doctorHospitalLocation', JSON.stringify(clinicAddress));
+                                }
+                            }
+                        }
+                    }, function(getAddressesError) {
+                        doctorServices.noConnectivityError();
+                    });
                     $state.go('doctorHome');
                 }
             }, function(doctorLoginError) {

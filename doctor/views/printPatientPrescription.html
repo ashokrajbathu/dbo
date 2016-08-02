@@ -10,8 +10,151 @@
 
 <body onload="window.print();">
     <div ng-app="printPatientPrescription" ng-controller="printPatientPrescriptionController as prescription" class="container">
+        <div id="detailsRow" class="row">
+            <div id="doctorDetails" class="col-md-3 col-sm-3 col-xs-3">
+                <span class="textInPrintPrescription">Dr.{{prescription.doctorName}}</span>
+                <br>
+                <span id="doctorSpeciality" class="doctorFields" ng-bind="prescription.speciality"></span>
+                <br>
+                <span id="doctorPhoneNumber" class="doctorFields">Phone:<span id="phoneNumberSpan">{{prescription.phoneNumber}}</span></span>
+                <br>
+                <span id="doctorRegNo" class="doctorFields">Registration No.<span id="regNoSpan">{{prescription.doctorRegistrationNo}}</span></span>
+            </div>
+            <div id="orgDiv" class="col-md-6 col-sm-6 col-xs-6">
+                <p id="organizationDetails" ng-bind="prescription.organization"></p>
+                <br>
+                <p id="organizationAddress" class="doctorFields" ng-bind="prescription.orgAddress"></p>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <hr>
+        </div>
+        <div id="nameRow" class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div id="patientNameDiv" class="col-md-3 col-sm-3 col-xs-3">
+                    <label class="printPrescriptionLabels">Patient Name:</label><span class="patientDetailsFields" ng-bind="prescription.patientName"></span>
+                </div>
+                <div id="billNumberLabel" class="col-md-offset-6 col-md-3 col-sm-offset-6 pull-right col-sm-3 col-xs-offset-6 col-xs-3">
+                    <label class="printPrescriptionLabels">Bill No:</label><span class="patientDetailsFields"></span>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div id="patientAgeDiv" class="col-md-3 col-sm-3 col-xs-3">
+                    <label class="printPrescriptionLabels">Age:</label><span class="patientDetailsFields" ng-bind="prescription.patientAge"></span>
+                    <label class="printPrescriptionLabels">Gender:</label><span class="patientDetailsFields" ng-bind="prescription.patientGender"></span>
+                </div>
+                <div id="prescriptionDate" class="col-md-offset-6 col-md-3 col-sm-offset-6 pull-right col-sm-3 col-xs-offset-6 col-xs-3">
+                    <label class="printPrescriptionLabels">Date:</label><span class="patientDetailsFields" ng-bind="prescription.today"></span>
+                </div>
+            </div>
+        </div>
+        <br>
+        <h3 id="assessment">ASSESSMENT:</h3>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="detailsDiv" class="col-md-3 col-xs-3 col-sm-3">
+                    <label class="printPrescriptionLabels">Height(cms):</label><span class="patientDetailsFields" ng-bind="prescription.height"></span>
+                </div>
+                <div class="detailsDiv" class="col-md-3 col-xs-3 col-sm-3">
+                    <label class="printPrescriptionLabels">Weight(kgs):</label><span class="patientDetailsFields" ng-bind="prescription.weight"></span>
+                </div>
+                <div class="detailsDiv" class="col-md-3 col-xs-3 col-sm-3">
+                    <label class="printPrescriptionLabels">Temperature(Fh):</label><span class="patientDetailsFields" ng-bind="prescription.temperature"></span>
+                </div>
+                <div class="detailsDiv" class="col-md-3 col-xs-3 col-sm-3">
+                    <label class="printPrescriptionLabels">Pulse:</label><span class="patientDetailsFields" ng-bind="prescription.pulse"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="detailsDiv" class="col-md-3 col-xs-3 col-sm-3">
+                    <label class="printPrescriptionLabels">BMI:</label><span class="patientDetailsFields" ng-bind="prescription.bmi"></span>
+                </div>
+                <div class="detailsDiv" class="col-md-3 col-xs-3 col-sm-3">
+                    <label class="printPrescriptionLabels">B.P.(mm Hg):</label><span class="patientDetailsFields" ng-bind="prescription.bloodPressure"></span>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <label class="printPrescriptionLabels">Symptoms:</label><span class="patientDetailsFields" ng-bind="prescription.symptoms"></span>
+            </div>
+        </div>
+        <br>
+        <div id="symptomsRow" class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <label class="printPrescriptionLabels">Investigation:</label><span class="patientDetailsFields" ng-bind="prescription.investigation"></span>
+            </div>
+        </div>
+        <h3 id="medicines">MEDICINES:</h3>
+        <div class="row">
+            <table id="medicinesTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Medicine Name</th>
+                        <th>Per Serving</th>
+                        <th>Days</th>
+                        <th>Dosage</th>
+                        <th>Special Instructions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="drugEntity in prescription.drugsList">
+                        <td ng-bind="$index+1"></td>
+                        <td ng-bind="drugEntity.brandName"></td>
+                        <td ng-bind="drugEntity.perServing"></td>
+                        <td ng-bind="drugEntity.noOfDays"></td>
+                        <td ng-bind="drugEntity.usageDirection"></td>
+                        <td ng-bind="drugEntity.remarks"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <h3 id="tests">TESTS:</h3>
+        <ol id="orderedList">
+            <li ng-repeat="testEntity in prescription.testsList">
+                <a ng-bind="testEntity.testName"></a> -
+                <a ng-bind="testEntity.remark"></a>
+            </li>
+        </ol>
+        <div class="row">
+            <label class="printPrescriptionLabels">Refer To:</label>
+            <span id="doctorReference" ng-bind="prescription.referToDoctorName"></span>
+        </div>
+        <div class="row">
+            <label class="printPrescriptionLabels">Remarks:</label>
+            <span id="doctorRemarks" ng-bind="prescription.remarksOfDoctor"></span>
+        </div>
+        <div class="row">
+            <label class="printPrescriptionLabels">Revisit On:</label>
+            <span id="doctorRevisitOn" ng-bind="prescription.revisitOnDate"></span>
+        </div>
+        <br>
+        <div class="row">
+            <div id="signatureSection" class="col-md-12 col-xs-12 col-sm-12">
+                <label>(Doctor Signature)</label>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="row">
+            <div id="qrCodeSection" class="col-md-12 col-sm-12 col-xs-12">
+            </div>
+        </div>
     </div>
     <script type="text/javascript" src="../../js/angular.js"></script>
+    <script type="text/javascript" src="../../js/lodash.js"></script>
+    <script type="text/javascript" src="../../js/jquery.qrcode.min.js"></script>
     <script type="text/javascript" src="../../plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <script type="text/javascript" src="../../plugins/jQuery/jquery-barcode.js"></script>
     <script type="text/javascript" src="../../js/jquery.qrcode.min.js"></script>

@@ -226,7 +226,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                             <input type="text" id="testsearchbox" ng-model-options="{debounce:500}" ng-change="prescription.testSearch()" ng-model="prescription.test.testName" class="form-control testsRow" placeholder="Test">
                             <div id="testDropdownDiv">
-                                <ul click-outside id="testsDropDown" ng-class="{'testDropDownActive':prescription.dropdownActive}" class="dropdown-menu">
+                                <ul style="z-index:1200;" click-outside id="testsDropDown" ng-class="{'testDropDownActive':prescription.dropdownActive}" class="dropdown-menu">
                                     <li ng-click="prescription.selectTestFromTheDropdown(testEntity)" ng-repeat="testEntity in prescription.testsList">
                                         <a style="cursor:pointer;" ng-bind="testEntity.diagnosisName"></a>
                                     </li>

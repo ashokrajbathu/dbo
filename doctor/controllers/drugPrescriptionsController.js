@@ -29,6 +29,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     var daysDisplay = 'Days';
     var activeDrugId;
     var printPrescription = {};
+    var currentActivePatient = {};
     var capsuleTypes = ['TABLET', 'CAPSULE', 'INJECTION', 'SACHET', 'LOZENGES', 'SUPPOSITORY', 'RESPULES', 'PEN', 'APLICAPS', 'ENEMA', 'PATCH'];
     prescriptionElement.testsListInTable = [];
     prescriptionElement.testsList = [];
@@ -158,6 +159,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     $(document).on('click', function(e) {
         if ($(e.target).closest("#testsearchbox").length === 0) {
             $("#testDropdownDiv").hide();
+            prescriptionElement.dropdownActive = false;
         }
     });
 
@@ -201,6 +203,8 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 if (prescriptionElement.patientsToBeDisplayedInRadios.length > 0) {
                     newPatientFlag = false;
                     activePatient = prescriptionElement.patientsToBeDisplayedInRadios[0];
+                    angular.copy(activePatient, currentActivePatient);
+                    localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
                     prescriptionElement.prescriptionData.firstName = prescriptionElement.patientsToBeDisplayedInRadios[0].firstName;
                     prescriptionElement.prescriptionData.drugAllergyInForm = prescriptionElement.patientsToBeDisplayedInRadios[0].drugAllergy;
                     activePatientIndex = 0;
@@ -260,6 +264,8 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                             if (prescriptionElement.patientsToBeDisplayedInRadios.length == 0) {
                                 prescriptionElement.patientsToBeDisplayedInRadios = addPatientResponse;
                                 activePatient = addPatientResponse[0];
+                                angular.copy(activePatient, currentActivePatient);
+                                localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
                                 activePatientIndex = 0;
                                 prescriptionElement.updatePatient = true;
                                 prescriptionElement.addMember = true;
@@ -270,6 +276,9 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                         } else {
                             prescriptionElement.patientsToBeDisplayedInRadios.splice(activePatientIndex, 1, addPatientResponse[0]);
                             prescriptionElement['radio' + activePatientIndex] = true;
+                            activePatient = addPatientResponse[0];
+                            angular.copy(activePatient, currentActivePatient);
+                            localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
                         }
                     }
                 }
@@ -301,6 +310,8 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
 
     function selectActivePatient(patientActiveIs, index) {
         activePatient = patientActiveIs;
+        angular.copy(activePatient, currentActivePatient);
+        localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
         activePatientIndex = index;
         prescriptionElement.prescriptionData.firstName = patientActiveIs.firstName;
         prescriptionElement.prescriptionData.drugAllergyInForm = patientActiveIs.drugAllergy;
@@ -522,6 +533,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 } else {
                     prescriptionElement.testsList = angular.fromJson(getTestsSuccess.data.response);
                     if (prescriptionElement.testsList.length > 0) {
+                        $("#testDropdownDiv").show();
                         prescriptionElement.dropdownActive = true;
                     } else {
                         prescriptionElement.dropdownActive = false;

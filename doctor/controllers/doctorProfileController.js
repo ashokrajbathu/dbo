@@ -153,6 +153,7 @@ function doctorProfileController($scope, $log, doctorServices, $state, $http, $p
                     });
                     doctorProfile['radio' + addressIndex] = true;
                     activeAddressIndex = addressIndex;
+                    activeAddress = doctorProfile.clinicAddresses[addressIndex];
                     doctorProfile.clinicAddress.address = doctorProfile.clinicAddresses[addressIndex].address;
                     doctorProfile.clinicAddress.city = doctorProfile.clinicAddresses[addressIndex].city;
                     doctorProfile.clinicAddress.pincode = doctorProfile.clinicAddresses[addressIndex].pincode;
