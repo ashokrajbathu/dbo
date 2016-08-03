@@ -22,7 +22,6 @@ function printPatientPrescriptionController($scope, $log) {
     var activeDoctor = localStorage.getItem('currentDoctor');
     var organizationAddress = localStorage.getItem('doctorHospitalLocation');
     var activePatient = localStorage.getItem('currentPatient');
-    $log.log('active presc is----', activePrescription);
     prescription.doctorName = '';
     prescription.speciality = '';
     prescription.phoneNumber = '';
@@ -49,10 +48,6 @@ function printPatientPrescriptionController($scope, $log) {
     prescription.doctorActive = angular.fromJson(activeDoctor);
     prescription.activePatient = angular.fromJson(activePatient);
     var organAddress = angular.fromJson(organizationAddress);
-    $log.log('current patient is------', prescription.activePatient);
-    $log.log('org address is----', organAddress);
-    $log.log('active prescription is----', prescription.prescriptionActive);
-    $log.log('active doctor is-------', prescription.doctorActive);
     if (_.has(prescription.doctorActive, 'firstName')) {
         prescription.doctorName += prescription.doctorActive.firstName;
     }
