@@ -15,7 +15,7 @@ function medicationController($rootScope, $scope, $log, dboticaServices, $state,
     var medicinesListForSetter = [];
 
     medication.categoryNameToolTip = false;
-    medication.newMedicine.drugName = '-Drug Name-';
+    medication.newMedicine.drugName = '';
     medication.newMedicine.days = '';
     medication.newMedicine.quantity = '';
     medication.newMedicine.instructions = '';
@@ -43,6 +43,17 @@ function medicationController($rootScope, $scope, $log, dboticaServices, $state,
 
     var billInvoice = {};
     dboticaServices.setInvoice(billInvoice);
+
+    var getDoctorsCategoriesPromise = dboticaServices.getDoctorCategories(organizationId);
+    getDoctorsCategoriesPromise.then(function(doctorsCategoriesPromise) {
+        angular.element('#nurseHeader').addClass('activeAdminLi');
+        var errorCode = doctorsCategoriesPromise.data.errorCode;
+        if (errorCode) {
+            dboticaServices.logoutFromThePage(errorCode);
+        } else {}
+    }, function(docotorCategoriesError) {
+        dboticaServices.noConnectivityError();
+    });
 
     function getData() {
         medication.patient = dboticaServices.getPatientDetailsFromService();
@@ -76,48 +87,41 @@ function medicationController($rootScope, $scope, $log, dboticaServices, $state,
 
     function saveMedicationDetails() {
         if (!jQuery.isEmptyObject(medication.patient)) {
-            if (medication.newMedicine.drugType !== '-Category Name-') {
-                var medicationRequestEntity = {};
-                medicationRequestEntity.organizationId = organizationId;
-                medicationRequestEntity.patientId = medication.patient.id;
-                medicationRequestEntity.patientName = medication.patient.firstName;
-                medicationRequestEntity.patientPhoneNumber = medication.patient.phoneNumber;
-                medicationRequestEntity.patientEventType = 'MEDICINE_PROVIDED';
-                var currentDate = new Date();
-                medicationRequestEntity.startTime = currentDate.getTime();
-                medicationRequestEntity.alertTime = '';
-                medicationRequestEntity.referenceId = '';
-                var medicineDetails = {};
-                medicineDetails.drugType = medication.newMedicine.drugType;
-                medicineDetails.days = medication.newMedicine.days;
-                medicineDetails.quantity = medication.newMedicine.quantity;
-                medicineDetails.instructions = medication.newMedicine.instructions;
-                medicineDetails.advice = medication.newMedicine.advice;
-                medicineDetails = JSON.stringify(medicineDetails);
-                medicationRequestEntity.referenceDetails = medicineDetails;
-                var saveMedicinesPromise = dboticaServices.patientEvent(medicationRequestEntity);
-                saveMedicinesPromise.then(function(saveMedicineSuccess) {
-                    var errorCode = saveMedicineSuccess.data.errorCode;
-                    if (errorCode) {
-                        dboticaServices.logoutFromThePage(errorCode);
-                    } else {
-                        var medicineResponse = angular.fromJson(saveMedicineSuccess.data.response);
-                        medicineResponse.referenceDetails = angular.fromJson(medicineResponse.referenceDetails);
-                        var referenceDetailsNew = angular.fromJson(medicineResponse);
-                        medication.patientEventsList.unshift(referenceDetailsNew);
-                        dboticaServices.setPatientEvents(medication.patientEventsList);
-                        dboticaServices.saveMedicineSuccessSwal();
-                        angular.element("#addMedicationModal").modal('hide');
-                    }
-                }, function(saveMedicineError) {
-                    dboticaServices.noConnectivityError();
-                });
-            } else {
-                medication.categoryNameToolTip = true;
-                $timeout(function() {
-                    medication.categoryNameToolTip = false;
-                }, 100);
-            }
+            var medicationRequestEntity = {};
+            medicationRequestEntity.organizationId = organizationId;
+            medicationRequestEntity.patientId = medication.patient.id;
+            medicationRequestEntity.patientName = medication.patient.firstName;
+            medicationRequestEntity.patientPhoneNumber = medication.patient.phoneNumber;
+            medicationRequestEntity.patientEventType = 'MEDICINE_PROVIDED';
+            var currentDate = new Date();
+            medicationRequestEntity.startTime = currentDate.getTime();
+            medicationRequestEntity.alertTime = '';
+            medicationRequestEntity.referenceId = '';
+            var medicineDetails = {};
+            /* medicineDetails.drugType = medication.newMedicine.drugType;*/
+            medicineDetails.days = medication.newMedicine.days;
+            medicineDetails.quantity = medication.newMedicine.quantity;
+            medicineDetails.instructions = medication.newMedicine.instructions;
+            medicineDetails.advice = medication.newMedicine.advice;
+            medicineDetails = JSON.stringify(medicineDetails);
+            medicationRequestEntity.referenceDetails = medicineDetails;
+            var saveMedicinesPromise = dboticaServices.patientEvent(medicationRequestEntity);
+            saveMedicinesPromise.then(function(saveMedicineSuccess) {
+                var errorCode = saveMedicineSuccess.data.errorCode;
+                if (errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var medicineResponse = angular.fromJson(saveMedicineSuccess.data.response);
+                    medicineResponse.referenceDetails = angular.fromJson(medicineResponse.referenceDetails);
+                    var referenceDetailsNew = angular.fromJson(medicineResponse);
+                    medication.patientEventsList.unshift(referenceDetailsNew);
+                    dboticaServices.setPatientEvents(medication.patientEventsList);
+                    dboticaServices.saveMedicineSuccessSwal();
+                    angular.element("#addMedicationModal").modal('hide');
+                }
+            }, function(saveMedicineError) {
+                dboticaServices.noConnectivityError();
+            });
         } else {
             angular.element("#addMedicationModal").modal('hide');
             dboticaServices.pleaseSelectPatientSwal();

@@ -692,7 +692,6 @@ angular.module('personalAssistant').directive('autoComplete', function(dboticaSe
                         for (var medicineIndex = 0; medicineIndex < medicines.length - 1; medicineIndex++) {
                             if (medicineEntered.toLowerCase() == medicines[medicineIndex].itemName.toLowerCase()) {
                                 angular.element('#exampleInputMedicineCost').val(medicines[medicineIndex].retailPrice);
-
                             }
                         }
                     }

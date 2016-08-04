@@ -47,6 +47,9 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.drugTemplate = drugTemplate;
     doctorServices.getDrugTemplates = getDrugTemplates;
     doctorServices.noPatientBeforeDrugTemplateSwal = noPatientBeforeDrugTemplateSwal;
+    doctorServices.bookAppointmentForPatient = bookAppointmentForPatient;
+    doctorServices.appointmentSuccessSwal = appointmentSuccessSwal;
+    doctorServices.appointmentBookFail = appointmentBookFail;
 
     function loginErrorSwal() {
         swal({
@@ -620,6 +623,46 @@ function doctorServices($http, $state, $log, $q) {
             title: "Info",
             text: "Please Select Patient before adding Drugs!!!",
             type: "info",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    function bookAppointmentForPatient(patientEntity) {
+        var deferred = $q.defer();
+        var bookAppointmentRequest = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/doctor/addCalendarEvent',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(patientEntity)
+        }
+        $http(bookAppointmentRequest).then(function(bookAppointmentSuccess) {
+            deferred.resolve(bookAppointmentSuccess);
+        }, function(bookAppointmentError) {
+            deferred.reject(bookAppointmentError);
+        });
+        return deferred.promise;
+    }
+
+    function appointmentSuccessSwal() {
+        swal({
+            title: "success",
+            text: "Appointment successfully Booked",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    function appointmentBookFail() {
+        swal({
+            title: "Error",
+            text: "Error updating the appointment details",
+            type: "error",
             confirmButtonText: "OK",
             allowOutsideClick: true
         });

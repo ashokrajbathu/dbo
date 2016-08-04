@@ -133,6 +133,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.selectAppointmentOrWalkin = selectAppointmentOrWalkin;
     prescriptionElement.addDrugTemplate = addDrugTemplate;
     prescriptionElement.addDrugTemp = addDrugTemp;
+    prescriptionElement.bookAppointment = bookAppointment;
 
     var getDrugTemplatesPromise = doctorServices.getDrugTemplates();
     getDrugTemplatesPromise.then(function(getDrugTemplatesSuccess) {
@@ -817,5 +818,34 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         prescriptionElement.fillPrescription.drugType = '';
         prescriptionElement.fillPrescription.daysOrQuantity = daysDisplay;
         prescriptionElement.fillPrescription.days = 1;
+    }
+
+    function bookAppointment() {
+        var date = prescriptionElement.revisitAfterDate;
+        date = new Date(date);
+        date = date.getTime();
+        var bookRequestEntity = {};
+        if (!_.isEmpty(activePatient)) {
+            bookRequestEntity.patientId = activePatient.id;
+            bookRequestEntity.startTime = date + 36000000;
+            bookRequestEntity.label = activePatient.firstName;
+
+            var bookAppointmentPromise = doctorServices.bookAppointmentForPatient(bookRequestEntity);
+            bookAppointmentPromise.then(function(bookAppointmentSuccess) {
+                var errorCode = bookAppointmentSuccess.data.errorCode;
+                if (errorCode) {
+                    doctorServices.logoutFromThePage(errorCode);
+                } else {
+                    bookAppointmentResponse = angular.fromJson(bookAppointmentSuccess.data.response);
+                    if (errorCode == null && bookAppointmentSuccess.data.success) {
+                        doctorServices.appointmentSuccessSwal();
+                    } else {
+                        doctorServices.appointmentBookFail();
+                    }
+                }
+            }, function(bookAppointmentError) {
+                doctorServices.noConnectivityError();
+            });
+        }
     }
 };
