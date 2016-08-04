@@ -4,53 +4,63 @@ patientDetailsController.$inject = ['$rootScope', '$scope', '$log', '$stateParam
 function patientDetailsController($rootScope, $scope, $log, $stateParams, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var detail = this;
 
-    var users = [{
+    detail.submitDetails = submitDetails;
+
+    detail.formsList = [{
+        display: true,
         name: 'First Name',
-        modelName: ''
+        modelName: 'first name'
     }, {
-        name: 'Last Name',
-        modelName: ''
+        displaySelectBox: true,
+        name: 'select Name',
+        selectBoxOptions: [
+            { 'name': 'ravi', 'value': 'ravi' },
+            { 'name': 'teja', 'value': 'teja' },
+            { 'name': 'bhisetti', 'value': 'bhisetti' }
+        ]
+    }, {
+        display: true,
+        name: 'Address',
+        modelName: 'last name'
+    }, {
+        displaySelectBox: true,
+        name: 'select friend Name',
+        selectBoxOptions: [
+            { 'name': 'ramu', 'value': 'ramu' },
+            { 'name': 'raju', 'value': 'raju' },
+            { 'name': 'teju', 'value': 'teju' }
+        ]
+    }, {
+        display: true,
+        name: 'District',
+        modelName: 'district'
+    }, {
+        displayButton: true,
+        name: 'Save'
+    }, {
+        displayRadioButton: true,
+        radioButtonName: 'ravi'
     }];
 
-    detail.formData = {};
-    detail.formData.button = 'Save';
-    detail.formData.users = users;
-
-    detail.saveData = saveData;
-
-    var configs1 = [{
-        'name': 'Configdsjfddsjasds 1',
-        'value': 'configkjdfdsfsd1'
+    detail.radiosList = [{
+        displayRadioButton: true,
+        radioButtonName: 'teja'
     }, {
-        'name': 'Configsjdsdjsjdfds 2',
-        'value': 'configsdmsf2'
-    }, {
-        'name': 'Configshsdjfsdfhjc 3',
-        'value': 'configshdfsdf3'
+        displayRadioButton: true,
+        radioButtonName: 'bhisetti'
     }];
 
-    var configs2 = [{
-        'name': 'Configdsjfddsjasds 1',
-        'value': 'configkjdfdsfsd1'
-    }, {
-        'name': 'Configsjdsdjsjdfds 2',
-        'value': 'configsdmsf2'
-    }, {
-        'name': 'Configshsdjfsdfhjc 3',
-        'value': 'configshdfsdf3'
-    }];
+    angular.forEach(detail.formsList, function(entity) {
+        if (_.has(entity, 'displaySelectBox')) {
+            if (entity.selectBoxOptions.length > 0) {
+                entity.config = entity.selectBoxOptions[0].value;
+            }
+        }
+    });
 
-    detail.selectBoxes = [{
-        configs: configs1
-    }, {
-        configs: configs2
-    }];
-
-    detail.selectBoxes[0].config = detail.selectBoxes[0].configs[0].value;
-    detail.selectBoxes[1].config = detail.selectBoxes[1].configs[1].value;
-
-    function saveData() {
-        $log.log('select box val is-----', detail.formData.users);
-        $log.log('input box values is-------', detail.selectBoxes);
+    function submitDetails() {
+        $log.log('in submit details');
+        $log.log('first name is---');
     }
+
 }

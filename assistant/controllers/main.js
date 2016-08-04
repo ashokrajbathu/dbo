@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('personalAssistant', ['ui.router', 'ngAnimate', 'ui.bootstrap', 'ngMessages', 'appServices', 'doctorServices', 'ngTable', 'oitozero.ngSweetAlert']);
+angular.module('personalAssistant', ['ui.router', 'ngAnimate', 'ui.bootstrap', 'dynform', 'ngMessages', 'appServices', 'doctorServices', 'ngTable', 'oitozero.ngSweetAlert']);

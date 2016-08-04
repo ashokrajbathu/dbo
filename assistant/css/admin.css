@@ -17,6 +17,11 @@
     color: black;
 }
 
+.selectBoxesInNurse {
+    height: 30px !important;
+    width: 180px !important;
+}
+
 .adminActiveInactiveBtnsGreen {
     padding-top: 0px;
     color: white;
