@@ -794,7 +794,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             drugsListToSave.push(templateEntityToSave);
             emptyDrugElements();
             timingBtnsDefault();
-
         } else {
             prescriptionElement['checkbox' + index] = false;
             var requiredIndex = _.findLastIndex(prescriptionElement.drugsList, function(entity) {
