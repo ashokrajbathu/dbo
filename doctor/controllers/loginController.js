@@ -59,7 +59,6 @@ function loginController($scope, $log, doctorServices, $state, $http, $parse, Sw
                             doctorServices.logoutFromThePage(errorCode);
                         } else {
                             var clinicAddressResponse = angular.fromJson(getAddressesSuccess.data.response);
-                            $log.log('clinic address response is---', clinicAddressResponse);
                             if (errorCode == null && getAddressesSuccess.data.success) {
                                 if (clinicAddressResponse.length > 0) {
                                     if (_.has(clinicAddressResponse[0], 'address')) {

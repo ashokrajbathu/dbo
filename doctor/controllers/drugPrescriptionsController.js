@@ -134,6 +134,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.addDrugTemplate = addDrugTemplate;
     prescriptionElement.addDrugTemp = addDrugTemp;
     prescriptionElement.bookAppointment = bookAppointment;
+    prescriptionElement.resetDrugPrescription = resetDrugPrescription;
 
     var getDrugTemplatesPromise = doctorServices.getDrugTemplates();
     getDrugTemplatesPromise.then(function(getDrugTemplatesSuccess) {
@@ -527,6 +528,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         var testOnSearch = prescriptionElement.test.testName;
         if (testOnSearch.length > 0) {
             var testsPromise = doctorServices.getTests(testOnSearch);
+            $log.log("test promise is--", testsPromise);
             testsPromise.then(function(getTestsSuccess) {
                 var errorCode = getTestsSuccess.data.errorCode;
                 if (errorCode) {
@@ -846,5 +848,26 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 doctorServices.noConnectivityError();
             });
         }
+    }
+
+    function resetDrugPrescription() {
+        prescriptionElement.phoneNumber = '';
+        prescriptionElement.updatePatient = false;
+        prescriptionElement.addMember = false;
+        prescriptionElement.PhoneNumberErrorMessage = false;
+        prescriptionElement.patientsToBeDisplayedInRadios = [];
+        prescriptionElement.prescriptionData = {};
+        prescriptionElement.test = {};
+        prescriptionElement.testsListInTable = [];
+        activePatient = {};
+        prescriptionElement.fillPrescription = {};
+        prescriptionElement.fillPrescription.daysOrQuantity = 'Days';
+        prescriptionElement.fillPrescription.days = 1;
+        timingBtnsDefault();
+        prescriptionElement.drugsList = [];
+        prescriptionElement.additionalComments='';
+        prescriptionElement.revisitAfterDays = emptyString;
+        prescriptionElement.revisitAfterDate = today;
+        prescriptionElement.referToDoctor = emptyString;
     }
 };
