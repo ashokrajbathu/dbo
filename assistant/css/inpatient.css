@@ -60,7 +60,7 @@
 } */
 
 .dropdown-menu {
-    height: 220px !important;
+    height: 150px !important;
     overflow-y: scroll !important;
     overflow-x: hidden !important;
 }

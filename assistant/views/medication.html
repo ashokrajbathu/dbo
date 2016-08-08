@@ -91,7 +91,7 @@
                 </thead>
                 <tbody ng-if="patientMedication && medication.getData();">
                     <tr ng-repeat="eventEntity in medication.patientEventsList">
-                        <td ng-bind="eventEntity.referenceDetails.drugType"></td>
+                        <td ng-bind="eventEntity.referenceDetails.medicineName"></td>
                         <td ng-bind="eventEntity.referenceDetails.instructions"></td>
                         <td ng-bind="eventEntity.referenceDetails.advice"></td>
                         <td ng-bind="eventEntity.referenceDetails.days"></td>

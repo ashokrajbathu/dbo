@@ -99,12 +99,14 @@ function medicationController($rootScope, $scope, $log, dboticaServices, $state,
             medicationRequestEntity.referenceId = '';
             var medicineDetails = {};
             /* medicineDetails.drugType = medication.newMedicine.drugType;*/
+            medicineDetails.medicineName = medication.newMedicine.drugName;
             medicineDetails.days = medication.newMedicine.days;
             medicineDetails.quantity = medication.newMedicine.quantity;
             medicineDetails.instructions = medication.newMedicine.instructions;
             medicineDetails.advice = medication.newMedicine.advice;
             medicineDetails = JSON.stringify(medicineDetails);
             medicationRequestEntity.referenceDetails = medicineDetails;
+            $log.log('medicine medicationRequestEntity is---', medicationRequestEntity);
             var saveMedicinesPromise = dboticaServices.patientEvent(medicationRequestEntity);
             saveMedicinesPromise.then(function(saveMedicineSuccess) {
                 var errorCode = saveMedicineSuccess.data.errorCode;
@@ -112,6 +114,7 @@ function medicationController($rootScope, $scope, $log, dboticaServices, $state,
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var medicineResponse = angular.fromJson(saveMedicineSuccess.data.response);
+                    $log.log('medication response is------', medicineResponse);
                     medicineResponse.referenceDetails = angular.fromJson(medicineResponse.referenceDetails);
                     var referenceDetailsNew = angular.fromJson(medicineResponse);
                     medication.patientEventsList.unshift(referenceDetailsNew);

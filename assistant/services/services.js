@@ -596,20 +596,12 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
-    this.getTests = function() {
+    this.getTestsByAdmin = function() {
         var deferred = $q.defer();
-        var active = "ACTIVE";
         var getTestsRequest = {
-            method: 'POST',
+            method: 'GET',
             url: 'http://localhost:8081/dbotica-spring/organization/getTests',
-            withCredentials: true,
-            data: JSON.stringify({
-                "state": active
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
+            withCredentials: true
         }
         $http(getTestsRequest).then(function(getTestsSuccessResponse) {
             deferred.resolve(getTestsSuccessResponse);
@@ -2044,6 +2036,26 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             title: "Success",
             text: "Room Transfer is successfully done!!!!",
             type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.serviceUpdateSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Service successfully updated.",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.serviceUpdateError = function() {
+        swal({
+            title: "Error",
+            text: "Please Fill All The Details!!!!",
+            type: "error",
             confirmButtonText: "OK",
             allowOutsideClick: true
         });

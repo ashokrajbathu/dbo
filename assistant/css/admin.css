@@ -90,7 +90,8 @@
 
 #exampleInputProcedureName,
 #exampleInputRemarks,
-#exampleInputCostAdmin {
+#exampleInputCostAdmin,
+#exampleInputDuration {
     width: 50%;
     height: 28px;
     border-radius: 4px;
@@ -210,17 +211,24 @@ img {
 
 @media only screen and (max-width:768px) {
     #caretDoctorInAdmin,
-    #caretInAdmin {
+    #caretInAdmin,
+    #roomCaretInAdmin {
         top: 16px !important;
         left: 280px !important;
     }
     #doctorInAssistantDrop>ul,
     #docTypeInAssistantDrop>ul,
+    #dropdownMenuForRooms,
     #exampleInputCostAdmin,
+    #exampleInputDuration,
     #exampleInputRemarks {
         width: 300px !important;
     }
-    .serviceDoctorBtn {
+    #dropdownMenuForRooms {
+        height: 120px !important;
+    }
+    .serviceDoctorBtn,
+    #selectRoomBtn {
         width: 300px;
     }
 }
@@ -259,13 +267,36 @@ img {
 @media screen and (max-width:991px) {
     #exampleInputProcedureName,
     #exampleInputRemarks,
-    #exampleInputCostAdmin {
+    #exampleInputCostAdmin,
+    #exampleInputDuration {
         width: 70%;
         height: 28px;
         border-radius: 4px;
         margin-bottom: 4px;
         border-color: #367fa9;
     }
+}
+
+@media screen and (min-width:768px) {
+    #selectRoomBtn,
+    #dropdownMenuForRooms {
+        width: 200px !important;
+    }
+    #dropdownMenuForRooms {
+        height: 120px !important;
+        margin-left: -1px;
+    }
+    #roomCaretInAdmin {
+        position: absolute;
+        left: 180px;
+        top: 45%;
+    }
+}
+
+#selectRoomBtn {
+    margin-top: -8px;
+    border-radius: 4px;
+    margin-left: -2px;
 }
 
 .selectDoctorSection {

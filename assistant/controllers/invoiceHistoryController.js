@@ -12,6 +12,13 @@ function invoiceHistoryController($scope, $log, $timeout, dboticaServices, $stat
     invoiceElement.viewAllInvoices = viewAllInvoices;
     invoiceElement.viewPendingInvoices = viewPendingInvoices;
     invoiceElement.editInvoice = editInvoice;
+    invoiceElement.pageChanged = pageChanged;
+
+    invoiceElement.itemsPerPage = 8;
+    invoiceElement.currentPage = 1;
+    var entitiesArray = [];
+    var displayArray = [];
+
 
     angular.element("#date").datepicker({
         dateFormat: "dd/mm/yy",
@@ -59,6 +66,7 @@ function invoiceHistoryController($scope, $log, $timeout, dboticaServices, $stat
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             invoiceElement.doctorsList = angular.fromJson(doctorsSuccessResponse.data.response);
+            angular.element('#BillingHeader').addClass('activeAdminLi');
             doctorActiveId = invoiceElement.doctorsList[0].id;
         }
         invoiceElement.loading = false;
@@ -78,7 +86,10 @@ function invoiceHistoryController($scope, $log, $timeout, dboticaServices, $stat
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             invoiceHistoryArray = angular.fromJson(invoiceSuccessResponse.data.response);
-            angular.copy(invoiceHistoryArray, invoiceElement.invoiceGlobal.invoiceHistoryList);
+            angular.copy(invoiceHistoryArray, entitiesArray);
+            invoiceElement.totalItems = entitiesArray.length;
+            displayArray = _.chunk(entitiesArray, invoiceElement.itemsPerPage);
+            angular.copy(displayArray[0], invoiceElement.invoiceGlobal.invoiceHistoryList);
         }
         invoiceElement.loading = false;
         invoiceElement.blurScreen = false;
@@ -265,7 +276,19 @@ function invoiceHistoryController($scope, $log, $timeout, dboticaServices, $stat
     }
 
     function displayInvoicesInTheTable(invoicesArray) {
+        entitiesArray = [];
+        displayArray = [];
         invoiceElement.invoiceGlobal.invoiceHistoryList = [];
-        invoiceElement.invoiceGlobal.invoiceHistoryList = invoicesArray;
+        angular.copy(invoicesArray, entitiesArray);
+        invoiceElement.totalItems = entitiesArray.length;
+        displayArray = _.chunk(entitiesArray, invoiceElement.itemsPerPage);
+        angular.copy(displayArray[0], invoiceElement.invoiceGlobal.invoiceHistoryList);
+    }
+
+    function pageChanged() {
+        var requiredIndex = invoiceElement.currentPage - 1;
+        displayArray = [];
+        displayArray = _.chunk(entitiesArray, invoiceElement.itemsPerPage);
+        angular.copy(displayArray[requiredIndex], invoiceElement.invoiceGlobal.invoiceHistoryList);
     }
 };

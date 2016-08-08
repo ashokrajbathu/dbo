@@ -48,6 +48,7 @@
             <table class="table invoiceHistoryTable">
                 <thead>
                     <tr>
+                        <th>S.No.</th>
                         <th>Invoice No.</th>
                         <th>Name</th>
                         <th>Date</th>
@@ -58,6 +59,7 @@
                 </thead>
                 <tbody class="invoiceHistoryTableBody">
                     <tr ng-click="invoice.editInvoice(invoiceEle)" class="invoiceListElements" ng-repeat="invoiceEle in invoice.invoiceGlobal.invoiceHistoryList track by $index">
+                        <td ng-bind="$index+1+((invoice.currentPage-1)*invoice.itemsPerPage)"></td>
                         <td></td>
                         <td ng-bind="invoiceEle.patientName"></td>
                         <td ng-bind="invoiceEle.creationTime |longDateIntoReadableDate"></td>
@@ -69,6 +71,7 @@
                     </tr>
                 </tbody>
             </table>
+            <uib-pagination class="pull-right" items-per-page="invoice.itemsPerPage" ng-change="invoice.pageChanged()" total-items="invoice.totalItems" ng-model="invoice.currentPage"></uib-pagination>
             <div id="blurBackScreen" ng-show="invoice.blurScreen"></div>
             <img class="spinner" src="css/images/default (2).gif" ng-show="invoice.loading"></img>
         </div>

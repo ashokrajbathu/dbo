@@ -22,7 +22,7 @@
                                 <button class="serviceDoctorBtn" type="button" data-toggle="dropdown">{{adminView.admin.serviceInDropDown}}
                                     <span id="caretInAdmin" class="caret"></span></button>
                                 <ul class="dropdown-menu">
-                                    <li ng-repeat="service in adminView.servicesList">
+                                    <li ng-repeat="service in adminView.servicesList track by $index">
                                         <a ng-click="adminView.serviceSelect(service)" ng-bind="service" class="doctorsServicesInDropDown"></a>
                                     </li>
                                 </ul>
@@ -38,6 +38,18 @@
                     <div class="form-group adminEntity">
                         <input type="text" class="form-control" ng-model="adminView.admin.procedureRemarksTextBox" placeholder="Remarks" id="exampleInputRemarks">
                     </div>
+                    <div ng-if="adminView.testDuration" class="form-group adminEntity">
+                        <input numbers-only type="text" class="form-control" ng-model="adminView.admin.duration" placeholder="Duration(in minutes)" id="exampleInputDuration">
+                    </div>
+                    <div ng-if="adminView.roomDropDown" id="roomNumberDropdown" class="form-group dropdown">
+                        <button id="selectRoomBtn" type="button" data-toggle="dropdown">{{adminView.roomName}}
+                            <span id="roomCaretInAdmin" class="caret"></span></button>
+                        <ul id="dropdownMenuForRooms" class="dropdown-menu">
+                            <li ng-click="adminView.roomSelectForTest(room,$index)" style="cursor:pointer;" ng-repeat="room in adminView.activeRooms">
+                                <a ng-bind="room.roomNo +'-'+room.floorNo"></a>
+                            </li>
+                        </ul>
+                    </div>
                     <button type="submit" ng-click="adminView.submitServiceRequest()" class="btn addProcedureBtn adminEntity">Add</button>
                 </form>
                 <div id="blurBackScreen" ng-show="adminView.blurScreen"></div>
@@ -49,15 +61,19 @@
                             <th>Name</th>
                             <th>Cost</th>
                             <th>Remarks</th>
+                            <th ng-if="adminView.testsListFlag">Duration</th>
+                            <th ng-if="adminView.testsListFlag">Room Number</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody class="tableInAdminBody">
-                        <tr class="itemsAnimation" ng-repeat="doctorService in adminView.admin.servicesListOfTheDoctor">
+                        <tr class="itemsAnimation" ng-repeat="doctorService in adminView.admin.servicesListOfTheDoctor track by $index">
                             <td ng-bind="$index+1"></td>
                             <td ng-bind="doctorService.billingName"></td>
                             <td ng-bind="doctorService.price/100"></td>
                             <td ng-bind="doctorService.remark"></td>
+                            <td ng-if="adminView.testsListFlag" ng-bind="(doctorService.duration/100)/60"></td>
+                            <td ng-if="adminView.testsListFlag" ng-bind="doctorService.roomAndFloorNumbers"></td>
                             <td>
                                 <button ng-class="[doctorService.state]" ng-click="adminView.btnActiveInServicesTable(doctorService)" ng-attr-id="{{'activeBtn'+$index}}" class="btn adminActiveInactiveBtnsBlue">{{doctorService.state}}</button>
                             </td>
