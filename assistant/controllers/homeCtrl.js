@@ -23,6 +23,7 @@ function homeCtrl($scope, $log, $location, dboticaServices, $state, $http, $pars
     $scope.isVisibleNavs.ipd = false;
     $scope.isVisibleNavs.mainAdmin = false;
     $scope.isVisibleNavs.nurse = false;
+    $scope.isVisibleNavs.labs = false;
 
     angular.forEach(currentActiveAssistantPermissions, function(assistantPermission) {
         var assistantSection = assistantPermission;
@@ -46,10 +47,11 @@ function homeCtrl($scope, $log, $location, dboticaServices, $state, $http, $pars
                 break;
             case 'NURSE':
                 $scope.isVisibleNavs.nurse = true;
+                $scope.isVisibleNavs.labs = true;
                 break;
         }
     });
-    
+
 
     switch (currentStateActive) {
         case 'patientManagement':
@@ -90,6 +92,10 @@ function homeCtrl($scope, $log, $location, dboticaServices, $state, $http, $pars
 
         case 'nurseHome':
             $state.go('home.nurse');
+            break;
+
+        case 'labs':
+            $state.go('home.labs');
             break;
     }
 

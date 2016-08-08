@@ -173,6 +173,11 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
             controller: 'patientDetailsController',
             controllerAs: 'detail',
             templateUrl: 'views/patientDetails.html'
+        })
+        .state('home.labs', {
+            controller: 'labsController',
+            controllerAs: 'labs',
+            templateUrl: 'views/labs.html'
         });
 });
 

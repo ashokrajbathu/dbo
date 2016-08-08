@@ -231,7 +231,7 @@
                             <div id="testDropdownDiv">
                                 <ul style="z-index:1200;" click-outside id="testsDropDown" ng-class="{'testDropDownActive':prescription.dropdownActive}" class="dropdown-menu">
                                     <li ng-click="prescription.selectTestFromTheDropdown(testEntity)" ng-repeat="testEntity in prescription.testsList">
-                                        <a style="cursor:pointer;" ng-bind="testEntity.diagnosisName"></a>
+                                        <a style="cursor:pointer;" ng-bind="testEntity.diagnosisTest"></a>
                                     </li>
                                 </ul>
                             </div>

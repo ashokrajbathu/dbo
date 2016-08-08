@@ -132,6 +132,7 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
             adminElement.admin.doctorInDropdown = doctor.firstName + doctor.lastName;
             adminElement.loading = true;
             var getTestsPromise = dboticaServices.getTests();
+            $log.log('get tests promise is-----', getTestsPromise);
             getTestsPromise.then(function(getTestsSuccessResponse) {
                 var errorCode = getTestsSuccessResponse.data.errorCode;
                 if (errorCode) {
@@ -236,6 +237,7 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
             if (adminElement.admin.doctorInDropdown == general) {
                 adminElement.loading = true;
                 var submitTestRequestPromise = dboticaServices.submitTestRequest(testObject);
+                $log.log('test request promise is-------', submitTestRequestPromise);
                 submitTestRequestPromise.then(function(testRequestSuccessResponse) {
                     var errorCode = testRequestSuccessResponse.data.errorCode;
                     if (errorCode) {

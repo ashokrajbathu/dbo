@@ -528,7 +528,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         var testOnSearch = prescriptionElement.test.testName;
         if (testOnSearch.length > 0) {
             var testsPromise = doctorServices.getTests(testOnSearch);
-            $log.log("test promise is--", testsPromise);
             testsPromise.then(function(getTestsSuccess) {
                 var errorCode = getTestsSuccess.data.errorCode;
                 if (errorCode) {
@@ -551,11 +550,10 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     }
 
     function selectTestFromTheDropdown(selectedTest) {
-        $log.log('selected test is------', selectedTest);
         activeTestId = '';
         prescriptionElement.dropdownActive = false;
         activeTestId = selectedTest.id;
-        prescriptionElement.test.testName = selectedTest.diagnosisName;
+        prescriptionElement.test.testName = selectedTest.diagnosisTest;
     }
 
     function addTest() {
@@ -725,7 +723,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     }
 
     function addDrugTemplate(drugTemplateEntity, index) {
-        $log.log('drug is---', drugTemplateEntity);
         if (!prescriptionElement['checkbox' + index]) {
             prescriptionElement['checkbox' + index] = true;
             var templateEntity = {};
@@ -765,7 +762,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             templateEntity.usageDirection = drugTemplateEntity.drugDosage.usageDirection;
             templateEntity.remarks = drugTemplateEntity.drugDosage.remarks;
             prescriptionElement.drugsList.push(templateEntity);
-            $log.log('drugs list is-----', prescriptionElement.drugsList);
             angular.copy(templateEntity, templateEntityToSave);
             templateEntityToSave.drugType = drugTemplateEntity.drugDosage.drugType;
             templateEntityToSave.perServing = drugTemplateEntity.drugDosage.perServing;
@@ -865,7 +861,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         prescriptionElement.fillPrescription.days = 1;
         timingBtnsDefault();
         prescriptionElement.drugsList = [];
-        prescriptionElement.additionalComments='';
+        prescriptionElement.additionalComments = '';
         prescriptionElement.revisitAfterDays = emptyString;
         prescriptionElement.revisitAfterDate = today;
         prescriptionElement.referToDoctor = emptyString;
