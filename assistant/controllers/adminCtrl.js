@@ -13,11 +13,15 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
     adminElement.toggleBetweenViews = toggleBetweenViews;
     adminElement.updateAddress = updateAddress;
     adminElement.roomSelectForTest = roomSelectForTest;
+    adminElement.testSearch = testSearch;
+    adminElement.selectTestFromTheDropdown = selectTestFromTheDropdown;
 
     adminElement.admin = {};
     var selectRoomObject = { 'roomNo': '--Select Room-', 'floorNo': '-' };
     adminElement.activeRoomId = '';
     adminElement.activeRooms = [];
+    adminElement.tableFlag = true;
+    adminElement.dropdownActive = false;
     adminElement.testDuration = false;
     adminElement.blurScreen = false;
     adminElement.loading = false;
@@ -126,7 +130,6 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var getRoomsResponse = angular.fromJson(getRoomsSuccess.data.response);
-            $log.log('rooms response is--------', getRoomsResponse);
             adminElement.activeRooms = _.filter(getRoomsResponse, function(entity) {
                 return entity.state == 'ACTIVE';
             });
@@ -150,13 +153,13 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
         adminElement.admin.doctorActive = doctor;
         if (doctor.firstName == general) {
             adminElement.testsListFlag = true;
+            adminElement.tableFlag = false;
             adminElement.admin.serviceInDropDown = selectService;
             adminElement.servicesList = ["New Test"];
             adminElement.admin.procedureName = false;
             adminElement.admin.doctorInDropdown = doctor.firstName + doctor.lastName;
             adminElement.loading = true;
             var getTestsPromise = dboticaServices.getTestsByAdmin();
-            $log.log('get tests promise is-----', getTestsPromise);
             getTestsPromise.then(function(getTestsSuccessResponse) {
                 var errorCode = getTestsSuccessResponse.data.errorCode;
                 if (errorCode) {
@@ -164,7 +167,6 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
                 } else {
                     getTestsSuccess = angular.fromJson(getTestsSuccessResponse.data.response);
                     angular.forEach(getTestsSuccess, function(testEntity) {
-                        $log.log('test entity recieved is----', testEntity);
                         if (testEntity.hasOwnProperty('organizationId')) {
                             if (testEntity.organizationId == organizationId) {
                                 adminElement.servicesList.unshift(testEntity.diagnosisTest);
@@ -175,6 +177,7 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
                     });
                     angular.copy(getTestsSuccess, adminElement.admin.servicesListOfTheDoctor);
                     getRoomAndFloorNo();
+                    adminElement.tableFlag = true;
                 }
                 adminElement.loading = false;
             }, function(getTestsErrorResponse) {
@@ -184,6 +187,7 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
             adminElement.admin.servicesListOfTheDoctor = [];
         } else {
             adminElement.testsListFlag = false;
+            adminElement.tableFlag = false;
             adminElement.admin.serviceInDropDown = selectService;
             adminElement.admin.doctorInDropdown = doctor.firstName + ' ' + doctor.lastName;
             adminElement.admin.procedureName = false;
@@ -196,8 +200,8 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
             } else {
                 adminElement.admin.servicesListOfTheDoctor = [];
             }
+            adminElement.tableFlag = true;
         }
-
     }
 
     function serviceSelect(service) {
@@ -268,9 +272,7 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
             }
             if (adminElement.admin.doctorInDropdown == general) {
                 adminElement.loading = true;
-                $log.log('test request is-----', testObject);
                 var submitTestRequestPromise = dboticaServices.submitTestRequest(testObject);
-                $log.log('test request promise is-------', submitTestRequestPromise);
                 submitTestRequestPromise.then(function(testRequestSuccessResponse) {
                     var errorCode = testRequestSuccessResponse.data.errorCode;
                     if (errorCode) {
@@ -280,15 +282,15 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
                         var success = testRequestSuccessResponse.data.success;
                         if (errorCode == null && success == true) {
                             var testSuccess = angular.fromJson(testRequestSuccessResponse.data.response);
+                            var localRoom = _.filter(adminElement.activeRooms, function(entity) {
+                                return entity.id == testSuccess.roomIds[0];
+                            });
                             if (testObject.hasOwnProperty('id')) {
                                 angular.forEach(adminElement.admin.servicesListOfTheDoctor, function(serviceOfDoctor) {
                                     if (testSuccess.id == serviceOfDoctor.id) {
                                         serviceOfDoctor.price = testSuccess.price;
                                         serviceOfDoctor.duration = testSuccess.duration;
                                         serviceOfDoctor.remark = testSuccess.remark;
-                                        var localRoom = _.filter(adminElement.activeRooms, function(entity) {
-                                            return entity.id == testSuccess.roomIds[0];
-                                        });
                                         serviceOfDoctor.roomAndFloorNumbers = localRoom[0].roomNo + '-' + localRoom[0].floorNo;
                                     }
                                 });
@@ -299,11 +301,14 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
                                 adminElement.activeRoomId = '';
                                 adminElement.roomName = '--Select Room--';
                             } else {
-                                testSuccess['billingName'] = testSuccess.testName;
-                                delete testSuccess.testName;
+                                testSuccess['billingName'] = testSuccess.diagnosisTest;
+                                delete testSuccess.diagnosisTest;
+                                testSuccess.roomAndFloorNumbers = localRoom[0].roomNo + '-' + localRoom[0].floorNo;
                                 adminElement.servicesList.unshift(testSuccess['billingName']);
                                 adminElement.admin.servicesListOfTheDoctor.push(testSuccess);
                                 adminElement.admin.procedureCostTextBox = "";
+                                adminElement.activeRoomId = '';
+                                adminElement.roomName = '--Select Room--';
                                 adminElement.admin.procedureRemarksTextBox = "";
                                 adminElement.admin.procedureNameTxtBox = "";
                             }
@@ -357,9 +362,11 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
         var changeTestStateRequestEntity = {};
         changeStateRequestEntity.doctorPriceInfos = [];
         if (adminElement.admin.doctorInDropdown == general) {
-            changeTestStateRequestEntity['testName'] = doctorService.billingName;
+            changeTestStateRequestEntity['diagnosisTest'] = doctorService.billingName;
             changeTestStateRequestEntity.organizationId = organizationId;
             changeTestStateRequestEntity.price = doctorService.price;
+            changeTestStateRequestEntity.duration = doctorService.duration;
+            changeTestStateRequestEntity.roomIds = doctorService.roomIds;
             changeTestStateRequestEntity.remark = doctorService.remark;
             changeTestStateRequestEntity.id = doctorService.id;
             changeTestStateRequestEntity.updatedBy = doctorService.updatedBy;
@@ -541,5 +548,47 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
             adminElement.activeRoomId = '';
             adminElement.roomName = '--Select Room--';
         }
+    }
+
+    function testSearch() {
+        var testOnSearch = adminElement.admin.procedureNameTxtBox;
+        if (testOnSearch.length > 0) {
+            var testsPromise = dboticaServices.getTests(testOnSearch);
+            testsPromise.then(function(getTestsSuccess) {
+                var errorCode = getTestsSuccess.data.errorCode;
+                if (errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    adminElement.testsList = angular.fromJson(getTestsSuccess.data.response);
+                    if (adminElement.testsList.length > 0) {
+                        angular.element('#testDropdownDiv').show();
+                        angular.element('#testsDropDown').css('display', 'block');
+                        adminElement.dropdownActive = true;
+                    } else {
+                        adminElement.dropdownActive = false;
+                    }
+                }
+            }, function(getTestsError) {
+                dboticaServices.noConnectivityError();
+            });
+        } else {
+            adminElement.dropdownActive = false;
+        }
+    }
+
+    angular.element(window).resize(function() {
+        $('#testsDropDown').css('display', 'none');
+    });
+
+    $(document).on('click', function(e) {
+        if ($(e.target).closest("#exampleInputProcedureName").length === 0) {
+            $("#testDropdownDiv").hide();
+            adminElement.dropdownActive = false;
+        }
+    });
+
+    function selectTestFromTheDropdown(selectedTest) {
+        adminElement.dropdownActive = false;
+        adminElement.admin.procedureNameTxtBox = selectedTest.diagnosisTest;
     }
 };

@@ -109,6 +109,10 @@
     height: 28px;
 }
 
+#testDropdownDiv {
+    width: 40% !important;
+}
+
 .tableInAdmin {
     margin-top: 6px;
 }
@@ -269,11 +273,17 @@ img {
     #exampleInputRemarks,
     #exampleInputCostAdmin,
     #exampleInputDuration {
-        width: 70%;
+        width: 70% !important;
         height: 28px;
         border-radius: 4px;
         margin-bottom: 4px;
         border-color: #367fa9;
+    }
+    #exampleInputProcedureName {
+        width: 70% !important;
+    }
+    #testDropdownDiv {
+        width: 50% !important;
     }
 }
 

@@ -2007,7 +2007,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getTestRequestEntity = {
             method: 'GET',
-            url: 'http://localhost:8081/dbotica-spring/diagnosis/getDiagnosisTest?testName=' + test,
+            url: 'http://localhost:8081/dbotica-spring/diagnosis/getDiagnosisTest?diagnosisName=' + test,
             withCredentials: true
         }
         $http(getTestRequestEntity).then(function(getTestsResponse) {

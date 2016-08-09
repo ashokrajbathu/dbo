@@ -30,7 +30,14 @@
                         </div>
                     </div>
                     <div ng-if="adminView.admin.procedureName" class="form-group animate-if adminEntity">
-                        <input type="text" class="form-control procedureNameTxtBox" ng-model="adminView.admin.procedureNameTxtBox" placeholder="Name" id="exampleInputProcedureName">
+                        <input type="text" class="form-control procedureNameTxtBox" ng-model="adminView.admin.procedureNameTxtBox" ng-change="adminView.testSearch()" ng-model-options="{debounce:500}" placeholder="Name" id="exampleInputProcedureName">
+                        <div style="z-index:1200;position:absolute;" id="testDropdownDiv">
+                            <ul style="z-index:1200;" id="testsDropDown" ng-class="{'testDropDownActive':adminView.dropdownActive}" class="dropdown-menu">
+                                <li ng-click="adminView.selectTestFromTheDropdown(testEntity)" ng-repeat="testEntity in adminView.testsList">
+                                    <a style="cursor:pointer;" ng-bind="testEntity.diagnosisTest"></a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="form-group adminEntity">
                         <input type="text" class="form-control" valid-number ng-model="adminView.admin.procedureCostTextBox" placeholder="Cost" id="exampleInputCostAdmin">
@@ -54,7 +61,7 @@
                 </form>
                 <div id="blurBackScreen" ng-show="adminView.blurScreen"></div>
                 <img class="spinner" src="css/images/default (2).gif" ng-show="adminView.loading"></img>
-                <table class="table tableInAdmin">
+                <table ng-if="adminView.tableFlag" class="table tableInAdmin" ng-cloak>
                     <thead>
                         <tr id="doctorServicesHeader">
                             <th>S.No.</th>

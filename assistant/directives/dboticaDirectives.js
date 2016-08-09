@@ -44,9 +44,7 @@ angular.module('personalAssistant').directive('validNumber', function() {
             });
         }
     };
-});
-
-angular.module('personalAssistant').directive('numbersOnly', function() {
+}).directive('numbersOnly', function() {
     return {
         require: 'ngModel',
         link: function(scope, element, attr, ngModelCtrl) {
@@ -65,9 +63,7 @@ angular.module('personalAssistant').directive('numbersOnly', function() {
             ngModelCtrl.$parsers.push(fromUser);
         }
     };
-});
-
-angular.module('personalAssistant').directive('uiSrefActiveIf', ['$state', function($state) {
+}).directive('uiSrefActiveIf', ['$state', function($state) {
     return {
         restrict: "A",
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
@@ -85,9 +81,7 @@ angular.module('personalAssistant').directive('uiSrefActiveIf', ['$state', funct
             update();
         }]
     };
-}]);
-
-angular.module('personalAssistant').directive('uiSrefIf', ['$state', function($state) {
+}]).directive('uiSrefIf', ['$state', function($state) {
     return {
         restrict: "A",
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
@@ -108,4 +102,53 @@ angular.module('personalAssistant').directive('uiSrefIf', ['$state', function($s
             update();
         }]
     };
-}]);
+}]).directive('testSelection', function(dboticaServices, $timeout, $log) {
+    return {
+        restrict: 'A',
+        controller: 'billManagementCtrl',
+        controllerAs: 'billView',
+        bindToController: true,
+        scope: { max: '=' },
+        link: function(scope, elem) {
+            scope.$watch(function() {
+                $timeout(function() {
+                    elem.autocomplete({
+                        source: dboticaServices.getTestsNamesList(),
+                        minLength: 2,
+                        select: function(event, ui) {
+                            var tests = dboticaServices.getTestsFromService();
+                            var testEntered = ui.item.value;
+                            for (var testIndex = 0; testIndex < tests.length; testIndex++) {
+                                if (testEntered.toLowerCase() == tests[testIndex].diagnosisTest.toLowerCase()) {
+                                    angular.element('#exampleInputTestsCost').val(tests[testIndex].price / 100);
+                                }
+                            }
+                        }
+                    }, 5);
+                });
+            });
+        }
+    };
+}).directive('autoComplete', function(dboticaServices, $timeout, $log) {
+    return {
+        restrict: 'A',
+        bindToController: true,
+        link: function(scope, elem) {
+            scope.$watch(function() {
+                elem.autocomplete({
+                    source: dboticaServices.getMedicineNames(),
+                    minLength: 2,
+                    select: function(event, ui) {
+                        var medicines = dboticaServices.getMedicine();
+                        var medicineEntered = ui.item.value;
+                        for (var medicineIndex = 0; medicineIndex < medicines.length - 1; medicineIndex++) {
+                            if (medicineEntered.toLowerCase() == medicines[medicineIndex].itemName.toLowerCase()) {
+                                angular.element('#exampleInputMedicineCost').val(medicines[medicineIndex].retailPrice);
+                            }
+                        }
+                    }
+                });
+            });
+        }
+    };
+});;

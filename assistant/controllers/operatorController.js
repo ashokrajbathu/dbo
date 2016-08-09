@@ -488,6 +488,7 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
                 } else {
                     operator.testsList = angular.fromJson(getTestsSuccess.data.response);
                     if (operator.testsList.length > 0) {
+                        angular.element('#testsDropDown').css('display', 'block');
                         operator.dropdownActive = true;
                     } else {
                         operator.dropdownActive = false;
@@ -505,7 +506,7 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
         activeTestId = '';
         operator.dropdownActive = false;
         activeTestId = selectedTest.id;
-        operator.test.testName = selectedTest.testName;
+        operator.test.testName = selectedTest.diagnosisTest;
     }
 
     function addTest() {
@@ -610,5 +611,17 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
         dateFormat: "dd/mm/yy",
         autoclose: true,
         'minDate': 0
+    });
+
+    $(document).on('click', function(e) {
+        if ($(e.target).closest("#testSearchBox").length === 0) {
+            $("#testsDropDown").hide();
+            operator.dropdownActive = false;
+        }
+    });
+
+    angular.element(window).resize(function() {
+        $(".ui-autocomplete").css('display', 'none');
+        $('#testsDropDown').css('display', 'none');
     });
 };

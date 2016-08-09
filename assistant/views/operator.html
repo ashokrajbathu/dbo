@@ -246,10 +246,10 @@
                     <div class="panel-body patientInOperatorPanelBody">
                         <div class="row">
                             <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                                <input type="text" ng-model-options="{debounce:500}" ng-change="operator.testSearch()" ng-model="operator.test.testName" class="form-control testsRow" placeholder="Test">
+                                <input type="text" ng-model-options="{debounce:500}" ng-change="operator.testSearch()" id="testSearchBox" ng-model="operator.test.testName" class="form-control testsRow" placeholder="Test">
                                 <ul id="testsDropDown" ng-class="{'testDropDownActive':operator.dropdownActive}" class="dropdown-menu">
                                     <li ng-click="operator.selectTestFromTheDropdown(testEntity)" ng-repeat="testEntity in operator.testsList">
-                                        <a style="cursor:pointer;" ng-bind="testEntity.testName"></a>
+                                        <a style="cursor:pointer;" ng-bind="testEntity.diagnosisTest"></a>
                                     </li>
                                 </ul>
                             </div>
