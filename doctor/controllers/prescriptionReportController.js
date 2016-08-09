@@ -5,6 +5,7 @@ function prescriptionReportController($scope, $log, doctorServices, $state, $htt
     localStorage.setItem('currentDoctorState', 'prescriptionReport');
     var prescriptionReport = this;
     prescriptionReport.deleteDrugOrTest = deleteDrugOrTest;
+    prescriptionReport.newPatient = newPatient;
     prescriptionReport.patientHeight = false;
     prescriptionReport.patientWeight = false;
     prescriptionReport.patientBMI = false;
@@ -21,7 +22,6 @@ function prescriptionReportController($scope, $log, doctorServices, $state, $htt
     prescriptionReport.prescriptionActive = {};
     var activePrescription = localStorage.getItem('prescriptionObjectToPrint');
     prescriptionReport.prescriptionActive = angular.fromJson(activePrescription);
-    $log.log('active prescription is----', prescriptionReport.prescriptionActive);
     if (_.isEmpty(prescriptionReport.prescriptionActive)) {
         localStorage.clear();
         localStorage.setItem('isLoggedInDoctor', 'false');
@@ -106,12 +106,15 @@ function prescriptionReportController($scope, $log, doctorServices, $state, $htt
                     updatedPrescriptionActive.prescriptionToPrint = updatePrescResponse;
                     updatedPrescriptionActive.drugListToDisplay = prescriptionReport.drugsList;
                     updatedPrescriptionActive.testsListToDisplay = prescriptionReport.testsListInTable;
-                    $log.log('kasjdas---', updatedPrescriptionActive);
                     localStorage.setItem('prescriptionObjectToPrint', JSON.stringify(updatedPrescriptionActive));
                 }
             }
         }, function(updatePrescriptionError) {
             doctorServices.noConnectivityError();
         });
+    }
+
+    function newPatient() {
+        $state.go('doctorHome.drugPrescription');
     }
 }

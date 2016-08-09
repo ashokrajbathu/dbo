@@ -251,6 +251,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                     } else {
                         var patientsList = angular.fromJson(patientSearchSuccessResponse.data.response);
                         if (patientsList.length > 0) {
+                            $log.log('patient details are----', patientsList[0]);
                             billElement.prescriptionOfPatient = true;
                             billElement.finalBill.patientId = patientsList[0].id;
                             billElement.finalBill.patientPhoneNumber = phoneNumber;

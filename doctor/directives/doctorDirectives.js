@@ -17,9 +17,7 @@ angular.module('doctor').directive('numbersOnly', function() {
             ngModelCtrl.$parsers.push(fromUser);
         }
     };
-});
-
-angular.module('doctor').directive('validNumber', function() {
+}).directive('validNumber', function() {
     return {
         require: '?ngModel',
         link: function(scope, element, attrs, ngModelCtrl) {
@@ -57,9 +55,7 @@ angular.module('doctor').directive('validNumber', function() {
             });
         }
     };
-});
-
-angular.module('doctor').directive('uiSrefActiveIf', ['$state', function($state) {
+}).directive('uiSrefActiveIf', ['$state', function($state) {
     return {
         restrict: "A",
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
@@ -77,9 +73,7 @@ angular.module('doctor').directive('uiSrefActiveIf', ['$state', function($state)
             update();
         }]
     };
-}]);
-
-angular.module('doctor').directive('uiSrefActiveDrugIf', ['$state', function($state) {
+}]).directive('uiSrefActiveDrugIf', ['$state', function($state) {
     return {
         restrict: "A",
         controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {

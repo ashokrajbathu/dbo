@@ -285,7 +285,6 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
         inpatientElement.roomCategoryName = roomCategoryEntity.organizationRoomCategory.roomType;
         if (inpatientElement.roomCategoryName == 'All Room Type') {
             angular.copy(sortedRoomsArray, inpatientElement.activeRoomsListToBeDisplayed);
-            /*inpatientElement.activeRoomsListToBeDisplayed.shift();*/
         } else {
             inpatientElement.activeRoomsListToBeDisplayed = [];
             angular.forEach(sortedRoomsArray, function(activeRoomEntity) {

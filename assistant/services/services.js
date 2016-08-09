@@ -2061,4 +2061,55 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.getLabEntities = function() {
+        var deferred = $q.defer();
+        labEntityRequest = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/organization/getLabEvents',
+            withCredentials: true
+        }
+        $http(labEntityRequest).then(function(getLabsSuccess) {
+            deferred.resolve(getLabsSuccess);
+        }, function(getLabsError) {
+            deferred.reject(getLabsError);
+        });
+        return deferred.promise;
+    }
+
+    this.appointmentSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Appointment successfully booked!!!",
+            type: "success",
+            confirmButtonText: "OK"
+        });
+    }
+
+    this.bookAppointmentFailureSwal = function() {
+        swal({
+            title: "Error",
+            text: "Book Appointment is Failed!",
+            type: "error",
+            confirmButtonText: "OK"
+        });
+    }
+
+    this.phoneNumberErrorSwal = function() {
+        swal({
+            title: "Error",
+            text: "Please enter phone number.",
+            type: "error",
+            confirmButtonText: "OK"
+        });
+    }
+
+    this.mandatoryFieldsMissingSwal = function() {
+        swal({
+            title: "Error",
+            text: "Mandatory fields are missing Patient not added.",
+            type: "error",
+            confirmButtonText: "OK"
+        });
+    }
+
 }]);

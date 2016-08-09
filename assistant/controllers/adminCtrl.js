@@ -212,12 +212,19 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
                 adminElement.admin.procedureNameTxtBox = '';
             }
             adminElement.admin.procedureName = true;
+            adminElement.roomDropDown = true;
+            adminElement.testDuration = true;
         } else {
             adminElement.admin.procedureNameTxtBox = service;
             adminElement.admin.procedureName = false;
+            adminElement.roomDropDown = false;
+            adminElement.testDuration = false;
         }
-        adminElement.roomDropDown = true;
-        adminElement.testDuration = true;
+        if (service == others) {
+            adminElement.admin.procedureNameTxtBox = '';
+            adminElement.roomDropDown = false;
+            adminElement.testDuration = false;
+        }
         adminElement.roomName = '--Select Room--';
         adminElement.activeRoomId = '';
     }

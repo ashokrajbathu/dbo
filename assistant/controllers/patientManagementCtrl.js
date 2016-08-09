@@ -202,15 +202,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         $scope.viewDetailsLink = false;
         var phoneNumberForSearch = $scope.patientDataSearch.phoneNumberSearch;
         if (phoneNumberForSearch === undefined || phoneNumberForSearch === "") {
-            swal({
-                title: "Error",
-                text: "Please enter phone number.",
-                type: "error",
-                confirmButtonText: "OK"
-            }, function() {
-
-            });
-
+            dboticaServices.phoneNumberErrorSwal();
         } else {
             $scope.loading = true;
             var promise = dboticaServices.getPatientDetailsOfThatNumber(phoneNumberForSearch);
@@ -639,33 +631,26 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                                         $scope.eveningArray[k].count++;
                                     }
                                 }
-
                             } else {
                                 continue;
                             }
                         }
                     }
-
                     for (var i = 0; i < $scope.blockedTimingsArray.length; i++) {
                         for (var j = 0, k = $scope.morningArray.length; j < k; j++) {
                             if ($scope.blockedTimingsArray[i] === $scope.morningArray[j].time) {
                                 $scope.morningArray.splice(j, 1);
                             }
-
                         }
-
                         for (var j = 0, k = $scope.afternoonArray.length; j < k; j++) {
                             if ($scope.blockedTimingsArray[i] === $scope.afternoonArray[j].time) {
                                 $scope.afternoonArray.splice(j, 1);
                             }
-
                         }
-
                         for (var j = 0, k = $scope.eveningArray.length; j < k; j++) {
                             if ($scope.blockedTimingsArray[i] === $scope.eveningArray[j].time) {
                                 $scope.eveningArray.splice(j, 1);
                             }
-
                         }
                     }
                 }
@@ -680,7 +665,6 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                 var id = '#morningArrayBtn' + mrngArrayIndex;
                 $scope['morningArrayBtnDisabled' + mrngArrayIndex] = true;
                 $scope['morning' + mrngArrayIndex] = true;
-                /*angular.element(id).removeClass("activeButton");*/
             }
         }
         for (var aftrnoonArrayIndex = 0; aftrnoonArrayIndex < $scope.afternoonArray.length; aftrnoonArrayIndex++) {
@@ -688,8 +672,6 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
             if ($scope.afternoonArray[aftrnoonArrayIndex].time < currentTimeMilliSecs) {
                 var id = '#afternoonArrayBtn' + aftrnoonArrayIndex;
                 $scope['afternoonArrayBtnDisabled' + aftrnoonArrayIndex] = true;
-                /*$scope['morning' + aftrnoonArrayIndex] = true;*/
-                /*angular.element(id).removeClass("activeButton");*/
             }
         }
         for (var eveningArrayIndex = 0; eveningArrayIndex < $scope.eveningArray.length; eveningArrayIndex++) {
@@ -697,8 +679,6 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
             if ($scope.eveningArray[eveningArrayIndex].time < currentTimeMilliSecs) {
                 var id = '#eveningArrayBtn' + eveningArrayIndex;
                 $scope['eveningArrayBtnDisabled' + eveningArrayIndex] = true;
-                /*$scope['morning' + aftrnoonArrayIndex] = true;*/
-                /*angular.element(id).removeClass("activeButton");*/
             }
         }
     }
@@ -750,12 +730,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                 dboticaServices.noConnectivityError();
             });
         } else {
-            swal({
-                title: "Error",
-                text: "Mandatory fields are missing Patient not added.",
-                type: "error",
-                confirmButtonText: "OK"
-            }, function() {});
+            dboticaServices.mandatoryFieldsMissingSwal();
         }
     }
 
@@ -842,19 +817,9 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                         $scope.loading = false;
                         dboticaServices.noConnectivityError();
                     });
-                    swal({
-                        title: "Success",
-                        text: "Appointment successfully booked!!!",
-                        type: "success",
-                        confirmButtonText: "OK"
-                    }, function() {});
+                    dboticaServices.appointmentSuccessSwal();
                 } else {
-                    swal({
-                        title: "Error",
-                        text: "Book Appointment is Failed!",
-                        type: "error",
-                        confirmButtonText: "OK"
-                    });
+                    dboticaServices.bookAppointmentFailureSwal();
                 }
             }
             $scope.loading = false;
