@@ -135,7 +135,7 @@
             </table>
             <!-- Modal -->
             <div id="myModal" class="modal fade" role="dialog">
-                <div class="modal-dialog">
+                <div id="newPatientModal" class="modal-dialog">
                     <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
@@ -222,6 +222,14 @@
                                             </div>
                                         </form>
                                     </div>
+                                    <div ng-if="patientNumberDiv" class="col-md-4 col-sm-8 col-xs-8">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="exampleInputPatientNumber">*Patient Number</label>
+                                                <input type="text" ng-model="patientData.patientNumber" class="form-control" id="exampleInputPatientNumber">
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -235,8 +243,8 @@
                                 <div class="col-md-4 patient-form-group form-group">
                                     <span class="modalInfo">Entry Type</span>
                                     <button ng-change="changeEntryTypeView()" id="entryTypeBtn" class="btn dropdown-toggle" ng-model="entryTypeSelected.value" type="button" data-toggle="dropdown">{{patientEntryType}}
-                                        <span class="caret"></span></button>
-                                    <ul class="dropdown-menu">
+                                        <span id="walkinAppointmentCaret" class="caret"></span></button>
+                                    <ul id="walkinAppointmentDropdown" class="dropdown-menu">
                                         <li style="cursor:pointer;" ng-repeat="option in entryType"><a ng-click="selectOption(option)">{{option}}</a></li>
                                     </ul>
                                 </div>

@@ -643,7 +643,7 @@
         if (data.length != 0) {
             for (var i in data) {
                 var test = data[i];
-                var testString = test['testName'];
+                var testString = test['diagnosisTest'];
                 dropdown.append('<li id="' + test['id'] + '"><a href="#">' + testString);
             }
             $('.tests-dropdown-menu > li').click(function(e) {
@@ -652,7 +652,7 @@
                 for (var s in data) {
                     if (data[s]['id'] === id) {
                         console.log(data[s]);
-                        $('#prescription-form-test').val(data[s]['testName']);
+                        $('#prescription-form-test').val(data[s]['diagnosisTest']);
                         $('#prescription-form-test').attr("testId", data[s][id]);
                         break;
                     }
@@ -679,7 +679,7 @@
             type: "GET",
             url: "http://localhost:8081/dbotica-spring/diagnosis/getDiagnosisTest",
             data: {
-                'testName': testName
+                'diagnosisTest': testName
             },
             xhrFields: {
                 withCredentials: true
@@ -738,7 +738,7 @@
             testPojoList = $.parseJSON($.cookie('testPojoList'));
         }
         var testPojo = {};
-        testPojo['testName'] = test;
+        testPojo['diagnosisTest'] = test;
         testPojo['testId'] = testId;
         testPojo['remark'] = remark;
         $('#current-tests > tbody').append('<tr><td>' + count + '</td><td>' + test + '</td><td>' + remark + '<td id ="deleteTest' + count + '"><button type ="submit" name = "deleteButton" class = "deleteTestButton" id ="deleteTestButton' + count + '" value="deleteTest' + count + '">Delete</button></td></tr>');
@@ -782,7 +782,7 @@
             testPojoList = [];
             $.cookie('testPojoList', "");
             for (s in testData) {
-                $('#current-tests > tbody').append('<tr><td>' + newCount + '</td><td>' + testData[s]['testName'] + '</td><td>' + testData[s]['remark'] + '</td><td id ="deleteTest' + newCount + '"><button type ="submit" name = "deleteButton" class = "deleteTestButton" id ="deleteTestButton' + newCount + '" value="deleteTest' + newCount + '">Delete</button></td></tr>');
+                $('#current-tests > tbody').append('<tr><td>' + newCount + '</td><td>' + testData[s]['diagnosisTest'] + '</td><td>' + testData[s]['remark'] + '</td><td id ="deleteTest' + newCount + '"><button type ="submit" name = "deleteButton" class = "deleteTestButton" id ="deleteTestButton' + newCount + '" value="deleteTest' + newCount + '">Delete</button></td></tr>');
                 newCount++;
                 try {
                     testPojoList.push(testData[s]);

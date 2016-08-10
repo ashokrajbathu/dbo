@@ -43,10 +43,6 @@ function openDb(callBack) {
         if (!!callBack) {
             callBack();
         }
-
-
-
-
     };
     req.onerror = function(event) {
         console.error("openDb:", event.target.errorCode);

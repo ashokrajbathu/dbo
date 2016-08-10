@@ -78,7 +78,9 @@ function myPatientsController($scope, $log, doctorServices, $state, $http, $pars
         $scope.$apply();
         entitiesArrayFlag = true;
         $scope.$watch('entitiesArrayFlag', function(newVal, oldVal) {
-            angular.copy(displayArrayInModal[watcherIndex][0], $scope.patientPrescriptionToBeDisplayed);
+            if (!_.isEmpty(displayArrayInModal)) {
+                angular.copy(displayArrayInModal[watcherIndex][0], $scope.patientPrescriptionToBeDisplayed);
+            }
         }, true);
     }
 
@@ -88,7 +90,10 @@ function myPatientsController($scope, $log, doctorServices, $state, $http, $pars
         angular.copy(entitiesArrayInModal, patient.prescriptionsToBeDisplayed);
         displayArrayInModal = _.chunk(entitiesArrayInModal, patient.itemsPerPageInModal);
         patient.totalItemsInModal = entitiesArrayInModal.length;
-        angular.copy(displayArrayInModal[0][0], $scope.patientPrescriptionToBeDisplayed);
+        $scope.patientPrescriptionToBeDisplayed = {};
+        if (!_.isEmpty(displayArrayInModal)) {
+            angular.copy(displayArrayInModal[0][0], $scope.patientPrescriptionToBeDisplayed);
+        }
         prescriptionsWatcher();
 
     }

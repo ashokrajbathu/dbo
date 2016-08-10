@@ -219,6 +219,45 @@
     top: 50%;
 }
 
+@media only screen and (min-width:991px) {
+    #walkinAppointmentCaret {
+        position: absolute;
+        left: 75%;
+        top: 64%;
+    }
+    #walkinAppointmentDropdown {
+        width: 180px !important;
+        margin-left: 14px;
+        height: 68px !important;
+    }
+}
+
+@media only screen and (min-width:768px) and (max-width:990px) {
+    #walkinAppointmentCaret {
+        position: absolute;
+        left: 75%;
+        top: 52%;
+    }
+    #walkinAppointmentDropdown {
+        width: 180px !important;
+        margin-left: 70px !important;
+        height: 68px !important;
+    }
+}
+
+@media only screen and (max-width:767px) {
+    #walkinAppointmentCaret {
+        position: absolute;
+        left: 32%;
+        top: 48%;
+    }
+    #walkinAppointmentDropdown {
+        width: 180px !important;
+        margin-left: 70px !important;
+        height: 68px !important;
+    }
+}
+
 #caretDoctorInAdmin {
     position: absolute;
     left: 85%;
@@ -241,6 +280,7 @@
     white-space: normal !important;
     word-wrap: break-word !important;
 }
+
 
 /* .dropdown-menu>li>a:hover {
     margin-left: -5px;

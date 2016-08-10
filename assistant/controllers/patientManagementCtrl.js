@@ -51,6 +51,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
 
     $scope.loading = false;
     $scope.blurScreen = false;
+    $scope.patientNumberDiv = false;
     $scope.patientsList = [];
     $scope.doctorName = "";
     $scope.doctorSpecialization = "";
@@ -202,6 +203,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         $scope.viewDetailsLink = false;
         var phoneNumberForSearch = $scope.patientDataSearch.phoneNumberSearch;
         if (phoneNumberForSearch === undefined || phoneNumberForSearch === "") {
+            angular.element('#newPatientModal').modal('hide');
             dboticaServices.phoneNumberErrorSwal();
         } else {
             $scope.loading = true;
@@ -227,9 +229,11 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                         $scope.patientId = patientData[0].id;
                     } else {
                         $scope.patientData = {};
+                        $scope.patientNumberDiv = true;
+                        $scope.patientData.gender = 'MALE';
+                        $scope.patientData.bloodGroup = 'O_POSITIVE';
                         $scope.patientData.phoneNumber = phoneNumberForSearch;
                     }
-
                 }
                 $scope.loading = false;
             }, function(errorResponse) {
@@ -324,7 +328,6 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
             }
             $scope.loading = false;
         }, function(errorResponse) {
-
             $scope.loading = false;
             dboticaServices.noConnectivityError();
         });
@@ -393,7 +396,6 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
             }
             $scope.loading = false;
         }, function(errorResponse) {
-
             $scope.loading = false;
             dboticaServices.noConnectivityError();
         });
@@ -429,7 +431,6 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                 }
                 $scope.loading = false;
             }, function(errorResponse) {
-
                 $scope.loading = false;
                 dboticaServices.noConnectivityError();
             });
