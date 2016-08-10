@@ -104,6 +104,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
     $scope.morningArrayLength = 0;
     $scope.afternoonArrayLength = 0;
     $scope.eveningArrayLength = 0;
+    $scope.patientActive = {};
     $scope.morningTimingsPatientsCountArray = [];
     $scope.afternoonTimingsPatientsCountArray = [];
     $scope.eveningTimingsPatientsCountArray = [];
@@ -123,7 +124,10 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
     $scope.patientDataInNextDiv = {};
     $scope.patientEntryType = "WALK_IN";
     $scope.entryTypeSelected = {};
+    $scope.patientsOfNumber = false;
     $scope.entryTypeSelected.value = "WALK_IN";
+    $scope.patientsOfPhoneNumber = [];
+    $scope.familyMemberLink = false;
 
     $scope.entryType = ["WALK_IN", "APPOINTMENT"];
 
@@ -217,8 +221,13 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                     $scope.patientAvailable = true;
                     $scope.nextForm = false;
                     $scope.addPatientBtn = false;
+                    $scope.patientsOfPhoneNumber = angular.fromJson(response.data.response);
                     if (response.data.success === true && response.data.response.length > 2) {
                         var patientData = JSON.parse(response.data.response);
+                        $scope.patientsOfNumber = true;
+                        $scope.familyMemberLink = true;
+                        $scope.patientActive = patientData[0];
+                        $scope.radio0 = true;
                         $scope.patientData.gender = patientData[0].gender;
                         $scope.patientData.bloodGroup = patientData[0].bloodGroup;
                         $scope.patientData.drugAllergy = patientData[0].bloodAllergy;
@@ -230,6 +239,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                         $scope.patientId = patientData[0].id;
                     } else {
                         $scope.patientData = {};
+                        $scope.familyMemberLink = false;
                         $scope.patientNumberDiv = true;
                         $scope.patientData.gender = 'MALE';
                         $scope.patientData.bloodGroup = 'O_POSITIVE';
@@ -616,7 +626,6 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                             } catch (e) {
                                 console.log(e);
                             }
-
                             if (!!state && state === "ACTIVE") {
                                 for (var k = 0; k < $scope.morningArrayLength; k++) {
                                     if ($scope.morningArray[k].time === doctorResponseAfterDateSelect[i].startTime) {
@@ -694,6 +703,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         $scope.afternoonTimings = false;
         $scope.eveningTimings = false;
         $scope.patientDetails = true;
+        var indexOfBookedPatient;
         var firstName = $scope.patientData.firstName;
         var phoneNumber = $scope.patientData.phoneNumber;
         var emailId = $scope.patientData.emailId;
@@ -706,6 +716,15 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         newPatientData.emailId = $scope.patientData.emailId;
         newPatientData.phoneNumber = $scope.patientData.phoneNumber;
         newPatientData.age = $scope.patientData.age;
+        if (_.isEmpty($scope.patientActive)) {
+            if ($scope.familyMemberLink) {
+                newPatientData.primaryPatient = false;
+            } else {
+                newPatientData.primaryPatient = true;
+            }
+        } else {
+            newPatientData.primaryPatient = $scope.patientActive.primaryPatient;
+        }
         if ($scope.patientId !== undefined && $scope.patientId !== "") {
             newPatientData.id = $scope.patientId;
         }
@@ -722,13 +741,22 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                     if (!$scope.patientNumberDiv) {
                         $scope.nextForm = true;
                         $scope.nextBtn = false;
+                        $scope.familyMemberLink = false;
+                        $scope.patientsOfNumber = false;
                         $scope.patientAvailable = false;
                         $scope.viewDetailsLink = true;
                         $scope.addPatientBtn = true;
                     }
-                    $scope.patientDataInNextDiv.name = addPatientResponse[0].firstName;
-                    $scope.book.label = addPatientResponse[0].firstName;
-                    $scope.book.patientId = addPatientResponse[0].id;
+                    if (!_.isEmpty($scope.patientId)) {
+                        indexOfBookedPatient = _.findLastIndex(addPatientResponse, function(entity) {
+                            return entity.id == $scope.patientId;
+                        });
+                    } else {
+                        indexOfBookedPatient = 0;
+                    }
+                    $scope.patientDataInNextDiv.name = addPatientResponse[indexOfBookedPatient].firstName;
+                    $scope.book.label = addPatientResponse[indexOfBookedPatient].firstName;
+                    $scope.book.patientId = addPatientResponse[indexOfBookedPatient].id;
                 }
                 $scope.loading = false;
             }, function() {
@@ -746,16 +774,16 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                 registerPatientRequest.patientType = $scope.patientData.patientType;
                 registerPatientRequest.patientState = 'CHECK_IN';
                 var registerPatientPromise = dboticaServices.registerPatient(registerPatientRequest);
-                console.log('register patient promise is----', registerPatientPromise);
                 registerPatientPromise.then(function(registerPatientSuccess) {
                     var errorCode = registerPatientSuccess.data.errorCode;
                     if (errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         var registerPatientResponse = angular.fromJson(registerPatientSuccess.data.response);
-                        console.log('register response----', registerPatientResponse);
                         $scope.nextForm = true;
                         $scope.nextBtn = false;
+                        $scope.familyMemberLink = false;
+                        $scope.patientsOfNumber = false;
                         $scope.patientAvailable = false;
                         $scope.viewDetailsLink = true;
                         $scope.addPatientBtn = true;
@@ -764,7 +792,6 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                     dboticaServices.noConnectivityError();
                 });
             } else {
-                console.log('in error check-----');
                 displayForm();
                 dboticaServices.mandatoryFieldsMissingSwal();
             }
@@ -843,12 +870,12 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
             if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                if (response.data.success === true) {
+                if (errorCode == null && response.data.success === true) {
                     $scope.loading = true;
                     var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
                     patientsListOfDoctor.then(function(response) {
-                        var patientsList = JSON.parse(response.data.response);
-                        $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
+                        var localPatientsList = JSON.parse(response.data.response);
+                        $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(localPatientsList);
                         $scope.loading = false;
                     }, function(error) {
                         $scope.loading = false;
@@ -866,10 +893,28 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         });
     }
 
+    $scope.selectActivePatient = function(patientEntity, index) {
+        $scope.book.patientId = patientEntity.id;
+        $scope.patientActive = patientEntity;
+        $scope.patientId = patientEntity.id;
+        angular.copy(patientEntity, $scope.patientData);
+    }
+
+    $scope.addNewMemberToPhoneNumber = function() {
+        $scope.patientData = {};
+        $scope.patientData.phoneNumber = $scope.patientActive.phoneNumber;
+        $scope.patientActive = {};
+        $scope.patientNumberDiv = true;
+        $scope.patientData.patientNumber = '';
+        $scope.patientData.patientType = 'OUT_PATIENT';
+        $scope.patientData.gender = 'MALE';
+        $scope.patientData.bloodGroup = 'O_POSITIVE';
+    }
+
     var displayForm = function() {
-        console.log('in display forms----');
         $scope.nextForm = false;
         $scope.patientAvailable = true;
         $scope.nextBtn = true;
+        $scope.patientsOfNumber = false;
     }
 };

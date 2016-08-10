@@ -572,15 +572,17 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
 
     function validPhoneNumber(phoneNumber) {
         var numbers = /^[0-9]+$/;
-        if (phoneNumber.match(numbers)) {
-            billElement.enterDigits = false;
-            if (phoneNumber.length == 10) {
-                billElement.enterPhoneNumber = false;
+        if (phoneNumber !== undefined && phoneNumber !== '') {
+            if (phoneNumber.match(numbers)) {
+                billElement.enterDigits = false;
+                if (phoneNumber.length == 10) {
+                    billElement.enterPhoneNumber = false;
+                } else {
+                    billElement.enterPhoneNumber = true;
+                }
             } else {
-                billElement.enterPhoneNumber = true;
+                billElement.enterDigits = true;
             }
-        } else {
-            billElement.enterDigits = true;
         }
     }
 
@@ -666,6 +668,20 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
             localStorage.setItem('addressInTheBill', JSON.stringify(getAddressSuccessResponse));
         }
     }, function(getAddressError) {
+        dboticaServices.noConnectivityError();
+    });
+
+    var getPatientAndOrganizationPatientPromise = dboticaServices.getPatientAndOrganizationPatient('8885552221');
+    $log.log('patient details promise is-------', getPatientAndOrganizationPatientPromise);
+    getPatientAndOrganizationPatientPromise.then(function(getPatientDetailsSuccess) {
+        var errorCode = getPatientDetailsSuccess.data.errorCode;
+        if (errorCode) {
+            dboticaServices.logoutFromThePage(errorCode);
+        } else {
+            var getPatientDetailsResponse = angular.fromJson(getPatientDetailsSuccess.data.response);
+            $log.log('patient details response is------', getPatientDetailsResponse);
+        }
+    }, function(getPatientDetailsError) {
         dboticaServices.noConnectivityError();
     });
 

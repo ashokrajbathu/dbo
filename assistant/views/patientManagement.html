@@ -147,6 +147,23 @@
                                        <a class="viewDetailsLink" ng-click="viewDetails()" href="javascript:void">View/Hide Patient Details</a>
                                        <hr>
                                    </div> -->
+                            <div style="margin-bottom:7px;" class="pull-right" ng-if="familyMemberLink" class="row">
+                                <a ng-click="addNewMemberToPhoneNumber()" style="cursor:pointer;">Add Family Member</a>
+                            </div>
+                            <div ng-if="patientsOfNumber" class="patientsList">
+                                <div class="row">
+                                    <label style="margin-left:12px;">Patients :</label>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-2 col-xs-6" ng-repeat="patientEntity in patientsOfPhoneNumber">
+                                        <div class="radio patientRadios">
+                                            <label class="textOfRadios">
+                                                <input ng-click="selectActivePatient(patientEntity,$index)" type="radio" ng-checked="{{'radio'+$index}}" name="patientRadio">{{patientEntity.firstName}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div ng-show="patientAvailable">
                                 <div class="row inpatientRowInModal">
                                     <div class="col-md-4 col-sm-8 col-xs-8">
