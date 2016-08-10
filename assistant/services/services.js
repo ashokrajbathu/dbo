@@ -2106,7 +2106,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     this.mandatoryFieldsMissingSwal = function() {
         swal({
             title: "Error",
-            text: "Mandatory fields are missing Patient not added.",
+            text: "Mandatory fields are missing!! Patient not added.",
             type: "error",
             confirmButtonText: "OK"
         });

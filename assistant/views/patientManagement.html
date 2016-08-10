@@ -230,6 +230,17 @@
                                             </div>
                                         </form>
                                     </div>
+                                    <div ng-if="patientNumberDiv" class="col-md-4 col-sm-8 col-xs-8">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="exampleInputPatientNumber">*Patient Type</label>
+                                                <select ng-model="patientData.patientType" class="form-control exampleInputPatientType" id="exampleInputPatientType">
+                                                    <option>OUT_PATIENT</option>
+                                                    <option>IN_PATIENT</option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
