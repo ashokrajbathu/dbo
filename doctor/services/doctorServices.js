@@ -50,6 +50,8 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.bookAppointmentForPatient = bookAppointmentForPatient;
     doctorServices.appointmentSuccessSwal = appointmentSuccessSwal;
     doctorServices.appointmentBookFail = appointmentBookFail;
+    doctorServices.getTodayString = getTodayString;
+    doctorServices.selectDateSwal = selectDateSwal;
 
     function loginErrorSwal() {
         swal({
@@ -59,6 +61,17 @@ function doctorServices($http, $state, $log, $q) {
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
+    }
+
+    function getTodayString() {
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+        var today = day + "/" + month + "/" + year;
+        return today;
     }
 
     function referDetailsErrorSwal() {
@@ -321,6 +334,16 @@ function doctorServices($http, $state, $log, $q) {
         swal({
             title: "Info",
             text: "Please Select Patient before saving prescription!!!",
+            type: "info",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    function selectDateSwal() {
+        swal({
+            title: "Info",
+            text: "Please Select Date for booking appointment!!!",
             type: "info",
             confirmButtonText: "OK",
             allowOutsideClick: true

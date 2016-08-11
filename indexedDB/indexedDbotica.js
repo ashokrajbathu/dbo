@@ -47,9 +47,7 @@ function openDb(callBack) {
     req.onerror = function(event) {
         console.error("openDb:", event.target.errorCode);
     };
-
-
-
+    
     req.onupgradeneeded = function(event) {
         db = event.target.result;
         event.target.transaction.oncomplete = function(e) {

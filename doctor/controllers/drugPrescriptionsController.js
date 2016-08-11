@@ -105,7 +105,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     var date = new Date();
     var dateSorted = moment(date).format("DD/MM/YYYY,hh:mm A");
     var dateArray = dateSorted.split(comma);
-    prescriptionElement.revisitAfterDate = dateArray[0];
+    prescriptionElement.revisitAfterDate = '';
     var today = dateArray[0];
 
     prescriptionElement.phoneNumberLengthValidation = phoneNumberLengthValidation;
@@ -655,7 +655,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         prescriptionElement.phoneNumber = emptyString;
         prescriptionElement.patientsToBeDisplayedInRadios = [];
         prescriptionElement.revisitAfterDays = emptyString;
-        prescriptionElement.revisitAfterDate = today;
+        prescriptionElement.revisitAfterDate = '';
         prescriptionElement.referToDoctor = emptyString;
     }
 
@@ -818,31 +818,34 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     }
 
     function bookAppointment() {
-        var date = prescriptionElement.revisitAfterDate;
-        date = new Date(date);
-        date = date.getTime();
-        var bookRequestEntity = {};
-        if (!_.isEmpty(activePatient)) {
-            bookRequestEntity.patientId = activePatient.id;
-            bookRequestEntity.startTime = date + 36000000;
-            bookRequestEntity.label = activePatient.firstName;
-
-            var bookAppointmentPromise = doctorServices.bookAppointmentForPatient(bookRequestEntity);
-            bookAppointmentPromise.then(function(bookAppointmentSuccess) {
-                var errorCode = bookAppointmentSuccess.data.errorCode;
-                if (errorCode) {
-                    doctorServices.logoutFromThePage(errorCode);
-                } else {
-                    bookAppointmentResponse = angular.fromJson(bookAppointmentSuccess.data.response);
-                    if (errorCode == null && bookAppointmentSuccess.data.success) {
-                        doctorServices.appointmentSuccessSwal();
+        if (!_.isEmpty(prescriptionElement.revisitAfterDate)) {
+            var date = prescriptionElement.revisitAfterDate;
+            date = new Date(date);
+            date = date.getTime();
+            var bookRequestEntity = {};
+            if (!_.isEmpty(activePatient)) {
+                bookRequestEntity.patientId = activePatient.id;
+                bookRequestEntity.startTime = date + 36000000;
+                bookRequestEntity.label = activePatient.firstName;
+                var bookAppointmentPromise = doctorServices.bookAppointmentForPatient(bookRequestEntity);
+                bookAppointmentPromise.then(function(bookAppointmentSuccess) {
+                    var errorCode = bookAppointmentSuccess.data.errorCode;
+                    if (errorCode) {
+                        doctorServices.logoutFromThePage(errorCode);
                     } else {
-                        doctorServices.appointmentBookFail();
+                        bookAppointmentResponse = angular.fromJson(bookAppointmentSuccess.data.response);
+                        if (errorCode == null && bookAppointmentSuccess.data.success) {
+                            doctorServices.appointmentSuccessSwal();
+                        } else {
+                            doctorServices.appointmentBookFail();
+                        }
                     }
-                }
-            }, function(bookAppointmentError) {
-                doctorServices.noConnectivityError();
-            });
+                }, function(bookAppointmentError) {
+                    doctorServices.noConnectivityError();
+                });
+            }
+        } else {
+            doctorServices.selectDateSwal();
         }
     }
 
@@ -863,7 +866,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         prescriptionElement.drugsList = [];
         prescriptionElement.additionalComments = '';
         prescriptionElement.revisitAfterDays = emptyString;
-        prescriptionElement.revisitAfterDate = today;
+        prescriptionElement.revisitAfterDate = '';
         prescriptionElement.referToDoctor = emptyString;
     }
 };
