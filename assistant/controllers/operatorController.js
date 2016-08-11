@@ -172,6 +172,10 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
                     operator.radio0 = true;
                 } else {
                     angular.element('#newOrUpdatePatientModal').modal('show');
+                    operator.patientData = {};
+                    operator.patientData.phoneNumber = operator.phoneNumber;
+                    operator.updatePatient = false;
+                    operator.addMember = false;
                     operator.noPatientDetailsErrorMessage = true;
                     operator.patientData.bloodGroup = 'O_POSITIVE';
                     operator.patientData.gender = 'MALE';

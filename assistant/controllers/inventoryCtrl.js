@@ -78,6 +78,7 @@ function inventoryCtrl($scope, $log, $timeout, $filter, dboticaServices, $state,
     inventoryElement.loading = true;
     var promise = dboticaServices.getItemsOfTheTable(inventoryElement.start, inventoryElement.limit, "All", "All", organizationId);
     promise.then(function(response) {
+        $log.log('items on load is-----', response);
         var errorCode = response.data.errorCode;
         if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
@@ -257,7 +258,7 @@ function inventoryCtrl($scope, $log, $timeout, $filter, dboticaServices, $state,
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var success = response.data.success;
-                    if (success) {
+                    if (errorCode == null && success) {
                         dboticaServices.batchAdditionForItemSuccessSwal();
                         var itemObject = angular.fromJson(response.data.response);
                         angular.forEach(inventoryElement.itemsDisplayArray, function(itemsDisplayArrayElement) {
@@ -590,6 +591,7 @@ function inventoryCtrl($scope, $log, $timeout, $filter, dboticaServices, $state,
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var itemsFetchedFromApi = angular.fromJson(response.data.response);
+            $log.log('itms fetched from api are----', itemsFetchedFromApi);
             inventoryElement.totalDrugsCount = itemsFetchedFromApi.totalCount;
             var itemsFetchedFromApiFromStart = itemsFetchedFromApi.inventoryItems;
             if (itemsFetchedFromApiFromStart.length >= displayListLength) {
@@ -640,27 +642,6 @@ function inventoryCtrl($scope, $log, $timeout, $filter, dboticaServices, $state,
         }
     }
 
-    /*angular.element('#inputItemNameInventory').autocomplete({
-        source: function(request, callback) {
-            var searchParam = request.term;
-            //drugItemSearch(searchParam, callback);
-            var result = [];
-            result.push("dfcghjbn");
-            callback(result);
-        },
-        minLength: 2,
-        focus: function(event, ui) {
-            event.preventDefault();
-        },
-        select: function(event, ui) {
-
-        }
-
-    });
-
-    function getDropdownElementsOfDrug(drug) {
-
-    }*/
 
     var returnItemTypeActive = function() {
         var itemType = "";
@@ -695,31 +676,6 @@ function inventoryCtrl($scope, $log, $timeout, $filter, dboticaServices, $state,
         }
         return stockType;
     }
-
-    /*inventoryElement.drugsToBeDisplayedInDropdown = ['ravi', 'raviteja', 'bhisetti'];*/
-
-    /*angular.module('personalAssistant').directive('inventorySelection', function(dboticaServices, $timeout, $log) {
-        return {
-            require: 'ngModel',
-            restrict: 'A',
-            controller: 'inventoryCtrl',
-            controllerAs: 'inventory',
-            bindToController: true,
-            scope: { drp: '=' },
-            link: function(scope, elem) {
-                scope.$watch(function() {
-                    $timeout(function() {
-                        elem.autocomplete({
-                            source: inventoryElement.drugsToBeDisplayedInDropdown,
-                            minLength: 2,
-                            select: function(event, ui) {
-                                                            }
-                        }, 5);
-                    });
-                });
-            }
-        };
-    });*/
 
     angular.module('personalAssistant').filter("billingAndBatchConsumed", function() {
         return function(input) {

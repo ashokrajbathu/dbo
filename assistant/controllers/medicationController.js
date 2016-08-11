@@ -8,13 +8,18 @@ function medicationController($rootScope, $scope, $log, dboticaServices, $state,
     medication.saveMedicationDetails = saveMedicationDetails;
     medication.drugTypeNameSelection = drugTypeNameSelection;
     medication.removeParticularEvent = removeParticularEvent;
+    medication.medicineSearch = medicineSearch;
+    medication.selectTestFromTheDropdown = selectTestFromTheDropdown;
 
     medication.patient = {};
+    var medicinesListOnLoad = [];
+    medication.medicineNamesList = [];
     medication.newMedicine = {};
     medication.patientEventsList = [];
     var medicinesListForSetter = [];
 
     medication.categoryNameToolTip = false;
+    medication.dropdownActive = false;
     medication.newMedicine.drugName = '';
     medication.newMedicine.days = '';
     medication.newMedicine.quantity = '';
@@ -52,6 +57,27 @@ function medicationController($rootScope, $scope, $log, dboticaServices, $state,
             dboticaServices.logoutFromThePage(errorCode);
         } else {}
     }, function(docotorCategoriesError) {
+        dboticaServices.noConnectivityError();
+    });
+
+    var medicinesPromise = dboticaServices.getItemsOfTheTable(0, 100, 'All', 'Drug', organizationId);
+    medicinesPromise.then(function(getMedicinesSuccess) {
+        var errorCode = getMedicinesSuccess.data.errorCode;
+        if (errorCode) {
+            dboticaServices.logoutFromThePage(errorCode);
+        } else {
+            var medicinesResponse = angular.fromJson(getMedicinesSuccess.data.response);
+            $log.log('medicines response is------', medicinesResponse);
+            if (medicinesResponse.inventoryItems.length > 0) {
+                angular.forEach(medicinesResponse.inventoryItems, function(medicineEntity) {
+                    if (medicineEntity.availableStock > parseInt(0)) {
+                        medicinesListOnLoad.push(medicineEntity);
+                    }
+                });
+                $log.log('names list is -----', medicinesListOnLoad);
+            }
+        }
+    }, function(getMedicinesError) {
         dboticaServices.noConnectivityError();
     });
 
@@ -157,6 +183,45 @@ function medicationController($rootScope, $scope, $log, dboticaServices, $state,
         }, function(removeEventError) {
             dboticaServices.noConnectivityError();
         });
+    }
+
+    function medicineSearch() {
+        medication.medicineNamesList = [];
+        $log.log('drug on search is------', medication.newMedicine.drugName);
+        if (medication.newMedicine.drugName.length >= parseInt(2)) {
+            $log.log('medicinesListOnLoad is----', medicinesListOnLoad);
+            angular.forEach(medicinesListOnLoad, function(medicineEntity) {
+                $log.log('in for loop----', medication.newMedicine.drugName.toLowerCase());
+                $log.log('in 2 if loop------', medicineEntity.itemName.toLowerCase());
+                if (medicineEntity.itemName.toLowerCase().indexOf(medication.newMedicine.drugName.toLowerCase()) > -1) {
+                    $log.log('in if loop--------');
+                    medication.medicineNamesList.push(medicineEntity);
+                }
+            });
+            $log.log('medicines after search are-----', medication.medicineNamesList);
+            if (medication.medicineNamesList.length > 0) {
+                $('#medicinesDropDown').css('display', 'block');
+                medication.dropdownActive = true;
+            }
+        } else {
+            medication.dropdownActive = false;
+        }
+    }
+
+    $(document).on('click', function(e) {
+        if ($(e.target).closest("#inputDrugInMedication").length === 0) {
+            $("#medicinesDropDown").hide();
+            medication.dropdownActive = false;
+        }
+    });
+
+    angular.element(window).resize(function() {
+        $('#medicinesDropDown').css('display', 'none');
+    });
+
+    function selectTestFromTheDropdown(medicine) {
+        medication.newMedicine.drugName = medicine.itemName;
+        medication.dropdownActive = false;
     }
 
 

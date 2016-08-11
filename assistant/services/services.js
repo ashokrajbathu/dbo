@@ -14,6 +14,8 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     var doctorCategoriesList = [];
     var doctorsNamesList = [];
     var medicine = [];
+    var medicinesFromNurse = [];
+    var medicineNamesFromNurse = [];
     var roomCategoriesList = [];
     var patientsArray = [];
     var progressNotePatientEvents = [];
@@ -786,19 +788,6 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
 
     }
 
-
-    this.setSuccessValue = function(value) {
-        loginResponseSuccessValue = value;
-    }
-
-    this.getSuccessValue = function() {
-        return loginResponseSuccessValue;
-    }
-
-    this.getErrorCode = function() {
-        return loginResponseErrorCode;
-    }
-
     this.setMedicine = function(value) {
         medicine = value;
     }
@@ -806,75 +795,11 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     this.getMedicine = function() {
         return medicine;
     }
-
     this.setMedicineNames = function(value) {
         medicineNames = value;
-
     }
-
     this.getMedicineNames = function() {
-
         return medicineNames;
-    }
-
-    this.setDoctorsOfThatAssistant = function(value) {
-        loginResponseDoctorsList = value;
-    }
-
-    this.getDoctorsList = function() {
-        return loginResponseDoctorsList;
-    }
-
-    this.setFirstDoctorName = function(value) {
-        loginResponseDoctorName = value;
-    }
-
-    this.getFirstDoctorName = function() {
-        return loginResponseDoctorName;
-    }
-
-    this.setFirstDoctorSpecialization = function(value) {
-        loginResponseDoctorSpecialization = value;
-    }
-
-    this.getFirstDoctorSpecialization = function() {
-        return loginResponseDoctorSpecialization;
-    }
-
-    this.setFirstDoctorId = function(value) {
-        loginResponseDoctorId = value;
-    }
-
-    this.getFirstDoctorId = function() {
-        return loginResponseDoctorId;
-    }
-
-    this.setFirstDoctorDayStartTime = function(value) {
-        loginResponseDayStartTime = value;
-    }
-
-    this.getFirstDoctorDayStartTime = function() {
-        return loginResponseDayStartTime;
-    }
-
-    this.setFirstDoctorDayEndTime = function(value) {
-        loginResponseDayEndTime = value;
-    }
-
-    this.getFirstDoctorDayEndTime = function() {
-        return loginResponseDayEndTime;
-    }
-
-    this.setFirstDoctorTimePerPatient = function(value) {
-        loginResponseTimePerPatient = value;
-    }
-
-    this.getFirstDoctorTimePerPatient = function() {
-        return loginResponseTimePerPatient;
-    }
-
-    this.getFirstDoctorPatientsList = function() {
-        return loginResponsePatientsList;
     }
 
     this.setItemSelected = function(value) {
@@ -905,20 +830,28 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         invoiceObject = value;
     }
 
-    this.setRoomCategories = function(value) {
-        roomCategoriesList = value;
-    }
-
-    this.getRoomCategoriesList = function() {
-        return roomCategoriesList;
-    }
-
     this.getInvoice = function() {
         return invoiceObject;
     }
 
     this.setDoctorsDetailsArray = function(value) {
         doctorsListArray = value;
+    }
+
+    this.setMedicinesFromNurse = function(value) {
+        medicinesFromNurse = value;
+    }
+
+    this.getMedicinesFromNurse = function() {
+        return medicinesFromNurse;
+    }
+
+    this.setMedicineNamesFromNurse = function(value) {
+        medicineNamesFromNurse = value;
+    }
+
+    this.getMedicineNamesFromNurse = function() {
+        return medicineNamesFromNurse;
     }
 
     this.getDoctorsDetailsArray = function(doctorId) {
@@ -2125,6 +2058,15 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             deferred.reject(getError);
         });
         return deferred.promise;
+    }
+
+    this.itemsCountErrorSwal = function() {
+        swal({
+            title: "Error",
+            text: "Please enter units below available stock.",
+            type: "error",
+            confirmButtonText: "OK"
+        });
     }
 
 }]);

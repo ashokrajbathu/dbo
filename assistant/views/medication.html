@@ -37,7 +37,14 @@
                                     </div> -->
                                     <label for="inputDrugInMedication" class="col-md-2 col-sm-2 col-xs-2 control-label">Drug Name</label>
                                     <div class="col-md-7 col-sm-7 col-xs-7">
-                                        <input ng-model="medication.newMedicine.drugName" type="text" class="form-control" id="inputDrugInMedication" placeholder="Drug Name">
+                                        <input auto-complete-medicines ng-model="medication.newMedicine.drugName" type="text" medication="66" ng-change="medication.medicineSearch()" class="form-control" id="inputDrugInMedication" placeholder="Drug Name">
+                                        <div id="medicinesDiv">
+                                            <ul style="z-index:1200;height:60px;" click-outside id="medicinesDropDown" ng-class="{'testDropDownActive':medication.dropdownActive}" class="dropdown-menu">
+                                                <li ng-click="medication.selectTestFromTheDropdown(medicineEntity)" ng-repeat="medicineEntity in medication.medicineNamesList">
+                                                    <a style="cursor:pointer;" ng-bind="medicineEntity.itemName"></a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">

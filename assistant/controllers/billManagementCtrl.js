@@ -132,13 +132,21 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
         billElement.loading = true;
         billElement.blurScreen = true;
         var medicinesPromise = dboticaServices.getItemsOfTheTable(0, 100, 'All', 'Drug', organizationId);
+        $log.log('medicines promise is-----', medicinesPromise);
         medicinesPromise.then(function(successResponse) {
             var errorCode = successResponse.data.errorCode;
             if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var medicinesSuccessResponse = angular.fromJson(successResponse.data.response);
-                billElement.addMedicine = medicinesSuccessResponse.inventoryItems;
+                $log.log('medicines success response is-------', medicinesSuccessResponse);
+                billElement.addMedicine = [];
+                angular.forEach(medicinesSuccessResponse.inventoryItems, function(entity) {
+                    if (entity.availableStock > parseInt(0)) {
+                        billElement.addMedicine.push(entity);
+                    }
+                });
+                $log.log('set medicine is-----', billElement.addMedicine);
                 dboticaServices.setMedicine(billElement.addMedicine);
                 angular.forEach(billElement.addMedicine, function(medicineName) {
                     billElement.addMedicineNames.push(medicineName.itemName);
@@ -389,6 +397,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
     }
 
     function billFinalSubmisssion() {
+        $log.log('in function-----');
         localStorage.setItem('billActiveToPrint', '');
         localStorage.setItem('patientNameInBillActive', '');
         localStorage.setItem('patientNumberInBillActive', '');
@@ -426,7 +435,10 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
             billElement.finalBill.amountPaid = billElement.finalBill.amountPaid * 100;
             if (!billElement.nextDueErrorMsg) {
                 billElement.loading = true;
+                billElement.finalBill.modeOfPayment = 'DIRECT_PAY';
+                billElement.finalBill.patientInsuranceId = '393495';
                 var invoiceUpdatePromise = dboticaServices.updateInvoice(billElement.finalBill);
+                $log.log('invoice promise is-------', invoiceUpdatePromise);
                 invoiceUpdatePromise.then(function(invoiceUpdateSuccessResponse) {
                     var errorCode = invoiceUpdateSuccessResponse.data.errorCode;
                     if (errorCode) {
@@ -436,6 +448,35 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                         var invoiceSuccessResponse = invoiceUpdateSuccessResponse.data.response;
                         if (errorCode == null && success == true && invoiceSuccessResponse == null) {
                             var billActiveForPrint = angular.fromJson(invoiceUpdateSuccessResponse.config.data);
+                            $log.log('bill active for print is-----', billActiveForPrint);
+                            if (_.has(billActiveForPrint, 'items')) {
+                                angular.forEach(billActiveForPrint.items, function(entity) {
+                                    if (entity.itemType == 'MEDICINE') {
+                                        var localDrugObjectIndex = _.findLastIndex(billElement.addMedicine, function(medicineEntity) {
+                                            return medicineEntity.itemName == entity.itemName;
+                                        });
+                                        if (localDrugObjectIndex !== undefined && localDrugObjectIndex !== parseInt(-1)) {
+                                            var drugItemUpdateObject = {};
+                                            angular.copy(billElement.addMedicine[localDrugObjectIndex], drugItemUpdateObject);
+                                            drugItemUpdateObject.billingConsumedStock += entity.quantity;
+                                            $log.log('drug update object is------', drugItemUpdateObject);
+                                            var drugItemCountUpdatePromise = dboticaServices.addItemIntoStock(drugItemUpdateObject);
+                                            $log.log('drug update promise is-----', drugItemCountUpdatePromise);
+                                            drugItemCountUpdatePromise.then(function(drugUpdateSuccess) {
+                                                var errorCode = drugUpdateSuccess.data.errorCode;
+                                                if (errorCode) {
+                                                    dboticaServices.logoutFromThePage(errorCode);
+                                                } else {
+                                                    var drugItemCountResponse = angular.fromJson(drugUpdateSuccess.data.response);
+                                                    $log.log('drug item count response is----', drugItemCountResponse);
+                                                }
+                                            }, function(drugUpdateError) {
+                                                dboticaServices.noConnectivityError();
+                                            });
+                                        }
+                                    }
+                                });
+                            }
                             localStorage.setItem('billActiveToPrint', JSON.stringify(billActiveForPrint));
                             localStorage.setItem('patientNameInBillActive', billElement.patient.firstName);
                             localStorage.setItem('patientNumberInBillActive', billElement.patient.phoneNumber);
@@ -567,8 +608,6 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
             }
         }
     }
-
-
 
     function validPhoneNumber(phoneNumber) {
         var numbers = /^[0-9]+$/;

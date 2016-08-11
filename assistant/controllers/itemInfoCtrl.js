@@ -180,6 +180,7 @@ function itemInfoCtrl($scope, $log, dboticaServices, $state, $http, $parse, doct
     }
 
     function updateBatch(item, index) {
+        $log.log('batch for update is-----', item);
         var idOfTheTextBox = "#batchTextBoxes" + index;
         var idOfTheSelectBox = "#batchSelectBoxes" + index;
         var valueInTextBox = angular.element(idOfTheTextBox).val();
@@ -224,14 +225,7 @@ function itemInfoCtrl($scope, $log, dboticaServices, $state, $http, $parse, doct
                 dboticaServices.noConnectivityError();
             });
         } else {
-            swal({
-                title: "Error",
-                text: "Please enter units below available stock.",
-                type: "error",
-                confirmButtonText: "OK"
-            }, function() {
-
-            });
+            dboticaServices.itemsCountErrorSwal();
         }
         angular.element(idOfTheTextBox).val('');
     }
