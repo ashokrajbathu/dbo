@@ -725,7 +725,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         } else {
             newPatientData.primaryPatient = $scope.patientActive.primaryPatient;
         }
-        if ($scope.patientId !== undefined && $scope.patientId !== "") {
+        if ($scope.patientId !== undefined && $scope.patientId !== "" && !_.isEmpty($scope.patientActive)) {
             newPatientData.id = $scope.patientId;
         }
         var newPatientDetails = JSON.stringify(newPatientData);
@@ -904,6 +904,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         $scope.patientData = {};
         $scope.patientData.phoneNumber = $scope.patientActive.phoneNumber;
         $scope.patientActive = {};
+        $scope.patientId = '';
         $scope.patientNumberDiv = true;
         $scope.patientData.patientNumber = '';
         $scope.patientData.patientType = 'OUT_PATIENT';
