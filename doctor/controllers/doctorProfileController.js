@@ -291,7 +291,6 @@ function doctorProfileController($scope, $log, doctorServices, $state, $http, $p
                     doctorServices.logoutFromThePage(errorCode);
                 } else {
                     var updateAddressResponse = angular.fromJson(updateAddressSuccess.data.response);
-                    $log.log('updated address is---', updateAddressResponse);
                     if (errorCode == null && updateAddressSuccess.data.success) {
                         doctorServices.updateAddressSuccessSwal();
                         if (!_.isEmpty(activeAddress)) {

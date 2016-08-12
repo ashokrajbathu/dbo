@@ -534,8 +534,10 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                     doctorServices.logoutFromThePage(errorCode);
                 } else {
                     prescriptionElement.testsList = angular.fromJson(getTestsSuccess.data.response);
+                    $log.log('tests are----', prescriptionElement.testsList);
                     if (prescriptionElement.testsList.length > 0) {
                         $("#testDropdownDiv").show();
+                        $('#testsDropDown').css('display', 'block');
                         prescriptionElement.dropdownActive = true;
                     } else {
                         prescriptionElement.dropdownActive = false;
@@ -545,6 +547,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 doctorServices.noConnectivityError();
             });
         } else {
+            $("#testDropdownDiv").hide();
             prescriptionElement.dropdownActive = false;
         }
     }
