@@ -44,10 +44,12 @@ function printPatientPrescriptionController($scope, $log) {
     prescription.testsList = [];
     prescription.revisitOnDate = '';
     prescription.referToDoctorName = '';
+    prescription.orgAddressEmpty = false;
     prescription.prescriptionActive = angular.fromJson(activePrescription);
     prescription.doctorActive = angular.fromJson(activeDoctor);
     prescription.activePatient = angular.fromJson(activePatient);
     var organAddress = angular.fromJson(organizationAddress);
+    console.log('organ address is------', organAddress);
     if (_.has(prescription.doctorActive, 'firstName')) {
         prescription.doctorName += prescription.doctorActive.firstName;
     }
@@ -70,6 +72,9 @@ function printPatientPrescriptionController($scope, $log) {
     }
     if (_.has(organAddress, 'address')) {
         prescription.orgAddress = organAddress.address + ' ' + organAddress.city;
+        if (organAddress.address == '' && organAddress.city == '') {
+            prescription.orgAddressEmpty = true;
+        }
     }
     if (_.has(prescription.activePatient, 'firstName')) {
         prescription.patientName += prescription.activePatient.firstName;

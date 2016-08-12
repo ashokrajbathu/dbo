@@ -101,4 +101,10 @@
     #doctorRevisitOn {
         font-size: 18px;
     }
+    #addressEmptyDiv {
+        height: 4em !important;
+    }
+    #addressBorder {
+        height: 2em !important;
+    }
 }

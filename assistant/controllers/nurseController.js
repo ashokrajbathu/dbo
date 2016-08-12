@@ -82,11 +82,15 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
                 nurseHome.patientsListToBeDisplayed = [];
                 inpatientsListFromApi = angular.fromJson(patientsListSuccess.data.response);
                 $log.log('inpatientsListFromApiis---', inpatientsListFromApi);
+                var totalInPatientsList = [];
                 if (inpatientsListFromApi.length > 0) {
                     angular.forEach(inpatientsListFromApi, function(inpatientEntity) {
-                        inpatientEntity.details = angular.fromJson(inpatientEntity.details);
+                        if (_.has(inpatientEntity, 'details') && inpatientEntity.patientState == 'ADMITTED') {
+                            inpatientEntity.details = angular.fromJson(inpatientEntity.details);
+                            totalInPatientsList.push(inpatientEntity);
+                        }
                     });
-                    angular.copy(inpatientsListFromApi, nurseHome.patientsListToBeDisplayed);
+                    angular.copy(totalInPatientsList, nurseHome.patientsListToBeDisplayed);
                 }
             }
         }, function(patientsListError) {

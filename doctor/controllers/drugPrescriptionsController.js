@@ -718,8 +718,25 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         angular.copy(walkinEntities[requiredIndex], prescriptionElement.walkinsListToBeDisplayed);
     }
 
-    function selectAppointmentOrWalkin() {
+    function selectAppointmentOrWalkin(patientEntity) {
         angular.element('#appointmentsModals').modal('hide');
+        resetDrugPrescription();
+        var getPatientDetailsPromise = doctorServices.getPatientDetailsOfThatNumber(patientEntity.patientId);
+        getPatientDetailsPromise.then(function(getPatientSuccess) {
+            var errorCode = getPatientSuccess.data.errorCode;
+            if (errorCode) {
+                doctorServices.logoutFromThePage(errorCode);
+            } else {
+                getPatientDetailsResponse = angular.fromJson(getPatientSuccess.data.response);
+                activePatient = getPatientDetailsResponse[0];
+                angular.copy(activePatient, currentActivePatient);
+                localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
+                prescriptionElement.prescriptionData.firstName = activePatient.firstName;
+                prescriptionElement.prescriptionData.drugAllergyInForm = activePatient.drugAllergy;
+            }
+        }, function(getPatientsError) {
+            doctorServices.noConnectivityError();
+        });
     }
 
     function addDrugTemplate(drugTemplateEntity, index) {

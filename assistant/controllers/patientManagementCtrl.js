@@ -731,6 +731,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         var newPatientDetails = JSON.stringify(newPatientData);
         if (firstName != undefined && firstName !== '' && phoneNumber !== undefined && phoneNumber !== '') {
             $scope.loading = true;
+            console.log('patient request is-----', newPatientDetails);
             var promise = dboticaServices.addNewPatient(newPatientDetails);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;

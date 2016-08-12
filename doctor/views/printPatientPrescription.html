@@ -25,6 +25,9 @@
                 <br>
                 <p id="organizationAddress" class="doctorFields" ng-bind="prescription.orgAddress"></p>
             </div>
+            <div ng-if="prescription.orgAddressEmpty" id="addressEmptyDiv">
+            </div>
+            <div id="addressBorder"></div>
         </div>
         <br>
         <div class="row">

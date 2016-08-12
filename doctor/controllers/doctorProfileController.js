@@ -302,6 +302,8 @@ function doctorProfileController($scope, $log, doctorServices, $state, $http, $p
                             addLocation(updateAddressResponse);
                         } else {
                             if (doctorProfile.clinicAddresses.length == 0) {
+                                doctorProfile.radio0 = true;
+                                activeAddressIndex = 0;
                                 addLocation(updateAddressResponse);
                             }
                             doctorProfile.clinicAddresses.push(updateAddressResponse);

@@ -34,7 +34,7 @@
                                         <td ng-bind="appointmentEntity.label"></td>
                                         <td ng-bind="appointmentEntity.startTime|ReadableAppointmentsTimings"></td>
                                         <td>
-                                            <a ng-click="prescription.selectAppointmentOrWalkin()" class="doctorLinks">SELECT</a>
+                                            <a style="cursor:pointer;" ng-click="prescription.selectAppointmentOrWalkin(appointmentEntity)" class="doctorLinks">SELECT</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -58,7 +58,7 @@
                                         <td ng-bind="walkinEntity.label"></td>
                                         <td ng-bind="walkinEntity.startTime|ReadableAppointmentsTimings"></td>
                                         <td>
-                                            <a ng-click="prescription.selectAppointmentOrWalkin()" class="doctorLinks">SELECT</a>
+                                            <a style="cursor:pointer;" ng-click="prescription.selectAppointmentOrWalkin(walkinEntity)" class="doctorLinks">SELECT</a>
                                         </td>
                                     </tr>
                                 </tbody>
