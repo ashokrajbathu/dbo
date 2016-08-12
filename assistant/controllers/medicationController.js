@@ -67,14 +67,12 @@ function medicationController($rootScope, $scope, $log, dboticaServices, $state,
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var medicinesResponse = angular.fromJson(getMedicinesSuccess.data.response);
-            $log.log('medicines response is------', medicinesResponse);
             if (medicinesResponse.inventoryItems.length > 0) {
                 angular.forEach(medicinesResponse.inventoryItems, function(medicineEntity) {
                     if (medicineEntity.availableStock > parseInt(0)) {
                         medicinesListOnLoad.push(medicineEntity);
                     }
                 });
-                $log.log('names list is -----', medicinesListOnLoad);
             }
         }
     }, function(getMedicinesError) {
@@ -132,7 +130,6 @@ function medicationController($rootScope, $scope, $log, dboticaServices, $state,
             medicineDetails.advice = medication.newMedicine.advice;
             medicineDetails = JSON.stringify(medicineDetails);
             medicationRequestEntity.referenceDetails = medicineDetails;
-            $log.log('medicine medicationRequestEntity is---', medicationRequestEntity);
             var saveMedicinesPromise = dboticaServices.patientEvent(medicationRequestEntity);
             saveMedicinesPromise.then(function(saveMedicineSuccess) {
                 var errorCode = saveMedicineSuccess.data.errorCode;
@@ -140,7 +137,6 @@ function medicationController($rootScope, $scope, $log, dboticaServices, $state,
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var medicineResponse = angular.fromJson(saveMedicineSuccess.data.response);
-                    $log.log('medication response is------', medicineResponse);
                     medicineResponse.referenceDetails = angular.fromJson(medicineResponse.referenceDetails);
                     var referenceDetailsNew = angular.fromJson(medicineResponse);
                     medication.patientEventsList.unshift(referenceDetailsNew);
@@ -187,18 +183,12 @@ function medicationController($rootScope, $scope, $log, dboticaServices, $state,
 
     function medicineSearch() {
         medication.medicineNamesList = [];
-        $log.log('drug on search is------', medication.newMedicine.drugName);
         if (medication.newMedicine.drugName.length >= parseInt(2)) {
-            $log.log('medicinesListOnLoad is----', medicinesListOnLoad);
             angular.forEach(medicinesListOnLoad, function(medicineEntity) {
-                $log.log('in for loop----', medication.newMedicine.drugName.toLowerCase());
-                $log.log('in 2 if loop------', medicineEntity.itemName.toLowerCase());
                 if (medicineEntity.itemName.toLowerCase().indexOf(medication.newMedicine.drugName.toLowerCase()) > -1) {
-                    $log.log('in if loop--------');
                     medication.medicineNamesList.push(medicineEntity);
                 }
             });
-            $log.log('medicines after search are-----', medication.medicineNamesList);
             if (medication.medicineNamesList.length > 0) {
                 $('#medicinesDropDown').css('display', 'block');
                 medication.dropdownActive = true;
@@ -223,6 +213,4 @@ function medicationController($rootScope, $scope, $log, dboticaServices, $state,
         medication.newMedicine.drugName = medicine.itemName;
         medication.dropdownActive = false;
     }
-
-
 };

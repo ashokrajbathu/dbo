@@ -132,21 +132,18 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
         billElement.loading = true;
         billElement.blurScreen = true;
         var medicinesPromise = dboticaServices.getItemsOfTheTable(0, 100, 'All', 'Drug', organizationId);
-        $log.log('medicines promise is-----', medicinesPromise);
         medicinesPromise.then(function(successResponse) {
             var errorCode = successResponse.data.errorCode;
             if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var medicinesSuccessResponse = angular.fromJson(successResponse.data.response);
-                $log.log('medicines success response is-------', medicinesSuccessResponse);
                 billElement.addMedicine = [];
                 angular.forEach(medicinesSuccessResponse.inventoryItems, function(entity) {
                     if (entity.availableStock > parseInt(0)) {
                         billElement.addMedicine.push(entity);
                     }
                 });
-                $log.log('set medicine is-----', billElement.addMedicine);
                 dboticaServices.setMedicine(billElement.addMedicine);
                 angular.forEach(billElement.addMedicine, function(medicineName) {
                     billElement.addMedicineNames.push(medicineName.itemName);
@@ -259,7 +256,6 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                     } else {
                         var patientsList = angular.fromJson(patientSearchSuccessResponse.data.response);
                         if (patientsList.length > 0) {
-                            $log.log('patient details are----', patientsList[0]);
                             billElement.prescriptionOfPatient = true;
                             billElement.finalBill.patientId = patientsList[0].id;
                             billElement.finalBill.patientPhoneNumber = phoneNumber;
@@ -397,7 +393,6 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
     }
 
     function billFinalSubmisssion() {
-        $log.log('in function-----');
         localStorage.setItem('billActiveToPrint', '');
         localStorage.setItem('patientNameInBillActive', '');
         localStorage.setItem('patientNumberInBillActive', '');
@@ -438,7 +433,6 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                 billElement.finalBill.modeOfPayment = 'DIRECT_PAY';
                 billElement.finalBill.patientInsuranceId = '393495';
                 var invoiceUpdatePromise = dboticaServices.updateInvoice(billElement.finalBill);
-                $log.log('invoice promise is-------', invoiceUpdatePromise);
                 invoiceUpdatePromise.then(function(invoiceUpdateSuccessResponse) {
                     var errorCode = invoiceUpdateSuccessResponse.data.errorCode;
                     if (errorCode) {
@@ -448,7 +442,6 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                         var invoiceSuccessResponse = invoiceUpdateSuccessResponse.data.response;
                         if (errorCode == null && success == true && invoiceSuccessResponse == null) {
                             var billActiveForPrint = angular.fromJson(invoiceUpdateSuccessResponse.config.data);
-                            $log.log('bill active for print is-----', billActiveForPrint);
                             if (_.has(billActiveForPrint, 'items')) {
                                 angular.forEach(billActiveForPrint.items, function(entity) {
                                     if (entity.itemType == 'MEDICINE') {
@@ -459,16 +452,13 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                                             var drugItemUpdateObject = {};
                                             angular.copy(billElement.addMedicine[localDrugObjectIndex], drugItemUpdateObject);
                                             drugItemUpdateObject.billingConsumedStock += entity.quantity;
-                                            $log.log('drug update object is------', drugItemUpdateObject);
                                             var drugItemCountUpdatePromise = dboticaServices.addItemIntoStock(drugItemUpdateObject);
-                                            $log.log('drug update promise is-----', drugItemCountUpdatePromise);
                                             drugItemCountUpdatePromise.then(function(drugUpdateSuccess) {
                                                 var errorCode = drugUpdateSuccess.data.errorCode;
                                                 if (errorCode) {
                                                     dboticaServices.logoutFromThePage(errorCode);
                                                 } else {
                                                     var drugItemCountResponse = angular.fromJson(drugUpdateSuccess.data.response);
-                                                    $log.log('drug item count response is----', drugItemCountResponse);
                                                 }
                                             }, function(drugUpdateError) {
                                                 dboticaServices.noConnectivityError();
@@ -711,14 +701,12 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
     });
 
     var getPatientAndOrganizationPatientPromise = dboticaServices.getPatientAndOrganizationPatient('8885552221');
-    $log.log('patient details promise is-------', getPatientAndOrganizationPatientPromise);
     getPatientAndOrganizationPatientPromise.then(function(getPatientDetailsSuccess) {
         var errorCode = getPatientDetailsSuccess.data.errorCode;
         if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var getPatientDetailsResponse = angular.fromJson(getPatientDetailsSuccess.data.response);
-            $log.log('patient details response is------', getPatientDetailsResponse);
         }
     }, function(getPatientDetailsError) {
         dboticaServices.noConnectivityError();
