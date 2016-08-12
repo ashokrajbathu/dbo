@@ -757,6 +757,37 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                     $scope.patientDataInNextDiv.name = addPatientResponse[indexOfBookedPatient].firstName;
                     $scope.book.label = addPatientResponse[indexOfBookedPatient].firstName;
                     $scope.book.patientId = addPatientResponse[indexOfBookedPatient].id;
+                    if ($scope.patientNumberDiv && !_.isEmpty($scope.book.patientId)) {
+                        if (firstName !== undefined && firstName !== '' && phoneNumber !== undefined && phoneNumber !== '' && patientNumber !== undefined && patientNumber !== '') {
+                            var registerPatientRequest = {};
+                            registerPatientRequest.phoneNumber = phoneNumber;
+                            registerPatientRequest.organizationPatientNo = patientNumber;
+                            registerPatientRequest.patientType = $scope.patientData.patientType;
+                            registerPatientRequest.patientState = 'CHECK_IN';
+                            var registerPatientPromise = dboticaServices.registerPatient(registerPatientRequest);
+                            console.log('prom is-----', registerPatientPromise);
+                            registerPatientPromise.then(function(registerPatientSuccess) {
+                                var errorCode = registerPatientSuccess.data.errorCode;
+                                if (errorCode) {
+                                    dboticaServices.logoutFromThePage(errorCode);
+                                } else {
+                                    var registerPatientResponse = angular.fromJson(registerPatientSuccess.data.response);
+                                    $scope.nextForm = true;
+                                    $scope.nextBtn = false;
+                                    $scope.familyMemberLink = false;
+                                    $scope.patientsOfNumber = false;
+                                    $scope.patientAvailable = false;
+                                    $scope.viewDetailsLink = true;
+                                    $scope.addPatientBtn = true;
+                                }
+                            }, function(registerPatientError) {
+                                dboticaServices.noConnectivityError();
+                            });
+                        } else {
+                            displayForm();
+                            dboticaServices.mandatoryFieldsMissingSwal();
+                        }
+                    }
                 }
                 $scope.loading = false;
             }, function() {
@@ -766,36 +797,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         } else {
             dboticaServices.mandatoryFieldsMissingSwal();
         }
-        if ($scope.patientNumberDiv) {
-            if (firstName !== undefined && firstName !== '' && phoneNumber !== undefined && phoneNumber !== '' && patientNumber !== undefined && patientNumber !== '') {
-                var registerPatientRequest = {};
-                registerPatientRequest.phoneNumber = phoneNumber;
-                registerPatientRequest.organizationPatientNo = patientNumber;
-                registerPatientRequest.patientType = $scope.patientData.patientType;
-                registerPatientRequest.patientState = 'CHECK_IN';
-                var registerPatientPromise = dboticaServices.registerPatient(registerPatientRequest);
-                registerPatientPromise.then(function(registerPatientSuccess) {
-                    var errorCode = registerPatientSuccess.data.errorCode;
-                    if (errorCode) {
-                        dboticaServices.logoutFromThePage(errorCode);
-                    } else {
-                        var registerPatientResponse = angular.fromJson(registerPatientSuccess.data.response);
-                        $scope.nextForm = true;
-                        $scope.nextBtn = false;
-                        $scope.familyMemberLink = false;
-                        $scope.patientsOfNumber = false;
-                        $scope.patientAvailable = false;
-                        $scope.viewDetailsLink = true;
-                        $scope.addPatientBtn = true;
-                    }
-                }, function(registerPatientError) {
-                    dboticaServices.noConnectivityError();
-                });
-            } else {
-                displayForm();
-                dboticaServices.mandatoryFieldsMissingSwal();
-            }
-        }
+
     }
 
     $scope.viewTime = function(timing) {

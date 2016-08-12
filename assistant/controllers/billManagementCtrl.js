@@ -45,6 +45,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
     billElement.bill.patientsListOfThatNumber = [];
     billElement.bill.billTypes = [];
     billElement.bill.billsListing = [];
+    billElement.organizationPatientsListArray = [];
     billElement.bill.doctorActiveName = "";
     billElement.bill.doctorActiveService = "No Bill Type";
     billElement.bill.paymentDueType = "Completed";
@@ -248,23 +249,28 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
         } else {
             if (!billElement.enterDigits && !billElement.enterPhoneNumber) {
                 billElement.loading = true;
-                var patientSearchPromise = dboticaServices.getPatientDetailsOfThatNumber(phoneNumber);
+                var patientSearchPromise = dboticaServices.getPatientAndOrganizationPatient(phoneNumber);
                 patientSearchPromise.then(function(patientSearchSuccessResponse) {
                     var errorCode = patientSearchSuccessResponse.data.errorCode;
                     if (errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
-                        var patientsList = angular.fromJson(patientSearchSuccessResponse.data.response);
-                        if (patientsList.length > 0) {
+                        billElement.bill.patientsListOfThatNumber = angular.fromJson(patientSearchSuccessResponse.data.response);
+                        $log.log('patient res is---', billElement.bill.patientsListOfThatNumber);
+                        /*var patientsList = [];
+                        angular.forEach(patientsAndOrganizationPatientsList, function(entity) {
+                            patientsList.push(entity.patient);
+                        });*/
+                        if (billElement.bill.patientsListOfThatNumber.length > 0) {
                             billElement.prescriptionOfPatient = true;
-                            billElement.finalBill.patientId = patientsList[0].id;
+                            billElement.finalBill.patientId = billElement.bill.patientsListOfThatNumber[0].patient.id;
                             billElement.finalBill.patientPhoneNumber = phoneNumber;
                             billElement.bill.viewOrHide = true;
                             $scope.radio0 = true;
                             billElement.bill.patientSearchPatients = true;
-                            billElement.bill.patientsListOfThatNumber = patientsList;
-                            billElement.patient = patientsList[0];
-                            var patientPrescriptionsPromise = dboticaServices.getPrescriptionsOfThePatient(patientsList[0].id);
+                            /* billElement.bill.patientsListOfThatNumber = patientsList;*/
+                            billElement.patient = billElement.bill.patientsListOfThatNumber[0].patient;
+                            var patientPrescriptionsPromise = dboticaServices.getPrescriptionsOfThePatient(billElement.bill.patientsListOfThatNumber[0].patient.id);
                             patientPrescriptionsPromise.then(function(getPrescriptionSuccess) {
                                 var patientPrescriptions = angular.fromJson(getPrescriptionSuccess.data.response);
                                 if (patientPrescriptions.length > 0) {
@@ -287,11 +293,11 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
     }
 
     function updateBillForm(patient, index) {
-        billElement.patient = patient;
+        billElement.patient = patient.patient;
         $scope.radio0 = false;
         $scope['radio' + index] = true;
-        billElement.finalBill.patientId = patient.id;
-        var patientPrescriptionPromise = dboticaServices.getPrescriptionsOfThePatient(patient.id);
+        billElement.finalBill.patientId = patient.patient.id;
+        var patientPrescriptionPromise = dboticaServices.getPrescriptionsOfThePatient(patient.patient.id);
         patientPrescriptionPromise.then(function(selectedRadioPatientSuccess) {
             var errorCode = selectedRadioPatientSuccess.data.errorCode;
             if (errorCode) {
@@ -700,13 +706,15 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
         dboticaServices.noConnectivityError();
     });
 
-    var getPatientAndOrganizationPatientPromise = dboticaServices.getPatientAndOrganizationPatient('8885552221');
+    var getPatientAndOrganizationPatientPromise = dboticaServices.getPatientAndOrganizationPatient('4455663322');
+    $log.log('in patient and org patient promise---------', getPatientAndOrganizationPatientPromise);
     getPatientAndOrganizationPatientPromise.then(function(getPatientDetailsSuccess) {
         var errorCode = getPatientDetailsSuccess.data.errorCode;
         if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var getPatientDetailsResponse = angular.fromJson(getPatientDetailsSuccess.data.response);
+            $log.log('get Patient details response is--------', getPatientDetailsResponse);
         }
     }, function(getPatientDetailsError) {
         dboticaServices.noConnectivityError();

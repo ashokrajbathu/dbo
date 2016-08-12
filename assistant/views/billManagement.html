@@ -26,13 +26,13 @@
                             </form>
                         </div>
                         <a style="cursor:pointer;" ng-click="billView.bill.patientSearchPatients=!billView.bill.patientSearchPatients;billView.prescriptionOfPatient=!billView.prescriptionOfPatient" class="pull-right" ng-if="billView.bill.viewOrHide">View/Hide Patients</a>
-                        <div class="animate-if" ng-if="billView.bill.patientSearchPatients">
+                        <div ng-if="billView.bill.patientSearchPatients">
                             <p>Patients:</p>
-                            <div class="itemsAnimation" ng-repeat="patient in billView.bill.patientsListOfThatNumber">
-                                <input class="radiosInPatientSearch" type="radio" name="patients" ng-click="billView.updateBillForm(patient,$index)" ng-checked="{{'radio'+$index}}" ng-attr-value="{{patient.firstName}}" ng-attr-id="{{'patient'+$index}}">{{patient.firstName}}
+                            <div ng-repeat="patient in billView.bill.patientsListOfThatNumber">
+                                <input class="radiosInPatientSearch" type="radio" name="patients" ng-click="billView.updateBillForm(patient,$index)" ng-checked="{{'radio'+$index}}" ng-attr-value="{{patient.patient.firstName}}" ng-attr-id="{{'patient'+$index}}">{{patient.patient.firstName}}<span ng-if="patient.organizationPatient.patientState=='ADMITTED'"> - INPATIENT</span>
                             </div>
                         </div>
-                        <div ng-if="billView.prescriptionOfPatient" class="prescriptionInSearch animate-if">
+                        <div ng-if="billView.prescriptionOfPatient" class="prescriptionInSearch">
                             <p>Prescriptions:</p>
                             <ul>
                                 <li style="list-style-type:disc;" ng-repeat="prescription in billView.prescriptionsArray">

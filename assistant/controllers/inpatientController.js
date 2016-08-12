@@ -46,6 +46,7 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
     var activeBedIndex;
     var activeRoom = {};
     var activeBed = {};
+    var organizationPatientsList = [];
     inpatientElement.bedsListToBeDisplayed = [];
     inpatientElement.activeRoomsListToBeDisplayed = [];
     inpatientElement.activeDoctorsListToBeDisplayed = [];
@@ -192,6 +193,18 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
         }, function(inpatientSearchError) {
             dboticaServices.noConnectivityError();
         });
+        var getOrganizationPatientsPromise = dboticaServices.getInPatientsWithPhoneNumber(inpatientElement.number);
+        getOrganizationPatientsPromise.then(function(getOrgPatientsSuccess) {
+            var errorCode = getOrgPatientsSuccess.data.errorCode;
+            if (errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                organizationPatientsList = angular.fromJson(getOrgPatientsSuccess.data.response);
+                $log.log('getOrganizationPatientsResponse is-------', organizationPatientsList);
+            }
+        }, function(getOrgPatientsError) {
+            dboticaServices.noConnectivityError();
+        });
     }
 
     function patientSelectFromDropdown(selectedPatient) {
@@ -317,8 +330,14 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
         var doctorDepartment = inpatientElement.doctorDepartment;
         var doctorName = inpatientElement.doctorNameInTheBox;
         if (patientName !== undefined && patientName !== '' && doctorDepartment !== undefined && doctorDepartment !== '' && doctorName !== undefined && doctorName !== '') {
+            var organizationPatientIndex = _.findLastIndex(organizationPatientsList, function(orgEntity) {
+                return orgEntity.patientId == activePatientId;
+            });
             inpatientElement.mandatoryFieldsErrorMessage = false;
             var bedRequestEntity = {};
+            if (organizationPatientIndex !== undefined && organizationPatientIndex !== -1) {
+                bedRequestEntity.id = organizationPatientsList[organizationPatientIndex].id;
+            }
             bedRequestEntity.patientId = activePatientId;
             bedRequestEntity.inPatientNumber = inpatientElement.inpatientNumber;
             bedRequestEntity.organizationBedId = bedEntity.id;
@@ -338,6 +357,7 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
             bedRequestEntity.doctorDetail.doctorId = activeDoctorId;
             bedRequestEntity.doctorDetail.doctorDepartment = doctorDepartment;
             bedRequestEntity.doctorDetail.doctorName = activeDoctorName;
+            $log.log('bed request entity is--------', bedRequestEntity);
             var addPatientToBedPromise = dboticaServices.addPatientToBed(bedRequestEntity);
             $log.log('add patient to bed promise---', addPatientToBedPromise);
             addPatientToBedPromise.then(function(addPatientSuccess) {

@@ -52,9 +52,9 @@
     margin-right: 50px;
 }
 
-.radiosInPatientSearch:hover {
+/* .radiosInPatientSearch:hover {
     transform: scale(2);
-}
+} */
 
 .panel-default>.panel-heading {
     color: white;
