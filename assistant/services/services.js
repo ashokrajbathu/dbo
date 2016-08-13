@@ -1592,6 +1592,21 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
+    this.getPatientEventsWithPatientId = function(organizationId, patientId) {
+        var deferred = $q.defer();
+        var getEventsRequest = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/getPatientEvents?organizationId=' + organizationId + '&patientIds=' + patientId,
+            withCredentials: true
+        }
+        $http(getEventsRequest).then(function(getEventsSuccess) {
+            deferred.resolve(getEventsSuccess);
+        }, function(getEventsError) {
+            deferred.reject(getEventsError);
+        });
+        return deferred.promise;
+    }
+
     this.addPatientToBed = function(addPatientBedObject) {
         var deferred = $q.defer();
         var addPatientRequestEntity = {

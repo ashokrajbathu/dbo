@@ -279,6 +279,26 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                                     billElement.prescriptionsArray = [];
                                 }
                             }, function(getPrescriptionError) {});
+                            $log.log('patien tid is-------', billElement.bill.patientsListOfThatNumber[0].patient);
+                            var patientEventsPromise = dboticaServices.getPatientEventsWithPatientId(organizationId, billElement.bill.patientsListOfThatNumber[0].patient.id);
+                            $log.log('events promise is-------', patientEventsPromise);
+                            patientEventsPromise.then(function(patientEventsSuccess) {
+                                var errorCode = patientEventsSuccess.data.errorCode;
+                                if (errorCode) {
+                                    dboticaServices.logoutFromThePage(errorCode);
+                                } else {
+                                    var patientEventResponse = angular.fromJson(patientEventsSuccess.data.response);
+                                    $log.log('event is-----', patientEventResponse);
+                                    var eventIndex = _.findLastIndex(patientEventResponse, function(eventEntity) {
+                                        $log.log('patient id is--', eventEntity.patientId);
+                                        $log.log('id sdksd---', billElement.bill.patientsListOfThatNumber[0].patient.id);
+                                        return eventEntity.patientId == billElement.bill.patientsListOfThatNumber[0].patient.id;
+                                    });
+                                    $log.log('patient entity is-----', patientEventResponse[eventIndex]);
+                                }
+                            }, function(patientEventsError) {
+                                dboticaServices.noConnectivityError();
+                            });
                         }
                     }
                     billElement.loading = false;
