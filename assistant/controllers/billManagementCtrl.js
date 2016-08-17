@@ -32,6 +32,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
     billElement.bill = {};
     billElement.patientSearch = {};
     billElement.patient = {};
+    billElement.organizationPatient = {};
     var inpatientsMedicinesList = [];
     billElement.nextDueErrorMsg = false;
     billElement.enterDigits = false;
@@ -272,6 +273,9 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                             billElement.bill.patientSearchPatients = true;
                             /* billElement.bill.patientsListOfThatNumber = patientsList;*/
                             billElement.patient = billElement.bill.patientsListOfThatNumber[0].patient;
+                            if (_.has(billElement.bill.patientsListOfThatNumber[0], 'organizationPatient')) {
+                                billElement.organizationPatient = billElement.bill.patientsListOfThatNumber[0].organizationPatient;
+                            }
                             var patientPrescriptionsPromise = dboticaServices.getPrescriptionsOfThePatient(billElement.bill.patientsListOfThatNumber[0].patient.id);
                             patientPrescriptionsPromise.then(function(getPrescriptionSuccess) {
                                 var patientPrescriptions = angular.fromJson(getPrescriptionSuccess.data.response);
@@ -297,12 +301,14 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                                     inpatientsMedicinesList = _.filter(sortedEntites, function(sortedEntity) {
                                         return sortedEntity.patientEventType == 'MEDICINE_PROVIDED';
                                     });
+                                    $log.log('medicines list is------', inpatientsMedicinesList);
                                     angular.forEach(inpatientsMedicinesList, function(inpatientEntity) {
                                         inpatientEntity.referenceDetails = angular.fromJson(inpatientEntity.referenceDetails);
                                     });
                                     var medicinesFromService = dboticaServices.getMedicine();
                                     angular.forEach(inpatientsMedicinesList, function(medicineEntity) {
                                         if (medicineEntity.referenceDetails.days !== undefined && medicineEntity.referenceDetails.days !== '' && medicineEntity.referenceDetails.quantity !== undefined && medicineEntity.referenceDetails.quantity !== '') {
+                                            $log.log('in check one--', medicineEntity);
                                             var medicineObject = {};
                                             medicineObject.paid = false;
                                             medicineObject.tax = parseInt(0);
@@ -311,7 +317,9 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                                             medicineObject.itemName = medicineEntity.referenceDetails.medicineName;
                                             medicineObject.quantity = parseInt(medicineEntity.referenceDetails.days) * parseInt(medicineEntity.referenceDetails.quantity);
                                             angular.forEach(medicinesFromService, function(entry) {
-                                                if (medicineEntity.referenceDetails.medicineName.toLowerCase() == entry.itemName.toLowerCase()) {}
+                                                if (medicineEntity.referenceDetails.medicineName.toLowerCase() == entry.itemName.toLowerCase()) {
+                                                    medicineObject.cost = entry.retailPrice;
+                                                }
                                             });
                                             if (medicineObject.quantity !== undefined && medicineObject.quantity !== '' && medicineObject.cost !== undefined && medicineObject.cost !== '') {
                                                 medicineObject.amountCharged = parseInt(medicineObject.quantity) * parseInt(medicineObject.cost);
@@ -321,6 +329,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                                             }
                                         }
                                     });
+                                    $log.log('medicines array is-----', billElement.bill.billsListing);
                                 }
                             }, function(patientEventsError) {
                                 dboticaServices.noConnectivityError();
@@ -340,6 +349,9 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
 
     function updateBillForm(patient, index) {
         billElement.patient = patient.patient;
+        if (_.has(patient, 'organizationPatient')) {
+            billElement.organizationPatient = patient.organizationPatient;
+        }
         $scope.radio0 = false;
         $scope['radio' + index] = true;
         billElement.finalBill.patientId = patient.patient.id;
@@ -520,36 +532,37 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                                     if (entity.itemType == 'TEST') {
                                         $log.log('test is----', entity);
                                         var testRequestEntity = {};
-                                        testRequestEntity.patientId = billElement.patient.id;
-                                        testRequestEntity.diagnosisTest = entity.itemName;
-                                        testRequestEntity.doctorId = billElement.bill.doctorActive.id;
-
-                                        testRequestEntity.paymentStatus = entity.paid;
-                                        testRequestEntity.eventState = 'LAB_ALLOTED';
-                                        var patientDetails = {};
-                                        angular.copy(billElement.patient, patientDetails);
-                                        testRequestEntity.referenceDetails = JSON.stringify(patientDetails);
-                                        var testIndex = _.findLastIndex(activeTestsList, function(testEntity) {
-                                            return entity.itemName == testEntity.diagnosisTest;
-                                        });
-                                        /*if (testIndex !== undefined && testIndex !== -1) {
-                                            testRequestEntity.roomId = activeTestsList[testIndex].roomIds[0];
-                                            testRequestEntity.diagnosisId = activeTestsList[testIndex].id;
-                                            $log.log('request is-----', testRequestEntity);
-                                            var updateLabPromise = dboticaServices.updateLabEvent(testRequestEntity);
-                                            $log.log('update lab promise is----', updateLabPromise);
-                                            updateLabPromise.then(function(updateSuccess) {
-                                                var errorCode = updateSuccess.data.errorCode;
-                                                if (errorCode) {
-                                                    dboticaServices.logoutFromThePage(errorCode);
-                                                } else {
-                                                    var updateResponse = angular.fromJson(updateSuccess.data.response);
-                                                    $log.log('update response is------', updateResponse);
-                                                }
-                                            }, function(updateError) {
-                                                dboticaServices.noConnectivityError();
+                                        if (!_.isEmpty(billElement.organizationPatient)) {
+                                            testRequestEntity.patientId = billElement.organizationPatient.id;
+                                            testRequestEntity.diagnosisTest = entity.itemName;
+                                            testRequestEntity.doctorId = billElement.bill.doctorActive.id;
+                                            testRequestEntity.paymentStatus = entity.paid;
+                                            testRequestEntity.eventState = 'LAB_ALLOTED';
+                                            var patientDetails = {};
+                                            angular.copy(billElement.patient, patientDetails);
+                                            testRequestEntity.referenceDetails = JSON.stringify(patientDetails);
+                                            var testIndex = _.findLastIndex(activeTestsList, function(testEntity) {
+                                                return entity.itemName == testEntity.diagnosisTest;
                                             });
-                                        }*/
+                                            if (testIndex !== undefined && testIndex !== -1) {
+                                                testRequestEntity.roomId = activeTestsList[testIndex].roomIds[0];
+                                                testRequestEntity.diagnosisId = activeTestsList[testIndex].id;
+                                                $log.log('request is-----', testRequestEntity);
+                                                var updateLabPromise = dboticaServices.updateLabEvent(testRequestEntity);
+                                                $log.log('update lab promise is----', updateLabPromise);
+                                                updateLabPromise.then(function(updateSuccess) {
+                                                    var errorCode = updateSuccess.data.errorCode;
+                                                    if (errorCode) {
+                                                        dboticaServices.logoutFromThePage(errorCode);
+                                                    } else {
+                                                        var updateResponse = angular.fromJson(updateSuccess.data.response);
+                                                        $log.log('update response is------', updateResponse);
+                                                    }
+                                                }, function(updateError) {
+                                                    dboticaServices.noConnectivityError();
+                                                });
+                                            }
+                                        }
                                     }
                                 });
                             }

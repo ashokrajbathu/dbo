@@ -164,3 +164,8 @@
 .doctorInInpatientPanel>.doctorInInpatientPanelBody {
     border: 1px solid #c5c5c5;
 }
+
+#labsTable>thead>tr>th,
+#labsTable>tbody>tr>td {
+    text-align: center !important;
+}

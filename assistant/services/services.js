@@ -2096,7 +2096,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             withCredentials: true,
             data: JSON.stringify(labEvent)
         }
-        $http(labEvent).then(function(labSuccessResponse) {
+        $http(labRequestEntity).then(function(labSuccessResponse) {
             deferred.resolve(labSuccessResponse);
         }, function(labErrorResponse) {
             deferred.reject(labErrorResponse);

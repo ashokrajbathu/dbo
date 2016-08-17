@@ -18,6 +18,13 @@ function labsController($scope, $log, $location, dboticaServices, $state, $http,
         } else {
             var getLabsResponse = angular.fromJson(getLabsSuccess.data.response);
             $log.log('get lab response is----', getLabsResponse);
+            labs.labTestsList = _.filter(getLabsResponse, function(labTestEntity) {
+                return labTestEntity.state == 'ACTIVE';
+            });
+            angular.forEach(labs.labTestsList, function(labEntry) {
+                labEntry.referenceDetails = angular.fromJson(labEntry.referenceDetails);
+            });
+            $log.log('total lab tests are----', labs.labTestsList);
         }
     }, function(getLabsError) {
         dboticaServices.noConnectivityError();

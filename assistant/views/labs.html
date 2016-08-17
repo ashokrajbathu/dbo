@@ -1,7 +1,7 @@
 <div ng-controller="labsController as labs">
     <div class="container">
         <h3>Labs:</h3>
-        <table class="table table-striped table-bordered">
+        <table id="labsTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
                     <th>S.No.</th>
@@ -13,13 +13,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                <tr ng-repeat="labEntity in labs.labTestsList">
+                    <td ng-bind="$index+1"></td>
+                    <td ng-bind="labEntity.referenceDetails.firstName"></td>
+                    <td ng-bind="labEntity.referenceDetails.age"></td>
+                    <td ng-bind="labEntity.referenceDetails.gender"></td>
+                    <td ng-bind="labEntity.diagnosisTest"></td>
+                    <td>
+                        <button class="btn btnDelete">Generate QR</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
