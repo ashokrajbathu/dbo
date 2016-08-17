@@ -11,9 +11,7 @@ angular.module('doctor').filter("longDateIntoReadableDate", function() {
         }
         return result;
     };
-});
-
-angular.module('doctor').filter('editBloodGroup', function() {
+}).filter('editBloodGroup', function() {
     return function(input) {
         var result;
         if (input == undefined || input == '') {
@@ -23,9 +21,7 @@ angular.module('doctor').filter('editBloodGroup', function() {
         }
         return result;
     };
-});
-
-angular.module('doctor').filter('ReadableAppointmentsTimings', function() {
+}).filter('ReadableAppointmentsTimings', function() {
     return function(input) {
         var result;
         if (input == undefined) {

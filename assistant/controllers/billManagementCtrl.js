@@ -181,6 +181,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                         }
                     }
                 });
+                $log.log('active tests list is----', activeTestsList);
                 dboticaServices.setTestsFromBillManagement(activeTestsList);
                 dboticaServices.setTestsNamesFromBillManagement(activeTestsNamesList);
             }
@@ -251,6 +252,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
             if (!billElement.enterDigits && !billElement.enterPhoneNumber) {
                 billElement.loading = true;
                 var patientSearchPromise = dboticaServices.getPatientAndOrganizationPatient(phoneNumber);
+                $log.log('patient search promise is------', patientSearchPromise);
                 patientSearchPromise.then(function(patientSearchSuccessResponse) {
                     var errorCode = patientSearchSuccessResponse.data.errorCode;
                     if (errorCode) {
@@ -515,6 +517,40 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                                             });
                                         }
                                     }
+                                    if (entity.itemType == 'TEST') {
+                                        $log.log('test is----', entity);
+                                        var testRequestEntity = {};
+                                        testRequestEntity.patientId = billElement.patient.id;
+                                        testRequestEntity.diagnosisTest = entity.itemName;
+                                        testRequestEntity.doctorId = billElement.bill.doctorActive.id;
+
+                                        testRequestEntity.paymentStatus = entity.paid;
+                                        testRequestEntity.eventState = 'LAB_ALLOTED';
+                                        var patientDetails = {};
+                                        angular.copy(billElement.patient, patientDetails);
+                                        testRequestEntity.referenceDetails = JSON.stringify(patientDetails);
+                                        var testIndex = _.findLastIndex(activeTestsList, function(testEntity) {
+                                            return entity.itemName == testEntity.diagnosisTest;
+                                        });
+                                        /*if (testIndex !== undefined && testIndex !== -1) {
+                                            testRequestEntity.roomId = activeTestsList[testIndex].roomIds[0];
+                                            testRequestEntity.diagnosisId = activeTestsList[testIndex].id;
+                                            $log.log('request is-----', testRequestEntity);
+                                            var updateLabPromise = dboticaServices.updateLabEvent(testRequestEntity);
+                                            $log.log('update lab promise is----', updateLabPromise);
+                                            updateLabPromise.then(function(updateSuccess) {
+                                                var errorCode = updateSuccess.data.errorCode;
+                                                if (errorCode) {
+                                                    dboticaServices.logoutFromThePage(errorCode);
+                                                } else {
+                                                    var updateResponse = angular.fromJson(updateSuccess.data.response);
+                                                    $log.log('update response is------', updateResponse);
+                                                }
+                                            }, function(updateError) {
+                                                dboticaServices.noConnectivityError();
+                                            });
+                                        }*/
+                                    }
                                 });
                             }
                             localStorage.setItem('billActiveToPrint', JSON.stringify(billActiveForPrint));
@@ -766,18 +802,3 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
     });
 
 };
-
-angular.module('personalAssistant').filter("longDateIntoReadableDate", function() {
-    return function(input) {
-        var result;
-        if (input == undefined) {
-            result = "";
-        } else {
-            result = new Date(input);
-            result = moment(result).format('DD/MM/YYYY,hh:mm:ss A');
-            var timeArray = result.split(",");
-            result = timeArray[0];
-        }
-        return result;
-    };
-});

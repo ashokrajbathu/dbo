@@ -2084,4 +2084,24 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.updateLabEvent = function(labEvent) {
+        var deferred = $q.defer();
+        var labRequestEntity = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/organization/updateLabEvent',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(labEvent)
+        }
+        $http(labEvent).then(function(labSuccessResponse) {
+            deferred.resolve(labSuccessResponse);
+        }, function(labErrorResponse) {
+            deferred.reject(labErrorResponse);
+        });
+        return deferred.promise;
+    }
+
 }]);

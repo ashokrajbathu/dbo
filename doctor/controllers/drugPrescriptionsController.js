@@ -146,6 +146,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             prescriptionElement.drugTemplates = _.filter(getDrugTemplatesResponse, function(entity) {
                 return entity.state == 'ACTIVE';
             });
+            $log.log('drug templates are-----', prescriptionElement.drugTemplates);
             angular.forEach(prescriptionElement.drugTemplates, function(value, key) {
                 prescriptionElement['checkbox' + key] = false;
             });
