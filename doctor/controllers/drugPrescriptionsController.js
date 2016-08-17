@@ -800,7 +800,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                     templateEntityToSave.noOfDays = quantCount != 0 ? Math.ceil(parseInt(drugTemplateEntity.drugDosage.noOfDays) / (parseInt(perServing) * quantCount)) : 1;
                 }
             } else {
-                if (rugTemplateEntity.drugDosage.daysOrQuantity == 'Days') {
+                if (drugTemplateEntity.drugDosage.daysOrQuantity == 'Days') {
                     templateEntityToSave.noOfDays = drugTemplateEntity.drugDosage.noOfDays;
                     templateEntityToSave.quantity = 1;
                 } else {

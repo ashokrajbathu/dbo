@@ -63,11 +63,9 @@ app.filter("longDateIntoReadableDate", function() {
             result = "";
         } else {
             result = new Date(input);
-            result = result.toLocaleString();
-            var resultArray = result.split(',');
-            var resultArrayDate = resultArray[0];
-            var resultArrayDateReadable = resultArrayDate.split('/');
-            result = resultArrayDateReadable[1] + '/' + resultArrayDateReadable[0] + '/' + resultArrayDateReadable[2];
+            result = moment(result).format('DD/MM/YYYY,hh:mm:ss A');
+            var timeArray = result.split(",");
+            result = timeArray[0];
         }
         return result;
     };
