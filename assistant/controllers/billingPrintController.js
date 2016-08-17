@@ -6,6 +6,9 @@ app.controller('printBillController', ['$scope', function($scope) {
     var d = new Date();
     $scope.todayDate = d.getTime();
     $scope.rupees = 'Rs.';
+    $scope.doctorServicesPageDisplay = true;
+    $scope.medicinesPageDisplay = true;
+    $scope.testsPageDisplay = true;
     var billNowActive = localStorage.getItem('billActiveToPrint');
     $scope.patientNameInBill = localStorage.getItem('patientNameInBillActive');
     $scope.patientNumberInBill = localStorage.getItem('patientNumberInBillActive');
@@ -19,7 +22,37 @@ app.controller('printBillController', ['$scope', function($scope) {
     $scope.billNowActiveDetails = JSON.parse(billNowActive);
     console.log("bill now active is----", JSON.parse(billNowActive));
     console.log('address active is----', $scope.addressInTheBill);
-    $scope.itemsToBeDisplayed = $scope.billNowActiveDetails.items;
+    $scope.itemsToBeDisplayedDoctorServices = [];
+    $scope.itemsToBeDisplayedMedicines = [];
+    $scope.itemsToBeDisplayedTests = [];
+    //$scope.itemsToBeDisplayed = $scope.billNowActiveDetails.items;
+    angular.forEach($scope.billNowActiveDetails.items, function(entity) {
+        if (entity.itemType == 'DOCTOR_CHARGE') {
+            $scope.itemsToBeDisplayedDoctorServices.push(entity);
+        }
+    });
+    if ($scope.itemsToBeDisplayedDoctorServices.length > 0) {
+        $scope.doctorServicesPageDisplay = false;
+    }
+    angular.forEach($scope.billNowActiveDetails.items, function(medicineEntity) {
+        if (medicineEntity.itemType == 'MEDICINE') {
+            $scope.itemsToBeDisplayedMedicines.push(medicineEntity);
+        }
+    });
+    if ($scope.itemsToBeDisplayedMedicines.length > 0) {
+        $scope.medicinesPageBreakerFlag = true;
+        $scope.medicinesPageDisplay = false;
+    }
+    angular.forEach($scope.billNowActiveDetails.items, function(testEntity) {
+        if (testEntity.itemType == 'TEST') {
+            $scope.itemsToBeDisplayedTests.push(testEntity);
+        }
+    });
+    if ($scope.itemsToBeDisplayedTests.length > 0) {
+        $scope.testsPageBreakerFlag = true;
+        $scope.testsPageDisplay = false;
+    }
+
     $scope.paymentEntries = $scope.billNowActiveDetails.paymentEntries;
 }]);
 

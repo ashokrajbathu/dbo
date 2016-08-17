@@ -275,7 +275,7 @@ function doctorServices($http, $state, $log, $q) {
     function getTests(test) {
         var deferred = $q.defer();
         var getTestRequestEntity = {
-            method: 'GET',
+            method: 'GET',  
             url: 'http://localhost:8081/dbotica-spring/diagnosis/getDiagnosisTest?diagnosisTest=' + test,
             withCredentials: true
         }

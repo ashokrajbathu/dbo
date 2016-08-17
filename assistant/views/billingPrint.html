@@ -10,92 +10,205 @@
 
 <body onload="window.print();">
     <div ng-app="printBill" ng-controller="printBillController" class="container">
-        <h3 style="margin-left:75%;">Tin No:<span ng-bind="tinNo"></span></h3>
+        <div class="headerDiv"></div>
+        <!-- <h3 style="margin-left:75%;">Tin No:<span ng-bind="tinNo"></span></h3>
         <h1 id="patientBillHeader" ng-bind="organizationName|uppercase"></h1>
         <p class="addressInTheBill" align="center" ng-bind="address"></p>
         <p style="margin-top:-12px;font-size:20px;" align="center">Cell No:<span ng-bind="cellNumber"></span> Phone No:<span ng-bind="phoneNumber"></span>
-        </p>
-        <div id="billingDate">
-            <label>Bill Date :</label>
-            <span class="amountDet" ng-bind="todayDate|longDateIntoReadableDate"></span>
-        </div>
-        <div class="row">
-            <div id="labelsInBill1" class="col-md-4">
-                <label>Name :</label>
-                <span class="amountDet" ng-bind="patientNameInBill"></span>
+        </p> -->
+        <div ng-class="{'pageBreaker':doctorServicesPageBreakerFlag,'pageDisplay':doctorServicesPageDisplay}" class="doctorServicesDiv">
+            <div id="billingDate">
+                <label>Bill Date :</label>
+                <span class="amountDet" ng-bind="todayDate|longDateIntoReadableDate"></span>
             </div>
-            <div id="labelsInBill2" class="col-md-4">
-                <label>Phone :</label>
-                <span class="amountDet" ng-bind="patientNumberInBill"></span>
+            <div class="row">
+                <div id="labelsInBill1" class="col-md-4">
+                    <label>Name :</label>
+                    <span class="amountDet" ng-bind="patientNameInBill"></span>
+                </div>
+                <div id="labelsInBill2" class="col-md-4">
+                    <label>Phone :</label>
+                    <span class="amountDet" ng-bind="patientNumberInBill"></span>
+                </div>
             </div>
+            <h3>Doctor Services:</h3>
+            <table class="table billingTable table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th width="5%;">S.No.</th>
+                        <th width="15%;">Bill Name</th>
+                        <th>Due Date</th>
+                        <th>Cost(Rs.)</th>
+                        <th>Discount</th>
+                        <th>Tax</th>
+                        <th>Quantity</th>
+                        <th>Amount(Rs.)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in itemsToBeDisplayedDoctorServices">
+                        <td ng-bind="$index+1"></td>
+                        <td ng-bind="item.itemName"></td>
+                        <td ng-bind="item.dueDate | longDateIntoReadableDate"></td>
+                        <td width="20%;" ng-bind="item.cost/100"></td>
+                        <td ng-bind="item.discount"></td>
+                        <td ng-bind="item.tax"></td>
+                        <td ng-bind="item.quantity"></td>
+                        <td ng-bind="item.amountCharged/100" width="20%;"></td>
+                        <td>
+                            <input class="checkboxInPage" type="checkbox" ng-checked="item.paid">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <h3>Services:</h3>
-        <table class="table billingTable table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th width="5%;">S.No.</th>
-                    <th width="15%;">Bill Name</th>
-                    <th>Due Date</th>
-                    <th>Cost(Rs.)</th>
-                    <th>Discount</th>
-                    <th>Tax</th>
-                    <th>Quantity</th>
-                    <th>Amount(Rs.)</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="item in itemsToBeDisplayed">
-                    <td ng-bind="$index+1"></td>
-                    <td ng-bind="item.itemName"></td>
-                    <td ng-bind="item.dueDate | longDateIntoReadableDate"></td>
-                    <td width="20%;" ng-bind="item.cost/100"></td>
-                    <td ng-bind="item.discount"></td>
-                    <td ng-bind="item.tax"></td>
-                    <td ng-bind="item.quantity"></td>
-                    <td ng-bind="item.amountCharged/100" width="20%;"></td>
-                    <td>
-                        <input class="checkboxInPage" type="checkbox" ng-checked="item.paid">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <h3>Payment Details:</h3>
-        <table id="paymentEntriesTable" class="table billingTable table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>S.No.</th>
-                    <th>Payment Date</th>
-                    <th>Amount Paid(Rs.)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="paymentItem in paymentEntries">
-                    <td ng-bind="$index+1"></td>
-                    <td ng-bind="paymentItem.updatedAt|longDateIntoReadableDate"></td>
-                    <td ng-bind="paymentItem.amountPaid/100"></td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="row">
-            <div class="amountDetails" class="col-md-6">
-                <label>Total Amount:</label>
-                <span class="amountDet" ng-bind="rupees+billNowActiveDetails.totalAmount/100"></span>
-                <label class="leftMargin">Amount Paid:</label>
-                <span class="amountDet" class="amountDetails" ng-bind="rupees+billNowActiveDetails.amountPaid/100"></span>
+        <div ng-class="{'pageBreaker':medicinesPageBreakerFlag,'pageDisplay':medicinesPageDisplay}" class="doctorServicesDiv">
+            <div id="billingDate">
+                <label>Bill Date :</label>
+                <span class="amountDet" ng-bind="todayDate|longDateIntoReadableDate"></span>
             </div>
-            <h3>Next Payment Details:</h3>
-            <div style="margin-top:-0.5em;" class="col-md-6">
-                <label>Next Payment Date:</label>
-                <span class="amountDet" ng-bind="billNowActiveDetails.nextPaymentDate|longDateIntoReadableDate"></span>
-                <label class="leftMargin">Next Payment Amount:</label>
-                <span class="amountDet" ng-bind="rupees+billNowActiveDetails.nextPaymentAmount/100"></span>
+            <div class="row">
+                <div id="labelsInBill1" class="col-md-4">
+                    <label>Name :</label>
+                    <span class="amountDet" ng-bind="patientNameInBill"></span>
+                </div>
+                <div id="labelsInBill2" class="col-md-4">
+                    <label>Phone :</label>
+                    <span class="amountDet" ng-bind="patientNumberInBill"></span>
+                </div>
             </div>
+            <h3>Medicines :</h3>
+            <table class="table billingTable table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th width="5%;">S.No.</th>
+                        <th width="15%;">Bill Name</th>
+                        <th>Due Date</th>
+                        <th>Cost(Rs.)</th>
+                        <th>Discount</th>
+                        <th>Tax</th>
+                        <th>Quantity</th>
+                        <th>Amount(Rs.)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in itemsToBeDisplayedMedicines">
+                        <td ng-bind="$index+1"></td>
+                        <td ng-bind="item.itemName"></td>
+                        <td ng-bind="item.dueDate | longDateIntoReadableDate"></td>
+                        <td width="20%;" ng-bind="item.cost/100"></td>
+                        <td ng-bind="item.discount"></td>
+                        <td ng-bind="item.tax"></td>
+                        <td ng-bind="item.quantity"></td>
+                        <td ng-bind="item.amountCharged/100" width="20%;"></td>
+                        <td>
+                            <input class="checkboxInPage" type="checkbox" ng-checked="item.paid">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="row">
+        <div ng-class="{'pageBreaker':testsPageBreakerFlag,'pageDisplay':testsPageDisplay}" class="doctorServicesDiv">
+            <div id="billingDate">
+                <label>Bill Date :</label>
+                <span class="amountDet" ng-bind="todayDate|longDateIntoReadableDate"></span>
+            </div>
+            <div class="row">
+                <div id="labelsInBill1" class="col-md-4">
+                    <label>Name :</label>
+                    <span class="amountDet" ng-bind="patientNameInBill"></span>
+                </div>
+                <div id="labelsInBill2" class="col-md-4">
+                    <label>Phone :</label>
+                    <span class="amountDet" ng-bind="patientNumberInBill"></span>
+                </div>
+            </div>
+            <h3>Tests :</h3>
+            <table class="table billingTable table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th width="5%;">S.No.</th>
+                        <th width="15%;">Bill Name</th>
+                        <th>Due Date</th>
+                        <th>Cost(Rs.)</th>
+                        <th>Discount</th>
+                        <th>Tax</th>
+                        <th>Quantity</th>
+                        <th>Amount(Rs.)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in itemsToBeDisplayedTests">
+                        <td ng-bind="$index+1"></td>
+                        <td ng-bind="item.itemName"></td>
+                        <td ng-bind="item.dueDate | longDateIntoReadableDate"></td>
+                        <td width="20%;" ng-bind="item.cost/100"></td>
+                        <td ng-bind="item.discount"></td>
+                        <td ng-bind="item.tax"></td>
+                        <td ng-bind="item.quantity"></td>
+                        <td ng-bind="item.amountCharged/100" width="20%;"></td>
+                        <td>
+                            <input class="checkboxInPage" type="checkbox" ng-checked="item.paid">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="authoritySign">
-            <label>(Authority Signature)</label>
+        <div style="page-break-before:always;">
+            <div id="billingDate">
+                <label>Bill Date :</label>
+                <span class="amountDet" ng-bind="todayDate|longDateIntoReadableDate"></span>
+            </div>
+            <div class="row">
+                <div id="labelsInBill1" class="col-md-4">
+                    <label>Name :</label>
+                    <span class="amountDet" ng-bind="patientNameInBill"></span>
+                </div>
+                <div id="labelsInBill2" class="col-md-4">
+                    <label>Phone :</label>
+                    <span class="amountDet" ng-bind="patientNumberInBill"></span>
+                </div>
+            </div>
+            <h3>Payment Details:</h3>
+            <table id="paymentEntriesTable" class="table billingTable table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Payment Date</th>
+                        <th>Amount Paid(Rs.)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="paymentItem in paymentEntries">
+                        <td ng-bind="$index+1"></td>
+                        <td ng-bind="paymentItem.updatedAt|longDateIntoReadableDate"></td>
+                        <td ng-bind="paymentItem.amountPaid/100"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="amountDetails" class="col-md-6">
+                    <label>Total Amount:</label>
+                    <span class="amountDet" ng-bind="rupees+billNowActiveDetails.totalAmount/100"></span>
+                    <label class="leftMargin">Amount Paid:</label>
+                    <span class="amountDet" class="amountDetails" ng-bind="rupees+billNowActiveDetails.amountPaid/100"></span>
+                </div>
+                <h3>Next Payment Details:</h3>
+                <div style="margin-top:-0.5em;" class="col-md-6">
+                    <label>Next Payment Date:</label>
+                    <span class="amountDet" ng-bind="billNowActiveDetails.nextPaymentDate|longDateIntoReadableDate"></span>
+                    <label class="leftMargin">Next Payment Amount:</label>
+                    <span class="amountDet" ng-bind="rupees+billNowActiveDetails.nextPaymentAmount/100"></span>
+                </div>
+            </div>
+            <div class="row">
+            </div>
+            <div class="authoritySign">
+                <label>(Authority Signature)</label>
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="../../js/angular.js"></script>

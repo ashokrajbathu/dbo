@@ -69,4 +69,11 @@
         margin-top: -10px;
         font-size: 20px;
     }
+    .headerDiv {}
+    .pageBreaker {
+        page-break-before: always;
+    }
+    .pageDisplay {
+        display: none;
+    }
 }

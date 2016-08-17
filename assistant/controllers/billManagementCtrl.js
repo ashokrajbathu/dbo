@@ -286,9 +286,12 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                                     dboticaServices.logoutFromThePage(errorCode);
                                 } else {
                                     var patientEventResponse = angular.fromJson(patientEventsSuccess.data.response);
-                                    var sortedEntites = _.filter(patientEventResponse, function(eventEntity) {
-                                        return eventEntity.patientId == billElement.bill.patientsListOfThatNumber[0].organizationPatient.id;
-                                    });
+                                    $log.log('check is----', billElement.bill.patientsListOfThatNumber[0]);
+                                    if (_.has(billElement.bill.patientsListOfThatNumber[0], 'organizationPatient')) {
+                                        var sortedEntites = _.filter(patientEventResponse, function(eventEntity) {
+                                            return eventEntity.patientId == billElement.bill.patientsListOfThatNumber[0].organizationPatient.id;
+                                        });
+                                    }
                                     inpatientsMedicinesList = _.filter(sortedEntites, function(sortedEntity) {
                                         return sortedEntity.patientEventType == 'MEDICINE_PROVIDED';
                                     });
