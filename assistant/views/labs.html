@@ -9,21 +9,27 @@
                     <th>Age</th>
                     <th>Gender</th>
                     <th>Test Name</th>
+                    <th>Sample Collected</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="labEntity in labs.labTestsList">
-                    <td ng-bind="$index+1"></td>
+                    <td ng-bind="$index+1+((labs.currentPage-1)*labs.itemsPerPage)"></td>
                     <td ng-bind="labEntity.referenceDetails.firstName"></td>
                     <td ng-bind="labEntity.referenceDetails.age"></td>
                     <td ng-bind="labEntity.referenceDetails.gender"></td>
                     <td ng-bind="labEntity.diagnosisTest"></td>
                     <td>
+                        <input ng-click="labs.sampleCollection(labEntity,$index)" ng-checked="labEntity.eventState=='SAMPLE_COLLECTED'" type="checkbox" name="sample" value="testSample">
+                    </td>
+                    <td>
                         <button class="btn btnDelete">Generate QR</button>
+                        <a ng-click="labs.clearTest(labEntity,$index)" style="cursor:pointer;margin-left:4px;">Clear</a>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <uib-pagination class="pull-right" items-per-page="labs.itemsPerPage" ng-change="labs.pageChanged()" total-items="labs.totalItems" ng-model="labs.currentPage"></uib-pagination>
     </div>
 </div>

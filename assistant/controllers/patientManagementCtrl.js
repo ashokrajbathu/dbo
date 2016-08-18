@@ -130,6 +130,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
     $scope.familyMemberLink = false;
 
     $scope.entryType = ["WALK_IN", "APPOINTMENT"];
+    var organizationId = localStorage.getItem('orgId');
 
     $scope.loading = false;
     $scope.blurScreen = false;
@@ -759,10 +760,12 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                     $scope.book.label = addPatientResponse[indexOfBookedPatient].firstName;
                     $scope.book.patientId = addPatientResponse[indexOfBookedPatient].id;
                     if ($scope.patientNumberDiv && !_.isEmpty($scope.book.patientId)) {
-                        if (firstName !== undefined && firstName !== '' && phoneNumber !== undefined && phoneNumber !== '' && patientNumber !== undefined && patientNumber !== '') {
+                        if (firstName !== undefined && firstName !== '' && phoneNumber !== undefined && phoneNumber !== '') {
                             var registerPatientRequest = {};
+                            registerPatientRequest.organizationId = organizationId;
+                            registerPatientRequest.patientId = $scope.book.patientId;
                             registerPatientRequest.phoneNumber = phoneNumber;
-                            registerPatientRequest.organizationPatientNo = patientNumber;
+                            // registerPatientRequest.organizationPatientNo = patientNumber;
                             registerPatientRequest.patientType = $scope.patientData.patientType;
                             registerPatientRequest.patientState = 'CHECK_IN';
                             var registerPatientPromise = dboticaServices.registerPatient(registerPatientRequest);
