@@ -107,9 +107,9 @@
                                 </div>
                                 <div class="col-md-3 col-sm-4 col-xs-4">
                                     <div class="dropdown">
-                                        <button class="doctorSelectBox dropdown-toggle" ng-cloak type="button" data-toggle="dropdown">{{billView.bill.doctorActiveName}}
-                                            <span class="caret"></span></button>
-                                        <ul class="dropdown-menu">
+                                        <button id="doctorNameBtn" class="doctorSelectBox dropdown-toggle" ng-cloak type="button" data-toggle="dropdown">{{billView.bill.doctorActiveName}}
+                                            <span id="doctorNameCaret" class="caret"></span></button>
+                                        <ul id="dropdownDoctors" class="dropdown-menu">
                                             <li ng-repeat="doctor in billView.bill.doctorsListInBillManagement">
                                                 <a ng-click="billView.selectDoctorFromDropdown(doctor)" class="doctorsListInBill" ng-bind="doctor.firstName +' '+doctor.lastName"></a>
                                             </li>
@@ -125,7 +125,7 @@
                                             <div class="dropdown patientDrpDwn">
                                                 <button class="billSelectBoxes doctorBillsDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{billView.bill.doctorActiveService}}
                                                     <span id="caretInBillManagement" class="caret"></span></button>
-                                                <ul class="dropdown-menu">
+                                                <ul id="doctorServices" class="dropdown-menu">
                                                     <li style="overflow:hidden;white-space:no-wrap;text-overflow:ellipsis;width:inherit;" ng-repeat="billIndex in billView.bill.billTypes">
                                                         <a ng-click="billView.selectBillFromDropdown(billIndex)" class="doctorsListInBill">{{billIndex.billingName}}</a>
                                                     </li>

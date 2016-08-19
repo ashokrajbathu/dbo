@@ -610,7 +610,6 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         }, function(getTestsErrorResponse) {
             deferred.reject(getTestsErrorResponse);
         });
-
         return deferred.promise;
     }
 

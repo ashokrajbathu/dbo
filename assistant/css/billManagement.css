@@ -52,6 +52,7 @@
     margin-right: 50px;
 }
 
+
 /* .radiosInPatientSearch:hover {
     transform: scale(2);
 } */
@@ -270,6 +271,17 @@
     top: 45%;
 }
 
+@media only screen and (max-width:768px) {
+    #caretInBillManagement {
+        position: absolute;
+        left: 120px;
+        top: 45%;
+    }
+    #doctorServices {
+        width: 120px !important;
+    }
+}
+
 
 /* .dropdown>ul {
     margin-left: 4px;
@@ -402,6 +414,21 @@
     .doctorBillsDropdown {
         width: 140px;
     }
+}
+
+#doctorNameBtn {
+    width: 160px;
+}
+
+#doctorNameCaret {
+    position: absolute;
+    left: 140px;
+    top: 40%;
+}
+
+#dropdownDoctors {
+    margin-left: 7px;
+    width: 165px !important;
 }
 
 
