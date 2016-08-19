@@ -94,12 +94,20 @@
                     <div class="row">
                         <label id="patientsListLabel">Patients are:</label>
                     </div>
-                    <div class="col-md-2 col-sm-2 col-xs-6" ng-repeat="patientEntity in prescription.patientsToBeDisplayedInRadios">
-                        <div class="radio patientRadios">
-                            <label class="textOfRadios">
-                                <input ng-click="prescription.selectActivePatient(patientEntity,$index)" type="radio" ng-checked="prescription.{{'radio'+$index}}" name="patientRadio">{{patientEntity.firstName}}
-                            </label>
+                    <div class="row">
+                        <div class="col-md-2 col-sm-2 col-xs-6" ng-repeat="patientEntity in prescription.patientsToBeDisplayedInRadios">
+                            <div class="radio patientRadios">
+                                <label class="textOfRadios">
+                                    <input ng-click="prescription.selectActivePatient(patientEntity,$index)" type="radio" ng-checked="prescription.{{'radio'+$index}}" name="patientRadio">{{patientEntity.firstName}}
+                                </label>
+                            </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <label id="patientPrescriptionsLabel">Selected Patient Prescriptions :</label>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-6" ng-repeat="prescriptionEntity in prescription.patientPrescriptions">
+                        <a style="cursor:pointer;">Prescription - <span ng-bind="prescriptionEntity.prescription.lastUpdated|longDateIntoReadableDate"></span></a>
                     </div>
                 </div>
             </div>

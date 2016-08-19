@@ -55,7 +55,8 @@
     margin-top: -2px !important;
 }
 
-#patientsListLabel {
+#patientsListLabel,
+#patientPrescriptionsLabel {
     margin-left: 14px;
     margin-top: 6px;
 }

@@ -39,7 +39,6 @@ function labsController($scope, $log, $location, dboticaServices, $state, $http,
     });
 
     function sampleCollection(labTest, index) {
-        $log.log('ab test is-----', labTest);
         var labTestActive = {};
         angular.copy(labTest, labTestActive);
         labTestActive.referenceDetails = JSON.stringify(labTestActive.referenceDetails);
@@ -78,20 +77,17 @@ function labsController($scope, $log, $location, dboticaServices, $state, $http,
     }
 
     function clearTest(labActive, index) {
-        $log.log('active lab is------', labActive, index);
         var labRequestObject = {};
         angular.copy(labActive, labRequestObject);
         labRequestObject.eventState = 'INIT_DIAGNOSIS';
         labRequestObject.referenceDetails = JSON.stringify(labRequestObject.referenceDetails);
         var clearLabTestPromise = dboticaServices.updateLabEvent(labRequestObject);
-        $log.log('clear lab test promise is-----', clearLabTestPromise);
         clearLabTestPromise.then(function(clearLabTestSuccess) {
             var errorCode = clearLabTestSuccess.data.errorCode;
             if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 var clearLabTestResponse = angular.fromJson(clearLabTestSuccess.data.response);
-                $log.log('la test respo------', clearLabTestResponse);
                 if (errorCode == null && clearLabTestSuccess.data.success) {
                     labs.labTestsList.splice(index, 1);
                     var selectedLabTestIndex = _.findLastIndex(entitiesArray, function(labTestEntity) {

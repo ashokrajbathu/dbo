@@ -57,6 +57,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.prescriptionData.pulse = '';
     prescriptionElement.prescriptionData.drugAllergyInForm = '';
     var activePatient = {};
+    prescriptionElement.patientPrescriptions = [];
     prescriptionElement.totalAppointmentsCount = 0;
     prescriptionElement.totalWalkinsCount = 0;
     prescriptionElement.itemsPerPage = 8;
@@ -214,6 +215,20 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                     prescriptionElement.updatePatient = true;
                     prescriptionElement.addMember = true;
                     prescriptionElement.radio0 = true;
+                    $log.log('patient id is-----', activePatient.id);
+                    var getPatientPrescriptionsPromise = doctorServices.prescriptionsOfPatient(activePatient.id);
+                    $log.log('patient prescriptions are-----', getPatientPrescriptionsPromise);
+                    getPatientPrescriptionsPromise.then(function(getPrescriptionsSuccess) {
+                        var errorCode = getPrescriptionsSuccess.data.errorCode;
+                        if (errorCode) {
+                            doctorServices.logoutFromThePage(errorCode);
+                        } else {
+                            prescriptionElement.patientPrescriptions = angular.fromJson(getPrescriptionsSuccess.data.response);
+                            $log.log('prescriptions response is-----', prescriptionElement.patientPrescriptions);
+                        }
+                    }, function(getPrescriptionsError) {
+                        doctorServices.noConnectivityError();
+                    });
                 } else {
                     angular.element('#newOrUpdatePatientModal').modal('show');
                     prescriptionElement.noPatientDetailsErrorMessage = true;

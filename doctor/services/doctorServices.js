@@ -52,6 +52,7 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.appointmentBookFail = appointmentBookFail;
     doctorServices.getTodayString = getTodayString;
     doctorServices.selectDateSwal = selectDateSwal;
+    doctorServices.prescriptionsOfPatient = prescriptionsOfPatient;
 
     function loginErrorSwal() {
         swal({
@@ -275,7 +276,7 @@ function doctorServices($http, $state, $log, $q) {
     function getTests(test) {
         var deferred = $q.defer();
         var getTestRequestEntity = {
-            method: 'GET',  
+            method: 'GET',
             url: 'http://localhost:8081/dbotica-spring/diagnosis/getDiagnosisTest?diagnosisTest=' + test,
             withCredentials: true
         }
@@ -689,6 +690,21 @@ function doctorServices($http, $state, $log, $q) {
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
+    }
+
+    function prescriptionsOfPatient(idOfPatient) {
+        var deferred = $q.defer();
+        var prescriptionsRequest = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/doctor/patientPrescriptions?patientId=' + idOfPatient + '&start=' + 0 + '&limit=' + 5,
+            withCredentials: true
+        }
+        $http(prescriptionsRequest).then(function(prescriptionsSuccess) {
+            deferred.resolve(prescriptionsSuccess);
+        }, function(prescriptionsError) {
+            deferred.reject(prescriptionsError);
+        });
+        return deferred.promise;
     }
 
 };
