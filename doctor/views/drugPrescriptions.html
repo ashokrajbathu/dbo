@@ -107,7 +107,7 @@
                         <label id="patientPrescriptionsLabel">Selected Patient Prescriptions :</label>
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-6" ng-repeat="prescriptionEntity in prescription.patientPrescriptions">
-                        <a style="cursor:pointer;">Prescription - <span ng-bind="prescriptionEntity.prescription.lastUpdated|longDateIntoReadableDate"></span></a>
+                        <a ng-click="prescription.selectPrescription(prescriptionEntity,$index)" style="cursor:pointer;">Prescription - <span ng-bind="prescriptionEntity.prescription.lastUpdated|longDateIntoReadableDate"></span></a>
                     </div>
                 </div>
             </div>
@@ -263,7 +263,7 @@
                         <tbody>
                             <tr ng-repeat="testItem in prescription.testsListInTable">
                                 <td ng-bind="$index+1"></td>
-                                <td ng-bind="testItem.testName"></td>
+                                <td ng-bind="testItem.diagnosisTest"></td>
                                 <td ng-bind="testItem.remark"></td>
                                 <td>
                                     <button type="button" ng-click="prescription.deleteTest($index)" class="btn btnDelete">Delete</button>

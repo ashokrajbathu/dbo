@@ -136,6 +136,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.addDrugTemp = addDrugTemp;
     prescriptionElement.bookAppointment = bookAppointment;
     prescriptionElement.resetDrugPrescription = resetDrugPrescription;
+    prescriptionElement.selectPrescription = selectPrescription;
 
     var getDrugTemplatesPromise = doctorServices.getDrugTemplates();
     getDrugTemplatesPromise.then(function(getDrugTemplatesSuccess) {
@@ -502,7 +503,11 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             quantCount = 1;
         }
         drugEntity.usageDirection = _.join(timingsArray, comma);
+        drugEntity.daysOrQuantity = prescriptionElement.fillPrescription.daysOrQuantity;
         drugEntity.remarks = prescriptionElement.fillPrescription.specialInstructions;
+        if (_.isEmpty(drugEntity.remarks)) {
+            drugEntity.remarks = '';
+        }
         prescriptionElement.drugsList.push(drugEntity);
         angular.copy(drugEntity, drugEntityToSave);
         drugEntityToSave.drugType = activeDrugType;
@@ -531,6 +536,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 drugEntityToSave.noOfDays = 1;
             }
         }
+        $log.log('entity to save-----', drugEntityToSave);
         drugsListToSave.push(drugEntityToSave);
         emptyDrugElements();
         timingBtnsDefault();
@@ -577,7 +583,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     function addTest() {
         var testEntity = {};
         testEntity.testId = activeTestId;
-        testEntity.testName = prescriptionElement.test.testName;
+        testEntity.diagnosisTest = prescriptionElement.test.testName;
         testEntity.remark = prescriptionElement.test.remarks;
         prescriptionElement.testsListInTable.push(testEntity);
         prescriptionElement.test.testName = '';
@@ -899,9 +905,79 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         prescriptionElement.fillPrescription.days = 1;
         timingBtnsDefault();
         prescriptionElement.drugsList = [];
+        prescriptionElement.patientPrescriptions = [];
         prescriptionElement.additionalComments = '';
         prescriptionElement.revisitAfterDays = emptyString;
         prescriptionElement.revisitAfterDate = '';
         prescriptionElement.referToDoctor = emptyString;
+    }
+
+    function selectPrescription(prescriptionActive, index) {
+        $log.log('prescription is-----', prescriptionActive);
+        if (_.has(prescriptionActive.prescription, 'weight') && !_.isEmpty(prescriptionActive.prescription.weight)) {
+            prescriptionElement.prescriptionData.weight = prescriptionActive.prescription.weight;
+        }
+        if (_.has(prescriptionActive.prescription, 'height') && !_.isEmpty(prescriptionActive.prescription.height)) {
+            prescriptionElement.prescriptionData.height = prescriptionActive.prescription.height;
+        }
+        if (_.has(prescriptionActive.prescription, 'bloodPressure') && !_.isEmpty(prescriptionActive.prescription.bloodPressure)) {
+            prescriptionElement.prescriptionData.bloodPressure = prescriptionActive.prescription.bloodPressure;
+        }
+        if (_.has(prescriptionActive.prescription, 'pulse') && !_.isEmpty(prescriptionActive.prescription.pulse)) {
+            prescriptionElement.prescriptionData.pulse = prescriptionActive.prescription.pulse;
+        }
+        if (_.has(prescriptionActive.prescription, 'bmi') && !_.isEmpty(prescriptionActive.prescription.bmi)) {
+            prescriptionElement.prescriptionData.bmi = prescriptionActive.prescription.bmi;
+        }
+        if (_.has(prescriptionActive.prescription, 'saturation') && !_.isEmpty(prescriptionActive.prescription.saturation)) {
+            prescriptionElement.prescriptionData.saturation = prescriptionActive.prescription.saturation;
+        }
+        if (_.has(prescriptionActive.prescription, 'revisitDate') && !_.isEmpty(prescriptionActive.prescription.revisitDate)) {
+            prescriptionElement.revisitAfterDate = prescriptionActive.prescription.revisitDate;
+        }
+        if (_.has(prescriptionActive.prescription, 'references') && !_.isEmpty(prescriptionActive.prescription.references)) {
+            prescriptionElement.referToDoctor = prescriptionActive.prescription.references;
+        }
+        if (_.has(prescriptionActive.prescription, 'remarks') && !_.isEmpty(prescriptionActive.prescription.remarks)) {
+            prescriptionElement.additionalComments = prescriptionActive.prescription.remarks;
+        }
+        if (_.has(prescriptionActive.prescription, 'symptoms') && !_.isEmpty(prescriptionActive.prescription.symptoms)) {
+            prescriptionElement.prescriptionData.symptoms = prescriptionActive.prescription.symptoms;
+        }
+        if (_.has(prescriptionActive.prescription, 'investigation') && !_.isEmpty(prescriptionActive.prescription.investigation)) {
+            prescriptionElement.prescriptionData.investigation = prescriptionActive.prescription.investigation;
+        }
+        if (_.has(prescriptionActive.prescription, 'temperature') && !_.isEmpty(prescriptionActive.prescription.temperature)) {
+            prescriptionElement.prescriptionData.temperature = prescriptionActive.prescription.temperature;
+        }
+        if (_.has(prescriptionActive.prescription, 'diagnosisTests') && !_.isEmpty(prescriptionActive.prescription.diagnosisTests)) {
+            prescriptionElement.testsListInTable = [];
+            angular.copy(prescriptionActive.prescription.diagnosisTests, prescriptionElement.testsListInTable);
+        }
+        if (_.has(prescriptionActive.prescription, 'drugDosage') && !_.isEmpty(prescriptionActive.prescription.drugDosage)) {
+            prescriptionElement.drugsList = [];
+            angular.forEach(prescriptionActive.prescription.drugDosage, function(drugEntity) {
+                var localDrugObject = {};
+                localDrugObject.brandName = drugEntity.brandName;
+                if (drugEntity.perServing == 1) {
+                    localDrugObject.perServing = 1 + ' unit';
+                } else {
+                    localDrugObject.perServing = drugEntity.perServing + ' units';
+                }
+                localDrugObject.usageDirection = drugEntity.usageDirection;
+                localDrugObject.remarks = drugEntity.remarks;
+                if (drugEntity.daysOrQuantity == 'Days') {
+                    if (drugEntity.noOfDays == 1) {
+                        localDrugObject.noOfDays = 1 + ' Day';
+                    } else {
+                        localDrugObject.noOfDays = drugEntity.noOfDays + ' Days';
+                    }
+                }
+                if (drugEntity.daysOrQuantity == 'Quantity') {
+                    localDrugObject.noOfDays = drugEntity.quantity + ' Quantity';
+                }
+                prescriptionElement.drugsList.push(localDrugObject);
+            });
+        }
     }
 };
