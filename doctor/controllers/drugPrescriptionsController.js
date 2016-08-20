@@ -629,10 +629,14 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             prescriptionRequest.gender = activePatient.gender;
             prescriptionRequest.drugDosage = drugsListToSave;
             prescriptionRequest.diagnosisTests = prescriptionElement.testsListInTable;
+            prescriptionElement.loading = true;
+            prescriptionElement.blurScreen = true;
             var prescriptionPromise = doctorServices.addPrescription(prescriptionRequest);
             prescriptionPromise.then(function(prescriptionSuccess) {
                 var errorCode = prescriptionSuccess.data.errorCode;
                 if (errorCode) {
+                    prescriptionElement.loading = false;
+                    prescriptionElement.blurScreen = false;
                     doctorServices.logoutFromThePage(errorCode);
                 } else {
                     var prescriptionResponse = angular.fromJson(prescriptionSuccess.data.response);
@@ -655,8 +659,12 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                         functionalitiesAfterAddingPresc();
                         timingBtnsDefault();
                     }
+                    prescriptionElement.blurScreen = false;
+                    prescriptionElement.loading = false;
                 }
             }, function(prescriptionError) {
+                prescriptionElement.blurScreen = false;
+                prescriptionElement.loading = false;
                 doctorServices.noConnectivityError();
             });
         } else {

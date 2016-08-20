@@ -1,4 +1,6 @@
 <div id="drugPrescriptionsBody" ng-controller="drugPrescriptionsController as prescription">
+    <div id="blurBackScreen" ng-if="prescription.blurScreen"></div>
+    <img class="spinner loadingSymbol" src="css/images/default (2).gif" ng-if="prescription.loading"></img>
     <h3 class="prescriptionHeader">Prescriptions Form</h3>
     <div class="row">
         <div class="col-md-offset-1 col-md-1 col-sm-1 col-xs-1">
