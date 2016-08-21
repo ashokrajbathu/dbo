@@ -596,7 +596,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var doctorEventsRequest = {
             method: 'GET',
-            url: 'http://localhost:8081/dbotica-spring/assistant/getDoctorEvents?doctorId=' + doctorId,
+            url: 'http://localhost:8081/dbotica-spring/doctor/getDoctorEvents?doctorId=' + doctorId,
             withCredentials: true
         }
         $http(doctorEventsRequest).then(function(doctorEventsSuccess) {

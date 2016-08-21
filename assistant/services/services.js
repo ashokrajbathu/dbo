@@ -2103,4 +2103,19 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
+    this.getOrganizationPatient = function(patientId) {
+        var deferred = $q.defer();
+        var getOrganizationRequest = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/getOrgPatientByPatientId?patientId=' + patientId,
+            withCredentials: true
+        }
+        $http(getOrganizationRequest).then(function(getOrgPatientSuccess) {
+            deferred.resolve(getOrgPatientSuccess);
+        }, function(getOrgPatientError) {
+            deferred.reject(getOrgPatientError);
+        });
+        return deferred.promise;
+    }
+
 }]);

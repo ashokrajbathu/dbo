@@ -709,6 +709,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     function appointmentsList() {
         angular.element('#appointmentsModals').modal('show');
         var doctorEventsPromise = doctorServices.getDoctorEvents(activeDoctor.id);
+        $log.log('doctor events promise is----', doctorEventsPromise);
         doctorEventsPromise.then(function(doctorEventsSuccess) {
             var errorCode = doctorEventsSuccess.data.errorCode;
             if (errorCode) {
