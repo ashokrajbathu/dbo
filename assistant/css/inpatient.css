@@ -60,8 +60,8 @@
 } */
 
 .dropdown-menu {
-    height: 150px !important;
-    overflow-y: scroll !important;
+    max-height: 155px !important;
+    overflow-y: auto !important;
     overflow-x: hidden !important;
 }
 
@@ -100,6 +100,12 @@
     position: absolute;
     left: 95%;
     top: 43%;
+}
+
+#fieldTypeCaret {
+    position: absolute;
+    left: 230px;
+    top: 36%;
 }
 
 @media only screen and (max-width:350px) {
@@ -168,4 +174,14 @@
 #labsTable>thead>tr>th,
 #labsTable>tbody>tr>td {
     text-align: center !important;
+}
+
+#fieldTypeBtn {
+    padding-top: 1px;
+    width: 250px !important;
+}
+
+#fieldTypeDropDown {
+    margin-top: -6px !important;
+    width: 250px !important;
 }

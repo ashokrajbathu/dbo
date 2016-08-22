@@ -425,5 +425,4 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
             inpatientElement.mandatoryFieldsErrorMessage = true;
         }
     }
-
 };

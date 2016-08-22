@@ -8,6 +8,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     var inpatient = {};
     var patientName = "";
     var doctorName = "";
+    var editedString = '';
     var medicineNames, doctorsListArray = [];
     var testsList = [];
     var testsNameList = [];
@@ -2116,6 +2117,56 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             deferred.reject(getOrgPatientError);
         });
         return deferred.promise;
+    }
+
+    this.templateMandatoryFieldsSwal = function() {
+        swal({
+            title: "Error",
+            text: "Please fill all the fields",
+            type: "error",
+            confirmButtonText: "OK"
+        });
+    }
+
+    this.addFieldRequest = function(addFieldRequestEntity) {
+        var deferred = $q.defer();
+        var fieldRequest = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/template/addTemplate',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(addFieldRequestEntity)
+        }
+        $http(fieldRequest).then(function(addFieldSuccess) {
+            deferred.resolve(addFieldSuccess);
+        }, function(addFieldError) {
+            deferred.reject(addFieldError);
+        });
+        return deferred.promise;
+    }
+
+    this.getAllTemplates = function(organizationId, template, visibility) {
+        var deferred = $q.defer();
+        var getTemplatesRequest = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/template/getTemplates?organizationId=' + organizationId + '&name=' + template + '&showInvisible=' + visibility,
+            withCredentials: true
+        }
+        $http(getTemplatesRequest).then(function(getTemplateSuccess) {
+            deferred.resolve(getTemplateSuccess);
+        }, function(getAllTemplateError) {
+            deferred.reject(getAllTemplateError);
+        });
+        return deferred.promise;
+    }
+
+    this.getDescription = function(descriptionName) {
+        editedString = _.lowerFirst(descriptionName);
+        editedString = _.replace(editedString, ' ', '');
+        return editedString;
     }
 
 }]);

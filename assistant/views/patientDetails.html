@@ -5,33 +5,20 @@
     <div class="tab">
         <div id="contentOfPatientDetailsTab" class="tab-content activeTabContent">
             <div class="row">
-                <div class="col-md-8 col-sm-8 col-xs-8" ng-repeat="entity in detail.formsList">
-                    <div ng-repeat="formEntity in entity.formName">
-                        <div ng-if="formEntity.display" class="form-group">
+                <div class="col-md-8 col-sm-8 col-xs-8" ng-repeat="entity in detail.formsList track by $index">
+                    <div ng-repeat="formEntity in entity">
+                        <h4 ng-if="$index==0" ng-bind="formEntity.sectionName"></h4>
+                        <div ng-if="formEntity.fieldState=='ACTIVE' && formEntity.fieldType=='TEXT_BOX'" class="form-group">
                             <label ng-bind="formEntity.name"></label>
-                            <input type="text" class="form-control" name="text" ng-model="formEntity.modelName">
+                            <input type="text" class="form-control" name="text" ng-model="formEntity.description">
                         </div>
-                        <div ng-if="formEntity.displaySelectBox" class="form-group">
+                        <div ng-if="formEntity.fieldState=='ACTIVE' && formEntity.fieldType=='DROPDOWN'" class="form-group">
                             <label ng-bind="formEntity.name"></label>
                             <select class="selectBoxesInNurse" ng-model="formEntity.config" ng-options="template.value as template.name for template in formEntity.selectBoxOptions"></select>
                         </div>
-                        <!-- <div class="radio" ng-if="formEntity.displayRadioButton">
-                        <label>
-                            <input type="radio" name="{{formEntity.radioButtonName}}">{{formEntity.radioButtonName}}
-                        </label>
-                    </div> -->
-                        <div ng-if="formEntity.displayButton">
+                        <div ng-if="formEntity.fieldState=='ACTIVE' && formEntity.fieldType=='BUTTON'">
                             <button ng-click="detail.submitDetails()" class="btn mainAdminBtn">{{formEntity.name}}</button>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2 col-sm-2 col-xs-6" ng-repeat="radioEntity in detail.radiosList">
-                    <div class="radio" ng-if="radioEntity.displayRadioButton">
-                        <label>
-                            <input type="radio" value="{{radioEntity.radioButtonName}}">{{radioEntity.radioButtonName}}
-                        </label>
                     </div>
                 </div>
             </div>
