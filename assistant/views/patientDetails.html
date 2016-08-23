@@ -5,6 +5,7 @@
     <div class="tab">
         <div id="contentOfPatientDetailsTab" class="tab-content activeTabContent">
             <div class="row">
+                <a ng-if="patientMedication && detail.getData();"></a>
                 <div class="col-md-8 col-sm-8 col-xs-8" ng-repeat="entity in detail.formsList track by $index">
                     <div ng-repeat="formEntity in entity">
                         <h4 ng-if="$index==0" ng-bind="formEntity.sectionName"></h4>
@@ -14,13 +15,27 @@
                         </div>
                         <div ng-if="formEntity.fieldState=='ACTIVE' && formEntity.fieldType=='DROPDOWN'" class="form-group">
                             <label ng-bind="formEntity.name"></label>
-                            <select class="selectBoxesInNurse" ng-model="formEntity.config" ng-options="template.value as template.name for template in formEntity.selectBoxOptions"></select>
+                            <select class="selectBoxesInNurse" ng-model="formEntity.description" ng-options="template.value as template.name for template in formEntity.restrictValues"></select>
+                        </div>
+                        <div ng-if="formEntity.fieldState=='ACTIVE' && formEntity.fieldType=='CHECK_BOX'" class="form-group">
+                            <label ng-bind="formEntity.name"></label>
+                            <div class="row">
+                                <div ng-repeat="restrictValue in formEntity.restrictValues" class="col-md-3 col-sm-3 col-xs-3">
+                                    <label class="checkbox-inline">
+                                        <input ng-click="detail.selectCheckBox(restrictValue)" ng-checked="restrictValue.checkBoxValue" type="checkbox">{{restrictValue.name}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="formEntity.fieldState=='ACTIVE' && formEntity.fieldType=='TEXT_AREA'" class="form-group">
+                            <label ng-bind="formEntity.name"></label>
+                            <textarea ng-model="formEntity.description" class="form-control" rows="2"></textarea>
                         </div>
                         <div ng-if="formEntity.fieldState=='ACTIVE' && formEntity.fieldType=='BUTTON'">
-                            <button ng-click="detail.submitDetails()" class="btn mainAdminBtn">{{formEntity.name}}</button>
+                            <button ng-click="detail.submitDetails(entity)" class="btn addPatientBtn buttonsInInpatientModal">{{formEntity.name}}</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
