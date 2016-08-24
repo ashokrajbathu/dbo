@@ -26,6 +26,10 @@
                         <input ng-model="addTemplate.fieldName" type="text" class="form-control" id="exampleInputFieldName" placeholder="Field Name">
                     </div>
                     <div class="form-group">
+                        <label for="exampleInputFieldHeaderName">*New Field Header Name</label>
+                        <input ng-model="addTemplate.fieldHeaderName" type="text" class="form-control" id="exampleInputFieldHeaderName" placeholder="New Field Header Name">
+                    </div>
+                    <div class="form-group">
                         <form class="form-inline">
                             <div class="form-group">
                                 <div class="dropdown">
@@ -51,6 +55,18 @@
                             </div>
                         </form>
                     </div>
+                    <!-- <div class="form-group">
+                        <label for="exampleSectionTableFields">Section Table Header Fields:</label>
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <input ng-model="addTemplate.tableHeaderFields" type="text" class="form-control" id="exampleInputTableHeaderFields" placeholder="Table Header Fields">
+                                <button ng-click="addTemplate.addHeaderFields()" type="submit" class="btn addPatientBtn buttonsInInpatientModal">Add</button>
+                                <div class="form-group">
+                                    <textarea ng-model="addTemplate.addedTableHeaderFields" id="addedHeaderTextArea" class="form-control" rows="3" placeholder="Added Header Fields"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div> -->
                     <button type="submit" ng-click="addTemplate.addField()" class="btn addPatientBtn buttonsInInpatientModal">Save</button>
                 </form>
             </div>

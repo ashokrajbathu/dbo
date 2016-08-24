@@ -155,6 +155,7 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
                 var intakeEventsList = [];
                 var outputEventsList = [];
                 var transferEventsList = [];
+                var templatesEventsList = [];
                 $log.log('events response is----', eventsResponseIs);
                 angular.forEach(eventsResponseIs, function(patientEventEntity) {
                     patientEventEntity.referenceDetails = angular.fromJson(patientEventEntity.referenceDetails);
@@ -173,6 +174,9 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
                     if (patient.id == patientEventEntity.patientId && patientEventEntity.state == 'ACTIVE' && patientEventEntity.patientEventType == 'PATIENT_DETAILS' && patientEventEntity.referenceDetails.type == 'OUTPUT_RECORD') {
                         outputEventsList.push(patientEventEntity);
                     }
+                    if (patient.id == patientEventEntity.patientId && patientEventEntity.state == 'ACTIVE' && patientEventEntity.patientEventType == 'PATIENT_DETAILS' && patientEventEntity.referenceDetails.type == 'TEMPLATE_PATIENTDETAILS') {
+                        templatesEventsList.push(patientEventEntity);
+                    }
                     if (patient.id == patientEventEntity.patientId && patientEventEntity.state == 'ACTIVE' && patientEventEntity.patientEventType == 'ROOM_TRANSFERRED') {
                         if (_.has(patientEventEntity, 'referenceDetails.type')) {
                             patientEventEntity.roomTransferDate = patientEventEntity.creationTime;
@@ -186,6 +190,7 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
                 dboticaServices.setIntakeEvents(intakeEventsList);
                 dboticaServices.setOutputEvents(outputEventsList);
                 dboticaServices.setTransfersArray(transferEventsList);
+                dboticaServices.setTemplatePatientDetails(templatesEventsList);
                 $log.log('transfer events list is---', transferEventsList);
             }
         }, function(eventsError) {

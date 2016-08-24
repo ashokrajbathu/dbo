@@ -8,14 +8,18 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     addTemplate.fieldTypesList = [{ 'fieldName': '---Select Field Type---' }, { 'fieldName': 'TEXTBOX' }, { 'fieldName': 'CHECKBOX' }, { 'fieldName': 'DROPDOWN' }, { 'fieldName': 'TEXTAREA' }, { 'fieldName': 'BUTTON' }]
     addTemplate.sectionName = '';
     addTemplate.fieldName = '';
+    addTemplate.fieldHeaderName = '';
     addTemplate.sectionNameDiv = false;
     addTemplate.showDropdownDiv = false;
     addTemplate.selectFieldType = selectFieldType;
     addTemplate.addField = addField;
     addTemplate.addNewDropdownField = addNewDropdownField;
     addTemplate.selectSectionName = selectSectionName;
+    addTemplate.addHeaderFields = addHeaderFields;
     var selectedFieldTypeIs = '';
     addTemplate.addedFieldsForDropdown = '';
+    addTemplate.addedTableHeaderFields = '';
+    addTemplate.tableHeaderFields = '';
     addTemplate.sectionNamesList = [];
     addTemplate.sectionObjectsList = [];
     var initialSectionName = '---Select Section Name---';
@@ -82,7 +86,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
 
     function addField() {
         $log.log('kjsdkjs----', addTemplate.sectionName);
-        if (addTemplate.sectionName !== '' && addTemplate.sectionName !== initialSectionName && addTemplate.fieldName !== '' && addTemplate.fieldType !== selectFieldTypeString) {
+        if (addTemplate.sectionName !== '' && addTemplate.sectionName !== initialSectionName && addTemplate.fieldName !== '' && addTemplate.fieldType !== selectFieldTypeString && addTemplate.fieldHeaderName !== '') {
             var addFieldRequestEntity = {};
             addFieldRequestEntity.organizationId = organizationId;
             addFieldRequestEntity.name = 'template';
@@ -90,6 +94,8 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
             addFieldRequestEntity.visibility = 'ACTIVE';
             addFieldRequestEntity.templateFields = [];
             var templateFieldObject = {};
+            templateFieldObject.tableHeaders = [];
+            templateFieldObject.headerFieldName = addTemplate.fieldHeaderName;
             templateFieldObject.fieldType = selectedFieldTypeIs;
             templateFieldObject.fieldState = 'ACTIVE';
             templateFieldObject.mandatory = true;
@@ -126,6 +132,13 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
             templateFieldObject.name = addTemplate.fieldName;
             templateFieldObject.sectionName = addTemplate.sectionName;
             addFieldRequestEntity.templateFields.push(templateFieldObject);
+            /*var tableHeaders = [];
+            tableHeaders = _.split(addTemplate.addedTableHeaderFields, ',');
+            angular.forEach(tableHeaders, function(headerEntity) {
+                var localHeaderObject = {};
+                localHeaderObject.headerField = headerEntity;
+                templateFieldObject.tableHeaders.push(localHeaderObject);
+            });*/
             $log.log('req is----', addFieldRequestEntity);
             var addFieldPromise = dboticaServices.addFieldRequest(addFieldRequestEntity);
             $log.log('promise is------', addFieldPromise);
@@ -164,5 +177,17 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
             addTemplate.sectionName = sectionEntity.sectionName;
             addTemplate.sectionNameDiv = false;
         }
+    }
+
+    function addHeaderFields() {
+        if (addTemplate.addedTableHeaderFields == '') {
+            addTemplate.addedTableHeaderFields += addTemplate.tableHeaderFields;
+            addTemplate.tableHeaderFields = '';
+        } else {
+            addTemplate.addedTableHeaderFields += ',';
+            addTemplate.addedTableHeaderFields += addTemplate.tableHeaderFields;
+            addTemplate.tableHeaderFields = '';
+        }
+
     }
 }

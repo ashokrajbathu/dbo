@@ -14,6 +14,8 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
     var localActiveTemplatesList = [];
     var localSortedTemplatesList = [];
     var localSortedObjects = [];
+    var templatePatientDetailsListSetter = [];
+    detail.templateEventsList = [];
     detail.patient = {};
 
     var getTemplatesPromise = dboticaServices.getAllTemplates(organizationId, 'template', true);
@@ -34,6 +36,7 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
                 var localTemplatesArray = [];
                 angular.forEach(activeTemplatesList, function(localActiveTemplateEntity) {
                     if (activeTemplateEntity.templateFields[0].sectionName == localActiveTemplateEntity.templateFields[0].sectionName) {
+                        localActiveTemplateEntity.templateFields[0].createdTime = localActiveTemplateEntity.creationTime;
                         localSortedArray.push(localActiveTemplateEntity.templateFields[0]);
                         localSortedObjects.push(localActiveTemplateEntity);
                     }
@@ -51,6 +54,23 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
                 var buttonIndex = _.findLastIndex(sortTempEntity, function(buttonCheckEntity) {
                     return buttonCheckEntity.fieldType == 'BUTTON';
                 });
+                sortTempEntity[0].tableHeaders = [];
+                angular.forEach(sortTempEntity, function(headerEntity) {
+                    var localHeader = {};
+                    if (headerEntity.headerFieldName !== 'Button') {
+                        localHeader.headerField = headerEntity.headerFieldName;
+                        sortTempEntity[0].tableHeaders.push(localHeader);
+                    }
+                });
+                var maxTimeObject = _.maxBy(sortTempEntity, function(sortTimeEntity) {
+                    return sortTimeEntity.createdTime;
+                });
+                var maxTimeIndex = _.findLastIndex(sortTempEntity, function(sortIndexEntity) {
+                    return sortIndexEntity.createdTime == maxTimeObject.createdTime;
+                });
+                if (maxTimeIndex !== undefined && maxTimeIndex !== -1) {
+                    sortTempEntity[maxTimeIndex].maxTimeFlag = true;
+                }
                 if (buttonIndex !== undefined && buttonIndex !== -1) {
                     var templateButtonObject = {};
                     angular.copy(sortTempEntity[buttonIndex], templateButtonObject);
@@ -60,7 +80,6 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
             });
             angular.copy(localSortedTemplatesList, detail.formsList);
             $log.log('after sorting array is-----', localSortedTemplatesList);
-
         }
     }, function(getTemplatesError) {
         dboticaServices.noConnectivityError();
@@ -68,10 +87,16 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
 
     function getData() {
         detail.patient = dboticaServices.getPatientDetailsFromService();
+        detail.templateEventsList = [];
+        detail.templateEventsList = dboticaServices.getTemplatePatientDetails();
+        $log.log('templates are---', detail.templateEventsList);
+        if (detail.templateEventsList !== templatePatientDetailsListSetter) {
+            angular.copy(detail.templateEventsList, templatePatientDetailsListSetter);
+        }
         return true;
     }
 
-    function submitDetails(submitEntity) {
+    function submitDetails(submitEntity, index) {
         $log.log('in submit details');
         $log.log('first name is---', submitEntity);
         $log.log('inpatient is----', detail.patient);
@@ -88,6 +113,9 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
             patientDetailsRequestEntity.alertTime = '';
             patientDetailsRequestEntity.referenceId = '';
             var patientDetails = {};
+            patientDetails.type = 'TEMPLATE_PATIENTDETAILS';
+            patientDetails.sectionName = submitEntity[0].sectionName;
+            patientDetails.detailsArray = [];
             angular.forEach(submitEntity, function(entity) {
                 var localEntity = {};
                 angular.copy(entity, localEntity);
@@ -96,18 +124,31 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
                     case 'TEXT_BOX':
                     case 'DROPDOWN':
                     case 'TEXT_AREA':
-                        patientDetails[localEntity.name] = localEntity.description;
+                        var entity = {};
+                        entity.nameOfSection = submitEntity[0].sectionName;
+                        entity.headerNameToTag = localEntity.headerFieldName;
+                        entity.displayField = localEntity.description;
+                        patientDetails.detailsArray.push(entity);
                         break;
                     case 'CHECK_BOX':
                         var checkArray = [];
+                        var checkEntity = {};
                         angular.forEach(entity.restrictValues, function(restrictIs) {
                             if (restrictIs.checkBoxValue) {
                                 checkArray.push(restrictIs.name);
                             }
                         });
-                        patientDetails[localEntity.name] = _.join(checkArray, ',');
+                        checkEntity.nameOfSection = submitEntity[0].sectionName;
+                        checkEntity.headerNameToTag = localEntity.headerFieldName;
+                        checkEntity.displayField = _.join(checkArray, ',');
+                        patientDetails.detailsArray.push(checkEntity);
                         break;
                     case 'BUTTON':
+                        var buttonEntity = {};
+                        buttonEntity.nameOfSection = submitEntity[0].sectionName;
+                        buttonEntity.displayField = '';
+                        buttonEntity.headerNameToTag = localEntity.headerFieldName;
+                        patientDetails.detailsArray.push(buttonEntity);
                         break;
                 }
             });
@@ -124,10 +165,20 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
                 } else {
                     var patientDetailsResponse = angular.fromJson(patientDetailsSuccess.data.response);
                     $log.log('patient response is-----', patientDetailsResponse);
+                    if (errorCode == null && patientDetailsSuccess.data.success) {
+                        patientDetailsResponse.referenceDetails = angular.fromJson(patientDetailsResponse.referenceDetails);
+                        detail.templateEventsList.unshift(patientDetailsResponse);
+                        dboticaServices.setTemplatePatientDetails(detail.templateEventsList);
+                        dboticaServices.templateDetailsSuccessSwal();
+                        angular.element('#addPatientDetails' + index).modal('hide');
+                    }
                 }
             }, function(patientDetailsError) {
                 dboticaServices.noConnectivityError();
             });
+        } else {
+            angular.element('#addPatientDetails' + index).modal('hide');
+            dboticaServices.pleaseSelectPatientSwal();
         }
     }
 

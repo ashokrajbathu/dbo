@@ -21,6 +21,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     var patientsArray = [];
     var progressNotePatientEvents = [];
     var vitalSignPatientEvents = [];
+    var templatePatientEvents = [];
     var selectedPatient = {};
     var itemSelected, longDate;
     var intakeEvents = [];
@@ -2167,6 +2168,23 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         editedString = _.lowerFirst(descriptionName);
         editedString = _.replace(editedString, ' ', '');
         return editedString;
+    }
+
+    this.setTemplatePatientDetails = function(value) {
+        templatePatientEvents = value;
+    }
+
+    this.getTemplatePatientDetails = function() {
+        return templatePatientEvents;
+    }
+
+    this.templateDetailsSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Details Successfully Updated!!",
+            type: "success",
+            confirmButtonText: "OK"
+        });
     }
 
 }]);
