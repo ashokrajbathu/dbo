@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="bootstrap/css/animate.min.css" />
     <link rel='stylesheet' href='bootstrap/css/font-awesome.min.css' />
     <link rel='stylesheet' href='bootstrap/css/linecons.min.css' />
+    <link rel='stylesheet' href='assets/css/careerMain.css' />
     <link href='bootstrap/css/fontcss1.css' rel='stylesheet' type='text/css'>
     <link href='bootstrap/css/fontcss2.css' rel='stylesheet' type='text/css'>
     <link href='bootstrap/css/fontcss3.css' rel='stylesheet' type='text/css'>
@@ -62,6 +63,12 @@
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="bootstrap/js/blocs.min.js"></script>
     <script src="bootstrap/js/jqBootstrapValidation.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.migrate.js"></script>
+    <script src="assets/js/PageClass.js"></script>
+    <script src="assets/js/AgentClass.js"></script>
+    <script src="assets/js/IndexClass.js"></script>
+    <script src="assets/js/typer.js"></script>
     <script src="bootstrap/js/formHandler.js"></script>
     <script>
     (function(i, s, o, g, r, a, m) {
@@ -116,11 +123,11 @@
                 <!--//navbar-header-->
                 <div id="navbar-collapse" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active nav-item"><a href="index.html">Home</a></li>
+                        <li class="nav-item"><a href="index.html">Home</a></li>
                         <li class="nav-item"><a href="features.html">Features</a></li>
                         <li class="nav-item"><a href="download.html">Download</a></li>
                         <li class="nav-item"><a href="pricing.html">Pricing for Hospitals</a></li>
-                        <li class="nav-item"><a href="careers.html">Careers</a></li>
+                        <li class="active nav-item"><a href="careers.html">Careers</a></li>
                         <!--//dropdown-->
                         <li class="nav-item nav-item-cta last"><a class="btn btn-cta btn-cta-secondary" href="login.html">Log in</a></li>
                     </ul>
@@ -133,266 +140,214 @@
         <!--//container-->
     </header>
     <!--//header-->
-    <div class="bg-slider-wrapper">
-        <div class="flexslider bg-slider">
-            <ul class="slides">
-                <li class="slide slide-1"></li>
-                <li class="slide slide-2"></li>
-                <li class="slide slide-3"></li>
-            </ul>
-        </div>
+    <div class="headline-bg about-headline-bg">
     </div>
-    <!--//bg-slider-wrapper-->
-    <section class="promo section section-on-bg">
-        <div class="container text-center">
-            <br/>
-            <h2 class="title">SKIP. NO. PILLS.</h2>
-            <p class="intro">Dbotica - Helping millions turn their smartphone into a <u>Health wallet</u>. It helps users to track and maintain their <u>Medical History</u> virtually. Users can get automated notifications and reminders for taking prescribed Medicines.
-            </p>
-            <p><a class="btn btn-cta btn-cta-primary" target="_blank" href="https://play.google.com/store/apps/details?id=com.dbotica.patient"><i class="fa fa-android"></i> Download the App</a></p>
-            <button type="button" class="play-trigger btn-link " data-toggle="modal" data-target="#modal-video"><i class="fa fa-youtube-play"></i> Watch the video</button>
+    <!--//headline-bg-->
+    <!-- ******Video Section****** -->
+    <section class="story-section section section-on-bg">
+        <div class="intro-text title container text-center">We're looking for passionate <span data-typer-targets="Backend Developers,Frontend Developers,Data Operators,Sales Executives">backend developers</span>.</div>
+        <div class="story-container container text-center constant-padding">
+            <div class="story-container-inner">
+                <div class="about">
+                    <p>Dbotica - Helping millions turn their smartphone into a Health wallet. It helps users to track and maintain their Medical History virtually. Users can get automated notifications and reminders for taking prescribed medicines from the doctor. It is a new age technology that is providing a comprehensive and economical healthcare solution to users. We are putting together a rockstar team of smart and self-driven people on various leadership roles.</p>
+
+                            <!-- For Desktop -->
+                            <div class="hidden-xs">
+                                <div class="row outer">
+                                    <div class="inner">
+                                        <h1 class="text1">Mission</h1>
+                                        <h4>Dbotica seeks to add convenience in healthcare by standardizing the healthcare process through regulatory compliance and revolutionazing medical health records.</h4>
+                                    </div>
+                                    <div class="inner align">
+                                        <img src="assets/images/team/mission.png">
+                                    </div>
+                                </div>
+                                <div class="row outer">
+                                    <div class="inner">
+                                        <h1 class="text1">Vision</h1>
+                                        <h4>Dbotica seeks to conduct business by maintaining innovation in the product and keeping software as a service, as a driver.</h4>
+                                    </div>
+                                    <div class="inner align">
+                                        <img src="assets/images/team/vision.png">
+                                    </div>
+                                </div>
+                                <div class="row outer">
+                                    <div class="inner">
+                                        <h1 class="text1">Culture</h1>
+                                        <h4>Dbotica maintains it's cultural fit first and foremost. Fitting into that culture is the most important thing we look for hiring. Happy employees, leads to happy customers</h4>
+                                    </div>
+                                    <div class="inner align">
+                                        <img src="assets/images/team/culture.png">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- For Mobiles -->
+                            <div class="hidden-sm hidden-md hidden-lg">
+                                <div class="row mobile">
+                                    <div class="col-xs-12">
+                                        <img src="assets/images/team/mission.png">
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <h1 class="heading">Mission</h1>
+                                        <h4 class="subheading">Dbotica seeks to add convenience in healthcare by standardizing the healthcare process through regulatory compliance and revolutionazing medical health records.</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <img class="mrgn-top" src="assets/images/team/vision.png">
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <h1 class="heading">Vision</h1>
+                                        <h4 class="subheading">Dbotica seeks to conduct business by maintaining innovation in the product and keeping software as a service, as a driver.</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <img class="mrgn-top" src="assets/images/team/culture.png">
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <h1 class="heading">Culture</h1>
+                                        <h4 class="subheading rmv-mrgn">Dbotica maintains it's cultural fit first and foremost. Fitting into that culture is the most important thing we look for hiring. Happy employees, leads to happy customers</h4>
+                                    </div>
+                                </div>
+                            </div>
+                      
+                    <blockquote class="belife">“It doesn’t make sense to hire smart people and tell them what to do, We hire smart people so they can tell what to do” - Steve Jobs
+                    </blockquote>
+                </div>
+                <!--//about-->
+                <div class="team row">
+                    <h3 class="title">Explore Opportunities</h3>
+                    <div class="member col-md-4 col-sm-6 col-xs-12">
+                        <div class="member-inner">
+                            <figure class="profile">
+                               
+                                <figcaption class="info">
+                                    <span class="name">Backend Developer</span>
+                                    <br />
+                                    <span class="job-title">Java-Spring/MongoDB/AWS</span>
+                                </figcaption>
+                            </figure>
+                            <!--//profile-->
+                            <div class="social">
+                                <ul class="social-list list-inline">
+                                    <li><a href=""><i class="fa fa-forward"></i></a></li>
+                                </ul>
+                                <!--//social-list-->
+                            </div>
+                            <!--//social-->
+                        </div>
+                        <!--//member-inner-->
+                    </div>
+                    <!--//member-->
+                    <div class="member col-md-4 col-sm-6 col-xs-12">
+                        <div class="member-inner">
+                            <figure class="profile">
+                                
+                                <figcaption class="info"><span class="name">Front-End Developer</span>
+                                    <br /><span class="job-title">AngularJS/HTML5/CSS3</span></figcaption>
+                            </figure>
+                            <!--//profile-->
+                            <div class="social">
+                                <ul class="social-list list-inline">
+                                    <li><a target="_blank" href="https://angel.co/dbotica/jobs/126738-front-end-engineer"><i class="fa fa-forward"></i></a></li>
+                                </ul>
+                                <!--//social-list-->
+                            </div>
+                            <!--//social-->
+                        </div>
+                        <!--//member-inner-->
+                    </div>
+                    <!--//member-->
+                    <div class="member col-md-4 col-sm-6 col-xs-12">
+                        <div class="member-inner">
+                            <figure class="profile">
+                                
+                                <figcaption class="info"><span class="name">Designer</span>
+                                    <br /><span class="job-title">Product UI/UX Designer</span></figcaption>
+                            </figure>
+                            <!--//profile-->
+                            <div class="social">
+                                <ul class="social-list list-inline">
+                                    <li><a target="_blank" href="https://angel.co/dbotica/jobs/165588-designer"><i class="fa fa-forward"></i></a></li>
+                                </ul>
+                                <!--//social-list-->
+                            </div>
+                            <!--//social-->
+                        </div>
+                        <!--//member-inner-->
+                    </div>
+                    <!--//member-->
+                    <div class="member col-md-4 col-sm-6 col-xs-12">
+                        <div class="member-inner">
+                            <figure class="profile">
+                                
+                                <figcaption class="info"><span class="name">Customer Relations</span>
+                                    <br /><span class="job-title">Customer Relations Executives</span></figcaption>
+                            </figure>
+                            <!--//profile-->
+                            <div class="social">
+                                <ul class="social-list list-inline">
+                                    <li><a href=""><i class="fa fa-forward"></i></a></li>
+                                </ul>
+                                <!--//social-list-->
+                            </div>
+                            <!--//social-->
+                        </div>
+                        <!--//member-inner-->
+                    </div>
+                    <!--//member-->
+                    <div class="member col-md-4 col-sm-6 col-xs-12">
+                        <div class="member-inner">
+                            <figure class="profile">
+                                
+                                <figcaption class="info"><span class="name">Sales Executive</span>
+                                    <br /><span class="job-title">B2B/B2C</span></figcaption>
+                            </figure>
+                            <!--//profile-->
+                            <div class="social">
+                                <ul class="social-list list-inline">
+                                    <li><a href=""><i class="fa fa-forward"></i></a></li>
+                                </ul>
+                                <!--//social-list-->
+                            </div>
+                            <!--//social-->
+                        </div>
+                        <!--//member-inner-->
+                    </div>
+                    <!--//member-->
+                    <div class="member col-md-4 col-sm-6 col-xs-12">
+                        <div class="member-inner">
+                            <figure class="profile">
+                            
+                                <figcaption class="info"><span class="name">Data Operators</span>
+                                    <br /><span class="job-title">Dbotica's ERP System</span></figcaption>
+                            </figure>
+                            <!--//profile-->
+                            <div class="social">
+                                <ul class="social-list list-inline">
+                                    <li><a href=""><i class="fa fa-forward"></i></a></li>
+                                </ul>
+                                <!--//social-list-->
+                            </div>
+                            <!--//social-->
+                        </div>
+                        <!--//member-inner-->
+                    </div>
+                    <!--//member-->
+                </div>
+                <!--//team-->
+                <div class="press-kit text-center">
+                    <a class="btn btn-cta btn-cta-secondary" target="_blank" href="https://angel.co/dbotica/jobs"><i class="fa fa-angellist" aria-hidden="true"></i></a>
+                    <a class="btn btn-cta btn-cta-secondary" target="_blank" href="https://linkedin.com/company/dbotica"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                </div>
+                <!--//press-kit-->
+            </div>
+            <!--//story-container-->
         </div>
         <!--//container-->
     </section>
-    <div class="sections-wrapper">
-        <!-- ******Why Section****** -->
-        <section id="why" class="section why">
-            <div class="container">
-                <h2 class="title text-center">How Can Dbotica Help You?</h2>
-                <p class="intro text-center">We're providing economical and digital healthcare solutions!</p>
-                <div class="row item">
-                    <div class="content col-xs-12 col-md-4">
-                        <h3 class="title">Getting the right doctor, No confusion anymore</h3>
-                        <div class="desc">
-                            <p>Search and find local Doctors without any further ado and book appointments for diagnosis, treatment or a simple advice - we do have it all. Seek out for the best professionals with the complementary Health wallet that the medical word has to offer on 'Dbotica'.</p>
-                            <p></p>
-                        </div>
-                        <div class="quote">
-                            <div class="quote-profile">
-                                <img class="img-responsive img-circle" src="assets/images/people/people_vivek.png" alt="">
-                            </div>
-                            <!--//profile-->
-                            <div class="quote-content">
-                                <blockquote>
-                                    <p><a href="https://twitter.com/dbotica_labs" target="_blank">@dbotica_labs</a> Love it! Thank you for making my life easier and saving me time! I’ll definitely recommend it to my friends. :)</p>
-                                </blockquote>
-                                <p class="source"><i class="fa fa-twitter"></i>@vivek2500, New Delhi</p>
-                            </div>
-                            <!--//quote-content-->
-                        </div>
-                        <!--//quote-->
-                    </div>
-                    <!--//content-->
-                    <figure class="figure col-md-offset-1 col-sm-offset-0 col-xs-offset-0 col-xs-12 col-md-7">
-                        <img class="img-responsive" src="assets/images/figures/figure-1.png">
-                        <div class="control text-center">
-                            <button type="button" class="play-trigger" data-toggle="modal" data-target="#modal-video"><i class="fa fa-play"></i></button>
-                        </div>
-                        <figcaption class="figure-caption">(Reliable Doctor Booking Platform) </figcaption>
-                    </figure>
-                </div>
-                <!--//item-->
-                <div class="row item">
-                    <div class="content col-md-push-8 col-sm-push-0 col-xs-push-0 col-xs-12 col-md-4">
-                        <h3 class="title">Medicine Intake Reminder System</h3>
-                        <div class="desc">
-                            <p>Dbotica reminds users about their medicine intakes using uploaded prescriptions by text messages and push notifications. This application reminds users every time about their pill intake and upcomming sessions without manually entering.</p>
-                        </div>
-                        <div class="quote">
-                            <div class="quote-profile">
-                                <img class="img-responsive img-circle" src="assets/images/people/people_prachi.png" alt="">
-                            </div>
-                            <!--//profile-->
-                            <div class="quote-content">
-                                <blockquote>
-                                    <p><a href="twitter.com/dbotica_labs">@dbotica_labs</a> Cool! It helped me remember my medicines routine. Daily! :D</p>
-                                </blockquote>
-                                <p class="source"><i class="fa fa-twitter"></i>@prachishringi, Sydney</p>
-                            </div>
-                            <!--//quote-content-->
-                        </div>
-                        <!--//quote-->
-                    </div>
-                    <!--//content-->
-                    <figure class="figure col-md-pull-4 col-sm-pull-0 col-xs-pull-0 col-xs-12 col-md-7">
-                        <img class="img-responsive" src="assets/images/figures/figure-4.png" alt="">
-                        <div class="control text-center">
-                        </div>
-                        <!--//control-->
-                    </figure>
-                </div>
-                <!--//item-->
-                <div class="row item ">
-                    <div class="content col-xs-12 col-md-4">
-                        <h3 class="title">Comprehensive Patient Management System</h3>
-                        <div class="desc">
-                            <p>A comprehensive patient management tool for the doctors. In which they can check booking schedules, update patient details.</p>
-                            <p>Our Hospital Management System includes various tools such as inventory management, doctor management, patient management to help organise everything.</p>
-                        </div>
-                        <div class="quote">
-                            <div class="quote-profile">
-                                <img class="img-responsive img-circle" src="assets/images/people/people_lavina.png" alt="">
-                            </div>
-                            <!--//profile-->
-                            <div class="quote-content">
-                                <blockquote>
-                                    <p>Easy to use! It's very helpful in managing patients and updating medical prescriptions.</p>
-                                </blockquote>
-                                <p class="source"><a href="#">Lavina Sharma - Head of Operations</a>, Bengaluru Smiles</p>
-                            </div>
-                            <!--//quote-content-->
-                        </div>
-                        <!--//quote-->
-                    </div>
-                    <!--//content-->
-                    <figure class="figure col-md-offset-1 col-sm-offset-0 col-xs-offset-0 col-xs-12 col-md-7">
-                        <img class="img-responsive" src="assets/images/figures/figure-3.png" alt="">
-                    </figure>
-                </div>
-                <!--//item-->
-                <div class="row item">
-                    <div class="content col-md-push-8 col-sm-push-0 col-xs-push-0 col-xs-12 col-md-4">
-                        <h3 class="title">Electronic Medical Records for Clinics and Hospitals</h3>
-                        <div class="desc">
-                            <p>Freedom to Doctors form the hassle of maintaining patient medical records. Writing prescription on dbotica is as simple as writing on the pad. Doctors can access the patients records whenever and wherever they want.</p>
-                            <p><i class="fa fa-forward"></i> <a href="download.html">Go to Login Page</a></p>
-                        </div>
-                        <div class="quote">
-                            <div class="quote-profile">
-                                <img class="img-responsive img-circle" src="assets/images/people/people_ashwani.png" alt="">
-                            </div>
-                            <!--//profile-->
-                            <div class="quote-content">
-                                <blockquote>
-                                    <p>The value creation by Dbotica in healthcare is enormous. Medicine Intake Reminder System helps doctors to get directly in touch with patient.</p>
-                                </blockquote>
-                                <p class="source">Dr. Ashwani Garg, Forus Health Pvt. Ltd.</p>
-                            </div>
-                            <!--//quote-content-->
-                        </div>
-                        <!--//quote-->
-                    </div>
-                    <!--//content-->
-                    <figure class="figure col-md-pull-4 col-sm-pull-0 col-xs-pull-0 col-xs-12 col-md-7">
-                        <img class="img-responsive" src="assets/images/figures/figure-2.png" alt="">
-                        <div class="control text-center">
-                        </div>
-                        <!--//control-->
-                    </figure>
-                </div>
-                <!--//item-->
-            </div>
-            <!--//container-->
-        </section>
-        <!--//why-->
-        <!-- ******Testimonials Section****** -->
-        <section class="section testimonials">
-            <div class="container">
-                <h2 class="title text-center">What are people saying about Dbotica?</h2>
-                <div id="testimonials-carousel" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        <li data-target="#testimonials-carousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#testimonials-carousel" data-slide-to="1" class=""></li>
-                        <li data-target="#testimonials-carousel" data-slide-to="2" class=""></li>
-                        <li data-target="#testimonials-carousel" data-slide-to="3" class=""></li>
-                        <li data-target="#testimonials-carousel" data-slide-to="4" class=""></li>
-                    </ol>
-                    <!--//carousel-indicators-->
-                    <div class="carousel-inner">
-                        <div class="item active">
-                            <figure class="profile"><img src="assets/images/people/people_ishant.png" alt=""></figure>
-                            <div class="content">
-                                <blockquote>
-                                    <i class="fa fa-quote-left"></i>
-                                    <p>India is moving towards digitalization, it's good to see someone taking a step towards Healthcare. All the best guys!</p>
-                                </blockquote>
-                                <p class="source">Ishant Kohli
-                                    <br><span class="title">BDM, Oceania, SE Asia</span></p>
-                            </div>
-                            <!--//content-->
-                        </div>
-                        <!--//item-->
-                        <div class="item">
-                            <figure class="profile"><img src="assets/images/people/people_deepa.png" alt=""></figure>
-                            <div class="content">
-                                <blockquote>
-                                    <i class="fa fa-quote-left"></i>
-                                    <p>I am very excited about MRS - Medication Intake Reminder System, which has recieved great reviews and proven to be great hit among all the class of patient at HCG.</p>
-                                </blockquote>
-                                <p class="source">Deepanjali Dummi
-                                    <br><span class="title">Head of Health Information Management - HealthCare Global, Bengaluru</span></p>
-                            </div>
-                            <!--//content-->
-                        </div>
-                        <!--//item-->
-                        <div class="item">
-                            <figure class="profile"><img src="assets/images/people/people_chandra.png" alt=""></figure>
-                            <div class="content">
-                                <blockquote>
-                                    <i class="fa fa-quote-left"></i>
-                                    <p>Dbotica helped us in improving the hospital's workflow, reducing the medication error and ultimately benifitting patient outcomes and promoting evidence based practice.</p>
-                                </blockquote>
-                                <p class="source">Dr. Chandraprabha
-                                    <br><span class="title">BAMS - Ayurvedic Doctor - Healing Earth Multi Speciality Ayurveda Hospital, Bengaluru</span></p>
-                            </div>
-                            <!--//content-->
-                        </div>
-                        <!--//item-->
-                        <div class="item">
-                            <figure class="profile"><img src="assets/images/people/people_prashant.png" alt=""></figure>
-                            <div class="content">
-                                <blockquote>
-                                    <i class="fa fa-quote-left"></i>
-                                    <p>Health tech is blazing hot right now and customer driven Healthcare companies like Dbotica can change the face of healthcare as we know.</p>
-                                </blockquote>
-                                <p class="source">Prashant Jain
-                                    <br><span class="title">Entreprenuer, COO - CroFarm Pvt. Ltd.</span></p>
-                            </div>
-                            <!--//content-->
-                        </div>
-                        <!--//item-->
-                        <div class="item">
-                            <figure class="profile"><img src="assets/images/people/people_vish.png" alt=""></figure>
-                            <div class="content">
-                                <blockquote>
-                                    <i class="fa fa-quote-left"></i>
-                                    <p>Information technology has made significant contributions to the world, with the increased use of EMR, physicians and patients both are seeing the benifits that the new medical technologies are bringing.</p>
-                                </blockquote>
-                                <p class="source">Vish Srinivasan
-                                    <br><span class="title">Senior Director - GlobalFoundries, Singapore</span></p>
-                            </div>
-                            <!--//content-->
-                        </div>
-                        <!--//item-->
-                    </div>
-                    <!--//carousel-inner-->
-                </div>
-                <!--//carousel-->
-            </div>
-            <!--//container-->
-        </section>
-        <!--//testimonials-->
-        <!-- ******Press Section****** -->
-        <!--//press-->
-        <!-- ******CTA Section****** -->
-        <section id="cta-section" class="section cta-section text-center home-cta-section">
-            <div class="container">
-                <h2 class="title">More than <span class="counting">10,000</span> users have skipped no pills using Dbotica</h2>
-                <p class="intro"></p>
-                <div class="form-container">
-                    <h3><p class="intro">Help yourself! #SkipNoPills</p></h3>
-                    <form class="signup-form navbar-form">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Enter your Phone Number">
-                        </div>
-                        <button type="submit" class="btn btn-cta btn-cta-primary">Get App</button>
-                    </form>
-                </div>
-            </div>
-            <!--//container-->
-        </section>
-        <!--//cta-section-->
-    </div>
+    <!--//story-video-->
     <!-- ******FOOTER****** -->
     <footer class="footer">
         <div class="footer-content">
@@ -523,27 +478,6 @@
         <!--//bottom-bar-->
     </footer>
     <!--//footer-->
-    <!-- Video Modal -->
-    <div class="modal modal-video" id="modal-video" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 id="videoModalLabel" class="modal-title sr-only">Video Tour</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="video-container">
-                        <iframe id="vimeo-video" src="http://player.vimeo.com/video/179865118?color=ffffff&amp;wmode=transparent" width="720" height="405" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                    </div>
-                    <!--//video-container-->
-                </div>
-                <!--//modal-body-->
-            </div>
-            <!--//modal-content-->
-        </div>
-        <!--//modal-dialog-->
-    </div>
-    <!--//modal-->
     <!-- Javascript -->
     <script type="text/javascript" src="assets/plugins/jquery-1.12.3.min.js"></script>
     <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
@@ -553,9 +487,6 @@
     <script type="text/javascript" src="assets/plugins/FitVids/jquery.fitvids.js"></script>
     <script type="text/javascript" src="assets/plugins/flexslider/jquery.flexslider-min.js"></script>
     <script type="text/javascript" src="assets/js/main.js"></script>
-    <!-- Vimeo video API -->
-    <script src="http://a.vimeocdn.com/js/froogaloop2.min.js"></script>
-    <script type="text/javascript" src="assets/js/vimeo.js"></script>
 </body>
 
 </html>

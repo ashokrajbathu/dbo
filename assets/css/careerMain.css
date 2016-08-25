@@ -1,0 +1,522 @@
+body, h1, h2, h3, h4, h5, h6 {
+    font-family: Celias, Helvetica, sans-serif !important
+}
+
+.cover .outer, .grid .pdng, .team {
+    position: relative
+}
+
+.about .inner, .cover .inner {
+    vertical-align: middle;
+    text-align: center
+}
+
+#slider, .about, .about .inner, .cover .inner, .drop-mail, .team {
+    text-align: center
+}
+
+body {
+    line-height: 1.42857143;
+    font-weight: 400;
+    padding-top: 0 !important
+}
+
+section {
+    padding: 80px 0
+}
+
+.cover .outer {
+    display: table;
+    width: 100%;
+    height: 100%;
+    -webkit-background-position: center;
+    -moz-background-position: center;
+    -o-background-position: center;
+    background-position: center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    border-bottom: 1px solid #eee;
+    top: 0
+}
+
+.quo:after, .quo:before {
+    width: 20px;
+    content: "";
+    opacity: .4
+}
+
+.cover .inner {
+    background-color: rgba(0, 0, 0, .4);
+    display: table-cell;
+    background-size: cover;
+    height: 73vh;
+    color: #fff
+}
+
+.quo:after, .quo:before, .team span {
+    display: inline-block
+}
+
+.cover .inner h1 {
+    font-size: 44px;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-transform: uppercase
+}
+
+.cover .inner h4 {
+    font-size: 18px;
+    line-height: 21px;
+    font-weight: 500;
+    color: #fff
+}
+
+.quo:before {
+    background: url(../../careers/images/careers/open-quote.png) no-repeat;
+    height: 20px;
+    background-size: auto 10px;
+    margin-right: 2px
+}
+
+.quo:after {
+    background: url(../../careers/images/careers/close-quote.png) no-repeat;
+    height: 15px;
+    background-size: auto 10px;
+    margin-left: 5px
+}
+
+.grid {
+    background-color: #f8f8f8;
+    padding-bottom: 120px
+}
+
+.grid h4.subheading {
+    margin-bottom: 70px
+}
+
+.grid .row {
+    margin-top: 0;
+    padding: 0 5px
+}
+
+.grid .space {
+    border: 12px solid #f8f8f8
+}
+
+.grid .img1, .grid .img2 {
+    border-bottom: 0
+}
+
+.grid .pdng {
+    padding: 0
+}
+
+.grid .img1 {
+    background-position: center;
+    background-size: cover;
+    height: 480px;
+    background-color: rgba(0, 0, 0, .1)
+}
+
+.grid .img2, .grid .img3 {
+    background-position: center;
+    background-size: cover;
+    height: 240px;
+    background-color: rgba(0, 0, 0, .1)
+}
+
+.team {
+    padding: 118px 0
+}
+
+.team p {
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.8em;
+    margin-bottom: 1em
+}
+
+.team .quote {
+    width: 50px;
+    opacity: .2;
+    margin-bottom: 1.8em
+}
+
+.team .teamImg img {
+    webkit-transition: all .2s linear;
+    moz-transition: opacity .2s linear;
+    o-transition: opacity .2s linear;
+    transition: all .2s linear;
+    width: 70px;
+    opacity: .5
+}
+
+.openings_card .card, .openings_card .card h3 {
+    webkit-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out
+}
+
+
+.team .teamImg img.zeroOpacity {
+    opacity: 1
+}
+
+.team .teamImg img:hover {
+    transform: scale(1.6);
+    opacity: 1;
+    cursor: pointer
+}
+
+.transformImg {
+    transform: scale(1.6)
+}
+
+.team h4 {
+    font-size: 16px;
+    color: #666;
+    font-weight: 400;
+    margin-bottom: 7em
+}
+
+.team .info h4 {
+    margin: 40px 0 0;
+    font-size: 14px;
+    color: #000;
+    opacity: 1 !important;
+    line-height: 1.4em
+}
+
+.about h1.heading {
+    margin-bottom: 1em
+}
+
+.about .mrgn-btm {
+    margin-bottom: 3em
+}
+
+.about .outer {
+    display: table;
+    width: 100%
+}
+
+.about .inner {
+    display: table-cell;
+    height: 220px;
+    width: 50%
+}
+
+.about .inner .text1 {
+    margin-top: 5px;
+    font-size: 18px;
+    font-weight: 500
+}
+
+.about .inner.align {
+    width: 40% !important
+}
+
+.about h4 {
+    max-width: 350px;
+    margin: 20px auto 0;
+    font-size: 16px;
+    color: #999;
+    line-height: 1.7em
+}
+
+.about img {
+    width: 155px
+}
+
+.about .rmv-mrgn {
+    margin-bottom: 0
+}
+
+.openings_card {
+    background-color: #f8f8f8
+}
+
+.openings_card .card {
+    padding: 40px 10px;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #666;
+    border: 1px solid #eee;
+    moz-transition: all .2s ease-in-out;
+    o-transition: all .2s ease-in-out;
+    background-color: #fff
+}
+
+.openings_card .card:hover {
+    cursor: pointer;
+    color: #333;
+    box-shadow: rgba(0, 0, 0, .1) 0 0 40px
+}
+
+.openings_card .card:hover h3 {
+    font-weight: 400
+}
+
+.openings_card .card h3 {
+    margin: 10px 0;
+    line-height: 1.3em;
+    font-size: 18px;
+    font-weight: 400;
+    color: #000
+}
+
+.openings_card .card h4 {
+    FONT-SIZE: 14px;
+    line-height: 1.5em;
+    margin: 0 0 25px;
+    font-weight: 400;
+    padding: 0 15px
+}
+
+.openings_card .card .open-position {
+    color: #e96125;
+    font-size: 16px
+}
+
+#slider h4, .drop-mail {
+    color: #666;
+    font-size: 14px
+}
+
+.card img {
+    width: 20px
+}
+
+#slider, #slider li {
+    position: relative;
+    width: 320px;
+    height: 300px
+}
+
+.drop-mail {
+    padding-top: 0;
+    line-height: 1.6em;
+    margin: 2em 0;
+    font-weight: 400
+}
+
+.mobileTestimonial {
+    padding-bottom: 0
+}
+
+.pdng0 {
+    padding: 0 0 20px
+}
+
+#slider {
+    margin: auto;
+    overflow: hidden;
+    padding: 20px;
+    border-radius: 10px
+}
+
+#slider li {
+    float: left;
+    display: inline-block
+}
+
+#slider ul {
+    list-style: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 9000px;
+    transition: left .3s linear;
+    -moz-transition: left .3s linear;
+    -o-transition: left .3s linear;
+    -webkit-transition: left .3s linear;
+    color: #666;
+    -webkit-animation: slide-animation 15s infinite
+}
+
+.slider-container {
+    margin: 0 auto;
+    padding: 0;
+    width: 320px
+}
+
+@-webkit-keyframes slide-animation {
+    0% {
+        opacity: 0
+    }
+
+    2% {
+        opacity: 1
+    }
+
+    20% {
+        left: 0;
+        opacity: 1
+    }
+
+    22.5% {
+        opacity: .6
+    }
+
+    25%, 45% {
+        left: -320px;
+        opacity: 1
+    }
+
+    47.5% {
+        opacity: .6
+    }
+
+    50%, 70% {
+        left: -640px;
+        opacity: 1
+    }
+
+    72.5% {
+        opacity: .6
+    }
+
+    75% {
+        left: -960px;
+        opacity: 1
+    }
+
+    95% {
+        opacity: 1
+    }
+
+    98% {
+        left: -960px;
+        opacity: 0
+    }
+
+    100% {
+        left: 0;
+        opacity: 0
+    }
+}
+
+#slider ul:hover {
+    -moz-animation-play-state: paused;
+    -webkit-animation-play-state: paused
+}
+
+#slider p {
+    margin: 30px auto 15px;
+    font-size: 14px;
+    color: #999;
+    line-height: 1.7em;
+    max-width: 300px
+}
+
+@media only screen and (max-width :769px) {
+    section {
+        padding: 50px 0
+    }
+
+    .cover .inner {
+        height: 80vh
+    }
+
+    .cover .inner h1 {
+        font-size: 26px;
+        margin-bottom: 15px;
+        line-height: 1.5em
+    }
+
+    .cover .inner h4 {
+        font-size: 16px
+    }
+
+    .about .outer {
+        margin: 0
+    }
+
+    .about .inner {
+        width: 50%;
+        padding: 0 2%
+    }
+
+    .about .inner.align {
+        width: 25%
+    }
+
+    .about img.mrgn-top {
+        margin-top: 50px
+    }
+
+    .about h1.heading {
+        margin-bottom: -10px
+    }
+
+    .about h4 {
+        font-size: 14px
+    }
+
+    .grid {
+        padding-bottom: 50px
+    }
+
+    .grid h4.subheading {
+        margin-bottom: 50px
+    }
+
+    .grid .img1 {
+        height: 380px;
+        width: 100%
+    }
+
+    .grid .img2, .grid .img3 {
+        height: 160px;
+        width: 50%;
+        float: left
+    }
+
+    .grid .space {
+        border: 5px solid #f8f8f8
+    }
+
+    .team {
+        padding: 4.5em 0 2.5em
+    }
+
+    .team .quote-text {
+        margin-bottom: 3em;
+        max-width: 300px
+    }
+}
+
+@media only screen and (max-width :480px) {
+    .openings_card {
+        padding: 3.5em 0
+    }
+
+    .team .circle {
+        width: 100px;
+        height: 100px
+    }
+
+    .scroll-down {
+        display: none
+    }
+
+    .openings_card .card {
+        margin: 0 10px 25px;
+        padding: 20px 10px
+    }
+
+    .cover .inner {
+        height: 385px
+    }
+
+    #slider {
+        padding: 20px 0;
+        width: 310px;
+        left: -15px
+    }
+}
+
+
