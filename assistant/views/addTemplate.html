@@ -14,6 +14,8 @@
                                         <a class="doctorsListInBill" ng-bind="sectionEntity.sectionName"></a>
                                     </li>
                                 </ul>
+                                <span ng-click="addTemplate.changeSectionDetails()" ng-if="addTemplate.editSectionDetails"><a class="doctorsListInBill">Edit Fields</a></span>
+                                <!-- <span><a class="doctorsListInBill">Edit Section Name</a></span> -->
                             </div>
                         </div>
                     </form>
@@ -21,15 +23,15 @@
                         <label for="exampleInputSectionName">*Section Name</label>
                         <input ng-model="addTemplate.sectionName" type="text" class="form-control" id="exampleInputSectionName" placeholder="Section Name">
                     </div>
-                    <div class="form-group">
+                    <div ng-if="addTemplate.newFieldName" class="form-group">
                         <label for="exampleInputFieldName">*New Field Name</label>
                         <input ng-model="addTemplate.fieldName" type="text" class="form-control" id="exampleInputFieldName" placeholder="Field Name">
                     </div>
-                    <div class="form-group">
+                    <div ng-if="addTemplate.newFieldHeaderName" class="form-group">
                         <label for="exampleInputFieldHeaderName">*New Field Header Name</label>
                         <input ng-model="addTemplate.fieldHeaderName" type="text" class="form-control" id="exampleInputFieldHeaderName" placeholder="New Field Header Name">
                     </div>
-                    <div class="form-group">
+                    <div ng-if="addTemplate.fieldTypeDiv" class="form-group">
                         <form class="form-inline">
                             <div class="form-group">
                                 <div class="dropdown">
@@ -44,16 +46,35 @@
                             </div>
                         </form>
                     </div>
+                    <div ng-if="addTemplate.labelsDropdownDiv" class="form-group">
+                        <label for="exampleLabels">Select Label From Dropdown</label>
+                        <div class="dropdown">
+                            <button id="labelBtn" style="font-weight:700;" class="btn dropdown-toggle docDropdownInInpatient roomDropdowns roomTypeDropdown" type="button" data-toggle="dropdown">{{addTemplate.activeLabelName}}<span class="caret" id="labelCaret"></span></button>
+                            <ul id="labelDropdownDiv" class="dropdown-menu">
+                                <li ng-click="addTemplate.editFieldNames(labelEntity)" ng-repeat="labelEntity in addTemplate.actveSectionLabels">
+                                    <a class="doctorsListInBill" ng-bind="labelEntity.name"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div ng-if="addTemplate.selectedLabelName" class="form-group">
+                        <label for="exampleSelectedLabel">Selected Label Name</label>
+                        <input ng-model="addTemplate.labelNameToEdit" type="text" class="form-control" id="exampleSelectedLabel" placeholder="Selected Label Name">
+                    </div>
+                    <div ng-if="addTemplate.selectedLabelHeaderField" class="form-group">
+                        <label for="exampleSelectedLabelHeader">Selected Label Header Name</label>
+                        <input ng-model="addTemplate.labelHeaderToEdit" type="text" class="form-control" id="exampleSelectedLabelHeader" placeholder="Selected Label Header Name">
+                    </div>
                     <div ng-if="addTemplate.showDropdownDiv" class="form-group">
-                        <form class="form-inline">
-                            <div class="form-group">
+                        <!-- <form class="form-inline"> -->
+                        <!-- <div class="form-group">
                                 <input ng-model="addTemplate.newDropdownFieldText" type="text" class="form-control" id="exampleInputName2" placeholder="Add Dropdown Fields">
                             </div>
-                            <button ng-click="addTemplate.addNewDropdownField()" type="submit" class="btn addPatientBtn buttonsInInpatientModal">Add</button>
-                            <div class="form-group">
-                                <textarea ng-model="addTemplate.addedFieldsForDropdown" id="dropdownAddedFieldsTextArea" class="form-control" columns="5" rows="3" placeholder="Added Fields"></textarea>
-                            </div>
-                        </form>
+                            <button ng-click="addTemplate.addNewDropdownField()" type="submit" class="btn addPatientBtn buttonsInInpatientModal">Add</button> -->
+                        <!--  <div style="width:100%;" class="form-group"> -->
+                        <textarea ng-model="addTemplate.addedFieldsForDropdown" id="dropdownAddedFieldsTextArea" class="form-control" columns="5" rows="3" placeholder="Added Fields(Add Fields seperating with ,)"></textarea>
+                        <!--  </div> -->
+                        <!--  </form> -->
                     </div>
                     <!-- <div class="form-group">
                         <label for="exampleSectionTableFields">Section Table Header Fields:</label>

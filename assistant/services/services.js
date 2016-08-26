@@ -2187,4 +2187,13 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.fieldDetailsUpdateSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Field Details Updated Successfully!!",
+            type: "success",
+            confirmButtonText: "OK"
+        })
+    }
+
 }]);

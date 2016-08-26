@@ -103,7 +103,8 @@
 }
 
 #fieldTypeCaret,
-#sectionNameCaret {
+#sectionNameCaret,
+#labelCaret {
     position: absolute;
     left: 230px;
     top: 36%;
@@ -178,13 +179,15 @@
 }
 
 #fieldTypeBtn,
-#sectionNameBtn {
+#sectionNameBtn,
+#labelBtn {
     padding-top: 1px;
     width: 250px !important;
 }
 
 #fieldTypeDropDown,
-#sectionNameDropDown {
+#sectionNameDropDown,
+#labelDropdownDiv {
     margin-top: -6px !important;
     width: 250px !important;
 }
@@ -192,11 +195,4 @@
 #dropdownAddedFieldsTextArea,
 #addedHeaderTextArea {
     margin-top: 8px;
-}
-
-@media only screen and (min-width:768px) {
-    #dropdownAddedFieldsTextArea,
-    #addedHeaderTextArea {
-        width: 330px;
-    }
 }
