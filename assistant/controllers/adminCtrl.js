@@ -188,6 +188,9 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
         } else {
             adminElement.testsListFlag = false;
             adminElement.tableFlag = false;
+            adminElement.testDuration = false;
+            adminElement.roomDropDown = false;
+            adminElement.admin.servicesListOfTheDoctor = [];
             adminElement.admin.serviceInDropDown = selectService;
             adminElement.admin.doctorInDropdown = doctor.firstName + ' ' + doctor.lastName;
             adminElement.admin.procedureName = false;
@@ -200,7 +203,9 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
             } else {
                 adminElement.admin.servicesListOfTheDoctor = [];
             }
-            adminElement.tableFlag = true;
+            if (!adminElement.roomDropDown) {
+                adminElement.tableFlag = true;
+            }
         }
     }
 

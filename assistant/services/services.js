@@ -9,6 +9,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     var patientName = "";
     var doctorName = "";
     var editedString = '';
+    var templateName = '';
     var medicineNames, doctorsListArray = [];
     var testsList = [];
     var testsNameList = [];
@@ -2178,6 +2179,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return templatePatientEvents;
     }
 
+
     this.templateDetailsSuccessSwal = function() {
         swal({
             title: "Success",
@@ -2193,7 +2195,34 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             text: "Field Details Updated Successfully!!",
             type: "success",
             confirmButtonText: "OK"
-        })
+        });
+    }
+
+    this.newTemplateSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "New Template Added Successfully!!",
+            type: "success",
+            confirmButtonText: "OK"
+        });
+    }
+
+    this.addTemplateNameSwal = function() {
+        swal({
+            title: "Error",
+            text: "Please Enter Template Name",
+            type: "error",
+            confirmButtonText: "OK"
+        });
+    }
+
+    this.selectTemplateSwal = function() {
+        swal({
+            title: "Error",
+            text: "Please Select Template Name",
+            type: "error",
+            confirmButtonText: "OK"
+        });
     }
 
 }]);

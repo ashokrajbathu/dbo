@@ -9,18 +9,41 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
     nurseHome.patientSearchWithPhoneNumber = patientSearchWithPhoneNumber;
     nurseHome.patientEventSelect = patientEventSelect;
     nurseHome.patientSelectFromTheList = patientSelectFromTheList;
+    nurseHome.patientEventFromtemplates = patientEventFromtemplates;
     nurseHome.patientDetails = {};
     nurseHome.patientDetails.name = '';
     nurseHome.patientSearchBtnDisabled = true;
     nurseHome.PhoneNumberErrorMessage = false;
     nurseHome.patientsListToBeDisplayed = [];
+    nurseHome.templatesList = [];
     nurseHome.patientEventName = 'Patient Medication';
     var organizationId = localStorage.getItem('orgId');
     $rootScope.patientMedication = false;
+    $scope.templateFlag = false;
+    $scope.activeTemplate = {};
+    $scope.activeTemplateFields = [];
 
     var billInvoice = {};
     dboticaServices.setInvoice(billInvoice);
 
+    var getTemplatesPromise = dboticaServices.getAllTemplates(organizationId, '', true);
+    getTemplatesPromise.then(function(getTemplatesSuccess) {
+        var errorCode = getTemplatesSuccess.data.errorCode;
+        if (errorCode) {
+            dboticaServices.logoutFromThePage(errorCode);
+        } else {
+            var getTemplatesResponse = angular.fromJson(getTemplatesSuccess.data.response);
+            $log.log('get response is------', getTemplatesResponse);
+            if (errorCode == null && getTemplatesSuccess.data.success) {
+                nurseHome.templatesList = _.filter(getTemplatesResponse, function(getEntity) {
+                    return getEntity.state == 'ACTIVE';
+                });
+                $log.log('skjdskj ----', nurseHome.templatesList);
+            }
+        }
+    }, function(getTemplatesError) {
+        dboticaServices.noConnectivityError();
+    });
 
     function phoneNumberLengthValidation() {
         var phoneNumber = nurseHome.number;
@@ -129,6 +152,34 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
                 break;
         }
     }
+
+    function patientEventFromtemplates(eventEntity) {
+        nurseHome.patientEventName = eventEntity.name;
+        $scope.activeTemplate = eventEntity;
+        $scope.templateName = eventEntity.name;
+        $scope.templateFlag = !$scope.templateFlag;
+        elementWatcher();
+    }
+
+    function elementWatcher() {
+        $scope.$watch('$scope.templateFlag', function() {
+            $scope.activeTemplate = {};
+            var localActiveObject = {};
+            var activeTemplateIndex = _.findLastIndex(nurseHome.templatesList, function(templateEntity) {
+                return templateEntity.name == $scope.templateName;
+            });
+            angular.copy(nurseHome.templatesList[activeTemplateIndex], localActiveObject);
+            angular.forEach(localActiveObject.templateFields, function(activeEntity, key, value) {
+                if (activeEntity.fieldState == 'INACTIVE') {
+                    localActiveObject.templateFields.splice(key, 1);
+                }
+            });
+            $scope.activeTemplateFields = _.partition(localActiveObject.templateFields, 'sectionName');
+            angular.copy(localActiveObject, $scope.activeTemplate);
+        });
+    }
+
+
 
     function patientSelectFromTheList(patient) {
         $log.log('patient selected is------', patient);

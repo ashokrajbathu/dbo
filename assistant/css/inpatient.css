@@ -144,6 +144,11 @@
     top: 45%;
 }
 
+.caretCss {
+    margin-top: 10px;
+    float: right;
+}
+
 .dropdownInModalInpatient:hover,
 .docDropdownInInpatient:hover,
 .docDropdownInInpatient:active,
@@ -180,16 +185,18 @@
 
 #fieldTypeBtn,
 #sectionNameBtn,
-#labelBtn {
+#labelBtn,
+#newSectionBtn {
     padding-top: 1px;
-    width: 250px !important;
+    width: 270px !important;
 }
 
 #fieldTypeDropDown,
 #sectionNameDropDown,
-#labelDropdownDiv {
+#labelDropdownDiv,
+#sectionNameInModal {
     margin-top: -6px !important;
-    width: 250px !important;
+    width: 270px !important;
 }
 
 #dropdownAddedFieldsTextArea,

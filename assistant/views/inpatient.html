@@ -22,7 +22,7 @@
                                     <label for="examplePatientSelect">Patient Select</label>
                                     <div class="dropdown">
                                         <button style="width:100%;" class="btn dropdownInModalInpatient dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.patientName}}
-                                            <span id="caretInInpatient" class="caret"></span></button>
+                                            <span id="caretInInpatient0" class="caret caretCss"></span></button>
                                         <ul class="dropdown-menu">
                                             <li ng-click="inpatient.patientSelectFromDropdown(patient)" ng-repeat="patient in inpatient.patientsListOfThatNumber">
                                                 <a style="cursor:pointer;" ng-bind="patient.firstName"></a>
@@ -236,7 +236,7 @@
                     <div class="dropdownInRoomsSection row">
                         <div class="col-md-6">
                             <div id="doctorCategoryDropdown" class="dropdown">
-                                <button style="width:100%;" class="docDropdownInInpatient roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorCategoryName}}<span id="caretRoomType" class="caret"></span></button>
+                                <button style="width:100%;" class="docDropdownInInpatient roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorCategoryName}}<span id="caretRoomType0" class="caret caretCss"></span></button>
                                 <ul class="dropdown-menu">
                                     <li ng-click="inpatient.selectedDoctorCategory(doctorCategory)" ng-repeat="doctorCategory in inpatient.activeDoctorCategoriesList">
                                         <a style="cursor:pointer;" ng-bind="doctorCategory.doctorType"></a>
@@ -246,7 +246,7 @@
                         </div>
                         <div class="col-md-6">
                             <div id="doctorNameDropdown" class="dropdown">
-                                <button style="width:100%;" class="docDropdownInInpatient roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorNameInPatient}}<span id="caretRoomTypeStatus" class="caret"></span></button>
+                                <button style="width:100%;" class="docDropdownInInpatient roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.doctorNameInPatient}}<span id="caretRoomTypeStatus0" class="caret caretCss"></span></button>
                                 <ul class="dropdown-menu">
                                     <li ng-click="inpatient.selectedDoctorname(doctorEntity)" ng-repeat="doctorEntity in inpatient.activeDoctorsListToBeDisplayed">
                                         <a style="cursor:pointer;" ng-bind="doctorEntity.doctor.firstName"></a>
@@ -265,7 +265,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div id="roomCategoryDropdown" class="dropdown">
-                                <button style="width:100%;" class="docDropdownInInpatient roomDropdowns roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.roomCategoryName}}<span id="caretRoomCategoryType" class="caret"></span></button>
+                                <button style="width:100%;" class="docDropdownInInpatient roomDropdowns roomTypeDropdown dropdown-toggle" type="button" data-toggle="dropdown">{{inpatient.roomCategoryName}}<span id="caretRoomCategoryType0" class="caret caretCss"></span></button>
                                 <ul class="dropdown-menu">
                                     <li ng-click="inpatient.selectedRoomCategory(roomCategory)" ng-repeat="roomCategory in inpatient.activeRoomsList">
                                         <a style="cursor:pointer;" ng-bind="roomCategory.organizationRoomCategory.roomType"></a>
