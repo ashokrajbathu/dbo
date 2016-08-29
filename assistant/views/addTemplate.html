@@ -89,5 +89,36 @@
                 </form>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-11 col-sm-11 col-xs-12">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>S.No.</th>
+                            <th>Template Name</th>
+                            <th>Section Name</th>
+                            <th>Field Name</th>
+                            <th>Field Type</th>
+                            <th>Field Elements</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="sectionEntity in addTemplate.sectionElementsList">
+                            <td ng-bind="$index+1"></td>
+                            <td ng-bind="sectionEntity.templateName"></td>
+                            <td ng-bind="sectionEntity.sectionName"></td>
+                            <td ng-bind="sectionEntity.name"></td>
+                            <td ng-bind="sectionEntity.fieldType|removeunderscore"></td>
+                            <td></td>
+                            <td>
+                                <a class="doctorsListInBill">Edit</a>|
+                                <a class="doctorsListInBill">Delete</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

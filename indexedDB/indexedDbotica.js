@@ -155,7 +155,6 @@ function syncAllDrugsToIndexedDB() {
                 withCredentials: true
             },
             success: function(response) {
-
                 var data = $.parseJSON(response.response);
                 //console.log("In sync drugs: " + response.totalCount + " " + data.length);
                 var drugObjectStore = getObjectStore(DB_DRUG_STORE, "readwrite");

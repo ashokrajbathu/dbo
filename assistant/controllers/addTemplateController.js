@@ -31,6 +31,8 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     addTemplate.addedFieldsForDropdown = '';
     addTemplate.newSectionName = '';
     addTemplate.newLabelName = '';
+    addTemplate.sectionElementsList = [];
+    var localActiveSectionsFields = [];
 
     addTemplate.selectTemplate = selectTemplate;
     addTemplate.addNewTemplate = addNewTemplate;
@@ -51,6 +53,16 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
             if (errorCode == null && getTemplateSuccess.data.success) {
                 addTemplate.templatesList = _.filter(getTemplateResponse, function(entity) {
                     return entity.state == 'ACTIVE';
+                });
+                angular.copy(addTemplate.templatesList, localActiveSectionsFields);
+                angular.forEach(localActiveSectionsFields, function(template) {
+                    angular.forEach(template.templateFields, function(fieldEntity, key, value) {
+                        if (fieldEntity.fieldState == 'ACTIVE') {
+                            fieldEntity.elementId = template.id;
+                            fieldEntity.templateName = template.name;
+                            addTemplate.sectionElementsList.push(fieldEntity);
+                        }
+                    });
                 });
                 addTemplate.templatesList.push(newTemplateObject);
                 addTemplate.templatesList.unshift(selectTemplateObject);
