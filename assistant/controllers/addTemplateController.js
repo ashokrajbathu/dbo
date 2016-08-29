@@ -36,7 +36,12 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     addTemplate.newSectionName = '';
     addTemplate.newLabelName = '';
     addTemplate.sectionElementsList = [];
+    addTemplate.sectionElementsListToDisplay = [];
     var localActiveSectionsFields = [];
+    var entitiesArray = [];
+    var displayArray = [];
+    addTemplate.itemsPerPage = 2;
+    addTemplate.currentPage = 1;
 
     addTemplate.selectTemplate = selectTemplate;
     addTemplate.addNewTemplate = addNewTemplate;
@@ -45,6 +50,8 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     addTemplate.selectSectionnameInModal = selectSectionnameInModal;
     addTemplate.addEntityToTemplate = addEntityToTemplate;
     addTemplate.editAnElement = editAnElement;
+    addTemplate.pageChanged = pageChanged;
+    addTemplate.deleteAnElement = deleteAnElement;
 
     var getTemplatesPromise = dboticaServices.getAllTemplates(organizationId, '', true);
     $log.log('get promise is-----------', getTemplatesPromise);
@@ -59,28 +66,23 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
                 addTemplate.templatesList = _.filter(getTemplateResponse, function(entity) {
                     return entity.state == 'ACTIVE';
                 });
+                $log.log('temps list----', addTemplate.templatesList);
                 angular.copy(addTemplate.templatesList, localActiveSectionsFields);
                 angular.forEach(localActiveSectionsFields, function(template) {
                     angular.forEach(template.templateFields, function(fieldEntity, key, value) {
                         if (fieldEntity.fieldState == 'ACTIVE') {
+                            fieldEntity.keyValue = key;
                             fieldEntity.elementId = template.id;
                             fieldEntity.templateName = template.name;
-                            if (fieldEntity.fieldType == 'CHECK_BOX') {
-                                var fieldValues = [];
-
-                                fieldEntity.elementValues = _.join(fieldValues, ',');
-                            }
-                            if (fieldEntity.fieldType == 'DROPDOWN') {
-                                var fieldValues = [];
-                                angular.forEach(fieldEntity.restrictValues, function(restEntity) {
-                                    fieldValues.push(restEntity.value);
-                                });
-                                fieldEntity.elementValues = _.join(fieldValues, ',');
-                            }
+                            fieldEntity.elementValues = dboticaServices.getStringValues(fieldEntity.restrictValues, fieldEntity.fieldType);
                             addTemplate.sectionElementsList.push(fieldEntity);
                         }
                     });
                 });
+                addTemplate.totalItems = addTemplate.sectionElementsList.length;
+                angular.copy(addTemplate.sectionElementsList, entitiesArray);
+                displayArray = _.chunk(entitiesArray, addTemplate.itemsPerPage);
+                angular.copy(displayArray[0], addTemplate.sectionElementsListToDisplay);
                 addTemplate.templatesList.push(newTemplateObject);
                 addTemplate.templatesList.unshift(selectTemplateObject);
             }
@@ -208,9 +210,11 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
                 var requestEntity = {};
                 requestEntity.templateFields = [];
                 var check = false;
+                var newSectionFlag = false;
                 angular.copy(activeTemplate, requestEntity);
                 var templateFieldObject = {};
                 if (addTemplate.sectionNameToDisplay == 'New Section') {
+                    newSectionFlag = true;
                     templateFieldObject.sectionName = addTemplate.newSectionName;
                     check = addTemplate.newSectionName !== '' && addTemplate.newLabelName !== '' && addTemplate.fieldType !== '---Select Field Type---';
                 }
@@ -267,12 +271,39 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
                             var addSectionResponse = angular.fromJson(addSectionSuccess.data.response);
                             $log.log('response is------', addSectionResponse);
                             if (errorCode == null && addSectionSuccess.data.success) {
+                                var templateIndex = dboticaServices.getReqTemplate(localActiveSectionsFields, addSectionResponse);
+                                localActiveSectionsFields.splice(templateIndex, 1, addSectionResponse);
                                 dboticaServices.fieldDetailsUpdateSuccessSwal();
+                                var newField = addSectionResponse.templateFields.pop();
+                                if (newSectionFlag) {
+                                    addTemplate.sectionNamesList.splice(1, 0, newField);
+                                }
+                                newField.keyValue = entitiesArray.length;
+                                newField.elementId = addSectionResponse.id;
+                                newField.templateName = addSectionResponse.name;
+                                newField.elementValues = dboticaServices.getStringValues(newField.restrictValues, newField.fieldType);
+                                if (addTemplate.sectionElementsListToDisplay.length < addTemplate.itemsPerPage) {
+                                    addTemplate.sectionElementsListToDisplay.unshift(newField);
+                                    entitiesArray.push(newField);
+                                } else {
+                                    if (displayArray.length == addTemplate.currentPage || displayArray.length == parseInt(1)) {
+                                        addTemplate.sectionElementsListToDisplay = [];
+                                        addTemplate.currentPage = addTemplate.currentPage + 1;
+                                        addTemplate.sectionElementsListToDisplay.unshift(newField);
+                                    }
+                                    entitiesArray.unshift(newField);
+                                    if (addTemplate.sectionElementsListToDisplay.length == addTemplate.itemsPerPage && displayArray.length !== parseInt(1)) {
+                                        addTemplate.currentPage = 1;
+                                        displayArray = _.chunk(entitiesArray, addTemplate.itemsPerPage);
+                                        angular.copy(displayArray[0], addTemplate.sectionElementsListToDisplay);
+                                    }
+                                }
+                                displayArray = _.chunk(entitiesArray, addTemplate.itemsPerPage);
+                                addTemplate.totalItems = entitiesArray.length;
                                 addTemplate.newSectionName = '';
                                 addTemplate.newLabelName = '';
                                 addTemplate.newTemplateSection = false;
                                 addTemplate.showDropdownDiv = false;
-                                activeTemplate = {};
                                 addTemplate.sectionNameToDisplay = '-Select Section Name-';
                                 addTemplate.fieldType = '---Select Field Type---';
                             }
@@ -327,11 +358,25 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
                         if (errorCode == null && editTemplateSuccess.data.success) {
                             dboticaServices.editFieldSuccessSwal();
                             angular.element('#addNewFieldModal').modal('hide');
-                            var editIndex = _.findLastIndex(addTemplate.sectionElementsList, function(sectionEntity) {
+                            var templateIndex = dboticaServices.getReqTemplate(localActiveSectionsFields, editTemplateResponse);
+                            localActiveSectionsFields.splice(templateIndex, 1, editTemplateResponse);
+                            var editIndex = _.findLastIndex(entitiesArray, function(sectionEntity) {
                                 return sectionEntity.name == elementInTable.name && sectionEntity.fieldType == elementInTable.fieldType;
                             });
-                            addTemplate.sectionElementsList[editIndex].name = editTemplateResponse.templateFields[sectionElementIndex].name;
+                            entitiesArray[editIndex].name = editTemplateResponse.templateFields[sectionElementIndex].name;
+                            if (editTemplateResponse.templateFields[sectionElementIndex].fieldType == 'DROPDOWN') {
+                                var fieldValues = [];
+                                fieldValues = dboticaServices.getDropdownValues(editTemplateResponse.templateFields[sectionElementIndex].restrictValues);
+                                entitiesArray[editIndex].elementValues = _.join(fieldValues, ',');
+                            }
+                            if (editTemplateResponse.templateFields[sectionElementIndex].fieldType == 'CHECK_BOX') {
+                                var fieldValues = [];
+                                fieldValues = dboticaServices.getCheckBoxValues(editTemplateResponse.templateFields[sectionElementIndex].restrictValues);
+                                entitiesArray[editIndex].elementValues = _.join(fieldValues, ',');
+                            }
                         }
+                        displayArray = _.chunk(entitiesArray, addTemplate.itemsPerPage);
+                        angular.copy(displayArray[addTemplate.currentPage - 1], addTemplate.sectionElementsListToDisplay);
                     }
                 }, function(editTemplateError) {
                     dboticaServices.noConnectivityError();
@@ -355,15 +400,65 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
             addTemplate.addedFieldsForDropdown = elementToEdit.elementValues;
         }
         templateToEdit = {};
-        angular.forEach(addTemplate.templatesList, function(editEntity) {
-            if (editEntity.id == elementToEdit.elementId) {
-                angular.copy(editEntity, templateToEdit);
-            }
-        });
+        templateToEdit = dboticaServices.getTemplateId(addTemplate.templatesList, elementToEdit);
         sectionElementIndex = _.findLastIndex(templateToEdit.templateFields, function(resEntity) {
             return resEntity.name == elementToEdit.name && resEntity.fieldType == elementToEdit.fieldType;
         });
-        $log.log('template to edit is------', templateToEdit);
-        $log.log('index is------', sectionElementIndex);
+    }
+
+    function pageChanged() {
+        var requiredIndex = addTemplate.currentPage - 1;
+        displayArray = [];
+        displayArray = _.chunk(entitiesArray, addTemplate.itemsPerPage);
+        angular.copy(displayArray[requiredIndex], addTemplate.sectionElementsListToDisplay);
+    }
+
+    function deleteAnElement(elementToDelete, index) {
+        $log.log('element to delete-----', elementToDelete, index);
+        swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover Field Details!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: false
+            },
+            function() {
+                var deleteIndex;
+                var fieldToDeleteFromTemplateIndex = dboticaServices.getReqTemplateToDelete(localActiveSectionsFields, elementToDelete.elementId);
+                var templateObject = localActiveSectionsFields[fieldToDeleteFromTemplateIndex];
+                angular.forEach(templateObject.templateFields, function(templateFieldEntity, key, value) {
+                    if (templateFieldEntity.name == elementToDelete.name && templateFieldEntity.fieldType == elementToDelete.fieldType) {
+                        templateFieldEntity.fieldState = 'INACTIVE';
+                        deleteIndex = key;
+                    }
+                });
+                var deleteFieldPromise = dboticaServices.addFieldRequest(templateObject);
+                deleteFieldPromise.then(function(deleteFieldEntity) {
+                    var errorCode = deleteFieldEntity.data.errorCode;
+                    if (errorCode) {
+                        dboticaServices.logoutFromThePage(errorCode);
+                    } else {
+                        var deleteFieldResponse = angular.fromJson(deleteFieldEntity.data.response);
+                        if (errorCode == null && deleteFieldEntity.data.success) {
+                            var templateIndex = dboticaServices.getReqTemplate(localActiveSectionsFields, deleteFieldResponse);
+                            localActiveSectionsFields.splice(templateIndex, 1, deleteFieldResponse);
+                            var editIndex = _.findLastIndex(entitiesArray, function(sectionEntity) {
+                                return sectionEntity.name == elementToDelete.name && sectionEntity.fieldType == elementToDelete.fieldType;
+                            });
+                            addTemplate.sectionElementsListToDisplay.splice(index, 1);
+                            entitiesArray.splice(editIndex, 1);
+                            displayArray = _.chunk(entitiesArray, addTemplate.itemsPerPage);
+                            dboticaServices.deleteFieldSuccessSwal();
+                            addTemplate.totalItems = entitiesArray.length;
+                            angular.copy(displayArray[addTemplate.currentPage - 1], addTemplate.sectionElementsListToDisplay);
+                        }
+                    }
+                }, function(deleteFieldError) {
+                    dboticaServices.noConnectivityError();
+                });
+            }
+        );
     }
 }

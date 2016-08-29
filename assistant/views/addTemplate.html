@@ -104,8 +104,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="sectionEntity in addTemplate.sectionElementsList">
-                            <td ng-bind="$index+1"></td>
+                        <tr ng-repeat="sectionEntity in addTemplate.sectionElementsListToDisplay">
+                            <td ng-bind="$index+1+((addTemplate.currentPage-1)*addTemplate.itemsPerPage)"></td>
                             <td ng-bind="sectionEntity.templateName"></td>
                             <td ng-bind="sectionEntity.sectionName"></td>
                             <td ng-bind="sectionEntity.name"></td>
@@ -113,11 +113,12 @@
                             <td ng-bind="sectionEntity.elementValues"></td>
                             <td>
                                 <a ng-click="addTemplate.editAnElement(sectionEntity,$index)" class="doctorsListInBill">Edit</a>|
-                                <a class="doctorsListInBill">Delete</a>
+                                <a ng-click="addTemplate.deleteAnElement(sectionEntity,$index)" class="doctorsListInBill">Delete</a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                <uib-pagination class="pull-right" items-per-page="addTemplate.itemsPerPage" ng-change="addTemplate.pageChanged()" total-items="addTemplate.totalItems" ng-model="addTemplate.currentPage"></uib-pagination>
             </div>
         </div>
     </div>

@@ -175,6 +175,7 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
                 }
             });
             $scope.activeTemplateFields = _.partition(localActiveObject.templateFields, 'sectionName');
+            $log.log('$scope.active-----', $scope.activeTemplateFields);
             angular.copy(localActiveObject, $scope.activeTemplate);
         });
     }

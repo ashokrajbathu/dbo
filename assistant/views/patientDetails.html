@@ -6,7 +6,7 @@
     </ul>
     <div class="tab">
         <div id="contentOfPatientDetailsTab" class="tab-content activeTabContent">
-            <div ng-init="sectionIndex=$index" ng-repeat="section in activeTemplateFields track by $index">
+            <div ng-repeat="section in activeTemplateFields">
                 <div ng-repeat="sectionEntity in section track by $index">
                     <h4 ng-if="$index==0" ng-bind="sectionEntity.sectionName"></h4>
                     <hr ng-if="$index==0">

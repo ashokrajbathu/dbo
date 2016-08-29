@@ -2240,10 +2240,67 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
-    this.getCheckBoxValues = function(array) {
-        angular.forEach(fieldEntity.restrictValues, function(restEntity) {
-            fieldValues.push(restEntity.name);
+    this.deleteFieldSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Field Successfully deleted!!",
+            type: "success",
+            confirmButtonText: "OK"
         });
+    }
+
+
+    this.getStringValues = function(array, type) {
+        var fieldString = '';
+        if (type == 'CHECK_BOX') {
+            var fieldValues = [];
+            angular.forEach(array, function(restEntity) {
+                fieldValues.push(restEntity.name);
+            });
+            fieldString = _.join(fieldValues, ',');
+        }
+        if (type == 'DROPDOWN') {
+            var fieldValues = [];
+            angular.forEach(array, function(restEntity) {
+                fieldValues.push(restEntity.value);
+            });
+            fieldString = _.join(fieldValues, ',');
+        }
+        return fieldString;
+    }
+
+    this.getTemplateId = function(array, elementToEdit) {
+        var templateToEdit = {};
+        angular.forEach(array, function(editEntity) {
+            if (editEntity.id == elementToEdit.elementId) {
+                angular.copy(editEntity, templateToEdit);
+            }
+        });
+        return templateToEdit;
+    }
+
+    this.sectionIndex = function(templateToEdit, elementToEdit) {
+        var sectionElementIndex;
+        sectionElementIndex = _.findLastIndex(templateToEdit.templateFields, function(resEntity) {
+            return resEntity.name == elementToEdit.name && resEntity.fieldType == elementToEdit.fieldType;
+        });
+        return sectionElementIndex;
+    }
+
+    this.getReqTemplate = function(localActiveSectionsFields, editTemplateResponse) {
+        var index;
+        index = _.findLastIndex(localActiveSectionsFields, function(localEntity) {
+            return localEntity.id == editTemplateResponse.id;
+        });
+        return index;
+    }
+
+    this.getReqTemplateToDelete = function(localActiveSectionsFields, id) {
+        var index;
+        index = _.findLastIndex(localActiveSectionsFields, function(localEntity) {
+            return localEntity.id == id;
+        });
+        return index;
     }
 
 }]);
