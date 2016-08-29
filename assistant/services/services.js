@@ -2240,4 +2240,10 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.getCheckBoxValues = function(array) {
+        angular.forEach(fieldEntity.restrictValues, function(restEntity) {
+            fieldValues.push(restEntity.name);
+        });
+    }
+
 }]);

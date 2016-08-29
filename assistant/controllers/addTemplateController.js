@@ -10,7 +10,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     addTemplate.templatesList = [];
     var activeTemplate = {};
     var templateToEdit = {};
-    var elementIndexinTable;
+    var elementInTable;
     var sectionElementIndex;
     var selectFieldTypeString = '---Select Field Type---';
     addTemplate.newTemplateName = '';
@@ -67,9 +67,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
                             fieldEntity.templateName = template.name;
                             if (fieldEntity.fieldType == 'CHECK_BOX') {
                                 var fieldValues = [];
-                                angular.forEach(fieldEntity.restrictValues, function(restEntity) {
-                                    fieldValues.push(restEntity.name);
-                                });
+
                                 fieldEntity.elementValues = _.join(fieldValues, ',');
                             }
                             if (fieldEntity.fieldType == 'DROPDOWN') {
@@ -208,6 +206,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
         if (_.isEmpty(templateToEdit)) {
             if (addTemplate.sectionNameToDisplay !== '-Select Section Name-') {
                 var requestEntity = {};
+                requestEntity.templateFields = [];
                 var check = false;
                 angular.copy(activeTemplate, requestEntity);
                 var templateFieldObject = {};
@@ -328,6 +327,10 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
                         if (errorCode == null && editTemplateSuccess.data.success) {
                             dboticaServices.editFieldSuccessSwal();
                             angular.element('#addNewFieldModal').modal('hide');
+                            var editIndex = _.findLastIndex(addTemplate.sectionElementsList, function(sectionEntity) {
+                                return sectionEntity.name == elementInTable.name && sectionEntity.fieldType == elementInTable.fieldType;
+                            });
+                            addTemplate.sectionElementsList[editIndex].name = editTemplateResponse.templateFields[sectionElementIndex].name;
                         }
                     }
                 }, function(editTemplateError) {
@@ -338,7 +341,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     }
 
     function editAnElement(elementToEdit, index) {
-        elementIndexinTable = index;
+        elementInTable = elementToEdit;
         $log.log('element to edit is------', elementToEdit);
         angular.element('#addNewFieldModal').modal('show');
         addTemplate.selectSectionNameDiv = false;
