@@ -2205,6 +2205,12 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             type: "success",
             confirmButtonText: "OK"
         });
+        swal({
+            title: "Success",
+            text: "New Template Added Successfully!!",
+            type: "success",
+            confirmButtonText: "OK"
+        });
     }
 
     this.addTemplateNameSwal = function() {
@@ -2221,6 +2227,15 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             title: "Error",
             text: "Please Select Template Name",
             type: "error",
+            confirmButtonText: "OK"
+        });
+    }
+
+    this.editFieldSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Field Successfully updated!!",
+            type: "success",
             confirmButtonText: "OK"
         });
     }

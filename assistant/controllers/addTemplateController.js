@@ -9,8 +9,12 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     var selectTemplateObject = { 'name': '-Select Template Name-' };
     addTemplate.templatesList = [];
     var activeTemplate = {};
+    var templateToEdit = {};
+    var elementIndexinTable;
+    var sectionElementIndex;
     var selectFieldTypeString = '---Select Field Type---';
     addTemplate.newTemplateName = '';
+    addTemplate.selectSectionNameDiv = true;
     addTemplate.showDropdownDiv = false;
     addTemplate.templateName = false;
     addTemplate.addBtn = false;
@@ -40,6 +44,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     addTemplate.selectFieldType = selectFieldType;
     addTemplate.selectSectionnameInModal = selectSectionnameInModal;
     addTemplate.addEntityToTemplate = addEntityToTemplate;
+    addTemplate.editAnElement = editAnElement;
 
     var getTemplatesPromise = dboticaServices.getAllTemplates(organizationId, '', true);
     $log.log('get promise is-----------', getTemplatesPromise);
@@ -60,6 +65,20 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
                         if (fieldEntity.fieldState == 'ACTIVE') {
                             fieldEntity.elementId = template.id;
                             fieldEntity.templateName = template.name;
+                            if (fieldEntity.fieldType == 'CHECK_BOX') {
+                                var fieldValues = [];
+                                angular.forEach(fieldEntity.restrictValues, function(restEntity) {
+                                    fieldValues.push(restEntity.name);
+                                });
+                                fieldEntity.elementValues = _.join(fieldValues, ',');
+                            }
+                            if (fieldEntity.fieldType == 'DROPDOWN') {
+                                var fieldValues = [];
+                                angular.forEach(fieldEntity.restrictValues, function(restEntity) {
+                                    fieldValues.push(restEntity.value);
+                                });
+                                fieldEntity.elementValues = _.join(fieldValues, ',');
+                            }
                             addTemplate.sectionElementsList.push(fieldEntity);
                         }
                     });
@@ -121,8 +140,14 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     }
 
     function addNewFieldModal() {
+        templateToEdit = {};
         if (!_.isEmpty(activeTemplate)) {
             angular.element('#addNewFieldModal').modal('show');
+            addTemplate.selectSectionNameDiv = true;
+            addTemplate.newTemplateSection = false;
+            addTemplate.newLabelSection = false;
+            addTemplate.fieldTypeDropdown = false;
+            addTemplate.showDropdownDiv = false;
             var sectionObjectsList = _.filter(activeTemplate.templateFields, function(templateEntity) {
                 if (templateEntity.fieldState == 'ACTIVE') {
                     return templateEntity;
@@ -180,86 +205,162 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
 
     function addEntityToTemplate() {
         $log.log('template active is-----', activeTemplate);
-        if (addTemplate.sectionNameToDisplay !== '-Select Section Name-') {
-            var requestEntity = {};
-            var check = false;
-            angular.copy(activeTemplate, requestEntity);
-            var templateFieldObject = {};
-            if (addTemplate.sectionNameToDisplay == 'New Section') {
-                templateFieldObject.sectionName = addTemplate.newSectionName;
-                check = addTemplate.newSectionName !== '' && addTemplate.newLabelName !== '' && addTemplate.fieldType !== '---Select Field Type---';
+        if (_.isEmpty(templateToEdit)) {
+            if (addTemplate.sectionNameToDisplay !== '-Select Section Name-') {
+                var requestEntity = {};
+                var check = false;
+                angular.copy(activeTemplate, requestEntity);
+                var templateFieldObject = {};
+                if (addTemplate.sectionNameToDisplay == 'New Section') {
+                    templateFieldObject.sectionName = addTemplate.newSectionName;
+                    check = addTemplate.newSectionName !== '' && addTemplate.newLabelName !== '' && addTemplate.fieldType !== '---Select Field Type---';
+                }
+                if (addTemplate.sectionNameToDisplay !== 'New Section' && addTemplate.sectionNameToDisplay !== '-Select Section Name-') {
+                    templateFieldObject.sectionName = addTemplate.sectionNameToDisplay;
+                    check = addTemplate.newLabelName !== '' && addTemplate.fieldType !== '---Select Field Type---';
+                }
+                templateFieldObject.name = addTemplate.newLabelName;
+                templateFieldObject.headerFieldName = '';
+                templateFieldObject.tableHeaders = [];
+                templateFieldObject.fieldState = 'ACTIVE';
+                templateFieldObject.mandatory = true;
+                templateFieldObject.minValue = '';
+                templateFieldObject.maxValue = '';
+                templateFieldObject.value = '';
+                templateFieldObject.fieldType = selectedFieldTypeIs;
+                if (selectedFieldTypeIs == 'TEXT_BOX' || selectedFieldTypeIs == 'BUTTON' || selectedFieldTypeIs == 'TEXT_AREA') {
+                    templateFieldObject.restrictValues = [];
+                    templateFieldObject.description = '';
+                }
+                if (selectedFieldTypeIs == 'DROPDOWN') {
+                    var dropdownFields = [];
+                    templateFieldObject.restrictValues = [];
+                    dropdownFields = _.split(addTemplate.addedFieldsForDropdown, ',');
+                    templateFieldObject.description = dropdownFields[0];
+                    angular.forEach(dropdownFields, function(dropdownEntity) {
+                        var localFieldObject = {};
+                        localFieldObject.name = dropdownEntity;
+                        localFieldObject.value = dropdownEntity;
+                        templateFieldObject.restrictValues.push(localFieldObject);
+                    });
+                }
+                if (selectedFieldTypeIs == 'CHECK_BOX') {
+                    var checkboxFields = [];
+                    templateFieldObject.restrictValues = [];
+                    templateFieldObject.description = '';
+                    checkBoxFields = _.split(addTemplate.addedFieldsForDropdown, ',');
+                    angular.forEach(checkBoxFields, function(checkBoxEntity) {
+                        var localCheckObject = {};
+                        localCheckObject.name = checkBoxEntity;
+                        localCheckObject.checkBoxValue = false;
+                        templateFieldObject.restrictValues.push(localCheckObject);
+                    });
+                }
+                requestEntity.templateFields.push(templateFieldObject);
+                $log.log('request is-----', requestEntity);
+                if (check) {
+                    var addSectionPromise = dboticaServices.addFieldRequest(requestEntity);
+                    addSectionPromise.then(function(addSectionSuccess) {
+                        var errorCode = addSectionSuccess.data.errorCode;
+                        if (errorCode) {
+                            dboticaServices.logoutFromThePage(errorCode);
+                        } else {
+                            var addSectionResponse = angular.fromJson(addSectionSuccess.data.response);
+                            $log.log('response is------', addSectionResponse);
+                            if (errorCode == null && addSectionSuccess.data.success) {
+                                dboticaServices.fieldDetailsUpdateSuccessSwal();
+                                addTemplate.newSectionName = '';
+                                addTemplate.newLabelName = '';
+                                addTemplate.newTemplateSection = false;
+                                addTemplate.showDropdownDiv = false;
+                                activeTemplate = {};
+                                addTemplate.sectionNameToDisplay = '-Select Section Name-';
+                                addTemplate.fieldType = '---Select Field Type---';
+                            }
+                        }
+                    }, function(addSectionError) {
+                        dboticaServices.noConnectivityError();
+                    });
+                } else {
+                    dboticaServices.templateMandatoryFieldsSwal();
+                }
+            } else {
+                dboticaServices.templateMandatoryFieldsSwal();
             }
-            if (addTemplate.sectionNameToDisplay !== 'New Section' && addTemplate.sectionNameToDisplay !== '-Select Section Name-') {
-                templateFieldObject.sectionName = addTemplate.sectionNameToDisplay;
-                check = addTemplate.newLabelName !== '' && addTemplate.fieldType !== '---Select Field Type---';
-            }
-            templateFieldObject.name = addTemplate.newLabelName;
-            templateFieldObject.headerFieldName = '';
-            templateFieldObject.tableHeaders = [];
-            templateFieldObject.fieldState = 'ACTIVE';
-            templateFieldObject.mandatory = true;
-            templateFieldObject.minValue = '';
-            templateFieldObject.maxValue = '';
-            templateFieldObject.value = '';
-            templateFieldObject.fieldType = selectedFieldTypeIs;
-            if (selectedFieldTypeIs == 'TEXT_BOX' || selectedFieldTypeIs == 'BUTTON' || selectedFieldTypeIs == 'TEXT_AREA') {
-                templateFieldObject.restrictValues = [];
-                templateFieldObject.description = '';
-            }
-            if (selectedFieldTypeIs == 'DROPDOWN') {
-                var dropdownFields = [];
-                templateFieldObject.restrictValues = [];
-                dropdownFields = _.split(addTemplate.addedFieldsForDropdown, ',');
-                templateFieldObject.description = dropdownFields[0];
-                angular.forEach(dropdownFields, function(dropdownEntity) {
-                    var localFieldObject = {};
-                    localFieldObject.name = dropdownEntity;
-                    localFieldObject.value = dropdownEntity;
-                    templateFieldObject.restrictValues.push(localFieldObject);
-                });
-            }
-            if (selectedFieldTypeIs == 'CHECK_BOX') {
+        } else {
+            var editTemplateRequestEntity = {};
+            angular.copy(templateToEdit, editTemplateRequestEntity);
+            editTemplateRequestEntity.templateFields[sectionElementIndex].name = addTemplate.newLabelName;
+            if (editTemplateRequestEntity.templateFields[sectionElementIndex].fieldType == 'CHECK_BOX') {
                 var checkboxFields = [];
-                templateFieldObject.restrictValues = [];
-                templateFieldObject.description = '';
+                editTemplateRequestEntity.templateFields[sectionElementIndex].restrictValues = [];
                 checkBoxFields = _.split(addTemplate.addedFieldsForDropdown, ',');
                 angular.forEach(checkBoxFields, function(checkBoxEntity) {
                     var localCheckObject = {};
                     localCheckObject.name = checkBoxEntity;
                     localCheckObject.checkBoxValue = false;
-                    templateFieldObject.restrictValues.push(localCheckObject);
+                    editTemplateRequestEntity.templateFields[sectionElementIndex].restrictValues.push(localCheckObject);
                 });
             }
-            requestEntity.templateFields.push(templateFieldObject);
-            $log.log('request is-----', requestEntity);
-            if (check) {
-                var addSectionPromise = dboticaServices.addFieldRequest(requestEntity);
-                addSectionPromise.then(function(addSectionSuccess) {
-                    var errorCode = addSectionSuccess.data.errorCode;
+            if (editTemplateRequestEntity.templateFields[sectionElementIndex].fieldType == 'DROPDOWN') {
+                var dropdownFields = [];
+                editTemplateRequestEntity.templateFields[sectionElementIndex].restrictValues = [];
+                dropdownFields = _.split(addTemplate.addedFieldsForDropdown, ',');
+                editTemplateRequestEntity.templateFields[sectionElementIndex].description = dropdownFields[0];
+                angular.forEach(dropdownFields, function(dropdownEntity) {
+                    var localFieldObject = {};
+                    localFieldObject.name = dropdownEntity;
+                    localFieldObject.value = dropdownEntity;
+                    editTemplateRequestEntity.templateFields[sectionElementIndex].restrictValues.push(localFieldObject);
+                });
+            }
+            if (addTemplate.newLabelSection !== undefined && addTemplate.newLabelSection !== '') {
+                $log.log('req is to edit-----', editTemplateRequestEntity);
+                var editPromise = dboticaServices.addFieldRequest(editTemplateRequestEntity);
+                $log.log('edit promise is------', editPromise);
+                editPromise.then(function(editTemplateSuccess) {
+                    var errorCode = editTemplateSuccess.data.errorCode;
                     if (errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
-                        var addSectionResponse = angular.fromJson(addSectionSuccess.data.response);
-                        $log.log('response is------', addSectionResponse);
-                        if (errorCode == null && addSectionSuccess.data.success) {
-                            dboticaServices.fieldDetailsUpdateSuccessSwal();
-                            addTemplate.newSectionName = '';
-                            addTemplate.newLabelName = '';
-                            addTemplate.newTemplateSection = false;
-                            addTemplate.showDropdownDiv = false;
-                            activeTemplate = {};
-                            addTemplate.sectionNameToDisplay = '-Select Section Name-';
-                            addTemplate.fieldType = '---Select Field Type---';
+                        var editTemplateResponse = angular.fromJson(editTemplateSuccess.data.response);
+                        $log.log('edit response is-------', editTemplateResponse);
+                        if (errorCode == null && editTemplateSuccess.data.success) {
+                            dboticaServices.editFieldSuccessSwal();
+                            angular.element('#addNewFieldModal').modal('hide');
                         }
                     }
-                }, function(addSectionError) {
+                }, function(editTemplateError) {
                     dboticaServices.noConnectivityError();
                 });
-            } else {
-                dboticaServices.templateMandatoryFieldsSwal();
             }
-        } else {
-            dboticaServices.templateMandatoryFieldsSwal();
         }
+    }
+
+    function editAnElement(elementToEdit, index) {
+        elementIndexinTable = index;
+        $log.log('element to edit is------', elementToEdit);
+        angular.element('#addNewFieldModal').modal('show');
+        addTemplate.selectSectionNameDiv = false;
+        addTemplate.newLabelSection = true;
+        addTemplate.newTemplateSection = false;
+        addTemplate.fieldTypeDropdown = false;
+        addTemplate.showDropdownDiv = false;
+        addTemplate.newLabelName = elementToEdit.name;
+        if (elementToEdit.fieldType == 'CHECK_BOX' || elementToEdit.fieldType == 'DROPDOWN') {
+            addTemplate.showDropdownDiv = true;
+            addTemplate.addedFieldsForDropdown = elementToEdit.elementValues;
+        }
+        templateToEdit = {};
+        angular.forEach(addTemplate.templatesList, function(editEntity) {
+            if (editEntity.id == elementToEdit.elementId) {
+                angular.copy(editEntity, templateToEdit);
+            }
+        });
+        sectionElementIndex = _.findLastIndex(templateToEdit.templateFields, function(resEntity) {
+            return resEntity.name == elementToEdit.name && resEntity.fieldType == elementToEdit.fieldType;
+        });
+        $log.log('template to edit is------', templateToEdit);
+        $log.log('index is------', sectionElementIndex);
     }
 }

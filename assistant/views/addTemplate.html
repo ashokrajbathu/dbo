@@ -32,7 +32,7 @@
                                 <div class="modal-body">
                                     <div class="col-md-8 col-sm-8 col-xs-12">
                                         <form>
-                                            <div class="form-group">
+                                            <div ng-if="addTemplate.selectSectionNameDiv" class="form-group">
                                                 <label style="float:left;margin-right:4px;">*Select Section Name : </label>
                                                 <form class="form-inline">
                                                     <div style="display:inline-block;" class="dropdown">
@@ -110,9 +110,9 @@
                             <td ng-bind="sectionEntity.sectionName"></td>
                             <td ng-bind="sectionEntity.name"></td>
                             <td ng-bind="sectionEntity.fieldType|removeunderscore"></td>
-                            <td></td>
+                            <td ng-bind="sectionEntity.elementValues"></td>
                             <td>
-                                <a class="doctorsListInBill">Edit</a>|
+                                <a ng-click="addTemplate.editAnElement(sectionEntity,$index)" class="doctorsListInBill">Edit</a>|
                                 <a class="doctorsListInBill">Delete</a>
                             </td>
                         </tr>

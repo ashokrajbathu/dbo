@@ -250,7 +250,9 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
             patientDataRequestEntity.phoneNumber = phoneNumber;
             patientDataRequestEntity.age = inpatientElement.patientData.age;
             patientDataRequestEntity = JSON.stringify(patientDataRequestEntity);
+            $log.log('pat req is-------', patientDataRequestEntity);
             var inpatientPromise = dboticaServices.addNewPatient(patientDataRequestEntity);
+            $log.log('inpatient promise is-----', inpatientPromise);
             inpatientPromise.then(function(inpatientSuccessResponse) {
                 var errorCode = inpatientSuccessResponse.data.errorCode;
                 if (errorCode) {
@@ -261,13 +263,14 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
                     var success = inpatientSuccessResponse.data.success;
                     if (errorCode == null && success == true) {
                         inpatientElement.patientNameInBox = firstName;
-
                         addInPatientRequestEntity.organizationId = organizationId;
                         addInPatientRequestEntity.patientId = activePatientId;
                         addInPatientRequestEntity.phoneNumber = inpatientElement.patientData.phoneNumber;
                         addInPatientRequestEntity.patientType = 'IN_PATIENT';
                         addInPatientRequestEntity.patientState = 'CHECK_IN';
+                        $log.log('add in patient req is-----', addInPatientRequestEntity);
                         var addInPatientPromise = dboticaServices.registerPatient(addInPatientRequestEntity);
+                        $log.log('add in patient promise is----', addInPatientPromise);
                         addInPatientPromise.then(function(addInPatientSuccess) {
                             var errorCode = addInPatientSuccess.data.errorCode;
                             if (errorCode) {
@@ -373,7 +376,7 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
                 bedRequestEntity.id = organizationPatientsList[organizationPatientIndex].id;
             }
             bedRequestEntity.patientId = activePatientId;
-            bedRequestEntity.inPatientNumber = inpatientElement.inpatientNumber;
+            bedRequestEntity.inPatientNumber = inpatientElement.patientNumberInBox;
             bedRequestEntity.organizationBedId = bedEntity.id;
             var date = new Date();
             var longValueOfDate = date.getTime();
