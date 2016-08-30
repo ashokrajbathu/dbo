@@ -3,4 +3,6 @@ permissionsController.$inject = ['$rootScope', '$scope', '$log', '$stateParams',
 
 function permissionsController($rootScope, $scope, $log, $stateParams, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var permissions = this;
+
+
 }

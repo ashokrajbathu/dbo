@@ -179,8 +179,6 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
         });
     }
 
-
-
     function patientSelectFromTheList(patient) {
         $log.log('patient selected is------', patient);
         dboticaServices.setInpatient(patient);

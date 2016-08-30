@@ -11,6 +11,8 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     var activeTemplate = {};
     var templateToEdit = {};
     var elementInTable;
+    var billInvoice = {};
+    dboticaServices.setInvoice(billInvoice);
     var sectionElementIndex;
     var selectFieldTypeString = '---Select Field Type---';
     addTemplate.newTemplateName = '';
@@ -19,6 +21,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     addTemplate.templateName = false;
     addTemplate.addBtn = false;
     addTemplate.addNewFieldBtn = true;
+    addTemplate.editTemplateName = false;
     var organizationId = localStorage.getItem('orgId');
     addTemplate.sectionNameToDisplay = '-Select Section Name-';
     var selectSectionObject = { 'sectionName': '-Select Section Name-' };
@@ -51,6 +54,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     addTemplate.addEntityToTemplate = addEntityToTemplate;
     addTemplate.editAnElement = editAnElement;
     addTemplate.pageChanged = pageChanged;
+    addTemplate.editTemp = editTemp;
     addTemplate.deleteAnElement = deleteAnElement;
 
     var getTemplatesPromise = dboticaServices.getAllTemplates(organizationId, '', true);
@@ -98,8 +102,10 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
             addTemplate.addNewFieldBtn = false;
             addTemplate.templateName = true;
             addTemplate.addBtn = true;
+            addTemplate.editTemplateName = false;
         } else {
             if (template.name !== '-Select Template Name-') {
+                addTemplate.editTemplateName = true;
                 activeTemplate = template;
             }
             addTemplate.addNewFieldBtn = true;
@@ -460,5 +466,13 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
                 });
             }
         );
+    }
+
+    function editTemp() {
+        if (!_.isEmpty(activeTemplate)) {
+            addTemplate.templateName = true;
+            addTemplate.newTemplateName = activeTemplate.name;
+            addTemplate.addBtn = true;
+        };
     }
 }
