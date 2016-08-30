@@ -629,6 +629,15 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             localStorage.setItem("isLoggedInAssistant", "false");
             $state.go('login');
         }
+        if (errorCode == 'BAD_REQUEST_ERROR') {
+            swal({
+                title: "Error",
+                text: "Error with Request Made.Please Check It!!!!!",
+                type: "error",
+                confirmButtonText: "OK",
+                allowOutsideClick: true
+            });
+        }
     }
 
     this.getLongValueOfDate = function(dateSelected) {

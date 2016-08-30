@@ -122,6 +122,11 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
             controllerAs: 'registerPatient',
             templateUrl: 'views/registerPatient.html'
         })
+        .state('home.mainAdmin.permissions', {
+            controller: 'permissionsController',
+            controllerAs: 'permissions',
+            templateUrl: 'views/permissions.html'
+        })
         .state('home.mainAdmin.patientEvents', {
             controller: 'patientEventsController',
             controllerAs: 'patientEvents',
