@@ -43,7 +43,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     var localActiveSectionsFields = [];
     var entitiesArray = [];
     var displayArray = [];
-    addTemplate.itemsPerPage = 2;
+    addTemplate.itemsPerPage = 5;
     addTemplate.currentPage = 1;
 
     addTemplate.selectTemplate = selectTemplate;

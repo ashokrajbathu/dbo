@@ -1,6 +1,4 @@
-var myapp = angular.module('doctorAppServices', []);
-
-myapp.service('doctorServices', doctorServices);
+angular.module('doctorAppServices', []).service('doctorServices', doctorServices);
 doctorServices.$inject = ['$http', '$state', '$log', '$q'];
 
 function doctorServices($http, $state, $log, $q) {

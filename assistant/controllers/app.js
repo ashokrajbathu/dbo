@@ -31,7 +31,6 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
             templateUrl: 'views/login.html'
         })
         .state('home', {
-            /*url: '/home',*/
             templateUrl: 'views/home.html'
         })
         .state('home.patientManagement', {

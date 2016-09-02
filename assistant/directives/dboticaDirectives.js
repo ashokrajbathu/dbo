@@ -177,3 +177,4 @@ angular.module('personalAssistant').directive('validNumber', function() {
             }
         };
     });
+}
