@@ -31,7 +31,14 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputFloor">Floor</label>
-                                    <input ng-model="room.addNewRoom.floorNo" type="text" class="form-control" id="exampleInputFloor" placeholder="Floor">
+                                    <select ng-model="room.addNewRoom.floorNo" class="form-control" id="exampleInputFloor">
+                                        <option>1st Floor</option>
+                                        <option>2nd Floor</option>
+                                        <option>3rd Floor</option>
+                                        <option>4th Floor</option>
+                                        <option>5th Floor</option>
+                                    </select>
+                                    <!-- <input ng-model="room.addNewRoom.floorNo" type="text" class="form-control" id="exampleInputFloor" placeholder="Floor"> -->
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputRoomRate">Room Rate</label>

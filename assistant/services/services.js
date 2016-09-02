@@ -1872,6 +1872,16 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.addAssistantSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Assistant Details Successfully Added!!!!",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
     this.noAdmittedPatientSwal = function() {
         swal({
             title: "Info",
@@ -1958,6 +1968,41 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             deferred.resolve(getTransferResponse);
         }, function(getTransferError) {
             deferred.reject(getTransferError);
+        });
+        return deferred.promise;
+    }
+
+    this.getOrganizationAssistants = function(organizationId) {
+        var deferred = $q.defer();
+        var getAssistantsRequest = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/organization/getAssistantsByOrganizationId?organizationId=' + organizationId,
+            withCredentials: true
+        }
+        $http(getAssistantsRequest).then(function(getAssistantsResponse) {
+            deferred.resolve(getAssistantsResponse);
+        }, function(getAssistantsError) {
+            deferred.reject(getTransferError);
+        });
+        return deferred.promise;
+    }
+
+    this.assistantAddition = function(assistantToAdd) {
+        var deferred = $q.defer();
+        var addAssistantRequest = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/dbotica/assistant/addAssistant',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(assistantToAdd)
+        }
+        $http(addAssistantRequest).then(function(addAssistantResponse) {
+            deferred.resolve(addAssistantResponse);
+        }, function(addAssistantError) {
+            deferred.reject(addAssistantError);
         });
         return deferred.promise;
     }

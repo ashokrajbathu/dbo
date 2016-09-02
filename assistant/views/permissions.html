@@ -3,15 +3,82 @@
     <hr>
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-sm-8 col-xs-8">
+            <div class="col-md-8 col-sm-12 col-xs-12">
                 <form>
                     <div class="form-group">
+                        <label style="float:left;margin-right:4px;">Select Assistant Name</label>
+                        <form class="form-inline">
+                            <div style="display:inline-block;" class="dropdown">
+                                <button style="font-weight:700;align:center;" type="button" data-toggle="dropdown" id="sectionNameBtn" class="btn dropdown-toggle docDropdownInInpatient roomDropdowns roomTypeDropdown">{{permissions.assistantNameToDisplay}}
+                                    <span class="caret caretCss" id="templateNameCaret0"></span></button>
+                                <ul class="dropdown-menu" id="sectionNameDropDown">
+                                    <li ng-click="permissions.selectAssistant(assistantEntity)" ng-repeat="assistantEntity in permissions.assistantList">
+                                        <a class="doctorsListInBill" ng-bind="assistantEntity.firstName"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-group">
                         <label for="assistantName">*Assistant Name</label>
-                        <input class="form-control" id="assistantName" type="text" placeholder="Assistant Name">
+                        <input ng-model="permissions.assistantDetails.firstName" class="form-control" id="assistantName" type="text" placeholder="Assistant Name">
                     </div>
                     <div class="form-group">
                         <label for="assistantEmailid">*Email Id</label>
-                        <input class="form-control" id="assistantEmailid" type="text" placeholder="Email Id">
+                        <input ng-model="permissions.assistantDetails.emailId" class="form-control" id="assistantEmailid" type="text" placeholder="Email Id / User Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="examplePassword">*Password</label>
+                        <input ng-model="permissions.assistantDetails.password" type="password" class="form-control" placeholder="Password" placeholder="Email Id">
+                    </div>
+                    <div class="form-group">
+                        <label for="examplePhoneNumber">*Phone Number</label>
+                        <input class="form-control" ng-model="permissions.assistantDetails.phoneNumber" id="assistantPhoneNumber" type="text" placeholder="Phone Number">
+                    </div>
+                    <div class="form-group">
+                        <label for="examplePhoneNumber">*Age</label>
+                        <input numbersonly class="form-control" ng-model="permissions.assistantDetails.age" id="assistantPhoneNumber" type="text" placeholder="Age">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleCity">*City</label>
+                        <input ng-model="permissions.assistantDetails.city" type="text" class="form-control" id="exampleCity" placeholder="City">
+                    </div>
+                    <div class="form-group">
+                        <label for="examplePermissions">*Permissions</label>
+                        <div class="row">
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <input ng-click="permissions.selectPermissions('PATIENT_MANAGEMENT')" type="checkbox" ng-checked="permissions.patientManagement" name="permission" value="permission">Patient Management
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <input ng-click="permissions.selectPermissions('BILLING_MANAGEMENT')" type="checkbox" ng-checked="permissions.billManagement" name="permission" value="permission">Bill Management
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <input ng-click="permissions.selectPermissions('INVENTORY_MANAGEMENT')" type="checkbox" ng-checked="permissions.inventoryManagement" name="permission" value="permission">Inventory Management
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <input ng-click="permissions.selectPermissions('ORGANIZATION_MANAGEMENT')" type="checkbox" ng-checked="permissions.organizationManagement" name="permission" value="permission">Hospital Management
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <input ng-click="permissions.selectPermissions('HOSPITAL_ADMIN')" type="checkbox" name="permission" ng-checked="permissions.hospitalAdmin" value="permission">Admin
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <input ng-click="permissions.selectPermissions('NURSE')" type="checkbox" name="permission" ng-checked="permissions.nurse" value="permission">Nurse
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <input ng-click="permissions.selectPermissions('OPERATOR')" type="checkbox" name="permission" ng-checked="permissions.operator" value="permission">Operator
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <input ng-click="permissions.selectPermissions('LAB_OPERATOR')" type="checkbox" name="permission" ng-checked="permissions.labOperator" value="permission">Lab Operator
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="permissions.mandatoryFields" class="form-group">
+                        <span style="color:red;">*Please Enter Mandatory Fields</span>
+                    </div>
+                    <div class="form-group">
+                        <button ng-click="permissions.addAssistant()" class="btn addPatientBtn">Add</button>
                     </div>
                 </form>
             </div>

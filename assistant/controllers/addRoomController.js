@@ -6,6 +6,7 @@ function roomController($scope, $log, dboticaServices, $state, $http, $parse, do
 
     roomElement.roomCategories = [];
     roomElement.addNewRoom = {};
+    roomElement.addNewRoom.floorNo = '1st Floor';
     roomElement.roomType = '';
     roomElement.roomsList = [];
 
@@ -171,10 +172,12 @@ function roomController($scope, $log, dboticaServices, $state, $http, $parse, do
     }
 
     function editRoom(room, index) {
+        $log.log('selected room is-----', room);
         roomItemId = '';
         roomItemIndex = '';
         roomItemId = room.id;
         roomItemIndex = index;
+        roomElement.addNewRoom.floorNo = room.floorNo;
         var newRoomObject = {};
         angular.copy(room, newRoomObject);
         newRoomObject.roomRate = parseInt(newRoomObject.roomRate) / 100;
@@ -185,6 +188,7 @@ function roomController($scope, $log, dboticaServices, $state, $http, $parse, do
         });
         newRoomObject.organizationId = organizationId;
         angular.copy(newRoomObject, roomElement.addNewRoom);
+        roomElement.addNewRoom.floorNo = room.floorNo;
     }
 
     function roomSearch() {
