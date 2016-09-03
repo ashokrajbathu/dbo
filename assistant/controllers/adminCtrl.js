@@ -294,7 +294,8 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
                         var success = testRequestSuccessResponse.data.success;
                         if (errorCode == null && success == true) {
                             var testSuccess = angular.fromJson(testRequestSuccessResponse.data.response);
-                            var localRoom = _.filter(adminElement.activeRooms, function(entity) {
+                            var localRoom = [];
+                            localRoom = _.filter(adminElement.activeRooms, function(entity) {
                                 return entity.id == testSuccess.roomIds[0];
                             });
                             if (testObject.hasOwnProperty('id')) {
@@ -303,7 +304,11 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
                                         serviceOfDoctor.price = testSuccess.price;
                                         serviceOfDoctor.duration = testSuccess.duration;
                                         serviceOfDoctor.remark = testSuccess.remark;
-                                        serviceOfDoctor.roomAndFloorNumbers = localRoom[0].roomNo + '-' + localRoom[0].floorNo;
+                                        if (localRoom.length > 0) {
+                                            serviceOfDoctor.roomAndFloorNumbers = localRoom[0].roomNo + '-' + localRoom[0].floorNo;
+                                        } else {
+                                            serviceOfDoctor.roomAndFloorNumbers = '';
+                                        }
                                     }
                                 });
                                 adminElement.admin.procedureCostTextBox = "";
@@ -506,12 +511,17 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
 
     var getRoomAndFloorNo = function() {
         angular.forEach(adminElement.admin.servicesListOfTheDoctor, function(entity) {
-            var localRoomAndFloor = _.filter(adminElement.activeRooms, function(roomEntity) {
+            var localRoomAndFloor = [];
+            localRoomAndFloor = _.filter(adminElement.activeRooms, function(roomEntity) {
                 if (roomEntity.id == entity.roomIds[0]) {
                     return roomEntity;
                 }
             });
-            entity.roomAndFloorNumbers = localRoomAndFloor[0].roomNo + '-' + localRoomAndFloor[0].floorNo;
+            if (localRoomAndFloor.length > 0) {
+                entity.roomAndFloorNumbers = localRoomAndFloor[0].roomNo + '-' + localRoomAndFloor[0].floorNo;
+            } else {
+                entity.roomAndFloorNumbers = '';
+            }
         });
     }
 
