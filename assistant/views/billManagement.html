@@ -50,22 +50,22 @@
                                     <div class="modal-body">
                                         <table class="table prescriptionInModal">
                                             <thead>
-                                                <tr>
-                                                    <th>S.No.</th>
-                                                    <th>Drug Name</th>
-                                                    <th>Quantity</th>
-                                                    <th>Status</th>
-                                                </tr>
+                                            <tr>
+                                                <th>S.No.</th>
+                                                <th>Drug Name</th>
+                                                <th>Quantity</th>
+                                                <th>Status</th>
+                                            </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="drug in billView.prescriptionSelected.drugDosage">
-                                                    <td ng-bind="$index+1"></td>
-                                                    <td ng-bind="drug.brandName"></td>
-                                                    <td ng-bind="drug.quantity"></td>
-                                                    <td>
-                                                        <button ng-click="billView.selectDrugInModal(drug,$index)" class="btn billBtn">Add</button>
-                                                    </td>
-                                                </tr>
+                                            <tr ng-repeat="drug in billView.prescriptionSelected.drugDosage">
+                                                <td ng-bind="$index+1"></td>
+                                                <td ng-bind="drug.brandName"></td>
+                                                <td ng-bind="drug.quantity"></td>
+                                                <td>
+                                                    <button ng-click="billView.selectDrugInModal(drug,$index)" class="btn billBtn">Add</button>
+                                                </td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -81,7 +81,7 @@
             <div ng-class="{'col-md-11':billView.patientBillFullGrid,'col-md-9':billView.patientBillGridNine}" class="billInfo col-xs-12 col-sm-12">
                 <div class="panel panel-default">
                     <div class="heading panel-heading">
-                        <h4 class="headerInfo">Patient Bill : 
+                        <h4 class="headerInfo">Patient Bill :
                             <a ng-click="billView.newBill()" class="invoiceHistoryLink pull-right">New Bill</a>
                             <a style="margin-right:30px;" ng-click="billView.goToInvoicePage()" class="invoiceHistoryLink pull-right">View Invoice History</a>
                         </h4>
@@ -231,18 +231,18 @@
                                             <span ng-if="billView.checkPaidAndDue" class="warningParagraphs">*Enter amount less than due amount</span>
                                             <table class="table costsTable table-bordered">
                                                 <thead>
-                                                    <tr>
-                                                        <th>S.No.</th>
-                                                        <th>Date</th>
-                                                        <th>Cost</th>
-                                                    </tr>
+                                                <tr>
+                                                    <th>S.No.</th>
+                                                    <th>Date</th>
+                                                    <th>Cost</th>
+                                                </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr ng-repeat="billInModal in billView.addPay">
-                                                        <td ng-bind="$index+1"></td>
-                                                        <td ng-bind="billInModal.updatedAt"></td>
-                                                        <td ng-bind="billInModal.amountPaid"></td>
-                                                    </tr>
+                                                <tr ng-repeat="billInModal in billView.addPay">
+                                                    <td ng-bind="$index+1"></td>
+                                                    <td ng-bind="billInModal.updatedAt"></td>
+                                                    <td ng-bind="billInModal.amountPaid"></td>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -266,42 +266,42 @@
                             <div ng-switch="billView.bill.billsListing.length">
                                 <table class="table finalBillTable">
                                     <thead>
-                                        <tr>
-                                            <th>Bill Name</th>
-                                            <th>Due Date</th>
-                                            <th width="14%">Cost</th>
-                                            <th width="10%">Discount</th>
-                                            <th width="10%">VAT</th>
-                                            <th width="10%">Quantity</th>
-                                            <th width="18%">Total</th>
-                                            <th>Paid</th>
-                                            <th>Action</th>
-                                        </tr>
+                                    <tr>
+                                        <th>Bill Name</th>
+                                        <th>Due Date</th>
+                                        <th width="14%">Cost</th>
+                                        <th width="10%">Discount</th>
+                                        <th width="10%">VAT</th>
+                                        <th width="10%">Quantity</th>
+                                        <th width="18%">Total</th>
+                                        <th>Paid</th>
+                                        <th>Action</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="itemsAnimation" ng-switch-default ng-repeat="billEle in billView.bill.billsListing">
-                                            <td ng-bind="billEle.itemName"></td>
-                                            <td ng-bind="billEle.dueDate | longDateIntoReadableDate"></td>
-                                            <td>
-                                                <input valid-number type="text" ng-change="billView.updateAmount(billEle,$index)" ng-model="billEle.cost" class="form-control">
-                                            </td>
-                                            <td>
-                                                <input valid-number type="text" ng-change="billView.updateAmount(billEle,$index)" ng-model="billEle.discount" class="form-control">
-                                            </td>
-                                            <td>
-                                                <input valid-number type="text" ng-change="billView.updateAmount(billEle,$index)" ng-model="billEle.tax" class="form-control">
-                                            </td>
-                                            <td>
-                                                <input valid-number type="text" ng-change="billView.updateAmount(billEle,$index)" ng-model="billEle.quantity" class="form-control">
-                                            </td>
-                                            <td ng-bind="billEle.amountCharged"></td>
-                                            <td>
-                                                <input type="checkbox" ng-click="billEle.paid=!billEle.paid" ng-checked="{{'checkBox'+$index}}" ng-attr-name="billEle.paid">
-                                            </td>
-                                            <td>
-                                                <button ng-click="billView.deleteABill(billEle,$index)" class="btn billDelete">Delete</button>
-                                            </td>
-                                        </tr>
+                                    <tr class="itemsAnimation" ng-switch-default ng-repeat="billEle in billView.bill.billsListing">
+                                        <td ng-bind="billEle.itemName"></td>
+                                        <td ng-bind="billEle.dueDate | longDateIntoReadableDate"></td>
+                                        <td>
+                                            <input valid-number type="text" ng-change="billView.updateAmount(billEle,$index)" ng-model="billEle.cost" class="form-control">
+                                        </td>
+                                        <td>
+                                            <input valid-number type="text" ng-change="billView.updateAmount(billEle,$index)" ng-model="billEle.discount" class="form-control">
+                                        </td>
+                                        <td>
+                                            <input valid-number type="text" ng-change="billView.updateAmount(billEle,$index)" ng-model="billEle.tax" class="form-control">
+                                        </td>
+                                        <td>
+                                            <input valid-number type="text" ng-change="billView.updateAmount(billEle,$index)" ng-model="billEle.quantity" class="form-control">
+                                        </td>
+                                        <td ng-bind="billEle.amountCharged"></td>
+                                        <td>
+                                            <input type="checkbox" ng-click="billEle.paid=!billEle.paid" ng-checked="{{'checkBox'+$index}}" ng-attr-name="billEle.paid">
+                                        </td>
+                                        <td>
+                                            <button ng-click="billView.deleteABill(billEle,$index)" class="btn billDelete">Delete</button>
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
                                 <span class="emptyTableMessage" style="color:red;" ng-switch-when="0">**Tap the add button in the upper right to add a bill**</span>
