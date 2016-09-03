@@ -487,7 +487,11 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
             newObject.diagnosisTest = adminElement.admin.procedureNameTxtBox;
             newObject.duration = adminElement.admin.duration;
             newObject.duration = newObject.duration * 60 * 100;
-            newObject.roomIds.push(adminElement.activeRoomId);
+            if (adminElement.activeRoomId == '') {
+                newObject.roomIds = [];
+            } else {
+                newObject.roomIds.push(adminElement.activeRoomId);
+            }
         } else {
             newObject.billingName = adminElement.admin.procedureNameTxtBox;
         }
