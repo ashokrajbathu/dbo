@@ -773,6 +773,16 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     }
 
     function addDrugTemplate(drugTemplateEntity, index) {
+        $log.log('entity is -------', drugTemplateEntity);
+        var perservingId = '#perServing' + index;
+        var unitsId = '#units' + index;
+        drugTemplateEntity.drugDosage.perServing = angular.element(perservingId).val();
+        if (drugTemplateEntity.drugDosage.daysOrQuantity == 'Days') {
+            drugTemplateEntity.drugDosage.noOfDays = angular.element(unitsId).val();
+        } else {
+            drugTemplateEntity.drugDosage.quantity = angular.element(unitsId).val();
+        }
+        $log.log('c1 is----', angular.element(unitsId).val());
         if (!prescriptionElement['checkbox' + index]) {
             prescriptionElement['checkbox' + index] = true;
             var templateEntity = {};
@@ -802,7 +812,11 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             if (drugTemplateEntity.drugDosage.noOfDays == 1 && drugTemplateEntity.drugDosage.daysOrQuantity == 'Days') {
                 templateEntity.noOfDays = singleDay;
             } else {
-                templateEntity.noOfDays = drugTemplateEntity.drugDosage.noOfDays + ' ' + drugTemplateEntity.drugDosage.daysOrQuantity;
+                if (drugTemplateEntity.drugDosage.daysOrQuantity == 'Days') {
+                    templateEntity.noOfDays = drugTemplateEntity.drugDosage.noOfDays + ' ' + drugTemplateEntity.drugDosage.daysOrQuantity;
+                } else {
+                    templateEntity.noOfDays = drugTemplateEntity.drugDosage.quantity + ' ' + drugTemplateEntity.drugDosage.daysOrQuantity;
+                }
             }
             var usageArray = drugTemplateEntity.drugDosage.usageDirection.split(',');
             var quantCount = usageArray.length;

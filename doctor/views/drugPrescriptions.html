@@ -366,10 +366,10 @@
                                 </td>
                                 <td ng-bind="drugTemplateEntity.drugDosage.brandName"></td>
                                 <td>
-                                    <input type="text" ng-model="drugTemplateEntity.drugDosage.perServing">
+                                    <input id="perServing{{$index}}" type="text" ng-model="drugTemplateEntity.drugDosage.perServing">
                                 </td>
                                 <td>
-                                    <input type="text" ng-model="drugTemplateEntity.drugDosage.units">
+                                    <input id="units{{$index}}" type="text" ng-model="drugTemplateEntity.drugDosage.units">
                                 </td>
                                 <td ng-bind="drugTemplateEntity.drugDosage.usageDirection"></td>
                             </tr>
