@@ -1991,7 +1991,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var addAssistantRequest = {
             method: 'POST',
-            url: 'http://localhost:8081/dbotica-spring/dbotica/assistant/addAssistant',
+            url: 'http://localhost:8081/dbotica-spring/organization/addAssistant',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'

@@ -47,7 +47,7 @@ function openDb(callBack) {
     req.onerror = function(event) {
         console.error("openDb:", event.target.errorCode);
     };
-    
+
     req.onupgradeneeded = function(event) {
         db = event.target.result;
         event.target.transaction.oncomplete = function(e) {
@@ -155,7 +155,8 @@ function syncAllDrugsToIndexedDB() {
                 withCredentials: true
             },
             success: function(response) {
-                var data = $.parseJSON(response.response);
+                $log.log('response is--------', response);
+                var data = angular.fromJson(response.response);
                 //console.log("In sync drugs: " + response.totalCount + " " + data.length);
                 var drugObjectStore = getObjectStore(DB_DRUG_STORE, "readwrite");
                 totalDrugCount = response.totalCount;

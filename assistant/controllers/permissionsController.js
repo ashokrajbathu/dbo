@@ -78,11 +78,13 @@ function permissionsController($rootScope, $scope, $log, $stateParams, dboticaSe
         if (check) {
             permissions.mandatoryFields = false;
             angular.copy(permissions.assistantDetails, assistantRequest);
-            angular.copy(localAssistantPermissions, assistantRequest.assistantPermissions);
+            assistantRequest.assistantPermissions = localAssistantPermissions;
             if (permissions.assistantNameToDisplay !== 'New Assistant' && permissions.assistantNameToDisplay !== '---Select Assistant---') {
                 assistantRequest.id = activeAssistant.id;
             }
             $log.log('assis req is-------', assistantRequest);
+            assistantRequest.organizationId = organizationId;
+            assistantRequest.userName = permissions.assistantDetails.emailId;
             var addAssistantPromise = dboticaServices.assistantAddition(assistantRequest);
             $log.log('assis promise is-------', addAssistantPromise);
             addAssistantPromise.then(function(addAssistantSuccess) {
@@ -93,11 +95,11 @@ function permissionsController($rootScope, $scope, $log, $stateParams, dboticaSe
                     var addAssistantResponse = angular.fromJson(addAssistantSuccess.data.response);
                     $log.log('assis response is-------', addAssistantResponse);
                     if (errorCode == null && addAssistantSuccess.data.success) {
-                        dboticaServices.addAssistantSuccessSwal();
                         emptyAllPermissions();
                         activeAssistant = {};
                         permissions.assistantNameToDisplay = '---Select Assistant---';
-                        permission.assistantDetails = {};
+                        permissions.assistantDetails = {};
+                        dboticaServices.addAssistantSuccessSwal();
                     }
                 }
             }, function(addAssistantError) {
@@ -109,6 +111,7 @@ function permissionsController($rootScope, $scope, $log, $stateParams, dboticaSe
     }
 
     function emptyAllPermissions() {
+        $log.log('in permissions');
         permissions.patientManagement = false;
         permissions.billManagement = false;
         permissions.inventoryManagement = false;
