@@ -233,7 +233,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                         $scope.patientData.bloodGroup = patientData[0].bloodGroup;
                         $scope.patientData.drugAllergy = patientData[0].bloodAllergy;
                         $scope.patientData.firstName = patientData[0].firstName;
-                        $scope.patientData.lastName =  patientData[0].lastName;
+                        $scope.patientData.lastName = patientData[0].lastName;
                         $scope.patientData.emailId = patientData[0].emailId;
                         $scope.patientData.phoneNumber = patientData[0].phoneNumber;
                         $scope.patientData.age = patientData[0].age;
