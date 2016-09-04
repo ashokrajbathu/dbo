@@ -296,7 +296,7 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
                             var testSuccess = angular.fromJson(testRequestSuccessResponse.data.response);
                             var localRoom = [];
                             localRoom = _.filter(adminElement.activeRooms, function(entity) {
-                                return entity.id == testSuccess.roomIds[0];
+                                return entity.id !== undefined && entity.id == testSuccess.roomIds[0];
                             });
                             if (testObject.hasOwnProperty('id')) {
                                 angular.forEach(adminElement.admin.servicesListOfTheDoctor, function(serviceOfDoctor) {
@@ -320,7 +320,11 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
                             } else {
                                 testSuccess['billingName'] = testSuccess.diagnosisTest;
                                 delete testSuccess.diagnosisTest;
-                                testSuccess.roomAndFloorNumbers = localRoom[0].roomNo + '-' + localRoom[0].floorNo;
+                                if (localRoom.length > 0) {
+                                    testSuccess.roomAndFloorNumbers = localRoom[0].roomNo + '-' + localRoom[0].floorNo;
+                                } else {
+                                    testSuccess.roomAndFloorNumbers = '';
+                                }
                                 adminElement.servicesList.unshift(testSuccess['billingName']);
                                 adminElement.admin.servicesListOfTheDoctor.push(testSuccess);
                                 adminElement.admin.procedureCostTextBox = "";
@@ -513,7 +517,7 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
         angular.forEach(adminElement.admin.servicesListOfTheDoctor, function(entity) {
             var localRoomAndFloor = [];
             localRoomAndFloor = _.filter(adminElement.activeRooms, function(roomEntity) {
-                if (roomEntity.id == entity.roomIds[0]) {
+                if (roomEntity.id !== undefined && roomEntity.id == entity.roomIds[0]) {
                     return roomEntity;
                 }
             });
