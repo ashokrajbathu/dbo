@@ -666,6 +666,20 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 prescriptionElement.loading = false;
                 doctorServices.noConnectivityError();
             });
+            var addPatientRequest = {};
+            addPatientRequest.patientId = activePatient.id;
+            addPatientRequest.mobileNumber = activePatient.phoneNumber;
+            var addPatientPromise = doctorServices.addPatientFromDrugController(addPatientRequest);
+            addPatientPromise.then(function(addPatientSuccessResponse) {
+                var errorCode = addPatientSuccessResponse.data.errorCode;
+                if (errorCode) {
+                    doctorServices.logoutFromThePage(errorCode);
+                } else {
+                    var addPatientResp = angular.fromJson(addPatientSuccessResponse.data.response);
+                }
+            }, function(addPatientErrorResponse) {
+                doctorServices.noConnectivityError();
+            });
         } else {
             doctorServices.noPatientOrNoDoctorSwal();
         }

@@ -51,6 +51,7 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.getTodayString = getTodayString;
     doctorServices.selectDateSwal = selectDateSwal;
     doctorServices.prescriptionsOfPatient = prescriptionsOfPatient;
+    doctorServices.addPatientFromDrugController = addPatientFromDrugController;
 
     function loginErrorSwal() {
         swal({
@@ -60,6 +61,26 @@ function doctorServices($http, $state, $log, $q) {
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
+    }
+
+    function addPatientFromDrugController(addPatient) {
+        var deferred = $q.defer();
+        var addPatientRequest = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/doctor/addMyPatients',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(addPatient)
+        }
+        $http(addPatientRequest).then(function(addPatientResponse) {
+            deferred.resolve(addPatientResponse);
+        }, function(addPatientError) {
+            deferred.reject(addPatientError);
+        });
+        return deferred.promise;
     }
 
     function getTodayString() {
