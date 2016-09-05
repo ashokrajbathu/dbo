@@ -157,11 +157,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         doctorServices.noConnectivityError();
     });
 
-    $timeout(function() {
-        try {
-            openDb();
-        } catch (e) {}
-    }, 3000);
+
 
 
     $(document).on('click', function(e) {
@@ -1006,4 +1002,10 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             });
         }
     }
+
+    $timeout(function() {
+        try {
+            openDb();
+        } catch (e) {}
+    }, 3000);
 };
