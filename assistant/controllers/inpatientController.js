@@ -175,9 +175,11 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
         inpatientElement.patientData.bloodGroup = 'O_POSITIVE';
         inpatientElement.patientData.phoneNumber = inpatientElement.number;
         var inpatientSearchPromise = dboticaServices.getPatientDetailsOfThatNumber(inpatientElement.number);
+        $log.log('inpatient promise is----', inpatientSearchPromise);
         inpatientSearchPromise.then(function(inpatientSearchSuccess) {
             var errorCode = inpatientSearchSuccess.data.errorCode;
             if (errorCode) {
+                $log.log('errorcode-s----');
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 inpatientElement.patientsListOfThatNumber = angular.fromJson(inpatientSearchSuccess.data.response);
@@ -194,6 +196,7 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
             dboticaServices.noConnectivityError();
         });
         var getOrganizationPatientsPromise = dboticaServices.getInPatientsWithPhoneNumber(inpatientElement.number);
+        $log.log('org patient promise is------', getOrganizationPatientsPromise);
         getOrganizationPatientsPromise.then(function(getOrgPatientsSuccess) {
             var errorCode = getOrgPatientsSuccess.data.errorCode;
             if (errorCode) {

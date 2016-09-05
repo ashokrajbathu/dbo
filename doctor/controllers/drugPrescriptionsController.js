@@ -1,7 +1,7 @@
 angular.module('doctor').controller('drugPrescriptionsController', drugPrescriptionsController);
-drugPrescriptionsController.$inject = ['$scope', '$log', 'doctorServices', '$state', '$parse', '$http', 'SweetAlert'];
+drugPrescriptionsController.$inject = ['$scope', '$log', 'doctorServices', '$state', '$parse', '$http', '$timeout', 'SweetAlert'];
 
-function drugPrescriptionsController($scope, $log, doctorServices, $state, $http, $parse, SweetAlert) {
+function drugPrescriptionsController($scope, $log, doctorServices, $state, $http, $parse, $timeout, SweetAlert) {
     localStorage.setItem('currentDoctorState', 'drugPrescriptions');
 
     var prescriptionElement = this;
@@ -157,9 +157,12 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         doctorServices.noConnectivityError();
     });
 
-    try {
-        openDb();
-    } catch (e) {}
+    $timeout(function() {
+        try {
+            openDb();
+        } catch (e) {}
+    }, 3000);
+
 
     $(document).on('click', function(e) {
         if ($(e.target).closest("#testsearchbox").length === 0) {
