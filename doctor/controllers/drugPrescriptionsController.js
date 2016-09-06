@@ -670,12 +670,14 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             addPatientRequest.patientId = activePatient.id;
             addPatientRequest.mobileNumber = activePatient.phoneNumber;
             var addPatientPromise = doctorServices.addPatientFromDrugController(addPatientRequest);
+            $log.log('add patient promise is-------', addPatientPromise);
             addPatientPromise.then(function(addPatientSuccessResponse) {
                 var errorCode = addPatientSuccessResponse.data.errorCode;
                 if (errorCode) {
                     doctorServices.logoutFromThePage(errorCode);
                 } else {
                     var addPatientResp = angular.fromJson(addPatientSuccessResponse.data.response);
+                    $log.log('add patient response is------', addPatientResp);
                 }
             }, function(addPatientErrorResponse) {
                 doctorServices.noConnectivityError();

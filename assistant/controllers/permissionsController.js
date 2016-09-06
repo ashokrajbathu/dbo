@@ -20,6 +20,7 @@ function permissionsController($rootScope, $scope, $log, $stateParams, dboticaSe
     var selectAssistantObject = { 'firstName': '---Select Assistant---' };
     permissions.assistantNameToDisplay = '---Select Assistant---';
     var newAssistantObject = { 'firstName': 'New Assistant' };
+    var emptyCheckBoxesFlag = false;
 
     permissions.addAssistant = addAssistant;
     permissions.selectPermissions = selectPermissions;
@@ -73,6 +74,7 @@ function permissionsController($rootScope, $scope, $log, $stateParams, dboticaSe
 
     function addAssistant() {
         var assistantRequest = {};
+        emptyCheckBoxesFlag = false;
         assistantRequest.assistantPermissions = [];
         var check = (permissions.assistantDetails.firstName !== '' && permissions.assistantDetails.city !== '' && permissions.assistantDetails.emailId !== '' && permissions.assistantDetails.password !== '' && permissions.assistantDetails.phoneNumber !== '' && permissions.assistantDetails.assistantPermissions !== [] && localAssistantPermissions.length !== 0);
         if (check) {
@@ -96,6 +98,7 @@ function permissionsController($rootScope, $scope, $log, $stateParams, dboticaSe
                     $log.log('assis response is-------', addAssistantResponse);
                     if (errorCode == null && addAssistantSuccess.data.success) {
                         emptyAllPermissions();
+                        emptyCheckBoxesFlag = true;
                         activeAssistant = {};
                         permissions.assistantNameToDisplay = '---Select Assistant---';
                         permissions.assistantDetails = {};
@@ -109,6 +112,7 @@ function permissionsController($rootScope, $scope, $log, $stateParams, dboticaSe
             permissions.mandatoryFields = true;
         }
     }
+
 
     function emptyAllPermissions() {
         $log.log('in permissions');
@@ -152,7 +156,4 @@ function permissionsController($rootScope, $scope, $log, $stateParams, dboticaSe
             }
         });
     }
-
-
-
 }

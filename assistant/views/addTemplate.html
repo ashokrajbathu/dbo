@@ -66,6 +66,10 @@
                                                     </ul>
                                                 </div>
                                             </div>
+                                            <div ng-if="addTemplate.defaultValueTxtBox" class="form-group">
+                                                <label for="defaultLabelInModel">Default Value</label>
+                                                <input ng-model="addTemplate.defaultValueInTxtBox" class="form-control" type="text" placeholder="Default Value" id="defaultLabelInModel">
+                                            </div>
                                             <div ng-if="addTemplate.showDropdownDiv" class="form-group">
                                                 <textarea ng-model="addTemplate.addedFieldsForDropdown" id="dropdownAddedFieldsTextArea" class="form-control" columns="5" rows="3" placeholder="Added Fields(Add Fields seperating with ,)"></textarea>
                                             </div>

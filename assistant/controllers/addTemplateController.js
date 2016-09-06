@@ -45,6 +45,8 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     var displayArray = [];
     addTemplate.itemsPerPage = 5;
     addTemplate.currentPage = 1;
+    addTemplate.defaultValueTxtBox = false;
+    addTemplate.defaultValueInTxtBox = '';
 
     addTemplate.selectTemplate = selectTemplate;
     addTemplate.addNewTemplate = addNewTemplate;
@@ -149,6 +151,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
         templateToEdit = {};
         if (!_.isEmpty(activeTemplate)) {
             angular.element('#addNewFieldModal').modal('show');
+            addTemplate.defaultValueInTxtBox = '';
             addTemplate.selectSectionNameDiv = true;
             addTemplate.newTemplateSection = false;
             addTemplate.newLabelSection = false;
@@ -185,25 +188,31 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
         switch (addTemplate.fieldType) {
             case 'TEXTBOX':
                 selectedFieldTypeIs = 'TEXT_BOX';
+                addTemplate.defaultValueTxtBox = true;
                 addTemplate.showDropdownDiv = false;
                 break;
             case 'CHECKBOX':
                 selectedFieldTypeIs = 'CHECK_BOX';
+                addTemplate.defaultValueTxtBox = false;
                 addTemplate.showDropdownDiv = true;
                 break;
             case 'DROPDOWN':
                 selectedFieldTypeIs = 'DROPDOWN';
+                addTemplate.defaultValueTxtBox = false;
                 addTemplate.showDropdownDiv = true;
                 break;
             case 'TEXTAREA':
                 selectedFieldTypeIs = 'TEXT_AREA';
+                addTemplate.defaultValueTxtBox = true;
                 addTemplate.showDropdownDiv = false;
                 break;
             case 'BUTTON':
                 selectedFieldTypeIs = 'BUTTON';
+                addTemplate.defaultValueTxtBox = false;
                 addTemplate.showDropdownDiv = false;
                 break;
             case '---Select Field Type---':
+                addTemplate.defaultValueTxtBox = false;
                 addTemplate.showDropdownDiv = false;
                 break;
         }
@@ -239,7 +248,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
                 templateFieldObject.fieldType = selectedFieldTypeIs;
                 if (selectedFieldTypeIs == 'TEXT_BOX' || selectedFieldTypeIs == 'BUTTON' || selectedFieldTypeIs == 'TEXT_AREA') {
                     templateFieldObject.restrictValues = [];
-                    templateFieldObject.description = '';
+                    templateFieldObject.description = addTemplate.defaultValueInTxtBox;
                 }
                 if (selectedFieldTypeIs == 'DROPDOWN') {
                     var dropdownFields = [];
