@@ -20,7 +20,7 @@ function permissionsController($rootScope, $scope, $log, $stateParams, dboticaSe
     var selectAssistantObject = { 'firstName': '---Select Assistant---' };
     permissions.assistantNameToDisplay = '---Select Assistant---';
     var newAssistantObject = { 'firstName': 'New Assistant' };
-    var emptyCheckBoxesFlag = false;
+    var editAssistantFlag = false;
 
     permissions.addAssistant = addAssistant;
     permissions.selectPermissions = selectPermissions;
@@ -29,23 +29,27 @@ function permissionsController($rootScope, $scope, $log, $stateParams, dboticaSe
     emptyAllPermissions();
 
     var organizationId = localStorage.getItem('orgId');
-    var getAssistantsPromise = dboticaServices.getOrganizationAssistants(organizationId);
-    getAssistantsPromise.then(function(getAssistantsSuccess) {
-        var errorCode = getAssistantsSuccess.data.errorCode;
-        if (errorCode) {
-            dboticaServices.logoutFromThePage(errorCode);
-        } else {
-            var assistantsResponse = angular.fromJson(getAssistantsSuccess.data.response);
-            $log.log('response is------', assistantsResponse);
-            permissions.assistantList = _.filter(assistantsResponse, function(entity) {
-                return entity.state == 'ACTIVE';
-            });
-            permissions.assistantList.unshift(selectAssistantObject);
-            permissions.assistantList.push(newAssistantObject);
-        }
-    }, function(getAssistantsError) {
-        dboticaServices.noConnectivityError();
-    });
+    getAssistantsOnLoad();
+
+    function getAssistantsOnLoad() {
+        permissions.assistantList = [];
+        var getAssistantsPromise = dboticaServices.getOrganizationAssistants(organizationId);
+        getAssistantsPromise.then(function(getAssistantsSuccess) {
+            var errorCode = getAssistantsSuccess.data.errorCode;
+            if (errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                var assistantsResponse = angular.fromJson(getAssistantsSuccess.data.response);
+                permissions.assistantList = _.filter(assistantsResponse, function(entity) {
+                    return entity.state == 'ACTIVE';
+                });
+                permissions.assistantList.unshift(selectAssistantObject);
+                permissions.assistantList.push(newAssistantObject);
+            }
+        }, function(getAssistantsError) {
+            dboticaServices.noConnectivityError();
+        });
+    }
 
     function selectPermissions(permission) {
         var permissionIndex = _.findLastIndex(localAssistantPermissions, function(assistantEntity) {
@@ -74,31 +78,31 @@ function permissionsController($rootScope, $scope, $log, $stateParams, dboticaSe
 
     function addAssistant() {
         var assistantRequest = {};
-        emptyCheckBoxesFlag = false;
+        editAssistantFlag = false;
+        if (permissions.assistantNameToDisplay !== '---Select Assistant---' && permissions.assistantNameToDisplay !== 'New Assistant') {
+            assistantRequest.id = activeAssistant.id;
+            editAssistantFlag = true;
+        }
         assistantRequest.assistantPermissions = [];
         var check = (permissions.assistantDetails.firstName !== '' && permissions.assistantDetails.city !== '' && permissions.assistantDetails.emailId !== '' && permissions.assistantDetails.password !== '' && permissions.assistantDetails.phoneNumber !== '' && permissions.assistantDetails.assistantPermissions !== [] && localAssistantPermissions.length !== 0);
         if (check) {
             permissions.mandatoryFields = false;
             angular.copy(permissions.assistantDetails, assistantRequest);
             assistantRequest.assistantPermissions = localAssistantPermissions;
-            if (permissions.assistantNameToDisplay !== 'New Assistant' && permissions.assistantNameToDisplay !== '---Select Assistant---') {
-                assistantRequest.id = activeAssistant.id;
-            }
-            $log.log('assis req is-------', assistantRequest);
             assistantRequest.organizationId = organizationId;
             assistantRequest.userName = permissions.assistantDetails.emailId;
             var addAssistantPromise = dboticaServices.assistantAddition(assistantRequest);
-            $log.log('assis promise is-------', addAssistantPromise);
             addAssistantPromise.then(function(addAssistantSuccess) {
                 var errorCode = addAssistantSuccess.data.errorCode;
                 if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var addAssistantResponse = angular.fromJson(addAssistantSuccess.data.response);
-                    $log.log('assis response is-------', addAssistantResponse);
                     if (errorCode == null && addAssistantSuccess.data.success) {
                         emptyAllPermissions();
-                        emptyCheckBoxesFlag = true;
+                        if (editAssistantFlag) {
+                            getAssistantsOnLoad();
+                        }
                         activeAssistant = {};
                         permissions.assistantNameToDisplay = '---Select Assistant---';
                         permissions.assistantDetails = {};
@@ -115,7 +119,6 @@ function permissionsController($rootScope, $scope, $log, $stateParams, dboticaSe
 
 
     function emptyAllPermissions() {
-        $log.log('in permissions');
         permissions.patientManagement = false;
         permissions.billManagement = false;
         permissions.inventoryManagement = false;
