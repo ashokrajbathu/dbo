@@ -148,7 +148,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             prescriptionElement.drugTemplates = _.filter(getDrugTemplatesResponse, function(entity) {
                 return entity.state == 'ACTIVE';
             });
-            $log.log('drug templates are-----', prescriptionElement.drugTemplates);
             angular.forEach(prescriptionElement.drugTemplates, function(value, key) {
                 prescriptionElement['checkbox' + key] = false;
             });
@@ -215,16 +214,13 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                     prescriptionElement.updatePatient = true;
                     prescriptionElement.addMember = true;
                     prescriptionElement.radio0 = true;
-                    $log.log('patient id is-----', activePatient.id);
                     var getPatientPrescriptionsPromise = doctorServices.prescriptionsOfPatient(activePatient.id);
-                    $log.log('patient prescriptions are-----', getPatientPrescriptionsPromise);
                     getPatientPrescriptionsPromise.then(function(getPrescriptionsSuccess) {
                         var errorCode = getPrescriptionsSuccess.data.errorCode;
                         if (errorCode) {
                             doctorServices.logoutFromThePage(errorCode);
                         } else {
                             prescriptionElement.patientPrescriptions = angular.fromJson(getPrescriptionsSuccess.data.response);
-                            $log.log('prescriptions response is-----', prescriptionElement.patientPrescriptions);
                         }
                     }, function(getPrescriptionsError) {
                         doctorServices.noConnectivityError();
@@ -535,7 +531,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 drugEntityToSave.noOfDays = 1;
             }
         }
-        $log.log('entity to save-----', drugEntityToSave);
         drugsListToSave.push(drugEntityToSave);
         emptyDrugElements();
         timingBtnsDefault();
@@ -670,14 +665,12 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             addPatientRequest.patientId = activePatient.id;
             addPatientRequest.mobileNumber = activePatient.phoneNumber;
             var addPatientPromise = doctorServices.addPatientFromDrugController(addPatientRequest);
-            $log.log('add patient promise is-------', addPatientPromise);
             addPatientPromise.then(function(addPatientSuccessResponse) {
                 var errorCode = addPatientSuccessResponse.data.errorCode;
                 if (errorCode) {
                     doctorServices.logoutFromThePage(errorCode);
                 } else {
                     var addPatientResp = angular.fromJson(addPatientSuccessResponse.data.response);
-                    $log.log('add patient response is------', addPatientResp);
                 }
             }, function(addPatientErrorResponse) {
                 doctorServices.noConnectivityError();
@@ -724,7 +717,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     function appointmentsList() {
         angular.element('#appointmentsModals').modal('show');
         var doctorEventsPromise = doctorServices.getDoctorEvents(activeDoctor.id);
-        $log.log('doctor events promise is----', doctorEventsPromise);
         doctorEventsPromise.then(function(doctorEventsSuccess) {
             var errorCode = doctorEventsSuccess.data.errorCode;
             if (errorCode) {
@@ -788,7 +780,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     }
 
     function addDrugTemplate(drugTemplateEntity, index) {
-        $log.log('entity is -------', drugTemplateEntity);
         var perservingId = '#perServing' + index;
         var unitsId = '#units' + index;
         drugTemplateEntity.drugDosage.perServing = angular.element(perservingId).val();
@@ -797,7 +788,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         } else {
             drugTemplateEntity.drugDosage.quantity = angular.element(unitsId).val();
         }
-        $log.log('c1 is----', angular.element(unitsId).val());
         if (!prescriptionElement['checkbox' + index]) {
             prescriptionElement['checkbox' + index] = true;
             var templateEntity = {};
@@ -951,7 +941,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     }
 
     function selectPrescription(prescriptionActive, index) {
-        $log.log('prescription is-----', prescriptionActive);
         if (_.has(prescriptionActive.prescription, 'weight') && !_.isEmpty(prescriptionActive.prescription.weight)) {
             prescriptionElement.prescriptionData.weight = prescriptionActive.prescription.weight;
         }

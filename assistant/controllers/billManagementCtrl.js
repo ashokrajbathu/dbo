@@ -219,6 +219,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
 
     function selectDoctorFromDropdown(doctor) {
         billElement.bill.doctorActive = doctor;
+        billElement.bill.billCost = '';
         billElement.finalBill.doctorId = doctor.id;
         if (doctor.hasOwnProperty('doctorPriceInfos')) {
             for (var serviceIndex in doctor.doctorPriceInfos) {
@@ -234,7 +235,6 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
             billElement.bill.billTypes = _.filter(doctor.doctorPriceInfos, function(priceEntity) {
                 return priceEntity.state == 'ACTIVE';
             });
-
         } else {
             billElement.bill.doctorActiveService = "No Service";
             billElement.bill.billTypes = [];
@@ -248,7 +248,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
     }
 
     function patientSearchOftheNumber(phoneNumber) {
-        if (phoneNumber === undefined) {
+        if (phoneNumber === undefined || phoneNumber == '') {
             dboticaServices.showNoPhoneNumberSwal();
         } else {
             if (!billElement.enterDigits && !billElement.enterPhoneNumber) {
@@ -260,10 +260,6 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         billElement.bill.patientsListOfThatNumber = angular.fromJson(patientSearchSuccessResponse.data.response);
-                        /*var patientsList = [];
-                        angular.forEach(patientsAndOrganizationPatientsList, function(entity) {
-                            patientsList.push(entity.patient);
-                        });*/
                         if (billElement.bill.patientsListOfThatNumber.length > 0) {
                             billElement.prescriptionOfPatient = true;
                             billElement.finalBill.patientId = billElement.bill.patientsListOfThatNumber[0].patient.id;
@@ -271,7 +267,6 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                             billElement.bill.viewOrHide = true;
                             $scope.radio0 = true;
                             billElement.bill.patientSearchPatients = true;
-                            /* billElement.bill.patientsListOfThatNumber = patientsList;*/
                             billElement.patient = billElement.bill.patientsListOfThatNumber[0].patient;
                             if (_.has(billElement.bill.patientsListOfThatNumber[0], 'organizationPatient')) {
                                 billElement.organizationPatient = billElement.bill.patientsListOfThatNumber[0].organizationPatient;
@@ -416,7 +411,6 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
         billElement.invoice.amount -= billToBeRemoved.amountCharged;
         billElement.bill.billsListing.splice(index, 1);
     }
-
 
     function addTestToFinalBill() {
         if (billElement.finalBill.patientId == "") {
