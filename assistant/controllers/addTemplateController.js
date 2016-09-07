@@ -47,6 +47,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     addTemplate.currentPage = 1;
     addTemplate.defaultValueTxtBox = false;
     addTemplate.defaultValueInTxtBox = '';
+    var editTemplateNameFlag = false;
 
     addTemplate.selectTemplate = selectTemplate;
     addTemplate.addNewTemplate = addNewTemplate;
@@ -60,19 +61,16 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     addTemplate.deleteAnElement = deleteAnElement;
 
     var getTemplatesPromise = dboticaServices.getAllTemplates(organizationId, '', true);
-    $log.log('get promise is-----------', getTemplatesPromise);
     getTemplatesPromise.then(function(getTemplateSuccess) {
         var errorCode = getTemplateSuccess.data.errorCode;
         if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var getTemplateResponse = angular.fromJson(getTemplateSuccess.data.response);
-            $log.log('resp is-----', getTemplateResponse);
             if (errorCode == null && getTemplateSuccess.data.success) {
                 addTemplate.templatesList = _.filter(getTemplateResponse, function(entity) {
                     return entity.state == 'ACTIVE';
                 });
-                $log.log('temps list----', addTemplate.templatesList);
                 angular.copy(addTemplate.templatesList, localActiveSectionsFields);
                 angular.forEach(localActiveSectionsFields, function(template) {
                     angular.forEach(template.templateFields, function(fieldEntity, key, value) {
@@ -98,9 +96,11 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     });
 
     function selectTemplate(template) {
+        editTemplateNameFlag = false;
         addTemplate.templateNameToDisplay = template.name;
         if (template.name == 'New Template') {
             activeTemplate = {};
+            addTemplate.newTemplateName = '';
             addTemplate.addNewFieldBtn = false;
             addTemplate.templateName = true;
             addTemplate.addBtn = true;
@@ -109,6 +109,9 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
             if (template.name !== '-Select Template Name-') {
                 addTemplate.editTemplateName = true;
                 activeTemplate = template;
+            }
+            if (template.name == '-Select Template Name-') {
+                addTemplate.editTemplateName = false;
             }
             addTemplate.addNewFieldBtn = true;
             addTemplate.templateName = false;
@@ -119,24 +122,44 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     function addNewTemplate() {
         if (addTemplate.templateName && addTemplate.addBtn && addTemplate.newTemplateName !== '') {
             var addTemplateRequestEntity = {};
-            addTemplateRequestEntity.organizationId = organizationId;
-            addTemplateRequestEntity.permissions = ['NURSE'];
-            addTemplateRequestEntity.name = addTemplate.newTemplateName;
-            addTemplateRequestEntity.visibility = 'ACTIVE';
-            addTemplateRequestEntity.templateFields = [];
+            if (editTemplateNameFlag && addTemplate.templateNameToDisplay !== 'New Template' && addTemplate.templateNameToDisplay !== '-Select Template Name-') {
+                angular.copy(activeTemplate, addTemplateRequestEntity);
+                addTemplateRequestEntity.name = addTemplate.newTemplateName;
+            } else {
+                addTemplateRequestEntity.organizationId = organizationId;
+                addTemplateRequestEntity.permissions = ['NURSE'];
+                addTemplateRequestEntity.name = addTemplate.newTemplateName;
+                addTemplateRequestEntity.visibility = 'ACTIVE';
+                addTemplateRequestEntity.templateFields = [];
+            }
             var addTemplatePromise = dboticaServices.addFieldRequest(addTemplateRequestEntity);
-            $log.log('promise is------', addTemplatePromise);
             addTemplatePromise.then(function(addTemplateSuccess) {
                 var errorCode = addTemplateSuccess.data.errorCode;
                 if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var addTemplateResponse = angular.fromJson(addTemplateSuccess.data.response);
-                    $log.log('add template response is-------', addTemplateResponse);
                     if (errorCode == null && addTemplateSuccess.data.success) {
                         dboticaServices.newTemplateSuccessSwal();
                         addTemplate.newTemplateName = '';
-                        addTemplate.templatesList.splice(1, 0, addTemplateResponse);
+                        if (!editTemplateNameFlag) {
+                            addTemplate.templatesList.splice(1, 0, addTemplateResponse);
+                        } else {
+                            var templateIndex = _.findLastIndex(addTemplate.templatesList, function(templateEntity) {
+                                return templateEntity.id !== undefined && templateEntity.id == addTemplateResponse.id;
+                            });
+                            angular.forEach(entitiesArray, function(sectionEntity) {
+                                if (sectionEntity.elementId == addTemplateResponse.id) {
+                                    sectionEntity.templateName = addTemplateResponse.name;
+                                }
+                            });
+                            pageChanged();
+                            addTemplate.templatesList.splice(templateIndex, 1, addTemplateResponse);
+                            addTemplate.templateNameToDisplay = addTemplateResponse.name;
+                            angular.copy(addTemplateResponse, activeTemplate);
+                            addTemplate.templateName = false;
+                            addTemplate.addBtn = false;
+                        }
                     }
                 }
             }, function(addTemplateError) {
@@ -219,7 +242,6 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     }
 
     function addEntityToTemplate() {
-        $log.log('template active is-----', activeTemplate);
         if (_.isEmpty(templateToEdit)) {
             if (addTemplate.sectionNameToDisplay !== '-Select Section Name-') {
                 var requestEntity = {};
@@ -275,7 +297,6 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
                     });
                 }
                 requestEntity.templateFields.push(templateFieldObject);
-                $log.log('request is-----', requestEntity);
                 if (check) {
                     var addSectionPromise = dboticaServices.addFieldRequest(requestEntity);
                     addSectionPromise.then(function(addSectionSuccess) {
@@ -284,7 +305,6 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
                             dboticaServices.logoutFromThePage(errorCode);
                         } else {
                             var addSectionResponse = angular.fromJson(addSectionSuccess.data.response);
-                            $log.log('response is------', addSectionResponse);
                             if (errorCode == null && addSectionSuccess.data.success) {
                                 var templateIndex = dboticaServices.getReqTemplate(localActiveSectionsFields, addSectionResponse);
                                 localActiveSectionsFields.splice(templateIndex, 1, addSectionResponse);
@@ -360,16 +380,13 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
                 });
             }
             if (addTemplate.newLabelSection !== undefined && addTemplate.newLabelSection !== '') {
-                $log.log('req is to edit-----', editTemplateRequestEntity);
                 var editPromise = dboticaServices.addFieldRequest(editTemplateRequestEntity);
-                $log.log('edit promise is------', editPromise);
                 editPromise.then(function(editTemplateSuccess) {
                     var errorCode = editTemplateSuccess.data.errorCode;
                     if (errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
                         var editTemplateResponse = angular.fromJson(editTemplateSuccess.data.response);
-                        $log.log('edit response is-------', editTemplateResponse);
                         if (errorCode == null && editTemplateSuccess.data.success) {
                             dboticaServices.editFieldSuccessSwal();
                             angular.element('#addNewFieldModal').modal('hide');
@@ -402,7 +419,6 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
 
     function editAnElement(elementToEdit, index) {
         elementInTable = elementToEdit;
-        $log.log('element to edit is------', elementToEdit);
         angular.element('#addNewFieldModal').modal('show');
         addTemplate.selectSectionNameDiv = false;
         addTemplate.newLabelSection = true;
@@ -429,7 +445,6 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     }
 
     function deleteAnElement(elementToDelete, index) {
-        $log.log('element to delete-----', elementToDelete, index);
         swal({
                 title: "Are you sure?",
                 text: "You will not be able to recover Field Details!",
@@ -480,6 +495,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     function editTemp() {
         if (!_.isEmpty(activeTemplate)) {
             addTemplate.templateName = true;
+            editTemplateNameFlag = true;
             addTemplate.newTemplateName = activeTemplate.name;
             addTemplate.addBtn = true;
         };
