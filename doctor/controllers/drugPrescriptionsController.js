@@ -93,6 +93,8 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     var walkinsListSorted = [];
     var appointmentsEntities = [];
     var walkinEntities = [];
+    prescriptionElement.templatesList = [];
+    var activeTemplates = [];
 
     activeDoctor = localStorage.getItem('currentDoctor');
     activeDoctor = angular.fromJson(activeDoctor);
@@ -156,7 +158,32 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         doctorServices.noConnectivityError();
     });
 
-
+    var getDoctorTemplatesPromise = doctorServices.getDoctorTemplates(activeDoctor.organizationId);
+    $log.log('templates are-------', getDoctorTemplatesPromise);
+    getDoctorTemplatesPromise.then(function(getTemplatesSuccess) {
+        var errorCode = getTemplatesSuccess.data.errorCode;
+        if (errorCode) {
+            doctorServices.logoutFromThePage(errorCode);
+        } else {
+            var doctorTemplates = angular.fromJson(getTemplatesSuccess.data.response);
+            activeTemplates = _.filter(doctorTemplates, function(templateEntity) {
+                return templateEntity.state == 'ACTIVE';
+            });
+            angular.forEach(activeTemplates, function(activeTemplateEntity) {
+                angular.forEach(activeTemplateEntity.templateFields, function(templateFieldEntity, key, value) {
+                    if (templateFieldEntity.fieldState == 'INACTIVE') {
+                        activeTemplateEntity.templateFields.splice(key, 1);
+                    }
+                });
+                activeTemplateEntity.activeTemplateFields = {};
+                activeTemplateEntity.activeTemplateFields = _.groupBy(activeTemplateEntity.templateFields, 'sectionName');
+            });
+            $log.log('final active temps are-------', activeTemplates);
+            angular.copy(activeTemplates, prescriptionElement.templatesList);
+        }
+    }, function(getTemplatesError) {
+        doctorServices.noConnectivityError();
+    });
 
 
     $(document).on('click', function(e) {

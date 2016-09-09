@@ -204,6 +204,55 @@
     </div>
     <div class="row">
         <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
+            <div ng-repeat="templateEntity in prescription.templatesList track by $index" class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div style="background-color:#3c8dbc;background-image:none;cursor:pointer;" class="panel-heading">
+                        <h4 class="panel-title">
+                              <a style="color:white;" data-toggle="collapse" ng-bind="templateEntity.name" data-parent="#accordion" data-target="#collapse{{$index}}">
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse{{$index}}" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div ng-repeat="section in templateEntity.activeTemplateFields">
+                                <div ng-init="sectionIndex=$index" ng-repeat="sectionEntity in section track by $index">
+                                    <h4 ng-if="sectionIndex==0" ng-bind="sectionEntity.sectionName"></h4>
+                                    <hr ng-if="sectionIndex==0">
+                                    <div class="row">
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <div ng-if="sectionEntity.fieldState=='ACTIVE' && sectionEntity.fieldType=='TEXT_BOX'" class="form-group">
+                                                <label ng-bind="sectionEntity.name"></label>
+                                                <input type="text" class="form-control" name="text" ng-model="sectionEntity.description">
+                                            </div>
+                                            <div ng-if="sectionEntity.fieldState=='ACTIVE' && sectionEntity.fieldType=='DROPDOWN'" class="form-group">
+                                                <label ng-bind="sectionEntity.name"></label>
+                                                <select class="selectBoxesInNurse" ng-model="sectionEntity.description" ng-options="template.value as template.name for template in sectionEntity.restrictValues"></select>
+                                            </div>
+                                            <div ng-if="sectionEntity.fieldState=='ACTIVE' && sectionEntity.fieldType=='TEXT_AREA'" class="form-group">
+                                                <label ng-bind="sectionEntity.name"></label>
+                                                <textarea ng-model="sectionEntity.description" class="form-control" rows="2"></textarea>
+                                            </div>
+                                            <div ng-if="sectionEntity.fieldState=='ACTIVE' && sectionEntity.fieldType=='CHECK_BOX'" class="form-group">
+                                                <label ng-bind="sectionEntity.name"></label>
+                                                <div class="row">
+                                                    <div ng-repeat="restrictValue in sectionEntity.restrictValues" class="col-md-3 col-sm-3 col-xs-3">
+                                                        <label class="checkbox-inline">
+                                                            <input ng-checked="restrictValue.checkBoxValue" type="checkbox">{{restrictValue.name}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
             <div class="panel panelsInDoctor">
                 <div class="panel-heading">
                     <h4>Investigation</h4>

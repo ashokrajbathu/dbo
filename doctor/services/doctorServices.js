@@ -52,6 +52,7 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.selectDateSwal = selectDateSwal;
     doctorServices.prescriptionsOfPatient = prescriptionsOfPatient;
     doctorServices.addPatientFromDrugController = addPatientFromDrugController;
+    doctorServices.getDoctorTemplates = getDoctorTemplates;
 
     function loginErrorSwal() {
         swal({
@@ -61,6 +62,23 @@ function doctorServices($http, $state, $log, $q) {
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
+    }
+
+    function getDoctorTemplates(organizationId) {
+        var deferred = $q.defer();
+        var template = '';
+        var visibility = true;
+        var getTemplatesRequest = {
+            method: 'GET',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/template/getTemplates?organizationId=' + organizationId + '&name=' + template + '&showInvisible=' + visibility,
+            withCredentials: true
+        }
+        $http(getTemplatesRequest).then(function(getTemplateSuccess){
+            deferred.resolve(getTemplateSuccess);
+        },function(getTemplatesError){
+            deferred.reject(getTemplatesError);
+        });
+        return deferred.promise;
     }
 
     function addPatientFromDrugController(addPatient) {

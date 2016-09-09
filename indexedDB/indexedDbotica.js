@@ -481,7 +481,6 @@ function getPatientByPhoneNumberFromIndexedDB(phoneNumber) {
     var index = store.index("phoneNumber");
     index.get(phoneNumber).onsuccess = function(event) {
         return event.target.result;
-
     };
 }
 
@@ -511,7 +510,6 @@ function getAllPrescriptionsFromIndexedDB(addDataToTable, callBackAfterAdding, i
 
             cursor.continue();
         } else {
-            console.log('in else---');
             callBackAfterAdding(id);
 
 
