@@ -146,7 +146,11 @@ function syncAllDrugsToIndexedDB() {
         $.ajax({
             type: "GET",
             url: "http://localhost:8081/dbotica-spring/drug/getDrugs",
-            data: {
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+			data: {
                 'start': startDrugIndex,
                 'limit': 1000,
                 'lastUpdated': lastUpdatedDrugIndex
@@ -244,7 +248,11 @@ function syncAllPrescriptionsToIndexedDB() {
         $.ajax({
             type: "GET",
             url: "http://localhost:8081/dbotica-spring/doctor/myPrescriptions",
-            data: {
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("Accept", "application/json");
+            },
+			data: {
                 'doctorId': doctorId,
                 'start': startPrescriptionIndex,
                 'limit': 100,
@@ -314,7 +322,7 @@ function syncAllPrescriptionsToIndexedDB() {
 Get all patiensts of this doctor from server
 */
 //TODO
-function syncAllPatientsToIndexedDB() {
+/*function syncAllPatientsToIndexedDB() {
 
     $.ajax({
         type: "GET",
@@ -330,7 +338,7 @@ function syncAllPatientsToIndexedDB() {
         }
     });
 
-}
+}*/
 
 /*
  *
