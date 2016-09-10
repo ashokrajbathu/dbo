@@ -24,7 +24,6 @@ angular.module('oitozero.ngSweetAlert', [])
 
 angular.module('personalAssistant').config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
-
     $stateProvider
         .state('login', {
             url: '/',
