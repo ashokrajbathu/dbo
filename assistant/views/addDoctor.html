@@ -76,9 +76,6 @@
                                 <form>
                                     <div class="form-group">
                                         <label for="exampleInputDoctorSpeciality">Speciality</label>
-                                        <!-- <select ng-model="doctor.doctorData.speciality" ng-options="speciality.name for speciality in doctor.optionsForSpeciality">
-                                            <option value="{{speciality.name}}" ng-bind="speciality"></option>
-                                        </select> -->
                                         <div id="drpBtnDivdoctor" class="dropdown">
                                             <button style="border-color:#d2d6de;width:100%;" id="drpBtndoctor" class="btn roomCategoryBtn dropdown-toggle" type="button" data-toggle="dropdown">{{doctor.specialityName}}
                                                 <span id="caretIndoctor" class="caret"></span></button>
@@ -144,15 +141,6 @@
                                 <div class="form-group">
                                     <label for="exampleInputDoctorName">Doctor Name</label>
                                     <input readonly type="text" ng-model="doctor.doctorName" class="form-control" id="exampleInputDoctorPhoneNumber" placeholder="Doctor Name">
-                                    <!-- <div id="drpBtnDivAdminDoc" class="dropdown">
-                                    <button style="border-color:#d2d6de;" id="drpBtnRoomDoc" class="btn roomCategoryBtn dropdown-toggle" type="button" data-toggle="dropdown">{{doctor.doctorName}}
-                                        <span id="caretInDoc" class="caret"></span></button>
-                                    <ul class="dropdown-menu">
-                                        <li ng-click="doctor.doctorSelectFromDropDown(docEntity)" ng-repeat="docEntity in doctor.doctorsListToBeDisplayed">
-                                            <a style="cursor:pointer;" ng-bind="docEntity.firstName +' '+docEntity.lastName"></a>
-                                        </li>
-                                    </ul>
-                                </div> -->
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputDoctorPhoneNumber">Phone Number</label>
@@ -171,9 +159,6 @@
     </div>
     <div class="input-group">
         <input style="margin-top:8px;" type="search" ng-model="doctor.doctorNameForSearch" class="form-control searchInMainAdmin pull-right" ng-change="doctor.doctorSearchInTheTotalList()" placeholder="Doctor Category / Name">
-        <!-- <span ng-click="doctor.doctorSearchInTheTotalList()" class="input-group-btn">
-            <button type="submit" class="btn mainAdminBtn searchBtnInMainAdmin"><span class="glyphicon glyphiconSearch glyphicon-search"></span></button>
-        </span> -->
     </div>
     <table class="table mainAdminTable table-hover table-striped">
         <thead>
