@@ -197,20 +197,6 @@ function personalAssistantCtrl($scope, $log, $location, dboticaServices, $state,
     $scope.loading = false;
     $scope.blurScreen = false;
     $scope.radioModel = 'morning';
-    $scope.checkModel = {
-        left: false,
-        middle: true,
-        right: false
-    };
-    $scope.checkResults = [];
-    $scope.$watchCollection('checkModel', function() {
-        $scope.checkResults = [];
-        angular.forEach($scope.checkModel, function(value, key) {
-            if (value) {
-                $scope.checkResults.push(key);
-            }
-        });
-    });
     if (localStorage.getItem("isLoggedInAssistant") == "true") {
         $state.go('home');
     }
