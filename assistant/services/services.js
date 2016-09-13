@@ -806,9 +806,11 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     this.getMedicine = function() {
         return medicine;
     }
+
     this.setMedicineNames = function(value) {
         medicineNames = value;
     }
+
     this.getMedicineNames = function() {
         return medicineNames;
     }
@@ -2294,6 +2296,15 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.templateInstanceSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Details Successfully Added",
+            type: "success",
+            confirmButtonText: "OK"
+        });
+    }
+
     this.deleteFieldSuccessSwal = function() {
         swal({
             title: "Success",
@@ -2355,6 +2366,26 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             return localEntity.id == id;
         });
         return index;
+    }
+
+    this.addTemplateInstance = function(templateInstance) {
+        var deferred = $q.defer();
+        var instanceRequest = {
+            method: 'POST',
+            url: 'http://localhost:8081/dbotica-spring/organization/hospital/template/addTemplateInstance',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(templateInstance)
+        }
+        $http(instanceRequest).then(function(instanceSuccess) {
+            deferred.resolve(instanceSuccess);
+        }, function(instanceError) {
+            deferred.reject(instanceError);
+        });
+        return deferred.promise;
     }
 
 }]);

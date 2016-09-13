@@ -8,6 +8,7 @@
         <div id="contentOfPatientDetailsTab" class="tab-content activeTabContent">
             <div ng-repeat="section in activeTemplateFields">
                 <div ng-repeat="sectionEntity in section track by $index">
+                    <a ng-if="patientMedication && detail.getData();"></a>
                     <h4 ng-if="$index==0" ng-bind="sectionEntity.sectionName"></h4>
                     <hr ng-if="$index==0">
                     <div class="row">
@@ -36,6 +37,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <button ng-click="detail.submitPatientFullForm()" style="margin-left:10px;" class="btn mainAdminBtn">Save</button>
             </div>
         </div>
     </div>

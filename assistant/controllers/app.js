@@ -236,6 +236,7 @@ function personalAssistantCtrl($scope, $log, $location, dboticaServices, $state,
                                 currentStateAllocation(assistantObj.assistantPermissions);
                                 var organizationIdActive = assistantObj.organizationId;
                                 localStorage.setItem('orgId', organizationIdActive);
+                                localStorage.setItem('assistant', JSON.stringify(assistantObject));
                                 $state.go('home');
                                 break;
                             } else {
@@ -253,6 +254,7 @@ function personalAssistantCtrl($scope, $log, $location, dboticaServices, $state,
                     localStorage.setItem('assistantCurrentlyLoggedIn', currentAssistantObject);
                     var assistantObject = $.parseJSON(response.data.response);
                     var organizationId = assistantObject.organizationId;
+                    localStorage.setItem('assistant', JSON.stringify(assistantObject));
                     localStorage.setItem('orgId', organizationId);
                     $log.log("assistant info is----", $.parseJSON(response.data.response));
                     localStorage.setItem("isLoggedInAssistant", "true");
