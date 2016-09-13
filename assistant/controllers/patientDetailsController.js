@@ -7,6 +7,7 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
     var templatesList = [];
     detail.activeTemplate = {};
     detail.patient = {};
+    var onLoadTemplateFileds = {};
 
     detail.submitPatientFullForm = submitPatientFullForm;
     detail.getData = getData;
@@ -14,6 +15,7 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
     var assistantObject = localStorage.getItem('assistant');
     var organizationId = localStorage.getItem('orgId');
     assistantObject = angular.fromJson(assistantObject);
+    angular.copy($scope.activeTemplateFields, onLoadTemplateFileds);
 
     var getTemplatesPromise = dboticaServices.getAllTemplates(organizationId, '', true);
     getTemplatesPromise.then(function(getTemplateSuccess) {
@@ -56,6 +58,7 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
                 var addTemplateResponse = angular.fromJson(addInstanceSuccess.data.response);
                 if (errorCode == null && addInstanceSuccess.data.success) {
                     dboticaServices.templateInstanceSuccessSwal();
+                    angular.copy(onLoadTemplateFileds, $scope.activeTemplateFields);
                 }
             }
         }, function(addTemplateError) {
