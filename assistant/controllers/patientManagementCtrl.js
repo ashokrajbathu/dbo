@@ -66,6 +66,10 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
     $scope.patientData = {};
     $scope.nextForm = false;
     $scope.errorMsg = false;
+    $scope.caseNumber = '---Case Number---';
+    var caseNumberObject = { 'organizationCaseNo': '---Case Number---' };
+    $scope.caseNumbersList = [];
+    var activeCaseNo = '';
     $scope.trial = false;
     $scope.nextBtn = true;
     $scope.isActiveBook = true;
@@ -198,6 +202,15 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         }
     }
 
+    $scope.selectCaseNumber = function(selectedCase) {
+        $scope.caseNumber = selectedCase.organizationCaseNo;
+        if (selectedCase.organizationCaseNo !== '---Case Number---') {
+            activeCaseNo = selectedCase.organizationCaseNo;
+        } else {
+            activeCaseNo = '';
+        }
+    }
+
     $scope.patientSearch = function() {
         angular.element("#modalSubmitBtn").removeAttr("data-dismiss");
         $scope.modalSubmitButtonText = "Add Patient";
@@ -225,6 +238,23 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                     $scope.patientsOfPhoneNumber = angular.fromJson(response.data.response);
                     if (response.data.success === true && response.data.response.length > 2) {
                         var patientData = JSON.parse(response.data.response);
+                        var casePromise = dboticaServices.getCaseHistory(patientData[0].id);
+                        console.log('case promise is-------', casePromise);
+                        casePromise.then(function(caseSuccessResponse) {
+                            var errorCode = caseSuccessResponse.data.errorCode;
+                            if (errorCode) {
+                                dboticaServices.logoutFromThePage(errorCode);
+                            } else {
+                                var caseResponse = angular.fromJson(caseSuccessResponse.data.response);
+                                console.log('case response is-------', caseResponse);
+                                if (errorCode == null && caseSuccessResponse.data.success) {
+                                    angular.copy(caseResponse, $scope.caseNumbersList);
+                                    $scope.caseNumbersList.unshift(caseNumberObject);
+                                }
+                            }
+                        }, function(caseErrorResponse) {
+                            dboticaServices.noConnectivityError();
+                        });
                         $scope.patientsOfNumber = true;
                         $scope.familyMemberLink = true;
                         $scope.patientActive = patientData[0];
@@ -736,12 +766,14 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
             $scope.loading = true;
             console.log('patient request is-----', newPatientDetails);
             var promise = dboticaServices.addNewPatient(newPatientDetails);
+            console.log('add patient promise is-----', promise);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
                 if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var addPatientResponse = JSON.parse(response.data.response);
+                    console.log('add patient response is------', addPatientResponse);
                     if (!$scope.patientNumberDiv) {
                         $scope.nextForm = true;
                         $scope.nextBtn = false;
@@ -761,14 +793,15 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                     $scope.patientDataInNextDiv.name = addPatientResponse[indexOfBookedPatient].firstName;
                     $scope.book.label = addPatientResponse[indexOfBookedPatient].firstName;
                     $scope.book.patientId = addPatientResponse[indexOfBookedPatient].id;
-                    if ($scope.patientNumberDiv && !_.isEmpty($scope.book.patientId)) {
+                    if (!_.isEmpty($scope.book.patientId)) {
                         if (firstName !== undefined && firstName !== '' && phoneNumber !== undefined && phoneNumber !== '') {
                             var registerPatientRequest = {};
                             registerPatientRequest.organizationId = organizationId;
                             registerPatientRequest.patientId = $scope.book.patientId;
                             registerPatientRequest.phoneNumber = phoneNumber;
+                            registerPatientRequest.activeCaseNumber = activeCaseNo;
                             // registerPatientRequest.organizationPatientNo = patientNumber;
-                            registerPatientRequest.patientType = $scope.patientData.patientType;
+                            registerPatientRequest.patientType = 'OUT_PATIENT';
                             registerPatientRequest.patientState = 'CHECK_IN';
                             var registerPatientPromise = dboticaServices.registerPatient(registerPatientRequest);
                             console.log('prom is-----', registerPatientPromise);

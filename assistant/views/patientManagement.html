@@ -255,7 +255,7 @@
                                             </div>
                                         </form>
                                     </div> -->
-                                    <div ng-if="patientNumberDiv" class="col-md-4 col-sm-8 col-xs-8">
+                                    <!-- <div ng-if="patientNumberDiv" class="col-md-4 col-sm-8 col-xs-8">
                                         <form>
                                             <div class="form-group">
                                                 <label for="exampleInputPatientNumber">*Patient Type</label>
@@ -263,6 +263,22 @@
                                                     <option>OUT_PATIENT</option>
                                                     <option>IN_PATIENT</option>
                                                 </select>
+                                            </div>
+                                        </form>
+                                    </div> -->
+                                    <div class="col-md-4 col-sm-8 col-xs-8">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="selectCaseNumber">Select Case Number</label>
+                                                <div class="dropdown">
+                                                    <button style="width:100%;color:black;border-radius:0px;border-color:#d2d6de;" class="btn dropdown-toggle" type="button" data-toggle="dropdown">{{caseNumber}}
+                                                        <span id="caretInInpatient0" class="caret caretCss"></span></button>
+                                                    <ul class="dropdown-menu">
+                                                        <li ng-click="selectCaseNumber(case)" ng-repeat="case in caseNumbersList">
+                                                            <a style="cursor:pointer;" ng-bind="case.organizationCaseNo"></a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -279,7 +295,7 @@
                                 <div class="col-md-4 patient-form-group form-group">
                                     <span class="modalInfo">Entry Type</span>
                                     <button ng-change="changeEntryTypeView()" id="entryTypeBtn" class="btn dropdown-toggle" ng-model="entryTypeSelected.value" type="button" data-toggle="dropdown">{{patientEntryType}}
-                                        <span id="walkinAppointmentCaret" class="caret"></span></button>
+                                        <span id="walkinAppointmentCaret0" class="caret caretCss"></span></button>
                                     <ul id="walkinAppointmentDropdown" class="dropdown-menu">
                                         <li style="cursor:pointer;" ng-repeat="option in entryType"><a ng-click="selectOption(option)">{{option}}</a></li>
                                     </ul>
