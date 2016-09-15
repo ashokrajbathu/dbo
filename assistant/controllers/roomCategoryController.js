@@ -22,7 +22,7 @@ function roomCategoryController($scope, $log, dboticaServices, $state, $http, $p
 
     var entitiesArray = [];
     var entitiesArrayFlag = parseInt(0);
-    var organizationId = localStorage.getItem('orgId');
+    var organizationId = sessionStorage.getItem('orgId');
     roomCategoryElement.currentPage = 1;
     roomCategoryElement.itemsPerPage = 3;
     var displayArray = [];

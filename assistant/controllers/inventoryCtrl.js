@@ -2,7 +2,7 @@ angular.module('personalAssistant').controller('inventoryCtrl', inventoryCtrl);
 inventoryCtrl.$inject = ['$scope', '$log', '$timeout', '$filter', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
 
 function inventoryCtrl($scope, $log, $timeout, $filter, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
-    localStorage.setItem("currentState", "inventory");
+    sessionStorage.setItem("currentState", "inventory");
 
     var inventoryElement = this;
 
@@ -59,7 +59,7 @@ function inventoryCtrl($scope, $log, $timeout, $filter, dboticaServices, $state,
     var displayListLength = 3;
     inventoryElement.startDisplay = inventoryElement.start + 1;
     inventoryElement.endDisplay = displayListLength;
-    var organizationId = localStorage.getItem('orgId');
+    var organizationId = sessionStorage.getItem('orgId');
     var itemSelectedForAddingBatch = {};
     inventoryElement.warningMessage = false;
     inventoryElement.itemSearch = {};

@@ -2,7 +2,7 @@ angular.module('doctor').controller('myPatientsController', myPatientsController
 myPatientsController.$inject = ['$scope', '$log', 'doctorServices', '$state', '$parse', '$http', 'SweetAlert'];
 
 function myPatientsController($scope, $log, doctorServices, $state, $http, $parse, SweetAlert) {
-    localStorage.setItem('currentDoctorState', 'myPatients');
+    sessionStorage.setItem('currentDoctorState', 'myPatients');
 
     var activeDoctor = {};
     var patient = this;
@@ -36,12 +36,12 @@ function myPatientsController($scope, $log, doctorServices, $state, $http, $pars
     patient.pageChanged = pageChanged;
     patient.viewPatientPrescriptions = viewPatientPrescriptions;
 
-    activeDoctor = localStorage.getItem('currentDoctor');
+    activeDoctor = sessionStorage.getItem('currentDoctor');
     activeDoctor = angular.fromJson(activeDoctor);
 
     if (_.isEmpty(activeDoctor)) {
-        localStorage.clear();
-        localStorage.setItem("isLoggedInDoctor", "false");
+        sessionStorage.clear();
+        sessionStorage.setItem("isLoggedInDoctor", "false");
         $state.go('login');
     }
 

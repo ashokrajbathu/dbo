@@ -2,7 +2,7 @@ angular.module('doctor').controller('drugPrescriptionsController', drugPrescript
 drugPrescriptionsController.$inject = ['$scope', '$log', 'doctorServices', '$state', '$parse', '$http', '$timeout', 'SweetAlert'];
 
 function drugPrescriptionsController($scope, $log, doctorServices, $state, $http, $parse, $timeout, SweetAlert) {
-    localStorage.setItem('currentDoctorState', 'drugPrescriptions');
+    sessionStorage.setItem('currentDoctorState', 'drugPrescriptions');
 
     var prescriptionElement = this;
     prescriptionElement.blurScreen = false;
@@ -96,12 +96,12 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.templatesList = [];
     var activeTemplates = [];
 
-    activeDoctor = localStorage.getItem('currentDoctor');
+    activeDoctor = sessionStorage.getItem('currentDoctor');
     activeDoctor = angular.fromJson(activeDoctor);
 
     if (_.isEmpty(activeDoctor)) {
-        localStorage.clear();
-        localStorage.setItem("isLoggedInDoctor", "false");
+        sessionStorage.clear();
+        sessionStorage.setItem("isLoggedInDoctor", "false");
         $state.go('login');
     }
 
@@ -234,7 +234,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                     newPatientFlag = false;
                     activePatient = prescriptionElement.patientsToBeDisplayedInRadios[0];
                     angular.copy(activePatient, currentActivePatient);
-                    localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
+                    sessionStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
                     prescriptionElement.prescriptionData.firstName = prescriptionElement.patientsToBeDisplayedInRadios[0].firstName;
                     prescriptionElement.prescriptionData.drugAllergyInForm = prescriptionElement.patientsToBeDisplayedInRadios[0].drugAllergy;
                     activePatientIndex = 0;
@@ -306,7 +306,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                                 prescriptionElement.patientsToBeDisplayedInRadios = addPatientResponse;
                                 activePatient = addPatientResponse[0];
                                 angular.copy(activePatient, currentActivePatient);
-                                localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
+                                sessionStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
                                 activePatientIndex = 0;
                                 prescriptionElement.updatePatient = true;
                                 prescriptionElement.addMember = true;
@@ -319,7 +319,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                             prescriptionElement['radio' + activePatientIndex] = true;
                             activePatient = addPatientResponse[0];
                             angular.copy(activePatient, currentActivePatient);
-                            localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
+                            sessionStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
                         }
                     }
                 }
@@ -352,7 +352,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     function selectActivePatient(patientActiveIs, index) {
         activePatient = patientActiveIs;
         angular.copy(activePatient, currentActivePatient);
-        localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
+        sessionStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
         activePatientIndex = index;
         prescriptionElement.prescriptionData.firstName = patientActiveIs.firstName;
         prescriptionElement.prescriptionData.drugAllergyInForm = patientActiveIs.drugAllergy;
@@ -666,14 +666,14 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                         prescriptionObject.prescriptionToPrint = prescriptionResponse;
                         prescriptionObject.drugListToDisplay = prescriptionElement.drugsList;
                         prescriptionObject.testsListToDisplay = prescriptionElement.testsListInTable;
-                        localStorage.setItem('prescriptionObjectToPrint', JSON.stringify(prescriptionObject));
+                        sessionStorage.setItem('prescriptionObjectToPrint', JSON.stringify(prescriptionObject));
                         $state.go('doctorHome.prescriptionReport');
                         printPrescription.patient = activePatient;
                         printPrescription.doctor = activeDoctor;
                         printPrescription.referDetails = prescriptionResponse;
                         printPrescription.prescription = prescriptionElement.drugsList;
                         printPrescription.tests = prescriptionElement.testsListInTable;
-                        localStorage.setItem('activePrescription', JSON.stringify(printPrescription));
+                        sessionStorage.setItem('activePrescription', JSON.stringify(printPrescription));
                         try {
                             addPrescriptionToIndexedDB(prescriptionResponse, activePatient, activeDoctor.id);
                         } catch (e) {}
@@ -797,7 +797,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 getPatientDetailsResponse = angular.fromJson(getPatientSuccess.data.response);
                 activePatient = getPatientDetailsResponse[0];
                 angular.copy(activePatient, currentActivePatient);
-                localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
+                sessionStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
                 prescriptionElement.prescriptionData.firstName = activePatient.firstName;
                 prescriptionElement.prescriptionData.drugAllergyInForm = activePatient.drugAllergy;
             }

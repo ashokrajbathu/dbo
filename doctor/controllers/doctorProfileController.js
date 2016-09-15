@@ -2,7 +2,7 @@ angular.module('doctor').controller('doctorProfileController', doctorProfileCont
 doctorProfileController.$inject = ['$scope', '$log', 'doctorServices', '$state', '$parse', '$http', 'SweetAlert'];
 
 function doctorProfileController($scope, $log, doctorServices, $state, $http, $parse, SweetAlert) {
-    localStorage.setItem('currentDoctorState', 'doctorProfile');
+    sessionStorage.setItem('currentDoctorState', 'doctorProfile');
     var doctorProfile = this;
     doctorProfile.oneAtATime = true;
     doctorProfile.open = true;
@@ -51,12 +51,12 @@ function doctorProfileController($scope, $log, doctorServices, $state, $http, $p
     doctorProfile.updateAddress = updateAddress;
 
 
-    doctorActive = localStorage.getItem('currentDoctor');
+    doctorActive = sessionStorage.getItem('currentDoctor');
     doctorActive = angular.fromJson(doctorActive);
     angular.copy(doctorActive, doctorProfile.doctor);
     if (_.isEmpty(doctorActive)) {
-        localStorage.clear();
-        localStorage.setItem("isLoggedInDoctor", "false");
+        sessionStorage.clear();
+        sessionStorage.setItem("isLoggedInDoctor", "false");
         doctorServices.logoutFromThePage('NO_USER_LOGGED_IN');
         $state.go('login');
     } else {
@@ -138,7 +138,7 @@ function doctorProfileController($scope, $log, doctorServices, $state, $http, $p
             doctorProfile.clinicAddresses = angular.fromJson(clinicsSuccess.data.response);
             $log.log('clinics addresses are----', doctorProfile.clinicAddresses);
             if (doctorProfile.clinicAddresses.length > 0) {
-                var addressActive = localStorage.getItem('doctorHospitalLocation');
+                var addressActive = sessionStorage.getItem('doctorHospitalLocation');
                 addressActive = angular.fromJson(addressActive);
                 if (_.isEmpty(addressActive)) {
                     doctorProfile.radio0 = true;
@@ -342,6 +342,6 @@ function doctorProfileController($scope, $log, doctorServices, $state, $http, $p
         addressOfTheDoctor.address = addressEntity.address;
         addressOfTheDoctor.city = addressEntity.city;
         addressOfTheDoctor = JSON.stringify(addressOfTheDoctor);
-        localStorage.setItem('doctorHospitalLocation', addressOfTheDoctor);
+        sessionStorage.setItem('doctorHospitalLocation', addressOfTheDoctor);
     }
 };

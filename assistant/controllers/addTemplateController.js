@@ -22,7 +22,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     addTemplate.addBtn = false;
     addTemplate.addNewFieldBtn = true;
     addTemplate.editTemplateName = false;
-    var organizationId = localStorage.getItem('orgId');
+    var organizationId = sessionStorage.getItem('orgId');
     addTemplate.sectionNameToDisplay = '-Select Section Name-';
     var selectSectionObject = { 'sectionName': '-Select Section Name-' };
     var sectionNameObject = { 'sectionName': 'New Section' };

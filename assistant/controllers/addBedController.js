@@ -32,7 +32,7 @@ function bedController($scope, $log, dboticaServices, $state, $http, $parse, doc
     var sortedItemsArrayOnPageChange = [];
     var entitiesArrayFlag = parseInt(0);
 
-    var organizationId = localStorage.getItem('orgId');
+    var organizationId = sessionStorage.getItem('orgId');
 
     var billInvoice = {};
     dboticaServices.setInvoice(billInvoice);

@@ -2,7 +2,7 @@ angular.module('personalAssistant').controller('itemInfoCtrl', itemInfoCtrl);
 itemInfoCtrl.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
 
 function itemInfoCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
-    localStorage.setItem("currentState", "itemInfo");
+    sessionStorage.setItem("currentState", "itemInfo");
 
     var itemInfoElement = this;
 
@@ -40,15 +40,15 @@ function itemInfoCtrl($scope, $log, dboticaServices, $state, $http, $parse, doct
     itemInfoElement.informationOfBatches = [];
     itemSelected = dboticaServices.getSelectedItem();
     if (itemSelected !== undefined) {
-        localStorage.setItem('currentItemId', itemSelected.id);
-        localStorage.setItem('organizationId', itemSelected.organizationId);
-        localStorage.setItem('itemName', itemSelected.itemName);
-        localStorage.setItem('itemEntityState', itemSelected.state);
+        sessionStorage.setItem('currentItemId', itemSelected.id);
+        sessionStorage.setItem('organizationId', itemSelected.organizationId);
+        sessionStorage.setItem('itemName', itemSelected.itemName);
+        sessionStorage.setItem('itemEntityState', itemSelected.state);
     }
-    var currentItemId = localStorage.getItem('currentItemId');
-    var organizationId = localStorage.getItem('organizationId');
-    var itemName = localStorage.getItem('itemName');
-    var itemEntityState = localStorage.getItem('itemEntityState');
+    var currentItemId = sessionStorage.getItem('currentItemId');
+    var organizationId = sessionStorage.getItem('organizationId');
+    var itemName = sessionStorage.getItem('itemName');
+    var itemEntityState = sessionStorage.getItem('itemEntityState');
     itemInfoElement.addBatchInItemInfo.itemName = itemName;
     itemInfoElement.addBatchInItemInfo.organizationId = organizationId;
     if (itemEntityState == "ACTIVE") {

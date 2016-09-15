@@ -9,14 +9,14 @@ function progressNoteController($scope, $log, dboticaServices, $state, $http, $p
 
     var note = this;
 
-    var organizationId = localStorage.getItem('orgId');
+    var organizationId = sessionStorage.getItem('orgId');
 
     note.addNoteInModal = addNoteInModal;
     note.getData = getData;
     note.timeChangeInTxtBox = timeChangeInTxtBox;
     note.removeNotesEntity = removeNotesEntity;
 
-    var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
+    var loggedInAss = sessionStorage.getItem('assistantCurrentlyLoggedIn');
     loggedInAss = angular.fromJson(loggedInAss);
     note.assistantName = loggedInAss.firstName;
 

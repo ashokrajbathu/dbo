@@ -2,8 +2,8 @@ angular.module('personalAssistant').controller('labsController', labsController)
 labsController.$inject = ['$scope', '$log', '$location', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
 
 function labsController($scope, $log, $location, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
-    localStorage.setItem('currentState', '');
-    localStorage.setItem('currentState', 'labs');
+    sessionStorage.setItem('currentState', '');
+    sessionStorage.setItem('currentState', 'labs');
     angular.element('#nurseHeader').removeClass('activeAdminLi');
     var labs = this;
     var entitiesArray = [];

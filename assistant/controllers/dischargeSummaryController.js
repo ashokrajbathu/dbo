@@ -4,7 +4,7 @@ dischargeSummaryController.$inject = ['$scope', '$log', 'dboticaServices', '$sta
 function dischargeSummaryController($scope, $log, dboticaServices, $state, $http, $parse, $timeout, doctorServices, SweetAlert) {
     var discharge = this;
 
-    var organizationId = localStorage.getItem('orgId');
+    var organizationId = sessionStorage.getItem('orgId');
 
     discharge.request = {};
 

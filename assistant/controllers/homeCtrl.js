@@ -2,10 +2,10 @@ angular.module('personalAssistant').controller('homeCtrl', homeCtrl);
 homeCtrl.$inject = ['$scope', '$log', '$location', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
 
 function homeCtrl($scope, $log, $location, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
-    var currentStateActive = localStorage.getItem("currentState");
+    var currentStateActive = sessionStorage.getItem("currentState");
     var currentActiveAssistant = {};
     var currentActiveAssistantPermissions = [];
-    currentActiveAssistant = localStorage.getItem("assistantCurrentlyLoggedIn");
+    currentActiveAssistant = sessionStorage.getItem("assistantCurrentlyLoggedIn");
     currentActiveAssistant = $.parseJSON(currentActiveAssistant);
     if (currentActiveAssistant == null || currentActiveAssistant == undefined || currentActiveAssistant == '') {
         var errorCode = 'NO_USER_LOGGED_IN';
@@ -106,12 +106,12 @@ function homeCtrl($scope, $log, $location, dboticaServices, $state, $http, $pars
         var promise = {};
         promise = dboticaServices.logout();
         promise.then(function(response) {
-            localStorage.clear();
-            localStorage.setItem("isLoggedInAssistant", "false");
+            sessionStorage.clear();
+            sessionStorage.setItem("isLoggedInAssistant", "false");
             $state.go('login');
         }, function(errorResponse) {
-            localStorage.clear();
-            localStorage.setItem("isLoggedInAssistant", "false");
+            sessionStorage.clear();
+            sessionStorage.setItem("isLoggedInAssistant", "false");
             $state.go('login');
             $log.log("in logout error response");
         });

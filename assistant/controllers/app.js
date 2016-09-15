@@ -197,7 +197,7 @@ function personalAssistantCtrl($scope, $log, $location, dboticaServices, $state,
     $scope.loading = false;
     $scope.blurScreen = false;
     $scope.radioModel = 'morning';
-    if (localStorage.getItem("isLoggedInAssistant") == "true") {
+    if (sessionStorage.getItem("isLoggedInAssistant") == "true") {
         $state.go('home');
     }
 
@@ -229,35 +229,35 @@ function personalAssistantCtrl($scope, $log, $location, dboticaServices, $state,
                             }, function() {});
                             break;
                         case "USER_ALREADY_LOGGED_IN":
-                            var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
+                            var loggedInAss = sessionStorage.getItem('assistantCurrentlyLoggedIn');
                             var assistantObj = $.parseJSON(loggedInAss);
                             $log.log("assis obj is----", assistantObj);
                             if (assistantObj !== null && assistantObj !== undefined && assistantObj !== '') {
                                 currentStateAllocation(assistantObj.assistantPermissions);
                                 var organizationIdActive = assistantObj.organizationId;
-                                localStorage.setItem('orgId', organizationIdActive);
-                                localStorage.setItem('assistant', JSON.stringify(assistantObject));
+                                sessionStorage.setItem('orgId', organizationIdActive);
+                                sessionStorage.setItem('assistant', JSON.stringify(assistantObject));
                                 $state.go('home');
                                 break;
                             } else {
                                 var logoutPromise = {};
                                 logoutPromise = dboticaServices.logout();
                                 logoutPromise.then(function(response) {
-                                    localStorage.clear();
-                                    localStorage.setItem("isLoggedInAssistant", "false");
+                                    sessionStorage.clear();
+                                    sessionStorage.setItem("isLoggedInAssistant", "false");
                                 }, function(errorResponse) {
                                     $log.log("in error response of logout in home page");
                                 });
                             }
                     }
                 } else {
-                    localStorage.setItem('assistantCurrentlyLoggedIn', currentAssistantObject);
+                    sessionStorage.setItem('assistantCurrentlyLoggedIn', currentAssistantObject);
                     var assistantObject = $.parseJSON(response.data.response);
                     var organizationId = assistantObject.organizationId;
-                    localStorage.setItem('assistant', JSON.stringify(assistantObject));
-                    localStorage.setItem('orgId', organizationId);
+                    sessionStorage.setItem('assistant', JSON.stringify(assistantObject));
+                    sessionStorage.setItem('orgId', organizationId);
                     $log.log("assistant info is----", $.parseJSON(response.data.response));
-                    localStorage.setItem("isLoggedInAssistant", "true");
+                    sessionStorage.setItem("isLoggedInAssistant", "true");
                     currentStateAllocation(assistantObject.assistantPermissions);
                     $state.go('home');
                 }
@@ -278,22 +278,22 @@ function personalAssistantCtrl($scope, $log, $location, dboticaServices, $state,
         var assistantPermission = assistantPermissions[0];
         switch (assistantPermission) {
             case 'PATIENT_MANAGEMENT':
-                localStorage.setItem("currentState", "patientManagement");
+                sessionStorage.setItem("currentState", "patientManagement");
                 break;
             case 'BILLING_MANAGEMENT':
-                localStorage.setItem("currentState", "billManagement");
+                sessionStorage.setItem("currentState", "billManagement");
                 break;
             case 'INVENTORY_MANAGEMENT':
-                localStorage.setItem("currentState", "inventory");
+                sessionStorage.setItem("currentState", "inventory");
                 break;
             case 'ORGANIZATION_MANAGEMENT':
-                localStorage.setItem("currentState", "admin");
+                sessionStorage.setItem("currentState", "admin");
                 break;
             case 'HOSPITAL_ADMIN':
-                localStorage.setItem("currentState", "mainAdmin");
+                sessionStorage.setItem("currentState", "mainAdmin");
                 break;
             case 'NURSE':
-                localStorage.setItem("currentState", "nurseHome");
+                sessionStorage.setItem("currentState", "nurseHome");
                 break;
         }
     }

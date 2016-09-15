@@ -2,7 +2,7 @@ angular.module('personalAssistant').controller('patientManagementCtrl', patientM
 patientManagementCtrl.$inject = ['$scope', 'dboticaServices', '$state', '$filter', '$parse', '$http', 'SweetAlert', 'doctorServices'];
 
 function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, $parse, doctorServices, SweetAlert) {
-    localStorage.setItem("currentState", "patientManagement");
+    sessionStorage.setItem("currentState", "patientManagement");
     angular.element("#sessionDatepicker").datepicker({
         dateFormat: "dd/mm/yy",
         autoclose: true,
@@ -132,7 +132,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
     $scope.familyMemberLink = false;
 
     $scope.entryType = ["WALK_IN", "APPOINTMENT"];
-    var organizationId = localStorage.getItem('orgId');
+    var organizationId = sessionStorage.getItem('orgId');
 
     $scope.loading = false;
     $scope.blurScreen = false;
@@ -169,8 +169,8 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         $scope.blurScreen = false;
         $scope.loading = false;
         dboticaServices.noConnectivityError();
-        localStorage.clear();
-        localStorage.setItem("isLoggedInAssistant", "false");
+        sessionStorage.clear();
+        sessionStorage.setItem("isLoggedInAssistant", "false");
         $state.go('login');
     });
 

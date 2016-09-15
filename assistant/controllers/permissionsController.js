@@ -28,7 +28,7 @@ function permissionsController($rootScope, $scope, $log, $stateParams, dboticaSe
 
     emptyAllPermissions();
 
-    var organizationId = localStorage.getItem('orgId');
+    var organizationId = sessionStorage.getItem('orgId');
     getAssistantsOnLoad();
 
     function getAssistantsOnLoad() {

@@ -28,8 +28,8 @@ function medicationController($rootScope, $scope, $log, dboticaServices, $state,
     medication.newMedicine.drugType = '-Category Name-';
     var drugTypeNameSelected = '-Category Name-';
 
-    var organizationId = localStorage.getItem('orgId');
-    var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
+    var organizationId = sessionStorage.getItem('orgId');
+    var loggedInAss = sessionStorage.getItem('assistantCurrentlyLoggedIn');
     loggedInAss = angular.fromJson(loggedInAss);
     medication.assistantName = loggedInAss.firstName;
     medication.categoryNamesArray = [

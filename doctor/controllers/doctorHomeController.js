@@ -4,7 +4,7 @@ doctorHomeController.$inject = ['$scope', '$log', 'doctorServices', '$state', '$
 function doctorHomeController($scope, $log, doctorServices, $state, $http, $parse, SweetAlert) {
     var doctorHome = this;
     doctorHome.logoutFromDoctor = logoutFromDoctor;
-    var doctorActive = localStorage.getItem('currentDoctor');
+    var doctorActive = sessionStorage.getItem('currentDoctor');
     doctorActive = angular.fromJson(doctorActive);
     doctorHome.doctorName = '';
 
@@ -12,8 +12,8 @@ function doctorHomeController($scope, $log, doctorServices, $state, $http, $pars
 
     function getDoctorName() {
         if (_.isEmpty(doctorActive)) {
-            localStorage.clear();
-            localStorage.setItem('isLoggedInDoctor', 'false');
+            sessionStorage.clear();
+            sessionStorage.setItem('isLoggedInDoctor', 'false');
         } else {
             if (_.has(doctorActive, 'firstName')) {
                 doctorHome.doctorName = 'Dr.' + doctorActive.firstName;
@@ -24,7 +24,7 @@ function doctorHomeController($scope, $log, doctorServices, $state, $http, $pars
         }
     }
 
-    var currentActiveState = localStorage.getItem('currentDoctorState');
+    var currentActiveState = sessionStorage.getItem('currentDoctorState');
     switch (currentActiveState) {
         case 'drugPrescriptions':
             $state.go('doctorHome.drugPrescription');
@@ -56,12 +56,12 @@ function doctorHomeController($scope, $log, doctorServices, $state, $http, $pars
     function logoutFromDoctor() {
         var logoutPromise = doctorServices.logout();
         logoutPromise.then(function(logoutSuccess) {
-            localStorage.clear();
-            localStorage.setItem("isLoggedInDoctor", "false");
+            sessionStorage.clear();
+            sessionStorage.setItem("isLoggedInDoctor", "false");
             $state.go('login');
         }, function(errorResponse) {
-            localStorage.clear();
-            localStorage.setItem("isLoggedInDoctor", "false");
+            sessionStorage.clear();
+            sessionStorage.setItem("isLoggedInDoctor", "false");
             $state.go('login');
         });
     }

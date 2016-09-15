@@ -3,7 +3,7 @@ patientDetailsController.$inject = ['$rootScope', '$scope', '$log', '$stateParam
 
 function patientDetailsController($rootScope, $scope, $log, $stateParams, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var detail = this;
-    var organizationId = localStorage.getItem('orgId');
+    var organizationId = sessionStorage.getItem('orgId');
     var templatesList = [];
     detail.activeTemplate = {};
     detail.patient = {};
@@ -12,8 +12,8 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
     detail.submitPatientFullForm = submitPatientFullForm;
     detail.getData = getData;
 
-    var assistantObject = localStorage.getItem('assistant');
-    var organizationId = localStorage.getItem('orgId');
+    var assistantObject = sessionStorage.getItem('assistant');
+    var organizationId = sessionStorage.getItem('orgId');
     assistantObject = angular.fromJson(assistantObject);
     angular.copy($scope.activeTemplateFields, onLoadTemplateFields);
 

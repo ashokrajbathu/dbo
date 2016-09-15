@@ -21,7 +21,7 @@ function vitalSignController($scope, $log, dboticaServices, $state, $http, $pars
 
     vitalSign.dateToolTip = false;
 
-    var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
+    var loggedInAss = sessionStorage.getItem('assistantCurrentlyLoggedIn');
     loggedInAss = angular.fromJson(loggedInAss);
     vitalSign.assistantName = loggedInAss.firstName;
 
@@ -60,7 +60,7 @@ function vitalSignController($scope, $log, dboticaServices, $state, $http, $pars
         selected: 'top'
     };
 
-    var organizationId = localStorage.getItem('orgId');
+    var organizationId = sessionStorage.getItem('orgId');
 
     function getData() {
         vitalSign.patient = dboticaServices.getPatientDetailsFromService();

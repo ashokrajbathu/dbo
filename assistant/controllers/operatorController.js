@@ -3,7 +3,7 @@ operatorController.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$p
 
 function operatorController($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var operator = this;
-    localStorage.setItem('currentState', 'operator');
+    sessionStorage.setItem('currentState', 'operator');
     operator.blurScreen = false;
     operator.loading = false;
     operator.dropdownActive = false;
@@ -113,7 +113,7 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             getAddressSuccessResponse = angular.fromJson(getAddressSuccess.data.response);
-            localStorage.setItem('addressInTheBill', JSON.stringify(getAddressSuccessResponse));
+            sessionStorage.setItem('addressInTheBill', JSON.stringify(getAddressSuccessResponse));
         }
     }, function(getAddressError) {
         dboticaServices.noConnectivityError();
@@ -570,7 +570,7 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
                         printPrescription.referDetails = prescriptionResponse;
                         printPrescription.prescription = operator.drugsList;
                         printPrescription.tests = operator.testsListInTable;
-                        localStorage.setItem('activePrescription', JSON.stringify(printPrescription));
+                        sessionStorage.setItem('activePrescription', JSON.stringify(printPrescription));
                         functionalitiesAfterAddingPresc();
                         timingBtnsDefault();
                     }

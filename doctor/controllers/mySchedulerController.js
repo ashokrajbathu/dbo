@@ -2,7 +2,7 @@ angular.module('doctor').controller('mySchedulerController', mySchedulerControll
 mySchedulerController.$inject = ['$scope', '$log', 'doctorServices', '$state', '$parse', '$http', 'SweetAlert'];
 
 function mySchedulerController($scope, $log, doctorServices, $state, $http, $parse, SweetAlert) {
-    localStorage.setItem('currentDoctorState', 'myScheduler');
+    sessionStorage.setItem('currentDoctorState', 'myScheduler');
 
     var scheduler = this;
     $log.log('in my scheduler');

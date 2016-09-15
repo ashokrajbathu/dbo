@@ -2,7 +2,7 @@ angular.module('personalAssistant').controller('nurseController', nurseControlle
 nurseController.$inject = ['$rootScope', '$scope', '$log', '$stateParams', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
 
 function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
-    localStorage.setItem('currentState', 'nurseHome');
+    sessionStorage.setItem('currentState', 'nurseHome');
 
     var nurseHome = this;
     nurseHome.phoneNumberLengthValidation = phoneNumberLengthValidation;
@@ -17,7 +17,7 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
     nurseHome.patientsListToBeDisplayed = [];
     nurseHome.templatesList = [];
     nurseHome.patientEventName = 'Patient Medication';
-    var organizationId = localStorage.getItem('orgId');
+    var organizationId = sessionStorage.getItem('orgId');
     $rootScope.patientMedication = false;
     $scope.templateFlag = false;
     $scope.activeTemplate = {};

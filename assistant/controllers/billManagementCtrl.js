@@ -2,7 +2,7 @@ angular.module('personalAssistant').controller('billManagementCtrl', billManagem
 billManagementCtrl.$inject = ['$scope', '$log', '$timeout', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
 
 function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
-    localStorage.setItem("currentState", "billManagement");
+    sessionStorage.setItem("currentState", "billManagement");
 
     var billElement = this;
 
@@ -73,10 +73,10 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
     var activeTestsNamesList = [];
     billElement.finalBill.patientId = "";
     billElement.add.quantity = parseInt(1);
-    var organizationId = localStorage.getItem('orgId');
+    var organizationId = sessionStorage.getItem('orgId');
     billElement.bill.nextPaymentDate = getTodayString();
     billElement.finalBill.organizationId = organizationId;
-    var currentActiveAssistant = $.parseJSON(localStorage.getItem('assistantCurrentlyLoggedIn'));
+    var currentActiveAssistant = $.parseJSON(sessionStorage.getItem('assistantCurrentlyLoggedIn'));
     if (currentActiveAssistant == null) {
         dboticaServices.noConnectivityError();
     } else {
@@ -447,9 +447,9 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
     }
 
     function billFinalSubmisssion() {
-        localStorage.setItem('billActiveToPrint', '');
-        localStorage.setItem('patientNameInBillActive', '');
-        localStorage.setItem('patientNumberInBillActive', '');
+        sessionStorage.setItem('billActiveToPrint', '');
+        sessionStorage.setItem('patientNameInBillActive', '');
+        sessionStorage.setItem('patientNumberInBillActive', '');
         if (billElement.finalBill.patientId == "") {
             dboticaServices.showNoPatientSwal();
         } else {
@@ -552,9 +552,9 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                                     }
                                 });
                             }
-                            localStorage.setItem('billActiveToPrint', JSON.stringify(billActiveForPrint));
-                            localStorage.setItem('patientNameInBillActive', billElement.patient.firstName);
-                            localStorage.setItem('patientNumberInBillActive', billElement.patient.phoneNumber);
+                            sessionStorage.setItem('billActiveToPrint', JSON.stringify(billActiveForPrint));
+                            sessionStorage.setItem('patientNameInBillActive', billElement.patient.firstName);
+                            sessionStorage.setItem('patientNumberInBillActive', billElement.patient.phoneNumber);
                             newBill();
                         }
                     }
@@ -781,7 +781,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             getAddressSuccessResponse = angular.fromJson(getAddressSuccess.data.response);
-            localStorage.setItem('addressInTheBill', JSON.stringify(getAddressSuccessResponse));
+            sessionStorage.setItem('addressInTheBill', JSON.stringify(getAddressSuccessResponse));
         }
     }, function(getAddressError) {
         dboticaServices.noConnectivityError();
