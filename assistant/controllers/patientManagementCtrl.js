@@ -15,8 +15,6 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         'minDate': 0
     });
     angular.element("#datepicker").datepicker("setDate", new Date());
-
-
     angular.element("#deleteTimeDatepicker").datepicker({
         format: "dd/mm/yyyy",
         autoclose: true,
@@ -60,7 +58,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
     $scope.cancelAppointmentsTable = false;
     $scope.doctorTimings = false;
     $scope.dateSelected = "";
-    $scope.doctorObjectForChangingStartAndEndTime = {};
+    $scope.startEndTimeObj = {};
     $scope.addTime = {};
     $scope.modalSubmitButtonText = "Add Patient";
     $scope.patientData = {};
@@ -153,9 +151,9 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                 $scope.doctorName = $scope.doctorsList[0].firstName;
                 $scope.doctorSpecialization = $scope.doctorsList[0].speciality;
                 $scope.book.doctorId = $scope.doctorsList[0].id;
-                $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = $scope.doctorsList[0].dayStartTime;
-                $scope.doctorObjectForChangingStartAndEndTime.dayEndTime = $scope.doctorsList[0].dayEndTime;
-                $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = $scope.doctorsList[0].timePerPatient;
+                $scope.startEndTimeObj.dayStartTime = $scope.doctorsList[0].dayStartTime;
+                $scope.startEndTimeObj.dayEndTime = $scope.doctorsList[0].dayEndTime;
+                $scope.startEndTimeObj.timePerPatient = $scope.doctorsList[0].timePerPatient;
                 var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
                 patientsListOfDoctor.then(function(response) {
                     var patientsList = JSON.parse(response.data.response);
@@ -192,13 +190,13 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
             var date = dateArray[1] + '/' + dateArray[0] + '/' + dateArray[2];
             var dateInFormat = new Date(date);
             var milliSecsOfDate = dateInFormat.getTime();
-            var startmillisecs = milliSecsOfDate + $scope.doctorObjectForChangingStartAndEndTime.dayStartTime;
-            var endmillisecs = milliSecsOfDate + $scope.doctorObjectForChangingStartAndEndTime.dayEndTime;
+            var startmillisecs = milliSecsOfDate + $scope.startEndTimeObj.dayStartTime;
+            var endmillisecs = milliSecsOfDate + $scope.startEndTimeObj.dayEndTime;
             angular.element("#timepicker").timepicker('setTime', new Date(startmillisecs));
             angular.element("#timepickerEndTime").timepicker('setTime', new Date(endmillisecs));
             $scope.addTime.dayStartTime = angular.element("#timepicker").val();
             $scope.addTime.dayEndTime = angular.element("#timepickerEndTime").val();
-            $scope.addTime.timePerPatient = ($scope.doctorObjectForChangingStartAndEndTime.timePerPatient / 1000) / 60;
+            $scope.addTime.timePerPatient = ($scope.startEndTimeObj.timePerPatient / 1000) / 60;
         }
     }
 
@@ -239,14 +237,12 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                     if (response.data.success === true && response.data.response.length > 2) {
                         var patientData = JSON.parse(response.data.response);
                         var casePromise = dboticaServices.getCaseHistory(patientData[0].id);
-                        console.log('case promise is-------', casePromise);
                         casePromise.then(function(caseSuccessResponse) {
                             var errorCode = caseSuccessResponse.data.errorCode;
                             if (errorCode) {
                                 dboticaServices.logoutFromThePage(errorCode);
                             } else {
                                 var caseResponse = angular.fromJson(caseSuccessResponse.data.response);
-                                console.log('case response is-------', caseResponse);
                                 if (errorCode == null && caseSuccessResponse.data.success) {
                                     angular.copy(caseResponse, $scope.caseNumbersList);
                                     $scope.caseNumbersList.unshift(caseNumberObject);
@@ -366,9 +362,9 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
             if (errorCode) {
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
-                $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = milliSecondsOfStartTime;
-                $scope.doctorObjectForChangingStartAndEndTime.dayEndTime = milliSecondsOfEndTime;
-                $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = timePerPatientOfThatDoctor;
+                $scope.startEndTimeObj.dayStartTime = milliSecondsOfStartTime;
+                $scope.startEndTimeObj.dayEndTime = milliSecondsOfEndTime;
+                $scope.startEndTimeObj.timePerPatient = timePerPatientOfThatDoctor;
             }
             $scope.loading = false;
         }, function(errorResponse) {
@@ -538,10 +534,10 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         $scope.patientAvailable = false;
         $scope.addPatientBtn = true;
         $scope.patientDataSearch.phoneNumberSearch = "";
-        $scope.doctorObjectForChangingStartAndEndTime.id = doctor.id;
-        $scope.doctorObjectForChangingStartAndEndTime.dayStartTime = doctor.dayStartTime;
-        $scope.doctorObjectForChangingStartAndEndTime.dayEndTime = doctor.dayEndTime;
-        $scope.doctorObjectForChangingStartAndEndTime.timePerPatient = doctor.timePerPatient;
+        $scope.startEndTimeObj.id = doctor.id;
+        $scope.startEndTimeObj.dayStartTime = doctor.dayStartTime;
+        $scope.startEndTimeObj.dayEndTime = doctor.dayEndTime;
+        $scope.startEndTimeObj.timePerPatient = doctor.timePerPatient;
         $scope.book.doctorId = doctor.id;
         var doctorId = doctor.id;
         $scope.loading = true;
@@ -590,9 +586,9 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         var timePerPatientForThatDoctor = 0;
         for (var i = 0, l = $scope.doctorsList.length; i < l; i++) {
             if ($scope.book.doctorId == $scope.doctorsList[i].id) {
-                dayStartTimeOfDoctor = $scope.doctorObjectForChangingStartAndEndTime.dayStartTime + milliSecsOfDate;
-                dayEndTimeOfDoctor = $scope.doctorObjectForChangingStartAndEndTime.dayEndTime + milliSecsOfDate;
-                timePerPatientForThatDoctor = $scope.doctorObjectForChangingStartAndEndTime.timePerPatient;
+                dayStartTimeOfDoctor = $scope.startEndTimeObj.dayStartTime + milliSecsOfDate;
+                dayEndTimeOfDoctor = $scope.startEndTimeObj.dayEndTime + milliSecsOfDate;
+                timePerPatientForThatDoctor = $scope.startEndTimeObj.timePerPatient;
             }
         }
         if (dayStartTimeOfDoctor === 0) {
@@ -764,16 +760,13 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         var newPatientDetails = JSON.stringify(newPatientData);
         if (firstName != undefined && firstName !== '' && phoneNumber !== undefined && phoneNumber !== '') {
             $scope.loading = true;
-            console.log('patient request is-----', newPatientDetails);
             var promise = dboticaServices.addNewPatient(newPatientDetails);
-            console.log('add patient promise is-----', promise);
             promise.then(function(response) {
                 var errorCode = response.data.errorCode;
                 if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var addPatientResponse = JSON.parse(response.data.response);
-                    console.log('add patient response is------', addPatientResponse);
                     if (!$scope.patientNumberDiv) {
                         $scope.nextForm = true;
                         $scope.nextBtn = false;
@@ -804,7 +797,6 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                             registerPatientRequest.patientType = 'OUT_PATIENT';
                             registerPatientRequest.patientState = 'CHECK_IN';
                             var registerPatientPromise = dboticaServices.registerPatient(registerPatientRequest);
-                            console.log('prom is-----', registerPatientPromise);
                             registerPatientPromise.then(function(registerPatientSuccess) {
                                 var errorCode = registerPatientSuccess.data.errorCode;
                                 if (errorCode) {

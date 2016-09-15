@@ -21,6 +21,7 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
     inpatientElement.nameOrNumberErrorMessage = false;
     inpatientElement.mandatoryFieldsErrorMessage = false;
     inpatientElement.number = "";
+    var activeOrgPatientId = '';
     inpatientElement.patientData = {};
     inpatientElement.patientData.firstName = "";
     inpatientElement.patientData.phoneNumber = "";
@@ -61,8 +62,6 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
 
     var billInvoice = {};
     dboticaServices.setInvoice(billInvoice);
-
-
     var doctorsListPromise = dboticaServices.doctorsOfAssistant();
     doctorsListPromise.then(function(doctorsListSuccess) {
         var errorCode = doctorsListSuccess.data.errorCode;
@@ -78,7 +77,6 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
     }, function(doctorsListError) {
         dboticaServices.noConnectivityError();
     });
-
     var doctorCategoriesPromise = dboticaServices.getDoctorCategories(organizationId);
     doctorCategoriesPromise.then(function(doctorCategorySuccess) {
         var errorCode = doctorCategorySuccess.data.errorCode;
@@ -94,7 +92,6 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
     }, function(doctorCategoryError) {
         dboticaServices.noConnectivityError();
     });
-
     var doctorsListPromise = dboticaServices.doctorsListInMainAdmin(organizationId);
     doctorsListPromise.then(function(doctorsListSuccess) {
         var errorCode = doctorsListSuccess.data.errorCode;
@@ -109,7 +106,6 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
     }, function(doctorsListError) {
         dboticaServices.noConnectivityError();
     });
-
     var roomsPromise = dboticaServices.getRooms(organizationId);
     roomsPromise.then(function(roomsSuccess) {
         var errorCode = roomsSuccess.data.errorCode;
@@ -126,7 +122,6 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
     }, function(roomError) {
         dboticaServices.noConnectivityError();
     });
-
     var bedsPromise = dboticaServices.getBeds(organizationId);
     bedsPromise.then(function(bedsSuccess) {
         var errorCode = bedsSuccess.data.errorCode;
@@ -179,7 +174,6 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
         inpatientSearchPromise.then(function(inpatientSearchSuccess) {
             var errorCode = inpatientSearchSuccess.data.errorCode;
             if (errorCode) {
-                $log.log('errorcode-s----');
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 inpatientElement.patientsListOfThatNumber = angular.fromJson(inpatientSearchSuccess.data.response);
@@ -204,17 +198,37 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
             } else {
                 organizationPatientsList = angular.fromJson(getOrgPatientsSuccess.data.response);
                 $log.log('getOrganizationPatientsResponse is-------', organizationPatientsList);
+                if (errorCode == null && getOrgPatientsSuccess.data.success && organizationPatientsList.length > 0) {
+                    activeOrgPatientId = organizationPatientsList[0].id;
+                }
             }
         }, function(getOrgPatientsError) {
             dboticaServices.noConnectivityError();
         });
     }
 
+    /*background-color background-image background-repeat background-attachment background-position*/
+
     function patientSelectFromDropdown(selectedPatient) {
         if (selectedPatient.firstName !== patientName) {
             inpatientElement.patientName = selectedPatient.firstName;
             inpatientElement.patientData = selectedPatient;
             inpatientElement.patientIdActive = selectedPatient.id;
+            var orgPatientPromise = dboticaServices.getOrganizationPatient(selectedPatient.id);
+            orgPatientPromise.then(function(orgSuccess) {
+                var errorCode = orgSuccess.data.errorCode;
+                if (errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var orgPatientResponse = angular.fromJson(orgSuccess.data.response);
+                    $log.log('response is-----', orgPatientResponse);
+                    if (errorCode == null && orgSuccess.data.success) {
+                        activeOrgPatientId = orgPatientResponse[0].id;
+                    }
+                }
+            }, function(orgError) {
+                dboticaServices.noConnectivityError();
+            });
         }
     }
 
@@ -224,12 +238,14 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
         if (inpatientElement.patientIdActive !== "") {
             patientDataRequestEntity.id = inpatientElement.patientIdActive;
             var getOrgPatientPromise = dboticaServices.getOrganizationPatient(inpatientElement.patientIdActive);
+            $log.log('org patient promise is------', getOrgPatientPromise);
             getOrgPatientPromise.then(function(getOrgPatientSuccess) {
                 var errorCode = getOrgPatientSuccess.data.errorCode;
                 if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var getOrgPatientResponse = angular.fromJson(getOrgPatientSuccess.data.response);
+                    $log.log('org patient response is--------', getOrgPatientResponse);
                     if (errorCode == null && getOrgPatientSuccess.data.success) {
                         if (getOrgPatientResponse.length > 0) {
                             addInPatientRequestEntity.id = getOrgPatientResponse[0].id;
@@ -266,10 +282,13 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
                     var success = inpatientSuccessResponse.data.success;
                     if (errorCode == null && success == true) {
                         inpatientElement.patientNameInBox = firstName;
+                        if (activeOrgPatientId !== '') {
+                            addInPatientRequestEntity.id = activeOrgPatientId;
+                        }
                         addInPatientRequestEntity.organizationId = organizationId;
                         addInPatientRequestEntity.patientId = activePatientId;
                         addInPatientRequestEntity.phoneNumber = inpatientElement.patientData.phoneNumber;
-                        addInPatientRequestEntity.patientType = 'IN_PATIENT';
+                        addInPatientRequestEntity.patientType = 'OUT_PATIENT';
                         addInPatientRequestEntity.patientState = 'CHECK_IN';
                         $log.log('add in patient req is-----', addInPatientRequestEntity);
                         var addInPatientPromise = dboticaServices.registerPatient(addInPatientRequestEntity);
@@ -280,7 +299,10 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
                                 dboticaServices.logoutFromThePage(errorCode);
                             } else {
                                 var addInPatientResponse = angular.fromJson(addInPatientSuccess.data.response);
-                                inpatientElement.patientNumberInBox = addInPatientResponse.organizationPatientNo;
+                                $log.log('add in patient response is-------', addInPatientResponse);
+                                if (errorCode == null && addInPatientSuccess.data.success) {
+                                    inpatientElement.patientNumberInBox = addInPatientResponse.organizationPatientNo;
+                                }
                             }
                         }, function(addInPatientError) {
                             dboticaServices.noConnectivityError();

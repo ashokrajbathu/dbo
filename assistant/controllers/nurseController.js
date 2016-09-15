@@ -185,8 +185,8 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
         nurseHome.patientDetails.name = patient.details.inPatientName;
         nurseHome.patientDetails.inpatientNumberInBox = patient.organizationPatientNo;
         nurseHome.patientDetails.inpatientAdmitTime = moment(patient.details.admitTime).format("DD/MM/YYYY,hh:mm:ss A");
-        nurseHome.patientDetails.inchargeDoctorInBox = patient.doctorDetail.doctorName;
-        nurseHome.patientDetails.inchargeDepartmentInBox = patient.doctorDetail.doctorDepartment;
+        nurseHome.patientDetails.inchargeDoctorInBox = patient.doctorDetails.doctorName;
+        nurseHome.patientDetails.inchargeDepartmentInBox = patient.doctorDetails.doctorDepartment;
         nurseHome.patientDetails.inPatientRoomInBox = patient.details.roomNumber;
         nurseHome.patientDetails.bedNumberInBox = patient.details.bedNumber;
         dboticaServices.setPatientDetailsInService(patient);
