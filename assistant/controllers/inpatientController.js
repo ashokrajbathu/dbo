@@ -14,7 +14,6 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
     inpatientElement.selectedRoomCategory = selectedRoomCategory;
     inpatientElement.statusOfBed = statusOfBed;
     inpatientElement.admitPatient = admitPatient;
-    /*inpatientElement.selectedRoom = selectedRoom;*/
 
     inpatientElement.PhoneNumberErrorMessage = false;
     inpatientElement.patientSearchBtnDisabled = true;
