@@ -77,10 +77,8 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         }
         $http(req).then(function(response) {
             deferred.resolve(response);
-
         }, function(errorResponse) {
             deferred.reject(errorResponse);
-
         });
         return deferred.promise;
     }
@@ -2404,3 +2402,54 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     }
 
 }]);
+
+/*
+Angular js provides capability to create single page applications in a clean and maintainable way
+it gives user data binding capability to HTML
+angular js uses dependency injection and make use of separation of concerns
+developers writes less code and get more functionality
+views are pure htmls and controllers written in javascript do pure business processing
+
+
+MVC Pattern: 
+
+Angular JS uses MVC based framework.
+Model:it represents the data of your application
+View:responsible to display/show the data
+controller:responsible to control the relation between model and view
+
+Every section in angular JS is created using the modules.
+A module can have dependencies of other modules or a single module by itself.
+because of this code becomes reusable.
+
+ng-app directive indicates the start of an angular JS application.
+
+scope is key entity for two way binding in angular JS
+$scope acts as a bridge between javascript and DOM.it creates a binding between them.
+$scope is a javascript object with properties and methods which are available for both view and controller.
+
+$rootscope isnt different from scope object
+except it is the very top level scope object.once angular startts rendering your application a $rootscope object is created
+remaining all scope objects become the children of the scope object.
+
+ng-controller attribute simply tells Angular where to bind and scope an instance of a controller and make the controllers data and methods be available in that DOM scope.
+its basically a meeeting place of our business logic and presentation logic
+
+An angular JS controller allows us to interact with a view and a model,its the place where presentation logic can take place to keep our UI bindings in sync with the model.
+
+controller as helps us to clearly identify to which controller a property belongs to .
+
+the main deifference between a service and factory is the way in which they are created.
+All services are applicationsingletons. there is only one instance of a service per injector.
+
+A service is a constructor function.
+
+Angular JS directives:
+Angular JS has a set of buit in directives which offers functionality to your applications.
+Angular JS also let you define your own directives.
+'A':only matches attribute name
+'E':only matches element name
+'C':only matches class name
+    
+
+*/

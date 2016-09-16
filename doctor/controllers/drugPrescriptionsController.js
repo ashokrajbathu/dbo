@@ -230,6 +230,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 doctorServices.logoutFromThePage(errorCode);
             } else {
                 prescriptionElement.patientsToBeDisplayedInRadios = angular.fromJson(patientSearchSuccess.data.response);
+                $log.log('patients are----', prescriptionElement.patientsToBeDisplayedInRadios);
                 if (prescriptionElement.patientsToBeDisplayedInRadios.length > 0) {
                     newPatientFlag = false;
                     activePatient = prescriptionElement.patientsToBeDisplayedInRadios[0];
