@@ -3,7 +3,7 @@ patientDetailsController.$inject = ['$rootScope', '$scope', '$log', '$stateParam
 
 function patientDetailsController($rootScope, $scope, $log, $stateParams, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var detail = this;
-    var organizationId = sessionStorage.getItem('orgId');
+    var organizationId = localStorage.getItem('orgId');
     var templatesList = [];
     detail.activeTemplate = {};
     detail.patient = {};
@@ -12,8 +12,8 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
     detail.submitPatientFullForm = submitPatientFullForm;
     detail.getData = getData;
 
-    var assistantObject = sessionStorage.getItem('assistant');
-    var organizationId = sessionStorage.getItem('orgId');
+    var assistantObject = localStorage.getItem('assistant');
+    var organizationId = localStorage.getItem('orgId');
     assistantObject = angular.fromJson(assistantObject);
     angular.copy($scope.activeTemplateFields, onLoadTemplateFields);
 
@@ -47,6 +47,8 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
         templateInstance.patientId = detail.patient.id;
         templateInstance.userId = assistantObject.id;
         templateInstance.userRole = 'ASSISTANT';
+        templateInstance.organizationCaseId = detail.patient.organizationCaseId;
+        templateInstance.organizationCaseNo = detail.patient.organizationCaseNo;
         templateInstance.organizationId = organizationId;
         templateInstance.overridePermissions = assistantObject.assistantPermissions;
         var addTemplateInstancePromise = dboticaServices.addTemplateInstance(templateInstance);
@@ -70,4 +72,6 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
         detail.patient = dboticaServices.getPatientDetailsFromService();
         return true;
     }
+
+
 };

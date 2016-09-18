@@ -58,7 +58,7 @@ function ipRoomTransferController($scope, $log, dboticaServices, $state, $http, 
     ipRoom.roomCategoryNameInModal = '-Room Type-';
     ipRoom.roomNumNameInModal = '-Room Name-';
     ipRoom.bedNumNameInModal = '-Bed Number-';
-    var loggedInAss = sessionStorage.getItem('assistantCurrentlyLoggedIn');
+    var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
     loggedInAss = angular.fromJson(loggedInAss);
     ipRoom.assistantName = loggedInAss.firstName;
 
@@ -79,7 +79,7 @@ function ipRoomTransferController($scope, $log, dboticaServices, $state, $http, 
         return true;
     }
 
-    var organizationId = sessionStorage.getItem('orgId');
+    var organizationId = localStorage.getItem('orgId');
 
     var roomsPromise = dboticaServices.getRooms(organizationId);
     roomsPromise.then(function(roomsSuccess) {

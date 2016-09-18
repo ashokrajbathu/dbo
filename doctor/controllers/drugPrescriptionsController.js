@@ -2,7 +2,7 @@ angular.module('doctor').controller('drugPrescriptionsController', drugPrescript
 drugPrescriptionsController.$inject = ['$scope', '$log', 'doctorServices', '$state', '$parse', '$http', '$timeout', 'SweetAlert'];
 
 function drugPrescriptionsController($scope, $log, doctorServices, $state, $http, $parse, $timeout, SweetAlert) {
-    sessionStorage.setItem('currentDoctorState', 'drugPrescriptions');
+    localStorage.setItem('currentDoctorState', 'drugPrescriptions');
 
     var prescriptionElement = this;
     prescriptionElement.blurScreen = false;
@@ -96,12 +96,12 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.templatesList = [];
     var activeTemplates = [];
 
-    activeDoctor = sessionStorage.getItem('currentDoctor');
+    activeDoctor = localStorage.getItem('currentDoctor');
     activeDoctor = angular.fromJson(activeDoctor);
 
     if (_.isEmpty(activeDoctor)) {
-        sessionStorage.clear();
-        sessionStorage.setItem("isLoggedInDoctor", "false");
+        localStorage.clear();
+        localStorage.setItem("isLoggedInDoctor", "false");
         $state.go('login');
     }
 
@@ -233,9 +233,25 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 $log.log('patients are----', prescriptionElement.patientsToBeDisplayedInRadios);
                 if (prescriptionElement.patientsToBeDisplayedInRadios.length > 0) {
                     newPatientFlag = false;
+                    var casePromise = doctorServices.getPatientCaseHistory(prescriptionElement.patientsToBeDisplayedInRadios[0].id);
+                    $log.log('case promise is--------', casePromise);
+                    casePromise.then(function(caseSuccess) {
+                        var errorCode = caseSuccess.data.errorCode;
+                        if (errorCode) {
+                            doctorServices.logoutFromThePage(errorCode);
+                        } else {
+                            var caseHistoryResponse = angular.fromJson(caseSuccess.data.response);
+                            $log.log('case response is------', caseHistoryResponse);
+                            if (errorCode == null && caseSuccess.data.success) {
+
+                            }
+                        }
+                    }, function(caseError) {
+                        doctorServices.noConnectivityError();
+                    });
                     activePatient = prescriptionElement.patientsToBeDisplayedInRadios[0];
                     angular.copy(activePatient, currentActivePatient);
-                    sessionStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
+                    localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
                     prescriptionElement.prescriptionData.firstName = prescriptionElement.patientsToBeDisplayedInRadios[0].firstName;
                     prescriptionElement.prescriptionData.drugAllergyInForm = prescriptionElement.patientsToBeDisplayedInRadios[0].drugAllergy;
                     activePatientIndex = 0;
@@ -307,7 +323,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                                 prescriptionElement.patientsToBeDisplayedInRadios = addPatientResponse;
                                 activePatient = addPatientResponse[0];
                                 angular.copy(activePatient, currentActivePatient);
-                                sessionStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
+                                localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
                                 activePatientIndex = 0;
                                 prescriptionElement.updatePatient = true;
                                 prescriptionElement.addMember = true;
@@ -320,7 +336,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                             prescriptionElement['radio' + activePatientIndex] = true;
                             activePatient = addPatientResponse[0];
                             angular.copy(activePatient, currentActivePatient);
-                            sessionStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
+                            localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
                         }
                     }
                 }
@@ -353,7 +369,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     function selectActivePatient(patientActiveIs, index) {
         activePatient = patientActiveIs;
         angular.copy(activePatient, currentActivePatient);
-        sessionStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
+        localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
         activePatientIndex = index;
         prescriptionElement.prescriptionData.firstName = patientActiveIs.firstName;
         prescriptionElement.prescriptionData.drugAllergyInForm = patientActiveIs.drugAllergy;
@@ -667,14 +683,14 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                         prescriptionObject.prescriptionToPrint = prescriptionResponse;
                         prescriptionObject.drugListToDisplay = prescriptionElement.drugsList;
                         prescriptionObject.testsListToDisplay = prescriptionElement.testsListInTable;
-                        sessionStorage.setItem('prescriptionObjectToPrint', JSON.stringify(prescriptionObject));
+                        localStorage.setItem('prescriptionObjectToPrint', JSON.stringify(prescriptionObject));
                         $state.go('doctorHome.prescriptionReport');
                         printPrescription.patient = activePatient;
                         printPrescription.doctor = activeDoctor;
                         printPrescription.referDetails = prescriptionResponse;
                         printPrescription.prescription = prescriptionElement.drugsList;
                         printPrescription.tests = prescriptionElement.testsListInTable;
-                        sessionStorage.setItem('activePrescription', JSON.stringify(printPrescription));
+                        localStorage.setItem('activePrescription', JSON.stringify(printPrescription));
                         try {
                             addPrescriptionToIndexedDB(prescriptionResponse, activePatient, activeDoctor.id);
                         } catch (e) {}
@@ -798,7 +814,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 getPatientDetailsResponse = angular.fromJson(getPatientSuccess.data.response);
                 activePatient = getPatientDetailsResponse[0];
                 angular.copy(activePatient, currentActivePatient);
-                sessionStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
+                localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
                 prescriptionElement.prescriptionData.firstName = activePatient.firstName;
                 prescriptionElement.prescriptionData.drugAllergyInForm = activePatient.drugAllergy;
             }

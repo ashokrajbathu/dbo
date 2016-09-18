@@ -4,7 +4,7 @@ invoiceHistoryController.$inject = ['$scope', '$log', '$timeout', 'dboticaServic
 function invoiceHistoryController($scope, $log, $timeout, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var invoiceElement = this;
 
-    sessionStorage.setItem("currentState", "invoiceHistory");
+    localStorage.setItem("currentState", "invoiceHistory");
 
     invoiceElement.selectSearchType = selectSearchType;
     invoiceElement.searchRequestSubmit = searchRequestSubmit;
@@ -39,7 +39,7 @@ function invoiceHistoryController($scope, $log, $timeout, dboticaServices, $stat
     invoiceElement.searchBoxDate = false;
     invoiceElement.searchBoxEndDate = false;
     invoiceElement.searchSelected = "Phone Number";
-    var organizationId = sessionStorage.getItem('orgId');
+    var organizationId = localStorage.getItem('orgId');
     invoiceElement.searchWarningMessage = false;
     invoiceElement.isAllRedActive = true;
     invoiceElement.isAllBlueActive = false;

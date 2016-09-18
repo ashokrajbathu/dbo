@@ -2,7 +2,7 @@ angular.module('doctor').controller('loginController', loginController);
 loginController.$inject = ['$scope', '$log', 'doctorServices', '$state', '$parse', '$http', 'SweetAlert'];
 
 function loginController($scope, $log, doctorServices, $state, $http, $parse, SweetAlert) {
-    if (sessionStorage.getItem("isLoggedInDoctor") == "true") {
+    if (localStorage.getItem("isLoggedInDoctor") == "true") {
         $state.go('doctorHome');
     }
     var login = this;
@@ -39,7 +39,7 @@ function loginController($scope, $log, doctorServices, $state, $http, $parse, Sw
         activeClinicAddress.address = '';
         activeClinicAddress.city = '';
         angular.copy(activeClinicAddress, clinicAddress);
-        sessionStorage.setItem('doctorHospitalLocation', JSON.stringify(activeClinicAddress));
+        localStorage.setItem('doctorHospitalLocation', JSON.stringify(activeClinicAddress));
         if (emailId !== undefined && emailId !== '' && password !== undefined && password !== '') {
             var doctorLoginPromise = doctorServices.login(login.loginCredentials);
             doctorLoginPromise.then(function(doctorLoginSuccess) {
@@ -49,9 +49,9 @@ function loginController($scope, $log, doctorServices, $state, $http, $parse, Sw
                     doctorServices.loginError(errorCode);
                 } else {
                     var doctorActive = doctorLoginSuccess.data.response;
-                    sessionStorage.setItem('currentDoctor', doctorActive);
-                    sessionStorage.setItem('currentDoctorState', 'drugPrescriptions');
-                    sessionStorage.setItem('isLoggedInDoctor', 'true');
+                    localStorage.setItem('currentDoctor', doctorActive);
+                    localStorage.setItem('currentDoctorState', 'drugPrescriptions');
+                    localStorage.setItem('isLoggedInDoctor', 'true');
                     var getAddressesPromise = doctorServices.getClinicsAddress();
                     getAddressesPromise.then(function(getAddressesSuccess) {
                         var errorCode = getAddressesSuccess.data.errorCode;
@@ -67,7 +67,7 @@ function loginController($scope, $log, doctorServices, $state, $http, $parse, Sw
                                     if (_.has(clinicAddressResponse[0], 'city')) {
                                         clinicAddress.city = clinicAddressResponse[0].city;
                                     }
-                                    sessionStorage.setItem('doctorHospitalLocation', JSON.stringify(clinicAddress));
+                                    localStorage.setItem('doctorHospitalLocation', JSON.stringify(clinicAddress));
                                 }
                             }
                         }

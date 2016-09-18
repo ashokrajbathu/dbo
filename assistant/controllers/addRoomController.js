@@ -37,7 +37,7 @@ function roomController($scope, $log, dboticaServices, $state, $http, $parse, do
     dboticaServices.setInvoice(billInvoice);
 
 
-    var organizationId = sessionStorage.getItem('orgId');
+    var organizationId = localStorage.getItem('orgId');
     var roomCategoriesPromise = dboticaServices.getRoomCategories(organizationId);
     roomCategoriesPromise.then(function(roomCategoriesSuccess) {
         var errorCode = roomCategoriesSuccess.data.errorCode;

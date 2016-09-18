@@ -88,6 +88,17 @@
                         <label for="exampleInputTemplateName">*Template Name</label>
                         <input ng-model="addTemplate.newTemplateName" id="exampleInputTemplateName" type="text" class="form-control" placeholder="Template Name">
                     </div>
+                    <div ng-if="addTemplate.templatePermissionsDiv" class="form-group">
+                        <div class="row">
+                            <div ng-repeat="permissionEntity in addTemplate.permissionsList" class="col-md-2">
+                                <div class="checkbox">
+                                    <label>
+                                        <input ng-checked="addTemplate.{{permissionEntity.name}}" ng-click="addTemplate.permissionAddition(permissionEntity.name)" type="checkbox">{{permissionEntity.name}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div ng-if="addTemplate.addBtn" class="form-group">
                         <button type="submit" ng-click="addTemplate.addNewTemplate()" class="btn addPatientBtn buttonsInInpatientModal">Add</button>
                     </div>

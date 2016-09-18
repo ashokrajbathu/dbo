@@ -6,7 +6,7 @@ printPrescriptionController.$inject = ['$scope'];
 function printPrescriptionController($scope) {
     var prescription = this;
 
-    var activePrescription = sessionStorage.getItem('activePrescription');
+    var activePrescription = localStorage.getItem('activePrescription');
     activePrescription = angular.fromJson(activePrescription);
     console.log('active prescription is----', activePrescription);
     if (activePrescription !== undefined && activePrescription !== null && activePrescription !== '') {
@@ -17,7 +17,7 @@ function printPrescriptionController($scope) {
         prescription.patientName = activePrescription.patient.firstName;
         prescription.phoneNumber = activePrescription.patient.phoneNumber;
         var qrString = activePrescription.patient.id + ':' + activePrescription.referDetails.id;
-        var addressInTheBill = sessionStorage.getItem('addressInTheBill');
+        var addressInTheBill = localStorage.getItem('addressInTheBill');
         addressInTheBill = angular.fromJson(addressInTheBill);
         if (addressInTheBill !== undefined && addressInTheBill !== null && addressInTheBill !== '') {
             prescription.organizationName = addressInTheBill[0].label;

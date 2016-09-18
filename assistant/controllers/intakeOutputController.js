@@ -23,7 +23,7 @@ function intakeOutputController($scope, $log, dboticaServices, $state, $http, $p
     intakeOutput.mytime = new Date();
     intakeOutput.myOutputTime = new Date();
 
-    var loggedInAss = sessionStorage.getItem('assistantCurrentlyLoggedIn');
+    var loggedInAss = localStorage.getItem('assistantCurrentlyLoggedIn');
     loggedInAss = angular.fromJson(loggedInAss);
     intakeOutput.assistantName = loggedInAss.firstName;
 
@@ -85,7 +85,7 @@ function intakeOutputController($scope, $log, dboticaServices, $state, $http, $p
     intakeOutput.intake.time = timeArray[1];
     intakeOutput.output.time = timeArray[1];
 
-    var organizationId = sessionStorage.getItem('orgId');
+    var organizationId = localStorage.getItem('orgId');
 
     intakeOutput.dateToolTip = false;
     intakeOutput.particularToolTip = false;

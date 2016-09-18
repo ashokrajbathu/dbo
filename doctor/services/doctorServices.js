@@ -53,6 +53,7 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.prescriptionsOfPatient = prescriptionsOfPatient;
     doctorServices.addPatientFromDrugController = addPatientFromDrugController;
     doctorServices.getDoctorTemplates = getDoctorTemplates;
+    doctorServices.getPatientCaseHistory = getPatientCaseHistory;
 
     function loginErrorSwal() {
         swal({
@@ -62,6 +63,21 @@ function doctorServices($http, $state, $log, $q) {
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
+    }
+
+    function getPatientCaseHistory(patientId) {
+        var deferred = $q.defer();
+        var caseHistoryRequest = {
+            method: 'GET',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getCaseHistory?patientId=' + patientId,
+            withCredentials: true
+        }
+        $http(caseHistoryRequest).then(function(caseHistorySuccess) {
+            deferred.resolve(caseHistorySuccess);
+        }, function(caseHistoryError) {
+            deferred.reject(caseHistoryError);
+        });
+        return deferred.promise;
     }
 
     function getDoctorTemplates(organizationId) {

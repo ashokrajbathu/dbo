@@ -4,6 +4,13 @@ addTemplateController.$inject = ['$rootScope', '$scope', '$log', '$stateParams',
 function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var addTemplate = this;
 
+    addTemplate.templatePermissionsDiv = false;
+    var activePermissions = [];
+    addTemplate.Nurse = false;
+    addTemplate.Doctor = false;
+    addTemplate.Operator = false;
+    addTemplate.Admin = false;
+    addTemplate.permissionsList = [{ name: 'Nurse' }, { name: 'Doctor' }, { name: 'Operator' }, { name: 'Admin' }];
     addTemplate.templateNameToDisplay = '-Select Template Name-';
     var newTemplateObject = { 'name': 'New Template' };
     var selectTemplateObject = { 'name': '-Select Template Name-' };
@@ -22,7 +29,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     addTemplate.addBtn = false;
     addTemplate.addNewFieldBtn = true;
     addTemplate.editTemplateName = false;
-    var organizationId = sessionStorage.getItem('orgId');
+    var organizationId = localStorage.getItem('orgId');
     addTemplate.sectionNameToDisplay = '-Select Section Name-';
     var selectSectionObject = { 'sectionName': '-Select Section Name-' };
     var sectionNameObject = { 'sectionName': 'New Section' };
@@ -59,6 +66,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     addTemplate.pageChanged = pageChanged;
     addTemplate.editTemp = editTemp;
     addTemplate.deleteAnElement = deleteAnElement;
+    addTemplate.permissionAddition = permissionAddition;
 
     var getTemplatesPromise = dboticaServices.getAllTemplates(organizationId, '', true);
     getTemplatesPromise.then(function(getTemplateSuccess) {
@@ -95,11 +103,41 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
         dboticaServices.noConnectivityError();
     });
 
+    function permissionAddition(permission) {
+        addTemplate[permission] = !addTemplate[permission];
+        switch (permission) {
+            case 'Nurse':
+                sortPermission('NURSE');
+                break;
+            case 'Doctor':
+                sortPermission('DOCTOR');
+                break;
+            case 'Admin':
+                sortPermission('HOSPITAL_ADMIN');
+                break;
+            case 'Operator':
+                sortPermission('LAB_OPERATOR');
+                break;
+        }
+    }
+
+    function sortPermission(permission) {
+        var permissionIndex = _.findLastIndex(activePermissions, function(entity) {
+            return entity == permission;
+        });
+        if (permissionIndex == -1) {
+            activePermissions.push(permission);
+        } else {
+            activePermissions.splice(permissionIndex, 1);
+        }
+    }
+
     function selectTemplate(template) {
         editTemplateNameFlag = false;
         addTemplate.templateNameToDisplay = template.name;
         if (template.name == 'New Template') {
             activeTemplate = {};
+            addTemplate.templatePermissionsDiv = true;
             addTemplate.newTemplateName = '';
             addTemplate.addNewFieldBtn = false;
             addTemplate.templateName = true;
@@ -112,6 +150,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
             }
             if (template.name == '-Select Template Name-') {
                 addTemplate.editTemplateName = false;
+                addTemplate.templatePermissionsDiv = false;
             }
             addTemplate.addNewFieldBtn = true;
             addTemplate.templateName = false;
@@ -120,14 +159,14 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     }
 
     function addNewTemplate() {
-        if (addTemplate.templateName && addTemplate.addBtn && addTemplate.newTemplateName !== '') {
+        if (addTemplate.templateName && addTemplate.addBtn && addTemplate.newTemplateName !== '' && activePermissions.length > 0) {
             var addTemplateRequestEntity = {};
             if (editTemplateNameFlag && addTemplate.templateNameToDisplay !== 'New Template' && addTemplate.templateNameToDisplay !== '-Select Template Name-') {
                 angular.copy(activeTemplate, addTemplateRequestEntity);
                 addTemplateRequestEntity.name = addTemplate.newTemplateName;
             } else {
                 addTemplateRequestEntity.organizationId = organizationId;
-                addTemplateRequestEntity.permissions = ['NURSE'];
+                addTemplateRequestEntity.permissions = activePermissions;
                 addTemplateRequestEntity.name = addTemplate.newTemplateName;
                 addTemplateRequestEntity.visibility = 'ACTIVE';
                 addTemplateRequestEntity.templateFields = [];
@@ -158,6 +197,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
                             addTemplate.templateNameToDisplay = addTemplateResponse.name;
                             angular.copy(addTemplateResponse, activeTemplate);
                             addTemplate.templateName = false;
+                            addTemplate.templatePermissionsDiv = false;
                             addTemplate.addBtn = false;
                         }
                     }
@@ -420,6 +460,8 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
     function editAnElement(elementToEdit, index) {
         elementInTable = elementToEdit;
         angular.element('#addNewFieldModal').modal('show');
+        addTemplate.templatePermissionsDiv = true;
+
         addTemplate.selectSectionNameDiv = false;
         addTemplate.newLabelSection = true;
         addTemplate.newTemplateSection = false;
@@ -434,6 +476,25 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
         templateToEdit = dboticaServices.getTemplateId(addTemplate.templatesList, elementToEdit);
         sectionElementIndex = _.findLastIndex(templateToEdit.templateFields, function(resEntity) {
             return resEntity.name == elementToEdit.name && resEntity.fieldType == elementToEdit.fieldType;
+        });
+    }
+
+    function editPermissions(permissionsList) {
+        angular.forEach(permissionsList, function(permissionEntity) {
+            switch (permissionEntity) {
+                case 'NURSE':
+                    addTemplate.Nurse = true;
+                    break;
+                case 'DOCTOR':
+                    addTemplate.Doctor = true;
+                    break;
+                case 'HOSPITAL_ADMIN':
+                    addTemplate.Admin = true;
+                    break;
+                case 'LAB_OPERATOR':
+                    addTemplate.Operator = true;
+                    break;
+            }
         });
     }
 
@@ -496,6 +557,9 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
         if (!_.isEmpty(activeTemplate)) {
             addTemplate.templateName = true;
             editTemplateNameFlag = true;
+            addTemplate.templatePermissionsDiv = true;
+            activePermissions = activeTemplate.permissions;
+            editPermissions(activeTemplate.permissions);
             addTemplate.newTemplateName = activeTemplate.name;
             addTemplate.addBtn = true;
         };

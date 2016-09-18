@@ -2,7 +2,7 @@ angular.module('personalAssistant').controller('adminCtrl', adminCtrl);
 adminCtrl.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
 
 function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
-    sessionStorage.setItem("currentState", "admin");
+    localStorage.setItem("currentState", "admin");
     var adminElement = this;
 
     adminElement.selectOthersService = selectOthersService;
@@ -54,7 +54,7 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
 
     var testActiveIndex = 0;
     var getTestsSuccess = [];
-    var organizationId = sessionStorage.getItem('orgId');
+    var organizationId = localStorage.getItem('orgId');
     var generalObject = { 'firstName': "General", 'lastName': "" };
 
     adminElement.doctorSectionDiv = true;
@@ -489,7 +489,7 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
     var getServiceRequestObject = function(testOrService) {
         var newObject = {};
         newObject.roomIds = [];
-        var assistantCurrentlyLoggedIn = sessionStorage.getItem('assistantCurrentlyLoggedIn');
+        var assistantCurrentlyLoggedIn = localStorage.getItem('assistantCurrentlyLoggedIn');
         assistantCurrentlyLoggedIn = $.parseJSON(assistantCurrentlyLoggedIn);
         if (testOrService == test) {
             newObject.organizationId = organizationId;

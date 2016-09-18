@@ -4,7 +4,7 @@ doctorController.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$par
 function doctorController($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var doctorElement = this;
 
-    var organizationId = sessionStorage.getItem('orgId');
+    var organizationId = localStorage.getItem('orgId');
 
     doctorElement.doctorTypeSelect = doctorTypeSelect;
     doctorElement.addNewDoctorInModal = addNewDoctorInModal;

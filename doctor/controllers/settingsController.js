@@ -2,7 +2,7 @@ angular.module('doctor').controller('settingsController', settingsController);
 settingsController.$inject = ['$scope', '$log', 'doctorServices', '$state', '$parse', '$http', 'SweetAlert'];
 
 function settingsController($scope, $log, doctorServices, $state, $http, $parse, SweetAlert) {
-    sessionStorage.setItem('currentDoctorState', 'settings');
+    localStorage.setItem('currentDoctorState', 'settings');
     var settings = this;
     var classDefault = 'default';
     var classSuccess = 'success';
@@ -43,12 +43,12 @@ function settingsController($scope, $log, doctorServices, $state, $http, $parse,
         openDb();
     } catch (e) {}
 
-    activeDoctor = sessionStorage.getItem('currentDoctor');
+    activeDoctor = localStorage.getItem('currentDoctor');
     activeDoctor = angular.fromJson(activeDoctor);
 
     if (_.isEmpty(activeDoctor)) {
-        sessionStorage.clear();
-        sessionStorage.setItem("isLoggedInDoctor", "false");
+        localStorage.clear();
+        localStorage.setItem("isLoggedInDoctor", "false");
         $state.go('login');
     }
 

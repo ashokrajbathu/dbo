@@ -2,7 +2,7 @@ angular.module('doctor').controller('referDboticaController', referDboticaContro
 referDboticaController.$inject = ['$scope', '$log', 'doctorServices', '$state', '$parse', '$http', 'SweetAlert'];
 
 function referDboticaController($scope, $log, doctorServices, $state, $http, $parse, SweetAlert) {
-    sessionStorage.setItem('currentDoctorState', 'referDbotica');
+    localStorage.setItem('currentDoctorState', 'referDbotica');
     var refer = this;
     refer.referDoctor = {};
     refer.referDoctor.doctorName = '';

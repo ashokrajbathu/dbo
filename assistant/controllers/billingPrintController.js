@@ -9,10 +9,10 @@ app.controller('printBillController', ['$scope', function($scope) {
     $scope.doctorServicesPageDisplay = true;
     $scope.medicinesPageDisplay = true;
     $scope.testsPageDisplay = true;
-    var billNowActive = sessionStorage.getItem('billActiveToPrint');
-    $scope.patientNameInBill = sessionStorage.getItem('patientNameInBillActive');
-    $scope.patientNumberInBill = sessionStorage.getItem('patientNumberInBillActive');
-    $scope.addressInTheBill = sessionStorage.getItem('addressInTheBill');
+    var billNowActive = localStorage.getItem('billActiveToPrint');
+    $scope.patientNameInBill = localStorage.getItem('patientNameInBillActive');
+    $scope.patientNumberInBill = localStorage.getItem('patientNumberInBillActive');
+    $scope.addressInTheBill = localStorage.getItem('addressInTheBill');
     $scope.addressInTheBill = JSON.parse($scope.addressInTheBill);
     $scope.organizationName = $scope.addressInTheBill[0].label;
     $scope.address = $scope.addressInTheBill[0].address;

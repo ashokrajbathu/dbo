@@ -16,7 +16,7 @@ function patientHistoryController($scope, $log, dboticaServices, $state, $http, 
     patientHistoryElement.request.personalHistory = '';
     patientHistoryElement.request.patientMedicalHistory = '';
 
-    var organizationId = sessionStorage.getItem('orgId');
+    var organizationId = localStorage.getItem('orgId');
 
     var billInvoice = {};
     dboticaServices.setInvoice(billInvoice);

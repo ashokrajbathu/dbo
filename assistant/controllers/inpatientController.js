@@ -2,7 +2,7 @@ angular.module('personalAssistant').controller('inpatientController', inpatientC
 inpatientController.$inject = ['$scope', '$log', 'dboticaServices', '$state', '$parse', '$http', 'SweetAlert', 'doctorServices'];
 
 function inpatientController($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
-    sessionStorage.setItem("currentState", "ipd");
+    localStorage.setItem("currentState", "ipd");
     var inpatientElement = this;
     inpatientElement.phoneNumberLengthValidation = phoneNumberLengthValidation;
     inpatientElement.patientSearch = patientSearch;
@@ -57,7 +57,7 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
     var activeDoctorName = '';
     inpatientElement.activeDoctorsListToBeDisplayed.push(doctorObject);
 
-    var organizationId = sessionStorage.getItem('orgId');
+    var organizationId = localStorage.getItem('orgId');
 
     var billInvoice = {};
     dboticaServices.setInvoice(billInvoice);

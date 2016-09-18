@@ -2,7 +2,7 @@ angular.module('doctor').controller('prescriptionReportController', prescription
 prescriptionReportController.$inject = ['$scope', '$log', 'doctorServices', '$state', '$parse', '$http', 'SweetAlert'];
 
 function prescriptionReportController($scope, $log, doctorServices, $state, $http, $parse, SweetAlert) {
-    sessionStorage.setItem('currentDoctorState', 'prescriptionReport');
+    localStorage.setItem('currentDoctorState', 'prescriptionReport');
     var prescriptionReport = this;
     prescriptionReport.deleteDrugOrTest = deleteDrugOrTest;
     prescriptionReport.newPatient = newPatient;
@@ -20,11 +20,11 @@ function prescriptionReportController($scope, $log, doctorServices, $state, $htt
     prescriptionReport.patientComments = false;
     angular.element('#drugPrescriptionActive').addClass('activeDoctorLi');
     prescriptionReport.prescriptionActive = {};
-    var activePrescription = sessionStorage.getItem('prescriptionObjectToPrint');
+    var activePrescription = localStorage.getItem('prescriptionObjectToPrint');
     prescriptionReport.prescriptionActive = angular.fromJson(activePrescription);
     if (_.isEmpty(prescriptionReport.prescriptionActive)) {
-        sessionStorage.clear();
-        sessionStorage.setItem('isLoggedInDoctor', 'false');
+        localStorage.clear();
+        localStorage.setItem('isLoggedInDoctor', 'false');
         $state.go('login');
     } else {
         var prescDetails = prescriptionReport.prescriptionActive.prescriptionToPrint;
@@ -106,7 +106,7 @@ function prescriptionReportController($scope, $log, doctorServices, $state, $htt
                     updatedPrescriptionActive.prescriptionToPrint = updatePrescResponse;
                     updatedPrescriptionActive.drugListToDisplay = prescriptionReport.drugsList;
                     updatedPrescriptionActive.testsListToDisplay = prescriptionReport.testsListInTable;
-                    sessionStorage.setItem('prescriptionObjectToPrint', JSON.stringify(updatedPrescriptionActive));
+                    localStorage.setItem('prescriptionObjectToPrint', JSON.stringify(updatedPrescriptionActive));
                 }
             }
         }, function(updatePrescriptionError) {

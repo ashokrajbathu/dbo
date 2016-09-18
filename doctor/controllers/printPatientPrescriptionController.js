@@ -18,10 +18,10 @@ function printPatientPrescriptionController($scope, $log) {
     }
 
     getTodayString();
-    var activePrescription = sessionStorage.getItem('prescriptionObjectToPrint');
-    var activeDoctor = sessionStorage.getItem('currentDoctor');
-    var organizationAddress = sessionStorage.getItem('doctorHospitalLocation');
-    var activePatient = sessionStorage.getItem('currentPatient');
+    var activePrescription = localStorage.getItem('prescriptionObjectToPrint');
+    var activeDoctor = localStorage.getItem('currentDoctor');
+    var organizationAddress = localStorage.getItem('doctorHospitalLocation');
+    var activePatient = localStorage.getItem('currentPatient');
     prescription.doctorName = '';
     prescription.speciality = '';
     prescription.phoneNumber = '';

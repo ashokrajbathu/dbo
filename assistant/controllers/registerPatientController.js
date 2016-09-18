@@ -46,7 +46,7 @@ function registerPatientController($scope, $log, dboticaServices, $state, $http,
     register.editPatientState = editPatientState;
     register.registerPatientSearch = registerPatientSearch;
 
-    var organizationId = sessionStorage.getItem('orgId');
+    var organizationId = localStorage.getItem('orgId');
 
     var getRegisteredPatientsPromise = dboticaServices.getRegisteredPatients(organizationId);
     getRegisteredPatientsPromise.then(function(registeredPatientsSuccess) {

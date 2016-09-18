@@ -4,7 +4,7 @@ doctorCategoryController.$inject = ['$scope', '$log', 'dboticaServices', '$state
 function doctorCategoryController($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var doctorCategoryElement = this;
 
-    var organizationId = sessionStorage.getItem('orgId');
+    var organizationId = localStorage.getItem('orgId');
 
     doctorCategoryElement.addNewDoctorCategory = {};
     doctorCategoryElement.doctorCategoriesList = [];
