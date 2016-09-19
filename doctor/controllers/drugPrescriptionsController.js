@@ -96,6 +96,9 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.templatesList = [];
     var activeTemplates = [];
     prescriptionElement.patientCaseHistory = [];
+    prescriptionElement.templatesListInTable = [];
+    var activeCaseNumber = '';
+    var organizationPatientId = '';
 
     activeDoctor = localStorage.getItem('currentDoctor');
     activeDoctor = angular.fromJson(activeDoctor);
@@ -140,6 +143,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.bookAppointment = bookAppointment;
     prescriptionElement.resetDrugPrescription = resetDrugPrescription;
     prescriptionElement.selectPrescription = selectPrescription;
+    prescriptionElement.selectTemplate = selectTemplate;
 
     var getDrugTemplatesPromise = doctorServices.getDrugTemplates();
     getDrugTemplatesPromise.then(function(getDrugTemplatesSuccess) {
@@ -151,6 +155,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             prescriptionElement.drugTemplates = _.filter(getDrugTemplatesResponse, function(entity) {
                 return entity.state == 'ACTIVE';
             });
+            $log.log('prescriptionElement---', prescriptionElement.drugTemplates);
             angular.forEach(prescriptionElement.drugTemplates, function(value, key) {
                 prescriptionElement['checkbox' + key] = false;
             });
@@ -160,7 +165,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     });
 
     var getDoctorTemplatesPromise = doctorServices.getDoctorTemplates(activeDoctor.organizationId);
-    $log.log('templates are-------', getDoctorTemplatesPromise);
     getDoctorTemplatesPromise.then(function(getTemplatesSuccess) {
         var errorCode = getTemplatesSuccess.data.errorCode;
         if (errorCode) {
@@ -179,8 +183,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 activeTemplateEntity.activeTemplateFields = {};
                 activeTemplateEntity.activeTemplateFields = _.groupBy(activeTemplateEntity.templateFields, 'sectionName');
             });
-            $log.log('final active temps are-------', activeTemplates);
-            angular.copy(activeTemplates, prescriptionElement.templatesList);
+            angular.copy(activeTemplates, prescriptionElement.templatesListInTable);
         }
     }, function(getTemplatesError) {
         doctorServices.noConnectivityError();
@@ -196,6 +199,17 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
 
     function hideDropDown() {
         prescriptionElement.dropdownActive = false;
+    }
+
+    function selectTemplate(template) {
+        var templateIndex = _.findLastIndex(prescriptionElement.templatesList, function(templateEntity) {
+            return templateEntity.name == template.name;
+        });
+        if (templateIndex == -1) {
+            prescriptionElement.templatesList.push(template);
+        } else {
+            prescriptionElement.templatesList.splice(templateIndex, 1);
+        }
     }
 
     function phoneNumberLengthValidation() {
@@ -224,6 +238,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     }
 
     function patientSearchByDoctor() {
+        prescriptionElement.patientData.phoneNumber = prescriptionElement.phoneNumber;
         var patientSearchPromise = doctorServices.getPatientDetailsOfThatNumber(prescriptionElement.phoneNumber);
         patientSearchPromise.then(function(patientSearchSuccess) {
             var errorCode = patientSearchSuccess.data.errorCode;
@@ -231,23 +246,23 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 doctorServices.logoutFromThePage(errorCode);
             } else {
                 prescriptionElement.patientsToBeDisplayedInRadios = angular.fromJson(patientSearchSuccess.data.response);
-                $log.log('patients are----', prescriptionElement.patientsToBeDisplayedInRadios);
                 if (prescriptionElement.patientsToBeDisplayedInRadios.length > 0) {
                     newPatientFlag = false;
+                    getOrganizationPatientId(prescriptionElement.patientsToBeDisplayedInRadios[0].id);
                     var casePromise = doctorServices.getPatientCaseHistory(prescriptionElement.patientsToBeDisplayedInRadios[0].id);
-                    $log.log('case promise is--------', casePromise);
+                    $log.log('case promise is----', casePromise);
                     casePromise.then(function(caseSuccess) {
                         var errorCode = caseSuccess.data.errorCode;
                         if (errorCode) {
                             doctorServices.logoutFromThePage(errorCode);
                         } else {
                             var caseHistoryResponse = angular.fromJson(caseSuccess.data.response);
-                            $log.log('case response is------', caseHistoryResponse);
+                            $log.log('case history is-----', caseHistoryResponse);
                             if (errorCode == null && caseSuccess.data.success) {
                                 prescriptionElement.patientCaseHistory = _.filter(caseHistoryResponse, function(entity) {
                                     return entity.state == 'ACTIVE';
                                 });
-                                $log.log('case history list is-------', prescriptionElement.patientCaseHistory);
+                                getPrescriptionsOfCaseNumber(prescriptionElement.patientCaseHistory[0].id);
                             }
                         }
                     }, function(caseError) {
@@ -283,6 +298,44 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 }
             }
         }, function(patientSearchError) {
+            doctorServices.noConnectivityError();
+        });
+    }
+
+    function getOrganizationPatientId(id) {
+        var organizationPatientPromise = doctorServices.getOrgPatientDetails(id);
+        $log.log('org patient promise is-------', organizationPatientPromise);
+        organizationPatientPromise.then(function(orgPatientSuccess) {
+            var errorCode = orgPatientSuccess.data.errorCode;
+            if (errorCode) {
+                doctorServices.logoutFromThePage(errorCode);
+            } else {
+                var orgPatientResponse = angular.fromJson(orgPatientSuccess.data.response);
+                $log.log('org patient response is------', orgPatientResponse);
+                if (errorCode == null && orgPatientSuccess.data.success) {
+                    if (orgPatientResponse[0].state == 'ACTIVE') {
+                        organizationPatientId = orgPatientResponse[0].id;
+                        $log.log('org patien id is------', organizationPatientId);
+                    }
+                }
+            }
+        }, function(orgPatientError) {
+            doctorServices.noConnectivityError();
+        });
+    }
+
+    function getPrescriptionsOfCaseNumber(caseId) {
+        var prescriptionsPromise = doctorServices.getPrescriptionsOfCase(caseId);
+        $log.log('prescriptions promise is----', prescriptionsPromise);
+        prescriptionsPromise.then(function(casePrescriptionsSuccess) {
+            var errorCode = casePrescriptionsSuccess.data.errorCode;
+            if (errorCode) {
+                doctorServices.logoutFromThePage(errorCode);
+            } else {
+                var prescriptionsResponse = angular.fromJson(casePrescriptionsSuccess.data.response);
+                $log.log('prescriptions response is------', prescriptionsResponse);
+            }
+        }, function(prescriptionsError) {
             doctorServices.noConnectivityError();
         });
     }
@@ -331,6 +384,32 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                                 prescriptionElement.updatePatient = true;
                                 prescriptionElement.addMember = true;
                                 prescriptionElement.radio0 = true;
+                                var registerPatientRequest = {};
+                                prescriptionElement.prescriptionData.firstName = activePatient.firstName;
+                                prescriptionElement.prescriptionData.drugAllergyInForm = activePatient.drugAllergy;
+                                registerPatientRequest.organizationId = activeDoctor.organizationId;
+                                registerPatientRequest.patientId = activePatient.id;
+                                registerPatientRequest.phoneNumber = activePatient.phoneNumber;;
+                                registerPatientRequest.activeCaseNumber = '';
+                                registerPatientRequest.patientType = 'OUT_PATIENT';
+                                registerPatientRequest.patientState = 'CHECK_IN';
+                                var registerPatientPromise = doctorServices.registerPatient(registerPatientRequest);
+                                registerPatientPromise.then(function(registerPatientSuccess) {
+                                    var errorCode = registerPatientSuccess.data.errorCode;
+                                    if (errorCode) {
+                                        doctorServices.logoutFromThePage(errorCode);
+                                    } else {
+                                        var registerPatientResponse = angular.fromJson(registerPatientSuccess.data.response);
+                                        $log.log('reg respo-----', registerPatientResponse);
+                                        if (errorCode == null && registerPatientSuccess.data.success) {
+                                            if (registerPatientResponse.state == 'ACTIVE') {
+                                                organizationPatientId = registerPatientResponse.id;
+                                            }
+                                        }
+                                    }
+                                }, function(registerPatientError) {
+                                    doctorServices.noConnectivityError();
+                                });
                             } else {
                                 prescriptionElement.patientsToBeDisplayedInRadios.push(addPatientResponse[0]);
                             }
@@ -341,29 +420,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                             angular.copy(activePatient, currentActivePatient);
                             localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
                         }
-                        var registerPatientRequest = {};
-                        registerPatientRequest.organizationId = activeDoctor.organizationId;
-                        registerPatientRequest.patientId = activePatient.id;
-                        registerPatientRequest.phoneNumber = activePatient.phoneNumber;;
-                        registerPatientRequest.activeCaseNumber = '';
-                        registerPatientRequest.patientType = 'OUT_PATIENT';
-                        registerPatientRequest.patientState = 'CHECK_IN';
-                        var registerPatientPromise = doctorServices.registerPatient(registerPatientRequest);
-                        $log.log('register promise is-------', registerPatientPromise);
-                        registerPatientPromise.then(function(registerPatientSuccess) {
-                            var errorCode = registerPatientSuccess.data.errorCode;
-                            if (errorCode) {
-                                doctorServices.logoutFromThePage(errorCode);
-                            } else {
-                                var registerPatientResponse = angular.fromJson(registerPatientSuccess.data.response);
-                                $log.log('register response is---', registerPatientResponse);
-                                if (errorCode == null && registerPatientSuccess.data.success) {
-
-                                }
-                            }
-                        }, function(registerPatientError) {
-                            doctorServices.noConnectivityError();
-                        });
                         angular.element('#newOrUpdatePatientModal').modal('hide');
                     }
                 }
@@ -400,6 +456,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         activePatientIndex = index;
         prescriptionElement.prescriptionData.firstName = patientActiveIs.firstName;
         prescriptionElement.prescriptionData.drugAllergyInForm = patientActiveIs.drugAllergy;
+        getOrganizationPatientId(patientActiveIs.id);
     }
 
     angular.element('#drugSearchBox').autocomplete({
@@ -674,7 +731,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     }
 
     function savePrescription() {
-        if (!_.isEmpty(activeDoctor) && !_.isEmpty(activePatient)) {
+        if (!_.isEmpty(activeDoctor) && !_.isEmpty(activePatient) && organizationPatientId !== '') {
             var prescriptionRequest = {};
             prescriptionRequest.patientId = activePatient.id;
             prescriptionRequest.doctorId = activeDoctor.id;
@@ -696,6 +753,8 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             prescriptionRequest.diagnosisTests = prescriptionElement.testsListInTable;
             prescriptionElement.loading = true;
             prescriptionElement.blurScreen = true;
+            prescriptionRequest.organizationPatientId = organizationPatientId;
+            $log.log('presc request is------', prescriptionElement.organizationPatientId);
             var prescriptionPromise = doctorServices.addPrescription(prescriptionRequest);
             prescriptionPromise.then(function(prescriptionSuccess) {
                 var errorCode = prescriptionSuccess.data.errorCode;
@@ -705,6 +764,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                     doctorServices.logoutFromThePage(errorCode);
                 } else {
                     var prescriptionResponse = angular.fromJson(prescriptionSuccess.data.response);
+                    $log.log('prescription response is-----------', prescriptionResponse);
                     if (errorCode == null && prescriptionSuccess.data.success == true) {
                         doctorServices.addPrescriptionSuccessSwal();
                         prescriptionObject.prescriptionToPrint = prescriptionResponse;

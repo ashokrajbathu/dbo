@@ -9,6 +9,10 @@
     background-color: #3c8dbc;
 }
 
+#templatesListTable {
+    max-height: 200px;
+}
+
 .testDropDownActive {
     margin-left: 10px;
     display: block;

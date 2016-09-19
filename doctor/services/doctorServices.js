@@ -55,6 +55,8 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.getDoctorTemplates = getDoctorTemplates;
     doctorServices.getPatientCaseHistory = getPatientCaseHistory;
     doctorServices.registerPatient = registerPatient;
+    doctorServices.getOrgPatientDetails = getOrgPatientDetails;
+    doctorServices.getPrescriptionsOfCase = getPrescriptionsOfCase;
 
     function loginErrorSwal() {
         swal({
@@ -64,6 +66,36 @@ function doctorServices($http, $state, $log, $q) {
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
+    }
+
+    function getPrescriptionsOfCase(caseId) {
+        var deferred = $q.defer();
+        var caseRequest = {
+            method: 'GET',
+            url: 'http://localhost:8080/dbotica-spring/doctor/getPrescriptionsByCase?organizationCaseId=' + caseId,
+            withCredentials: true
+        }
+        $http(caseRequest).then(function(caseSuccess) {
+            deferred.resolve(caseSuccess);
+        }, function(caseError) {
+            deferred.reject(caseError);
+        });
+        return deferred.promise;
+    }
+
+    function getOrgPatientDetails(patientId) {
+        var deferred = $q.defer();
+        var orgPatientRequest = {
+            method: 'GET',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getOrgPatientByPatientId?patientId=' + patientId,
+            withCredentials: true
+        }
+        $http(orgPatientRequest).then(function(orgPatientSuccess) {
+            deferred.resolve(orgPatientSuccess);
+        }, function(orgPatientError) {
+            deferred.reject(orgpatientError);
+        });
+        return deferred.promise;
     }
 
     function registerPatient(registerPatientRequest) {
