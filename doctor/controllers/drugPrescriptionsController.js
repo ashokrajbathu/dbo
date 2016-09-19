@@ -95,6 +95,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     var walkinEntities = [];
     prescriptionElement.templatesList = [];
     var activeTemplates = [];
+    prescriptionElement.patientCaseHistory = [];
 
     activeDoctor = localStorage.getItem('currentDoctor');
     activeDoctor = angular.fromJson(activeDoctor);
@@ -243,7 +244,10 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                             var caseHistoryResponse = angular.fromJson(caseSuccess.data.response);
                             $log.log('case response is------', caseHistoryResponse);
                             if (errorCode == null && caseSuccess.data.success) {
-
+                                prescriptionElement.patientCaseHistory = _.filter(caseHistoryResponse, function(entity) {
+                                    return entity.state == 'ACTIVE';
+                                });
+                                $log.log('case history list is-------', prescriptionElement.patientCaseHistory);
                             }
                         }
                     }, function(caseError) {
@@ -316,7 +320,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 } else {
                     var addPatientResponse = angular.fromJson(addpatientSuccess.data.response);
                     if (errorCode == null && addpatientSuccess.data.success == true) {
-                        angular.element('#newOrUpdatePatientModal').modal('hide');
                         doctorServices.registerPatientSuccessSwal();
                         if (_.isEmpty(activePatient)) {
                             if (prescriptionElement.patientsToBeDisplayedInRadios.length == 0) {
@@ -338,6 +341,30 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                             angular.copy(activePatient, currentActivePatient);
                             localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
                         }
+                        var registerPatientRequest = {};
+                        registerPatientRequest.organizationId = activeDoctor.organizationId;
+                        registerPatientRequest.patientId = activePatient.id;
+                        registerPatientRequest.phoneNumber = activePatient.phoneNumber;;
+                        registerPatientRequest.activeCaseNumber = '';
+                        registerPatientRequest.patientType = 'OUT_PATIENT';
+                        registerPatientRequest.patientState = 'CHECK_IN';
+                        var registerPatientPromise = doctorServices.registerPatient(registerPatientRequest);
+                        $log.log('register promise is-------', registerPatientPromise);
+                        registerPatientPromise.then(function(registerPatientSuccess) {
+                            var errorCode = registerPatientSuccess.data.errorCode;
+                            if (errorCode) {
+                                doctorServices.logoutFromThePage(errorCode);
+                            } else {
+                                var registerPatientResponse = angular.fromJson(registerPatientSuccess.data.response);
+                                $log.log('register response is---', registerPatientResponse);
+                                if (errorCode == null && registerPatientSuccess.data.success) {
+
+                                }
+                            }
+                        }, function(registerPatientError) {
+                            doctorServices.noConnectivityError();
+                        });
+                        angular.element('#newOrUpdatePatientModal').modal('hide');
                     }
                 }
             }, function(addpatientError) {

@@ -54,6 +54,7 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.addPatientFromDrugController = addPatientFromDrugController;
     doctorServices.getDoctorTemplates = getDoctorTemplates;
     doctorServices.getPatientCaseHistory = getPatientCaseHistory;
+    doctorServices.registerPatient = registerPatient;
 
     function loginErrorSwal() {
         swal({
@@ -63,6 +64,26 @@ function doctorServices($http, $state, $log, $q) {
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
+    }
+
+    function registerPatient(registerPatientRequest) {
+        var deferred = $q.defer();
+        var registerPatientRequest = {
+            method: 'POST',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/updatePatient',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(registerPatientRequest)
+        }
+        $http(registerPatientRequest).then(function(registerPatientSuccess) {
+            deferred.resolve(registerPatientSuccess);
+        }, function(registerPatientError) {
+            deferred.reject(registerPatientError);
+        });
+        return deferred.promise;
     }
 
     function getPatientCaseHistory(patientId) {

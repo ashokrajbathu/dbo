@@ -106,6 +106,8 @@
                         </div>
                     </div>
                     <div class="row">
+                    </div>
+                    <div class="row">
                         <label id="patientPrescriptionsLabel">Selected Patient Prescriptions :</label>
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-6" ng-repeat="prescriptionEntity in prescription.patientPrescriptions">
@@ -197,6 +199,22 @@
                                 </div>
                             </form>
                         </div>
+                        <!-- <div class="col-md-3 col-sm-3 col-xs-12">
+                            <form>
+                                <div class="form-group">
+                                    <label for="selectCaseNumber">Select Case Number</label>
+                                    <div class="dropdown">
+                                        <button style="width:100%;color:black;border-radius:0px;border-color:#d2d6de;" class="btn dropdown-toggle" type="button" data-toggle="dropdown">{{prescription.caseNumber}}
+                                            <span id="caretInInpatient0" class="caret caretCss"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li ng-click="prescription.selectCaseNumber(case)" ng-repeat="case in prescription.patientCaseHistory">
+                                                <a style="cursor:pointer;" ng-bind="case.organizationCaseNo"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </form>
+                        </div> -->
                     </div>
                 </div>
             </div>

@@ -793,7 +793,6 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                             registerPatientRequest.patientId = $scope.book.patientId;
                             registerPatientRequest.phoneNumber = phoneNumber;
                             registerPatientRequest.activeCaseNumber = activeCaseNo;
-                            // registerPatientRequest.organizationPatientNo = patientNumber;
                             registerPatientRequest.patientType = 'OUT_PATIENT';
                             registerPatientRequest.patientState = 'CHECK_IN';
                             var registerPatientPromise = dboticaServices.registerPatient(registerPatientRequest);
