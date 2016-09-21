@@ -59,6 +59,7 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.getPrescriptionsOfCase = getPrescriptionsOfCase;
     doctorServices.getLocalObject = getLocalObject;
     doctorServices.getDrugList = getDrugList;
+    doctorServices.saveTemplateInstance = saveTemplateInstance;
 
     function loginErrorSwal() {
         swal({
@@ -126,6 +127,26 @@ function doctorServices($http, $state, $log, $q) {
             deferred.resolve(orgPatientSuccess);
         }, function(orgPatientError) {
             deferred.reject(orgpatientError);
+        });
+        return deferred.promise;
+    }
+
+    function saveTemplateInstance(templateInstance) {
+        var deferred = $q.defer();
+        var templateRequest = {
+            method: 'POST',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/template/addTemplateInstance',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(templateInstance)
+        }
+        $http(templateRequest).then(function(templateSuccess) {
+            deferred.resolve(templateSuccess);
+        }, function(templateError) {
+            deferred.reject(templateError);
         });
         return deferred.promise;
     }

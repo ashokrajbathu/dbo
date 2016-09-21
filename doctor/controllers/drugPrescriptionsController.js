@@ -837,6 +837,18 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                     $log.log('prescription response is-----------', prescriptionResponse);
                     if (errorCode == null && prescriptionSuccess.data.success == true) {
                         doctorServices.addPrescriptionSuccessSwal();
+                        var templateInstancePromise = doctorServices.saveTemplateInstance();
+                        templateInstancePromise.then(function(templateInstanceSuccess) {
+                            var errorCode = templateInstanceSuccess.data.errorCode;
+                            if (errorCode) {
+                                doctorServices.logoutFromThePage(errorCode);
+                            } else {
+                                templateInstanceResponse = angular.fromJson(templateInstanceSuccess.data.response);
+                                $log.log('instance response is--------', templateInstanceResponse);
+                            }
+                        }, function(templateInstanceError) {
+                            doctorServices.noConnectivityError();
+                        });
                         prescriptionObject.prescriptionToPrint = prescriptionResponse;
                         prescriptionObject.drugListToDisplay = prescriptionElement.drugsList;
                         prescriptionObject.testsListToDisplay = prescriptionElement.testsListInTable;

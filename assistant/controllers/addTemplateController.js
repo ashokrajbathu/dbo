@@ -288,6 +288,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
                 requestEntity.templateFields = [];
                 var check = false;
                 var newSectionFlag = false;
+                $log.log('active template is------', activeTemplate);
                 angular.copy(activeTemplate, requestEntity);
                 var templateFieldObject = {};
                 if (addTemplate.sectionNameToDisplay == 'New Section') {
@@ -346,6 +347,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
                         } else {
                             var addSectionResponse = angular.fromJson(addSectionSuccess.data.response);
                             if (errorCode == null && addSectionSuccess.data.success) {
+                                angular.copy(addSectionResponse, activeTemplate);
                                 var templateIndex = dboticaServices.getReqTemplate(localActiveSectionsFields, addSectionResponse);
                                 localActiveSectionsFields.splice(templateIndex, 1, addSectionResponse);
                                 dboticaServices.fieldDetailsUpdateSuccessSwal();
