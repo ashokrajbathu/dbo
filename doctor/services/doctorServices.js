@@ -57,6 +57,8 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.registerPatient = registerPatient;
     doctorServices.getOrgPatientDetails = getOrgPatientDetails;
     doctorServices.getPrescriptionsOfCase = getPrescriptionsOfCase;
+    doctorServices.getLocalObject = getLocalObject;
+    doctorServices.getDrugList = getDrugList;
 
     function loginErrorSwal() {
         swal({
@@ -66,6 +68,36 @@ function doctorServices($http, $state, $log, $q) {
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
+    }
+
+    function getDrugList(drugEntity) {
+        var localDrugObject = {};
+        localDrugObject.brandName = drugEntity.brandName;
+        if (drugEntity.perServing == 1) {
+            localDrugObject.perServing = 1 + ' unit';
+        } else {
+            localDrugObject.perServing = drugEntity.perServing + ' units';
+        }
+        localDrugObject.usageDirection = drugEntity.usageDirection;
+        localDrugObject.remarks = drugEntity.remarks;
+        if (drugEntity.daysOrQuantity == 'Days') {
+            if (drugEntity.noOfDays == 1) {
+                localDrugObject.noOfDays = 1 + ' Day';
+            } else {
+                localDrugObject.noOfDays = drugEntity.noOfDays + ' Days';
+            }
+        }
+        if (drugEntity.daysOrQuantity == 'Quantity') {
+            localDrugObject.noOfDays = drugEntity.quantity + ' Quantity';
+        }
+        return localDrugObject;
+    }
+
+    function getLocalObject(fieldName, fieldValue) {
+        var localObject = {};
+        localObject.name = fieldName;
+        localObject.value = fieldValue;
+        return localObject;
     }
 
     function getPrescriptionsOfCase(caseId) {

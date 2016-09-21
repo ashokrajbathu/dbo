@@ -97,6 +97,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     var activeTemplates = [];
     prescriptionElement.patientCaseHistory = [];
     prescriptionElement.templatesListInTable = [];
+    prescriptionElement.prescriptionsInModal = [];
     var activeCaseNumber = '';
     var organizationPatientId = '';
 
@@ -144,6 +145,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.resetDrugPrescription = resetDrugPrescription;
     prescriptionElement.selectPrescription = selectPrescription;
     prescriptionElement.selectTemplate = selectTemplate;
+    prescriptionElement.getPrescriptionsOfCaseNumber = getPrescriptionsOfCaseNumber;
 
     var getDrugTemplatesPromise = doctorServices.getDrugTemplates();
     getDrugTemplatesPromise.then(function(getDrugTemplatesSuccess) {
@@ -155,7 +157,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             prescriptionElement.drugTemplates = _.filter(getDrugTemplatesResponse, function(entity) {
                 return entity.state == 'ACTIVE';
             });
-            $log.log('prescriptionElement---', prescriptionElement.drugTemplates);
+            $log.log('prescription element---', prescriptionElement.drugTemplates);
             angular.forEach(prescriptionElement.drugTemplates, function(value, key) {
                 prescriptionElement['checkbox' + key] = false;
             });
@@ -262,7 +264,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                                 prescriptionElement.patientCaseHistory = _.filter(caseHistoryResponse, function(entity) {
                                     return entity.state == 'ACTIVE';
                                 });
-                                getPrescriptionsOfCaseNumber(prescriptionElement.patientCaseHistory[0].id);
                             }
                         }
                     }, function(caseError) {
@@ -324,7 +325,9 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         });
     }
 
-    function getPrescriptionsOfCaseNumber(caseId) {
+    function getPrescriptionsOfCaseNumber(selectedCase) {
+        var caseId = selectedCase.id;
+        var localPrescriptions = [];
         var prescriptionsPromise = doctorServices.getPrescriptionsOfCase(caseId);
         $log.log('prescriptions promise is----', prescriptionsPromise);
         prescriptionsPromise.then(function(casePrescriptionsSuccess) {
@@ -333,7 +336,74 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 doctorServices.logoutFromThePage(errorCode);
             } else {
                 var prescriptionsResponse = angular.fromJson(casePrescriptionsSuccess.data.response);
-                $log.log('prescriptions response is------', prescriptionsResponse);
+                $log.log('res----', prescriptionsResponse);
+                if (errorCode == null && casePrescriptionsSuccess.data.success) {
+                    angular.forEach(prescriptionsResponse, function(entity) {
+                        if (entity.state == 'ACTIVE') {
+                            var localPrescription = {};
+                            localPrescription.lastUpdated = entity.lastUpdated;
+                            localPrescription.prescriptionEntities = [];
+                            localPrescription.diagnosisTests = {};
+                            localPrescription.drugDosage = {};
+                            localPrescription.drugDosage.drugsList = [];
+                            if (_.has(entity, 'weight') && !_.isEmpty(entity.weight)) {
+                                localPrescription.prescriptionEntities.push(doctorServices.getLocalObject('Weight', entity.weight));
+                            }
+                            if (_.has(entity, 'age') && !_.isEmpty(entity.age)) {
+                                localPrescription.prescriptionEntities.push(doctorServices.getLocalObject('Age', entity.age));
+                            }
+                            if (_.has(entity, 'bloodPressure') && !_.isEmpty(entity.bloodPressure)) {
+                                localPrescription.prescriptionEntities.push(doctorServices.getLocalObject('Blood Pressure', entity.bloodPressure));
+                            }
+                            if (_.has(entity, 'bmi') && !_.isEmpty(entity.bmi)) {
+                                localPrescription.prescriptionEntities.push(doctorServices.getLocalObject('Body Mass Index', entity.bmi));
+                            }
+                            if (_.has(entity, 'height') && !_.isEmpty(entity.height)) {
+                                localPrescription.prescriptionEntities.push(doctorServices.getLocalObject('Height', entity.height));
+                            }
+                            if (_.has(entity, 'investigation') && !_.isEmpty(entity.investigation)) {
+                                localPrescription.prescriptionEntities.push(doctorServices.getLocalObject('Investigation', entity.investigation));
+                            }
+                            if (_.has(entity, 'organizationCaseNo') && !_.isEmpty(entity.organizationCaseNo)) {
+                                localPrescription.prescriptionEntities.push(doctorServices.getLocalObject('Case Number', entity.organizationCaseNo));
+                            }
+                            if (_.has(entity, 'pulse') && !_.isEmpty(entity.pulse)) {
+                                localPrescription.prescriptionEntities.push(doctorServices.getLocalObject('Pulse', entity.pulse));
+                            }
+                            if (_.has(entity, 'references') && !_.isEmpty(entity.references)) {
+                                localPrescription.prescriptionEntities.push(doctorServices.getLocalObject('Reference Doctor', entity.references));
+                            }
+                            if (_.has(entity, 'remarks') && !_.isEmpty(entity.remarks)) {
+                                localPrescription.prescriptionEntities.push(doctorServices.getLocalObject('Remarks', entity.remarks));
+                            }
+                            if (_.has(entity, 'revisitDate') && !_.isEmpty(entity.revisitDate)) {
+                                localPrescription.prescriptionEntities.push(doctorServices.getLocalObject('Revisit Date', entity.revisitDate));
+                            }
+                            if (_.has(entity, 'saturation') && !_.isEmpty(entity.saturation)) {
+                                localPrescription.prescriptionEntities.push(doctorServices.getLocalObject('Saturation', entity.saturation));
+                            }
+                            if (_.has(entity, 'symptoms') && !_.isEmpty(entity.symptoms)) {
+                                localPrescription.prescriptionEntities.push(doctorServices.getLocalObject('Symptoms', entity.symptoms));
+                            }
+                            if (_.has(entity, 'temperature') && !_.isEmpty(entity.temperature)) {
+                                localPrescription.prescriptionEntities.push(doctorServices.getLocalObject('Temperature', entity.temperature));
+                            }
+                            if (_.has(entity, 'diagnosisTests') && !_.isEmpty(entity.diagnosisTests)) {
+                                localPrescription.diagnosisTests.name = 'Medical Tests';
+                                localPrescription.diagnosisTests.tests = entity.diagnosisTests;
+                            }
+                            if (_.has(entity, 'drugDosage') && !_.isEmpty(entity.drugDosage)) {
+                                localPrescription.drugDosage.name = 'Medicines';
+                                angular.forEach(entity.drugDosage, function(drugEntity) {
+                                    localPrescription.drugDosage.drugsList.push(doctorServices.getDrugList(drugEntity));
+                                });
+                            }
+                            localPrescriptions.push(localPrescription);
+                        }
+                    });
+                    $log.log('prescs in modal----', localPrescriptions);
+                    angular.copy(localPrescriptions, prescriptionElement.prescriptionsInModal);
+                }
             }
         }, function(prescriptionsError) {
             doctorServices.noConnectivityError();
@@ -1116,7 +1186,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             prescriptionElement.drugsList = [];
             angular.forEach(prescriptionActive.prescription.drugDosage, function(drugEntity) {
                 var localDrugObject = {};
-                localDrugObject.brandName = drugEntity.brandName;
+                /*localDrugObject.brandName = drugEntity.brandName;
                 if (drugEntity.perServing == 1) {
                     localDrugObject.perServing = 1 + ' unit';
                 } else {
@@ -1133,7 +1203,8 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 }
                 if (drugEntity.daysOrQuantity == 'Quantity') {
                     localDrugObject.noOfDays = drugEntity.quantity + ' Quantity';
-                }
+                }*/
+                localDrugObject = doctorServices.getDrugList(drugEntity);
                 prescriptionElement.drugsList.push(localDrugObject);
             });
         }

@@ -145,12 +145,12 @@ function syncAllDrugsToIndexedDB() {
 
         $.ajax({
             type: "GET",
-            url: "http://localhost:8081/dbotica-spring/drug/getDrugs",
+            url: "http://localhost:8080/dbotica-spring/drug/getDrugs",
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.setRequestHeader("Accept", "application/json");
             },
-			data: {
+            data: {
                 'start': startDrugIndex,
                 'limit': 1000,
                 'lastUpdated': lastUpdatedDrugIndex
@@ -247,12 +247,12 @@ function syncAllPrescriptionsToIndexedDB() {
 
         $.ajax({
             type: "GET",
-            url: "http://localhost:8081/dbotica-spring/doctor/myPrescriptions",
+            url: "http://localhost:8080/dbotica-spring/doctor/myPrescriptions",
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.setRequestHeader("Accept", "application/json");
             },
-			data: {
+            data: {
                 'doctorId': doctorId,
                 'start': startPrescriptionIndex,
                 'limit': 100,
@@ -326,7 +326,7 @@ Get all patiensts of this doctor from server
 
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/dbotica-spring/doctor/myPatients",
+        url: "http://localhost:8080/dbotica-spring/doctor/myPatients",
         success: function(response) {
             var data = $.parseJSON(response.response);
             //console.log
