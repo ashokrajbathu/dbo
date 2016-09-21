@@ -116,7 +116,7 @@
                         <label id="patientPrescriptionsLabel">Patient Case History :</label>
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-6" ng-repeat="caseEntity in prescription.patientCaseHistory">
-                        <a data-toggle="modal" data-target="#casePrescriptionsModal" ng-click="prescription.getPrescriptionsOfCaseNumber(caseEntity)" style="cursor:pointer;">Case - <span>{{caseEntity.organizationCaseNo}}-{{caseEntity.lastUpdated|longDateIntoReadableDate}}</span></a>
+                        <a ng-class="{'activeCaseClass':caseEntity.organizationCaseStatus=='OPENED'}" data-toggle="modal" data-target="#casePrescriptionsModal" ng-click="prescription.getPrescriptionsOfCaseNumber(caseEntity)" style="cursor:pointer;">Case - <span>{{caseEntity.organizationCaseNo}}-{{caseEntity.lastUpdated|longDateIntoReadableDate}}</span></a>
                     </div>
                     <hr>
                     <div id="casePrescriptionsModal" class="modal fade" role="dialog">
@@ -192,8 +192,9 @@
                             </div>
                         </div>
                     </div>
-                    <div style="display:block;" class="row">
-                        <span><a style="cursor:pointer;margin-left:15px;display:block;" data-toggle="modal" data-target="#myTemplates">Select Templates</a></span>
+                    <div class="row">
+                        <span ng-click="prescription.openNewCase()"><a style="cursor:pointer;margin-left:15px;">New Case</a></span>
+                        <span><a style="cursor:pointer;margin-left:15px;" data-toggle="modal" data-target="#myTemplates">Select Templates</a></span>
                         <div id="myTemplates" class="modal fade" role="dialog">
                             <div class="modal-dialog">
                                 <div class="modal-content">

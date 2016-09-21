@@ -18,6 +18,10 @@
     display: block;
 }
 
+.activeCaseClass {
+    color: green;
+}
+
 .btnDelete {
     padding-top: 1px;
     height: 25px;

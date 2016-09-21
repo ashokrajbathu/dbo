@@ -60,6 +60,7 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.getLocalObject = getLocalObject;
     doctorServices.getDrugList = getDrugList;
     doctorServices.saveTemplateInstance = saveTemplateInstance;
+    doctorServices.closeCase = closeCase;
 
     function loginErrorSwal() {
         swal({
@@ -69,6 +70,27 @@ function doctorServices($http, $state, $log, $q) {
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
+    }
+
+    function closeCase(caseId) {
+        var deferred = $q.defer();
+        var organizationCaseId = caseId;
+        var closeRequest = {
+            method: 'POST',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/closeOrganizationCase',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: organizationCaseId
+        }
+        $http(closeRequest).then(function(closeCaseSuccess) {
+            deferred.resolve(closeCaseSuccess);
+        }, function(closeCaseError) {
+            deferred.reject(closeCaseError);
+        });
+        return deferred.promise;
     }
 
     function getDrugList(drugEntity) {

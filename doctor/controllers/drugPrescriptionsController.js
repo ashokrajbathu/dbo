@@ -100,6 +100,8 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.prescriptionsInModal = [];
     var activeCaseNumber = '';
     var organizationPatientId = '';
+    var caseActive = {};
+    prescriptionElement.activeCaseHighlight = false;
 
     activeDoctor = localStorage.getItem('currentDoctor');
     activeDoctor = angular.fromJson(activeDoctor);
@@ -146,6 +148,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.selectPrescription = selectPrescription;
     prescriptionElement.selectTemplate = selectTemplate;
     prescriptionElement.getPrescriptionsOfCaseNumber = getPrescriptionsOfCaseNumber;
+    prescriptionElement.openNewCase = openNewCase;
 
     var getDrugTemplatesPromise = doctorServices.getDrugTemplates();
     getDrugTemplatesPromise.then(function(getDrugTemplatesSuccess) {
@@ -201,6 +204,44 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
 
     function hideDropDown() {
         prescriptionElement.dropdownActive = false;
+    }
+
+    function openNewCase() {
+        $log.log('case active is-----', caseActive);
+        var activeCaseIndex = _.findLastIndex(prescriptionElement.patientCaseHistory, function(caseEntry) {
+            return caseEntry.organizationCaseStatus == 'OPENED';
+        });
+        prescriptionElement.patientCaseHistory[activeCaseIndex].organizationCaseStatus = 'CLOSED';
+        /*var closeCasePromise = doctorServices.closeCase(caseActive.id);
+        $log.log('close promise is------', closeCasePromise);
+        closeCasePromise.then(function(closeCaseSuccess) {
+            var errorCode = closeCaseSuccess.data.errorCode;
+            if (errorCode) {
+                doctorServices.logoutFromThePage(errorCode);
+            } else {
+                var closeCaseResponse = angular.fromJson(closeCaseSuccess.data.response);
+                $log.log('close case response is-------', closeCaseResponse);
+                if (errorCode == null && closeCaseSuccess.data.success) {
+                    var newCaseObject = {};
+                    newCaseObject.patientId = activePatient.id;
+                    var openCasePromise = doctorServices.registerPatient(newCaseObject);
+                    $log.log('open case promise is--------', openCasePromise);
+                    openCasePromise.then(function(openCaseSuccess) {
+                        var errorCode = openCaseSuccess.data.errorCode;
+                        if (errorCode) {
+                            doctorServices.logoutFromThePage(errorCode);
+                        } else {
+                            var openCaseResponse = angular.fromJson(openCaseSuccess.data.response);
+                            $log.log('open response is-------', openCaseResponse);
+                        }
+                    }, function(openCaseError) {
+                        doctorServices.noConnectivityError();
+                    });
+                }
+            }
+        }, function(closeCaseError) {
+            doctorServices.noConnectivityError();
+        });*/
     }
 
     function selectTemplate(template) {
@@ -262,6 +303,9 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                             $log.log('case history is-----', caseHistoryResponse);
                             if (errorCode == null && caseSuccess.data.success) {
                                 prescriptionElement.patientCaseHistory = _.filter(caseHistoryResponse, function(entity) {
+                                    if (entity.organizationCaseStatus == 'OPENED') {
+                                        caseActive = entity;
+                                    }
                                     return entity.state == 'ACTIVE';
                                 });
                             }
@@ -837,7 +881,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                     $log.log('prescription response is-----------', prescriptionResponse);
                     if (errorCode == null && prescriptionSuccess.data.success == true) {
                         doctorServices.addPrescriptionSuccessSwal();
-                        var templateInstancePromise = doctorServices.saveTemplateInstance();
+                        /*var templateInstancePromise = doctorServices.saveTemplateInstance();
                         templateInstancePromise.then(function(templateInstanceSuccess) {
                             var errorCode = templateInstanceSuccess.data.errorCode;
                             if (errorCode) {
@@ -848,7 +892,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                             }
                         }, function(templateInstanceError) {
                             doctorServices.noConnectivityError();
-                        });
+                        });*/
                         prescriptionObject.prescriptionToPrint = prescriptionResponse;
                         prescriptionObject.drugListToDisplay = prescriptionElement.drugsList;
                         prescriptionObject.testsListToDisplay = prescriptionElement.testsListInTable;
@@ -1198,24 +1242,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             prescriptionElement.drugsList = [];
             angular.forEach(prescriptionActive.prescription.drugDosage, function(drugEntity) {
                 var localDrugObject = {};
-                /*localDrugObject.brandName = drugEntity.brandName;
-                if (drugEntity.perServing == 1) {
-                    localDrugObject.perServing = 1 + ' unit';
-                } else {
-                    localDrugObject.perServing = drugEntity.perServing + ' units';
-                }
-                localDrugObject.usageDirection = drugEntity.usageDirection;
-                localDrugObject.remarks = drugEntity.remarks;
-                if (drugEntity.daysOrQuantity == 'Days') {
-                    if (drugEntity.noOfDays == 1) {
-                        localDrugObject.noOfDays = 1 + ' Day';
-                    } else {
-                        localDrugObject.noOfDays = drugEntity.noOfDays + ' Days';
-                    }
-                }
-                if (drugEntity.daysOrQuantity == 'Quantity') {
-                    localDrugObject.noOfDays = drugEntity.quantity + ' Quantity';
-                }*/
                 localDrugObject = doctorServices.getDrugList(drugEntity);
                 prescriptionElement.drugsList.push(localDrugObject);
             });

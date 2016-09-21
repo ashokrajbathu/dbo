@@ -159,7 +159,6 @@ function syncAllDrugsToIndexedDB() {
                 withCredentials: true
             },
             success: function(response) {
-                console.log('response is--------', response);
                 var data = angular.fromJson(response.response);
                 //console.log("In sync drugs: " + response.totalCount + " " + data.length);
                 var drugObjectStore = getObjectStore(DB_DRUG_STORE, "readwrite");
