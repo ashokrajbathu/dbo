@@ -113,7 +113,8 @@
                     </div>
                     <hr> -->
                     <div class="row">
-                        <label id="patientPrescriptionsLabel">Patient Case History :</label>
+                        <label id="patientPrescriptionsLabel">Active Case :</label>
+                        <a data-toggle="modal" class="historyCss" data-target="#casePrescriptionsModal">View Case History</a>
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-6" ng-repeat="caseEntity in prescription.patientCaseHistory">
                         <a ng-class="{'activeCaseClass':caseEntity.organizationCaseStatus=='OPENED'}" data-toggle="modal" data-target="#casePrescriptionsModal" ng-click="prescription.getPrescriptionsOfCaseNumber(caseEntity)" style="cursor:pointer;">Case - <span>{{caseEntity.organizationCaseNo}}-{{caseEntity.lastUpdated|longDateIntoReadableDate}}</span></a>
@@ -127,6 +128,19 @@
                                     <h3 class="modal-title">Case Prescriptions</h3>
                                 </div>
                                 <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-10 col-sm-10 col-xs-10">
+                                            <label for="exampleCaseName">Select Case Name</label>
+                                            <div style="display:inline-block;" class="dropdown">
+                                                <button style="width:250px;" class="dropdown-toggle btn caseNumberBtn" type="button" data-toggle="dropdown">{{prescription.displaySelectedCaseNumber}}<span class="caret caretCss"></span></button>
+                                                <ul style="width:250px;" class="dropdown-menu">
+                                                    <li ng-click="prescription.selectCaseNumberInModal(caseEntity)" ng-repeat="caseEntity in prescription.casesInModal">
+                                                        <a style="cursor:pointer;">{{caseEntity.organizationCaseNo}}-{{caseEntity.lastUpdated|longDateIntoReadableDate}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div ng-repeat="prescEntity in prescription.prescriptionsInModal">
                                         <h4>Prescription - {{prescEntity.lastUpdated|longDateIntoReadableDate}}</h4>
                                         <div class="row" ng-repeat="prescField in prescEntity.prescriptionEntities track by $index">

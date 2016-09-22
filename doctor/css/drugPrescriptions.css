@@ -18,6 +18,22 @@
     display: block;
 }
 
+.historyCss {
+    cursor: pointer;
+    float: right;
+    margin-right: 15px;
+}
+
+.caretCss {
+    margin-top: 10px;
+    float: right;
+}
+
+.caseNumberBtn {
+    border-color: #367fa9 !important;
+    background-color: white;
+}
+
 .activeCaseClass {
     color: green;
 }

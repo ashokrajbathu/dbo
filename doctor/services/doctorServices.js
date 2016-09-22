@@ -61,6 +61,22 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.getDrugList = getDrugList;
     doctorServices.saveTemplateInstance = saveTemplateInstance;
     doctorServices.closeCase = closeCase;
+    doctorServices.longDateToReadableDate = longDateToReadableDate;
+
+    function longDateToReadableDate(longDate) {
+        var result;
+        if (longDate == undefined || longDate == "") {
+            result = "";
+        } else {
+            result = new Date(longDate);
+            result = result.toLocaleString();
+            var resultArray = result.split(',');
+            var resultArrayDate = resultArray[0];
+            var resultArrayDateReadable = resultArrayDate.split('/');
+            result = resultArrayDateReadable[1] + '/' + resultArrayDateReadable[0] + '/' + resultArrayDateReadable[2];
+        }
+        return result;
+    }
 
     function loginErrorSwal() {
         swal({

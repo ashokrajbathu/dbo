@@ -2453,3 +2453,22 @@ Angular JS also let you define your own directives.
     
 
 */
+
+/*
+An expression is a unit of code that result in a value
+
+Javascript weird parts
+
+the parameters you pass to a function
+
+inheritance one object gets access to properties and methods of another object
+
+
+understanding the prototype: All objects in JS have a prototype
+
+Call() - 
+Apply() - 
+Bind() - 
+
+
+*/
