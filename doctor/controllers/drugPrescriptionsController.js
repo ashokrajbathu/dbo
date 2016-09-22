@@ -212,7 +212,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             return caseEntry.organizationCaseStatus == 'OPENED';
         });
         prescriptionElement.patientCaseHistory[activeCaseIndex].organizationCaseStatus = 'CLOSED';
-        /*var closeCasePromise = doctorServices.closeCase(caseActive.id);
+        var closeCasePromise = doctorServices.closeCase(caseActive.id);
         $log.log('close promise is------', closeCasePromise);
         closeCasePromise.then(function(closeCaseSuccess) {
             var errorCode = closeCaseSuccess.data.errorCode;
@@ -241,7 +241,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             }
         }, function(closeCaseError) {
             doctorServices.noConnectivityError();
-        });*/
+        });
     }
 
     function selectTemplate(template) {
