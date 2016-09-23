@@ -248,8 +248,10 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                             } else {
                                 var openCaseResponse = angular.fromJson(openCaseSuccess.data.response);
                                 $log.log('open response is-------', openCaseResponse);
-                                if (errorCode == null && openCaseResponse.data.success) {
-
+                                if (errorCode == null && openCaseSuccess.data.success) {
+                                    prescriptionElement.casesInModal.push(openCaseResponse);
+                                    prescriptionElement.patientCaseHistory = [];
+                                    prescriptionElement.patientCaseHistory.push(openCaseResponse);
                                 }
                             }
                         }, function(openCaseError) {
@@ -327,7 +329,10 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                                     }
                                     return entity.state == 'ACTIVE' && entity.organizationCaseStatus == 'OPENED';
                                 });
-                                angular.copy(prescriptionElement.patientCaseHistory, prescriptionElement.casesInModal);
+                                //  angular.copy(prescriptionElement.patientCaseHistory, prescriptionElement.casesInModal);
+                                prescriptionElement.casesInModal = _.filter(caseHistoryResponse, function(caseEntry) {
+                                    return caseEntry.state == 'ACTIVE';
+                                });
                             }
                         }
                     }, function(caseError) {
@@ -410,6 +415,32 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                             localPrescription.diagnosisTests = {};
                             localPrescription.drugDosage = {};
                             localPrescription.drugDosage.drugsList = [];
+                            if (entity.organizationTemplateInstance.length > 0) {
+                                angular.forEach(entity.organizationTemplateInstance, function(instanceEntity) {
+                                    var localFieldValues = [];
+                                    localFieldValues = angular.fromJson(instanceEntity.templateValues);
+                                    angular.forEach(localFieldValues, function(fieldEntity) {
+                                        var localObject = {};
+                                        if (fieldEntity.description !== '' && fieldEntity.fieldType !== 'CHECK_BOX') {
+                                            localObject.name = fieldEntity.name;
+                                            localObject.value = fieldEntity.description;
+                                            localPrescription.prescriptionEntities.push(localObject);
+                                        }
+                                        if (fieldEntity.fieldType == 'CHECK_BOX') {
+                                            localObject.name = fieldEntity.name;
+                                            var arr = [];
+                                            angular.forEach(fieldEntity.restrictValues, function(restrictEntity) {
+                                                if (restrictEntity.checkBoxValue) {
+                                                    arr.push(restrictEntity.name);
+                                                }
+                                            });
+                                            localObject.value = arr.join(',');
+                                            localPrescription.prescriptionEntities.push(localObject);
+                                        }
+
+                                    });
+                                });
+                            }
                             if (_.has(entity.prescription, 'weight') && !_.isEmpty(entity.prescription.weight)) {
                                 localPrescription.prescriptionEntities.push(doctorServices.getLocalObject('Weight', entity.prescription.weight));
                             }
@@ -867,7 +898,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     function savePrescription() {
         if (!_.isEmpty(activeDoctor) && !_.isEmpty(activePatient) && organizationPatientId !== '') {
             var prescriptionRequest = {};
-            var templateInstanceRequest = {};
+            var templateInstanceRequest = [];
             prescriptionRequest.patientId = activePatient.id;
             prescriptionRequest.doctorId = activeDoctor.id;
             prescriptionRequest.height = prescriptionElement.prescriptionData.height;
@@ -902,7 +933,23 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                     $log.log('prescription response is-----------', prescriptionResponse);
                     if (errorCode == null && prescriptionSuccess.data.success == true) {
                         doctorServices.addPrescriptionSuccessSwal();
+                        angular.forEach(prescriptionElement.templatesList, function(templateInstanceEntity) {
+                            $log.log('template values are-----', templateInstanceEntity);
+                            var localInstance = {};
+                            localInstance.templateId = templateInstanceEntity.id;
+                            localInstance.templateValues = JSON.stringify(templateInstanceEntity.templateFields);
+                            localInstance.patientId = activePatient.id;
+                            localInstance.userId = activeDoctor.id;
+                            localInstance.userRole = 'DOCTOR';
+                            localInstance.organizationCaseNo = caseActive.organizationCaseNo;
+                            localInstance.organizationCaseId = caseActive.organizationCaseId;
+                            localInstance.organizationId = activeDoctor.organizationId;
+                            localInstance.overridePermissions = activeDoctor.permissions;
+                            localInstance.prescriptionId = prescriptionResponse.id;
+                            templateInstanceRequest.push(localInstance);
+                        });
                         var templateInstancePromise = doctorServices.saveTemplateInstance(templateInstanceRequest);
+                        $log.log('template promise is-----', templateInstancePromise);
                         templateInstancePromise.then(function(templateInstanceSuccess) {
                             var errorCode = templateInstanceSuccess.data.errorCode;
                             if (errorCode) {

@@ -173,7 +173,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var templateRequest = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/organization/hospital/template/addTemplateInstance',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/template/addTemplateInstances',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
