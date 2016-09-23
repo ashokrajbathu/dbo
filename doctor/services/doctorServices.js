@@ -62,6 +62,7 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.saveTemplateInstance = saveTemplateInstance;
     doctorServices.closeCase = closeCase;
     doctorServices.longDateToReadableDate = longDateToReadableDate;
+    doctorServices.getCurrentActivePrescription = getCurrentActivePrescription;
 
     function longDateToReadableDate(longDate) {
         var result;
@@ -76,6 +77,21 @@ function doctorServices($http, $state, $log, $q) {
             result = resultArrayDateReadable[1] + '/' + resultArrayDateReadable[0] + '/' + resultArrayDateReadable[2];
         }
         return result;
+    }
+
+    function getCurrentActivePrescription(prescriptionId) {
+        var deferred = $q.defer();
+        var prescriptionsRequest = {
+            method: 'GET',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getPrescriptionById?prescriptionId=' + prescriptionId,
+            withCredentials: true
+        }
+        $http(prescriptionsRequest).then(function(prescriptionsSuccess) {
+            deferred.resolve(prescriptionsSuccess);
+        }, function(prescriptionsError) {
+            deferred.reject(prescriptionsError);
+        });
+        return deferred.promise;
     }
 
     function loginErrorSwal() {

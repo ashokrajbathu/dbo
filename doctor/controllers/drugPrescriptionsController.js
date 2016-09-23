@@ -964,6 +964,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                         prescriptionObject.prescriptionToPrint = prescriptionResponse;
                         prescriptionObject.drugListToDisplay = prescriptionElement.drugsList;
                         prescriptionObject.testsListToDisplay = prescriptionElement.testsListInTable;
+                        localStorage.setItem('activePrescriptionId', prescriptionResponse.id);
                         localStorage.setItem('prescriptionObjectToPrint', JSON.stringify(prescriptionObject));
                         $state.go('doctorHome.prescriptionReport');
                         printPrescription.patient = activePatient;

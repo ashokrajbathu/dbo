@@ -21,12 +21,27 @@ function prescriptionReportController($scope, $log, doctorServices, $state, $htt
     angular.element('#drugPrescriptionActive').addClass('activeDoctorLi');
     prescriptionReport.prescriptionActive = {};
     var activePrescription = localStorage.getItem('prescriptionObjectToPrint');
+    var activePrescriptionId = localStorage.getItem('activePrescriptionId');
     prescriptionReport.prescriptionActive = angular.fromJson(activePrescription);
     if (_.isEmpty(prescriptionReport.prescriptionActive)) {
         localStorage.clear();
         localStorage.setItem('isLoggedInDoctor', 'false');
         $state.go('login');
     } else {
+        $log.log('active prescription id is------', activePrescriptionId);
+        var currentPrescriptionPromise = doctorServices.getCurrentActivePrescription(activePrescriptionId);
+        $log.log('current prescription promise is-----', currentPrescriptionPromise);
+        currentPrescriptionPromise.then(function(currentPrescSuccess) {
+            var errorCode = currentPrescSuccess.data.errorCode;
+            if (errorCode) {
+                doctorServices.logoutFromThePage(errorCode);
+            } else {
+                var currentPrescriptionResponse = angular.fromJson(currentPrescSuccess.data.response);
+                $log.log('prescription response is--------', currentPrescriptionResponse);
+            }
+        }, function(currentPrescError) {
+            doctorServices.noConnectivityError();
+        });
         var prescDetails = prescriptionReport.prescriptionActive.prescriptionToPrint;
         prescriptionReport.drugsList = prescriptionReport.prescriptionActive.drugListToDisplay;
         prescriptionReport.testsListInTable = prescriptionReport.prescriptionActive.testsListToDisplay;
