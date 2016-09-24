@@ -5,6 +5,7 @@ function prescriptionReportController($scope, $log, doctorServices, $state, $htt
     localStorage.setItem('currentDoctorState', 'prescriptionReport');
     var prescriptionReport = this;
     prescriptionReport.deleteDrugOrTest = deleteDrugOrTest;
+    prescriptionReport.addTemplate = addTemplate;
     prescriptionReport.newPatient = newPatient;
     prescriptionReport.patientHeight = false;
     prescriptionReport.patientWeight = false;
@@ -18,6 +19,7 @@ function prescriptionReportController($scope, $log, doctorServices, $state, $htt
     prescriptionReport.patientSymptoms = false;
     prescriptionReport.patientInvestigation = false;
     prescriptionReport.patientComments = false;
+    prescriptionReport.templatesList = [];
     angular.element('#drugPrescriptionActive').addClass('activeDoctorLi');
     prescriptionReport.prescriptionActive = {};
     var activePrescription = localStorage.getItem('prescriptionObjectToPrint');
@@ -38,6 +40,16 @@ function prescriptionReportController($scope, $log, doctorServices, $state, $htt
             } else {
                 var currentPrescriptionResponse = angular.fromJson(currentPrescSuccess.data.response);
                 $log.log('prescription response is--------', currentPrescriptionResponse);
+                if (errorCode == null && currentPrescSuccess.data.success) {
+                    var localInstance = [];
+                    angular.copy(currentPrescriptionResponse.organizationTemplateInstance, localInstance);
+                    angular.forEach(localInstance, function(localEntity) {
+                        localEntity.templateValues = angular.fromJson(localEntity.templateValues);
+                        localEntity.activeTemplateFields = _.groupBy(localEntity.templateValues, 'sectionName');
+                        $log.log('local instance is-------', localEntity);
+                        prescriptionReport.templatesList.push(localEntity);
+                    });
+                }
             }
         }, function(currentPrescError) {
             doctorServices.noConnectivityError();
@@ -45,6 +57,7 @@ function prescriptionReportController($scope, $log, doctorServices, $state, $htt
         var prescDetails = prescriptionReport.prescriptionActive.prescriptionToPrint;
         prescriptionReport.drugsList = prescriptionReport.prescriptionActive.drugListToDisplay;
         prescriptionReport.testsListInTable = prescriptionReport.prescriptionActive.testsListToDisplay;
+        prescriptionReport.prescriptionActive.activeTemplates = [];
         if (!_.isEmpty(prescDetails.height)) {
             prescriptionReport.patientHeight = true;
             prescriptionReport.height = prescDetails.height;
@@ -93,6 +106,18 @@ function prescriptionReportController($scope, $log, doctorServices, $state, $htt
             prescriptionReport.patientComments = true;
             prescriptionReport.comments = prescDetails.remarks;
         }
+    }
+
+    function addTemplate(templateEntity) {
+        var templateIndex = _.findLastIndex(prescriptionReport.prescriptionActive.activeTemplates, function(entity) {
+            return entity.id == templateEntity.id;
+        });
+        if (templateIndex == -1) {
+            prescriptionReport.prescriptionActive.activeTemplates.push(templateEntity);
+        } else {
+            prescriptionReport.prescriptionActive.activeTemplates.splice(templateIndex, 1);
+        }
+        localStorage.setItem('prescriptionObjectToPrint', JSON.stringify(prescriptionReport.prescriptionActive));
     }
 
     function deleteDrugOrTest(drugOrTest, drugOrTestEntity, index) {

@@ -937,6 +937,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                             $log.log('template values are-----', templateInstanceEntity);
                             var localInstance = {};
                             localInstance.templateId = templateInstanceEntity.id;
+                            localInstance.templateName = templateInstanceEntity.name;
                             localInstance.templateValues = JSON.stringify(templateInstanceEntity.templateFields);
                             localInstance.patientId = activePatient.id;
                             localInstance.userId = activeDoctor.id;

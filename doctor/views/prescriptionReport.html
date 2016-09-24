@@ -145,4 +145,43 @@
             </div>
         </div>
     </div>
+    <div ng-repeat="templateEntity in prescriptionReport.templatesList" class="row">
+        <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
+            <div class="panel panelsInDoctor prescriptionReportpanels">
+                <div class="panel-heading">
+                    <h4 ng-bind="templateEntity.templateName"></h4>
+                    <div class="checkbox">
+                        <label style="color:black;float:right;">
+                            <input ng-click="prescriptionReport.addTemplate(templateEntity)" type="checkbox" value="">Genrate Print
+                        </label>
+                    </div>
+                </div>
+                <div class="panel-body patientInDoctorPanelBody">
+                    <div ng-repeat="sectionEntity in templateEntity.activeTemplateFields" class="templateSections">
+                        <div class="fieldSections" ng-repeat="fieldEntity in sectionEntity track by $index">
+                            <h4 ng-if="$index==0" ng-bind="fieldEntity.sectionName"></h4>
+                            <hr ng-if="$index==0">
+                            <div ng-if="fieldEntity.description!==''&&fieldEntity.fieldType=='TEXT_BOX'||fieldEntity.fieldType=='TEXT_AREA'||fieldEntity.fieldType=='DROPDOWN'" class="row">
+                                <div class="col-md-2 col-sm-2 col-xs-6">
+                                    <label ng-bind="fieldEntity.name + ':'"></label>
+                                </div>
+                                <div class="col-md-7 col-sm-7 col-xs-6">
+                                    <span ng-bind="fieldEntity.description"></span>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="fieldEntity.fieldType=='CHECK_BOX'">
+                                <div class="col-md-2 col-sm-2 col-xs-6">
+                                    <label ng-bind="fieldEntity.name +':'"></label>
+                                </div>
+                                <div class="col-md-7 col-sm-7 col-xs-6">
+                                    <span style="display:block;" ng-repeat="restrict in fieldEntity.restrictValues" ng-if="restrict.checkBoxValue==true" ng-bind="restrict.name">
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

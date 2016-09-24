@@ -87,6 +87,28 @@
         <br>
         <br>
         <br>
+        <div ng-repeat="templateEntity in prescription.prescriptionActive.activeTemplates" class="row">
+            <h4 ng-bind="templateEntity.templateName"></h4>
+            <div ng-repeat="sectionEntity in templateEntity.activeTemplateFields" class="templateSections">
+                <div class="fieldSections" ng-repeat="fieldEntity in sectionEntity track by $index">
+                    <h4 ng-if="$index==0" ng-bind="fieldEntity.sectionName"></h4>
+                    <div ng-if="fieldEntity.description!==''&&fieldEntity.fieldType=='TEXT_BOX'||fieldEntity.fieldType=='TEXT_AREA'||fieldEntity.fieldType=='DROPDOWN'" class="row">
+                        <div class="col-md-2 col-sm-2 col-xs-6">
+                            <label class="printPrescriptionLabels" ng-bind="fieldEntity.name + ':'"></label>
+                            <span style="display:inline;" ng-bind="fieldEntity.description"></span>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="fieldEntity.fieldType=='CHECK_BOX'">
+                        <div class="col-md-2 col-sm-2 col-xs-6">
+                            <label class="printPrescriptionLabels" ng-bind="fieldEntity.name +':'"></label>
+                            <span style="display:inline;" style="display:block;" ng-repeat="restrict in fieldEntity.restrictValues" ng-if="restrict.checkBoxValue==true" ng-bind="restrict.name + ' '">
+                                </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <label class="printPrescriptionLabels">Symptoms:</label><span class="patientDetailsFields" ng-bind="prescription.symptoms"></span>
