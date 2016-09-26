@@ -1,3 +1,41 @@
 <div ng-controller="registrationController as registration">
     <h4>Registration</h4>
+    <hr>
+    <div class="registrationBody">
+        <div class="col-md-6 col-xs-12 col-sm-12">
+            <div class="form-group">
+                <label class="control-label">*Insurance Type</label>
+                <select class="form-control" name="insurance type">
+                    <option value="LIC">LIC</option>
+                    <option value="ICICI">ICICI</option>
+                    <option value="HDFC">HDFC</option>
+                    <option value="SUNDARAM">SUNDARAM</option>
+                    <option value="KOTAK">KOTAK</option>
+                </select>
+                <label class="control-label">*Insurance Category</label>
+                <select class="form-control" name="insurance type">
+                    <option value="GENERAL">GENERAL</option>
+                    <option value="TRANSPORT">TRANSPORT</option>
+                    <option value="HEALTH">HEALTH</option>
+                    <option value="TRAVEL">TRAVEL</option>
+                    <option value="MUTUAL">MUTUAL</option>
+                </select>
+                <label class="control-label">*Company name</label>
+                <input type="text" class="form-control" name="companyname" placeholder="Company Name">
+                <label class="control-label">*Primary Insurance</label>
+                <input type="text" class="form-control" name="primaryinsurance" placeholder="Primary Insurance">
+                <label class="control-label">*Relation to Primary</label>
+                <input type="text" class="form-control" name="relationtoprimary" placeholder="Relation to Primary">
+                <label class="control-label">*Primary number</label>
+                <input type="text" class="form-control" name="primarynumber" placeholder="Primary number">
+                <label class="control-label">*Working Company</label>
+                <input type="text" class="form-control" name="workingcompany" placeholder="Working Company">
+                <label class="control-label">*EID</label>
+                <input type="text" class="form-control" name="eid" placeholder="EID">
+            </div>
+            <div class="form-group">
+                <button class="btn mainAdminBtn">Register</button>
+            </div>
+        </div>
+    </div>
 </div>

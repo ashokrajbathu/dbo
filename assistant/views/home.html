@@ -23,7 +23,7 @@
                     <!-- <li ng-if="isVisibleNavs.labs" ui-sref-active="activeAdminLi activeSectionBlack>a" ui-sref=".labs">
                         <a class="navbarLinks">Labs</a>
                     </li> -->
-                    <li ui-sref-active="activeAdminLi activeSectionBlack>a" ng-if="isVisibleNavs.insurance" ui-sref=".insurance">
+                    <li id="insuranceActive" ui-sref-active-if-insurance="home.insurance" ui-sref-active="activeAdminLi activeSectionBlack>a" ng-if="isVisibleNavs.insurance" ui-sref=".insurance">
                         <a class="navbarLinks">Insurance</a>
                     </li>
                 </ul>

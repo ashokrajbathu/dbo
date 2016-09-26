@@ -81,6 +81,24 @@ angular.module('personalAssistant').directive('validNumber', function() {
                 update();
             }]
         };
+    }]).directive('uiSrefActiveIfInsurance', ['$state', function($state) {
+        return {
+            restrict: "A",
+            controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+                var state = $attrs.uiSrefActiveIfInsurance;
+
+                function update() {
+                    if ($state.includes(state) || $state.is(state)) {
+                        $element.addClass("activeAdminLi");
+                    } else {
+                        $element.removeClass("activeAdminLi");
+                    }
+                }
+
+                $scope.$on('$stateChangeSuccess', update);
+                update();
+            }]
+        };
     }]).directive('uiSrefIf', ['$state', function($state) {
         return {
             restrict: "A",
