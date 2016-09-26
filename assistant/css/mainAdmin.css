@@ -39,13 +39,15 @@
     height: 90px !important;
 }
 
-#page-content-wrapper {
+#page-content-wrapper,
+#insurance-page-content-wrapper {
     width: 100%;
     position: absolute;
     padding: 15px;
 }
 
-#wrapperMainAdmin.toggled #page-content-wrapper {
+#wrapperMainAdmin.toggled #page-content-wrapper,
+#wrapperMainAdmin.toggled #insurance-page-content-wrapper {
     position: absolute;
     margin-right: -250px;
 }
@@ -114,11 +116,13 @@
     #wrapperMainAdmin.toggled #sidebar-wrapper {
         width: 0;
     }
-    #page-content-wrapper {
+    #page-content-wrapper,
+    #insurance-page-content-wrapper {
         padding: 20px;
         position: relative;
     }
-    #wrapperMainAdmin.toggled #page-content-wrapper {
+    #wrapperMainAdmin.toggled #page-content-wrapper,
+    #wrapperMainAdmin.toggled #insurance-page-content-wrapper {
         position: relative;
         margin-right: 0;
     }

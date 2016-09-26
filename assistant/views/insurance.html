@@ -1,0 +1,25 @@
+<div ng-controller="insuranceController as insurance">
+    <div id="wrapperMainAdmin">
+        <div style="position:absolute;height:130%;" id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a>Insurance</a>
+                </li>
+                <li ui-sref=".registration" ui-sref-active="highlightActiveAdminEntity highlightActiveAdminEntity>a" class="adminItem">
+                    <a class="mainAdminLinks">Registration</a>
+                </li>
+                <li ui-sref=".approvals" ui-sref-active="highlightActiveAdminEntity highlightActiveAdminEntity>a" class="adminItem">
+                    <a class="mainAdminLinks">Approvals</a>
+                </li>
+                <li ui-sref=".acceptance" ui-sref-active="highlightActiveAdminEntity highlightActiveAdminEntity>a" class="adminItem">
+                    <a class="mainAdminLinks">Acceptance</a>
+                </li>
+            </ul>
+        </div>
+        <div id="insurance-page-content-wrapper">
+            <div class="container-fluid">
+                <div ui-view autoscroll='false'></div>
+            </div>
+        </div>
+    </div>
+</div>

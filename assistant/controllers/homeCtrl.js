@@ -24,6 +24,7 @@ function homeCtrl($scope, $log, $location, dboticaServices, $state, $http, $pars
     $scope.isVisibleNavs.mainAdmin = false;
     $scope.isVisibleNavs.nurse = false;
     $scope.isVisibleNavs.labs = false;
+    $scope.isVisibleNavs.insurance = false;
 
     angular.forEach(currentActiveAssistantPermissions, function(assistantPermission) {
         var assistantSection = assistantPermission;
@@ -44,6 +45,7 @@ function homeCtrl($scope, $log, $location, dboticaServices, $state, $http, $pars
                 $scope.isVisibleNavs.operator = true;
                 $scope.isVisibleNavs.ipd = true;
                 $scope.isVisibleNavs.mainAdmin = true;
+                $scope.isVisibleNavs.insurance = true;
                 break;
             case 'NURSE':
                 $scope.isVisibleNavs.nurse = true;
@@ -96,6 +98,10 @@ function homeCtrl($scope, $log, $location, dboticaServices, $state, $http, $pars
 
         case 'labs':
             $state.go('home.labs');
+            break;
+
+        case 'insurance':
+            $state.go('home.insurance');
             break;
     }
 

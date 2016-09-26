@@ -137,6 +137,28 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
             controllerAs: 'nurse',
             templateUrl: 'views/nurseHome.html'
         })
+        .state('home.insurance', {
+            url: '/insurance',
+            controller: 'insuranceController',
+            redirectTo: 'home.insurance.registration',
+            controllerAs: 'insurance',
+            templateUrl: 'views/insurance.html'
+        })
+        .state('home.insurance.registration', {
+            controller: 'registrationController',
+            controllerAs: 'registration',
+            templateUrl: 'views/registration.html'
+        })
+        .state('home.insurance.approvals', {
+            controller: 'approvalsController',
+            controllerAs: 'approvals',
+            templateUrl: 'views/approvals.html'
+        })
+        .state('home.insurance.acceptance', {
+            controller: 'acceptanceController',
+            controllerAs: 'acceptance',
+            templateUrl: 'views/acceptance.html'
+        })
         .state('home.nurse.patientMedication', {
             controller: 'medicationController',
             controllerAs: 'medication',
@@ -238,6 +260,7 @@ function personalAssistantCtrl($scope, $log, $location, dboticaServices, $state,
                                 localStorage.setItem('orgId', organizationIdActive);
                                 localStorage.setItem('assistant', JSON.stringify(assistantObject));
                                 $state.go('home');
+                                event.preventDefault();
                                 break;
                             } else {
                                 var logoutPromise = {};
@@ -260,6 +283,7 @@ function personalAssistantCtrl($scope, $log, $location, dboticaServices, $state,
                     localStorage.setItem("isLoggedInAssistant", "true");
                     currentStateAllocation(assistantObject.assistantPermissions);
                     $state.go('home');
+                    event.preventDefault();
                 }
                 $scope.loading = false;
                 $scope.blurScreen = false;

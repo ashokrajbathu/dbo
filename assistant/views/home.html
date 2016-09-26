@@ -20,8 +20,11 @@
                     <li ng-if="isVisibleNavs.operator" ui-sref-active="activeAdminLi activeSectionBlack>a" ui-sref=".operator"><a class="navbarLinks">Operator</a></li>
                     <li id="mainAdminLiActive" ui-sref-active-if='home.mainAdmin' ng-if="isVisibleNavs.mainAdmin" ui-sref-active="activeAdminLi activeSectionBlack>a" ui-sref=".mainAdmin"><a class="navbarLinks">Admin</a></li>
                     <li ui-sref-active-if="home.nurse" id="nurseHeader" ng-if="isVisibleNavs.nurse" ui-sref-active="activeAdminLi activeSectionBlack>a" id="nurseHeader" ui-sref=".nurse"><a class="navbarLinks">Nurse</a></li>
-                    <li ng-if="isVisibleNavs.labs" ui-sref-active="activeAdminLi activeSectionBlack>a" ui-sref=".labs">
+                    <!-- <li ng-if="isVisibleNavs.labs" ui-sref-active="activeAdminLi activeSectionBlack>a" ui-sref=".labs">
                         <a class="navbarLinks">Labs</a>
+                    </li> -->
+                    <li ui-sref-active="activeAdminLi activeSectionBlack>a" ng-if="isVisibleNavs.insurance" ui-sref=".insurance">
+                        <a class="navbarLinks">Insurance</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
