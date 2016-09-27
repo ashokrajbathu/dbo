@@ -2104,6 +2104,15 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         });
     }
 
+    this.insuranceSuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Insurance Registration Successfully Done!!!",
+            type: "success",
+            confirmButtonText: "OK"
+        });
+    }
+
     this.bookAppointmentFailureSwal = function() {
         swal({
             title: "Error",
@@ -2197,6 +2206,26 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             type: "error",
             confirmButtonText: "OK"
         });
+    }
+
+    this.registerPatientInsurance = function(insuranceRequest) {
+        var deferred = $q.defer();
+        var fieldRequest = {
+            method: 'POST',
+            url: 'http://localhost:8080/dbotica-spring/organization/billing/updatePatientInsurance',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(insuranceRequest)
+        }
+        $http(fieldRequest).then(function(fieldSuccess) {
+            deferred.resolve(fieldSuccess);
+        }, function(fieldError) {
+            deferred.reject(fieldError);
+        });
+        return deferred.promise;
     }
 
     this.addFieldRequest = function(addFieldRequestEntity) {
