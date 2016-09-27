@@ -1956,7 +1956,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var prescriptionEntity = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/prescription/updatePrescription',
+            url: 'http://localhost:8080/dbotica-spring/assistant/updatePrescription',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -2469,6 +2469,30 @@ understanding the prototype: All objects in JS have a prototype
 Call() - 
 Apply() - 
 Bind() - 
+
+angular.bind(self,fn,args)-return a function fn bound to self.
+self - context in which fn should be evaluated in
+fn- function to be bound
+angular.bootstrap - use this function to manually startup angular application
+angular.bootstrap(element,[modules])
+DOM- DOM element which is the root of angular application
+modules - an array of modules to load into the application.
+angular.bootstrap(document,['demo']);
+creates a deep copy of source,which should be an object or an array : angular.copy
+if source is identical to destination an exception is thrown
+if source is not an object or array,source is returned
+angular.element returns the jQuery object - wraps a raw DOM element or a HTML string as a jQuery element.
+Determines if two objects or two values are equivalent.Supports value types,regular expressions,arrays and objects.
+angular.injector creates an injector object that can be used for retrieving services as well as for dependency injection
+angular.isArray determines if a reference is an array
+angular.isDefined determines if a reference is defined
+angular.isElement determines if a reference is a DOM element
+angular.isFunction- determines if a reference is a function
+angular.isNumber- determines if a reference is a number
+angular.isObject- determines if a reference is an object unlike 
+angular.isString- determines if a reference is a string
+angular.isUndefined-determines if a reference is undefined
+
 
 
 */

@@ -13,6 +13,7 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
     operator.doctorName = '---Select Doctor---';
     var doctorObject = { 'firstName': '---Select Doctor---' };
     var hyphen = '-';
+    var organizationPatientId = '';
     var classDefault = 'default';
     var classSuccess = 'success';
     var timingsArray = [];
@@ -20,6 +21,8 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
     var underscore = '_';
     var space = ' ';
     var comma = ',';
+    operator.symptoms = '';
+    operator.investigation = '';
     var activeTestId;
     var emptyString = '';
     var singleDay = 1 + ' Day';
@@ -155,6 +158,25 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
         }
     }
 
+    function getOrganizationPatientId(id) {
+        var organizationPatientPromise = dboticaServices.getOrganizationPatient(id);
+        organizationPatientPromise.then(function(orgPatientSuccess) {
+            var errorCode = orgPatientSuccess.data.errorCode;
+            if (errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                var orgPatientResponse = angular.fromJson(orgPatientSuccess.data.response);
+                if (errorCode == null && orgPatientSuccess.data.success) {
+                    if (orgPatientResponse[0].state == 'ACTIVE') {
+                        organizationPatientId = orgPatientResponse[0].id;
+                    }
+                }
+            }
+        }, function(orgPatientError) {
+            dboticaServices.noConnectivityError();
+        });
+    }
+
     function patientSearchByOperator() {
         var patientSearchPromise = dboticaServices.getPatientDetailsOfThatNumber(operator.phoneNumber);
         patientSearchPromise.then(function(patientSearchSuccess) {
@@ -166,6 +188,7 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
                 if (operator.patientsToBeDisplayedInRadios.length > 0) {
                     newPatientFlag = false;
                     activePatient = operator.patientsToBeDisplayedInRadios[0];
+                    getOrganizationPatientId(operator.patientsToBeDisplayedInRadios[0].id);
                     activePatientIndex = 0;
                     operator.updatePatient = true;
                     operator.addMember = true;
@@ -545,19 +568,20 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
             prescriptionRequest.bmi = emptyString;
             prescriptionRequest.saturation = emptyString;
             prescriptionRequest.pulse = emptyString;
-            prescriptionRequest.investigation = emptyString;
+            prescriptionRequest.investigation = operator.investigation;
             prescriptionRequest.references = operator.referToDoctor;
             prescriptionRequest.revisitDate = operator.revisitAfterDate;
-            prescriptionRequest.symptoms = emptyString;
+            prescriptionRequest.symptoms = operator.symptoms;
             prescriptionRequest.remarks = operator.additionalComments;
             prescriptionRequest.age = activePatient.age;
             prescriptionRequest.gender = activePatient.gender;
             prescriptionRequest.drugDosage = drugsListToSave;
             prescriptionRequest.diagnosisTests = operator.testsListInTable;
+            prescriptionRequest.organizationPatientId = organizationPatientId;
             $log.log('presc req is---', prescriptionRequest);
             var prescriptionPromise = dboticaServices.addPrescription(prescriptionRequest);
+            $log.log('prescription promise is----', prescriptionPromise);
             prescriptionPromise.then(function(prescriptionSuccess) {
-                $log.log('prescription promise is----', prescriptionPromise);
                 var errorCode = prescriptionSuccess.data.errorCode;
                 if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
@@ -589,6 +613,8 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
         operator.drugsList = [];
         activePatient = {};
         activeDoctor = {};
+        operator.symptoms = '';
+        operator.investigation = '';
         operator.doctorName = selectDoctor;
         operator.fillPrescription = {};
         operator.fillPrescription.daysOrQuantity = daysDisplay;
