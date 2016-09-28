@@ -2095,6 +2095,51 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
+    this.getPatientCaseHistory = function(patientId) {
+        var deferred = $q.defer();
+        var caseHistoryRequest = {
+            method: 'GET',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getCaseHistory?patientId=' + patientId,
+            withCredentials: true
+        }
+        $http(caseHistoryRequest).then(function(caseHistorySuccess) {
+            deferred.resolve(caseHistorySuccess);
+        }, function(caseHistoryError) {
+            deferred.reject(caseHistoryError);
+        });
+        return deferred.promise;
+    }
+
+    this.getPrescriptionsOfCase = function(caseId) {
+        var deferred = $q.defer();
+        var caseRequest = {
+            method: 'GET',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getPrescriptionsByCase?organizationCaseId=' + caseId,
+            withCredentials: true
+        }
+        $http(caseRequest).then(function(caseSuccess) {
+            deferred.resolve(caseSuccess);
+        }, function(caseError) {
+            deferred.reject(caseError);
+        });
+        return deferred.promise;
+    }
+
+    this.longDateToReadableDate = function(longDate) {
+        var result;
+        if (longDate == undefined || longDate == "") {
+            result = "";
+        } else {
+            result = new Date(longDate);
+            result = result.toLocaleString();
+            var resultArray = result.split(',');
+            var resultArrayDate = resultArray[0];
+            var resultArrayDateReadable = resultArrayDate.split('/');
+            result = resultArrayDateReadable[1] + '/' + resultArrayDateReadable[0] + '/' + resultArrayDateReadable[2];
+        }
+        return result;
+    }
+
     this.appointmentSuccessSwal = function() {
         swal({
             title: "Success",

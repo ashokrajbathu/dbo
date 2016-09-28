@@ -140,7 +140,6 @@ angular.module('personalAssistant').config(function($stateProvider, $urlRouterPr
         .state('home.insurance', {
             url: '/insurance',
             controller: 'insuranceController',
-            redirectTo: 'home.insurance.registration',
             controllerAs: 'insurance',
             templateUrl: 'views/insurance.html'
         })

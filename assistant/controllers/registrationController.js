@@ -4,7 +4,7 @@ registrationController.$inject = ['$scope', '$log', 'dboticaServices', '$state',
 function registrationController($scope, $log, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     angular.element('#insuranceActive').addClass('activeAdminLi');
 
-    var billInvoice = {};
+    /*var billInvoice = {};
     dboticaServices.setInvoice(billInvoice);
     var registration = this;
     registration.patientSearch = patientSearch;
@@ -122,5 +122,5 @@ function registrationController($scope, $log, dboticaServices, $state, $http, $p
             registration.numberErrorMessage = false;
             registration.disableSearchBtn = true;
         }
-    }
+    }*/
 }
