@@ -159,7 +159,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var caseRequest = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/doctor/getPrescriptionsByCase?organizationCaseId=' + caseId,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getPrescriptionsByCase?organizationCaseId=' + caseId,
             withCredentials: true
         }
         $http(caseRequest).then(function(caseSuccess) {

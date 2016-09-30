@@ -263,6 +263,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                         if (billElement.bill.patientsListOfThatNumber.length > 0) {
                             billElement.prescriptionOfPatient = true;
                             billElement.finalBill.patientId = billElement.bill.patientsListOfThatNumber[0].patient.id;
+                            billElement.finalBill.organizationPatientId = billElement.bill.patientsListOfThatNumber[0].organizationPatient.id;
                             billElement.finalBill.patientPhoneNumber = phoneNumber;
                             billElement.bill.viewOrHide = true;
                             $scope.radio0 = true;
@@ -346,6 +347,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
         $scope.radio0 = false;
         $scope['radio' + index] = true;
         billElement.finalBill.patientId = patient.patient.id;
+        billElement.finalBill.organizationPatientId = patient.organizationPatient.id;
         var patientPrescriptionPromise = dboticaServices.getPrescriptionsOfThePatient(patient.patient.id);
         patientPrescriptionPromise.then(function(selectedRadioPatientSuccess) {
             var errorCode = selectedRadioPatientSuccess.data.errorCode;
@@ -484,8 +486,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
             billElement.finalBill.amountPaid = billElement.finalBill.amountPaid * 100;
             if (!billElement.nextDueErrorMsg) {
                 billElement.loading = true;
-                billElement.finalBill.modeOfPayment = 'DIRECT_PAY';
-                billElement.finalBill.patientInsuranceId = '393495';
+                billElement.finalBill.patientInsuranceId = '';
                 var invoiceUpdatePromise = dboticaServices.updateInvoice(billElement.finalBill);
                 invoiceUpdatePromise.then(function(invoiceUpdateSuccessResponse) {
                     var errorCode = invoiceUpdateSuccessResponse.data.errorCode;
@@ -494,7 +495,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                     } else {
                         var success = invoiceUpdateSuccessResponse.data.success;
                         var invoiceSuccessResponse = invoiceUpdateSuccessResponse.data.response;
-                        if (errorCode == null && success == true && invoiceSuccessResponse == null) {
+                        if (errorCode == null && success == true) {
                             var billActiveForPrint = angular.fromJson(invoiceUpdateSuccessResponse.config.data);
                             if (_.has(billActiveForPrint, 'items')) {
                                 angular.forEach(billActiveForPrint.items, function(entity) {

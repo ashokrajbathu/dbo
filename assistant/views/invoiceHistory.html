@@ -61,10 +61,10 @@
                     <tr ng-click="invoice.editInvoice(invoiceEle)" class="invoiceListElements" ng-repeat="invoiceEle in invoice.invoiceGlobal.invoiceHistoryList track by $index">
                         <td ng-bind="$index+1+((invoice.currentPage-1)*invoice.itemsPerPage)"></td>
                         <td></td>
-                        <td ng-bind="invoiceEle.patientName"></td>
-                        <td ng-bind="invoiceEle.creationTime |longDateIntoReadableDate"></td>
-                        <td ng-bind="invoiceEle.doctorName"></td>
-                        <td ng-bind="(invoiceEle.totalAmount-invoiceEle.amountPaid)/100"></td>
+                        <td ng-bind="invoiceEle.billingInvoice.patientName"></td>
+                        <td ng-bind="invoiceEle.billingInvoice.creationTime |longDateIntoReadableDate"></td>
+                        <td ng-bind="invoiceEle.billingInvoice.doctorName"></td>
+                        <td ng-bind="(invoiceEle.billingInvoice.totalAmount-invoiceEle.billingInvoice.amountPaid)/100"></td>
                         <td>
                             <button class="btn searchBtnInventoryHistory viewInvoicesBtn">View All Invoices</button>
                         </td>

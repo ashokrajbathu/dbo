@@ -665,7 +665,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var invoiceRequest = {
             method: 'POST',
-            url: ' http://localhost:8080/dbotica-spring/billing/updateInvoice',
+            url: ' http://localhost:8080/dbotica-spring/organization/billing/updateInvoice',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -685,7 +685,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var invoiceHistoryRequest = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/billing/getInvoices?queryString=' + JSON.stringify({ 'organizationId': organizationId }),
+            url: 'http://localhost:8080/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'organizationId': organizationId }),
             withCredentials: true
         }
         $http(invoiceHistoryRequest).then(function(invoiceHistorySuccessResponse) {
@@ -694,7 +694,51 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             deferred.reject(invoiceHistoryErrorResponse);
         });
         return deferred.promise;
+    }
 
+    this.getLocalObject = function(fieldName, fieldValue) {
+        var localObject = {};
+        localObject.name = fieldName;
+        localObject.value = fieldValue;
+        return localObject;
+    }
+
+    this.getDrugList = function(drugEntity) {
+        var localDrugObject = {};
+        localDrugObject.brandName = drugEntity.brandName;
+        if (drugEntity.perServing == 1) {
+            localDrugObject.perServing = 1 + ' unit';
+        } else {
+            localDrugObject.perServing = drugEntity.perServing + ' units';
+        }
+        localDrugObject.usageDirection = drugEntity.usageDirection;
+        localDrugObject.remarks = drugEntity.remarks;
+        if (drugEntity.daysOrQuantity == 'Days') {
+            if (drugEntity.noOfDays == 1) {
+                localDrugObject.noOfDays = 1 + ' Day';
+            } else {
+                localDrugObject.noOfDays = drugEntity.noOfDays + ' Days';
+            }
+        }
+        if (drugEntity.daysOrQuantity == 'Quantity') {
+            localDrugObject.noOfDays = drugEntity.quantity + ' Quantity';
+        }
+        return localDrugObject;
+    }
+
+    this.getInvoicesWithCaseId = function(caseId) {
+        var deferred = $q.defer();
+        var caseRequest = {
+            method: 'GET',
+            url: 'http://localhost:8080/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'organizationCaseId': caseId }),
+            withCredentials: true
+        }
+        $http(caseRequest).then(function(caseSuccess) {
+            deferred.resolve(caseSuccess);
+        }, function(caseError) {
+            deferred.reject(caseError);
+        });
+        return deferred.promise;
     }
 
     this.searchResultOfInvoice = function(organizationId, searchType, firstSearchEntity, secondSearchEntity) {
@@ -703,10 +747,10 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var invoiceSearchRequestEntity;
         switch (searchType) {
             case 'Phone Number':
-                localUrl = 'http://localhost:8080/dbotica-spring/billing/getInvoices?queryString=' + JSON.stringify({ 'patientPhoneNumber': firstSearchEntity, "organizationId": organizationId });
+                localUrl = 'http://localhost:8080/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'patientPhoneNumber': firstSearchEntity, "organizationId": organizationId });
                 break;
             case 'Bill Number':
-                localUrl = 'http://localhost:8080/dbotica-spring/billing/getInvoices?queryString=' + JSON.stringify({ 'invoiceId': firstSearchEntity, "organizationId": organizationId });
+                localUrl = 'http://localhost:8080/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'invoiceId': firstSearchEntity, "organizationId": organizationId });
                 break;
             case 'Date':
                 var longValueOfStartDate = "";
@@ -721,14 +765,14 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
                 } else {
                     longValueOfEndDate = 0;
                 }
-                localUrl = 'http://localhost:8080/dbotica-spring/billing/getInvoices?queryString=' + JSON.stringify({ 'startTime': longValueOfStartDate, 'endTime': longValueOfEndDate, "organizationId": organizationId });
+                localUrl = 'http://localhost:8080/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'startTime': longValueOfStartDate, 'endTime': longValueOfEndDate, "organizationId": organizationId });
                 break;
             case 'Next Due Date':
                 var longValueOfDate = this.getLongValueOfDate(firstSearchEntity);
-                localUrl = 'http://localhost:8080/dbotica-spring/billing/getInvoices?queryString=' + JSON.stringify({ 'nextPaymentDueDate': longValueOfDate, "organizationId": organizationId });
+                localUrl = 'http://localhost:8080/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'nextPaymentDueDate': longValueOfDate, "organizationId": organizationId });
                 break;
             case 'Doctor':
-                localUrl = 'http://localhost:8080/dbotica-spring/billing/getInvoices?queryString=' + JSON.stringify({ 'doctorId': firstSearchEntity, "organizationId": organizationId });
+                localUrl = 'http://localhost:8080/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'doctorId': firstSearchEntity, "organizationId": organizationId });
                 break;
         }
         invoiceSearchRequestEntity = {
@@ -748,7 +792,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getPendingRequestEntity = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/billing/getInvoices?queryString=' + JSON.stringify({ 'organizationId': organizationId, 'paymentPending': true }),
+            url: 'http://localhost:8080/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'organizationId': organizationId, 'paymentPending': true }),
             withCredentials: true
         }
         $http(getPendingRequestEntity).then(function(pendingInvoiceSuccess) {
