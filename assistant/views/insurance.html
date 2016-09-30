@@ -153,9 +153,55 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <div class="insuranceBills">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleBill">Total Actual Bill</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleInsurance">Total Insurance Bill</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleinsuranceBill">Insurance Actual Pay</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleDiscount">Discount Insurance</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleTds">TDS Value</label>
+                                        <input type="text" class="form-control" placeholder="TDS Value">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInsurance">TDS Percentage</label>
+                                        <input type="text" class="form-control" placeholder="TDS Percentage">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <!-- <div id="billsModal" class="modal fade" role="dialog">
+                </div>
+            </div>
+            <!-- <div id="billsModal" class="modal fade" role="dialog">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -170,82 +216,82 @@
                             </div>
                         </div>
                     </div> -->
-                    <div id="prescriptionsModal" class="modal fade" role="dialog">
-                        <div class="modal-dialog">
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Case Prescriptions</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div ng-repeat="prescEntity in insurance.prescriptionsInModal">
-                                        <h4>Prescription - {{prescEntity.lastUpdated|longDateIntoReadableDate}}</h4>
-                                        <div class="row" ng-repeat="prescField in prescEntity.prescriptionEntities track by $index">
-                                            <div class="col-md-5 col-sm-5 col-xs-5">
-                                                <label ng-bind="prescField.name"></label>
-                                            </div>
-                                            <div class="col-md-7 col-sm-7 col-xs-7">
-                                                <span ng-bind="prescField.value"></span>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-10 col-sm-10 col-xs-10">
-                                                <div class="form-group">
-                                                    <label ng-bind="prescEntity.diagnosisTests.name"></label>
-                                                </div>
-                                                <table ng-if="prescEntity.diagnosisTests.tests.length>0" class="table table-bordered table-responsive">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Test Name</th>
-                                                            <th>Remarks</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr ng-repeat="testEntity in prescEntity.diagnosisTests.tests">
-                                                            <td ng-bind="testEntity.diagnosisTest"></td>
-                                                            <td ng-bind="testEntity.remark"></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-11 col-sm-11 col-xs-11">
-                                                <div class="form-group">
-                                                    <label ng-bind="prescEntity.drugDosage.name"></label>
-                                                </div>
-                                                <table ng-if="prescEntity.drugDosage.drugsList.length>0" class="table table-bordered table-responsive">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Brand Name</th>
-                                                            <th>Per Serving</th>
-                                                            <th>Days/Quantity</th>
-                                                            <th>Usage</th>
-                                                            <th>Remarks</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr ng-repeat="drugEntity in prescEntity.drugDosage.drugsList">
-                                                            <td ng-bind="drugEntity.brandName"></td>
-                                                            <td ng-bind="drugEntity.perServing"></td>
-                                                            <td ng-bind="drugEntity.noOfDays"></td>
-                                                            <td ng-bind="drugEntity.usageDirection"></td>
-                                                            <td ng-bind="drugEntity.remarks"></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+            <div id="prescriptionsModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Case Prescriptions</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div ng-repeat="prescEntity in insurance.prescriptionsInModal">
+                                <h4>Prescription - {{prescEntity.lastUpdated|longDateIntoReadableDate}}</h4>
+                                <div class="row" ng-repeat="prescField in prescEntity.prescriptionEntities track by $index">
+                                    <div class="col-md-5 col-sm-5 col-xs-5">
+                                        <label ng-bind="prescField.name"></label>
+                                    </div>
+                                    <div class="col-md-7 col-sm-7 col-xs-7">
+                                        <span ng-bind="prescField.value"></span>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
+                                <div class="row">
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <div class="form-group">
+                                            <label ng-bind="prescEntity.diagnosisTests.name"></label>
+                                        </div>
+                                        <table ng-if="prescEntity.diagnosisTests.tests.length>0" class="table table-bordered table-responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th>Test Name</th>
+                                                    <th>Remarks</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="testEntity in prescEntity.diagnosisTests.tests">
+                                                    <td ng-bind="testEntity.diagnosisTest"></td>
+                                                    <td ng-bind="testEntity.remark"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-11 col-sm-11 col-xs-11">
+                                        <div class="form-group">
+                                            <label ng-bind="prescEntity.drugDosage.name"></label>
+                                        </div>
+                                        <table ng-if="prescEntity.drugDosage.drugsList.length>0" class="table table-bordered table-responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th>Brand Name</th>
+                                                    <th>Per Serving</th>
+                                                    <th>Days/Quantity</th>
+                                                    <th>Usage</th>
+                                                    <th>Remarks</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="drugEntity in prescEntity.drugDosage.drugsList">
+                                                    <td ng-bind="drugEntity.brandName"></td>
+                                                    <td ng-bind="drugEntity.perServing"></td>
+                                                    <td ng-bind="drugEntity.noOfDays"></td>
+                                                    <td ng-bind="drugEntity.usageDirection"></td>
+                                                    <td ng-bind="drugEntity.remarks"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="modal-footer">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+</div>
 </div>
