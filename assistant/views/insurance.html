@@ -133,67 +133,78 @@
                                 <span style="display:inline-block;cursor:pointer;" data-target="#prescriptionsModal" data-toggle="modal" ng-if="insurance.viewPrescriptionsLink"><a style="">View Prescriptions</a></span>
                                 <span style="display:inline-block;" ng-if="insurance.viewBillsLink"><a style="cursor:pointer;" ng-click="insurance.invoicesTable=!insurance.invoicesTable;">Bills</a></span>
                             </div>
-                            <table id="invoicesTable" ng-if="insurance.invoicesTable" style="margin-top:20px;" class="table table-responsive table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>S.No.</th>
-                                        <th>Name</th>
-                                        <th>Date</th>
-                                        <th>Doctor</th>
-                                        <th>Cost Due</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="invoiceEntity in insurance.invoicesList track by $index">
-                                        <td ng-bind="$index+1"></td>
-                                        <td ng-bind="invoiceEntity.billingInvoice.patientName"></td>
-                                        <td ng-bind="invoiceEntity.billingInvoice.creationTime |longDateIntoReadableDate"></td>
-                                        <td ng-bind="invoiceEntity.billingInvoice.doctorName"></td>
-                                        <td ng-bind="(invoiceEntity.billingInvoice.totalAmount-invoiceEntity.billingInvoice.amountPaid)/100"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div ng-if="insurance.invoicesTable" ng-repeat="invoiceEntity in insurance.invoicesList track by $index">
+                                <h4>Patient-{{invoiceEntity.billingInvoice.patientName}},Doctor-{{invoiceEntity.billingInvoice.doctorName}}</h4>
+                                <table id="invoicesTable" style="margin-top:20px;" class="table table-responsive table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No.</th>
+                                            <th>Bill Name</th>
+                                            <th>Due Date</th>
+                                            <th>Cost</th>
+                                            <th>Discount</th>
+                                            <th>Tax</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
+                                            <th>Paid</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="invoiceElement in invoiceEntity.billingInvoice.items" ng-init="invoiceIndex=$index">
+                                            <td ng-bind="invoiceIndex+1"></td>
+                                            <td ng-bind="invoiceElement.itemName"></td>
+                                            <td ng-bind="invoiceElement.dueDate|longDateIntoReadableDate"></td>
+                                            <td ng-bind="invoiceElement.cost/100"></td>
+                                            <td ng-bind="invoiceElement.discount"></td>
+                                            <td ng-bind="invoiceElement.tax"></td>
+                                            <td ng-bind="invoiceElement.count"></td>
+                                            <td ng-bind="invoiceElement.amountCharged/100"></td>
+                                            <td>
+                                                <input style="color:white;" disabled type="checkbox" ng-checked="invoiceElement.paid">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             <div class="insuranceBills">
                                 <div class="row">
-                                    <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <label for="exampleBill">Total Actual Bill</label>
                                             <input type="text" class="form-control">
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <label for="exampleInsurance">Total Insurance Bill</label>
                                             <input type="text" class="form-control">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <label for="exampleinsuranceBill">Insurance Actual Pay</label>
                                             <input type="text" class="form-control">
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-sm-12 col-xs-12">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleTds">TDS Value</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <label for="exampleDiscount">Discount Insurance</label>
                                             <input type="text" class="form-control">
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 col-sm-12 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="exampleTds">TDS Value</label>
-                                        <input type="text" class="form-control" placeholder="TDS Value">
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-sm-12 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="exampleInsurance">TDS Percentage</label>
-                                        <input type="text" class="form-control" placeholder="TDS Percentage">
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="exampleInsurance">TDS Percentage</label>
+                                            <input type="text" class="form-control">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -201,24 +212,8 @@
                     </div>
                 </div>
             </div>
-            <!-- <div id="billsModal" class="modal fade" role="dialog">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Invoice History</h4>
-                                </div>
-                                <div class="modal-body">
-                                    
-                                </div>
-                                <div class="modal-footer">
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
             <div id="prescriptionsModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
-                    <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>

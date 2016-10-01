@@ -328,4 +328,5 @@ function insuranceController($scope, $log, dboticaServices, $state, $http, $pars
             insurance.disableSearchBtn = true;
         }
     }
+
 }
