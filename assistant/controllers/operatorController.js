@@ -247,10 +247,10 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
                         angular.element('#newOrUpdatePatientModal').modal('hide');
                         dboticaServices.registerPatientSuccessSwal();
                         if (_.isEmpty(activePatient)) {
+                            activePatient = addPatientResponse[0];
+                            activePatientIndex = 0;
                             if (operator.patientsToBeDisplayedInRadios.length == 0) {
                                 operator.patientsToBeDisplayedInRadios = addPatientResponse;
-                                activePatient = addPatientResponse[0];
-                                activePatientIndex = 0;
                                 operator.updatePatient = true;
                                 operator.addMember = true;
                                 operator.radio0 = true;
@@ -557,6 +557,8 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
     }
 
     function savePrescription() {
+        $log.log('active doctor is------', activeDoctor);
+        $log.log('active patient is------', activePatient);
         if (!_.isEmpty(activeDoctor) && !_.isEmpty(activePatient)) {
             var prescriptionRequest = {};
             prescriptionRequest.patientId = activePatient.id;
