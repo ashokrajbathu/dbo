@@ -32,4 +32,5 @@ angular.module('personalAssistant').filter("checkInSort", function() {
         }
         return result;
     }
+   
 });

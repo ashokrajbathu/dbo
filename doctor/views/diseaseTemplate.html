@@ -1,0 +1,72 @@
+<div ng-controller="diseaseTemplateController as diseaseTemplate">
+    <h3 class="prescriptionReportHeader">Disease Template</h3>
+    <hr>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-12 col-xs-12">
+                <form>
+                    <div class="form-group">
+                        <button class="btn mainAdminBtn doctorBtn" data-toggle="modal" data-target="#addMedicineModal">Add New Medicine
+                        </button>
+                    </div>
+                </form>
+                <div id="addMedicineModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4>Add New Medicine</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="exampleDiseaseName">Disease Name</label>
+                                        <input type="text" class="form-control" id="exampleDiseaseName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputDrugName">Drug Name</label>
+                                        <input type="text" ng-model="diseaseTemplate.brandName" class="form-control" id="exampleInputDrugName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputRemarks">Remarks</label>
+                                        <input type="text" ng-model="diseaseTemplate.remarks" class="form-control" id="exampleInpRemarks">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="perServing">Per Serving</label>
+                                        <input type="text" ng-model="diseaseTemplate.perServing" class="form-control" id="exampleInputPerServing">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="daysOrQuantity">Days/Quantity</label>
+                                        <select ng-model="diseaseTemplate.daysOrQuantity" id="daysOrQuantSelectBox">
+                                            <option value="Days">Days</option>
+                                            <option value="Quantity">Quantity</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="drugsOrQuantity">No.of Days/Quantity Count</label>
+                                        <input type="text" ng-model="diseaseTemplate.daysOrQuantityCount" class="form-control" id="drugsOrQuantity">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputDrugTimings">Timings</label>
+                                        <div class="row">
+                                            <div class="col-md-12 col-xs-12 col-sm-12 form-group">
+                                                <button type="button" ng-click="diseaseTemplate.addSuccess('Before_BreakFast')" class="btn timingsBtn col-md-1 btn-xs btn-{{diseaseTemplate.Before_BreakFast}}">BBF</button>
+                                                <button type="button" ng-click="diseaseTemplate.addSuccess('After_BreakFast')" class="btn timingsBtn col-md-1 btn-xs btn-{{diseaseTemplate.After_BreakFast}}">ABF</button>
+                                                <button type="button" ng-click="diseaseTemplate.addSuccess('Before_Lunch')" class="btn timingsBtn col-md-1 btn-xs btn-{{diseaseTemplate.Before_Lunch}}">BL</button>
+                                                <button type="button" ng-click="diseaseTemplate.addSuccess('After_Lunch')" class="btn timingsBtn col-md-1 btn-xs btn-{{diseaseTemplate.After_Lunch}}">AL</button>
+                                                <button type="button" ng-click="diseaseTemplate.addSuccess('Before_Dinner')" class="btn timingsBtn col-md-1 btn-xs btn-{{diseaseTemplate.Before_Dinner}}">BD</button>
+                                                <button type="button" ng-click="diseaseTemplate.addSuccess('After_Dinner')" class="btn timingsBtn col-md-1 btn-xs btn-{{diseaseTemplate.After_Dinner}}">AD</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

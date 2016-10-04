@@ -557,8 +557,6 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
     }
 
     function savePrescription() {
-        $log.log('active doctor is------', activeDoctor);
-        $log.log('active patient is------', activePatient);
         if (!_.isEmpty(activeDoctor) && !_.isEmpty(activePatient)) {
             var prescriptionRequest = {};
             prescriptionRequest.patientId = activePatient.id;

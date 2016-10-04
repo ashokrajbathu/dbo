@@ -139,11 +139,13 @@ function doctorController($scope, $log, dboticaServices, $state, $http, $parse, 
                     doctorElement.doctorsListToBeDisplayed.push(doctorListElement);
                 }
             });
-            if (doctorElement.doctorsListToBeDisplayed[0].lastName == undefined) {
-                doctorElement.doctorsListToBeDisplayed[0].lastName = '';
+            if (doctorElement.doctorsListToBeDisplayed.length > 0) {
+                if (doctorElement.doctorsListToBeDisplayed[0].lastName == undefined) {
+                    doctorElement.doctorsListToBeDisplayed[0].lastName = '';
+                }
+                doctorElement.doctorName = doctorElement.doctorsListToBeDisplayed[0].firstName + ' ' + doctorElement.doctorsListToBeDisplayed[0].lastName;
+                doctorElement.addNewDoctor.doctorId = doctorElement.doctorsListToBeDisplayed[0].id;
             }
-            doctorElement.doctorName = doctorElement.doctorsListToBeDisplayed[0].firstName + ' ' + doctorElement.doctorsListToBeDisplayed[0].lastName;
-            doctorElement.addNewDoctor.doctorId = doctorElement.doctorsListToBeDisplayed[0].id;
         }
     }, function(getDoctorsListError) {
         dboticaServices.noConnectivityError();
@@ -406,18 +408,9 @@ function doctorController($scope, $log, dboticaServices, $state, $http, $parse, 
         if (check === true) {
             doctorElement.asteriskErrorMessage = false;
             var newDoctorEntity = {};
-            newDoctorEntity.firstName = doctorElement.doctorData.firstName;
-            newDoctorEntity.lastName = '';
-            newDoctorEntity.emailId = doctorElement.doctorData.emailId;
-            newDoctorEntity.userName = doctorElement.doctorData.userName;
-            newDoctorEntity.password = doctorElement.doctorData.password;
-            newDoctorEntity.city = doctorElement.doctorData.city;
-            newDoctorEntity.speciality = doctorElement.specialityName;
-            newDoctorEntity.qualification = doctorElement.doctorData.qualification;
-            newDoctorEntity.doctorRegistrationNo = doctorElement.doctorData.doctorRegistrationNo;
-            newDoctorEntity.organization = doctorElement.doctorData.organization;
+            angular.copy(doctorElement.doctorData, newDoctorEntity);
+            newDoctorEntity.permissions = ['DOCTOR'];
             var newDoctorPromise = dboticaServices.newDoctorByAssistant(newDoctorEntity);
-            $log.log('add new doctor promise is----', newDoctorPromise);
             newDoctorPromise.then(function(newDoctorSuccess) {
                 var errorCode = newDoctorSuccess.data.errorCode;
                 if (errorCode) {
@@ -427,6 +420,8 @@ function doctorController($scope, $log, dboticaServices, $state, $http, $parse, 
                     if (errorCode == null && newDoctorSuccess.data.success == true) {
                         doctorElement.addNewDoctorForm = true;
                         doctorElement.newDoctorDetails = false;
+                        doctorElement.addNewDoctor.phoneNumber = newDoctorDetails.phoneNumber;
+                        doctorElement.addNewDoctor.doctorId = newDoctorDetails.id;
                     }
                 }
             }, function(newDoctorError) {

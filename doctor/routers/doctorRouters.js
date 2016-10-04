@@ -52,6 +52,12 @@ angular.module('doctor').config(function($stateProvider, $urlRouterProvider) {
             controllerAs: 'settings',
             templateUrl: 'views/settings.html'
         })
+        .state('doctorHome.diseaseTemplate', {
+            url: '/diseaseTemplate',
+            controller: 'diseaseTemplateController',
+            controllerAs: 'diseaseTemplate',
+            templateUrl: 'views/diseaseTemplate.html'
+        })
         .state('doctorHome.doctorProfile', {
             url: 'doctorProfile',
             controller: 'doctorProfileController',

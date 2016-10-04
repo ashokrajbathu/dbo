@@ -191,7 +191,24 @@ function insuranceController($scope, $log, dboticaServices, $state, $http, $pars
             }
         }, function(invoiceError) {
             dboticaServices.noConnectivityError();
-        })
+        });
+        /*angular.bind(self,fn,args): self-context which fn should be evaluated in fn is the function to be bound
+        returns a function which calls function fn bound to self(self becomes this for fn).
+        angular.bootstrap is used to manually startup angular application
+        angular.bootstrap(element, [modules]): element is the DOM element which is the root of angular application
+        modules-an array of modules to load into the application.
+        angular.copy-creates a deep copy of source which should be an object or an array
+        angular.element(element):wraps a DOM element or HTML string and returns a jQuery object.
+        angular.equals: determines if two objects or two values are equivalent.supports value types regular expressions
+        angular.injector: creates an injector object that can be used for retrieving services as well as for dependency injection
+        angular.injector(modules);
+
+        ngApp directive is used to auto-bootstrap an Angular-JS application.ngApp directive designates the root element of the application and is typically placed near the root element of the page eg. on the body or on the html tags
+        ngBind attribute tells angular to replace the text content of the HTML element with the value of a given expression and to update the text content when the value of the expression changes.
+        ngBindHtml : evaluates the expression and inserts the resulting HTML into the element in a secure way.
+        ngBindTemplate directive specifies that the element text content should be replaced with the interpolation of the template in the ngBindTemplate attribute.
+        ngCloak directive is used to avoid the undesirable flicker effect caused by the HTML template display
+        if the expression assigned to ngIf evaluates to a false value then the element is removed from the DOM otherwise a clone of the element is reinserted into the DOM.*/
     }
 
     function getPrescriptionsOfCaseNumber(caseEntity) {

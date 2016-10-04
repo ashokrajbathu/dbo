@@ -1515,7 +1515,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var newDoctorEntity = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/doctor/signup',
+            url: 'http://localhost:8080/dbotica-spring/organization/addDoctor',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -2562,12 +2562,17 @@ All services are applicationsingletons. there is only one instance of a service 
 
 A service is a constructor function.
 
+A service is a constructor function whereas a factory is not.
+
 Angular JS directives:
 Angular JS has a set of buit in directives which offers functionality to your applications.
 Angular JS also let you define your own directives.
 'A':only matches attribute name
 'E':only matches element name
 'C':only matches class name
+
+An angular controller allows us to interact with view and model,it is the place where presentation logic can take place to keep the UI bindings in sync with the Model
+it is the meeting place between our business logic and our presentation logic.
     
 
 */
@@ -2611,6 +2616,49 @@ angular.isObject- determines if a reference is an object unlike
 angular.isString- determines if a reference is a string
 angular.isUndefined-determines if a reference is undefined
 
+bootstrap is mainly used for developing responsive,mobile-first web sites
+Responsive web design is about creating web sites which automatically adjust themselves to look good in all devices,from small phones to large desktops
+easy to use
+responsive features
+mobile-first approach
+browser compatibility
 
+the .container class provides a responsive fixed width container
+the .container-fluid provides a full width container,spanning the entire width of the view port.
+bootstraps global default font size is 14px,with a line-height of 1.428
+text-success,text-info,text-danger,text-warning
+bg-success,bg-info,bg-danger,bg-primary,bg-warning
+A jumbotron indicates a big box for calling extra attention to some special content or information
+the most basic list group is an unordered list with list items
 
+<nav class="navbar navbar-default">
+<div class="container-fluid">
+<div class="navbar-header">
+
+it provides a different approach than ngRoute in that it changes application views based on state of the application and not just the route URL.
+
+<form name="userForm">
+<input type="text" name="userName" ng-model="user.username" ng-minlength="3" ng-maxlength="10" required>
+
+<div ng-messages="userForm.name.$error">
+<p ng-message="minLength">
+
+$animate.on(event,DOMElement,function callback(element,phase){
+    
+});
+
+$filter('uppercase')($scope.originalText);
+
+$q : A service that helps you run functions asynchronously,and use their return values when they are done processing
+A deferred object is simply an object that exposes a promise as well as the methods associated for resolving that promise. 
+
+A service which creates a resource object that lets you interact with RESTful server-side data sources.
+selectors 
+box models
+backgrounds and borders
+text effects
+animations
+2D/3D transformations
+
+A promise object represents a value that may not be available yet,but will be resolved at some point in the future.It allows you to write asynchronous code in a more synchronous way.
 */

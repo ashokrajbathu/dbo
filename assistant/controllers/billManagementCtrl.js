@@ -83,18 +83,18 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
         billElement.finalBill.assistantId = currentActiveAssistant.id;
         currentActiveInvoice = dboticaServices.getInvoice();
         if (!jQuery.isEmptyObject(currentActiveInvoice)) {
-            billElement.finalBill.patientId = currentActiveInvoice.patientId;
-            billElement.finalBill.patientPhoneNumber = currentActiveInvoice.patientPhoneNumber;
-            billElement.finalBill.invoiceState = currentActiveInvoice.invoiceState;
-            billElement.finalBill.creationTime = currentActiveInvoice.creationTime;
-            billElement.finalBill.id = currentActiveInvoice.id;
+            billElement.finalBill.patientId = currentActiveInvoice.billingInvoice.patientId;
+            billElement.finalBill.patientPhoneNumber = currentActiveInvoice.billingInvoice.patientPhoneNumber;
+            billElement.finalBill.invoiceState = currentActiveInvoice.billingInvoice.invoiceState;
+            billElement.finalBill.creationTime = currentActiveInvoice.billingInvoice.creationTime;
+            billElement.finalBill.id = currentActiveInvoice.billingInvoice.id;
             fetchDoctorDetails = false;
             billElement.patientSearchDiv = false;
             billElement.patientBillGridNine = false;
             billElement.patientBillFullGrid = true;
             billElement.loading = true;
             billElement.blurScreen = true;
-            var getDetailsOfThePatient = dboticaServices.getPatientDetailsOfThatNumber(currentActiveInvoice.patientId);
+            var getDetailsOfThePatient = dboticaServices.getPatientDetailsOfThatNumber(currentActiveInvoice.billingInvoice.patientId);
             getDetailsOfThePatient.then(function(getDetailsSuccess) {
                 var errorCode = getDetailsSuccess.data.errorCode;
                 if (errorCode) {
@@ -110,19 +110,19 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                 billElement.loading = false;
                 dboticaServices.noConnectivityError();
             });
-            billElement.bill.doctorActive = dboticaServices.getDoctorsDetailsArray(currentActiveInvoice.doctorId);
+            billElement.bill.doctorActive = dboticaServices.getDoctorsDetailsArray(currentActiveInvoice.billingInvoice.doctorId);
             setDoctorNameAndDoctorServices(billElement.bill.doctorActive);
-            billElement.invoice.nextPaymentDate = dboticaServices.longDateToReadableDate(currentActiveInvoice.nextPaymentDate);
-            billElement.invoice.nextPaymentAmount = currentActiveInvoice.nextPaymentAmount / 100;
-            angular.copy(currentActiveInvoice.paymentEntries, billElement.addToBill);
+            billElement.invoice.nextPaymentDate = dboticaServices.longDateToReadableDate(currentActiveInvoice.billingInvoice.nextPaymentDate);
+            billElement.invoice.nextPaymentAmount = currentActiveInvoice.billingInvoice.nextPaymentAmount / 100;
+            angular.copy(currentActiveInvoice.billingInvoice.paymentEntries, billElement.addToBill);
             angular.forEach(billElement.addToBill, function(billEntity) {
                 billEntity.amountPaid = billEntity.amountPaid / 100;
             });
-            var paymentEntriesAndTotalAmount = dboticaServices.getPaymentEntriesToDisplay(currentActiveInvoice.paymentEntries);
+            var paymentEntriesAndTotalAmount = dboticaServices.getPaymentEntriesToDisplay(currentActiveInvoice.billingInvoice.paymentEntries);
             billElement.addPay = paymentEntriesAndTotalAmount[0];
             var itemsToBeDisplayed = [];
             var totalAmountCharged = 0;
-            angular.copy(currentActiveInvoice.items, itemsToBeDisplayed);
+            angular.copy(currentActiveInvoice.billingInvoice.items, itemsToBeDisplayed);
             angular.forEach(itemsToBeDisplayed, function(itemsToBeDisplayedEntity) {
                 itemsToBeDisplayedEntity.cost = itemsToBeDisplayedEntity.cost / 100;
                 itemsToBeDisplayedEntity.amountCharged = itemsToBeDisplayedEntity.amountCharged / 100;
