@@ -14,6 +14,7 @@ app.controller('printBillController', ['$scope', function($scope) {
     $scope.patientNumberInBill = localStorage.getItem('patientNumberInBillActive');
     $scope.addressInTheBill = localStorage.getItem('addressInTheBill');
     $scope.addressInTheBill = JSON.parse($scope.addressInTheBill);
+    console.log('address is----', $scope.addressInTheBill);
     $scope.organizationName = $scope.addressInTheBill[0].label;
     $scope.address = $scope.addressInTheBill[0].address;
     $scope.cellNumber = $scope.addressInTheBill[0].cellNumber;

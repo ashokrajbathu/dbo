@@ -55,7 +55,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
     billElement.invoice = {};
     billElement.add = {};
 
-    billElement.invoice.nextPaymentAmount = "";
+    billElement.invoice.nextPaymentAmount = 0;
     billElement.invoice.amount = parseInt(0);
     billElement.add = {};
     billElement.add.testDate = "";
@@ -82,6 +82,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
     } else {
         billElement.finalBill.assistantId = currentActiveAssistant.id;
         currentActiveInvoice = dboticaServices.getInvoice();
+        $log.log('current invoice is----', currentActiveInvoice);
         if (!jQuery.isEmptyObject(currentActiveInvoice)) {
             billElement.finalBill.patientId = currentActiveInvoice.billingInvoice.patientId;
             billElement.finalBill.patientPhoneNumber = currentActiveInvoice.billingInvoice.patientPhoneNumber;
@@ -123,14 +124,18 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
             var itemsToBeDisplayed = [];
             var totalAmountCharged = 0;
             angular.copy(currentActiveInvoice.billingInvoice.items, itemsToBeDisplayed);
+            $log.log('items to be displayed is-------', itemsToBeDisplayed);
             angular.forEach(itemsToBeDisplayed, function(itemsToBeDisplayedEntity) {
+                $log.log('entity is-----', itemsToBeDisplayedEntity);
                 itemsToBeDisplayedEntity.cost = itemsToBeDisplayedEntity.cost / 100;
                 itemsToBeDisplayedEntity.amountCharged = itemsToBeDisplayedEntity.amountCharged / 100;
                 itemsToBeDisplayedEntity.quantity = itemsToBeDisplayedEntity.count;
                 totalAmountCharged += itemsToBeDisplayedEntity.amountCharged;
             });
             billElement.invoice.amount = totalAmountCharged - paymentEntriesAndTotalAmount[1];
+
             angular.copy(itemsToBeDisplayed, billElement.bill.billsListing);
+            $log.log('listing bills is----', billElement.bill.billsListing);
         }
         billElement.loading = true;
         billElement.blurScreen = true;
@@ -395,6 +400,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                         break;
                 }
                 newService.paid = false;
+                newService.discountReason = '';
                 billElement.bill.billsListing.push(newService);
             }
         }
@@ -433,6 +439,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                     newTestObject.discount = 0;
                     newTestObject.tax = 0;
                     newTestObject.quantity = 1;
+                    newTestObject.discountReason = '';
                     newTestObject.amountCharged = newTestObject.cost;
                     billElement.invoice.amount += parseInt(newTestObject.amountCharged);
                     newTestObject.paid = false;
@@ -487,6 +494,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
             if (!billElement.nextDueErrorMsg) {
                 billElement.loading = true;
                 billElement.finalBill.patientInsuranceId = '';
+                $log.log('final requ---', billElement.finalBill);
                 var invoiceUpdatePromise = dboticaServices.updateInvoice(billElement.finalBill);
                 invoiceUpdatePromise.then(function(invoiceUpdateSuccessResponse) {
                     var errorCode = invoiceUpdateSuccessResponse.data.errorCode;
@@ -678,6 +686,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                     newMedicine.amountCharged = parseInt(newMedicine.cost) * newMedicine.quantity;
                     billElement.invoice.amount += parseInt(newMedicine.amountCharged);
                     newMedicine.paid = false;
+                    newMedicine.discountReason = '';
                     billElement.bill.billsListing.push(newMedicine);
                     angular.element('#exampleInputMedicine').val("");
                     angular.element('#exampleInputMedicineCost').val("");

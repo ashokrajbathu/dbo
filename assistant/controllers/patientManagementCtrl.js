@@ -219,6 +219,8 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         $scope.nextBtn = true;
         $scope.addPatientBtn = true;
         $scope.viewDetailsLink = false;
+        $scope.caseNumbersList = [];
+        $scope.caseNumbersList.unshift(caseNumberObject);
         var phoneNumberForSearch = $scope.patientDataSearch.phoneNumberSearch;
         if (phoneNumberForSearch === undefined || phoneNumberForSearch === "") {
             dboticaServices.phoneNumberErrorSwal();
@@ -236,21 +238,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                     $scope.patientsOfPhoneNumber = angular.fromJson(response.data.response);
                     if (response.data.success === true && response.data.response.length > 2) {
                         var patientData = JSON.parse(response.data.response);
-                        var casePromise = dboticaServices.getCaseHistory(patientData[0].id);
-                        casePromise.then(function(caseSuccessResponse) {
-                            var errorCode = caseSuccessResponse.data.errorCode;
-                            if (errorCode) {
-                                dboticaServices.logoutFromThePage(errorCode);
-                            } else {
-                                var caseResponse = angular.fromJson(caseSuccessResponse.data.response);
-                                if (errorCode == null && caseSuccessResponse.data.success) {
-                                    angular.copy(caseResponse, $scope.caseNumbersList);
-                                    $scope.caseNumbersList.unshift(caseNumberObject);
-                                }
-                            }
-                        }, function(caseErrorResponse) {
-                            dboticaServices.noConnectivityError();
-                        });
+                        patientCaseNumbers(patientData[0].id);
                         $scope.patientsOfNumber = true;
                         $scope.familyMemberLink = true;
                         $scope.patientActive = patientData[0];
@@ -282,6 +270,24 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
             });
         }
         $scope.patientDataSearch.phoneNumberSearch = "";
+    }
+
+    function patientCaseNumbers(patientId) {
+        var casePromise = dboticaServices.getCaseHistory(patientId);
+        casePromise.then(function(caseSuccessResponse) {
+            var errorCode = caseSuccessResponse.data.errorCode;
+            if (errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                var caseResponse = angular.fromJson(caseSuccessResponse.data.response);
+                if (errorCode == null && caseSuccessResponse.data.success) {
+                    angular.copy(caseResponse, $scope.caseNumbersList);
+                    $scope.caseNumbersList.unshift(caseNumberObject);
+                }
+            }
+        }, function(caseErrorResponse) {
+            dboticaServices.noConnectivityError();
+        });
     }
 
     $scope.cancelBookings = function() {
