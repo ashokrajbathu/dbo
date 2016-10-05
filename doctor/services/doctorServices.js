@@ -83,7 +83,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var prescriptionsRequest = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getPrescriptionById?prescriptionId=' + prescriptionId,
+            url: 'https://dbotica.com:8443/dbotica-spring/organization/hospital/getPrescriptionById?prescriptionId=' + prescriptionId,
             withCredentials: true
         }
         $http(prescriptionsRequest).then(function(prescriptionsSuccess) {
@@ -109,7 +109,7 @@ function doctorServices($http, $state, $log, $q) {
         var organizationCaseId = caseId;
         var closeRequest = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/organization/hospital/closeOrganizationCase',
+            url: 'https://dbotica.com:8443/dbotica-spring/organization/hospital/closeOrganizationCase',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -159,7 +159,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var caseRequest = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getPrescriptionsByCase?organizationCaseId=' + caseId,
+            url: 'https://dbotica.com:8443/dbotica-spring/organization/hospital/getPrescriptionsByCase?organizationCaseId=' + caseId,
             withCredentials: true
         }
         $http(caseRequest).then(function(caseSuccess) {
@@ -174,7 +174,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var orgPatientRequest = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getOrgPatientByPatientId?patientId=' + patientId,
+            url: 'https://dbotica.com:8443/dbotica-spring/organization/hospital/getOrgPatientByPatientId?patientId=' + patientId,
             withCredentials: true
         }
         $http(orgPatientRequest).then(function(orgPatientSuccess) {
@@ -189,7 +189,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var templateRequest = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/organization/hospital/template/addTemplateInstances',
+            url: 'https://dbotica.com:8443/dbotica-spring/organization/hospital/template/addTemplateInstances',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -209,7 +209,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var registerPatientRequest = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/organization/hospital/updatePatient',
+            url: 'https://dbotica.com:8443/dbotica-spring/organization/hospital/updatePatient',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -229,7 +229,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var caseHistoryRequest = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getCaseHistory?patientId=' + patientId,
+            url: 'https://dbotica.com:8443/dbotica-spring/organization/hospital/getCaseHistory?patientId=' + patientId,
             withCredentials: true
         }
         $http(caseHistoryRequest).then(function(caseHistorySuccess) {
@@ -246,7 +246,7 @@ function doctorServices($http, $state, $log, $q) {
         var visibility = true;
         var getTemplatesRequest = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/organization/hospital/template/getTemplates?organizationId=' + organizationId + '&name=' + template + '&showInvisible=' + visibility,
+            url: 'https://dbotica.com:8443/dbotica-spring/organization/hospital/template/getTemplates?organizationId=' + organizationId + '&name=' + template + '&showInvisible=' + visibility,
             withCredentials: true
         }
         $http(getTemplatesRequest).then(function(getTemplateSuccess) {
@@ -261,7 +261,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var addPatientRequest = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/doctor/addMyPatients',
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/addMyPatients',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -315,7 +315,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var loginRequestEntity = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/doctor/login',
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/login',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -388,7 +388,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var signUpRequestEntity = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/doctor/referDoctor',
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/referDoctor',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -408,7 +408,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var logoutRequest = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/doctor/logout',
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/logout',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -427,7 +427,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var patientRequest = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/doctor/getPatients?patientIds=' + phoneNumberForSearch,
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/getPatients?patientIds=' + phoneNumberForSearch,
             withCredentials: true
         }
         $http(patientRequest).then(function(patientSuccess) {
@@ -442,7 +442,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var newPatientRequest = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/doctor/addPatient',
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/addPatient',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -490,7 +490,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var getTestRequestEntity = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/diagnosis/getDiagnosisTest?diagnosisTest=' + test,
+            url: 'https://dbotica.com:8443/dbotica-spring/diagnosis/getDiagnosisTest?diagnosisTest=' + test,
             withCredentials: true
         }
         $http(getTestRequestEntity).then(function(getTestsResponse) {
@@ -518,7 +518,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var prescriptionEntity = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/prescription/updatePrescription',
+            url: 'https://dbotica.com:8443/dbotica-spring/prescription/updatePrescription',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -577,7 +577,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var changePasswordRequestEntity = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/doctor/changePassword',
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/changePassword',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -626,7 +626,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var changeDetailsRequest = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/doctor/updateProfile',
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/updateProfile',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -646,7 +646,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var getAssistantsRequest = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/doctor/getMyAssistants',
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/getMyAssistants',
             withCredentials: true
         }
         $http(getAssistantsRequest).then(function(assistantsSuccess) {
@@ -661,7 +661,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var markAssistantRequest = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/doctor/markAssistantStatus',
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/markAssistantStatus',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -684,7 +684,7 @@ function doctorServices($http, $state, $log, $q) {
         var limit = 20;
         var getCreditsRequest = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/doctor/getCreditHistory?start=' + start + '&limit=' + limit + '&doctorId=' + doctorId,
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/getCreditHistory?start=' + start + '&limit=' + limit + '&doctorId=' + doctorId,
             withCredentials: true
         }
         $http(getCreditsRequest).then(function(getCreditsSuccess) {
@@ -699,7 +699,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var getAddressesRequest = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/doctor/getAddress',
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/getAddress',
             withCredentials: true
         }
         $http(getAddressesRequest).then(function(getAddressesSuccess) {
@@ -734,7 +734,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var updateAddressRequest = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/doctor/updateAddress',
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/updateAddress',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -764,7 +764,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var getAllPatientsRequest = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/doctor/getMyPatients',
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/getMyPatients',
             withCredentials: true
         }
         $http(getAllPatientsRequest).then(function(getAllPatientsSuccess) {
@@ -779,7 +779,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var referRequest = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/doctor/referDoctor',
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/referDoctor',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -809,7 +809,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var doctorEventsRequest = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/doctor/getDoctorEvents?doctorId=' + doctorId,
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/getDoctorEvents?doctorId=' + doctorId,
             withCredentials: true
         }
         $http(doctorEventsRequest).then(function(doctorEventsSuccess) {
@@ -824,7 +824,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var drugRequest = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/doctor/drugTemplate',
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/drugTemplate',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -844,7 +844,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var getTemplateRequest = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/doctor/getDrugTemplates',
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/getDrugTemplates',
             withCredentials: true
         }
         $http(getTemplateRequest).then(function(getTemplateSuccess) {
@@ -869,7 +869,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var bookAppointmentRequest = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/doctor/addCalendarEvent',
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/addCalendarEvent',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -909,7 +909,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var prescriptionsRequest = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/doctor/patientPrescriptions?patientId=' + idOfPatient + '&start=' + 0 + '&limit=' + 5,
+            url: 'https://dbotica.com:8443/dbotica-spring/doctor/patientPrescriptions?patientId=' + idOfPatient + '&start=' + 0 + '&limit=' + 5,
             withCredentials: true
         }
         $http(prescriptionsRequest).then(function(prescriptionsSuccess) {
