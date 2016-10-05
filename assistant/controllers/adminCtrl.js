@@ -551,6 +551,7 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
             addressRequestEntity = adminElement.orgAddress;
             addressRequestEntity.id = organizationAddressId;
         }
+        $log.log('request is--------', addressRequestEntity);
         var updateOrgAddressPromise = dboticaServices.updateOrgAddress(addressRequestEntity);
         updateOrgAddressPromise.then(function(updateOrgSuccess) {
             var errorCode = updateOrgSuccess.data.errorCode;

@@ -318,6 +318,9 @@ function personalAssistantCtrl($scope, $log, $location, dboticaServices, $state,
             case 'NURSE':
                 localStorage.setItem("currentState", "nurseHome");
                 break;
+            case 'OPERATOR':
+                localStorage.setItem("currentState", "operator");
+                break;
         }
     }
 };

@@ -42,7 +42,7 @@ function homeCtrl($scope, $log, $location, dboticaServices, $state, $http, $pars
                 $scope.isVisibleNavs.admin = true;
                 break;
             case 'HOSPITAL_ADMIN':
-                $scope.isVisibleNavs.operator = true;
+
                 $scope.isVisibleNavs.ipd = true;
                 $scope.isVisibleNavs.mainAdmin = true;
                 $scope.isVisibleNavs.insurance = true;
@@ -50,6 +50,9 @@ function homeCtrl($scope, $log, $location, dboticaServices, $state, $http, $pars
             case 'NURSE':
                 $scope.isVisibleNavs.nurse = true;
                 $scope.isVisibleNavs.labs = true;
+                break;
+            case 'OPERATOR':
+                $scope.isVisibleNavs.operator = true;
                 break;
         }
     });
