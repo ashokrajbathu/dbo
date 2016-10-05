@@ -123,7 +123,7 @@
                     <tr class="patientRow" ng-repeat="patient in patientsList">
                         <td>{{$index+1}}</td>
                         <td>{{patient.label}}</td>
-                        <td>{{patient.calendarStatus}}</td>
+                        <td ng-bind="patient.calendarStatus|removeunderscoreaddspace"></td>
                         <td>{{patient.startTime | date:"h:mma"}}</td>
                         <td id="actionsOnPatient">
                             <button class="btn checkin">Check-In</button>
