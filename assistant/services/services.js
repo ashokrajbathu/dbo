@@ -1535,7 +1535,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var addressEntity = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/assistant/getAddress',
+            url: 'http://localhost:8080/dbotica-spring/organization/getOrganizationDetails',
             withCredentials: true,
         }
         $http(addressEntity).then(function(addressSuccess) {
@@ -1574,32 +1574,17 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return result;
     }
 
-    this.getOrganizationAddress = function() {
-        var deferred = $q.defer();
-        var addressRequestEntity = {
-            method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/assistant/getAddress',
-            withCredentials: true
-        }
-        $http(addressRequestEntity).then(function(orgSuccess) {
-            deferred.resolve(orgSuccess);
-        }, function(orgError) {
-            deferred.reject(orgError);
-        });
-        return deferred.promise;
-    }
-
     this.updateOrgAddress = function(updateAddress) {
         var deferred = $q.defer();
         var updateEntity = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/assistant/updateAddress',
+            url: 'http://localhost:8080/dbotica-spring/organization/updateOrganizationAddress',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
             withCredentials: true,
-            data: JSON.stringify(updateAddress)
+            data: updateAddress
         }
         $http(updateEntity).then(function(updateSuccess) {
             deferred.resolve(updateSuccess);
