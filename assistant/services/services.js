@@ -2646,4 +2646,71 @@ animations
 2D/3D transformations
 
 A promise object represents a value that may not be available yet,but will be resolved at some point in the future.It allows you to write asynchronous code in a more synchronous way.
+
+================-----------------===================---------------------------===================
+
+angular.bind : return a function which calls function fn bound to self.(self becomes this for fn).
+angular.bind(self,fn,args)
+self: context which fn should be evaluated in.
+fn: function to be bind.
+angular.bootstrap: use this function to manually start up angular application.
+angular.bootstrap(element,[modules],[config]);
+element: DOM element which is the root of angular application
+modules : an array of modules to load into application
+angular.copy: creates a deep copy of source ,which should be an object or array.
+if no destination is supplied a copy of object or array is returned.
+if source is not an object or array,source is returned.
+A jQuery object is returned by angular.element(element)-HTML string or a raw DOM element
+wraps a raw DOM element or HTML string as a jQuery object.
+angular.equals: determines if two objects or two values are equivalent.supports value types,regular expressions,arrays and objects.
+var object=angular.extend({},object1,object2);
+angular.identity: A function that returns the first argument
+angular.injector: creates an injector object that can be used for retrieving services as well as for dependency injection.
+angular.noop: a function that performs no operation
+angular.toJson: serializes input into a JSON-formatted string.
+
+the ngBind attribute tells the Angular to replace the text content of the specified HTML with the value of a given expression,and to update the text content when the value of the expression changes.
+evaluates the expressions and inserts the resulting HTML into the element in a secured way.Toutilize this service 
+ng-bind-template="{{salutation}} {{name}}"
+
+when called it scrolls to the element related to the specified hash or to the current value of $location.hash
+$animate service provides a series of DOM utility methods that provides support for animations.
+$animate.on(event,container,callback);
+event: the animation event that will be captured
+container: the container element that will capture each of the animation events on itself and its children.
+$animate.off(event,container,callback);
+$cacheFactory: factory that constructs cache objects and gives access to them.
+$controller service is responsible for instantiating controllers.
+$document: A jquery wrapper for the browser's window.document object.
+Any uncaught exception in angular expressions is delegated to this service.
+
+CSS is a language that describes the style of the HTML document.
+It describes how HTML elements should be displayed.
+CSS stands for Cascading Style Sheets.
+CSS describes how HTML elements are to be displayed on screen,paper or in other media.
+HTML was created to describe the content of the webpage.
+p.center{
+    text-align:center;
+    color:red;
+}
+
+external style sheet
+internal style sheet
+inline style sheet
+
+colors in CSS are most often specified by name:red;
+an RGB value
+a HEX value
+background-color
+background-image
+background-repeat
+background-attachment
+background-position
+
+background-repeat:repeat-x;
+background-repeat:repeat-y;
+background-repeat:no-repeat;
+background-position:right top;
+background-attachment:fixed;
+
 */

@@ -18,7 +18,10 @@ const DB_PATIENT_STORE = 'patients';
 const DB_PRESCRIPTION_STORE = 'prescriptions';
 const DB_SYNC_STORE = 'syncStore';
 
-const doctorId = localStorage.getItem('doctorId');
+var doctorObject = localStorage.getItem('currentDoctor');
+doctorObject = $.parseJSON(doctorObject);
+console.log('doctor ob---', doctorObject.id);
+const doctorId = doctorObject.id;
 
 var db;
 
