@@ -539,7 +539,7 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
     function addTest() {
         var testEntity = {};
         testEntity.testId = activeTestId;
-        testEntity.testName = operator.test.testName;
+        testEntity.diagnosisTest = operator.test.testName;
         testEntity.remark = operator.test.remarks;
         operator.testsListInTable.push(testEntity);
         operator.test.testName = '';
