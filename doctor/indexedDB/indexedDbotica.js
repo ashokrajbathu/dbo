@@ -18,7 +18,10 @@ const DB_PATIENT_STORE = 'patients';
 const DB_PRESCRIPTION_STORE = 'prescriptions';
 const DB_SYNC_STORE = 'syncStore';
 
-const doctorId = localStorage.getItem('doctorId');
+var doctorObject = localStorage.getItem('currentDoctor');
+doctorObject = $.parseJSON(doctorObject);
+console.log('doctor ob---', doctorObject.id);
+const doctorId = doctorObject.id;
 
 var db;
 
@@ -145,7 +148,7 @@ function syncAllDrugsToIndexedDB() {
 
         $.ajax({
             type: "GET",
-            url: "https://dbotica.com:8443/dbotica-spring/drug/getDrugs",
+            url: "http://localhost:8080/dbotica-spring/drug/getDrugs",
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.setRequestHeader("Accept", "application/json");
@@ -246,17 +249,14 @@ function syncAllPrescriptionsToIndexedDB() {
 
         $.ajax({
             type: "GET",
-            url: "https://dbotica.com:8443/dbotica-spring/doctor/myPrescriptions",
+            url: "http://localhost:8080/dbotica-spring/doctor/myPrescriptions",
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.setRequestHeader("Accept", "application/json");
             },
             data: {
-                'doctorId': doctorId,
                 'start': startPrescriptionIndex,
-                'limit': 100,
-                'lastUpdated': lastUpdatedPrescriptionIndex
-
+                'limit': 100
             },
             xhrFields: {
                 withCredentials: true
@@ -264,6 +264,7 @@ function syncAllPrescriptionsToIndexedDB() {
             success: function(response) {
                 var data = {};
                 data = $.parseJSON(response.response);
+                console.log('data in indexed db is----', data);
                 var patientObjectStore = getObjectStore(DB_PATIENT_STORE, "readwrite");
                 totalPrescriptionCount = response.totalCount;
 
@@ -325,7 +326,7 @@ Get all patiensts of this doctor from server
 
     $.ajax({
         type: "GET",
-        url: "https://dbotica.com:8443/dbotica-spring/doctor/myPatients",
+        url: "http://localhost:8080/dbotica-spring/doctor/myPatients",
         success: function(response) {
             var data = $.parseJSON(response.response);
             //console.log
@@ -361,6 +362,9 @@ function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId, callBac
     /*console.log("addPrescription argumensts:", arguments);*/
     var patientName = !$.isEmptyObject(patientInfo) ? patientInfo.firstName : "Unknown";
     var patientPhoneNumber = !$.isEmptyObject(patientInfo) ? patientInfo.phoneNumber : 0;
+    console.log('prescription is-----', prescription);
+    console.log('patient info is----', patientInfo);
+    console.log('doctor id is----', doctorId);
     var obj = { "id": prescription.id, "prescription": prescription, "patientInfo": patientInfo, "doctorId": doctorId, "patientName": patientName, "patientPhoneNumber": patientPhoneNumber, "creationTime": new Date(prescription.creationTime) };
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readwrite');
 
@@ -378,6 +382,7 @@ function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId, callBac
 
         if (!prescriptionObj || $.isEmptyObject(prescriptionObj.patientInfo) || prescriptionObj.patientInfo === undefined || !$.isEmptyObject(obj.patientInfo)) {
             var prescriptionStore = getObjectStore(DB_PRESCRIPTION_STORE, 'readwrite');
+            console.log('obj is before adding-----', obj);
             var requestUpdate = prescriptionStore.put(obj);
             requestUpdate.onsuccess = function(event) {
 
@@ -510,7 +515,7 @@ function getAllPrescriptionsFromIndexedDB(addDataToTable, callBackAfterAdding, i
         if (cursor) {
             if (cursor.value.doctorId == doctorId) {
                 result.push(cursor.value);
-                //console.log("cursor value object is---", cursor.value);
+                console.log("cursor value object is---", cursor.value);
                 //console.log("cursor value array is---" + cursor.value);
                 addDataToTable(cursor.value);
             }
@@ -743,11 +748,13 @@ function getAllPrescriptionsFromIndexedDBOnLoad(addDataToArray, transferArrayToD
 
     index.openCursor(null, "prev").onsuccess = function(event) {
         var cursor = event.target.result;
-        // console.log("cursor value is----", cursor);
+        console.log("cursor value is----", cursor);
         if (cursor) {
+            console.log('in first idf check----');
             var doctorActive = localStorage.getItem('currentDoctor');
             doctorActive = angular.fromJson(doctorActive);
             if (cursor.value.doctorId == doctorActive.id) {
+                console.log('in if check----');
                 result.push(cursor.value);
                 addDataToArray(cursor.value);
             }

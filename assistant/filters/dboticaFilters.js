@@ -32,5 +32,17 @@ angular.module('personalAssistant').filter("checkInSort", function() {
         }
         return result;
     }
-   
+
+}).filter("removeunderscoreaddspace", function() {
+    return function(input) {
+        var result;
+        if (input == undefined) {
+            result = '';
+        } else {
+            input = _.replace(input, '_', ' ');
+            result = input;
+        }
+        return result;
+    }
+
 });

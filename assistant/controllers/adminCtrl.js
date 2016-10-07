@@ -102,21 +102,18 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
     });
 
     var organizationAddressPromise = dboticaServices.getOrganizationAddress();
+    $log.log('address promise is-------', organizationAddressPromise);
     organizationAddressPromise.then(function(organizationAddressSuccess) {
         var errorCode = organizationAddressSuccess.data.errorCode;
         if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var organizationAddress = angular.fromJson(organizationAddressSuccess.data.response);
-            if (organizationAddress.length > 0) {
-                organizationAddressId = organizationAddress[0].id;
-                adminElement.orgAddress.label = organizationAddress[0].label;
-                adminElement.orgAddress.address = organizationAddress[0].address;
-                adminElement.orgAddress.city = organizationAddress[0].city;
-                adminElement.orgAddress.pinCode = organizationAddress[0].pinCode;
-                adminElement.orgAddress.phoneNumber = organizationAddress[0].phoneNumber;
-                adminElement.orgAddress.cellNumber = organizationAddress[0].cellNumber;
-                adminElement.orgAddress.tinNo = organizationAddress[0].tinNo;
+            $log.log('address response is-----', organizationAddress);
+            organizationAddress = angular.fromJson(organizationAddress.address);
+            if (!_.isEmpty(organizationAddress)) {
+                organizationAddressId = organizationAddress.id;
+                angular.copy(organizationAddress, adminElement.orgAddress);
             }
         }
     }, function(organizationAddressError) {
@@ -551,18 +548,23 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
             addressRequestEntity = adminElement.orgAddress;
             addressRequestEntity.id = organizationAddressId;
         }
+        $log.log('request is--------', addressRequestEntity);
+        addressRequestEntity = JSON.stringify(addressRequestEntity);
         var updateOrgAddressPromise = dboticaServices.updateOrgAddress(addressRequestEntity);
+        $log.log('org address is-----', updateOrgAddressPromise);
         updateOrgAddressPromise.then(function(updateOrgSuccess) {
             var errorCode = updateOrgSuccess.data.errorCode;
             if (errorCode) {
                 dboticaServices.logoutFromThePage();
             } else {
-                updatedAddress = angular.fromJson(updateOrgSuccess.data.response);
+                var updatedAddressResponse = angular.fromJson(updateOrgSuccess.data.response);
+                $log.log('update address is-----', updatedAddressResponse);
                 if (errorCode == null && updateOrgSuccess.data.success == true) {
-                    if (updatedAddress.length > 0) {
-                        adminElement.orgAddress = updatedAddress[0];
+                    if (updatedAddressResponse.length > 0) {
+                        adminElement.orgAddress = updatedAddressResponse[0];
                     }
                     dboticaServices.updateAddressSuccessSwal();
+                    adminElement.orgAddress = {};
                 }
             }
         }, function(updateOrgError) {

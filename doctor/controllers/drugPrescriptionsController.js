@@ -955,6 +955,9 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                         printPrescription.tests = prescriptionElement.testsListInTable;
                         localStorage.setItem('activePrescription', JSON.stringify(printPrescription));
                         try {
+                            $log.log('presc respo----', prescriptionResponse);
+                            $log.log('active patient is-------', activePatient);
+                            $log.log('active doctor is------', activeDoctor);
                             addPrescriptionToIndexedDB(prescriptionResponse, activePatient, activeDoctor.id);
                         } catch (e) {}
                         functionalitiesAfterAddingPresc();

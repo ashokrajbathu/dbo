@@ -790,7 +790,8 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
         if (errorCode) {
             dboticaServices.logoutFromThePage(errorCode);
         } else {
-            getAddressSuccessResponse = angular.fromJson(getAddressSuccess.data.response);
+            var getAddressSuccessResponse = angular.fromJson(getAddressSuccess.data.response);
+            getAddressSuccessResponse = angular.fromJson(getAddressSuccessResponse.address);
             localStorage.setItem('addressInTheBill', JSON.stringify(getAddressSuccessResponse));
         }
     }, function(getAddressError) {

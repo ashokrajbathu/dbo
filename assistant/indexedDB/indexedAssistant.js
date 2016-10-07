@@ -127,7 +127,7 @@ function syncAllDrugsToIndexedDB() {
 
         $.ajax({
             type: "GET",
-            url: "http://localhost:8081/dbotica-spring/drug/getDrugs",
+            url: "http://localhost:8080/dbotica-spring/drug/getDrugs",
             data: {
                 'start': startDrugIndex,
                 'limit': 1000,
@@ -216,7 +216,7 @@ function syncAllPatientsToIndexedDB() {
 
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/dbotica-spring/doctor/myPatients",
+        url: "http://localhost:8080/dbotica-spring/doctor/myPatients",
         success: function(response) {
             var data = $.parseJSON(response.response);
             //console.log(data);

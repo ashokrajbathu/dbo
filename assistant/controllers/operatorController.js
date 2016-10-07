@@ -539,7 +539,7 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
     function addTest() {
         var testEntity = {};
         testEntity.testId = activeTestId;
-        testEntity.testName = operator.test.testName;
+        testEntity.diagnosisTest = operator.test.testName;
         testEntity.remark = operator.test.remarks;
         operator.testsListInTable.push(testEntity);
         operator.test.testName = '';
@@ -587,6 +587,7 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
                     var prescriptionResponse = angular.fromJson(prescriptionSuccess.data.response);
+                    $log.log('prescription response is-----', prescriptionResponse);
                     if (errorCode == null && prescriptionSuccess.data.success == true) {
                         dboticaServices.addPrescriptionSuccessSwal();
                         printPrescription.patient = activePatient;
@@ -621,6 +622,7 @@ function operatorController($scope, $log, dboticaServices, $state, $http, $parse
         operator.fillPrescription.days = 1;
         operator.updatePatient = false;
         operator.addMember = false;
+        operator.additionalComments = '';
         operator.phoneNumber = emptyString;
         operator.patientsToBeDisplayedInRadios = [];
         operator.revisitAfterDays = emptyString;

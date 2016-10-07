@@ -82,6 +82,9 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
                 angular.copy(addTemplate.templatesList, localActiveSectionsFields);
                 angular.forEach(localActiveSectionsFields, function(template) {
                     angular.forEach(template.templateFields, function(fieldEntity, key, value) {
+                        $log.log('filed entity is --------', fieldEntity);
+                        $log.log('key is-----', key);
+                        $log.log('value is------', value);
                         if (fieldEntity.fieldState == 'ACTIVE') {
                             fieldEntity.keyValue = key;
                             fieldEntity.elementId = template.id;
