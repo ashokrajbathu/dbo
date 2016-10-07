@@ -58,6 +58,12 @@ angular.module('doctor').config(function($stateProvider, $urlRouterProvider) {
             controllerAs: 'diseaseTemplate',
             templateUrl: 'views/diseaseTemplate.html'
         })
+        .state('doctorHome.imageTemplate', {
+            url: '/imageTemplate',
+            controller: 'imageTemplateController',
+            controllerAs: 'imageTemplate',
+            templateUrl: 'views/imageTemplate.html'
+        })
         .state('doctorHome.doctorProfile', {
             url: 'doctorProfile',
             controller: 'doctorProfileController',
