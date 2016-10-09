@@ -36,7 +36,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         inputData.password = password;
         var req = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/assistant/login',
+            url: 'http://localhost:8080/dbotica-spring/assistant/login',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -56,7 +56,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var requestEntity = {
             method: "GET",
-            url: "http://qa.dbotica.com:8081/dbotica-spring/assistant/getMyDoctors",
+            url: "http://localhost:8080/dbotica-spring/assistant/getMyDoctors",
             withCredentials: true
         }
         $http(requestEntity).then(function(doctorsResponse) {
@@ -72,7 +72,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var req = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/assistant/getDoctorEvents?doctorId=' + doctorId,
+            url: 'http://localhost:8080/dbotica-spring/assistant/getDoctorEvents?doctorId=' + doctorId,
             withCredentials: true
         }
         $http(req).then(function(response) {
@@ -87,7 +87,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var caseRequest = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/getCaseHistory?patientId=' + patientId,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getCaseHistory?patientId=' + patientId,
             withCredentials: true
         }
         $http(caseRequest).then(function(caseSuccess) {
@@ -102,7 +102,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var req = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/assistant/getPatients?patientIds=' + phoneNumberForSearch,
+            url: 'http://localhost:8080/dbotica-spring/assistant/getPatients?patientIds=' + phoneNumberForSearch,
             withCredentials: true
         }
         $http(req).then(function(response) {
@@ -117,7 +117,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var req = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/assistant/getDoctorEvents?patientPhoneNumber=' + patientPhoneNumberForCancelling + '&doctorId=' + doctorId + '&fetchAllEvents=true',
+            url: 'http://localhost:8080/dbotica-spring/assistant/getDoctorEvents?patientPhoneNumber=' + patientPhoneNumberForCancelling + '&doctorId=' + doctorId + '&fetchAllEvents=true',
             withCredentials: true
         }
         $http(req).then(function(response) {
@@ -132,7 +132,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var req = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/assistant/updateCalendarEvent',
+            url: 'http://localhost:8080/dbotica-spring/assistant/updateCalendarEvent',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -152,7 +152,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var req = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/assistant/updateDoctorTimings',
+            url: 'http://localhost:8080/dbotica-spring/assistant/updateDoctorTimings',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -172,7 +172,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var req = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/assistant/getDoctorEvents?doctorId=' + doctorId + '&requestTime=' + milliSecsOfDate,
+            url: 'http://localhost:8080/dbotica-spring/assistant/getDoctorEvents?doctorId=' + doctorId + '&requestTime=' + milliSecsOfDate,
             withCredentials: true
 
         }
@@ -188,7 +188,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var requestEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/drug/getDrugs?start=' + start + '&limit=' + limit + '&brandName=' + brandName,
+            url: 'http://localhost:8080/dbotica-spring/drug/getDrugs?start=' + start + '&limit=' + limit + '&brandName=' + brandName,
             withCredentials: true
         }
         $http(requestEntity).then(function(getDrugSuccess) {
@@ -203,7 +203,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var req = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/assistant/addPatient',
+            url: 'http://localhost:8080/dbotica-spring/assistant/addPatient',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -224,7 +224,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var req = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/assistant/logout',
+            url: 'http://localhost:8080/dbotica-spring/assistant/logout',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -243,7 +243,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var requestEntity = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/inventory/addItem',
+            url: 'http://localhost:8080/dbotica-spring/inventory/addItem',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -265,13 +265,13 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         if (itemType == "All") {
             switch (stockType) {
                 case 'All':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId });
                     break;
                 case 'Low':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "lowStock": true });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "lowStock": true });
                     break;
                 case 'Expired':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "expired": true });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "expired": true });
                     break;
             }
 
@@ -279,13 +279,13 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         if (itemType == "Drug") {
             switch (stockType) {
                 case 'All':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "inventoryItemType": "DRUG" });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "inventoryItemType": "DRUG" });
                     break;
                 case 'Low':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "lowStock": true, "inventoryItemType": "DRUG" });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "lowStock": true, "inventoryItemType": "DRUG" });
                     break;
                 case 'Expired':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "expired": true, "inventoryItemType": "DRUG" });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "expired": true, "inventoryItemType": "DRUG" });
                     break;
             }
 
@@ -293,13 +293,13 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         if (itemType == "Supplies") {
             switch (stockType) {
                 case 'All':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "inventoryItemType": "SUPPLIES" });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "inventoryItemType": "SUPPLIES" });
                     break;
                 case 'Low':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "lowStock": true, "inventoryItemType": "SUPPLIES" });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "lowStock": true, "inventoryItemType": "SUPPLIES" });
                     break;
                 case 'Expired':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "expired": true, "inventoryItemType": "SUPPLIES" });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "expired": true, "inventoryItemType": "SUPPLIES" });
                     break;
             }
 
@@ -307,26 +307,26 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         if (itemType == "Equipments") {
             switch (stockType) {
                 case 'All':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "inventoryItemType": "EQUIPMENT" });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "inventoryItemType": "EQUIPMENT" });
                     break;
                 case 'Low':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "lowStock": true, "inventoryItemType": "EQUIPMENT" });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "lowStock": true, "inventoryItemType": "EQUIPMENT" });
                     break;
                 case 'Expired':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "expired": true, "inventoryItemType": "EQUIPMENT" });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "expired": true, "inventoryItemType": "EQUIPMENT" });
                     break;
             }
         }
         if (itemType == "Others") {
             switch (stockType) {
                 case 'All':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "inventoryItemType": "OTHERS" });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "inventoryItemType": "OTHERS" });
                     break;
                 case 'Low':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "lowStock": true, "inventoryItemType": "OTHERS" });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "lowStock": true, "inventoryItemType": "OTHERS" });
                     break;
                 case 'Expired':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "expired": true, "inventoryItemType": "OTHERS" });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId, "expired": true, "inventoryItemType": "OTHERS" });
                     break;
             }
         }
@@ -347,7 +347,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var req = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/inventory/addBatch',
+            url: 'http://localhost:8080/dbotica-spring/inventory/addBatch',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -367,7 +367,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var requestEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItemDetails?itemId=' + itemId + '&organizationId=' + organizationId,
+            url: 'http://localhost:8080/dbotica-spring/inventory/getItemDetails?itemId=' + itemId + '&organizationId=' + organizationId,
             withCredentials: true
         }
         $http(requestEntity).then(function(response) {
@@ -382,7 +382,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var requestEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "itemName": itemName, "organizationId": organizationId }),
+            url: 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "itemName": itemName, "organizationId": organizationId }),
             withCredentials: true,
         }
         $http(requestEntity).then(function(response) {
@@ -397,7 +397,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var requestEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "itemId": itemId, "organizationId": organizationId }),
+            url: 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "itemId": itemId, "organizationId": organizationId }),
             withCredentials: true,
         }
         $http(requestEntity).then(function(successResponse) {
@@ -412,7 +412,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var requestEntity = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/inventory/updateBatchCount',
+            url: 'http://localhost:8080/dbotica-spring/inventory/updateBatchCount',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -435,19 +435,19 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             var localUrl;
             switch (itemType) {
                 case 'All':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
                     break;
                 case 'Drug':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "inventoryItemType": "DRUG", "organizationId": organizationId });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "inventoryItemType": "DRUG", "organizationId": organizationId });
                     break;
                 case 'Supplies':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "inventoryItemType": "SUPPLIES", "organizationId": organizationId });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "inventoryItemType": "SUPPLIES", "organizationId": organizationId });
                     break;
                 case 'Equipments':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "inventoryItemType": "EQUIPMENT", "organizationId": organizationId });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "inventoryItemType": "EQUIPMENT", "organizationId": organizationId });
                     break;
                 case 'Others':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "inventoryItemType": "OTHERS", "organizationId": organizationId });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "inventoryItemType": "OTHERS", "organizationId": organizationId });
                     break;
             }
             requestEntity = {
@@ -459,19 +459,19 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             var localUrl;
             switch (itemType) {
                 case 'All':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
                     break;
                 case 'Drug':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "inventoryItemType": "DRUG", "organizationId": organizationId });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "inventoryItemType": "DRUG", "organizationId": organizationId });
                     break;
                 case 'Supplies':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "inventoryItemType": "SUPPLIES", "organizationId": organizationId });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "inventoryItemType": "SUPPLIES", "organizationId": organizationId });
                     break;
                 case 'Equipments':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "inventoryItemType": "EQUIPMENT", "organizationId": organizationId });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "inventoryItemType": "EQUIPMENT", "organizationId": organizationId });
                     break;
                 case 'Others':
-                    localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "inventoryItemType": "OTHERS", "organizationId": organizationId });
+                    localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "inventoryItemType": "OTHERS", "organizationId": organizationId });
                     break;
             }
             requestEntity = {
@@ -498,65 +498,65 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             case 'All':
                 switch (stockType) {
                     case 'All':
-                        localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId });
+                        localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "start": start, "limit": limit, "organizationId": organizationId });
                         break;
                     case 'Low':
-                        localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
                         break;
                     case 'Expired':
-                        localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
                         break;
                 }
                 break;
             case 'DrugItems':
                 switch (stockType) {
                     case 'All':
-                        localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "DRUG", "start": start, "limit": limit, "organizationId": organizationId });
+                        localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "DRUG", "start": start, "limit": limit, "organizationId": organizationId });
                         break;
                     case 'Low':
-                        localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "DRUG", "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "DRUG", "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
                         break;
                     case 'Expired':
-                        localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "DRUG", "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "DRUG", "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
                         break;
                 }
                 break;
             case 'EquipmentItems':
                 switch (stockType) {
                     case 'All':
-                        localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "EQUIPMENT", "start": start, "limit": limit, "organizationId": organizationId });
+                        localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "EQUIPMENT", "start": start, "limit": limit, "organizationId": organizationId });
                         break;
                     case 'Low':
-                        localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "EQUIPMENT", "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "EQUIPMENT", "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
                         break;
                     case 'Expired':
-                        localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "EQUIPMENT", "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "EQUIPMENT", "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
                         break;
                 }
                 break;
             case 'SuppliesItems':
                 switch (stockType) {
                     case 'All':
-                        localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "SUPPLIES", "start": start, "limit": limit, "organizationId": organizationId });
+                        localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "SUPPLIES", "start": start, "limit": limit, "organizationId": organizationId });
                         break;
                     case 'Low':
-                        localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "SUPPLIES", "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "SUPPLIES", "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
                         break;
                     case 'Expired':
-                        localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "SUPPLIES", "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "SUPPLIES", "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
                         break;
                 }
                 break;
             case 'OtherItems':
                 switch (stockType) {
                     case 'All':
-                        localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "OTHERS", "start": start, "limit": limit, "organizationId": organizationId });
+                        localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "OTHERS", "start": start, "limit": limit, "organizationId": organizationId });
                         break;
                     case 'Low':
-                        localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "OTHERS", "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "OTHERS", "lowStock": true, "start": start, "limit": limit, "organizationId": organizationId });
                         break;
                     case 'Expired':
-                        localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "OTHERS", "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
+                        localUrl = 'http://localhost:8080/dbotica-spring/inventory/getItems?queryString=' + JSON.stringify({ "inventoryItemType": "OTHERS", "expired": true, "start": start, "limit": limit, "organizationId": organizationId });
                         break;
                 }
                 break;
@@ -578,7 +578,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var serviceRequestIs = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/updateDoctorPrices',
+            url: 'http://localhost:8080/dbotica-spring/organization/updateDoctorPrices',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -598,7 +598,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var testRequest = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/updateTest',
+            url: 'http://localhost:8080/dbotica-spring/organization/updateTest',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -618,7 +618,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getTestsRequest = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/getTests',
+            url: 'http://localhost:8080/dbotica-spring/organization/getTests',
             withCredentials: true
         }
         $http(getTestsRequest).then(function(getTestsSuccessResponse) {
@@ -665,7 +665,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var invoiceRequest = {
             method: 'POST',
-            url: ' http://qa.dbotica.com:8081/dbotica-spring/organization/billing/updateInvoice',
+            url: ' http://localhost:8080/dbotica-spring/organization/billing/updateInvoice',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -685,7 +685,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var invoiceHistoryRequest = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'organizationId': organizationId }),
+            url: 'http://localhost:8080/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'organizationId': organizationId }),
             withCredentials: true
         }
         $http(invoiceHistoryRequest).then(function(invoiceHistorySuccessResponse) {
@@ -730,7 +730,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var caseRequest = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'organizationCaseId': caseId }),
+            url: 'http://localhost:8080/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'organizationCaseId': caseId }),
             withCredentials: true
         }
         $http(caseRequest).then(function(caseSuccess) {
@@ -747,10 +747,10 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var invoiceSearchRequestEntity;
         switch (searchType) {
             case 'Phone Number':
-                localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'patientPhoneNumber': firstSearchEntity, "organizationId": organizationId });
+                localUrl = 'http://localhost:8080/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'patientPhoneNumber': firstSearchEntity, "organizationId": organizationId });
                 break;
             case 'Bill Number':
-                localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'invoiceId': firstSearchEntity, "organizationId": organizationId });
+                localUrl = 'http://localhost:8080/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'invoiceId': firstSearchEntity, "organizationId": organizationId });
                 break;
             case 'Date':
                 var longValueOfStartDate = "";
@@ -765,14 +765,14 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
                 } else {
                     longValueOfEndDate = 0;
                 }
-                localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'startTime': longValueOfStartDate, 'endTime': longValueOfEndDate, "organizationId": organizationId });
+                localUrl = 'http://localhost:8080/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'startTime': longValueOfStartDate, 'endTime': longValueOfEndDate, "organizationId": organizationId });
                 break;
             case 'Next Due Date':
                 var longValueOfDate = this.getLongValueOfDate(firstSearchEntity);
-                localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'nextPaymentDueDate': longValueOfDate, "organizationId": organizationId });
+                localUrl = 'http://localhost:8080/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'nextPaymentDueDate': longValueOfDate, "organizationId": organizationId });
                 break;
             case 'Doctor':
-                localUrl = 'http://qa.dbotica.com:8081/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'doctorId': firstSearchEntity, "organizationId": organizationId });
+                localUrl = 'http://localhost:8080/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'doctorId': firstSearchEntity, "organizationId": organizationId });
                 break;
         }
         invoiceSearchRequestEntity = {
@@ -792,7 +792,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getPendingRequestEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'organizationId': organizationId, 'paymentPending': true }),
+            url: 'http://localhost:8080/dbotica-spring/organization/billing/getInvoices?queryString=' + JSON.stringify({ 'organizationId': organizationId, 'paymentPending': true }),
             withCredentials: true
         }
         $http(getPendingRequestEntity).then(function(pendingInvoiceSuccess) {
@@ -809,7 +809,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var limit = parseInt(3);
         var getPrescriptionRequestEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/assistant/patient/getPrescriptions?patientId=' + patientId + '&start=' + start + '&limit=' + limit,
+            url: 'http://localhost:8080/dbotica-spring/assistant/patient/getPrescriptions?patientId=' + patientId + '&start=' + start + '&limit=' + limit,
             withCredentials: true
         }
         $http(getPrescriptionRequestEntity).then(function(gtPrescriptionSuccess) {
@@ -1230,7 +1230,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var roomCategoryEntity = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/updateRoomCategory',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/updateRoomCategory',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -1250,7 +1250,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getRoomCategoriesEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/getRoomCategories?organizationId=' + organizationId,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getRoomCategories?organizationId=' + organizationId,
             withCredentials: true
         }
         $http(getRoomCategoriesEntity).then(function(getRoomCategoriesSuuccess) {
@@ -1265,7 +1265,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var newRoomEntity = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/updateRoom',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/updateRoom',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -1335,7 +1335,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getRoomsEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/getRooms?organizationId=' + organizationId,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getRooms?organizationId=' + organizationId,
             withCredentials: true
         }
         $http(getRoomsEntity).then(function(getRoomsSuccess) {
@@ -1350,7 +1350,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var addNewDoctorCategoryEntity = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/updateDoctorCategory',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/updateDoctorCategory',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -1370,7 +1370,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getDoctorCategoriesEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/getDoctorCategories?organizationId=' + organizationId,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getDoctorCategories?organizationId=' + organizationId,
             withCredentials: true
         }
         $http(getDoctorCategoriesEntity).then(function(doctorCategoriesSuccess) {
@@ -1385,7 +1385,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var addNewDoctorRequestentity = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/updateDoctor',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/updateDoctor',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -1405,7 +1405,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getDoctorListInMainAdminEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/getDoctors?organizationId=' + organizationId + '&doctorType=' + '',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getDoctors?organizationId=' + organizationId + '&doctorType=' + '',
             withCredentials: true
         }
         $http(getDoctorListInMainAdminEntity).then(function(doctorsListInMainAdminSuccess) {
@@ -1460,7 +1460,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var addNewBedRequestEntity = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/updateBed',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/updateBed',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -1480,7 +1480,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getBedsRequestEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/getBeds?organizationId=' + organizationId,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getBeds?organizationId=' + organizationId,
             withCredentials: true
         }
         $http(getBedsRequestEntity).then(function(getBedsSuccess) {
@@ -1495,7 +1495,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var registPatientEntity = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/updatePatient',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/updatePatient',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -1515,7 +1515,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var newDoctorEntity = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/addDoctor',
+            url: 'http://localhost:8080/dbotica-spring/organization/addDoctor',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -1535,7 +1535,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var addressEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/getOrganizationDetails',
+            url: 'http://localhost:8080/dbotica-spring/organization/getOrganizationDetails',
             withCredentials: true,
         }
         $http(addressEntity).then(function(addressSuccess) {
@@ -1550,7 +1550,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var registeredPatientsRequestEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/getPatients?organizationId=' + organizationId,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getPatients?organizationId=' + organizationId,
             withCredentials: true
         }
         $http(registeredPatientsRequestEntity).then(function(registeredPatientSuccess) {
@@ -1578,7 +1578,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var updateEntity = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/updateOrganizationAddress',
+            url: 'http://localhost:8080/dbotica-spring/organization/updateOrganizationAddress',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -1616,7 +1616,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var patientEventRequestEntity = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/updatePatientEvent',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/updatePatientEvent',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -1636,7 +1636,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getEventsRequestEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/getPatientEvents?organizationId=' + organizationId,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getPatientEvents?organizationId=' + organizationId,
             withCredentials: true
         }
         $http(getEventsRequestEntity).then(function(getEventsSuccess) {
@@ -1651,7 +1651,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getEventsRequest = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/getPatientEvents?organizationId=' + organizationId + '&patientIds=' + patientId,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getPatientEvents?organizationId=' + organizationId + '&patientIds=' + patientId,
             withCredentials: true
         }
         $http(getEventsRequest).then(function(getEventsSuccess) {
@@ -1666,7 +1666,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var addPatientRequestEntity = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/addPatientToBed',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/addPatientToBed',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -1950,7 +1950,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getInPatientsRequestEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/getOrgPatientByPhone?phoneNumber=' + phoneNumber,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getOrgPatientByPhone?phoneNumber=' + phoneNumber,
             withCredentials: true
         }
         $http(getInPatientsRequestEntity).then(function(inpatientsSuccess) {
@@ -1965,7 +1965,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var transferEntity = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/transferPatient',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/transferPatient',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -1985,7 +1985,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var prescriptionEntity = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/assistant/updatePrescription',
+            url: 'http://localhost:8080/dbotica-spring/assistant/updatePrescription',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -2005,7 +2005,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getTransferEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/getTransferEvents?organizationId=' + organizationId,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getTransferEvents?organizationId=' + organizationId,
             withCredentials: true
         }
         $http(getTransferEntity).then(function(getTransferResponse) {
@@ -2020,7 +2020,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getAssistantsRequest = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/getAssistantsByOrganizationId?organizationId=' + organizationId,
+            url: 'http://localhost:8080/dbotica-spring/organization/getAssistantsByOrganizationId?organizationId=' + organizationId,
             withCredentials: true
         }
         $http(getAssistantsRequest).then(function(getAssistantsResponse) {
@@ -2035,7 +2035,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var addAssistantRequest = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/addAssistant',
+            url: 'http://localhost:8080/dbotica-spring/organization/addAssistant',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -2055,7 +2055,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getTestRequestEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/diagnosis/getDiagnosisTest?diagnosisTest=' + test,
+            url: 'http://localhost:8080/dbotica-spring/diagnosis/getDiagnosisTest?diagnosisTest=' + test,
             withCredentials: true
         }
         $http(getTestRequestEntity).then(function(getTestsResponse) {
@@ -2113,7 +2113,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         labEntityRequest = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/getLabEvents',
+            url: 'http://localhost:8080/dbotica-spring/organization/getLabEvents',
             withCredentials: true
         }
         $http(labEntityRequest).then(function(getLabsSuccess) {
@@ -2128,7 +2128,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var caseHistoryRequest = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/getCaseHistory?patientId=' + patientId,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getCaseHistory?patientId=' + patientId,
             withCredentials: true
         }
         $http(caseHistoryRequest).then(function(caseHistorySuccess) {
@@ -2143,7 +2143,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var caseRequest = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/getPrescriptionsByCase?organizationCaseId=' + caseId,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getPrescriptionsByCase?organizationCaseId=' + caseId,
             withCredentials: true
         }
         $http(caseRequest).then(function(caseSuccess) {
@@ -2218,7 +2218,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var requestEntity = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/getPatientAndOrganizationPatient?phoneNumber=' + phoneNumber,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getPatientAndOrganizationPatient?phoneNumber=' + phoneNumber,
             withCredentials: true
         }
         $http(requestEntity).then(function(getSuccess) {
@@ -2242,7 +2242,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var labRequestEntity = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/updateLabEvent',
+            url: 'http://localhost:8080/dbotica-spring/organization/updateLabEvent',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -2262,7 +2262,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getOrganizationRequest = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/getOrgPatientByPatientId?patientId=' + patientId,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/getOrgPatientByPatientId?patientId=' + patientId,
             withCredentials: true
         }
         $http(getOrganizationRequest).then(function(getOrgPatientSuccess) {
@@ -2286,7 +2286,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var fieldRequest = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/billing/updatePatientInsurance',
+            url: 'http://localhost:8080/dbotica-spring/organization/billing/updatePatientInsurance',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -2306,7 +2306,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var fieldRequest = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/template/addTemplate',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/template/addTemplate',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -2326,7 +2326,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var getTemplatesRequest = {
             method: 'GET',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/template/getTemplates?organizationId=' + organizationId + '&name=' + template + '&showInvisible=' + visibility,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/template/getTemplates?organizationId=' + organizationId + '&name=' + template + '&showInvisible=' + visibility,
             withCredentials: true
         }
         $http(getTemplatesRequest).then(function(getTemplateSuccess) {
@@ -2488,7 +2488,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var instanceRequest = {
             method: 'POST',
-            url: 'http://qa.dbotica.com:8081/dbotica-spring/organization/hospital/template/addTemplateInstance',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/template/addTemplateInstance',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
