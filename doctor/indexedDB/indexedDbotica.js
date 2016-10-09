@@ -264,7 +264,7 @@ function syncAllPrescriptionsToIndexedDB() {
             success: function(response) {
                 var data = {};
                 data = $.parseJSON(response.response);
-                console.log('data in indexed db is----', data);
+                // console.log('data in indexed db is----', data);
                 var patientObjectStore = getObjectStore(DB_PATIENT_STORE, "readwrite");
                 totalPrescriptionCount = response.totalCount;
 
@@ -362,9 +362,9 @@ function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId, callBac
     /*console.log("addPrescription argumensts:", arguments);*/
     var patientName = !$.isEmptyObject(patientInfo) ? patientInfo.firstName : "Unknown";
     var patientPhoneNumber = !$.isEmptyObject(patientInfo) ? patientInfo.phoneNumber : 0;
-    console.log('prescription is-----', prescription);
-    console.log('patient info is----', patientInfo);
-    console.log('doctor id is----', doctorId);
+    // console.log('prescription is-----', prescription);
+    //console.log('patient info is----', patientInfo);
+    //console.log('doctor id is----', doctorId);
     var obj = { "id": prescription.id, "prescription": prescription, "patientInfo": patientInfo, "doctorId": doctorId, "patientName": patientName, "patientPhoneNumber": patientPhoneNumber, "creationTime": new Date(prescription.creationTime) };
     var store = getObjectStore(DB_PRESCRIPTION_STORE, 'readwrite');
 
@@ -382,7 +382,7 @@ function addPrescriptionToIndexedDB(prescription, patientInfo, doctorId, callBac
 
         if (!prescriptionObj || $.isEmptyObject(prescriptionObj.patientInfo) || prescriptionObj.patientInfo === undefined || !$.isEmptyObject(obj.patientInfo)) {
             var prescriptionStore = getObjectStore(DB_PRESCRIPTION_STORE, 'readwrite');
-            console.log('obj is before adding-----', obj);
+            // console.log('obj is before adding-----', obj);
             var requestUpdate = prescriptionStore.put(obj);
             requestUpdate.onsuccess = function(event) {
 

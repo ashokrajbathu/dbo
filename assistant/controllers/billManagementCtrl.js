@@ -55,7 +55,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
     billElement.invoice = {};
     billElement.add = {};
 
-    billElement.invoice.nextPaymentAmount = 0;
+    billElement.invoice.nextPaymentAmount = parseInt(0);
     billElement.invoice.amount = parseInt(0);
     billElement.add = {};
     billElement.add.testDate = "";
@@ -88,6 +88,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
             billElement.finalBill.patientPhoneNumber = currentActiveInvoice.billingInvoice.patientPhoneNumber;
             billElement.finalBill.invoiceState = currentActiveInvoice.billingInvoice.invoiceState;
             billElement.finalBill.creationTime = currentActiveInvoice.billingInvoice.creationTime;
+            billElement.finalBill.organizationPatientId = currentActiveInvoice.billingInvoice.organizationPatientId;
             billElement.finalBill.id = currentActiveInvoice.billingInvoice.id;
             fetchDoctorDetails = false;
             billElement.patientSearchDiv = false;
@@ -114,7 +115,9 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
             billElement.bill.doctorActive = dboticaServices.getDoctorsDetailsArray(currentActiveInvoice.billingInvoice.doctorId);
             setDoctorNameAndDoctorServices(billElement.bill.doctorActive);
             billElement.invoice.nextPaymentDate = dboticaServices.longDateToReadableDate(currentActiveInvoice.billingInvoice.nextPaymentDate);
-            billElement.invoice.nextPaymentAmount = currentActiveInvoice.billingInvoice.nextPaymentAmount / 100;
+            $log.log('current invoice is-----', currentActiveInvoice.billingInvoice);
+            billElement.invoice.nextPaymentAmount = parseInt(currentActiveInvoice.billingInvoice.nextPaymentAmount) / 100;
+            $log.log('next payment amount is------', billElement.invoice.nextPaymentAmount);
             angular.copy(currentActiveInvoice.billingInvoice.paymentEntries, billElement.addToBill);
             angular.forEach(billElement.addToBill, function(billEntity) {
                 billEntity.amountPaid = billEntity.amountPaid / 100;
@@ -505,6 +508,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                         var invoiceSuccessResponse = invoiceUpdateSuccessResponse.data.response;
                         if (errorCode == null && success == true) {
                             var billActiveForPrint = angular.fromJson(invoiceUpdateSuccessResponse.config.data);
+                            billElement.invoice.nextPaymentAmount = parseInt(0);
                             if (_.has(billActiveForPrint, 'items')) {
                                 angular.forEach(billActiveForPrint.items, function(entity) {
                                     if (entity.itemType == 'MEDICINE') {

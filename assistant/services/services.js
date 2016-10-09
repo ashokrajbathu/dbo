@@ -2713,4 +2713,23 @@ background-repeat:no-repeat;
 background-position:right top;
 background-attachment:fixed;
 
+border-style property specifies what kind of border to display
+dotted,dashed,solid,
+border-width property specifies the width of the four borders
+
+font-style has 3 values : normal,italic and oblique
+1em-16px
+
+ol.c{
+    list-style-type:upper-roman;
+}
+
+tr:nth-child(even){
+    
+}
+
+tr:nth-child(odd){
+    
+}
+
 */
