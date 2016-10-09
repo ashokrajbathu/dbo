@@ -23,6 +23,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
     billElement.paidAndDueCheck = paidAndDueCheck;
     billElement.nextDueCheck = nextDueCheck;
     billElement.selectDrugInModal = selectDrugInModal;
+    billElement.deleteCost = deleteCost;
 
     billElement.loading = false;
     billElement.checkbox = 'checkBoxInModal';
@@ -205,6 +206,11 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
     if (fetchDoctorDetails) {
         billElement.loading = true;
         billElement.blurScreen = true;
+        getDoctorsOfAssistant();
+    }
+
+
+    function getDoctorsOfAssistant() {
         var doctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
         doctorsOfThatAssistant.then(function(successResponse) {
             var errorCode = successResponse.data.errorCode;
@@ -582,6 +588,15 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
         }
     }
 
+    function deleteCost(activeCostInBill, index) {
+        billElement.invoice.amount += parseInt(activeCostInBill.amountPaid);
+        billElement.addPay.splice(index, 1);
+        var costIndex = _.findLastIndex(billElement.addToBill, function(billEntity) {
+            return billEntity.amountPaid == activeCostInBill.amountPaid;
+        });
+        billElement.addToBill.splice(costIndex, 1);
+    }
+
     function addDueDateBill() {
         if (billElement.finalBill.patientId == "") {
             dboticaServices.showNoPatientSwal();
@@ -596,9 +611,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                 billElement.invoice.amount -= parseInt(billElement.dueDateBill.dueCost);
                 if (!jQuery.isEmptyObject(currentActiveInvoice)) {
                     if (billElement.invoice.nextPaymentAmount !== undefined && billElement.invoice.nextPaymentAmount !== "" && billElement.invoice.nextPaymentAmount !== 0) {
-
                         if (parseInt(billElement.dueDateBill.dueCost) <= parseInt(billElement.invoice.nextPaymentAmount)) {
-
                             billElement.invoice.nextPaymentAmount -= parseInt(billElement.dueDateBill.dueCost);
                         } else {
                             billElement.invoice.nextPaymentDate = "";
@@ -749,6 +762,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
         billElement.patientBillGridNine = true;
         currentActiveInvoice = {};
         billElement.patient = {};
+        getDoctorsOfAssistant();
         billElement.bill.patientsListOfThatNumber = [];
         billElement.patientSearch.phoneNumber = "";
         billElement.bill.patientSearchPatients = false;
@@ -757,6 +771,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
         billElement.invoice = {};
         billElement.bill.billsListing = [];
         billElement.invoice.amount = parseInt(0);
+        billElement.invoice.nextPaymentAmount = parseInt(0);
         billElement.dueDateBill = {};
         billElement.addPay = [];
         billElement.finalBill = {};

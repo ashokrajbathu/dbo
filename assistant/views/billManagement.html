@@ -235,6 +235,7 @@
                                                         <th>S.No.</th>
                                                         <th>Date</th>
                                                         <th>Cost</th>
+                                                        <th>Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -242,6 +243,9 @@
                                                         <td ng-bind="$index+1"></td>
                                                         <td ng-bind="billInModal.updatedAt"></td>
                                                         <td ng-bind="billInModal.amountPaid"></td>
+                                                        <td>
+                                                            <button ng-click="billView.deleteCost(billInModal,$index)" type="button" class="btn mainAdminBtn">Delete</button>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -313,7 +317,7 @@
                                             </td>
                                             <td ng-bind="billEle.amountCharged"></td>
                                             <td>
-                                                <input type="checkbox" ng-click="billEle.paid=!billEle.paid" ng-checked="{{'checkBox'+$index}}" ng-attr-name="billEle.paid">
+                                                <input readonly type="checkbox" ng-click="billEle.paid=!billEle.paid" ng-checked="{{'checkBox'+$index}}" ng-attr-name="billEle.paid">
                                             </td>
                                             <td>
                                                 <button ng-click="billView.deleteABill(billEle,$index)" class="btn billDelete">Delete</button>
