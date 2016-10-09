@@ -63,6 +63,7 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.closeCase = closeCase;
     doctorServices.longDateToReadableDate = longDateToReadableDate;
     doctorServices.getCurrentActivePrescription = getCurrentActivePrescription;
+    doctorServices.addImages = addImages;
 
     function longDateToReadableDate(longDate) {
         var result;
@@ -77,6 +78,36 @@ function doctorServices($http, $state, $log, $q) {
             result = resultArrayDateReadable[1] + '/' + resultArrayDateReadable[0] + '/' + resultArrayDateReadable[2];
         }
         return result;
+    }
+
+    function addImages(image) {
+        $log.log('kdfd---', image);
+        //var fd = new FormData(image);
+        var fd = new FormData();
+        fd.append('file', image.file);
+        fd.append('imageName', image.imageName);
+        $log.log('fd is----', fd); 
+        var deferred = $q.defer();
+        var imageRequest = {
+            method: 'POST',
+            url: 'http://localhost:8080/dbotica-spring/doctor/addDoctorDiseaseImage',
+            headers: {
+                //'Content-Type': 'multipart/form-data;boundary=diseaseImage',
+                'Content-Type': undefined,
+                'Accept' : 'application/json'
+
+            },
+            processData: false,
+            withCredentials: true,
+            data: fd
+        }
+        $log.log('request is in service-----', imageRequest);
+        $http(imageRequest).then(function(imageSuccess) {
+            deferred.resolve(imageSuccess);
+        }, function(imageError) {
+            deferred.reject(imageError);
+        });
+        return deferred.promise;
     }
 
     function getCurrentActivePrescription(prescriptionId) {
