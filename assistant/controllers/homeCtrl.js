@@ -42,7 +42,6 @@ function homeCtrl($scope, $log, $location, dboticaServices, $state, $http, $pars
                 $scope.isVisibleNavs.admin = true;
                 break;
             case 'HOSPITAL_ADMIN':
-
                 $scope.isVisibleNavs.ipd = true;
                 $scope.isVisibleNavs.mainAdmin = true;
                 $scope.isVisibleNavs.insurance = true;

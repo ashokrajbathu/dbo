@@ -18,25 +18,31 @@
                 </form>
             </div>
         </div>
-        <!-- <div class="row">
+        <div class="row">
             <div class="col-md-11 col-xs-11 col-sm-11">
-                <table class="table table-responsive table-bordered table-striped">
+                <table id="imagesTable" class="table table-responsive table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>S.No.</th>
-                            <th>Image Name</th>
+                            <th width="5%">S.No.</th>
+                            <th width="25%">Image Name</th>
                             <th>Image</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                        <tr ng-repeat="imageEntity in imageTemplate.imagesList">
+                            <td ng-bind="$index+1"></td>
+                            <td ng-bind="imageEntity.imageName"></td>
+                            <td>
+                                <img style="width:100px;height:100px;" ng-src="{{imageEntity.imageUrl}}">
+                            </td>
+                            <td>
+                                <button class="btn doctorBtn" type="button">Delete</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div> -->
+        </div>
     </div>
 </div>

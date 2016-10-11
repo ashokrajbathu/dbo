@@ -128,6 +128,20 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
+    this.appointmentsListOfFutureDate = function(longDate, doctorId) {
+        var deferred = $q.defer();
+        var req = {
+            method: 'GET',
+            url: 'http://localhost:8080/dbotica-spring/assistant/getDoctorEvents?requestTime=' + longDate + '&doctorId=' + doctorId + '&fetchAllEvents=true',
+            withCredentials: true
+        }
+        $http(req).then(function(response) {
+            deferred.resolve(response);
+        }, function(errorResponse) {
+            deferred.reject(errorResponse);
+        });
+        return deferred.promise;
+    }
     this.cancelAppointmentOfADateOrUpdateDoctorEvent = function(cancelBook) {
         var deferred = $q.defer();
         var req = {
@@ -1059,6 +1073,16 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         swal({
             title: "Error",
             text: "Please enter the Medicine Name",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.validDateSwal = function() {
+        swal({
+            title: "Error",
+            text: "Please Select Valid Date",
             type: "error",
             confirmButtonText: "OK",
             allowOutsideClick: true
@@ -2731,5 +2755,14 @@ tr:nth-child(even){
 tr:nth-child(odd){
     
 }
+
+$animate method exposes a series of DOM utility methods that provide support for animation hooks.
+on(event,container,callback)-the animation event that will be captured
+container-the container element that will capture each of the animation events that are fired on itself as well as among its children.
+Factory that constructs cache objects and give access to them
+compiles an HTML string or DOM into a template and produces a template function,which can then be used to link scope and the template together.
+filters are used for formatting data displayed to the user.
+$http is a core Angular service that facilitates communication with the remote HTTP servers
+$document- Ajquery wrapper for the browser window.document object
 
 */

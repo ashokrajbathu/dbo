@@ -27,6 +27,9 @@
                         <input ng-maxlength=10 numbers-only type="text" id="inputPatientPhoneNumberSearch" ng-model="patientDataSearch.phoneNumberSearch" placeholder="Phone Number">
                         <button id="patientSearchInAppointments" type="button" class="addPatientBtn btn" data-toggle="modal" ng-click="patientSearch()" data-target="#myModal">Patient Search</button>
                     </div>
+                    <div style="float:right;" class="form-group">
+                        <input type="text" ng-model="appointmentsSearchDate" ng-change="appointmentsOfDate()" id="searchDate" placeholder="Search Date">
+                    </div>
                     <!-- <div class="form-group">
                         <button type="button" ng-click="viewDoctorsSection()" class="doctorTimingsBtn btn">Doctor Timings</button>
                         <button type="button" ng-click="cancelBookingsModal()" data-toggle="modal" data-target="#myCancelBookingsModal" class="cancelBookingsBtn btn">Cancel Bookings</button>

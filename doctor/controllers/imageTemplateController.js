@@ -6,6 +6,27 @@ function imageTemplateController($scope, $log, doctorServices, $state, $http, $p
 
     imageTemplate.addImage = addImage;
     imageTemplate.imageName = '';
+    imageTemplate.imagesList = [];
+
+    var getImagesPromise = doctorServices.getDoctorImages();
+    $log.log('get images promise is-----', getImagesPromise);
+    getImagesPromise.then(function(getImagesSuccess) {
+        var errorCode = getImagesSuccess.data.errorCode;
+        if (errorCode) {
+            doctorServices.logoutFromThePage(errorCode);
+        } else {
+            var getImagesResponse = angular.fromJson(getImagesSuccess.data.response);
+            $log.log('images response is---', getImagesResponse);
+            if (errorCode == null && getImagesSuccess.data.success) {
+                imageTemplate.imagesList = _.filter(getImagesResponse, function(entity) {
+                    return entity.state == 'ACTIVE';
+                })
+
+            }
+        }
+    }, function(getImagesError) {
+        doctorServices.noConnectivityError();
+    });
 
     function addImage() {
         var imageRequest = {};

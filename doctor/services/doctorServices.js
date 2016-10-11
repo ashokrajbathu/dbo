@@ -64,6 +64,7 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.longDateToReadableDate = longDateToReadableDate;
     doctorServices.getCurrentActivePrescription = getCurrentActivePrescription;
     doctorServices.addImages = addImages;
+    doctorServices.getDoctorImages = getDoctorImages;
 
     function longDateToReadableDate(longDate) {
         var result;
@@ -80,13 +81,28 @@ function doctorServices($http, $state, $log, $q) {
         return result;
     }
 
+    function getDoctorImages() {
+        var deferred = $q.defer();
+        var getImageRequest = {
+            method: 'GET',
+            url: 'http://localhost:8080/dbotica-spring/doctor/getDoctorDiseaseImage',
+            withCredentials: true
+        }
+        $http(getImageRequest).then(function(getImageSuccess) {
+            deferred.resolve(getImageSuccess);
+        }, function(getImageError) {
+            deferred.reject(getImageError);
+        });
+        return deferred.promise;
+    }
+
     function addImages(image) {
         $log.log('kdfd---', image);
         //var fd = new FormData(image);
         var fd = new FormData();
         fd.append('file', image.file);
         fd.append('imageName', image.imageName);
-        $log.log('fd is----', fd); 
+        $log.log('fd is----', fd);
         var deferred = $q.defer();
         var imageRequest = {
             method: 'POST',
@@ -94,7 +110,7 @@ function doctorServices($http, $state, $log, $q) {
             headers: {
                 //'Content-Type': 'multipart/form-data;boundary=diseaseImage',
                 'Content-Type': undefined,
-                'Accept' : 'application/json'
+                'Accept': 'application/json'
 
             },
             processData: false,

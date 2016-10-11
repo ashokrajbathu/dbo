@@ -316,6 +316,8 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
             inpatientElement.activeDoctorsListToBeDisplayed = [];
             inpatientElement.activeDoctorsListToBeDisplayed.push(doctorObject);
             angular.forEach(activeDoctorsList, function(activeDoctorEntity) {
+                $log.log('active doctor entity is------', activeDoctorEntity);
+                $log.log('active doctor category is entity is------', doctorCategoryEntity);
                 if (activeDoctorEntity.organizationDoctorCategory.doctorType == doctorCategoryEntity.doctorType) {
                     inpatientElement.activeDoctorsListToBeDisplayed.push(activeDoctorEntity);
                 }
@@ -405,6 +407,7 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
             bedRequestEntity.doctorDetail.doctorId = activeDoctorId;
             bedRequestEntity.doctorDetail.doctorDepartment = doctorDepartment;
             bedRequestEntity.doctorDetail.doctorName = activeDoctorName;
+            $log.log('bed request entity is-----', bedRequestEntity);
             var addPatientToBedPromise = dboticaServices.addPatientToBed(bedRequestEntity);
             addPatientToBedPromise.then(function(addPatientSuccess) {
                 var errorCode = addPatientSuccess.data.errorCode;

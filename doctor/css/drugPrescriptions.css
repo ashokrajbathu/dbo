@@ -13,6 +13,11 @@
     max-height: 200px;
 }
 
+#imagesTable>thead>tr>th,
+#imagesTable>tbody>tr>td {
+    text-align: center;
+}
+
 .testDropDownActive {
     margin-left: 10px;
     display: block;

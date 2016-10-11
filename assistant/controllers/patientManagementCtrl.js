@@ -14,6 +14,12 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         autoclose: true,
         'minDate': 0
     });
+
+    angular.element("#searchDate").datepicker({
+        dateFormat: "dd/mm/yy",
+        autoclose: true
+    });
+
     angular.element("#datepicker").datepicker("setDate", new Date());
     angular.element("#deleteTimeDatepicker").datepicker({
         format: "dd/mm/yyyy",
@@ -60,6 +66,7 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
     $scope.dateSelected = "";
     $scope.startEndTimeObj = {};
     $scope.addTime = {};
+    $scope.appointmentsSearchDate = '';
     $scope.modalSubmitButtonText = "Add Patient";
     $scope.patientData = {};
     $scope.nextForm = false;
@@ -198,6 +205,31 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
             $scope.addTime.dayEndTime = angular.element("#timepickerEndTime").val();
             $scope.addTime.timePerPatient = ($scope.startEndTimeObj.timePerPatient / 1000) / 60;
         }
+    }
+
+    $scope.appointmentsOfDate = function() {
+        console.log('date selected is-------', $scope.appointmentsSearchDate);
+        var searchDate = moment($scope.appointmentsSearchDate, "DD/MM/YYYY").isValid();
+        if ($scope.appointmentsSearchDate.length == 10 && searchDate) {
+            var dateInFormat = new Date($scope.appointmentsSearchDate);
+            var milliSecsOfDate = dateInFormat.getTime();
+            console.log('date is-----', milliSecsOfDate, $scope.book.doctorId);
+            var appointmentsPromise = dboticaServices.appointmentsListOfFutureDate(milliSecsOfDate, $scope.book.doctorId);
+            console.log('promise is----', appointmentsPromise);
+            appointmentsPromise.then(function(appointmentsSuccess) {
+                var errorCode = appointmentsSuccess.data.errorCode;
+                if (errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var appointmentsResponse = angular.fromJson(appointmentsSuccess.data.response);
+                    console.log('response is------', appointmentsResponse);
+                }
+            }, function(appointmentsError) {
+                dboticaServices.noConnectivityError();
+            });
+        }
+        console.log('validity is-----', searchDate);
+
     }
 
     $scope.selectCaseNumber = function(selectedCase) {

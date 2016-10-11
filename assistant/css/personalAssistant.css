@@ -367,7 +367,8 @@
         color: white;
     }
     
-    #inputPatientPhoneNumberSearch {
+    #inputPatientPhoneNumberSearch,
+    #searchDate {
         padding-left: 12px;
         height: 33px;
         margin-top: 18px;
