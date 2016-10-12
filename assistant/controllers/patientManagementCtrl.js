@@ -238,6 +238,8 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
             }, function(appointmentsError) {
                 dboticaServices.noConnectivityError();
             });
+        } else {
+            getPatientAppointments($scope.book.doctorId);
         }
         console.log('validity is-----', searchDate);
 

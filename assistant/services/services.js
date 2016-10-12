@@ -129,10 +129,11 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
     }
 
     this.appointmentsListOfFutureDate = function(longDate, doctorId) {
+        var endDateLongValue = longDate + parseInt(86400000);
         var deferred = $q.defer();
         var req = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/assistant/getDoctorEvents?requestTime=' + longDate + '&doctorId=' + doctorId + '&fetchAllEvents=true',
+            url: 'http://localhost:8080/dbotica-spring/assistant/getDoctorEvents?requestTime=' + longDate + '&requestEndTime=' + endDateLongValue + '&doctorId=' + doctorId + '&fetchAllEvents=true',
             withCredentials: true
         }
         $http(req).then(function(response) {

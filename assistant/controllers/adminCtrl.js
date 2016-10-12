@@ -584,7 +584,7 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
 
     function testSearch() {
         var testOnSearch = adminElement.admin.procedureNameTxtBox;
-        if (testOnSearch.length > 0) {
+        if (adminElement.admin.doctorInDropdown == 'General' && testOnSearch.length > 0) {
             var testsPromise = dboticaServices.getTests(testOnSearch);
             testsPromise.then(function(getTestsSuccess) {
                 var errorCode = getTestsSuccess.data.errorCode;
