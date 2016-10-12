@@ -13,8 +13,12 @@
     max-height: 200px;
 }
 
-#imagesTable>thead>tr>th,
-#imagesTable>tbody>tr>td {
+#imageInDrugsTable {
+    max-height: 200px;
+}
+
+.imagesTable>thead>tr>th,
+.imagesTable>tbody>tr>td {
     text-align: center;
 }
 
@@ -147,7 +151,8 @@
 }
 
 .referToForm,
-#prescriptionAdditionalComments {
+#prescriptionAdditionalComments,
+.imageForm {
     margin-top: 6px;
 }
 

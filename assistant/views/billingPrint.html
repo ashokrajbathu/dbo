@@ -16,7 +16,8 @@
         <p class="addressInTheBill" align="center" ng-bind="address"></p>
         <p style="margin-top:-12px;font-size:20px;" align="center">Cell No:<span ng-bind="cellNumber"></span> Phone No:<span ng-bind="phoneNumber"></span>
         </p>
-        <div ng-class="{'pageBreaker':doctorServicesPageBreakerFlag,'pageDisplay':doctorServicesPageDisplay}" class="doctorServicesDiv">
+        <!-- jkb ng-class="{'pageBreaker':doctorServicesPageBreakerFlag,'pageDisplay':doctorServicesPageDisplay}" -->
+        <div class="doctorServicesDiv">
             <div id="billingDate">
                 <label>Bill Date :</label>
                 <span class="amountDet" ng-bind="todayDate|longDateIntoReadableDate"></span>
@@ -32,7 +33,7 @@
                 </div>
             </div>
             <h3>Doctor Services:</h3>
-            <table class="table billingTable table-bordered table-striped">
+            <table class="table printTable billingTable table-bordered table-striped">
                 <thead>
                     <tr>
                         <th width="5%;">S.No.</th>
@@ -63,8 +64,9 @@
                 </tbody>
             </table>
         </div>
-        <div ng-class="{'pageBreaker':medicinesPageBreakerFlag,'pageDisplay':medicinesPageDisplay}" class="doctorServicesDiv">
-            <div id="billingDate">
+        <!-- kj ng-class="{'pageBreaker':medicinesPageBreakerFlag,'pageDisplay':medicinesPageDisplay}" -->
+        <div class="doctorServicesDiv">
+            <!-- <div id="billingDate">
                 <label>Bill Date :</label>
                 <span class="amountDet" ng-bind="todayDate|longDateIntoReadableDate"></span>
             </div>
@@ -77,9 +79,9 @@
                     <label>Phone :</label>
                     <span class="amountDet" ng-bind="patientNumberInBill"></span>
                 </div>
-            </div>
+            </div> -->
             <h3>Medicines :</h3>
-            <table class="table billingTable table-bordered table-striped">
+            <table class="table printTable billingTable table-bordered table-striped">
                 <thead>
                     <tr>
                         <th width="5%;">S.No.</th>
@@ -110,8 +112,9 @@
                 </tbody>
             </table>
         </div>
-        <div ng-class="{'pageBreaker':testsPageBreakerFlag,'pageDisplay':testsPageDisplay}" class="doctorServicesDiv">
-            <div id="billingDate">
+        <!-- skkdfds ng-class="{'pageBreaker':testsPageBreakerFlag,'pageDisplay':testsPageDisplay}" -->
+        <div class="doctorServicesDiv">
+            <!-- <div id="billingDate">
                 <label>Bill Date :</label>
                 <span class="amountDet" ng-bind="todayDate|longDateIntoReadableDate"></span>
             </div>
@@ -124,9 +127,9 @@
                     <label>Phone :</label>
                     <span class="amountDet" ng-bind="patientNumberInBill"></span>
                 </div>
-            </div>
+            </div> -->
             <h3>Tests :</h3>
-            <table class="table billingTable table-bordered table-striped">
+            <table class="table printTable billingTable table-bordered table-striped">
                 <thead>
                     <tr>
                         <th width="5%;">S.No.</th>
@@ -157,8 +160,8 @@
                 </tbody>
             </table>
         </div>
-        <div style="page-break-before:always;">
-            <div id="billingDate">
+        <div>
+            <!-- <div id="billingDate">
                 <label>Bill Date :</label>
                 <span class="amountDet" ng-bind="todayDate|longDateIntoReadableDate"></span>
             </div>
@@ -171,9 +174,9 @@
                     <label>Phone :</label>
                     <span class="amountDet" ng-bind="patientNumberInBill"></span>
                 </div>
-            </div>
+            </div> -->
             <h3>Payment Details:</h3>
-            <table id="paymentEntriesTable" class="table billingTable table-bordered table-striped">
+            <table id="paymentEntriesTable" class="table printTable billingTable table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>S.No.</th>

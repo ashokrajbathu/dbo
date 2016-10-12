@@ -20,7 +20,7 @@
         </div>
         <div class="row">
             <div class="col-md-11 col-xs-11 col-sm-11">
-                <table id="imagesTable" class="table table-responsive table-bordered table-striped">
+                <table class="table table-responsive table-bordered imagesTable table-striped">
                     <thead>
                         <tr>
                             <th width="5%">S.No.</th>
@@ -37,7 +37,7 @@
                                 <img style="width:100px;height:100px;" ng-src="{{imageEntity.imageUrl}}">
                             </td>
                             <td>
-                                <button class="btn doctorBtn" type="button">Delete</button>
+                                <button ng-click="imageTemplate.deleteImage(imageEntity)" class="btn doctorBtn" type="button">Delete</button>
                             </td>
                         </tr>
                     </tbody>

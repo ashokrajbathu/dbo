@@ -65,6 +65,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.walkinsCurrentPage = 1;
     prescriptionElement.currentPage = 1;
     prescriptionElement.patientData = {};
+    prescriptionElement.imagesList = [];
     var activePatientIndex;
     var selectedDrug;
     var selectedDrugId;
@@ -153,6 +154,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.getPrescriptionsOfCaseNumber = getPrescriptionsOfCaseNumber;
     prescriptionElement.openNewCase = openNewCase;
     prescriptionElement.selectCaseNumberInModal = selectCaseNumberInModal;
+    prescriptionElement.selectImageToAddToPrescription = selectImageToAddToPrescription;
 
     var getDrugTemplatesPromise = doctorServices.getDrugTemplates();
     getDrugTemplatesPromise.then(function(getDrugTemplatesSuccess) {
@@ -197,6 +199,25 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         doctorServices.noConnectivityError();
     });
 
+    var getImagesPromise = doctorServices.getDoctorImages();
+    $log.log('image promise-----', getImagesPromise);
+    getImagesPromise.then(function(getImageSuccess) {
+        var errorCode = getImageSuccess.data.errorCode;
+        if (errorCode) {
+            doctorServices.logoutFromThePage(errorCode);
+        } else {
+            var imageSuccess = angular.fromJson(getImageSuccess.data.response);
+            $log.log('image success is-------', imageSuccess);
+            if (errorCode == null && getImageSuccess.data.success) {
+                prescriptionElement.imagesList = _.filter(imageSuccess, function(imageEntity) {
+                    return imageEntity.state == 'ACTIVE';
+                });
+            }
+        }
+    }, function(getImageError) {
+        doctorServices.noConnectivityError();
+    });
+
 
     $(document).on('click', function(e) {
         if ($(e.target).closest("#testsearchbox").length === 0) {
@@ -217,6 +238,10 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             prescriptionElement.displaySelectedCaseNumber = '---Select Case Number---';
             prescriptionElement.casesInModal = [];
         }
+    }
+
+    function selectImageToAddToPrescription(imageUnit) {
+        $log.log('image unit is------', imageUnit);
     }
 
     function openNewCase() {

@@ -158,6 +158,7 @@ angular.module('personalAssistant').directive('validNumber', function() {
                         minLength: 2,
                         select: function(event, ui) {
                             var medicines = dboticaServices.getMedicine();
+                            medicines = _.reverse(medicines);
                             var medicineEntered = ui.item.value;
                             for (var medicineIndex = 0; medicineIndex < medicines.length - 1; medicineIndex++) {
                                 if (medicineEntered.toLowerCase() == medicines[medicineIndex].itemName.toLowerCase()) {

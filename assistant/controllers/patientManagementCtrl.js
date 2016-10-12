@@ -161,13 +161,8 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                 $scope.startEndTimeObj.dayStartTime = $scope.doctorsList[0].dayStartTime;
                 $scope.startEndTimeObj.dayEndTime = $scope.doctorsList[0].dayEndTime;
                 $scope.startEndTimeObj.timePerPatient = $scope.doctorsList[0].timePerPatient;
-                var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor($scope.book.doctorId);
-                patientsListOfDoctor.then(function(response) {
-                    var patientsList = JSON.parse(response.data.response);
-                    $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
-                }, function(error) {
-                    dboticaServices.noConnectivityError();
-                });
+                getPatientAppointments($scope.book.doctorId);
+                /**/
             }
         }
         $scope.loading = false;
@@ -185,6 +180,8 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         $scope.cancelBook = {};
         $scope.cancelAppointmentsTable = false;
     }
+
+
 
     $scope.viewDoctorsSection = function() {
         if ($scope.doctorTimings) {
@@ -207,12 +204,22 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
         }
     }
 
+    function getPatientAppointments(currentDoctorId) {
+        var patientsListOfDoctor = dboticaServices.getPatientsListOfDoctor(currentDoctorId);
+        patientsListOfDoctor.then(function(response) {
+            var patientsList = JSON.parse(response.data.response);
+            $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(patientsList);
+        }, function(error) {
+            dboticaServices.noConnectivityError();
+        });
+    }
+
     $scope.appointmentsOfDate = function() {
         console.log('date selected is-------', $scope.appointmentsSearchDate);
         var searchDate = moment($scope.appointmentsSearchDate, "DD/MM/YYYY").isValid();
+        console.log('date after is---', $scope.appointmentsSearchDate);
         if ($scope.appointmentsSearchDate.length == 10 && searchDate) {
-            var dateInFormat = new Date($scope.appointmentsSearchDate);
-            var milliSecsOfDate = dateInFormat.getTime();
+            var milliSecsOfDate = dboticaServices.getLongValueOfDate($scope.appointmentsSearchDate);
             console.log('date is-----', milliSecsOfDate, $scope.book.doctorId);
             var appointmentsPromise = dboticaServices.appointmentsListOfFutureDate(milliSecsOfDate, $scope.book.doctorId);
             console.log('promise is----', appointmentsPromise);
@@ -223,6 +230,10 @@ function patientManagementCtrl($scope, dboticaServices, $state, $http, $filter, 
                 } else {
                     var appointmentsResponse = angular.fromJson(appointmentsSuccess.data.response);
                     console.log('response is------', appointmentsResponse);
+                    if (errorCode == null && appointmentsSuccess.data.success) {
+                        $scope.patientsList = [];
+                        $scope.patientsList = dboticaServices.getPatientsListOfDoctorSorted(appointmentsResponse);
+                    }
                 }
             }, function(appointmentsError) {
                 dboticaServices.noConnectivityError();

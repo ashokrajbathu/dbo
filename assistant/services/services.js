@@ -612,7 +612,7 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var testRequest = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/organization/updateTest',
+            url: 'http://localhost:8080/dbotica-spring/organization/updateDiagnosis',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'

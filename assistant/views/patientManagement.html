@@ -30,10 +30,6 @@
                     <div style="float:right;" class="form-group">
                         <input type="text" ng-model="appointmentsSearchDate" ng-change="appointmentsOfDate()" id="searchDate" placeholder="Search Date">
                     </div>
-                    <!-- <div class="form-group">
-                        <button type="button" ng-click="viewDoctorsSection()" class="doctorTimingsBtn btn">Doctor Timings</button>
-                        <button type="button" ng-click="cancelBookingsModal()" data-toggle="modal" data-target="#myCancelBookingsModal" class="cancelBookingsBtn btn">Cancel Bookings</button>
-                    </div> -->
                 </form>
             </div>
             <div id="myCancelBookingsModal" class="modal fade" role="dialog">
@@ -127,7 +123,7 @@
                         <td>{{$index+1}}</td>
                         <td>{{patient.label}}</td>
                         <td ng-bind="patient.calendarStatus|removeunderscoreaddspace"></td>
-                        <td>{{patient.startTime | date:"h:mma"}}</td>
+                        <td>{{patient.startTime | date:"dd-MM-yyyy,h:mma"}}</td>
                         <td id="actionsOnPatient">
                             <button class="btn checkin">Check-In</button>
                             <button data-toggle="modal" data-target="#myModal" ng-click="editDetailsOfPatient(patient.patientId)" class="btn btn-default neutral">Edit Details</button>
@@ -250,25 +246,6 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <!-- <div ng-if="patientNumberDiv" class="col-md-4 col-sm-8 col-xs-8">
-                                        <form>
-                                            <div class="form-group">
-                                                <label for="exampleInputPatientNumber">*Patient Number</label>
-                                                <input type="text" ng-model="patientData.patientNumber" class="form-control" id="exampleInputPatientNumber">
-                                            </div>
-                                        </form>
-                                    </div> -->
-                                    <!-- <div ng-if="patientNumberDiv" class="col-md-4 col-sm-8 col-xs-8">
-                                        <form>
-                                            <div class="form-group">
-                                                <label for="exampleInputPatientNumber">*Patient Type</label>
-                                                <select ng-model="patientData.patientType" class="form-control exampleInputPatientType" id="exampleInputPatientType">
-                                                    <option>OUT_PATIENT</option>
-                                                    <option>IN_PATIENT</option>
-                                                </select>
-                                            </div>
-                                        </form>
-                                    </div> -->
                                     <div class="col-md-4 col-sm-8 col-xs-8">
                                         <form>
                                             <div class="form-group">
@@ -282,6 +259,16 @@
                                                         </li>
                                                     </ul>
                                                 </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-8 col-xs-8">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="selectReferFrom">Refer From Doctor</label>
+                                                <input type="text" class="form-control" placeholder="Refer From Doctor">
                                             </div>
                                         </form>
                                     </div>

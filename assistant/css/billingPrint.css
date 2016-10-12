@@ -76,4 +76,8 @@
     .pageDisplay {
         display: none;
     }
+    .printTable>thead>tr,
+    .printTable>tbody>tr {
+        page-break-inside: avoid !important;
+    }
 }

@@ -5,6 +5,7 @@ function imageTemplateController($scope, $log, doctorServices, $state, $http, $p
     var imageTemplate = this;
 
     imageTemplate.addImage = addImage;
+    imageTemplate.deleteImage = deleteImage;
     imageTemplate.imageName = '';
     imageTemplate.imagesList = [];
 
@@ -27,6 +28,35 @@ function imageTemplateController($scope, $log, doctorServices, $state, $http, $p
     }, function(getImagesError) {
         doctorServices.noConnectivityError();
     });
+
+    function deleteImage(imageEntity) {
+        $log.log('image to delete is------', imageEntity);
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover Bed Details!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false
+        }, function() {
+            imageEntity.state = 'INACTIVE';
+            var deleteImagePromise = doctorServices.addImages(imageEntity);
+            $log.log('delete image promise ------------', deleteImagePromise);
+            deleteImagePromise.then(function(deleteImageSuccess) {
+                var errorCode = deleteImageSuccess.data.errorCode;
+                if (errorCode) {
+                    doctorServices.logoutFromThePage(errorCode);
+                } else {
+                    var deleteImageResponse = angular.fromJson(deleteImageSuccess.data.response);
+                    $log.log('delete image response-------', deleteImageResponse);
+                }
+            }, function(deleteImageError) {
+                doctorServices.noConnectivityError();
+            });
+        });
+
+    }
 
     function addImage() {
         var imageRequest = {};
