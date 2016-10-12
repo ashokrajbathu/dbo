@@ -105,6 +105,9 @@
                             <label for="exampleNurseBedNumber">Bed No.</label>
                             <input ng-model="nurse.patientDetails.bedNumberInBox" readonly type="text" class="form-control" id="exampleNurseBedNumber" placeholder="Bed No.">
                         </div>
+                        <div class="form-group">
+                            <button ng-click="nurse.dischargePatient()" class="btn addPatientBtn" type="button">Discharge</button>
+                        </div>
                     </div>
                 </div>
             </div>

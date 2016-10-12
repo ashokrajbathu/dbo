@@ -68,6 +68,16 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     };
 
+    this.selectInPatientSwal = function() {
+        swal({
+            title: "Error",
+            text: "Please Select In-Patient",
+            type: "error",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
     this.getPatientsListOfDoctor = function(doctorId) {
         var deferred = $q.defer();
         var req = {
@@ -79,6 +89,21 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             deferred.resolve(response);
         }, function(errorResponse) {
             deferred.reject(errorResponse);
+        });
+        return deferred.promise;
+    }
+
+    this.getPatientTemplateInstances = function(patientId, organizationId) {
+        var deferred = $q.defer();
+        var instanceRequest = {
+            method: 'GET',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/template/getPatientTemplateInstances?patientId=' + patientId + '&organizationId=' + organizationId,
+            withCredentials: true
+        }
+        $http(instanceRequest).then(function(instanceSuccess) {
+            deferred.resolve(instanceSuccess);
+        }, function(instanceError) {
+            deferred.reject(instanceError);
         });
         return deferred.promise;
     }

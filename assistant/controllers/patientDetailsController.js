@@ -51,21 +51,25 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
         templateInstance.organizationCaseNo = detail.patient.organizationCaseNo;
         templateInstance.organizationId = organizationId;
         templateInstance.overridePermissions = assistantObject.assistantPermissions;
-        var addTemplateInstancePromise = dboticaServices.addTemplateInstance(templateInstance);
-        addTemplateInstancePromise.then(function(addInstanceSuccess) {
-            var errorCode = addInstanceSuccess.data.errorCode;
-            if (errorCode) {
-                dboticaServices.logoutFromThePage(errorCode);
-            } else {
-                var addTemplateResponse = angular.fromJson(addInstanceSuccess.data.response);
-                if (errorCode == null && addInstanceSuccess.data.success) {
-                    dboticaServices.templateInstanceSuccessSwal();
-                    angular.copy(onLoadTemplateFields, $scope.activeTemplateFields);
+        if (!_.isEmpty(detail.patient)) {
+            var addTemplateInstancePromise = dboticaServices.addTemplateInstance(templateInstance);
+            addTemplateInstancePromise.then(function(addInstanceSuccess) {
+                var errorCode = addInstanceSuccess.data.errorCode;
+                if (errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var addTemplateResponse = angular.fromJson(addInstanceSuccess.data.response);
+                    if (errorCode == null && addInstanceSuccess.data.success) {
+                        dboticaServices.templateInstanceSuccessSwal();
+                        //angular.copy(onLoadTemplateFields, $scope.activeTemplateFields);
+                    }
                 }
-            }
-        }, function(addTemplateError) {
-            dboticaServices.noConnectivityError();
-        });
+            }, function(addTemplateError) {
+                dboticaServices.noConnectivityError();
+            });
+        } else {
+            dboticaServices.selectInPatientSwal();
+        }
     }
 
     function getData() {

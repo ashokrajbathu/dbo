@@ -385,6 +385,7 @@ function inpatientController($scope, $log, dboticaServices, $state, $http, $pars
             });
             inpatientElement.mandatoryFieldsErrorMessage = false;
             var bedRequestEntity = {};
+            $log.log('patient index---organization patient index------', organizationPatientIndex, organizationPatientsList);
             if (organizationPatientIndex !== undefined && organizationPatientIndex !== -1) {
                 bedRequestEntity.id = organizationPatientsList[organizationPatientIndex].id;
             }

@@ -10,6 +10,7 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
     nurseHome.patientEventSelect = patientEventSelect;
     nurseHome.patientSelectFromTheList = patientSelectFromTheList;
     nurseHome.patientEventFromtemplates = patientEventFromtemplates;
+    nurseHome.dischargePatient = dischargePatient;
     nurseHome.patientDetails = {};
     nurseHome.patientDetails.name = '';
     nurseHome.patientSearchBtnDisabled = true;
@@ -22,6 +23,7 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
     $scope.templateFlag = false;
     $scope.activeTemplate = {};
     $scope.activeTemplateFields = [];
+    var activeInpatient = {};
 
     var billInvoice = {};
     dboticaServices.setInvoice(billInvoice);
@@ -68,6 +70,27 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
             nurseHome.PhoneNumberErrorMessage = false;
             nurseHome.patientSearchBtnDisabled = true;
         }
+    }
+
+    function dischargePatient() {
+        if (!_.isEmpty(activeInpatient)) {
+            var patientTemplatePromise = dboticaServices.getPatientTemplateInstances(activeInpatient.id, activeInpatient.organizationId);
+            $log.log('promise is-------', patientTemplatePromise);
+            patientTemplatePromise.then(function(patientTemplateSuccess) {
+                var errorCode = patientTemplateSuccess.data.errorCode;
+                if (errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var templateInstanceResponse = angular.fromJson(patientTemplateSuccess.data.response);
+                    $log.log('template response is-------', templateInstanceResponse);
+                }
+            }, function(patientTemplateError) {
+                dboticaServices.noConnectivityError();
+            });
+        } else {
+            dboticaServices.selectInPatientSwal();
+        }
+
     }
 
     function patientSearchWithPhoneNumber() {
@@ -182,6 +205,7 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
     function patientSelectFromTheList(patient) {
         $log.log('patient selected is------', patient);
         dboticaServices.setInpatient(patient);
+        angular.copy(patient, activeInpatient);
         nurseHome.patientDetails.name = patient.details.inPatientName;
         nurseHome.patientDetails.inpatientNumberInBox = patient.organizationPatientNo;
         nurseHome.patientDetails.inpatientAdmitTime = moment(patient.details.admitTime).format("DD/MM/YYYY,hh:mm:ss A");
