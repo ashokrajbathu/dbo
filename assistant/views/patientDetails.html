@@ -30,7 +30,7 @@
                                 <div class="row">
                                     <div ng-repeat="restrictValue in sectionEntity.restrictValues" class="col-md-3 col-sm-3 col-xs-3">
                                         <label class="checkbox-inline">
-                                            <input ng-click="detail.selectCheckBox(restrictValue)" ng-checked="restrictValue.checkBoxValue" type="checkbox">{{restrictValue.name}}</label>
+                                            <input ng-click="restrictValue.checkBoxValue=!restrictValue.checkBoxValue" type="checkbox">{{restrictValue.name}}</label>
                                     </div>
                                 </div>
                             </div>

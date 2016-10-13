@@ -15,6 +15,7 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
     nurseHome.patientDetails.name = '';
     nurseHome.patientSearchBtnDisabled = true;
     nurseHome.PhoneNumberErrorMessage = false;
+    nurseHome.disablePrintBtn = true;
     nurseHome.patientsListToBeDisplayed = [];
     nurseHome.templatesList = [];
     nurseHome.patientEventName = 'Patient Medication';
@@ -205,7 +206,9 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
     function patientSelectFromTheList(patient) {
         $log.log('patient selected is------', patient);
         dboticaServices.setInpatient(patient);
+        localStorage.setItem('activeDischargePatient', JSON.stringify(patient));
         angular.copy(patient, activeInpatient);
+        nurseHome.disablePrintBtn = false;
         nurseHome.patientDetails.name = patient.details.inPatientName;
         nurseHome.patientDetails.inpatientNumberInBox = patient.organizationPatientNo;
         nurseHome.patientDetails.inpatientAdmitTime = moment(patient.details.admitTime).format("DD/MM/YYYY,hh:mm:ss A");

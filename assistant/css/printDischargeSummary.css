@@ -1,0 +1,15 @@
+@media print {
+    .patientLabels {
+        font-size: 22px;
+        margin-bottom: 8px;
+    }
+    .fieldValues {
+        display: inline !important;
+    }
+    .patientValues {
+        left: 40px;
+    }
+    .labelWidth {
+        width: 150pt !important;
+    }
+}
