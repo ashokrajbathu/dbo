@@ -75,6 +75,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
             dboticaServices.logoutFromThePage(errorCode);
         } else {
             var getTemplateResponse = angular.fromJson(getTemplateSuccess.data.response);
+            $log.log('template responses are----', getTemplateResponse);
             if (errorCode == null && getTemplateSuccess.data.success) {
                 addTemplate.templatesList = _.filter(getTemplateResponse, function(entity) {
                     return entity.state == 'ACTIVE';

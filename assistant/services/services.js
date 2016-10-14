@@ -52,6 +52,26 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     };
 
+    this.dischargePatient = function(organizationCaseId) {
+        var deferred = $q.defer();
+        var dischargeRequest = {
+            method: 'POST',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/closeOrganizationCase',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: organizationCaseId
+        }
+        $http(dischargeRequest).then(function(dischargeSuccess) {
+            deferred.resolve(dischargeSuccess);
+        }, function(dischargeError) {
+            discharge.reject(dischargeError);
+        });
+        return deferred.promise;
+    }
+
     this.doctorsOfAssistant = function() {
         var deferred = $q.defer();
         var requestEntity = {

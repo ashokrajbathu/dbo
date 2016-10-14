@@ -358,6 +358,8 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                     activePatient = prescriptionElement.patientsToBeDisplayedInRadios[0];
                     angular.copy(activePatient, currentActivePatient);
                     localStorage.setItem('currentPatient', JSON.stringify(currentActivePatient));
+                    prescriptionElement.prescriptionData.age = prescriptionElement.patientsToBeDisplayedInRadios[0].age;
+                    prescriptionElement.prescriptionData.lastName = prescriptionElement.patientsToBeDisplayedInRadios[0].lastName;
                     prescriptionElement.prescriptionData.firstName = prescriptionElement.patientsToBeDisplayedInRadios[0].firstName;
                     prescriptionElement.prescriptionData.drugAllergyInForm = prescriptionElement.patientsToBeDisplayedInRadios[0].drugAllergy;
                     activePatientIndex = 0;
@@ -522,6 +524,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         prescriptionElement.mandatoryFieldsErrorMessage = false;
         var firstName = prescriptionElement.patientData.firstName;
         var phoneNumber = prescriptionElement.patientData.phoneNumber;
+        var lastName = prescriptionElement.patientData.lastName;
         if (_.isEmpty(activePatient)) {
             if (newPatientFlag) {
                 addPatientRequestEntity.primaryPatient = true;
@@ -535,6 +538,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             prescriptionElement.mandatoryFieldsErrorMessage = false;
             addPatientRequestEntity.firstName = firstName;
             addPatientRequestEntity.phoneNumber = phoneNumber;
+            addPatientRequestEntity.lastName = lastName;
             addPatientRequestEntity.gender = prescriptionElement.patientData.gender;
             addPatientRequestEntity.bloodGroup = prescriptionElement.patientData.bloodGroup;
             addPatientRequestEntity.drugAllergy = prescriptionElement.patientData.drugAllergy;

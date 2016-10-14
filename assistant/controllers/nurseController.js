@@ -75,7 +75,7 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
 
     function dischargePatient() {
         if (!_.isEmpty(activeInpatient)) {
-            var patientTemplatePromise = dboticaServices.getPatientTemplateInstances(activeInpatient.id, activeInpatient.organizationId);
+            /*var patientTemplatePromise = dboticaServices.getPatientTemplateInstances(activeInpatient.id, activeInpatient.organizationId);
             $log.log('promise is-------', patientTemplatePromise);
             patientTemplatePromise.then(function(patientTemplateSuccess) {
                 var errorCode = patientTemplateSuccess.data.errorCode;
@@ -87,7 +87,20 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
                 }
             }, function(patientTemplateError) {
                 dboticaServices.noConnectivityError();
+            });*/
+            swal({
+                title: "Are you sure?",
+                text: "Patient will be discharged permanently!!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: false
+            }, function() {
+                $log.log('active in patient is-----', activeInpatient);
+                swal("Deleted!", "Patient Successfully Discharged.Click on print to see discharge summary.", "success");
             });
+
         } else {
             dboticaServices.selectInPatientSwal();
         }

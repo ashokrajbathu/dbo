@@ -65,6 +65,27 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.getCurrentActivePrescription = getCurrentActivePrescription;
     doctorServices.addImages = addImages;
     doctorServices.getDoctorImages = getDoctorImages;
+    doctorServices.addImageToPrescription = addImageToPrescription;
+
+    function addImageToPrescription(imageEntity) {
+        var deferred = $q.defer();
+        var addImageRequest = {
+            method: 'POST',
+            url: 'http://localhost:8080/dbotica-spring/doctor/updatePrescriptionImage',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(imageEntity)
+        }
+        $http(addImageRequest).then(function(addImageSuccess) {
+            deferred.resolve(addImageSuccess);
+        }, function(addImageError) {
+            deferred.reject(addImageError);
+        });
+        return deferred.promise;
+    }
 
     function longDateToReadableDate(longDate) {
         var result;
@@ -97,27 +118,21 @@ function doctorServices($http, $state, $log, $q) {
     }
 
     function addImages(image) {
-        $log.log('kdfd---', image);
-        //var fd = new FormData(image);
         var fd = new FormData();
         fd.append('file', image.file);
         fd.append('imageName', image.imageName);
-        $log.log('fd is----', fd);
         var deferred = $q.defer();
         var imageRequest = {
             method: 'POST',
             url: 'http://localhost:8080/dbotica-spring/doctor/addDoctorDiseaseImage',
             headers: {
-                //'Content-Type': 'multipart/form-data;boundary=diseaseImage',
                 'Content-Type': undefined,
                 'Accept': 'application/json'
-
             },
             processData: false,
             withCredentials: true,
             data: fd
         }
-        $log.log('request is in service-----', imageRequest);
         $http(imageRequest).then(function(imageSuccess) {
             deferred.resolve(imageSuccess);
         }, function(imageError) {

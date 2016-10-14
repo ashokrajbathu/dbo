@@ -252,11 +252,27 @@
                 </div>
                 <div class="panel-body patientInDoctorPanelBody">
                     <div class="row">
-                        <div class="col-md-3 col-sm-3 col-xs-12">
+                        <div class="col-md-2 col-sm-2 col-xs-12">
                             <form>
                                 <div class="from-group">
-                                    <label for="exampleInputPatientName">Patient Name</label>
-                                    <input ng-model="prescription.prescriptionData.firstName" type="text" class="form-control" id="exampleInputPatientName" placeholder="Patient Name">
+                                    <label for="exampleInputPatientName">First Name</label>
+                                    <input ng-model="prescription.prescriptionData.firstName" type="text" class="form-control" id="exampleInputPatientName" placeholder="First Name">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleLastName">Last Name</label>
+                                    <input ng-model="prescription.prescriptionData.lastName" type="text" class="form-control" id="exampleInputLastName" placeholder="Last Name">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                            <form>
+                                <div class="form-group">
+                                    <label for="examplePatientAge">Age</label>
+                                    <input ng-model="prescription.prescriptionData.age" type="text" class="form-control" id="exampleInputAge" placeholder="Age">
                                 </div>
                             </form>
                         </div>
@@ -284,7 +300,9 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="col-md-3 col-sm-3 col-xs-12">
+                    </div>
+                    <div id="patientDataSecondRow" class="row">
+                        <div class="col-md-2 col-sm-2 col-xs-12">
                             <form>
                                 <div class="from-group">
                                     <label for="exampleInputBloodPressure">Blood Pressure</label>
@@ -292,9 +310,7 @@
                                 </div>
                             </form>
                         </div>
-                    </div>
-                    <div id="patientDataSecondRow" class="row">
-                        <div class="col-md-3 col-sm-3 col-xs-12">
+                        <div class="col-md-2 col-sm-2 col-xs-12">
                             <form>
                                 <div class="from-group">
                                     <label for="exampleInputBMI">BMI</label>
@@ -687,9 +703,18 @@
                         <div class="col-md-4 col-sm-8 col-xs-8">
                             <form>
                                 <div class="form-group">
-                                    <label for="exampleInputName">*Name</label>
-                                    <input type="text" class="form-control exampleInpatientPhone" id="exampleInputFirstName" ng-model="prescription.patientData.firstName" placeholder="Name">
+                                    <label for="exampleInputName">*First Name</label>
+                                    <input type="text" class="form-control exampleInpatientPhone" id="exampleInputFirstName" ng-model="prescription.patientData.firstName" placeholder="First Name">
                                 </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputName">*Last Name</label>
+                                    <input type="text" class="form-control exampleInpatientPhone" id="exampleInputLastName" ng-model="prescription.patientData.lastName" placeholder="Last Name">
+                                </div>
+                                <!--  -->
                             </form>
                         </div>
                         <div class="col-md-4 col-sm-8 col-xs-8">
@@ -698,14 +723,7 @@
                                     <label for="exampleInputEmail">Email</label>
                                     <input type="email" class="form-control exampleInpatientPhone" id="exampleInputEmail" ng-model="prescription.patientData.emailId" placeholder="Email">
                                 </div>
-                            </form>
-                        </div>
-                        <div class="col-md-4 col-sm-8 col-xs-8">
-                            <form>
-                                <div class="form-group">
-                                    <label for="exampleInputPhoneNumber">*Phone Number</label>
-                                    <input numbers-only type="text" class="form-control exampleInpatientPhone" id="exampleInputPhoneNumber" ng-model="prescription.patientData.phoneNumber" placeholder="Phone Number">
-                                </div>
+                                <!--   -->
                             </form>
                         </div>
                     </div>
@@ -713,9 +731,19 @@
                         <div class="col-md-4 col-sm-8 col-xs-8">
                             <form>
                                 <div class="form-group">
+                                    <label for="exampleInputPhoneNumber">*Phone Number</label>
+                                    <input numbers-only type="text" class="form-control exampleInpatientPhone" id="exampleInputPhoneNumber" ng-model="prescription.patientData.phoneNumber" placeholder="Phone Number">
+                                </div>
+                                <!--  -->
+                            </form>
+                        </div>
+                        <div class="col-md-4 col-sm-8 col-xs-8">
+                            <form>
+                                <div class="form-group">
                                     <label for="exampleInputAge">Age</label>
                                     <input type="text" class="form-control exampleInpatientPhone" id="exampleInputAge" ng-model="prescription.patientData.age" placeholder="Age">
                                 </div>
+                                <!--   -->
                             </form>
                         </div>
                         <div class="col-md-4 col-sm-8 col-xs-8">
@@ -727,8 +755,11 @@
                                         <option>FEMALE</option>
                                     </select>
                                 </div>
+                                <!--  -->
                             </form>
                         </div>
+                    </div>
+                    <div class="row inpatientRowInModal">
                         <div class="col-md-4 col-sm-8 col-xs-8">
                             <form>
                                 <div class="form-group">
@@ -745,10 +776,9 @@
                                         <option value="OTHER">OTHER</option>
                                     </select>
                                 </div>
+                                <!--  -->
                             </form>
                         </div>
-                    </div>
-                    <div class="row inpatientRowInModal">
                         <div class="col-md-4 col-sm-8 col-xs-8">
                             <form>
                                 <div class="form-group">
