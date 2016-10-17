@@ -20,6 +20,7 @@ function prescriptionReportController($scope, $log, doctorServices, $state, $htt
     prescriptionReport.patientInvestigation = false;
     prescriptionReport.patientComments = false;
     prescriptionReport.templatesList = [];
+    prescriptionReport.imagesList = [];
     angular.element('#drugPrescriptionActive').addClass('activeDoctorLi');
     prescriptionReport.prescriptionActive = {};
     var activePrescription = localStorage.getItem('prescriptionObjectToPrint');
@@ -49,15 +50,37 @@ function prescriptionReportController($scope, $log, doctorServices, $state, $htt
                         $log.log('local instance is-------', localEntity);
                         prescriptionReport.templatesList.push(localEntity);
                     });
+                    var downloadImagePromise = doctorServices.downloadPrescriptionImage(activePrescriptionId);
+                    $log.log('promise is for downloading------', downloadImagePromise);
+                    downloadImagePromise.then(function(downloadImageSuccess) {
+                        var errorCode = downloadImageSuccess.data.errorCode;
+                        if (errorCode) {
+                            doctorServices.logoutFromThePage(errorCode);
+                        } else {
+                            var downloadImageResponse = angular.fromJson(downloadImageSuccess.data.response);
+                            $log.log('download response is-----', downloadImageResponse);
+                            if (errorCode == null && downloadImageSuccess.data.success) {
+                                prescriptionReport.imagesList = _.filter(downloadImageResponse, function(entity) {
+                                    return entity.state == 'ACTIVE';
+                                });
+                                $log.log('images list is-----', prescriptionReport.imagesList);
+                            }
+                        }
+                    }, function(downloadImageError) {
+                        doctorServices.noConnectivityError();
+                    });
                 }
             }
         }, function(currentPrescError) {
             doctorServices.noConnectivityError();
         });
+        $log.log('prescription id is------', activePrescriptionId);
+
         var prescDetails = prescriptionReport.prescriptionActive.prescriptionToPrint;
         prescriptionReport.drugsList = prescriptionReport.prescriptionActive.drugListToDisplay;
         prescriptionReport.testsListInTable = prescriptionReport.prescriptionActive.testsListToDisplay;
         prescriptionReport.prescriptionActive.activeTemplates = [];
+        localStorage.setItem('prescriptionObjectToPrint', JSON.stringify(prescriptionReport.prescriptionActive));
         if (!_.isEmpty(prescDetails.height)) {
             prescriptionReport.patientHeight = true;
             prescriptionReport.height = prescDetails.height;

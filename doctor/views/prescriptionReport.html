@@ -145,6 +145,43 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
+            <div class="panel panelsInDoctor prescriptionReportpanels">
+                <div class="panel-heading">
+                    <h4>Prescription Images</h4>
+                </div>
+                <div class="panel-body patientInDoctorPanelBody">
+                    <div class="row">
+                        <div class="col-md-11 col-xs-11 col-sm-11">
+                            <table id="imageInDrugsTable" class="table table-responsive table-bordered imagesTable table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">S.No.</th>
+                                        <th width="25%">Image Name</th>
+                                        <th>Image</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="imageEntity in prescriptionReport.imagesList">
+                                        <td ng-bind="$index+1"></td>
+                                        <td ng-bind="imageEntity.prescriptionImage.description"></td>
+                                        <td>
+                                            <img style="width:100px;height:100px;" ng-src="{{imageEntity.url}}">
+                                        </td>
+                                        <td>
+                                            <!--  <input ng-click="prescription.addImageToPrescription(imageEntity)" type="checkbox"> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div ng-repeat="templateEntity in prescriptionReport.templatesList" class="row">
         <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-11">
             <div class="panel panelsInDoctor prescriptionReportpanels">

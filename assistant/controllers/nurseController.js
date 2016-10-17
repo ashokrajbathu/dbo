@@ -75,19 +75,6 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
 
     function dischargePatient() {
         if (!_.isEmpty(activeInpatient)) {
-            /*var patientTemplatePromise = dboticaServices.getPatientTemplateInstances(activeInpatient.id, activeInpatient.organizationId);
-            $log.log('promise is-------', patientTemplatePromise);
-            patientTemplatePromise.then(function(patientTemplateSuccess) {
-                var errorCode = patientTemplateSuccess.data.errorCode;
-                if (errorCode) {
-                    dboticaServices.logoutFromThePage(errorCode);
-                } else {
-                    var templateInstanceResponse = angular.fromJson(patientTemplateSuccess.data.response);
-                    $log.log('template response is-------', templateInstanceResponse);
-                }
-            }, function(patientTemplateError) {
-                dboticaServices.noConnectivityError();
-            });*/
             swal({
                 title: "Are you sure?",
                 text: "Patient will be discharged permanently!!",
@@ -98,13 +85,26 @@ function nurseController($rootScope, $scope, $log, $stateParams, dboticaServices
                 closeOnConfirm: false
             }, function() {
                 $log.log('active in patient is-----', activeInpatient);
+                var dischargePatientPromise = dboticaServices.dischargePatient(activeInpatient.organizationCaseId);
+                $log.log('promise for discharging is-----', dischargePatientPromise);
+                dischargePatientPromise.then(function(dischargePatientSuccess) {
+                    var errorCode = dischargePatientSuccess.data.errorCode;
+                    if (errorCode) {
+                        dboticaServices.logoutFromThePage(errorCode);
+                    } else {
+                        var dischargePatientResponse = angular.fromJson(dischargePatientSuccess.data.response);
+                        $log.log('response is-----', dischargePatientResponse);
+                    }
+                }, function(dischargePatientError) {
+                    $log.log('patient error is-----', dischargePatientError);
+                    dboticaServices.noConnectivityError();
+                });
                 swal("Deleted!", "Patient Successfully Discharged.Click on print to see discharge summary.", "success");
             });
 
         } else {
             dboticaServices.selectInPatientSwal();
         }
-
     }
 
     function patientSearchWithPhoneNumber() {

@@ -15,6 +15,19 @@
     #regNoSpan {
         font-weight: 600;
     }
+    .patientLabels {
+        font-size: 22px;
+        margin-bottom: 8px;
+    }
+    .fieldValues {
+        display: inline !important;
+    }
+    .patientValues {
+        left: 40px;
+    }
+    .labelWidth {
+        width: 150pt !important;
+    }
     #doctorDetails {
         float: left;
     }

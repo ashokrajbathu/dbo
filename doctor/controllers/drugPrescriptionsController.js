@@ -66,6 +66,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.currentPage = 1;
     prescriptionElement.patientData = {};
     prescriptionElement.imagesList = [];
+    prescriptionElement.addedImagesList = [];
     var activePatientIndex;
     var selectedDrug;
     var selectedDrugId;
@@ -154,7 +155,19 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.getPrescriptionsOfCaseNumber = getPrescriptionsOfCaseNumber;
     prescriptionElement.openNewCase = openNewCase;
     prescriptionElement.selectCaseNumberInModal = selectCaseNumberInModal;
-    prescriptionElement.selectImageToAddToPrescription = selectImageToAddToPrescription;
+    prescriptionElement.addImageToPrescription = addImageToPrescription;
+
+    function addImageToPrescription(imageEntity) {
+        var imageIndex = _.findLastIndex(prescriptionElement.addedImagesList, function(entity) {
+            return entity.id == imageEntity.id;
+        });
+        if (imageIndex == -1) {
+            prescriptionElement.addedImagesList.push(imageEntity);
+        } else {
+            prescriptionElement.addedImagesList.splice(imageIndex, 1);
+        }
+        $log.log('final images list-----', prescriptionElement.addedImagesList);
+    }
 
     var getDrugTemplatesPromise = doctorServices.getDrugTemplates();
     getDrugTemplatesPromise.then(function(getDrugTemplatesSuccess) {
@@ -200,14 +213,12 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     });
 
     var getImagesPromise = doctorServices.getDoctorImages();
-    $log.log('image promise-----', getImagesPromise);
     getImagesPromise.then(function(getImageSuccess) {
         var errorCode = getImageSuccess.data.errorCode;
         if (errorCode) {
             doctorServices.logoutFromThePage(errorCode);
         } else {
             var imageSuccess = angular.fromJson(getImageSuccess.data.response);
-            $log.log('image success is-------', imageSuccess);
             if (errorCode == null && getImageSuccess.data.success) {
                 prescriptionElement.imagesList = _.filter(imageSuccess, function(imageEntity) {
                     return imageEntity.state == 'ACTIVE';
@@ -238,10 +249,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             prescriptionElement.displaySelectedCaseNumber = '---Select Case Number---';
             prescriptionElement.casesInModal = [];
         }
-    }
-
-    function selectImageToAddToPrescription(imageUnit) {
-        $log.log('image unit is------', imageUnit);
     }
 
     function openNewCase() {
@@ -945,6 +952,28 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                     var prescriptionResponse = angular.fromJson(prescriptionSuccess.data.response);
                     if (errorCode == null && prescriptionSuccess.data.success == true) {
                         doctorServices.addPrescriptionSuccessSwal();
+                        angular.forEach(prescriptionElement.addedImagesList, function(imageEntity) {
+                            var imageRequest = {};
+                            imageRequest.keyName = imageEntity.id;
+                            imageRequest.prescriptionId = prescriptionResponse.id;
+                            imageRequest.description = imageEntity.imageName;
+                            imageRequest.remark = '';
+                            var addImagePromise = doctorServices.addImageToPrescription(imageRequest);
+                            console.log('promise is---------', addImagePromise);
+                            addImagePromise.then(function(addImageSuccess) {
+                                var errorCode = addImageSuccess.data.errorCode;
+                                console.log('error code is---', errorCode);
+                                if (errorCode) {
+                                    doctorServices.logoutFromThePage(errorCode);
+                                } else {
+                                    var addImageResponse = angular.fromJson(addImageSuccess.data.response);
+                                    console.log('add image response-----', addImageResponse);
+                                }
+                            }, function(addImageError) {
+                                console.log('image error is---', addImageError);
+                                doctorServices.noConnectivityError();
+                            });
+                        });
                         angular.forEach(prescriptionElement.templatesList, function(templateInstanceEntity) {
                             var localInstance = {};
                             localInstance.templateId = templateInstanceEntity.id;
@@ -984,9 +1013,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                         printPrescription.tests = prescriptionElement.testsListInTable;
                         localStorage.setItem('activePrescription', JSON.stringify(printPrescription));
                         try {
-                            $log.log('presc respo----', prescriptionResponse);
-                            $log.log('active patient is-------', activePatient);
-                            $log.log('active doctor is------', activeDoctor);
                             addPrescriptionToIndexedDB(prescriptionResponse, activePatient, activeDoctor.id);
                         } catch (e) {}
                         functionalitiesAfterAddingPresc();

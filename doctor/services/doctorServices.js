@@ -66,6 +66,22 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.addImages = addImages;
     doctorServices.getDoctorImages = getDoctorImages;
     doctorServices.addImageToPrescription = addImageToPrescription;
+    doctorServices.downloadPrescriptionImage = downloadPrescriptionImage;
+
+    function downloadPrescriptionImage(prescriptionId) {
+        var deferred = $q.defer();
+        var imageRequest = {
+            method: 'GET',
+            url: 'http://localhost:8080/dbotica-spring/doctor/downloadPrescriptionImage?prescriptionId=' + prescriptionId,
+            withCredentials: true
+        }
+        $http(imageRequest).then(function(downloadImageSuccess) {
+            deferred.resolve(downloadImageSuccess);
+        }, function(downloadImageError) {
+            deferred.reject(downloadImageError);
+        });
+        return deferred.promise;
+    }
 
     function addImageToPrescription(imageEntity) {
         var deferred = $q.defer();
