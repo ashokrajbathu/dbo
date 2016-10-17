@@ -88,15 +88,15 @@
     #symptomsRow {
         margin-top: -0.4em;
     }
-    #medicinesTable>tbody>tr,
-    #medicinesTable>thead>tr,
-    #medicinesTable>tbody>tr>td,
-    #medicinesTable>thead>tr>th {
+    .medicinesTable>tbody>tr,
+    .medicinesTable>thead>tr,
+    .medicinesTable>tbody>tr>td,
+    .medicinesTable>thead>tr>th {
         border-collapse: collapse;
         border-right: 1px solid black;
         border-bottom: 1px solid black;
     }
-    #medicinesTable {
+    .medicinesTable {
         margin-top: -20px;
         width: 100%;
         border-collapse: collapse;

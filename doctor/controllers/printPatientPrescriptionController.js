@@ -1,9 +1,9 @@
 var app = angular.module('printPatientPrescription', []);
 
 app.controller('printPatientPrescriptionController', printPatientPrescriptionController);
-printPatientPrescriptionController.$inject = ['$scope', '$log'];
+printPatientPrescriptionController.$inject = ['$scope', '$log', '$http', '$q'];
 
-function printPatientPrescriptionController($scope, $log) {
+function printPatientPrescriptionController($scope, $log, $http, $q) {
     var prescription = this;
     prescription.today = '';
 
@@ -22,7 +22,7 @@ function printPatientPrescriptionController($scope, $log) {
     var activeDoctor = localStorage.getItem('currentDoctor');
     var organizationAddress = localStorage.getItem('doctorHospitalLocation');
     var activePatient = localStorage.getItem('currentPatient');
-    $log.log('active prescription is----', activePrescription);
+    $log.log('active prescription is----', angular.fromJson(activePrescription));
     prescription.doctorName = '';
     prescription.speciality = '';
     prescription.phoneNumber = '';
@@ -44,6 +44,7 @@ function printPatientPrescriptionController($scope, $log) {
     prescription.drugsList = [];
     prescription.testsList = [];
     prescription.activeTemplates = [];
+    prescription.imagesList = [];
     prescription.revisitOnDate = '';
     prescription.referToDoctorName = '';
     prescription.orgAddressEmpty = false;
@@ -139,4 +140,37 @@ function printPatientPrescriptionController($scope, $log) {
         height: 128,
         text: qrString
     });
+
+    var downloadImagePromise = downloadPrescriptionImage(prescription.prescriptionActive.prescriptionToPrint.id);
+    $log.log('promise is for downloading------', downloadImagePromise);
+    downloadImagePromise.then(function(downloadImageSuccess) {
+        var errorCode = downloadImageSuccess.data.errorCode;
+        if (errorCode) {
+            doctorServices.logoutFromThePage(errorCode);
+        } else {
+            var downloadImageResponse = angular.fromJson(downloadImageSuccess.data.response);
+            $log.log('download response is-----', downloadImageResponse);
+            if (errorCode == null && downloadImageSuccess.data.success) {
+                angular.copy(downloadImageResponse, prescription.imagesList);
+                $log.log('images list is-----', prescription.imagesList);
+            }
+        }
+    }, function(downloadImageError) {
+        doctorServices.noConnectivityError();
+    });
+
+    function downloadPrescriptionImage(prescriptionId) {
+        var deferred = $q.defer();
+        var imageRequest = {
+            method: 'GET',
+            url: 'http://localhost:8080/dbotica-spring/doctor/downloadPrescriptionImage?prescriptionId=' + prescriptionId,
+            withCredentials: true
+        }
+        $http(imageRequest).then(function(downloadImageSuccess) {
+            deferred.resolve(downloadImageSuccess);
+        }, function(downloadImageError) {
+            deferred.reject(downloadImageError);
+        });
+        return deferred.promise;
+    }
 }

@@ -64,12 +64,14 @@ function imageTemplateController($scope, $log, doctorServices, $state, $http, $p
         imageRequest.imageName = imageTemplate.imageName;
         var formData = new FormData();
         var addImagePromise = doctorServices.addImages(imageRequest);
+        $log.log('add image process---', addImagePromise);
         addImagePromise.then(function(addImageSuccess) {
             var errorCode = addImageSuccess.data.errorCode;
             if (errorCode) {
                 doctorServices.logoutFromThePage(errorCode);
             } else {
                 var addImageResponse = angular.fromJson(addImageSuccess.data.response);
+                $log.log('add image response-----', addImageResponse);
             }
         }, function(addImageError) {
             doctorServices.noConnectivityError();

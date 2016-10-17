@@ -60,9 +60,7 @@ function prescriptionReportController($scope, $log, doctorServices, $state, $htt
                             var downloadImageResponse = angular.fromJson(downloadImageSuccess.data.response);
                             $log.log('download response is-----', downloadImageResponse);
                             if (errorCode == null && downloadImageSuccess.data.success) {
-                                prescriptionReport.imagesList = _.filter(downloadImageResponse, function(entity) {
-                                    return entity.state == 'ACTIVE';
-                                });
+                                angular.copy(downloadImageResponse, prescriptionReport.imagesList);
                                 $log.log('images list is-----', prescriptionReport.imagesList);
                             }
                         }

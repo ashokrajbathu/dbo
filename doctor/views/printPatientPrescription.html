@@ -136,7 +136,7 @@
         </div>
         <h3 id="medicines">MEDICINES:</h3>
         <div class="row">
-            <table id="medicinesTable" class="table table-bordered table-striped">
+            <table class="table medicinesTable table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>S.No.</th>
@@ -166,6 +166,27 @@
                 <a ng-bind="testEntity.remark"></a>
             </li>
         </ol>
+        <h3>IMAGES:</h3>
+        <div class="row">
+            <table class="table medicinesTable table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Image Name</th>
+                        <th>Image</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="imageEntity in prescription.imagesList">
+                        <td ng-bind="$index+1"></td>
+                        <td ng-bind="imageEntity.prescriptionImage.description"></td>
+                        <td>
+                            <img style="width:100px;height:100px;" ng-src="{{imageEntity.url}}">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="row">
             <label class="printPrescriptionLabels">Refer To:</label>
             <span id="doctorReference" ng-bind="prescription.referToDoctorName"></span>

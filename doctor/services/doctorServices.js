@@ -140,7 +140,7 @@ function doctorServices($http, $state, $log, $q) {
         var deferred = $q.defer();
         var imageRequest = {
             method: 'POST',
-            url: 'http://localhost:8080/dbotica-spring/doctor/addDoctorDiseaseImage',
+            url: 'http://localhost:8080/dbotica-spring/doctor/updateDoctorDiseaseImage',
             headers: {
                 'Content-Type': undefined,
                 'Accept': 'application/json'
