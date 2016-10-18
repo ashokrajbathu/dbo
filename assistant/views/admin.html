@@ -27,6 +27,7 @@
                                     </li>
                                 </ul>
                             </div>
+                            <span data-toggle="modal" data-target="#categoryModal"><a style="cursor:pointer;">Add Category</a></span>
                         </div>
                     </div>
                     <div ng-if="adminView.admin.procedureName" class="form-group animate-if adminEntity">
@@ -124,6 +125,33 @@
                             <button ng-click="adminView.updateAddress()" style="margin-top:12px;" type="submit" class="btn addProcedureBtn adminEntity">Save</button>
                         </form>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="categoryModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Category</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row ">
+                        <div class="col-md-10 col-sm-10 col-xs-10">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleCategoryName">Category Name</label>
+                                    <input ng-model="adminView.categoryName" type="text" class="form-control" placeholder="Category Name">
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" ng-click="adminView.addCategory()" class="btn mainAdminBtn">Add</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
                 </div>
             </div>
         </div>

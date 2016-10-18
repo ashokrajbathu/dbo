@@ -207,6 +207,30 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
         billElement.loading = true;
         billElement.blurScreen = true;
         getDoctorsOfAssistant();
+        getCategoriesOfAssistant();
+    }
+
+    function getCategoriesOfAssistant() {
+        var getCategoriesPromise = dboticaServices.getCategories();
+        $log.log('get categories promise is-------', getCategoriesPromise);
+        getCategoriesPromise.then(function(getCategoriesSuccess) {
+            var errorCode = getCategoriesSuccess.data.errorCode;
+            if (errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                var getCategoriesResponse = angular.fromJson(getCategoriesSuccess.data.response);
+                $log.log('categories response is------', getCategoriesResponse);
+                if (errorCode == null && getCategoriesSuccess.data.success) {
+                    angular.forEach(getCategoriesResponse, function(categoryEntity) {
+                        categoryEntity.firstName = categoryEntity.name;
+                        categoryEntity.lastName = '';
+                        billElement.bill.doctorsListInBillManagement.push(categoryEntity);
+                    });
+                }
+            }
+        }, function(getCategoriesError) {
+            dboticaServices.noConnectivityError();
+        });
     }
 
 
@@ -218,9 +242,11 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
                 dboticaServices.logoutFromThePage(errorCode);
             } else {
                 billElement.bill.doctorsListInBillManagement = angular.fromJson(successResponse.data.response);
-                dboticaServices.setDoctorsDetailsArray(billElement.bill.doctorsListInBillManagement);
-                billElement.bill.doctorActive = billElement.bill.doctorsListInBillManagement[0];
-                setDoctorNameAndDoctorServices(billElement.bill.doctorActive);
+                if (errorCode == null && successResponse.data.success) {
+                    dboticaServices.setDoctorsDetailsArray(billElement.bill.doctorsListInBillManagement);
+                    billElement.bill.doctorActive = billElement.bill.doctorsListInBillManagement[0];
+                    setDoctorNameAndDoctorServices(billElement.bill.doctorActive);
+                }
             }
             billElement.loading = false;
             billElement.blurScreen = false;
@@ -232,21 +258,29 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
     }
 
     function selectDoctorFromDropdown(doctor) {
+        var localPriceInfos = [];
         billElement.bill.doctorActive = doctor;
         billElement.bill.billCost = '';
         billElement.finalBill.doctorId = doctor.id;
-        if (doctor.hasOwnProperty('doctorPriceInfos')) {
-            for (var serviceIndex in doctor.doctorPriceInfos) {
-                if (doctor.doctorPriceInfos[serviceIndex].billingName.toLowerCase() == "consultation") {
-                    billElement.bill.doctorActiveService = doctor.doctorPriceInfos[serviceIndex].billingName;
-                    billElement.bill.billCost = doctor.doctorPriceInfos[serviceIndex].price / 100;
+        var checkDoctorPriceInfos = doctor.hasOwnProperty('doctorPriceInfos');
+        var checkCategoryPriceInfos = doctor.hasOwnProperty('priceInfos');
+        if (checkDoctorPriceInfos || checkCategoryPriceInfos) {
+            if (checkDoctorPriceInfos) {
+                angular.copy(doctor.doctorPriceInfos, localPriceInfos);
+            } else {
+                angular.copy(doctor.priceInfos, localPriceInfos);
+            }
+            for (var serviceIndex in localPriceInfos) {
+                if (localPriceInfos[serviceIndex].billingName.toLowerCase() == "consultation") {
+                    billElement.bill.doctorActiveService = localPriceInfos[serviceIndex].billingName;
+                    billElement.bill.billCost = localPriceInfos[serviceIndex].price / 100;
                     break;
                 } else {
-                    billElement.bill.doctorActiveService = doctor.doctorPriceInfos[0].billingName;
-                    billElement.bill.billCost = doctor.doctorPriceInfos[0].price / 100;
+                    billElement.bill.doctorActiveService = localPriceInfos[0].billingName;
+                    billElement.bill.billCost = localPriceInfos[0].price / 100;
                 }
             }
-            billElement.bill.billTypes = _.filter(doctor.doctorPriceInfos, function(priceEntity) {
+            billElement.bill.billTypes = _.filter(localPriceInfos, function(priceEntity) {
                 return priceEntity.state == 'ACTIVE';
             });
         } else {
@@ -763,6 +797,7 @@ function billManagementCtrl($scope, $log, $timeout, dboticaServices, $state, $ht
         currentActiveInvoice = {};
         billElement.patient = {};
         getDoctorsOfAssistant();
+        getCategoriesOfAssistant();
         billElement.bill.patientsListOfThatNumber = [];
         billElement.patientSearch.phoneNumber = "";
         billElement.bill.patientSearchPatients = false;

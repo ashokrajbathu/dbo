@@ -72,6 +72,26 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
+    this.addNewCategory = function(category) {
+        var deferred = $q.defer();
+        var categoryRequest = {
+            method: 'POST',
+            url: 'http://localhost:8080/dbotica-spring/organization/billing/updateBillingCategory',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            withCredentials: true,
+            data: JSON.stringify(category)
+        }
+        $http(categoryRequest).then(function(categorySuccess) {
+            deferred.resolve(categorySuccess);
+        }, function(categoryError) {
+            deferred.reject(categoryError);
+        });
+        return deferred.promise;
+    }
+
     this.doctorsOfAssistant = function() {
         var deferred = $q.defer();
         var requestEntity = {
@@ -634,6 +654,19 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
+    this.deleteProperties = function(object) {
+        delete object['firstName'];
+        delete object['lastName'];
+        return object;
+    }
+
+    this.getEditedCategory = function(categoryEntity, categoriesArray) {
+        categoryEntity.firstName = categoryEntity.name;
+        categoryEntity.lastName = '';
+        categoriesArray.splice(categoriesArray.length - 1, 0, categoryEntity);
+        return categoriesArray;
+    }
+
     this.submitServiceRequest = function(serviceRequestEntity) {
         var deferred = $q.defer();
         var serviceRequestIs = {
@@ -685,6 +718,21 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             deferred.resolve(getTestsSuccessResponse);
         }, function(getTestsErrorResponse) {
             deferred.reject(getTestsErrorResponse);
+        });
+        return deferred.promise;
+    }
+
+    this.getCategories = function() {
+        var deferred = $q.defer();
+        var categoryRequest = {
+            method: 'GET',
+            url: 'http://localhost:8080/dbotica-spring/organization/billing/getBillingCategory',
+            withCredentials: true
+        }
+        $http(categoryRequest).then(function(categorySuccess) {
+            deferred.resolve(categorySuccess);
+        }, function(categoryError) {
+            deferred.reject(categoryError);
         });
         return deferred.promise;
     }
@@ -1199,6 +1247,16 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         swal({
             title: "Success",
             text: "Batch Successfully Added.",
+            type: "success",
+            confirmButtonText: "OK",
+            allowOutsideClick: true
+        });
+    }
+
+    this.addCatregorySuccessSwal = function() {
+        swal({
+            title: "Success",
+            text: "Category Successfully Added.",
             type: "success",
             confirmButtonText: "OK",
             allowOutsideClick: true
@@ -2177,6 +2235,14 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
             confirmButtonText: "OK",
             allowOutsideClick: true
         });
+    }
+
+    this.getServicesListOfAdmin = function(array) {
+        var localArray = ['Others'];
+        angular.forEach(array, function(docPriceEntity) {
+            localArray.unshift(docPriceEntity.billingName);
+        });
+        return localArray;
     }
 
     this.getLabEntities = function() {

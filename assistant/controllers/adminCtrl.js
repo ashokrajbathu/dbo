@@ -15,8 +15,11 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
     adminElement.roomSelectForTest = roomSelectForTest;
     adminElement.testSearch = testSearch;
     adminElement.selectTestFromTheDropdown = selectTestFromTheDropdown;
+    adminElement.addCategory = addCategory;
 
     adminElement.admin = {};
+    var categoryObject = {};
+    adminElement.categoryName = '';
     var selectRoomObject = { 'roomNo': '--Select Room-', 'floorNo': '-' };
     adminElement.activeRoomId = '';
     adminElement.activeRooms = [];
@@ -29,13 +32,14 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
     adminElement.roomDropDown = false;
     adminElement.admin.procedureName = false;
     adminElement.admin.doctorInDropdown;
-    adminElement.admin.doctorActive;
+    adminElement.admin.doctorActive = {};
     adminElement.admin.servicesListOfTheDoctor = [];
     adminElement.servicesList = ["Others"];
     adminElement.admin.serviceInDropDown = "Select Service";
     adminElement.admin.procedureCostTextBox = "";
     adminElement.admin.procedureRemarksTextBox = "";
     var selectService = "Select Service";
+    var categoryFlag = false;
     var others = "Others";
     var newTest = "New Test";
     var service = "service";
@@ -78,11 +82,6 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
                 adminElement.admin.doctorActive = adminElement.doctorsListInAdmin[0];
                 adminElement.admin.doctorInDropdown = adminElement.doctorsListInAdmin[0].firstName + ' ' + adminElement.doctorsListInAdmin[0].lastName;
                 adminElement.doctorsListInAdmin.push(generalObject);
-            } else {
-                adminElement.doctorsListInAdmin.push(generalObject);
-                adminElement.admin.doctorInDropdown = adminElement.doctorsListInAdmin[0].firstName + ' ' + adminElement.doctorsListInAdmin[0].lastName;
-            }
-            if (adminElement.doctorsListInAdmin.length > 0) {
                 if (adminElement.admin.doctorActive.hasOwnProperty('doctorPriceInfos')) {
                     adminElement.admin.servicesListOfTheDoctor = adminElement.admin.doctorActive.doctorPriceInfos;
                     angular.forEach(adminElement.admin.servicesListOfTheDoctor, function(serviceEntity) {
@@ -90,8 +89,10 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
                     });
                 }
             } else {
-                dboticaServices.noConnectivityError();
+                adminElement.doctorsListInAdmin.push(generalObject);
+                adminElement.admin.doctorInDropdown = adminElement.doctorsListInAdmin[0].firstName + ' ' + adminElement.doctorsListInAdmin[0].lastName;
             }
+            getAdminCategories();
         }
         adminElement.loading = false;
         adminElement.blurScreen = false;
@@ -100,6 +101,29 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
         adminElement.loading = false;
         dboticaServices.noConnectivityError();
     });
+
+    function getAdminCategories() {
+        var getDoctorCategoriesPromise = dboticaServices.getCategories();
+        $log.log('categories promise is-------', getDoctorCategoriesPromise);
+        getDoctorCategoriesPromise.then(function(categoriesSuccess) {
+            var errorCode = categoriesSuccess.data.errorCode;
+            if (errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                var categoriesResponse = angular.fromJson(categoriesSuccess.data.response);
+                $log.log('response categories are-----', categoriesResponse);
+                if (errorCode == null && categoriesSuccess.data.success) {
+                    angular.forEach(categoriesResponse, function(categoryEntity) {
+                        adminElement.doctorsListInAdmin = dboticaServices.getEditedCategory(categoryEntity, adminElement.doctorsListInAdmin);
+                    });
+                }
+            }
+        }, function(categoriesError) {
+            dboticaServices.noConnectivityError();
+        });
+    }
+
+
 
     var organizationAddressPromise = dboticaServices.getOrganizationAddress();
     $log.log('address promise is-------', organizationAddressPromise);
@@ -148,7 +172,9 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
 
     function doctorSelect(doctor) {
         adminElement.admin.doctorActive = doctor;
+        $log.log('doctor is-------', doctor);
         if (doctor.firstName == general) {
+            categoryFlag = false;
             adminElement.testsListFlag = true;
             adminElement.tableFlag = false;
             adminElement.admin.serviceInDropDown = selectService;
@@ -187,6 +213,7 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
             adminElement.tableFlag = false;
             adminElement.testDuration = false;
             adminElement.roomDropDown = false;
+            categoryFlag = false;
             adminElement.admin.servicesListOfTheDoctor = [];
             adminElement.admin.serviceInDropDown = selectService;
             adminElement.admin.doctorInDropdown = doctor.firstName + ' ' + doctor.lastName;
@@ -194,15 +221,46 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
             adminElement.servicesList = ["Others"];
             if (doctor.hasOwnProperty('doctorPriceInfos')) {
                 adminElement.admin.servicesListOfTheDoctor = doctor.doctorPriceInfos;
-                angular.forEach(doctor.doctorPriceInfos, function(docPriceEntity) {
-                    adminElement.servicesList.unshift(docPriceEntity.billingName);
-                });
+                adminElement.servicesList = dboticaServices.getServicesListOfAdmin(doctor.doctorPriceInfos);
             } else {
-                adminElement.admin.servicesListOfTheDoctor = [];
+                categoryFlag = true;
+                angular.copy(doctor, categoryObject);
+                angular.copy(doctor.priceInfos, adminElement.admin.servicesListOfTheDoctor);
+                $log.log('table name-------', adminElement.admin.servicesListOfTheDoctor);
+                adminElement.servicesList = dboticaServices.getServicesListOfAdmin(doctor.priceInfos);
+                $log.log('services list is------', adminElement.servicesList);
             }
             if (!adminElement.roomDropDown) {
                 adminElement.tableFlag = true;
             }
+        }
+    }
+
+    function addCategory() {
+        if (adminElement.categoryName !== '') {
+            var categoryRequest = {};
+            categoryRequest.name = adminElement.categoryName;
+            categoryRequest.priceInfos = [];
+            categoryRequest.description = '';
+            categoryRequest.organizationId = organizationId;
+            var addCategoryPromise = dboticaServices.addNewCategory(categoryRequest);
+            $log.log('category promise is----', addCategoryPromise);
+            addCategoryPromise.then(function(addCategorySuccess) {
+                var errorCode = addCategorySuccess.data.errorCode;
+                if (errorCode) {
+                    dboticaServices.logoutFromThePage(errorCode);
+                } else {
+                    var categoryResponse = angular.fromJson(addCategorySuccess.data.response);
+                    $log.log('category response is------', categoryResponse);
+                    if (errorCode == null && addCategorySuccess.data.success) {
+                        adminElement.doctorsListInAdmin = dboticaServices.getEditedCategory(categoryResponse, adminElement.doctorsListInAdmin);
+                        adminElement.categoryName = '';
+                        dboticaServices.addCatregorySuccessSwal();
+                    }
+                }
+            }, function(addCategoryError) {
+                dboticaServices.noConnectivityError();
+            });
         }
     }
 
@@ -234,144 +292,182 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
     function submitServiceRequest() {
         var serviceRequestEntity = {};
         var testObject = {};
-        if (adminElement.admin.doctorInDropdown == general) {
-            serviceRequestEntity.doctorId = "";
-        } else {
-            serviceRequestEntity.doctorId = adminElement.admin.doctorActive.id;
-        }
-        serviceRequestEntity.doctorPriceInfos = [];
-        if (adminElement.admin.serviceInDropDown !== selectService && adminElement.admin.procedureCostTextBox !== "" && adminElement.admin.procedureRemarksTextBox !== "") {
-            if (adminElement.admin.doctorActive.hasOwnProperty('doctorPriceInfos')) {
-                if (adminElement.admin.doctorActive.doctorPriceInfos.length > 0) {
-                    angular.forEach(adminElement.admin.doctorActive.doctorPriceInfos, function(doctorPriceInfoEntity) {
-                        var existingInfoObject = {};
-                        if (doctorPriceInfoEntity.billingName == adminElement.admin.serviceInDropDown) {} else {
-                            existingInfoObject.billingName = doctorPriceInfoEntity.billingName;
-                            existingInfoObject.price = doctorPriceInfoEntity.price;
-                            existingInfoObject.updatedDate = doctorPriceInfoEntity.updatedDate;
-                            existingInfoObject.remark = doctorPriceInfoEntity.remark;
-                            existingInfoObject.updatedBy = doctorPriceInfoEntity.updatedBy;
-                            existingInfoObject.state = doctorPriceInfoEntity.state;
-                            serviceRequestEntity.doctorPriceInfos.push(existingInfoObject);
-                        }
-                    });
-                    var serviceObject = getServiceRequestObject(service);
-                    serviceRequestEntity.doctorPriceInfos.push(serviceObject);
-                } else {
-                    var serviceObject = getServiceRequestObject(service);
-                    serviceRequestEntity.doctorPriceInfos.push(serviceObject);
-                }
-
+        var check = adminElement.admin.serviceInDropDown !== selectService && adminElement.admin.procedureCostTextBox !== "";
+        if (!categoryFlag) {
+            if (adminElement.admin.doctorInDropdown == general) {
+                serviceRequestEntity.doctorId = "";
             } else {
-                if (adminElement.admin.doctorInDropdown == general) {
-                    if (adminElement.admin.serviceInDropDown == newTest) {
-                        testObject = getServiceRequestObject(test);
-                    } else {
-                        testObject = getServiceRequestObject(test);
-                        angular.forEach(getTestsSuccess, function(testsSuccessEntity) {
-                            if (testsSuccessEntity.billingName == adminElement.admin.serviceInDropDown) {
-                                testObject.id = testsSuccessEntity.id;
+                serviceRequestEntity.doctorId = adminElement.admin.doctorActive.id;
+            }
+            serviceRequestEntity.doctorPriceInfos = [];
+            if (check) {
+                if (adminElement.admin.doctorActive.hasOwnProperty('doctorPriceInfos')) {
+                    if (adminElement.admin.doctorActive.doctorPriceInfos.length > 0) {
+                        angular.forEach(adminElement.admin.doctorActive.doctorPriceInfos, function(doctorPriceInfoEntity) {
+                            var existingInfoObject = {};
+                            if (doctorPriceInfoEntity.billingName == adminElement.admin.serviceInDropDown) {} else {
+                                existingInfoObject.billingName = doctorPriceInfoEntity.billingName;
+                                existingInfoObject.price = doctorPriceInfoEntity.price;
+                                existingInfoObject.updatedDate = doctorPriceInfoEntity.updatedDate;
+                                existingInfoObject.remark = doctorPriceInfoEntity.remark;
+                                existingInfoObject.updatedBy = doctorPriceInfoEntity.updatedBy;
+                                existingInfoObject.state = doctorPriceInfoEntity.state;
+                                serviceRequestEntity.doctorPriceInfos.push(existingInfoObject);
                             }
                         });
+                        var serviceObject = getServiceRequestObject(service);
+                        serviceRequestEntity.doctorPriceInfos.push(serviceObject);
+                    } else {
+                        var serviceObject = getServiceRequestObject(service);
+                        serviceRequestEntity.doctorPriceInfos.push(serviceObject);
                     }
                 } else {
-                    var serviceObject = getServiceRequestObject(service);
-                    serviceRequestEntity.doctorPriceInfos.push(serviceObject);
+                    if (adminElement.admin.doctorInDropdown == general) {
+                        if (adminElement.admin.serviceInDropDown == newTest) {
+                            testObject = getServiceRequestObject(test);
+                        } else {
+                            testObject = getServiceRequestObject(test);
+                            angular.forEach(getTestsSuccess, function(testsSuccessEntity) {
+                                if (testsSuccessEntity.billingName == adminElement.admin.serviceInDropDown) {
+                                    testObject.id = testsSuccessEntity.id;
+                                }
+                            });
+                        }
+                    } else {
+                        var serviceObject = getServiceRequestObject(service);
+                        serviceRequestEntity.doctorPriceInfos.push(serviceObject);
+                    }
                 }
+                if (adminElement.admin.doctorInDropdown == general) {
+                    adminElement.loading = true;
+                    var submitTestRequestPromise = dboticaServices.submitTestRequest(testObject);
+                    submitTestRequestPromise.then(function(testRequestSuccessResponse) {
+                        var errorCode = testRequestSuccessResponse.data.errorCode;
+                        if (errorCode) {
+                            dboticaServices.logoutFromThePage(errorCode);
+                        } else {
+                            var errorCode = testRequestSuccessResponse.data.errorCode;
+                            var success = testRequestSuccessResponse.data.success;
+                            if (errorCode == null && success == true) {
+                                var testSuccess = angular.fromJson(testRequestSuccessResponse.data.response);
+                                var localRoom = [];
+                                localRoom = _.filter(adminElement.activeRooms, function(entity) {
+                                    return entity.id !== undefined && entity.id == testSuccess.roomIds[0];
+                                });
+                                if (testObject.hasOwnProperty('id')) {
+                                    angular.forEach(adminElement.admin.servicesListOfTheDoctor, function(serviceOfDoctor) {
+                                        if (testSuccess.id == serviceOfDoctor.id) {
+                                            serviceOfDoctor.price = testSuccess.price;
+                                            serviceOfDoctor.duration = testSuccess.duration;
+                                            serviceOfDoctor.remark = testSuccess.remark;
+                                            if (localRoom.length > 0) {
+                                                serviceOfDoctor.roomAndFloorNumbers = localRoom[0].roomNo + '-' + localRoom[0].floorNo;
+                                            } else {
+                                                serviceOfDoctor.roomAndFloorNumbers = '';
+                                            }
+                                        }
+                                    });
+                                    clearFields();
+                                    adminElement.admin.duration = '';
+                                    adminElement.activeRoomId = '';
+                                    adminElement.roomName = '--Select Room--';
+                                } else {
+                                    testSuccess['billingName'] = testSuccess.diagnosisTest;
+                                    delete testSuccess.diagnosisTest;
+                                    if (localRoom.length > 0) {
+                                        testSuccess.roomAndFloorNumbers = localRoom[0].roomNo + '-' + localRoom[0].floorNo;
+                                    } else {
+                                        testSuccess.roomAndFloorNumbers = '';
+                                    }
+                                    adminElement.servicesList.unshift(testSuccess['billingName']);
+                                    adminElement.admin.servicesListOfTheDoctor.push(testSuccess);
+
+                                    adminElement.activeRoomId = '';
+                                    adminElement.roomName = '--Select Room--';
+                                    clearFields();
+                                }
+                            }
+                        }
+                        adminElement.loading = false;
+                    }, function(testRequestErrorResponse) {
+                        adminElement.loading = false;
+                        dboticaServices.noConnectivityError();
+                    });
+                } else {
+                    adminElement.loading = true;
+                    var submitServiceRequestPromise = dboticaServices.submitServiceRequest(serviceRequestEntity);
+                    submitServiceRequestPromise.then(function(successResponseOfServiceRequest) {
+                        var errorCode = successResponseOfServiceRequest.data.errorCode;
+                        if (errorCode) {
+                            dboticaServices.logoutFromThePage(errorCode);
+                        } else {
+                            if (successResponseOfServiceRequest.data.success === true && successResponseOfServiceRequest.data.errorCode === null) {
+                                var updatedDoctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
+                                updatedDoctorsOfThatAssistant.then(function(successResponse) {
+                                    var errorCode = successResponse.data.errorCode;
+                                    if (errorCode) {
+                                        dboticaServices.logoutFromThePage(errorCode);
+                                    } else {
+                                        var updatedDoctorsOfThatAssistantResponse = angular.fromJson(successResponse.data.response);
+                                        updateTheServices(updatedDoctorsOfThatAssistantResponse);
+                                    }
+                                }, function(errorResponse) {});
+                            }
+                            dboticaServices.serviceUpdateSuccessSwal();
+                            adminElement.admin.procedureName = false;
+                            clearFields();
+                            adminElement.admin.serviceInDropDown = selectService;
+                        }
+                        adminElement.loading = false;
+                    }, function(errorResponseOfServiceRequest) {
+                        adminElement.loading = false;
+                        dboticaServices.noConnectivityError();
+                    });
+                }
+            } else {
+                dboticaServices.serviceUpdateError();
             }
-            if (adminElement.admin.doctorInDropdown == general) {
-                adminElement.loading = true;
-                var submitTestRequestPromise = dboticaServices.submitTestRequest(testObject);
-                submitTestRequestPromise.then(function(testRequestSuccessResponse) {
-                    var errorCode = testRequestSuccessResponse.data.errorCode;
+        } else {
+            $log.log('category services is-----', categoryObject);
+            var categoryRequest = getServiceRequestObject(service);
+            delete categoryRequest['roomIds'];
+            $log.log('category request is-----', categoryRequest);
+            angular.copy(categoryObject, serviceRequestEntity);
+            if (adminElement.admin.serviceInDropDown == 'Others') {
+                serviceRequestEntity.priceInfos.push(categoryRequest);
+            } else {
+                var editIndex = _.findLastIndex(serviceRequestEntity.priceInfos, function(infoEntity) {
+                    return infoEntity.billingName == adminElement.admin.serviceInDropDown;
+                });
+                serviceRequestEntity.priceInfos.splice(editIndex, 1, categoryRequest);
+            }
+            dboticaServices.deleteProperties(serviceRequestEntity);
+            $log.log('service request entity is-----', serviceRequestEntity);
+            if (check) {
+                var doctorCategoryPromise = dboticaServices.addNewCategory(serviceRequestEntity);
+                $log.log('category promise is----', doctorCategoryPromise);
+                doctorCategoryPromise.then(function(categorySuccess) {
+                    var errorCode = categorySuccess.data.errorCode;
                     if (errorCode) {
                         dboticaServices.logoutFromThePage(errorCode);
                     } else {
-                        var errorCode = testRequestSuccessResponse.data.errorCode;
-                        var success = testRequestSuccessResponse.data.success;
-                        if (errorCode == null && success == true) {
-                            var testSuccess = angular.fromJson(testRequestSuccessResponse.data.response);
-                            var localRoom = [];
-                            localRoom = _.filter(adminElement.activeRooms, function(entity) {
-                                return entity.id !== undefined && entity.id == testSuccess.roomIds[0];
-                            });
-                            if (testObject.hasOwnProperty('id')) {
-                                angular.forEach(adminElement.admin.servicesListOfTheDoctor, function(serviceOfDoctor) {
-                                    if (testSuccess.id == serviceOfDoctor.id) {
-                                        serviceOfDoctor.price = testSuccess.price;
-                                        serviceOfDoctor.duration = testSuccess.duration;
-                                        serviceOfDoctor.remark = testSuccess.remark;
-                                        if (localRoom.length > 0) {
-                                            serviceOfDoctor.roomAndFloorNumbers = localRoom[0].roomNo + '-' + localRoom[0].floorNo;
-                                        } else {
-                                            serviceOfDoctor.roomAndFloorNumbers = '';
-                                        }
-                                    }
-                                });
-                                adminElement.admin.procedureCostTextBox = "";
-                                adminElement.admin.procedureRemarksTextBox = "";
-                                adminElement.admin.procedureNameTxtBox = "";
-                                adminElement.admin.duration = '';
-                                adminElement.activeRoomId = '';
-                                adminElement.roomName = '--Select Room--';
-                            } else {
-                                testSuccess['billingName'] = testSuccess.diagnosisTest;
-                                delete testSuccess.diagnosisTest;
-                                if (localRoom.length > 0) {
-                                    testSuccess.roomAndFloorNumbers = localRoom[0].roomNo + '-' + localRoom[0].floorNo;
-                                } else {
-                                    testSuccess.roomAndFloorNumbers = '';
-                                }
-                                adminElement.servicesList.unshift(testSuccess['billingName']);
-                                adminElement.admin.servicesListOfTheDoctor.push(testSuccess);
-                                adminElement.admin.procedureCostTextBox = "";
-                                adminElement.activeRoomId = '';
-                                adminElement.roomName = '--Select Room--';
-                                adminElement.admin.procedureRemarksTextBox = "";
-                                adminElement.admin.procedureNameTxtBox = "";
-                            }
+                        var categoryResponse = angular.fromJson(categorySuccess.data.response);
+                        $log.log('category response is-------', categoryResponse);
+                        if (errorCode == null && categorySuccess.data.success) {
+                            dboticaServices.serviceUpdateSuccessSwal();
+                            clearFields();
+                            adminElement.admin.serviceInDropDown = selectService;
+                            angular.copy(categoryResponse.priceInfos, adminElement.admin.servicesListOfTheDoctor);
+                            adminElement.servicesList = dboticaServices.getServicesListOfAdmin(categoryResponse.priceInfos);
+                            $log.log('services list is------', adminElement.servicesList);
                         }
                     }
-                    adminElement.loading = false;
-                }, function(testRequestErrorResponse) {
-                    adminElement.loading = false;
+                }, function(doctorError) {
                     dboticaServices.noConnectivityError();
                 });
             } else {
-                adminElement.loading = true;
-                var submitServiceRequestPromise = dboticaServices.submitServiceRequest(serviceRequestEntity);
-                submitServiceRequestPromise.then(function(successResponseOfServiceRequest) {
-                    var errorCode = successResponseOfServiceRequest.data.errorCode;
-                    if (errorCode) {
-                        dboticaServices.logoutFromThePage(errorCode);
-                    } else {
-                        if (successResponseOfServiceRequest.data.success === true && successResponseOfServiceRequest.data.errorCode === null) {
-                            var updatedDoctorsOfThatAssistant = dboticaServices.doctorsOfAssistant();
-                            updatedDoctorsOfThatAssistant.then(function(successResponse) {
-                                var errorCode = successResponse.data.errorCode;
-                                if (errorCode) {
-                                    dboticaServices.logoutFromThePage(errorCode);
-                                } else {
-                                    var updatedDoctorsOfThatAssistantResponse = angular.fromJson(successResponse.data.response);
-                                    updateTheServices(updatedDoctorsOfThatAssistantResponse);
-                                }
-                            }, function(errorResponse) {});
-                        }
-                        dboticaServices.serviceUpdateSuccessSwal();
-                        adminElement.admin.procedureName = false;
-                        adminElement.admin.procedureNameTxtBox = "";
-                        adminElement.admin.procedureCostTextBox = "";
-                        adminElement.admin.procedureRemarksTextBox = "";
-                        adminElement.admin.serviceInDropDown = selectService;
-                    }
-                    adminElement.loading = false;
-                }, function(errorResponseOfServiceRequest) {
-                    adminElement.loading = false;
-                    dboticaServices.noConnectivityError();
-                });
+                dboticaServices.serviceUpdateError();
             }
-        } else {
-            dboticaServices.serviceUpdateError();
         }
     }
 
@@ -379,88 +475,121 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
         var changeStateRequestEntity = {};
         var changeTestStateRequestEntity = {};
         changeStateRequestEntity.doctorPriceInfos = [];
-        if (adminElement.admin.doctorInDropdown == general) {
-            changeTestStateRequestEntity['diagnosisTest'] = doctorService.billingName;
-            changeTestStateRequestEntity.organizationId = organizationId;
-            changeTestStateRequestEntity.price = doctorService.price;
-            changeTestStateRequestEntity.duration = doctorService.duration;
-            changeTestStateRequestEntity.roomIds = doctorService.roomIds;
-            changeTestStateRequestEntity.remark = doctorService.remark;
-            changeTestStateRequestEntity.id = doctorService.id;
-            changeTestStateRequestEntity.updatedBy = doctorService.updatedBy;
-            var date = new Date();
-            changeTestStateRequestEntity.updatedDate = date.getTime();
-            if (doctorService.state == "ACTIVE") {
-                changeTestStateRequestEntity.state = "INACTIVE";
-            } else {
-                changeTestStateRequestEntity.state = "ACTIVE";
-            }
-            adminElement.loading = true;
-            var submitTestStatePromise = dboticaServices.submitTestRequest(changeTestStateRequestEntity);
-            submitTestStatePromise.then(function(submitTestStateChangeSuccess) {
-                var errorCode = submitTestStateChangeSuccess.data.errorCode;
-                if (errorCode) {
-                    dboticaServices.logoutFromThePage(errorCode);
+        if (!categoryFlag) {
+            if (adminElement.admin.doctorInDropdown == general) {
+                changeTestStateRequestEntity['diagnosisTest'] = doctorService.billingName;
+                changeTestStateRequestEntity.organizationId = organizationId;
+                changeTestStateRequestEntity.price = doctorService.price;
+                changeTestStateRequestEntity.duration = doctorService.duration;
+                changeTestStateRequestEntity.roomIds = doctorService.roomIds;
+                changeTestStateRequestEntity.remark = doctorService.remark;
+                changeTestStateRequestEntity.id = doctorService.id;
+                changeTestStateRequestEntity.updatedBy = doctorService.updatedBy;
+                var date = new Date();
+                changeTestStateRequestEntity.updatedDate = date.getTime();
+                if (doctorService.state == "ACTIVE") {
+                    changeTestStateRequestEntity.state = "INACTIVE";
                 } else {
-                    var successtestStateChange = angular.fromJson(submitTestStateChangeSuccess.data.response);
-                    if (submitTestStateChangeSuccess.data.success === true && submitTestStateChangeSuccess.data.errorCode === null) {
-                        doctorService.state = successtestStateChange.state;
-                    }
+                    changeTestStateRequestEntity.state = "ACTIVE";
                 }
-                adminElement.loading = false;
-            }, function(submitTestStateChangeError) {
-                adminElement.loading = false;
-                dboticaServices.noConnectivityError();
-            });
-        } else {
-            changeStateRequestEntity.doctorId = adminElement.admin.doctorActive.id;
-            angular.forEach(adminElement.admin.servicesListOfTheDoctor, function(doctorServicesEntity) {
-                var object = {};
-                object.billingName = doctorServicesEntity.billingName;
-                object.price = doctorServicesEntity.price;
-                object.remark = doctorServicesEntity.remark;
-                object.updatedBy = doctorServicesEntity.updatedBy;
-                check = (doctorService.billingName == doctorServicesEntity.billingName) && (doctorService.price == doctorServicesEntity.price);
-                if (check) {
-                    var date = new Date();
-                    object.updatedDate = date.getTime();
-                    if (doctorService.state == "ACTIVE") {
-                        object.state = "INACTIVE";
+                adminElement.loading = true;
+                var submitTestStatePromise = dboticaServices.submitTestRequest(changeTestStateRequestEntity);
+                submitTestStatePromise.then(function(submitTestStateChangeSuccess) {
+                    var errorCode = submitTestStateChangeSuccess.data.errorCode;
+                    if (errorCode) {
+                        dboticaServices.logoutFromThePage(errorCode);
                     } else {
-                        object.state = "ACTIVE";
+                        var successtestStateChange = angular.fromJson(submitTestStateChangeSuccess.data.response);
+                        if (submitTestStateChangeSuccess.data.success === true && submitTestStateChangeSuccess.data.errorCode === null) {
+                            doctorService.state = successtestStateChange.state;
+                        }
                     }
-                    changeStateRequestEntity.doctorPriceInfos.push(object);
-                } else {
-                    object.updatedDate = doctorServicesEntity.updatedDate;
-                    object.state = doctorServicesEntity.state;
-                    changeStateRequestEntity.doctorPriceInfos.push(object);
-                }
+                    adminElement.loading = false;
+                }, function(submitTestStateChangeError) {
+                    adminElement.loading = false;
+                    dboticaServices.noConnectivityError();
+                });
+            } else {
+                changeStateRequestEntity.doctorId = adminElement.admin.doctorActive.id;
+                angular.forEach(adminElement.admin.servicesListOfTheDoctor, function(doctorServicesEntity) {
+                    var object = {};
+                    object.billingName = doctorServicesEntity.billingName;
+                    object.price = doctorServicesEntity.price;
+                    object.remark = doctorServicesEntity.remark;
+                    object.updatedBy = doctorServicesEntity.updatedBy;
+                    check = (doctorService.billingName == doctorServicesEntity.billingName) && (doctorService.price == doctorServicesEntity.price);
+                    if (check) {
+                        var date = new Date();
+                        object.updatedDate = date.getTime();
+                        if (doctorService.state == "ACTIVE") {
+                            object.state = "INACTIVE";
+                        } else {
+                            object.state = "ACTIVE";
+                        }
+                        changeStateRequestEntity.doctorPriceInfos.push(object);
+                    } else {
+                        object.updatedDate = doctorServicesEntity.updatedDate;
+                        object.state = doctorServicesEntity.state;
+                        changeStateRequestEntity.doctorPriceInfos.push(object);
+                    }
+                });
+                adminElement.loading = true;
+                var changeServiceStateRequestPromise = dboticaServices.submitServiceRequest(changeStateRequestEntity);
+                changeServiceStateRequestPromise.then(function(successResponseOfChangeStateRequest) {
+                    var errorCode = successResponseOfChangeStateRequest.data.errorCode;
+                    if (errorCode) {
+                        dboticaServices.logoutFromThePage(errorCode);
+                    } else {
+                        if (successResponseOfChangeStateRequest.data.success === true && successResponseOfChangeStateRequest.data.errorCode === null) {
+                            var updatedDoctors = dboticaServices.doctorsOfAssistant();
+                            updatedDoctors.then(function(successResponse) {
+                                var errorCode = successResponse.data.errorCode;
+                                if (errorCode) {
+                                    dboticaServices.logoutFromThePage(errorCode);
+                                } else {
+                                    var updatedDoctorsResponse = angular.fromJson(successResponse.data.response);
+                                    updateTheServices(updatedDoctorsResponse);
+                                }
+                            }, function(errorResponse) {
+                                dboticaServices.noConnectivityError();
+                            });
+                        }
+                    }
+                    adminElement.loading = false;
+                }, function(changeStateRequestErrorResponse) {
+                    adminElement.loading = false;
+                    dboticaServices.noConnectivityError();
+                });
+            }
+        } else {
+            $log.log('edit category services----', doctorService);
+            $log.log('category object is----', categoryObject);
+            angular.copy(categoryObject, changeStateRequestEntity);
+            var check = adminElement.admin.serviceInDropDown !== selectService && adminElement.admin.procedureCostTextBox !== "";
+
+            var editIndex = _.findLastIndex(categoryObject.priceInfos, function(infoEntity) {
+                return infoEntity.billingName == doctorService.billingName;
             });
-            adminElement.loading = true;
-            var changeServiceStateRequestPromise = dboticaServices.submitServiceRequest(changeStateRequestEntity);
-            changeServiceStateRequestPromise.then(function(successResponseOfChangeStateRequest) {
-                var errorCode = successResponseOfChangeStateRequest.data.errorCode;
+            if (changeStateRequestEntity.priceInfos[editIndex].state == 'ACTIVE') {
+                changeStateRequestEntity.priceInfos[editIndex].state = 'INACTIVE';
+            } else {
+                changeStateRequestEntity.priceInfos[editIndex].state = 'ACTIVE';
+            }
+            $log.log('final req is------', changeStateRequestEntity);
+            var updateCategoryPromise = dboticaServices.addNewCategory(changeStateRequestEntity);
+            $log.log('update category promise is-----', updateCategoryPromise);
+            updateCategoryPromise.then(function(updateSuccess) {
+                var errorCode = updateSuccess.data.errorCode;
                 if (errorCode) {
                     dboticaServices.logoutFromThePage(errorCode);
                 } else {
-                    if (successResponseOfChangeStateRequest.data.success === true && successResponseOfChangeStateRequest.data.errorCode === null) {
-                        var updatedDoctors = dboticaServices.doctorsOfAssistant();
-                        updatedDoctors.then(function(successResponse) {
-                            var errorCode = successResponse.data.errorCode;
-                            if (errorCode) {
-                                dboticaServices.logoutFromThePage(errorCode);
-                            } else {
-                                var updatedDoctorsResponse = angular.fromJson(successResponse.data.response);
-                                updateTheServices(updatedDoctorsResponse);
-                            }
-                        }, function(errorResponse) {
-                            dboticaServices.noConnectivityError();
-                        });
+                    var updateCategoryResponse = angular.fromJson(updateSuccess.data.response);
+                    $log.log('update response is-----', updateCategoryResponse);
+                    if (errorCode == null && updateSuccess.data.success) {
+                        adminElement.admin.servicesListOfTheDoctor = updateCategoryResponse.priceInfos;
                     }
                 }
-                adminElement.loading = false;
-            }, function(changeStateRequestErrorResponse) {
-                adminElement.loading = false;
+            }, function(updateError) {
                 dboticaServices.noConnectivityError();
             });
         }
@@ -480,6 +609,7 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
                 });
             }
         });
+        getAdminCategories();
         adminElement.doctorsListInAdmin.push(generalObject);
     }
 
@@ -548,17 +678,14 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
             addressRequestEntity = adminElement.orgAddress;
             addressRequestEntity.id = organizationAddressId;
         }
-        $log.log('request is--------', addressRequestEntity);
         addressRequestEntity = JSON.stringify(addressRequestEntity);
         var updateOrgAddressPromise = dboticaServices.updateOrgAddress(addressRequestEntity);
-        $log.log('org address is-----', updateOrgAddressPromise);
         updateOrgAddressPromise.then(function(updateOrgSuccess) {
             var errorCode = updateOrgSuccess.data.errorCode;
             if (errorCode) {
                 dboticaServices.logoutFromThePage();
             } else {
                 var updatedAddressResponse = angular.fromJson(updateOrgSuccess.data.response);
-                $log.log('update address is-----', updatedAddressResponse);
                 if (errorCode == null && updateOrgSuccess.data.success == true) {
                     if (updatedAddressResponse.length > 0) {
                         adminElement.orgAddress = updatedAddressResponse[0];
@@ -622,5 +749,11 @@ function adminCtrl($scope, $log, dboticaServices, $state, $http, $parse, doctorS
     function selectTestFromTheDropdown(selectedTest) {
         adminElement.dropdownActive = false;
         adminElement.admin.procedureNameTxtBox = selectedTest.diagnosisTest;
+    }
+
+    function clearFields() {
+        adminElement.admin.procedureNameTxtBox = "";
+        adminElement.admin.procedureCostTextBox = "";
+        adminElement.admin.procedureRemarksTextBox = "";
     }
 };
