@@ -8,6 +8,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     prescriptionElement.blurScreen = false;
     prescriptionElement.loading = false;
     prescriptionElement.dropdownActive = false;
+    var viewPreviousFlag = false;
     var instanceFlag = false;
     prescriptionElement.drugTemplates = [];
     var selectDoctor = '---Select Doctor---';
@@ -250,6 +251,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         $log.log('instance entity is-----', instanceEntity);
         $log.log('active patient is-----', activePatient);
         var localInstanceEntity = {};
+        viewPreviousFlag = true;
         angular.copy(instanceEntity, localInstanceEntity);
         localInstanceEntity.templateFields = _.groupBy(localInstanceEntity.templateFields, 'sectionName');
         $log.log('instance entity after log by---', localInstanceEntity);
@@ -298,7 +300,9 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             prescriptionElement.templatesList[index].templateFields = doctorServices.getSortedArray(prescriptionElement.templatesList[index].activeTemplateFields);
         } else {
             prescriptionElement.templatesListInTable[templateIndexInTable].templatePresence = false;
-            prescriptionElement.templatesList.splice(index, 1);
+            if (!viewPreviousFlag) {
+                prescriptionElement.templatesList.splice(index, 1);
+            }
         }
     }
 
@@ -382,6 +386,7 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     }
 
     function patientSearchByDoctor() {
+        viewPreviousFlag = false;
         prescriptionElement.patientData.phoneNumber = prescriptionElement.phoneNumber;
         var patientSearchPromise = doctorServices.getPatientDetailsOfThatNumber(prescriptionElement.phoneNumber);
         patientSearchPromise.then(function(patientSearchSuccess) {

@@ -18,10 +18,10 @@ const DB_PATIENT_STORE = 'patients';
 const DB_PRESCRIPTION_STORE = 'prescriptions';
 const DB_SYNC_STORE = 'syncStore';
 
-var doctorObject = localStorage.getItem('currentDoctor');
-doctorObject = $.parseJSON(doctorObject);
-console.log('doctor ob---', doctorObject.id);
-const doctorId = doctorObject.id;
+/*var doctorObject = localStorage.getItem('currentDoctor');
+doctorObject = $.parseJSON(doctorObject);*/
+/*console.log('doctor ob---', doctorObject.id);*/
+/*const doctorId = doctorObject.id;*/
 
 var db;
 
@@ -275,6 +275,9 @@ function syncAllPrescriptionsToIndexedDB() {
                     } else {
                         data[i]['patientInfo'] = {};
                     }
+                    var doctorObject = localStorage.getItem('currentDoctor');
+                    doctorObject = $.parseJSON(doctorObject);
+                    var doctorId = doctorObject.id;
                     addPrescriptionToIndexedDB(data[i]["prescription"], data[i]["patientInfo"], doctorId);
 
                 }
@@ -513,6 +516,9 @@ function getAllPrescriptionsFromIndexedDB(addDataToTable, callBackAfterAdding, i
         var cursor = event.target.result;
         //console.log("cursor value is----", cursor);
         if (cursor) {
+            var doctorObject = localStorage.getItem('currentDoctor');
+            doctorObject = $.parseJSON(doctorObject);
+            var doctorId = doctorObject.id;
             if (cursor.value.doctorId == doctorId) {
                 result.push(cursor.value);
                 console.log("cursor value object is---", cursor.value);
@@ -581,6 +587,9 @@ function getPrescriptionsByTimeFromIndexedDB(fromDate, toDate, addDataToTable, c
         var cursor = event.target.result;
         console.log('cursor value is---', cursor);
         if (cursor) {
+            var doctorObject = localStorage.getItem('currentDoctor');
+            doctorObject = $.parseJSON(doctorObject);
+            var doctorId = doctorObject.id;
             if (cursor.value.doctorId == doctorId) {
                 result.push(cursor.value);
                 addDataToTable(cursor.value);
@@ -673,6 +682,9 @@ function getPrescriptionsFromIndexedDB(fromDate, toDate, phoneNumber, prescripti
     index.openCursor(range, "prev").onsuccess = function(event) {
         var cursor = event.target.result;
         if (cursor) {
+            var doctorObject = localStorage.getItem('currentDoctor');
+            doctorObject = $.parseJSON(doctorObject);
+            var doctorId = doctorObject.id;
             if (cursor.value.doctorId == doctorId) {
                 result.push(cursor.value);
                 addDataToTable(cursor.value);
