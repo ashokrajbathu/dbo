@@ -287,7 +287,7 @@ function addTemplateController($rootScope, $scope, $log, $stateParams, dboticaSe
 
     function addEntityToTemplate() {
         if (_.isEmpty(templateToEdit)) {
-            if (addTemplate.sectionNameToDisplay !== '-Select Section Name-') {
+            if (addTemplate.sectionNameToDisplay !== '-Select Section Name-' && addTemplate.fieldType !== '---Select Field Type---') {
                 var requestEntity = {};
                 requestEntity.templateFields = [];
                 var check = false;

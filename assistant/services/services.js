@@ -96,9 +96,11 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         var deferred = $q.defer();
         var requestEntity = {
             method: "GET",
+
             url: "http://localhost:8080/dbotica-spring/assistant/getMyDoctors",
             withCredentials: true
         }
+
         $http(requestEntity).then(function(doctorsResponse) {
             deferred.resolve(doctorsResponse);
 
@@ -1701,7 +1703,6 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         }
         return result;
     }
-
     this.updateOrgAddress = function(updateAddress) {
         var deferred = $q.defer();
         var updateEntity = {

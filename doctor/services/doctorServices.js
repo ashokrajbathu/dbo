@@ -67,6 +67,44 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.getDoctorImages = getDoctorImages;
     doctorServices.addImageToPrescription = addImageToPrescription;
     doctorServices.downloadPrescriptionImage = downloadPrescriptionImage;
+    doctorServices.getTemplateInstances = getTemplateInstances;
+    doctorServices.getSortedArray = getSortedArray;
+    doctorServices.sortTemplates = sortTemplates;
+    doctorServices.getIndex = getIndex;
+    doctorServices.getTemplateIndexInTable = getTemplateIndexInTable;
+
+    function sortTemplates(templatesArray) {
+        var localArray = [];
+        angular.copy(templatesArray, localArray);
+        angular.forEach(localArray, function(activeTemplateEntity) {
+            angular.forEach(activeTemplateEntity.templateFields, function(templateFieldEntity, key, value) {
+                if (templateFieldEntity.fieldState == 'INACTIVE') {
+                    activeTemplateEntity.templateFields.splice(key, 1);
+                }
+            });
+            activeTemplateEntity.activeTemplateFields = {};
+            activeTemplateEntity.templatePresence = false;
+            activeTemplateEntity.activeTemplateFields = _.groupBy(activeTemplateEntity.templateFields, 'sectionName');
+        });
+        return localArray;
+    }
+
+    function getIndex(array, element) {
+        var elementIndex = _.findLastIndex(array, function(arrayElement) {
+            return arrayElement.id == element.id;
+        });
+        return elementIndex;
+    }
+
+    function getTemplateIndexInTable(array, template) {
+        $log.log('array is-----', array);
+        $log.log('template is------', template);
+        var index = _.findLastIndex(array, function(arrayElement) {
+            return arrayElement.id == template.id;
+        });
+        return index;
+    }
+
 
     function downloadPrescriptionImage(prescriptionId) {
         var deferred = $q.defer();
@@ -79,6 +117,31 @@ function doctorServices($http, $state, $log, $q) {
             deferred.resolve(downloadImageSuccess);
         }, function(downloadImageError) {
             deferred.reject(downloadImageError);
+        });
+        return deferred.promise;
+    }
+
+    function getSortedArray(templatesArray) {
+        var finalArray = [];
+        angular.forEach(templatesArray, function(arrayEntity) {
+            angular.forEach(arrayEntity, function(entity) {
+                finalArray.push(entity);
+            });
+        });
+        return finalArray;
+    }
+
+    function getTemplateInstances(orgPatientId) {
+        var deferred = $q.defer();
+        var templateRequest = {
+            method: 'GET',
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/template/getPatientTemplateInstances?patientId=' + orgPatientId,
+            withCredentials: true
+        }
+        $http(templateRequest).then(function(templateSuccess) {
+            deferred.resolve(templateSuccess);
+        }, function(templateError) {
+            deferred.reject(templateError);
         });
         return deferred.promise;
     }
@@ -264,6 +327,7 @@ function doctorServices($http, $state, $log, $q) {
     }
 
     function saveTemplateInstance(templateInstance) {
+        $log.log('in instance service check-------');
         var deferred = $q.defer();
         var templateRequest = {
             method: 'POST',

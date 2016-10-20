@@ -133,7 +133,7 @@
                         <tbody>
                             <tr ng-repeat="testItem in prescriptionReport.testsListInTable">
                                 <td ng-bind="$index+1"></td>
-                                <td ng-bind="testItem.testName"></td>
+                                <td ng-bind="testItem.diagnosisTest"></td>
                                 <td ng-bind="testItem.remark"></td>
                                 <td>
                                     <button type="button" ng-click="prescriptionReport.deleteDrugOrTest('test',testItem,$index)" class="btn btnDelete">Delete</button>

@@ -13,6 +13,16 @@
     max-height: 200px;
 }
 
+.templateInstance,
+.templateInstance:hover {
+    float: right;
+    color: white;
+}
+
+.templateInstance:hover {
+    text-decoration: underline;
+}
+
 #imageInDrugsTable {
     max-height: 200px;
 }
