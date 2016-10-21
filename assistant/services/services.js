@@ -135,11 +135,11 @@ myapp.service('dboticaServices', ['$http', '$state', '$log', '$q', function($htt
         return deferred.promise;
     }
 
-    this.getPatientTemplateInstances = function(patientId, organizationId) {
+    this.getPatientTemplateInstances = function(caseId, organizationId) {
         var deferred = $q.defer();
         var instanceRequest = {
             method: 'GET',
-            url: 'http://localhost:8080/dbotica-spring/organization/hospital/template/getPatientTemplateInstances?patientId=' + patientId + '&organizationId=' + organizationId,
+            url: 'http://localhost:8080/dbotica-spring/organization/hospital/template/getCaseTemplateInstances?organizationCaseId=' + caseId + '&organizationId=' + organizationId,
             withCredentials: true
         }
         $http(instanceRequest).then(function(instanceSuccess) {

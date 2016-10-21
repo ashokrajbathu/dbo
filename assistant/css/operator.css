@@ -4,6 +4,35 @@
     background-color: #3c8dbc;
 }
 
+.previousForms,
+.previousForms:hover {
+    cursor: pointer;
+    color: #3c8dbc;
+    float: right;
+    margin-right: 10px;
+}
+
+.patientLabels {
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+
+.fieldValues {
+    display: inline !important;
+}
+
+.patientValues {
+    left: 40px;
+}
+
+.labelWidth {
+    width: 150pt !important;
+}
+
+.previousForms:hover {
+    text-decoration: underline;
+}
+
 .patientInOperator>.patientInOperatorPanelBody {
     border: 1px solid #c5c5c5;
 }

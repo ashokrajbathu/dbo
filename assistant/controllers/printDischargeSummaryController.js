@@ -5,15 +5,12 @@ app.controller('printDischargeSummaryController', ['$scope', '$window', '$timeou
 
     var patientActive = localStorage.getItem('activeDischargePatient');
     patientActive = angular.fromJson(patientActive);
-    console.log('patient active is---', patientActive);
-    var getTemplateInstances = dischargeServices.getPatientTemplateInstances(patientActive.id, patientActive.organizationId);
-    console.log('instances promise is------', getTemplateInstances);
+    var getTemplateInstances = dischargeServices.getPatientTemplateInstances(patientActive.organizationCaseId, patientActive.organizationId);
     getTemplateInstances.then(function(getInstancesSuccess) {
         $scope.name = 'ravi';
         var errorCode = getInstancesSuccess.data.errorCode;
         if (errorCode) {} else {
             var getInstancesResponse = angular.fromJson(getInstancesSuccess.data.response);
-            console.log('instance response is------', getInstancesResponse);
             if (errorCode == null && getInstancesSuccess.data.success) {
                 getInstancesResponse = _.filter(getInstancesResponse, function(entity) {
                     return entity.state == 'ACTIVE';
@@ -21,12 +18,9 @@ app.controller('printDischargeSummaryController', ['$scope', '$window', '$timeou
                 var prescriptionEntities = [];
                 if (getInstancesResponse.length > 0) {
                     angular.forEach(getInstancesResponse, function(instanceEntity) {
-                        console.log('instance entity is--------', instanceEntity);
                         var localFieldValues = angular.fromJson(instanceEntity.templateValues);
-                        console.log('local field values are----', localFieldValues);
                         var lastUpdatedValue = instanceEntity.lastUpdated;
                         angular.forEach(localFieldValues, function(field) {
-                            console.log('field entity is------', field);
                             angular.forEach(field, function(fieldEntity) {
                                 var localObject = {};
                                 if (fieldEntity.description !== '' && fieldEntity.fieldType !== 'CHECK_BOX') {
@@ -43,7 +37,6 @@ app.controller('printDischargeSummaryController', ['$scope', '$window', '$timeou
                                     localObject.fieldType = fieldEntity.fieldType;
                                     localObject.name = fieldEntity.name;
                                     var arr = [];
-                                    console.log('check box entity is------', fieldEntity);
                                     angular.forEach(fieldEntity.restrictValues, function(restrictEntity) {
                                         if (restrictEntity.checkBoxValue) {
                                             arr.push(restrictEntity.name);
@@ -56,12 +49,10 @@ app.controller('printDischargeSummaryController', ['$scope', '$window', '$timeou
                         });
                     });
                     prescriptionEntities = _.groupBy(prescriptionEntities, 'sectionName');
-                    console.log('entites are---', prescriptionEntities);
                     angular.forEach(prescriptionEntities, function(prescEntry) {
                         var localSortedArray = [];
                         localSortedArray = _.groupBy(prescEntry, 'lastUpdated');
                         $scope.activeTemplateInstances.push(localSortedArray);
-                        console.log('sorted array is----', $scope.activeTemplateInstances);
                         $timeout($window.print, 0);
                     });
                 }

@@ -15,18 +15,6 @@
                 <div ng-repeat="field in fieldEntity track by $index">
                     <h4 ng-if="$index==0" class="labelName" ng-bind="field.sectionName"></h4>
                     <div>
-                        <!--  <div style="display:inline;" class="col-md-7 fieldValues col-sm-7 col-xs-6">
-                           <label class="patientLabels labelWidth" ng-bind="field.name + ':'"></label>
-                           <span class="patientLabels patientValues" ng-bind="field.value"></span>
-                       </div> -->
-                        <!--  <div class="row">
-                           <div class="col-md-4 col-sm-4 col-xs-12">
-                               <label class="patientLabels labelWidth" ng-bind="field.name+':'"></label>
-                           </div>
-                           <div style="display:inline-block;width:60%;right:0px;" class="col-md-8 col-sm-8 col-xs-12">
-                               <span class="patientLabels" ng-bind="field.value"></span>
-                           </div>
-                       </div> -->
                         <table>
                             <tbody>
                                 <tr ng-if="field.value!==''&&field.fieldType=='TEXT_BOX'||field.fieldType=='TEXT_AREA'||field.fieldType=='DROPDOWN'">
@@ -40,13 +28,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <!--  <div class="row" >
-                       <div class="col-md-7 fieldValues col-sm-7 col-xs-6">
-                           <label class="patientLabels labelWidth" ></label>
-                           <span class="patientLabels patientValues" style="display:block;" >
-                               </span>
-                       </div>
-                   </div> -->
                 </div>
             </div>
         </div>

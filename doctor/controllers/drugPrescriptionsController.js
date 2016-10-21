@@ -169,7 +169,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
         } else {
             prescriptionElement.addedImagesList.splice(imageIndex, 1);
         }
-        $log.log('final images list-----', prescriptionElement.addedImagesList);
     }
 
     var getDrugTemplatesPromise = doctorServices.getDrugTemplates();
@@ -197,12 +196,10 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             doctorServices.logoutFromThePage(errorCode);
         } else {
             var doctorTemplates = angular.fromJson(getTemplatesSuccess.data.response);
-            $log.log('doctor templates are-----', doctorTemplates);
             activeTemplates = _.filter(doctorTemplates, function(templateEntity) {
                 return templateEntity.state == 'ACTIVE';
             });
             prescriptionElement.templatesListInTable = doctorServices.sortTemplates(activeTemplates);
-            $log.log('templates list in table is------', prescriptionElement.templatesListInTable);
         }
     }, function(getTemplatesError) {
         doctorServices.noConnectivityError();
@@ -248,20 +245,15 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     }
 
     function viewPreviousInstance(instanceEntity, index) {
-        $log.log('instance entity is-----', instanceEntity);
-        $log.log('active patient is-----', activePatient);
         var localInstanceEntity = {};
         viewPreviousFlag = true;
         angular.copy(instanceEntity, localInstanceEntity);
         localInstanceEntity.templateFields = _.groupBy(localInstanceEntity.templateFields, 'sectionName');
-        $log.log('instance entity after log by---', localInstanceEntity);
         var templateArray = [];
         var selectedTemplate = {};
         if (!_.isEmpty(activePatient)) {
 
-            $log.log('org patient is-----', organizationPatientId);
             var getPatientInstancesPromise = doctorServices.getTemplateInstances(organizationPatientId);
-            $log.log('instances promise is-------', getPatientInstancesPromise);
             getPatientInstancesPromise.then(function(instanceSuccess) {
                 var errorCode = instanceSuccess.data.errorCode;
                 if (errorCode) {
@@ -269,7 +261,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 } else {
 
                     var instancesResponse = angular.fromJson(instanceSuccess.data.response);
-                    $log.log('instance response is-----', instancesResponse);
                     if (errorCode == null && instanceSuccess.data.success) {
                         templateArray = _.filter(instancesResponse, function(entity) {
                             return entity.templateId == localInstanceEntity.id;
@@ -289,8 +280,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
     }
 
     function setInstancesToTemplate(template, index) {
-        $log.log('index value is---', index);
-        $log.log('tem list is00000000000', prescriptionElement.templatesList);
         template.templateValues = angular.fromJson(template.templateValues);
         template.templateValues = _.groupBy(template.templateValues, 'sectionName');
         var templateIndexInTable = doctorServices.getTemplateIndexInTable(prescriptionElement.templatesListInTable, prescriptionElement.templatesList[index]);
@@ -357,7 +346,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
             prescriptionElement.templatesList[templateIndex].templatePresence = false;
             prescriptionElement.templatesList.splice(templateIndex, 1);
         }
-        $log.log('select template is----', prescriptionElement.templatesList);
     }
 
     function phoneNumberLengthValidation() {
@@ -405,7 +393,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                         } else {
                             var caseHistoryResponse = angular.fromJson(caseSuccess.data.response);
                             getOrganizationPatientId(prescriptionElement.patientsToBeDisplayedInRadios[0].id);
-                            $log.log('org patient id after call is---', caseHistoryResponse);
                             if (errorCode == null && caseSuccess.data.success) {
                                 prescriptionElement.patientCaseHistory = _.filter(caseHistoryResponse, function(entity) {
                                     if (entity.organizationCaseStatus == 'OPENED') {
@@ -413,21 +400,17 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                                     }
                                     return entity.state == 'ACTIVE' && entity.organizationCaseStatus == 'OPENED';
                                 });
-                                //  angular.copy(prescriptionElement.patientCaseHistory, prescriptionElement.casesInModal);
                                 prescriptionElement.casesInModal = _.filter(caseHistoryResponse, function(caseEntry) {
                                     return caseEntry.state == 'ACTIVE';
                                 });
                             }
-                            $log.log('org patien tid ------', organizationPatientId);
                             var patientInstancesPromise = doctorServices.getTemplateInstances(caseHistoryResponse[0].organizationPatientId);
-                            $log.log('instances promise is------', patientInstancesPromise);
                             patientInstancesPromise.then(function(instanceSuccess) {
                                 var errorCode = instanceSuccess.data.errorCode;
                                 if (errorCode) {
                                     doctorServices.logoutFromThePage(errorCode);
                                 } else {
                                     var templatesResponse = angular.fromJson(instanceSuccess.data.response);
-                                    $log.log('template responses are----', templatesResponse);
                                     if (errorCode == null && instanceSuccess.data.success) {
                                         var date = new Date();
                                         var longDate = date.getTime();
@@ -436,8 +419,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                                             return (longDate - templateEntity.lastUpdated) < 86400000;
                                         });
                                         var templatesSorted = _.groupBy(templateArray, 'templateName');
-                                        $log.log('final arrau is------', templateArray);
-                                        $log.log('final sorted template array is------', templatesSorted);
                                         var finalSortedList = [];
                                         angular.forEach(templatesSorted, function(mainTemplateEntity) {
                                             var selectedTemplate = {};
@@ -446,7 +427,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                                             });
                                             finalSortedList.push(selectedTemplate);
                                         });
-                                        $log.log('final sorted list is------', finalSortedList);
                                         angular.forEach(finalSortedList, function(sortEntity) {
                                             var templateIndex = _.findLastIndex(prescriptionElement.templatesListInTable, function(templateEntity) {
                                                 return templateEntity.id == sortEntity.templateId;
@@ -513,7 +493,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                 if (errorCode == null && orgPatientSuccess.data.success) {
                     if (orgPatientResponse[0].state == 'ACTIVE') {
                         organizationPatientId = orgPatientResponse[0].id;
-                        $log.log('org patient id is-------', organizationPatientId);
                     }
                 }
             }
@@ -1072,16 +1051,12 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                                     doctorServices.logoutFromThePage(errorCode);
                                 } else {
                                     var addImageResponse = angular.fromJson(addImageSuccess.data.response);
-                                    console.log('add image response-----', addImageResponse);
                                 }
                             }, function(addImageError) {
-                                console.log('image error is---', addImageError);
                                 doctorServices.noConnectivityError();
                             });
                         });
-                        $log.log('templates list-----', prescriptionElement.templatesList);
                         angular.forEach(prescriptionElement.templatesList, function(templateInstanceEntity) {
-                            $log.log('template while saving -------', templateInstanceEntity);
                             var localInstance = {};
                             localInstance.templateId = templateInstanceEntity.id;
                             localInstance.templateName = templateInstanceEntity.name;
@@ -1089,7 +1064,6 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                             localInstance.patientId = organizationPatientId;
                             localInstance.userId = activeDoctor.id;
                             localInstance.userRole = 'DOCTOR';
-                            $log.log('case active on saving is-----', caseActive);
                             localInstance.organizationCaseNo = caseActive.organizationCaseNo;
                             localInstance.organizationCaseId = caseActive.id;
                             localInstance.organizationId = activeDoctor.organizationId;
@@ -1098,14 +1072,12 @@ function drugPrescriptionsController($scope, $log, doctorServices, $state, $http
                             templateInstanceRequest.push(localInstance);
                         });
                         var templateInstancePromise = doctorServices.saveTemplateInstance(templateInstanceRequest);
-                        $log.log('template promise is----', templateInstancePromise);
                         templateInstancePromise.then(function(templateInstanceSuccess) {
                             var errorCode = templateInstanceSuccess.data.errorCode;
                             if (errorCode) {
                                 doctorServices.logoutFromThePage(errorCode);
                             } else {
                                 templateInstanceResponse = angular.fromJson(templateInstanceSuccess.data.response);
-                                $log.log('instance response is------', templateInstanceResponse);
                             }
                         }, function(templateInstanceError) {
                             doctorServices.noConnectivityError();

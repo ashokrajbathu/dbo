@@ -3,6 +3,7 @@ patientDetailsController.$inject = ['$rootScope', '$scope', '$log', '$stateParam
 
 function patientDetailsController($rootScope, $scope, $log, $stateParams, dboticaServices, $state, $http, $parse, doctorServices, SweetAlert) {
     var detail = this;
+    detail.activeTemplateInstances = [];
     var organizationId = localStorage.getItem('orgId');
     var templatesList = [];
     detail.activeTemplate = {};
@@ -11,6 +12,7 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
 
     detail.submitPatientFullForm = submitPatientFullForm;
     detail.getData = getData;
+    detail.viewPreviousForms = viewPreviousForms;
 
     var assistantObject = localStorage.getItem('assistant');
     var organizationId = localStorage.getItem('orgId');
@@ -38,10 +40,75 @@ function patientDetailsController($rootScope, $scope, $log, $stateParams, dbotic
         dboticaServices.noConnectivityError();
     });
 
+    function viewPreviousForms() {
+        var patientTemplateInstancesPromise = dboticaServices.getPatientTemplateInstances(detail.patient.organizationCaseId, detail.patient.organizationId);
+        patientTemplateInstancesPromise.then(function(instanceSuccess) {
+            var errorCode = instanceSuccess.data.errorCode;
+            if (errorCode) {
+                dboticaServices.logoutFromThePage(errorCode);
+            } else {
+                var instanceResponse = angular.fromJson(instanceSuccess.data.response);
+                if (errorCode == null && instanceSuccess.data.success) {
+                    if (!_.isEmpty(detail.patient)) {
+                        instanceResponse = _.filter(instanceResponse, function(entity) {
+                            return entity.state == 'ACTIVE';
+                        });
+                        var prescriptionEntities = [];
+                        if (instanceResponse.length > 0) {
+                            angular.forEach(instanceResponse, function(instanceEntity) {
+                                var localFieldValues = angular.fromJson(instanceEntity.templateValues);
+                                var lastUpdatedValue = instanceEntity.lastUpdated;
+                                angular.forEach(localFieldValues, function(field) {
+                                    angular.forEach(field, function(fieldEntity) {
+                                        var localObject = {};
+                                        if (fieldEntity.description !== '' && fieldEntity.fieldType !== 'CHECK_BOX') {
+                                            localObject.sectionName = fieldEntity.sectionName;
+                                            localObject.lastUpdated = lastUpdatedValue;
+                                            localObject.fieldType = fieldEntity.fieldType;
+                                            localObject.name = fieldEntity.name;
+                                            localObject.value = fieldEntity.description;
+                                            prescriptionEntities.push(localObject);
+                                        }
+                                        if (fieldEntity.fieldType == 'CHECK_BOX') {
+                                            localObject.sectionName = fieldEntity.sectionName;
+                                            localObject.lastUpdated = lastUpdatedValue;
+                                            localObject.fieldType = fieldEntity.fieldType;
+                                            localObject.name = fieldEntity.name;
+                                            var arr = [];
+                                            angular.forEach(fieldEntity.restrictValues, function(restrictEntity) {
+                                                if (restrictEntity.checkBoxValue) {
+                                                    arr.push(restrictEntity.name);
+                                                }
+                                            });
+                                            localObject.value = arr.join(',');
+                                            prescriptionEntities.push(localObject);
+                                        }
+                                    });
+                                });
+                            });
+                            prescriptionEntities = _.groupBy(prescriptionEntities, 'sectionName');
+                            angular.forEach(prescriptionEntities, function(prescEntry) {
+                                var localSortedArray = [];
+                                localSortedArray = _.groupBy(prescEntry, 'lastUpdated');
+                                detail.activeTemplateInstances.push(localSortedArray);
+                            });
+                        }
+                        angular.element("#previousFormsModal").modal('show');
+                    } else {
+                        dboticaServices.selectInPatientSwal();
+                    }
+                }
+            }
+        }, function(instanceError) {
+            dboticaServices.noConnectivityError();
+        });
+    }
+
     function submitPatientFullForm() {
         var templateInstance = {};
         templateInstance.templateId = detail.activeTemplate.id;
         var localTemplateValues = {};
+        $log.log('patient data is----', detail.patient);
         angular.copy($scope.activeTemplateFields, localTemplateValues);
         templateInstance.templateValues = JSON.stringify(localTemplateValues);
         templateInstance.patientId = detail.patient.id;

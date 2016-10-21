@@ -6,6 +6,7 @@
     </ul>
     <div class="tab">
         <div id="contentOfPatientDetailsTab" class="tab-content activeTabContent">
+            <a ng-click="detail.viewPreviousForms()" class="previousForms">View Previous Forms</a>
             <div ng-repeat="section in activeTemplateFields">
                 <div ng-repeat="sectionEntity in section track by $index">
                     <a ng-if="patientMedication && detail.getData();"></a>
@@ -40,6 +41,42 @@
             </div>
             <div class="row">
                 <button ng-click="detail.submitPatientFullForm()" style="margin-left:10px;" class="btn mainAdminBtn">Save</button>
+            </div>
+        </div>
+    </div>
+    <div id="previousFormsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Previous Forms</h4>
+                </div>
+                <div class="modal-body">
+                    <div ng-repeat="templateEntity in detail.activeTemplateInstances">
+                        <div ng-repeat="fieldEntity in templateEntity">
+                            <hr>
+                            <div ng-repeat="field in fieldEntity track by $index">
+                                <h4 ng-if="$index==0" class="labelName" ng-bind="field.sectionName"></h4>
+                                <div>
+                                    <table>
+                                        <tbody>
+                                            <tr ng-if="field.value!==''&&field.fieldType=='TEXT_BOX'||field.fieldType=='TEXT_AREA'||field.fieldType=='DROPDOWN'">
+                                                <td class="labelWidth patientLabels" ng-bind="field.name+':'"></td>
+                                                <td class="patientLabels" ng-bind="field.value"></td>
+                                            </tr>
+                                            <tr ng-if="field.value!==''&&field.fieldType=='CHECK_BOX'">
+                                                <td class="labelWidth patientLabels" ng-bind="field.name +':'"></td>
+                                                <td class="patientLabels" ng-bind="field.value"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
             </div>
         </div>
     </div>
