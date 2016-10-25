@@ -72,6 +72,7 @@ function doctorServices($http, $state, $log, $q) {
     doctorServices.sortTemplates = sortTemplates;
     doctorServices.getIndex = getIndex;
     doctorServices.getTemplateIndexInTable = getTemplateIndexInTable;
+    doctorServices.getOrganizationDetails = getOrganizationDetails;
 
     function sortTemplates(templatesArray) {
         var localArray = [];
@@ -142,6 +143,21 @@ function doctorServices($http, $state, $log, $q) {
             deferred.resolve(templateSuccess);
         }, function(templateError) {
             deferred.reject(templateError);
+        });
+        return deferred.promise;
+    }
+
+    function getOrganizationDetails() {
+        var deferred = $q.defer();
+        var organizationRequest = {
+            method: 'GET',
+            url: 'http://localhost:8080/dbotica-spring/organization/getOrganizationDetails',
+            withCredentials: true
+        }
+        $http(organizationRequest).then(function(orgSuccess) {
+            deferred.resolve(orgSuccess);
+        }, function(orgError) {
+            deferred.reject(orgError);
         });
         return deferred.promise;
     }

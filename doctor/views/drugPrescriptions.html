@@ -105,11 +105,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div ng-if="prescription.newCase" class="row">
                         <label id="patientPrescriptionsLabel">Active Case :</label>
                         <a data-toggle="modal" class="historyCss" data-target="#casePrescriptionsModal">View Case History</a>
                     </div>
-                    <div class="col-md-3 col-sm-3 col-xs-6" ng-repeat="caseEntity in prescription.patientCaseHistory">
+                    <div ng-if="prescription.newCase" class="col-md-3 col-sm-3 col-xs-6" ng-repeat="caseEntity in prescription.patientCaseHistory">
                         <a ng-class="{'activeCaseClass':caseEntity.organizationCaseStatus=='OPENED'}" data-toggle="modal" data-target="#casePrescriptionsModal" ng-click="prescription.getPrescriptionsOfCaseNumber(caseEntity)" style="cursor:pointer;">Case - <span>{{caseEntity.organizationCaseNo}}-{{caseEntity.creationTime|longDateIntoReadableDate}}</span></a>
                     </div>
                     <hr>
@@ -200,8 +200,8 @@
                         </div>
                     </div>
                     <div class="row">
-                        <span ng-click="prescription.openNewCase()"><a style="cursor:pointer;margin-left:15px;">New Case</a></span>
-                        <span><a style="cursor:pointer;margin-left:15px;" data-toggle="modal" data-target="#myTemplates">Select Templates</a></span>
+                        <span ng-if="prescription.newCase" ng-click="prescription.openNewCase()"><a style="cursor:pointer;margin-left:15px;">New Case</a></span>
+                        <span ng-if="prescription.newCase"><a style="cursor:pointer;margin-left:15px;" data-toggle="modal" data-target="#myTemplates">Select Templates</a></span>
                         <div id="myTemplates" class="modal fade" role="dialog">
                             <div class="modal-dialog">
                                 <div class="modal-content">
