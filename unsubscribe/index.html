@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Unsubscribe - Dbotica MIRS</title>
+    <meta http-equiv="pragma" content="no-cache" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+
+
+        $.fn.serializeObject = function() {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function() {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+
+
+
+        $(document).ready(function() {
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for(var i = 0; i < hashes.length; i++)
+            {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            var patientId = vars['patientId'];
+            if(patientId == null){
+                alert('No Patient Found!')
+                window.location.href = 'http://qa.dbotica.com/';
+            }else{
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://qa.dbotica.com:8081/dbotica-spring/dbotica/getPatientById?patientId=' + patientId,
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("Accept", "application/json");
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        var errorCode = response.errorCode;
+                        if (!!errorCode) {
+                            switch (errorCode) {
+                                case "BAD_REQUEST_ERROR":
+                                    alert("Error : " + JSON.stringify(response.response));
+                                    break;
+                            }
+                        } else {
+                            var patient = JSON.parse(response.response);
+                            $('#patientId').val(patient['id']);
+                            $('#patientName').text(patient['userName']);
+
+                        }
+                    },
+                    error: function(request, status, error) {
+                        console.log(JSON.stringify(status));
+                    }
+                });
+            }
+        });
+
+
+        $(function() {
+            $('#unsubscribeForm').submit(function(e) {
+                e.preventDefault();
+                var removeReminderRequest = JSON.stringify($('#unsubscribeForm').serializeObject());
+                console.log(removeReminderRequest);
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://qa.dbotica.com:8081/dbotica-spring/message/removeReminders/',
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("Accept", "application/json");
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    data: removeReminderRequest,
+                    success: function(response) {
+                        console.log(response);
+                        var errorCode = response.errorCode;
+                        if (!!errorCode) {
+                            switch (errorCode) {
+                                case "BAD_REQUEST_ERROR":
+                                    alert("Error : " + JSON.stringify(response.response));
+                                    break;
+
+                            }
+                        } else {
+                            console.log("manager details before prse is----", response.response);
+                            var data = $.parseJSON(response.response);
+                            $('#result').text('You have been unsubscribed from MIRS Service');
+                        }
+                    },
+                    error: function(request, status, error) {
+                        $('#result').text(JSON.stringify(status));
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+<div id="login-overlay" class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Unsubscribe - Dbotica MIRS</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="well">
+
+                        <form id="unsubscribeForm" method="POST" action="">
+
+                            <div class="form-group">
+                                <label class="control-label">Reason</label>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="reason" id="reason" value="NOT_USEFUL" checked> Not Useful
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="reason" id="reason" value="TOO_ANNOYING"> Annoying
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="reason" id="reason" value="WRONG_MEDS" > Wrong Medicines
+                                    </label>
+                                </div>
+
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="reason" id="reason" value="GETTING_LATE" >Getting Late
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="reason" id="reason" value="OTHER" > Other Reason
+                                    </label>
+                                </div>
+                                <span class="help-block"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="otherReason" class="control-label">Other Reason</label>
+                                <input type="text" class="form-control" id="otherReason" name="otherReason" value="">
+                                <span class="help-block"></span>
+                            </div>
+                            <div class="form-group" style="visibility: hidden;">
+                                <label for="patientId" class="control-label">Patient Id</label>
+                                <input type="text" class="form-control" id="patientId" name="patientId" value="" readonly>
+                                <span class="help-block"></span>
+                            </div>
+                            <div id="loginErrorMsg" class="alert alert-error hide">Wrong emailId or password</div>
+                            <input type="submit" class="btn btn-primary"  value="Submit" style="width:100%;" />
+                        </form>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <p class="lead">Unsubscribe from MIRS <span class="text-success"></span></p>
+                    <ul class="list-unstyled" style="line-height: 2">
+                        <li><span class="fa fa-user"></span> &nbsp; &nbsp;<span id="patientName"></span></li>
+                        <li> We are sorry to see you leaving us!</li>
+
+
+                    </ul>
+                    <center><pre id="result" name="result">Unsubscribe Status</pre>
+                        <center>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
